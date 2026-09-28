@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Macro AR · Tablero diario de la economía argentina</title>
+<meta name="description" content="Dólares y brechas, riesgo país, reservas, inflación, tasas y agregados monetarios de Argentina, actualizados cada día hábil.">
+<meta property="og:title" content="Macro AR · Tablero diario de la economía argentina">
+<meta property="og:description" content="Dólares y brechas, riesgo país, reservas, inflación, tasas y agregados monetarios, actualizados cada día hábil.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://epherrafrancisco-gif.github.io/macro-ar/">
+<meta property="og:image" content="https://epherrafrancisco-gif.github.io/macro-ar/preview.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f2f4f6; --surface:#ffffff; --sunk:#edf0f3;
+  --ink:#131c26; --ink2:#485563; --muted:#788593; --line:#dbe1e7; --grid:#e8ecf0;
+  --accent:#1d4f7a; --accent-ink:#ffffff;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4;
+  --pos:#1f7a4d; --pos-bg:#e3f2ea; --neg:#b3261e; --neg-bg:#fbe7e5; --neu-bg:#e9edf1;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0e1319; --surface:#161d25; --sunk:#121820;
+    --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --line:#28323d; --grid:#1f2831;
+    --accent:#6aa8d8; --accent-ink:#0e1319;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+    --pos:#4cc38a; --pos-bg:#12291f; --neg:#f07a70; --neg-bg:#2d1614; --neu-bg:#1c252f;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0e1319; --surface:#161d25; --sunk:#121820;
+  --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --line:#28323d; --grid:#1f2831;
+  --accent:#6aa8d8; --accent-ink:#0e1319;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  --pos:#4cc38a; --pos-bg:#12291f; --neg:#f07a70; --neg-bg:#2d1614; --neu-bg:#1c252f;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:26px 56px;display:grid;gap:20px}
+@media (max-width:480px){.wrap{padding-inline:16px}}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 20px}
+.brand{display:grid;gap:2px}
+.brand h1{margin:0;font-size:30px;letter-spacing:-.02em;line-height:1.05;font-weight:700}
+.brand h1 span{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:.8em;margin-left:6px}
+.brand p{margin:0;color:var(--ink2);font-size:14px}
+.stamp{font-size:13px;color:var(--muted);text-align:right}
+.stamp b{color:var(--ink);font-weight:600}
+@media (max-width:600px){.stamp{text-align:left}}
+
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-block:-8px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+.tabs a{font-weight:600;font-size:15px;color:var(--ink2);text-decoration:none;padding:8px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs a[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;background:var(--sunk);border-radius:7px;padding:3px;gap:2px}
+.seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;background:transparent;color:var(--ink2);padding:5px 10px;border-radius:5px;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+
+section.view{display:grid;gap:18px}
+section.view[hidden]{display:none}
+.lbl{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;padding:1px 7px;border-radius:999px;width:fit-content;white-space:nowrap}
+.chip.up{color:var(--pos);background:var(--pos-bg)}
+.chip.dn{color:var(--neg);background:var(--neg-bg)}
+.chip.eq{color:var(--ink2);background:var(--neu-bg)}
+.chip.bad.up{color:var(--neg);background:var(--neg-bg)}
+.chip.bad.dn{color:var(--pos);background:var(--pos-bg)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:baseline;flex:none}
+
+/* quotes */
+.quotes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+@media (max-width:1180px){.quotes{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:640px){.quotes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:5px;align-content:start;min-width:0}
+.q .name{display:flex;align-items:center;font-weight:600;font-size:13.5px}
+.q .v small{font-size:.7em;color:var(--ink2);margin-right:2px}
+.q .v{white-space:nowrap;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(17px,1.6vw,21px);font-weight:500;letter-spacing:-.01em;line-height:1.15}
+.q .cv{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.q .row{display:flex;gap:6px;flex-wrap:wrap}
+.q .when{font-size:11px;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;min-width:0;align-content:start}
+.card h2{margin:0;font-size:15px;font-weight:600;text-wrap:balance}
+.card .sub{margin:0;color:var(--muted);font-size:12.5px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 4px 16px rgba(0,0,0,.14);min-width:160px;display:grid;gap:3px;z-index:3}
+.tip[hidden]{display:none}
+.tip .t{color:var(--muted);font-family:var(--mono);font-size:11.5px}
+.tip .r{display:flex;justify-content:space-between;gap:14px;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tip .r span:first-child{display:inline-flex;align-items:center;font-family:var(--sans)}
+.empty{color:var(--muted);font-size:13.5px;padding:30px 0;text-align:center}
+
+/* KPI tiles */
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.k{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start;min-width:0}
+.k .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:21px;font-weight:500;line-height:1.15;overflow-wrap:anywhere}
+.k .v small{font-size:12px;color:var(--ink2);font-weight:400;margin-left:3px}
+.k .d{font-size:11.5px;color:var(--muted)}
+.k .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+
+.gaps{display:grid;gap:0}
+.gap{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.gap:last-child{border-bottom:0}
+.gap .n{display:flex;align-items:center;font-size:13.5px}
+.gap .n small{color:var(--muted);margin-left:6px;font-size:12px}
+.gap .p{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:17px;font-weight:500;text-align:right}
+.meter{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden;grid-column:1/-1;margin-top:-2px}
+.meter i{display:block;height:100%;border-radius:3px}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+td.up{color:var(--pos)} td.dn{color:var(--neg)}
+footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
+footer a{color:var(--ink2)}
+.note{font-size:12px;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>Macro AR<span>diario</span></h1>
+      <p>Dólares, riesgo país, reservas, inflación, tasas y agregados monetarios</p>
+    </div>
+    <div class="stamp" id="stamp">Cargando datos…</div>
+  </header>
+
+  <div class="bar">
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <a href="#dolares" role="tab" id="tabD" aria-selected="true">Dólares</a>
+      <a href="#macro" role="tab" id="tabM" aria-selected="false">Macro</a>
+    </nav>
+    <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
+      <button type="button" data-r="30">1M</button>
+      <button type="button" data-r="91">3M</button>
+      <button type="button" data-r="182" aria-selected="true">6M</button>
+      <button type="button" data-r="365">1A</button>
+      <button type="button" data-r="0">Todo</button>
+    </div>
+  </div>
+
+  <!-- DÓLARES -->
+  <section class="view" id="vD">
+    <div class="quotes" id="quotes"></div>
+
+    <div class="card">
+      <div class="head"><h2>Cotizaciones (venta)</h2><div class="legend" id="lgDol"></div></div>
+      <div class="chart" id="chDol"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="head"><h2>Brecha contra el oficial</h2><div class="legend" id="lgGap"></div></div>
+        <div class="chart" id="chGap"></div>
+      </div>
+      <div class="card">
+        <div class="head"><h2>Brechas hoy</h2><span class="note" id="gapDate"></span></div>
+        <div class="gaps" id="gaps"></div>
+        <p class="note">Brecha = cotización ÷ oficial − 1. Canje = CCL ÷ MEP − 1: cuánto más cuesta sacar dólares al exterior que tenerlos acá.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="head"><h2>Últimos días</h2><span class="note">Venta, en pesos</span></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Fecha</th><th>Oficial</th><th>Mayorista</th><th>MEP</th><th>CCL</th><th>Blue</th><th>Brecha CCL</th><th>Var. MEP</th></tr></thead>
+        <tbody id="tDol"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- MACRO -->
+  <section class="view" id="vM" hidden>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Riesgo país</h2><span class="note">Puntos básicos (EMBI)</span></div><div class="chart" id="chRiesgo"></div></div>
+      <div class="card"><div class="head"><h2>Reservas brutas del BCRA</h2><span class="note">Millones de USD</span></div><div class="chart" id="chRes"></div></div>
+      <div class="card"><div class="head"><h2>Inflación mensual</h2><span class="note">IPC, % mensual</span></div><div class="chart" id="chInf"></div></div>
+      <div class="card"><div class="head"><h2>Inflación interanual y expectativas</h2><div class="legend" id="lgYoY"></div></div><div class="chart" id="chYoY"></div></div>
+      <div class="card"><div class="head"><h2>Tasas en pesos</h2><div class="legend" id="lgTas"></div></div><div class="chart" id="chTas"></div></div>
+      <div class="card"><div class="head"><h2>Plazo fijo contra inflación</h2><div class="legend" id="lgReal"></div></div><div class="chart" id="chReal"></div><p class="note">Rendimiento mensual del plazo fijo a 30 días (TNA ÷ 12, promedio del mes) contra la inflación del mismo mes. Si la barra naranja supera la azul, el plazo fijo perdió contra la inflación.</p></div>
+      <div class="card"><div class="head"><h2>Base monetaria</h2><span class="note">Billones de pesos</span></div><div class="chart" id="chBase"></div></div>
+      <div class="card"><div class="head"><h2>Depósitos privados en dólares</h2><span class="note">Millones de USD</span></div><div class="chart" id="chDep"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Fuentes: BCRA (reservas, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones del día). Se actualiza solo cada día hábil después del cierre.</span>
+    <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
+    <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const nf = (n,d=2) => n.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const sg = (n,d=2) => (n>0?'+':n<0?'−':'') + nf(Math.abs(n),d);
+  const pc = (n,d=1) => sg(n*100,d)+'%';
+  const fd = s => { const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
+  const fds = s => fd(s).slice(0,5);
+  const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const fmes = s => { const [y,m]=s.split('-'); return `${MES[+m-1]} ${y.slice(2)}`; };
+  const T = s => Date.parse(s+'T12:00:00Z');
+  const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  let days = [], months = [], loaded = {d:false,m:false};
+  let range = 182;
+  try{ const r = localStorage.getItem('macro-range'); if(r!==null && ['30','91','182','365','0'].includes(r)) range = +r; }catch(e){}
+
+  const DOL = [
+    {k:'oficial',  n:'Oficial',   c:'--s1', d:'BNA minorista'},
+    {k:'mayorista',n:'Mayorista', c:'--s5', d:'Com. A3500'},
+    {k:'mep',      n:'MEP',       c:'--s2', d:'Bolsa'},
+    {k:'ccl',      n:'CCL',       c:'--s3', d:'Contado con liqui'},
+    {k:'blue',     n:'Blue',      c:'--s4', d:'Informal'},
+    {k:'cripto',   n:'Cripto',    c:null,   d:'USDT'},
+    {k:'tarjeta',  n:'Tarjeta',   c:null,   d:'Oficial + impuestos'}
+  ];
+
+  // ---- series helpers ----
+  const get = (d,k) => { const x=d[k]; if(x==null) return null; if(typeof x==='number') return x; return x.v ?? null; };
+  function series(k, fn){
+    const out=[]; for(const d of days){ const v = fn ? fn(d) : get(d,k); if(v!=null && isFinite(v)) out.push([d.fecha, v]); } return out;
+  }
+  function lastTwo(pts){ const n=pts.length; return {last: pts[n-1], prev: pts[n-2]}; }
+  function ago(pts, nDays){
+    if(!pts.length) return null; const t = T(pts[pts.length-1][0]) - nDays*864e5;
+    for(let i=pts.length-1;i>=0;i--) if(T(pts[i][0])<=t) return pts[i];
+    return null;
+  }
+  function inRange(pts){
+    if(!range || !pts.length) return pts;
+    const t = T(pts[pts.length-1][0]) - range*864e5; return pts.filter(p=>T(p[0])>=t);
+  }
+  const gapFn = k => d => { const o=get(d,'oficial'), x=get(d,k); return (o&&x) ? (x/o-1)*100 : null; };
+
+  function chip(v, {d=1, pct=true, bad=false, unit=''}={}){
+    if(v==null || !isFinite(v)) return '';
+    const cls = Math.abs(v) < (pct?0.0005:0.5) ? 'eq' : v>0 ? 'up' : 'dn';
+    const txt = pct ? pc(v,d) : sg(v,d)+unit;
+    return `<span class="chip ${cls}${bad?' bad':''}">${txt}</span>`;
+  }
+
+  // ---- generic line chart ----
+  function niceStep(raw){ const p=Math.pow(10,Math.floor(Math.log10(raw||1))); const n=raw/p; return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p; }
+  function lineChart(el, ss, o={}){
+    ss = ss.filter(s=>s.pts.length);
+    if(!ss.length){ el.innerHTML = `<div class="empty">${loaded.d?'Sin datos en este rango.':'Cargando…'}</div>`; return; }
+    const W = Math.max(300, el.clientWidth||600), H = o.h || (W<520?200:240);
+    const labW = o.labW ?? 70;
+    const m = {t:12, r: ss.length>1||o.endLabel ? labW : 16, b:24, l: o.l ?? 52};
+    const iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const all = ss.flatMap(s=>s.pts.map(p=>p[1])); if(o.zero) all.push(0);
+    let lo=Math.min(...all), hi=Math.max(...all);
+    const pad = Math.max((hi-lo)*0.1, Math.abs(hi)*0.002 || 1); lo-=pad; hi+=pad;
+    if(o.zero && lo>0) lo=0;
+    const minD=Math.min(...all); if(minD>=0 && lo<0) lo=0;
+    const step=niceStep((hi-lo)/4); lo=Math.floor(lo/step)*step; hi=Math.ceil(hi/step)*step;
+    if(minD>=0 && lo<0) lo=0;
+    const ts = [...new Set(ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
+    const t0=T(ts[0]), t1=T(ts[ts.length-1]);
+    const x = f => ts.length===1 ? m.l+iw/2 : m.l + (T(f)-t0)/(t1-t0)*iw;
+    const y = v => m.t + (hi-v)/(hi-lo)*ih;
+    const yf = o.yfmt || (v=>nf(v, step<1?1:0));
+    let g='';
+    for(let v=lo; v<=hi+step*1e-6; v+=step){ const yy=y(v).toFixed(1), z=o.zero&&Math.abs(v)<step*1e-6;
+      g+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yy}" y2="${yy}" stroke="var(${z?'--muted':'--grid'})" stroke-width="1"${z?' stroke-dasharray="3 3"':''}/>`;
+      g+=`<text x="${m.l-7}" y="${+yy+3.5}" text-anchor="end">${yf(v)}</text>`; }
+    const nl = Math.max(2, Math.floor(iw/90));
+    for(let i=0;i<nl;i++){ const idx = Math.round(i*(ts.length-1)/(nl-1)); const f=ts[idx];
+      g+=`<text x="${x(f).toFixed(1)}" y="${H-5}" text-anchor="${i===0?'start':i===nl-1?'end':'middle'}">${(o.xfmt||fds)(f)}</text>`; }
+    ss.forEach(s=>{
+      const d = s.pts.map((p,i)=>`${i?'L':'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
+      if(s.area) g+=`<path d="${d}L${x(s.pts[s.pts.length-1][0]).toFixed(1)},${m.t+ih}L${x(s.pts[0][0]).toFixed(1)},${m.t+ih}Z" fill="var(${s.c})" opacity="0.08"/>`;
+      g+=`<path d="${d}" fill="none" stroke="var(${s.c})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dash?' stroke-dasharray="5 4"':''}/>`;
+    });
+    // endpoint dots + direct labels (nudged apart)
+    const ends = ss.map(s=>{ const p=s.pts[s.pts.length-1]; return {s, x:x(p[0]), y:y(p[1]), v:p[1]}; });
+    ends.forEach(e=>{ g+=`<circle cx="${e.x.toFixed(1)}" cy="${e.y.toFixed(1)}" r="3.5" fill="var(${e.s.c})" stroke="var(--surface)" stroke-width="2"/>`; });
+    if(m.r>16){
+      const lab = ends.map(e=>({...e, ly:e.y})).sort((a,b)=>a.ly-b.ly);
+      for(let k=0;k<6;k++) for(let i=1;i<lab.length;i++){ if(lab[i].ly-lab[i-1].ly<13){ const mid=(lab[i].ly+lab[i-1].ly)/2; lab[i-1].ly=mid-6.5; lab[i].ly=mid+6.5; } }
+      lab.forEach(e=>{ g+=`<text x="${m.l+iw+8}" y="${(e.ly+3.5).toFixed(1)}" style="fill:var(--ink);font-weight:600">${(o.lfmt||o.vfmt||yf)(e.v)}</text>`; });
+    }
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Gráfico')}">${g}
+      <line class="xh" y1="${m.t}" y2="${m.t+ih}" stroke="var(--muted)" stroke-width="1" visibility="hidden"/><g class="hov"></g>
+      <rect class="hit" x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+    const svg=el.querySelector('svg'), tip=el.querySelector('.tip'), xh=el.querySelector('.xh'), hov=el.querySelector('.hov');
+    const vf = o.vfmt || yf;
+    const pick = ev => {
+      const r=svg.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width;
+      let bf=ts[0], bd=Infinity; ts.forEach(f=>{ const dd=Math.abs(x(f)-px); if(dd<bd){bd=dd;bf=f;} });
+      const cx=x(bf); xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible');
+      let dots='', rows='';
+      ss.forEach(s=>{ const p=s.pts.find(q=>q[0]===bf); if(!p) return;
+        dots+=`<circle cx="${cx}" cy="${y(p[1]).toFixed(1)}" r="4.5" fill="var(${s.c})" stroke="var(--surface)" stroke-width="2"/>`;
+        rows+=`<div class="r"><span>${ss.length>1?`<i class="sw" style="background:var(${s.c})"></i>${s.n}`:(o.unitName||s.n)}</span><span>${vf(p[1])}</span></div>`; });
+      hov.innerHTML=dots; tip.hidden=false;
+      tip.innerHTML=`<span class="t">${(o.tfmt||fd)(bf)}</span>${rows}`;
+      const sx=cx*r.width/W, tw=tip.offsetWidth;
+      tip.style.left=Math.max(0,Math.min(r.width-tw, sx+(sx>r.width/2?-tw-12:12)))+'px'; tip.style.top='4px';
+    };
+    const hide=()=>{ tip.hidden=true; xh.setAttribute('visibility','hidden'); hov.innerHTML=''; };
+    const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
+  }
+
+  // ---- grouped bar chart (monthly) ----
+  function barChart(el, ss, o={}){
+    const keys = [...new Set(ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
+    if(!keys.length){ el.innerHTML = `<div class="empty">${loaded.m?'Sin datos.':'Cargando…'}</div>`; return; }
+    const W=Math.max(300, el.clientWidth||600), H=W<520?200:240;
+    const m={t:16,r:10,b:24,l:40}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const all=ss.flatMap(s=>s.pts.map(p=>p[1])).concat([0]);
+    let hi=Math.max(...all)*1.12, lo=Math.min(0,Math.min(...all)*1.12);
+    const step=niceStep((hi-lo)/4); hi=Math.ceil(hi/step)*step; lo=Math.floor(lo/step)*step;
+    const y=v=>m.t+(hi-v)/(hi-lo)*ih, slot=iw/keys.length, gw=Math.min(slot*0.72, 34*ss.length), bw=Math.max(2,(gw-(ss.length-1)*2)/ss.length);
+    let g='';
+    for(let v=lo; v<=hi+step*1e-6; v+=step){ const yy=y(v).toFixed(1), z=Math.abs(v)<step*1e-6;
+      g+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yy}" y2="${yy}" stroke="var(${z?'--muted':'--grid'})" stroke-width="1"/>`;
+      g+=`<text x="${m.l-6}" y="${+yy+3.5}" text-anchor="end">${nf(v, step<1?1:0)}%</text>`; }
+    const every=Math.ceil(keys.length/Math.max(2,Math.floor(iw/52)));
+    keys.forEach((k,i)=>{ const cx=m.l+slot*(i+.5);
+      if(i%every===0 || i===keys.length-1) g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="middle">${fmes(k)}</text>`;
+      ss.forEach((s,j)=>{ const p=s.pts.find(q=>q[0]===k); if(!p) return; const x0=cx-gw/2+j*(bw+2), y0=y(Math.max(0,p[1])), y1=y(Math.min(0,p[1]));
+        g+=`<rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y1-y0).toFixed(1)}" rx="2" fill="var(${s.c})"/>`; });
+    });
+    const lk=keys[keys.length-1];
+    if(ss.length===1){ const p=ss[0].pts.find(q=>q[0]===lk); if(p) g+=`<text x="${(m.l+slot*(keys.length-.5)).toFixed(1)}" y="${(y(p[1])-5).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${nf(p[1],1)}%</text>`; }
+    el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Gráfico de barras')}">${g}<rect class="hl" y="${m.t}" height="${ih}" width="${slot.toFixed(1)}" fill="var(--ink)" opacity="0.05" visibility="hidden"/><rect class="hit" x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+    const svg=el.querySelector('svg'), tip=el.querySelector('.tip'), hl=el.querySelector('.hl');
+    const pick=ev=>{ const r=svg.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width; const i=Math.max(0,Math.min(keys.length-1,Math.floor((px-m.l)/slot))); const k=keys[i];
+      hl.setAttribute('x',(m.l+slot*i).toFixed(1)); hl.setAttribute('visibility','visible');
+      tip.hidden=false; tip.innerHTML=`<span class="t">${fmes(k)}</span>`+ss.map(s=>{ const p=s.pts.find(q=>q[0]===k); return p?`<div class="r"><span><i class="sw" style="background:var(${s.c})"></i>${s.n}</span><span>${nf(p[1],(o.dec??1))}%</span></div>`:''; }).join('')+(o.extra?o.extra(k):'');
+      const sx=(m.l+slot*(i+.5))*r.width/W, tw=tip.offsetWidth; tip.style.left=Math.max(0,Math.min(r.width-tw, sx+(sx>r.width/2?-tw-12:12)))+'px'; tip.style.top='4px'; };
+    const hide=()=>{ tip.hidden=true; hl.setAttribute('visibility','hidden'); };
+    const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
+  }
+  const legend = (el, items) => { el.innerHTML = items.map(i=>`<span><i class="sw" style="background:var(${i.c})"></i>${i.n}</span>`).join(''); };
+
+  // ---- DÓLARES ----
+  function renderDolares(){
+    // quote cards
+    $('quotes').innerHTML = DOL.map(q=>{
+      const pts = series(q.k); if(!pts.length) return `<div class="q"><div class="name">${q.n}</div><div class="v">—</div><div class="when">${q.d}</div></div>`;
+      const {last, prev} = lastTwo(pts);
+      const lastDoc = days.find(d=>d.fecha===last[0]); const c = lastDoc && lastDoc[q.k] && lastDoc[q.k].c;
+      const m30 = ago(pts,30);
+      return `<div class="q">
+        <div class="name">${q.c?`<i class="sw" style="background:var(${q.c})"></i>`:''}${q.n}</div>
+        <div class="v"><small>$</small>${nf(last[1])}</div>
+        <div class="cv">${c?`Compra $ ${nf(c)}`:'&nbsp;'}</div>
+        <div class="row">${prev?chip(last[1]/prev[1]-1,{d:2}):''}${m30?`<span class="chip eq" title="Variación 30 días">30d ${pc(last[1]/m30[1]-1)}</span>`:''}</div>
+        <div class="when">${q.d} · ${fds(last[0])}</div></div>`;
+    }).join('');
+
+    const main = DOL.filter(q=>q.c);
+    legend($('lgDol'), main);
+    lineChart($('chDol'), main.map(q=>({n:q.n, c:q.c, pts:inRange(series(q.k))})), {aria:'Cotizaciones del dólar', yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v)});
+
+    const gapS = [{k:'mep',n:'MEP',c:'--s2'},{k:'ccl',n:'CCL',c:'--s3'},{k:'blue',n:'Blue',c:'--s4'}];
+    legend($('lgGap'), gapS);
+    lineChart($('chGap'), gapS.map(s=>({n:s.n, c:s.c, pts:inRange(series(null, gapFn(s.k)))})), {aria:'Brecha contra el oficial', zero:true, yfmt:v=>nf(v,v%1?1:0)+'%', vfmt:v=>sg(v,1)+'%', labW:58});
+
+    // gaps today
+    const lastDay = days.length ? days[days.length-1] : null;
+    const latest = k => { const p=series(k); return p.length?p[p.length-1][1]:null; };
+    const of = latest('oficial');
+    const rows = [
+      {n:'MEP', c:'--s2', v: latest('mep')/of-1},
+      {n:'CCL', c:'--s3', v: latest('ccl')/of-1},
+      {n:'Blue', c:'--s4', v: latest('blue')/of-1},
+      {n:'Cripto', c:'--muted', v: latest('cripto')/of-1},
+      {n:'Canje', sub:'CCL vs MEP', c:'--muted', v: latest('ccl')/latest('mep')-1}
+    ].filter(r=>isFinite(r.v));
+    const mx = Math.max(0.05, ...rows.map(r=>Math.abs(r.v)));
+    $('gaps').innerHTML = rows.map(r=>`<div class="gap"><span class="n"><i class="sw" style="background:var(${r.c})"></i>${r.n}${r.sub?`<small>${r.sub}</small>`:''}</span><span></span><span class="p">${pc(r.v,1)}</span>
+      <div class="meter"><i style="width:${(Math.abs(r.v)/mx*100).toFixed(1)}%;background:var(${r.c})"></i></div></div>`).join('');
+    $('gapDate').textContent = lastDay ? 'Al '+fd(lastDay.fecha) : '';
+
+    // table
+    const recent = days.filter(d=>get(d,'oficial')||get(d,'mep')).slice(-15).reverse();
+    $('tDol').innerHTML = recent.map((d,i)=>{
+      const o=get(d,'oficial'), ccl=get(d,'ccl'), mep=get(d,'mep');
+      const nxt = recent[i+1], pm = nxt?get(nxt,'mep'):null, vm = (mep&&pm)?mep/pm-1:null;
+      const c = v => v!=null?nf(v):'—';
+      return `<tr><td>${fd(d.fecha)}</td><td>${c(o)}</td><td>${c(get(d,'mayorista'))}</td><td>${c(mep)}</td><td>${c(ccl)}</td><td>${c(get(d,'blue'))}</td>
+        <td>${(o&&ccl)?pc(ccl/o-1):'—'}</td><td class="${vm>0?'up':vm<0?'dn':''}">${vm!=null?pc(vm,2):'—'}</td></tr>`;
+    }).join('') || `<tr><td colspan="8" style="color:var(--muted)">${loaded.d?'Sin datos.':'Cargando…'}</td></tr>`;
+  }
+
+  // ---- MACRO ----
+  function monthly(k){ return months.filter(m=>m[k]!=null).map(m=>[m.mes, m[k]]); }
+  function renderMacro(){
+    const riesgo=series('riesgo'), res=series('reservas'), base=series('base'), dep=series('depusd'),
+          badlar=series('badlar'), tamar=series('tamar'), pf=series('pf');
+    const inf=monthly('infl'), yoy=monthly('inflYoY'), exp=monthly('expect');
+    const L = p => p.length?p[p.length-1]:null;
+    const tile = (lbl, v, unit, row, d) => `<div class="k"><span class="lbl">${lbl}</span><span class="v">${v}${unit?`<small>${unit}</small>`:''}</span><div class="row">${row||''}</div><span class="d">${d||''}</span></div>`;
+    const t=[];
+    if(L(riesgo)){ const {last,prev}=lastTwo(riesgo), a=ago(riesgo,30);
+      t.push(tile('Riesgo país', nf(last[1],0), 'pb', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' pb',bad:true}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
+    if(L(res)){ const {last,prev}=lastTwo(res), a=ago(res,30);
+      t.push(tile('Reservas brutas', 'US$ '+nf(last[1],0), 'M', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' M'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
+    if(L(inf)){ const n=inf.length, last=inf[n-1], prev=inf[n-2];
+      t.push(tile('Inflación mensual', nf(last[1],1)+'%', '', prev?chip(last[1]-prev[1],{pct:false,d:1,unit:' pp',bad:true}):'', fmes(last[0])+' · INDEC')); }
+    if(L(yoy)){ const n=yoy.length, last=yoy[n-1], prev=yoy[n-2];
+      t.push(tile('Inflación interanual', nf(last[1],1)+'%', '', prev?chip(last[1]-prev[1],{pct:false,d:1,unit:' pp',bad:true}):'', fmes(last[0]))); }
+    if(L(exp)){ const last=L(exp); t.push(tile('Inflación esperada 12m', nf(last[1],1)+'%', '', '', 'REM · '+fmes(last[0]))); }
+    if(L(pf) && L(inf)){ const tna=L(pf)[1], mens=tna/12, li=L(inf)[1], real=((1+mens/100)/(1+li/100)-1)*100;
+      t.push(tile('Tasa real plazo fijo', sg(real,2)+'%', 'mensual', `<span class="chip ${real>=0?'up':'dn'}">${real>=0?'Le gana':'Pierde'}</span>`, `TNA ${nf(tna,1)}% vs IPC ${fmes(L(inf)[0])}`)); }
+    [['BADLAR privados',badlar],['TAMAR privados',tamar],['Plazo fijo 30 días',pf]].forEach(([n,s])=>{ if(!L(s)) return; const {last,prev}=lastTwo(s), a=ago(s,30);
+      t.push(tile(n, nf(last[1],2)+'%', 'TNA', (prev?chip(last[1]-prev[1],{pct:false,d:2,unit:' pp'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],2)} pp</span>`:''), fd(last[0]))); });
+    if(L(base)){ const {last,prev}=lastTwo(base), a=ago(base,30);
+      t.push(tile('Base monetaria', '$ '+nf(last[1]/1e6,2), 'billones', (prev?chip(last[1]/prev[1]-1,{d:1}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), fd(last[0]))); }
+    if(L(dep)){ const {last,prev}=lastTwo(dep), a=ago(dep,30);
+      t.push(tile('Depósitos USD privados', 'US$ '+nf(last[1],0), 'M', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' M'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
+    $('kpis').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
+
+    lineChart($('chRiesgo'), [{n:'Riesgo país', c:'--s1', pts:inRange(riesgo), area:true}], {aria:'Riesgo país', endLabel:true, labW:44, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' pb', unitName:'Riesgo país'});
+    lineChart($('chRes'), [{n:'Reservas', c:'--s3', pts:inRange(res), area:true}], {aria:'Reservas brutas', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Reservas'});
+    barChart($('chInf'), [{n:'IPC mensual', c:'--s1', pts:inf}], {aria:'Inflación mensual'});
+    legend($('lgYoY'), [{n:'Interanual', c:'--s1'},{n:'Esperada 12m (REM)', c:'--s2'}]);
+    lineChart($('chYoY'), [{n:'Interanual', c:'--s1', pts:yoy},{n:'Esperada 12m', c:'--s2', pts:exp}], {aria:'Inflación interanual y expectativas', labW:52, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', xfmt:fmes, tfmt:fmes});
+    legend($('lgTas'), [{n:'BADLAR',c:'--s1'},{n:'TAMAR',c:'--s2'},{n:'Plazo fijo 30d',c:'--s3'}]);
+    lineChart($('chTas'), [{n:'BADLAR',c:'--s1',pts:inRange(badlar)},{n:'TAMAR',c:'--s2',pts:inRange(tamar)},{n:'PF 30d',c:'--s3',pts:inRange(pf)}], {aria:'Tasas en pesos', labW:52, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,2)+'%'});
+    // plazo fijo mensual vs inflación
+    const byMonth={}; pf.forEach(([f,v])=>{ const k=f.slice(0,7); (byMonth[k]=byMonth[k]||[]).push(v); });
+    const pfM = Object.keys(byMonth).sort().map(k=>[k, byMonth[k].reduce((a,b)=>a+b,0)/byMonth[k].length/12]);
+    const infMap = Object.fromEntries(inf);
+    const pfMc = pfM.filter(p=>infMap[p[0]]!=null || p[0]===pfM[pfM.length-1][0]);
+    legend($('lgReal'), [{n:'Plazo fijo (mensual)',c:'--s1'},{n:'Inflación',c:'--s2'}]);
+    barChart($('chReal'), [{n:'Plazo fijo',c:'--s1',pts:pfMc},{n:'Inflación',c:'--s2',pts:inf.filter(p=>pfMc.some(q=>q[0]===p[0]))}], {aria:'Plazo fijo contra inflación', dec:2,
+      extra:k=>{ const a=pfMc.find(p=>p[0]===k), b=infMap[k]; if(!a||b==null) return '<div class="r" style="color:var(--muted)"><span>Inflación</span><span>sin dato aún</span></div>'; const r=((1+a[1]/100)/(1+b/100)-1)*100; return `<div class="r"><span>Tasa real</span><span style="color:var(${r>=0?'--pos':'--neg'})">${sg(r,2)}%</span></div>`; }});
+    lineChart($('chBase'), [{n:'Base monetaria', c:'--s5', pts:inRange(base).map(p=>[p[0],p[1]/1e6]), area:true}], {aria:'Base monetaria', endLabel:true, labW:48, yfmt:v=>nf(v,1), vfmt:v=>'$ '+nf(v,2)+' billones', lfmt:v=>nf(v,2), unitName:'Base'});
+    lineChart($('chDep'), [{n:'Depósitos USD', c:'--s4', pts:inRange(dep), area:true}], {aria:'Depósitos privados en dólares', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Depósitos'});
+  }
+
+  // ---- shell ----
+  let tab = 'dolares';
+  function setTab(t){
+    tab = t==='macro'?'macro':'dolares';
+    $('vD').hidden = tab!=='dolares'; $('vM').hidden = tab!=='macro';
+    $('tabD').setAttribute('aria-selected', String(tab==='dolares')); $('tabM').setAttribute('aria-selected', String(tab==='macro'));
+    render();
+  }
+  $('tabD').addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#dolares'); setTab('dolares'); });
+  $('tabM').addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#macro'); setTab('macro'); });
+  window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
+  document.querySelectorAll('#segRange button').forEach(b=>{
+    b.setAttribute('aria-selected', String(+b.dataset.r===range));
+    b.addEventListener('click', ()=>{ range=+b.dataset.r; document.querySelectorAll('#segRange button').forEach(x=>x.setAttribute('aria-selected', String(x===b))); try{localStorage.setItem('macro-range', String(range));}catch(e){} render(); });
+  });
+  function render(){
+    if(days.length){ const last=days[days.length-1]; const auto = last.fuente==='auto';
+      $('stamp').innerHTML = `Último dato <b>${fd(last.fecha)}</b><br>Se actualiza cada día hábil`; }
+    else if(loaded.d) $('stamp').textContent = 'Sin datos todavía';
+    if(tab==='dolares') renderDolares(); else renderMacro();
+  }
+  let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
+  setTab(location.hash.slice(1));
+
+  (async ()=>{
+    try{
+      const r = await fetch('data.json?t='+Date.now(), {cache:'no-store'});
+      const j = await r.json();
+      days = (j.diario||[]).filter(d=>d&&d.fecha).sort((a,b)=>a.fecha<b.fecha?-1:1);
+      months = (j.mensual||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
+    }catch(e){ $('stamp').textContent='No se pudieron cargar los datos. Recargá la página.'; }
+    loaded={d:true,m:true}; render();
+  })();
+})();
+</script>
+
+</body>
+</html>
