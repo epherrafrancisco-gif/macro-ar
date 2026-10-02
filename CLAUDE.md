@@ -268,6 +268,20 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   `contacto-linkedin|mail`). Foto: `foto.jpg` (480x480, la foto original sin retocar; Francisco no quiso el fondo azul). Título: solo "Francisco Epherra".
 - El dominio (F) queda para después.
 
+### Próxima sesión: jueves 08/10/2026, dominio `macroar.com.ar`
+El sitio está TERMINADO para Francisco (02/10/2026) y NO se lanza hasta tener el dominio.
+Él trae la clave fiscal de ARCA (se blanquea desde el home banking). Pasos, guiándolo uno
+por uno: (1) verificar en nic.ar que `macroar.com.ar` esté libre y comprarlo (alta $8.500,
+renovación anual $8.500 según nic.ar al 02/10/2026; que active renovación o se agende el
+vencimiento); (2) cuenta gratis en Cloudflare, agregar el dominio, copiar los 2 nameservers
+y cargarlos en NIC.ar → Delegaciones; (3) en Cloudflare: A @ → 185.199.108.153,
+185.199.109.153, 185.199.110.153, 185.199.111.153 y CNAME www → epherrafrancisco-gif.github.io,
+todos con nube GRIS (DNS only); verificar las IPs en la doc de GitHub Pages ese día;
+(4) recién con el DNS respondiendo: archivo `CNAME` en el repo + Settings → Pages →
+Custom domain + Enforce HTTPS; (5) cambiar las menciones de la URL (index.html og:url y
+SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y subir
+`?v=` de preview.png; (6) verificar que el link viejo redirija; (7) recién ahí lanzarlo.
+
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
   ya no se usa. Las tareas programadas de Claude están desactivadas.
