@@ -20,7 +20,7 @@ DATA = ROOT / "noticias.json"
 TZ_AR = timezone(timedelta(hours=-3))
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 MacroAR/1.0"
 HORAS = 48      # se muestran las últimas 48 horas
-MAXIMO = 150
+MAXIMO = 300
 
 FUENTES = {
     "Ámbito": "https://www.ambito.com/rss/pages/economia.xml",
@@ -36,8 +36,8 @@ TEMAS = {
     "bcra": r"\bbcra\b|banco central|reservas|tasas?\b|plazo fijo|encaje|bopreal|lecap|licitaci",
     "inflacion": r"inflaci|\bipc\b|precios|canasta|tarifa|aumento",
     "mercados": r"merval|acciones|bonos|riesgo pa[ií]s|wall street|mercados?\b|bolsa|cedear|cripto|bitcoin|\bfed\b",
-    "fiscal": r"fiscal|super[aá]vit|d[eé]ficit|recaudaci|impuesto|arca|presupuesto|deuda|\bfmi\b|gasto",
-    "actividad": r"actividad|industria|empleo|desempleo|salari|consumo|ventas|construcci|\bpbi\b|exportaci|importaci|vaca muerta|rigi|campo|cosecha",
+    "fiscal": r"fiscal|super[aá]vit|d[eé]ficit|recaudaci|impuest|tributari|retenciones|\barca\b|presupuesto|deuda|\bfmi\b|gasto|jubilaci",
+    "actividad": r"actividad|industria|empleo|desempleo|salari|consumo|ventas|construcci|\bpbi\b|exportaci|importaci|vaca muerta|rigi|inversi|campo|cosecha|petr[oó]le|miner",
 }
 
 
