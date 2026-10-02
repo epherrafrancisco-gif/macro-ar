@@ -17,6 +17,7 @@ Nunca inventa datos: si una fuente falla, ese campo queda como estaba.
 import argparse
 import json
 import sys
+import time
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -68,6 +69,8 @@ HIST_AMBITO = {"ofi": "dolar/oficial", "blue": "dolar/informal", "mep": "dolarra
 HIST_BCRA = {5: "may", 30: "cer"}
 # Inflación de EE.UU. (CPI-U sin desestacionalizar, BLS vía FRED, CSV sin clave).
 FRED_CPI = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS&cosd=2016-12-01"
+BLS_CPI = "CUUR0000SA0"  # la misma serie en la API del BLS (respaldo si FRED falla)
+ESTADO = ROOT / "estado.json"  # resultado de la última corrida, para revisar fuentes caídas
 
 log_ok, log_err = [], []
 
@@ -80,6 +83,17 @@ def get_text(url):
 
 def get_json(url):
     return json.loads(get_text(url))
+
+
+def con_reintento(fn, *args, intentos=3, espera=4):
+    """Para las descargas largas: si la fuente corta (límite de pedidos), espera y reintenta."""
+    for i in range(intentos):
+        try:
+            return fn(*args)
+        except Exception:  # noqa: BLE001
+            if i == intentos - 1:
+                raise
+            time.sleep(espera * (i + 1))
 
 
 def num_ar(s):
@@ -231,35 +245,46 @@ def historico(previo, hoy, forzar=False):
     reciente = (hoy.replace(day=1) - timedelta(days=1)).replace(day=1).isoformat()
 
     def desde_de(campo):
-        """Historia completa si el campo todavía no tiene datos de antes de 2019."""
-        tiene = any(campo in h for m, h in meses.items() if m < "2019-01")
+        """Historia completa si el campo todavía no tiene datos de antes de 2021
+        (el MEP y el CCL de Ámbito no tienen 2017, por eso no se exige el inicio)."""
+        tiene = any(campo in h for m, h in meses.items() if m < "2021-01")
         return reciente if (tiene and not forzar) else HIST_DOLAR
 
     diario, desdes = {}, {}
     for campo, ruta in HIST_AMBITO.items():
         desde = desdes[campo] = desde_de(campo)
-        try:
-            pts = {}
-            for d0, d1 in tramos(desde, hasta):
-                url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
-                for row in get_json(url)[1:]:
-                    try:
-                        f = fecha_ambito(row[0])
-                        v = num_ar(row[2] if campo in ("ofi", "blue") else row[1])
-                    except (ValueError, IndexError):
-                        continue
-                    if es_habil(f) and f not in pts and v > 0:
-                        pts[f] = v
+        pts, fallas = {}, []
+        for d0, d1 in tramos(desde, hasta):
+            url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
+            try:
+                rows = con_reintento(get_json, url)
+            except Exception as e:  # noqa: BLE001  (si falla un año, los demás siguen)
+                fallas.append(f"{d0.year}: {e}")
+                continue
+            for row in rows[1:]:
+                try:
+                    f = fecha_ambito(row[0])
+                    v = num_ar(row[2] if campo in ("ofi", "blue") else row[1])
+                except (ValueError, IndexError):
+                    continue
+                if es_habil(f) and f not in pts and v > 0:
+                    pts[f] = v
+            if desde == HIST_DOLAR:
+                time.sleep(1)  # no saturar a Ámbito con la descarga larga
+        if pts:
             diario[campo] = pts
             log_ok.append(f"Historia {campo}: {len(pts)} días desde {desde}")
-        except Exception as e:  # noqa: BLE001
-            log_err.append(f"Historia {campo}: {e}")
+        if fallas:
+            log_err.append(f"Historia {campo}, tramos con error: {'; '.join(fallas)}")
     for vid, campo in HIST_BCRA.items():
-        desde = desdes[campo] = desde_de(campo)
+        desde = desde_de(campo)
+        if campo == "may":  # el mayorista marca los días hábiles: tiene que cubrir lo que se bajó de Ámbito
+            desde = min([desde] + [desdes[c] for c in ("mep", "ccl", "blue") if c in desdes])
+        desdes[campo] = desde
         try:
             pts = {}
             for d0, d1 in tramos(desde, hasta):
-                pts.update(bcra_puntos(vid, d0.isoformat(), d1.isoformat()))
+                pts.update(con_reintento(bcra_puntos, vid, d0.isoformat(), d1.isoformat()))
             if campo == "may":
                 pts = {f: v for f, v in pts.items() if es_habil(f)}
             diario[campo] = pts
@@ -279,26 +304,56 @@ def historico(previo, hoy, forzar=False):
                 pormes.setdefault(f[:7], []).append(v)
         for mes, vals in pormes.items():
             meses.setdefault(mes, {"mes": mes})[campo] = round(sum(vals) / len(vals), 4 if campo == "cer" else 2)
-    try:
-        n = 0
-        for linea in get_text(FRED_CPI).strip().splitlines()[1:]:
-            partes = linea.strip().split(",")
-            if len(partes) < 2:
-                continue
-            try:
-                v = float(partes[1])
-            except ValueError:  # FRED marca con "." los meses sin dato
-                continue
-            mes = partes[0][:7]
-            if mes >= HIST_DOLAR[:7]:
-                meses.setdefault(mes, {"mes": mes})["cpi"] = round(v, 3)
-                n += 1
-        if not n:
-            raise ValueError("CSV sin datos")
-        log_ok.append(f"CPI EE.UU. (FRED): {n} meses")
-    except Exception as e:  # noqa: BLE001
-        log_err.append(f"CPI EE.UU. (FRED): {e}")
+    cpi, errores = {}, []
+    for nombre, fuente in (("FRED", cpi_fred), ("BLS", cpi_bls)):
+        try:
+            cpi = fuente()
+            if cpi:
+                log_ok.append(f"CPI EE.UU. ({nombre}): {len(cpi)} meses")
+                break
+            errores.append(f"{nombre}: sin datos")
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"{nombre}: {e}")
+    if errores:
+        (log_err if not cpi else log_ok).append("CPI EE.UU., fuentes con error: " + "; ".join(errores))
+    for mes, v in cpi.items():
+        if HIST_DOLAR[:7] <= mes <= hasta[:7]:
+            meses.setdefault(mes, {"mes": mes})["cpi"] = v
     return [meses[k] for k in sorted(meses) if k <= hasta[:7]]
+
+
+def cpi_fred():
+    out = {}
+    for linea in get_text(FRED_CPI).strip().splitlines()[1:]:
+        partes = linea.strip().split(",")
+        try:
+            out[partes[0][:7]] = round(float(partes[1]), 3)
+        except (ValueError, IndexError):  # FRED marca con "." los meses sin dato
+            continue
+    return out
+
+
+def cpi_bls():
+    """API pública del BLS (v1, sin clave: hasta 10 años por pedido)."""
+    out = {}
+    for anio0 in (int(HIST_DOLAR[:4]), int(HIST_DOLAR[:4]) + 10):
+        cuerpo = json.dumps({"seriesid": [BLS_CPI], "startyear": str(anio0), "endyear": str(anio0 + 9)}).encode()
+        req = urllib.request.Request("https://api.bls.gov/publicAPI/v1/timeseries/data/", data=cuerpo,
+                                     headers={"User-Agent": UA, "Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            j = json.loads(r.read().decode("utf-8"))
+        if j.get("status") != "REQUEST_SUCCEEDED":
+            raise ValueError(f"{j.get('status')}: {j.get('message')}")
+        for serie in j.get("Results", {}).get("series", []):
+            for p in serie.get("data", []):
+                if p.get("period", "").startswith("M") and p["period"] != "M13":
+                    try:
+                        out[f"{p['year']}-{p['period'][1:]}"] = round(float(p["value"]), 3)
+                    except ValueError:
+                        continue
+        if anio0 + 9 >= date.today().year:
+            break
+    return out
 
 
 def dolarapi():
@@ -389,6 +444,8 @@ def main():
     DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     json.loads(DATA.read_text(encoding="utf-8"))  # verificar que quedó un JSON válido
 
+    estado = {"actualizado": data["actualizado"], "ok": log_ok, "errores": log_err}
+    ESTADO.write_text(json.dumps(estado, ensure_ascii=False, indent=1), encoding="utf-8")
     print("Fuentes OK:\n  " + "\n  ".join(log_ok))
     if log_err:
         print("Fuentes con error:\n  " + "\n  ".join(log_err))
