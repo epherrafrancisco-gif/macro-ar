@@ -5,6 +5,7 @@ on:
     # Horarios en UTC (Buenos Aires = UTC-3), de lunes a viernes.
     - cron: "47 21 * * 1-5"   # 18:47 ART, después del cierre
     - cron: "15 13 * * 1-5"   # 10:15 ART, completa lo que el BCRA publica con atraso
+    - cron: "30 14 * * 1-5"   # 11:30 ART, media hora después de la apertura (dólares y riesgo país)
   workflow_dispatch:           # botón "Run workflow" para correrlo a mano
 
 permissions:

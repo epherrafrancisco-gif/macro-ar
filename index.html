@@ -141,13 +141,35 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)}
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.brand .by{font-size:12px;color:var(--muted);letter-spacing:.01em}
+
+/* en vivo */
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2);justify-self:start}
+.live .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.live.on .dot{background:var(--pos);box-shadow:0 0 0 0 var(--pos);animation:pulse 2s infinite}
+.live b{font-weight:600;color:var(--ink)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--pos) 55%,transparent)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.q.fl-up{animation:flUp 1.6s ease-out}
+.q.fl-dn{animation:flDn 1.6s ease-out}
+@keyframes flUp{0%,25%{background:var(--pos-bg);border-color:var(--pos)}100%{background:var(--surface);border-color:var(--line)}}
+@keyframes flDn{0%,25%{background:var(--neg-bg);border-color:var(--neg)}100%{background:var(--surface);border-color:var(--line)}}
+
+/* estadísticas sobre un gráfico */
+.stats{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:flex-end}
+.stats .st{display:grid;gap:1px}
+.stats .st .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:17px;font-weight:500}
+.stats .st .d{font-size:11.5px;color:var(--muted)}
+.stats .hero .v{font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em;line-height:1.1}
+.stats .up{color:var(--pos)} .stats .dn{color:var(--neg)}
+.subh{margin:4px 0 -4px;font-size:13px;font-weight:600;color:var(--ink2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 <div class="wrap">
   <header>
     <div class="brand">
       <h1>Macro AR<span>diario</span></h1>
+      <span class="by">Diseñado y operado por Francisco Epherra</span>
       <p>Dólares, riesgo país, reservas, inflación, tasas y agregados monetarios</p>
     </div>
     <div class="stamp" id="stamp">Cargando datos…</div>
@@ -169,7 +191,8 @@ footer a{color:var(--ink2)}
 
   <!-- DÓLARES -->
   <section class="view" id="vD">
-    <div class="quotes" id="quotes"></div>
+    <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
+    <div class="quotes" id="quotes" style="margin-top:-8px"></div>
 
     <div class="card">
       <div class="head"><h2>Cotizaciones (venta)</h2><div class="legend" id="lgDol"></div></div>
@@ -189,6 +212,13 @@ footer a{color:var(--ink2)}
     </div>
 
     <div class="card">
+      <div class="head"><h2>Canje: CCL contra MEP</h2><span class="note">Prima del CCL sobre el MEP, en %</span></div>
+      <div class="stats" id="canjeStats"></div>
+      <div class="chart" id="chCanje"></div>
+      <p class="note">Canje = CCL ÷ MEP − 1. La franja gris marca el promedio del período elegido ± 1 desvío: cuando la línea sale por arriba, el canje se está disparando (sacar dólares afuera se encarece frente a tenerlos acá).</p>
+    </div>
+
+    <div class="card">
       <div class="head"><h2>Últimos días</h2><span class="note">Venta, en pesos</span></div>
       <div class="tablewrap"><table>
         <thead><tr><th>Fecha</th><th>Oficial</th><th>Mayorista</th><th>MEP</th><th>CCL</th><th>Blue</th><th>Brecha CCL</th><th>Var. MEP</th></tr></thead>
@@ -200,6 +230,15 @@ footer a{color:var(--ink2)}
   <!-- MACRO -->
   <section class="view" id="vM" hidden>
     <div class="kpis" id="kpis"></div>
+
+    <div class="card">
+      <div class="head"><h2>Compras y ventas de dólares del BCRA</h2><span class="note">Millones de USD por día, en el mercado de cambios (MULC)</span></div>
+      <div class="stats" id="compStats"></div>
+      <div class="chart" id="chComp"></div>
+      <h3 class="subh" id="compAcT">Acumulado del año</h3>
+      <div class="chart" id="chCompAc"></div>
+      <p class="note">Verde: el BCRA compró dólares ese día. Rojo: vendió. Fuente: BCRA, variación de reservas por compra de divisas (se publica con uno o dos días de atraso).</p>
+    </div>
 
     <div class="grid2">
       <div class="card"><div class="head"><h2>Riesgo país</h2><span class="note">Puntos básicos (EMBI)</span></div><div class="chart" id="chRiesgo"></div></div>
@@ -214,7 +253,7 @@ footer a{color:var(--ink2)}
   </section>
 
   <footer>
-    <span>Fuentes: BCRA (reservas, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones del día). Se actualiza solo cada día hábil después del cierre.</span>
+    <span>Fuentes: BCRA (reservas, compras de divisas, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
     <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
   </footer>
@@ -229,6 +268,7 @@ footer a{color:var(--ink2)}
   const fd = s => { const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
   const fds = s => fd(s).slice(0,5);
   const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const MESL = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fmes = s => { const [y,m]=s.split('-'); return `${MES[+m-1]} ${y.slice(2)}`; };
   const T = s => Date.parse(s+'T12:00:00Z');
   const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -251,6 +291,29 @@ footer a{color:var(--ink2)}
   const get = (d,k) => { const x=d[k]; if(x==null) return null; if(typeof x==='number') return x; return x.v ?? null; };
   function series(k, fn){
     const out=[]; for(const d of days){ const v = fn ? fn(d) : get(d,k); if(v!=null && isFinite(v)) out.push([d.fecha, v]); } return out;
+  }
+  // ---- en vivo (DolarApi desde el navegador) ----
+  const LIVE_URL = 'https://dolarapi.com/v1/dolares', LIVE_MS = 60000;
+  const LIVE_MAP = {oficial:'oficial', blue:'blue', bolsa:'mep', contadoconliqui:'ccl', mayorista:'mayorista', cripto:'cripto', tarjeta:'tarjeta'};
+  let live = {}, liveAt = 0, liveOk = null, flash = {};
+  const fechaAR = t => new Date(t).toLocaleDateString('en-CA', {timeZone:'America/Argentina/Buenos_Aires'});
+  const horaAR = t => new Date(t).toLocaleTimeString('es-AR', {timeZone:'America/Argentina/Buenos_Aires', hour:'2-digit', minute:'2-digit', hour12:false});
+  // Serie de cierres + el valor en vivo, si es más nuevo o del mismo día que el último cierre.
+  function cardSeries(k){
+    const pts = series(k).slice();
+    const lastDoc = pts.length ? days.find(d=>d.fecha===pts[pts.length-1][0]) : null;
+    let c = lastDoc && lastDoc[k] && lastDoc[k].c, hora = '';
+    const L = live[k];
+    if(L){
+      const f = fechaAR(L.t), wd = new Date(f+'T12:00:00Z').getUTCDay();
+      const finde = (wd===0 || wd===6) && k!=='cripto';
+      const lf = pts.length ? pts[pts.length-1][0] : '';
+      if(!finde && f >= lf){
+        if(f===lf) pts[pts.length-1] = [f, L.v]; else pts.push([f, L.v]);
+        c = L.c; hora = horaAR(L.t);
+      }
+    }
+    return {pts, c, hora};
   }
   function lastTwo(pts){ const n=pts.length; return {last: pts[n-1], prev: pts[n-2]}; }
   function ago(pts, nDays){
@@ -280,7 +343,7 @@ footer a{color:var(--ink2)}
     const labW = o.labW ?? 70;
     const m = {t:12, r: ss.length>1||o.endLabel ? labW : 16, b:24, l: o.l ?? 52};
     const iw=W-m.l-m.r, ih=H-m.t-m.b;
-    const all = ss.flatMap(s=>s.pts.map(p=>p[1])); if(o.zero) all.push(0);
+    const all = ss.flatMap(s=>s.pts.map(p=>p[1])); if(o.zero) all.push(0); if(o.ref) all.push(o.ref.lo, o.ref.hi);
     let lo=Math.min(...all), hi=Math.max(...all);
     const pad = Math.max((hi-lo)*0.1, Math.abs(hi)*0.002 || 1); lo-=pad; hi+=pad;
     if(o.zero && lo>0) lo=0;
@@ -299,6 +362,10 @@ footer a{color:var(--ink2)}
     const nl = Math.max(2, Math.floor(iw/90));
     for(let i=0;i<nl;i++){ const idx = Math.round(i*(ts.length-1)/(nl-1)); const f=ts[idx];
       g+=`<text x="${x(f).toFixed(1)}" y="${H-5}" text-anchor="${i===0?'start':i===nl-1?'end':'middle'}">${(o.xfmt||fds)(f)}</text>`; }
+    if(o.ref){ const r=o.ref, yt=y(r.hi), yb=y(r.lo), ym=y(r.mid).toFixed(1);
+      g+=`<rect x="${m.l}" y="${yt.toFixed(1)}" width="${iw}" height="${Math.max(1,yb-yt).toFixed(1)}" fill="var(--muted)" opacity="0.13"/>`;
+      g+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${ym}" y2="${ym}" stroke="var(--ink2)" stroke-width="1" stroke-dasharray="4 4"/>`;
+      g+=`<text x="${m.l+6}" y="${(yt-5).toFixed(1)}" style="fill:var(--ink2)">${esc(r.label||'Promedio')}</text>`; }
     ss.forEach(s=>{
       const d = s.pts.map((p,i)=>`${i?'L':'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
       if(s.area) g+=`<path d="${d}L${x(s.pts[s.pts.length-1][0]).toFixed(1)},${m.t+ih}L${x(s.pts[0][0]).toFixed(1)},${m.t+ih}Z" fill="var(${s.c})" opacity="0.08"/>`;
@@ -365,23 +432,51 @@ footer a{color:var(--ink2)}
     const hide=()=>{ tip.hidden=true; hl.setAttribute('visibility','hidden'); };
     const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
   }
+  // ---- daily bars, green up / red down ----
+  function dailyBars(el, pts, o={}){
+    if(!pts.length){ el.innerHTML = `<div class="empty">${loaded.d?(o.emptyMsg||'Sin datos en este rango.'):'Cargando…'}</div>`; return; }
+    const W=Math.max(300, el.clientWidth||600), H=W<520?190:220;
+    const m={t:12,r:10,b:24,l:48}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const vals=pts.map(p=>p[1]);
+    let hi=Math.max(0,...vals), lo=Math.min(0,...vals);
+    const step=niceStep((hi-lo||1)/4); hi=Math.ceil(hi/step)*step; lo=Math.floor(lo/step)*step; if(hi===lo) hi=lo+step;
+    const y=v=>m.t+(hi-v)/(hi-lo)*ih, slot=iw/pts.length, bw=Math.max(1, Math.min(18, slot*(slot>4?0.72:1)));
+    const yf=o.yfmt||(v=>nf(v,0));
+    let g='';
+    for(let v=lo; v<=hi+step*1e-6; v+=step){ const yy=y(v).toFixed(1), z=Math.abs(v)<step*1e-6;
+      g+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yy}" y2="${yy}" stroke="var(${z?'--muted':'--grid'})" stroke-width="1"/>`;
+      g+=`<text x="${m.l-6}" y="${+yy+3.5}" text-anchor="end">${yf(v)}</text>`; }
+    const nl=Math.max(2,Math.min(pts.length,Math.floor(iw/90)));
+    for(let i=0;i<nl;i++){ const idx=Math.round(i*(pts.length-1)/Math.max(1,nl-1)); const cx=m.l+slot*(idx+.5);
+      g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="${i===0?'start':i===nl-1?'end':'middle'}">${fds(pts[idx][0])}</text>`; }
+    pts.forEach((p,i)=>{ const cx=m.l+slot*(i+.5), y0=y(Math.max(0,p[1])), y1=y(Math.min(0,p[1]));
+      g+=`<rect x="${(cx-bw/2).toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y1-y0).toFixed(1)}" rx="${bw>4?2:0}" fill="var(${p[1]>=0?'--pos':'--neg'})"/>`; });
+    el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Gráfico de barras diario')}">${g}<rect class="hl" y="${m.t}" height="${ih}" width="${Math.max(2,slot).toFixed(1)}" fill="var(--ink)" opacity="0.07" visibility="hidden"/><rect class="hit" x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/></svg><div class="tip" hidden></div>`;
+    const svg=el.querySelector('svg'), tip=el.querySelector('.tip'), hl=el.querySelector('.hl');
+    const pick=ev=>{ const r=svg.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width; const i=Math.max(0,Math.min(pts.length-1,Math.floor((px-m.l)/slot))); const p=pts[i];
+      hl.setAttribute('x',(m.l+slot*i).toFixed(1)); hl.setAttribute('visibility','visible');
+      tip.hidden=false; tip.innerHTML=`<span class="t">${fd(p[0])}</span>`+(o.rows?o.rows(p):'');
+      const sx=(m.l+slot*(i+.5))*r.width/W, tw=tip.offsetWidth; tip.style.left=Math.max(0,Math.min(r.width-tw, sx+(sx>r.width/2?-tw-12:12)))+'px'; tip.style.top='4px'; };
+    const hide=()=>{ tip.hidden=true; hl.setAttribute('visibility','hidden'); };
+    const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
+  }
   const legend = (el, items) => { el.innerHTML = items.map(i=>`<span><i class="sw" style="background:var(${i.c})"></i>${i.n}</span>`).join(''); };
 
   // ---- DÓLARES ----
   function renderDolares(){
     // quote cards
     $('quotes').innerHTML = DOL.map(q=>{
-      const pts = series(q.k); if(!pts.length) return `<div class="q"><div class="name">${q.n}</div><div class="v">—</div><div class="when">${q.d}</div></div>`;
+      const {pts, c, hora} = cardSeries(q.k); if(!pts.length) return `<div class="q"><div class="name">${q.n}</div><div class="v">—</div><div class="when">${q.d}</div></div>`;
       const {last, prev} = lastTwo(pts);
-      const lastDoc = days.find(d=>d.fecha===last[0]); const c = lastDoc && lastDoc[q.k] && lastDoc[q.k].c;
       const m30 = ago(pts,30);
-      return `<div class="q">
+      return `<div class="q${flash[q.k]?' fl-'+flash[q.k]:''}">
         <div class="name">${q.c?`<i class="sw" style="background:var(${q.c})"></i>`:''}${q.n}</div>
         <div class="v"><small>$</small>${nf(last[1])}</div>
         <div class="cv">${c?`Compra $ ${nf(c)}`:'&nbsp;'}</div>
         <div class="row">${prev?chip(last[1]/prev[1]-1,{d:2}):''}${m30?`<span class="chip eq" title="Variación 30 días">30d ${pc(last[1]/m30[1]-1)}</span>`:''}</div>
-        <div class="when">${q.d} · ${fds(last[0])}</div></div>`;
+        <div class="when">${q.d} · ${fds(last[0])}${hora?' '+hora:''}</div></div>`;
     }).join('');
+    flash = {};
 
     const main = DOL.filter(q=>q.c);
     legend($('lgDol'), main);
@@ -393,7 +488,7 @@ footer a{color:var(--ink2)}
 
     // gaps today
     const lastDay = days.length ? days[days.length-1] : null;
-    const latest = k => { const p=series(k); return p.length?p[p.length-1][1]:null; };
+    const latest = k => { const p=cardSeries(k).pts; return p.length?p[p.length-1][1]:null; };
     const of = latest('oficial');
     const rows = [
       {n:'MEP', c:'--s2', v: latest('mep')/of-1},
@@ -405,7 +500,21 @@ footer a{color:var(--ink2)}
     const mx = Math.max(0.05, ...rows.map(r=>Math.abs(r.v)));
     $('gaps').innerHTML = rows.map(r=>`<div class="gap"><span class="n"><i class="sw" style="background:var(${r.c})"></i>${r.n}${r.sub?`<small>${r.sub}</small>`:''}</span><span></span><span class="p">${pc(r.v,1)}</span>
       <div class="meter"><i style="width:${(Math.abs(r.v)/mx*100).toFixed(1)}%;background:var(${r.c})"></i></div></div>`).join('');
-    $('gapDate').textContent = lastDay ? 'Al '+fd(lastDay.fecha) : '';
+    const lo = cardSeries('oficial').pts;
+    $('gapDate').textContent = liveOk && Object.keys(live).length ? 'En vivo' : lo.length ? 'Al '+fd(lo[lo.length-1][0]) : '';
+
+    // canje CCL / MEP
+    const canje = inRange(series(null, d=>{ const a=get(d,'ccl'), b=get(d,'mep'); return (a&&b)?(a/b-1)*100:null; }));
+    if(canje.length){
+      const v=canje.map(p=>p[1]), mu=v.reduce((a,b)=>a+b,0)/v.length, sd=Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/v.length);
+      const mx=canje.reduce((a,b)=>b[1]>a[1]?b:a), now=canje[canje.length-1], z=sd?(now[1]-mu)/sd:0;
+      const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+      $('canjeStats').innerHTML = st('Último cierre', nf(now[1],2)+'%', fd(now[0]), z>1?'dn':'')
+        + st('Promedio del período', nf(mu,2)+'%', '± '+nf(sd,2)+' pp de desvío')
+        + st('Máximo del período', nf(mx[1],2)+'%', fd(mx[0]))
+        + st('Hoy vs promedio', sg(now[1]-mu,2)+' pp', z>1?'Por encima de la franja':z<-1?'Por debajo de la franja':'Dentro de lo normal', z>1?'dn':'');
+      lineChart($('chCanje'), [{n:'Canje', c:'--s3', pts:canje}], {aria:'Canje CCL contra MEP', endLabel:true, labW:52, ref:{mid:mu, lo:mu-sd, hi:mu+sd, label:'Promedio '+nf(mu,2)+'%'}, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', unitName:'Canje'});
+    } else { $('canjeStats').innerHTML=''; lineChart($('chCanje'), [], {}); }
 
     // table
     const recent = days.filter(d=>get(d,'oficial')||get(d,'mep')).slice(-15).reverse();
@@ -445,6 +554,32 @@ footer a{color:var(--ink2)}
     if(L(dep)){ const {last,prev}=lastTwo(dep), a=ago(dep,30);
       t.push(tile('Depósitos USD privados', 'US$ '+nf(last[1],0), 'M', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' M'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
     $('kpis').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
+
+    // compras / ventas del BCRA
+    const comp = series('compras');
+    if(comp.length){
+      const lastC = comp[comp.length-1], yr = lastC[0].slice(0,4), mes = lastC[0].slice(0,7);
+      const anio = comp.filter(p=>p[0].startsWith(yr)), sum = a => a.reduce((s,p)=>s+p[1],0);
+      const accY = sum(anio), accM = sum(comp.filter(p=>p[0].startsWith(mes)));
+      const pos = anio.filter(p=>p[1]>0).length, neg = anio.filter(p=>p[1]<0).length;
+      const usd = v => `${v<0?'−':''}US$ ${nf(Math.abs(v),0)} M`;
+      const cl = v => v>0?'up':v<0?'dn':'';
+      const st=(l,val,d,cls='',hero=false)=>`<div class="st${hero?' hero':''}"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+      $('compStats').innerHTML = st((accY>=0?'Compras netas en ':'Ventas netas en ')+yr, usd(Math.abs(accY)), `${pos} ruedas con compras · ${neg} con ventas`, cl(accY), true)
+        + st('En '+MESL[+mes.slice(5)-1], usd(accM), 'acumulado del mes', cl(accM))
+        + st('Último dato', (lastC[1]>0?'+':'')+usd(lastC[1]), fd(lastC[0]), cl(lastC[1]));
+      // acumulados para el tooltip
+      const accMap = {}; let ay=0, am=0, py='', pm='';
+      comp.forEach(([f,v])=>{ if(f.slice(0,4)!==py){ay=0;py=f.slice(0,4);} if(f.slice(0,7)!==pm){am=0;pm=f.slice(0,7);} ay+=v; am+=v; accMap[f]={m:am,y:ay}; });
+      const row=(l,v)=>`<div class="r"><span>${l}</span><span>${(v>0?'+':'')}${usd(v)}</span></div>`;
+      dailyBars($('chComp'), inRange(comp), {aria:'Compras y ventas diarias del BCRA', rows:p=>`<div class="r"><span>${p[1]>=0?'Compró':'Vendió'}</span><span>${usd(Math.abs(p[1]))}</span></div>`+row('Acum. del mes', accMap[p[0]].m)+row('Acum. del año', accMap[p[0]].y)});
+      $('compAcT').textContent = 'Acumulado del año '+yr;
+      lineChart($('chCompAc'), [{n:'Acumulado', c:'--s3', area:true, pts:anio.map(p=>[p[0], accMap[p[0]].y])}], {aria:'Compras acumuladas del BCRA en el año', zero:true, endLabel:true, labW:58, l:54, h:180, yfmt:v=>nf(v,0), vfmt:v=>usd(v), lfmt:v=>nf(v,0), unitName:'Acumulado'});
+    } else {
+      $('compStats').innerHTML = '';
+      dailyBars($('chComp'), [], {emptyMsg:'Todavía no hay datos: se cargan en la próxima actualización automática.'});
+      $('chCompAc').innerHTML = '';
+    }
 
     lineChart($('chRiesgo'), [{n:'Riesgo país', c:'--s1', pts:inRange(riesgo), area:true}], {aria:'Riesgo país', endLabel:true, labW:44, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' pb', unitName:'Riesgo país'});
     lineChart($('chRes'), [{n:'Reservas', c:'--s3', pts:inRange(res), area:true}], {aria:'Reservas brutas', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Reservas'});
@@ -487,6 +622,40 @@ footer a{color:var(--ink2)}
     if(tab==='dolares') renderDolares(); else renderMacro();
   }
   let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
+
+  // ---- polling en vivo: cada 60 s, solo con la pestaña visible ----
+  let lt, busy = false;
+  async function poll(){
+    clearTimeout(lt);
+    if(document.hidden){ return; }
+    if(busy) return; busy = true;
+    try{
+      const r = await fetch(LIVE_URL, {cache:'no-store'});
+      if(!r.ok) throw new Error(r.status);
+      const j = await r.json(), nuevo = {};
+      for(const d of j){ const k = LIVE_MAP[d.casa]; if(!k || !(d.venta>0)) continue;
+        nuevo[k] = {c: d.compra>0 ? +d.compra : null, v: +d.venta, t: Date.parse(d.fechaActualizacion) || Date.now()}; }
+      if(!Object.keys(nuevo).length) throw new Error('vacío');
+      const f = {};
+      if(liveOk) for(const k in nuevo){ const a = live[k]; if(a && a.v !== nuevo[k].v) f[k] = nuevo[k].v > a.v ? 'up' : 'dn'; }
+      live = nuevo; liveAt = Date.now(); liveOk = true; flash = f;
+      if(loaded.d && tab==='dolares') renderDolares(); else flash = {};
+    }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d && tab==='dolares') renderDolares(); }
+    busy = false; tick();
+    lt = setTimeout(poll, LIVE_MS);
+  }
+  function tick(){
+    const el = $('live'), tx = $('liveTxt');
+    if(liveOk){
+      const s = Math.max(0, Math.round((Date.now()-liveAt)/1000));
+      el.classList.add('on'); tx.innerHTML = `<b>En vivo</b> · actualizado hace ${s<60 ? s+' s' : Math.floor(s/60)+' min'}`;
+    } else if(liveOk===false){
+      el.classList.remove('on'); tx.textContent = 'Cotizaciones en vivo no disponibles · se muestra el último cierre';
+    }
+  }
+  setInterval(tick, 1000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && Date.now()-liveAt >= LIVE_MS) poll(); });
+  poll();
   setTab(location.hash.slice(1));
 
   (async ()=>{

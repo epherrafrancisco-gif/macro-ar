@@ -3,7 +3,8 @@
 Fuentes:
   - Ámbito (históricos de dólares y riesgo país)
   - BCRA, API de estadísticas monetarias v4.0 (reservas, mayorista, base,
-    tasas, depósitos, inflación y expectativas)
+    tasas, depósitos, inflación, expectativas y compras de divisas del BCRA;
+    estas últimas se piden siempre desde el 1 de enero para los acumulados)
   - DolarApi (cripto y tarjeta del día)
 
 Uso: python scripts/update.py [--dias N]
@@ -34,6 +35,10 @@ AMBITO = {
 }
 BCRA_DIARIO = {1: "reservas", 5: "mayorista", 15: "base", 7: "badlar", 44: "tamar", 12: "pf", 108: "depusd"}
 BCRA_MENSUAL = {27: "infl", 28: "inflYoY", 29: "expect"}
+# Series diarias que se piden desde el 1 de enero del año en curso (para los
+# acumulados anuales). 78 = variación de reservas por compra de divisas en el
+# MULC, en millones de USD (negativo = el BCRA vendió).
+BCRA_ANUAL = {78: "compras"}
 
 log_ok, log_err = [], []
 
@@ -94,8 +99,16 @@ def bcra_puntos(var_id, desde, hasta):
     return pts
 
 
-def bcra(desde, hasta, mensual_desde):
+def bcra(desde, hasta, mensual_desde, anual_desde):
     diario, mensual = {}, {}
+    for vid, campo in BCRA_ANUAL.items():
+        try:
+            pts = bcra_puntos(vid, anual_desde, hasta)
+            for f, v in pts.items():
+                diario.setdefault(campo, {})[f] = round(v, 2)
+            log_ok.append(f"BCRA {campo}: {len(pts)} días desde {anual_desde}")
+        except Exception as e:  # noqa: BLE001
+            log_err.append(f"BCRA {campo} (id {vid}): {e}")
     for vid, campo in BCRA_DIARIO.items():
         try:
             pts = bcra_puntos(vid, desde, hasta)
@@ -141,11 +154,12 @@ def main():
     desde = (hoy - timedelta(days=args.dias)).isoformat()
     hasta = hoy.isoformat()
     mensual_desde = (hoy - timedelta(days=120)).isoformat()
+    anual_desde = min(date(hoy.year, 1, 1), hoy - timedelta(days=args.dias)).isoformat()
     print(f"Ventana: {desde} a {hasta}")
 
     nuevos = {}  # fecha -> {campo: valor}
     amb = ambito(desde, hasta)
-    bd, bm = bcra(desde, hasta, mensual_desde)
+    bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
 
     # Días hábiles con dato oficial: sirven para descartar valores que Ámbito
@@ -194,8 +208,9 @@ def main():
     print("Fuentes OK:\n  " + "\n  ".join(log_ok))
     if log_err:
         print("Fuentes con error:\n  " + "\n  ".join(log_err))
-    print(f"Días agregados: {agregados or 'ninguno'}")
-    print(f"Días actualizados: {actualizados or 'ninguno'}")
+    resumen = lambda l: (f"{len(l)} ({l[0]} a {l[-1]})" if len(l) > 5 else str(l)) if l else "ninguno"
+    print(f"Días agregados: {resumen(agregados)}")
+    print(f"Días actualizados: {resumen(actualizados)}")
     print(f"Último dato: {data['actualizado']}")
 
 

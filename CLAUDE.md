@@ -30,14 +30,15 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
   - Diario (una fila por día hábil, todos los campos opcionales): `fecha`,
     `oficial {c,v}`, `blue {c,v}`, `mep {v}`, `ccl {v}`, `mayorista {v}`,
     `cripto {c,v}`, `tarjeta {c,v}`, `riesgo` (pb), `reservas` (MUSD),
-    `base` (millones $), `badlar`, `tamar`, `pf` (% TNA), `depusd` (MUSD).
+    `base` (millones $), `badlar`, `tamar`, `pf` (% TNA), `depusd` (MUSD),
+    `compras` (BCRA id 78, MUSD/día; negativo = vendió; se pide siempre desde el 1/1).
   - Mensual: `mes` (YYYY-MM), `infl`, `inflYoY`, `expect` (REM 12m).
-  - Historia desde 27/03/2026 (diario) y 08/2024 (mensual).
+  - Historia desde 27/03/2026 (diario; `compras` desde 01/2026) y 08/2024 (mensual).
 - `scripts/update.py`: trae datos y mezcla en `data.json` (solo librería estándar).
   Revisa los últimos N días (default 10). Nunca inventa datos: si una fuente falla,
   lo registra y deja el campo como estaba.
 - `.github/workflows/actualizar-datos.yml`: corre `update.py` L a V a las
-  10:15 y 18:47 ART (13:15 y 21:47 UTC) y a mano (`workflow_dispatch`), y
+  10:15, 11:30 y 18:47 ART (13:15, 14:30 y 21:47 UTC) y a mano (`workflow_dispatch`), y
   commitea `data.json` si cambió. **Funciona** (primera corrida OK el 02/10/2026).
 - `preview.png`: imagen para la vista previa de LinkedIn (og:image).
 
@@ -78,7 +79,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 Descartado por Francisco: calendario de vencimientos de deuda, "BSTEP",
 balanza cambiaria. Todo lo demás va, con los agregados de cada punto.
 
-### Bloque 1 (arrancar acá)
+### Bloque 1 (hecho el 02/10/2026; falta confirmar con la primera corrida que cargue `compras`
+y que DolarApi responda desde el navegador en el sitio publicado)
 1. **Firma**: "Diseñado y operado por Francisco Epherra" junto al nombre del sitio,
    en chico, debajo del título.
 2. **Canje histórico**: gráfico de la prima CCL/MEP − 1 en %, con su promedio
@@ -95,7 +97,7 @@ balanza cambiaria. Todo lo demás va, con los agregados de cada punto.
    Explicarle que los datos del BCRA no cambian intradía; lo que cambia son dólares
    y riesgo país. GitHub puede atrasar el cron 5-30 min.
 
-### Bloque 2
+### Bloque 2 (el próximo)
 6. **Agregados en términos reales**: base, M2 (y M2 transaccional privado)
    deflactados con CER (o IPC), y en % del PBI, para medir la remonetización.
 7. **Resultado fiscal mensual** (datos.gob.ar): primario y financiero en barras,
