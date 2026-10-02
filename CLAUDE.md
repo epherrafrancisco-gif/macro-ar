@@ -206,8 +206,21 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   scripts/diario.html (pie y texto del posteo) y README.
 - G y H DESCARTADOS por Francisco (02/10/2026): deuda del Tesoro en pesos (LECAP/BONCAP),
   newsletter e inflación semanal de alimentos propia. No volver a proponerlos.
-- Próximo: Francisco va a pasar una lista nueva de cosas para agregar (02/10/2026).
-  El dominio (F) queda para después de eso.
+
+### Bloque 5 (lista de Francisco del 02/10/2026)
+- HECHO: íconos (i) con glosario en criollo. Objeto `GLOS` (clave → [título, texto]) y
+  `GLOS_REGLAS` ([regex sobre el texto, clave, dónde: q = tarjetas de dólar, g = h2/h3/
+  etiquetas de KPI y stats, th = encabezados]). `decorar()` los agrega solo después de cada
+  dibujo (MutationObserver sobre .wrap). Para sumar un término: agregar a GLOS y una regla.
+  Popover único `#tipbox`: hover con mouse, tap en celular, foco con teclado, Esc cierra.
+- HECHO: en cada gráfico (`.card .chart[id]`) tres íconos: compartir, PNG y CSV
+  (`herramientas()`). Cada función de gráfico guarda `el._exp = {fn, a, o}`; el PNG
+  redibuja el gráfico a 760 px, copia los colores calculados y arma un canvas 2x con
+  título, subtítulo, leyenda, marca de agua "Macro AR", logo, URL y @macroar_diario.
+  Compartir: en celular usa navigator.share con el archivo (no se pudo probar acá:
+  Chromium de Linux no lo soporta); en compu copia la imagen al portapapeles y abre
+  twitter.com/intent/tweet con texto y link (si no puede copiar, la descarga).
+- El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;

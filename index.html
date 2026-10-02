@@ -146,6 +146,24 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
+/* (i) informativos */
+.info{all:unset;box-sizing:border-box;display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--muted);color:var(--muted);font:600 10px/1 var(--mono);text-transform:none;letter-spacing:0;margin-left:5px;vertical-align:1px;cursor:help;flex:none}
+.info:hover,.info[aria-expanded="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.info:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#tipbox{position:fixed;z-index:50;max-width:min(300px,calc(100vw - 24px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;box-shadow:0 8px 28px rgba(0,0,0,.18);font-size:13px;line-height:1.45;text-transform:none;letter-spacing:0;font-weight:400}
+#tipbox b{display:block;font-size:13.5px;margin-bottom:3px}
+#tipbox[hidden]{display:none}
+/* herramientas de cada gráfico */
+.tools{display:inline-flex;gap:2px;margin-left:auto}
+.tools button{all:unset;box-sizing:border-box;width:28px;height:26px;display:inline-grid;place-items:center;border-radius:6px;color:var(--muted);cursor:pointer}
+.tools button:hover{color:var(--ink);background:var(--sunk)}
+.tools button:focus-visible{outline:2px solid var(--accent)}
+.tools svg{width:15px;height:15px}
+.subh.wt{display:flex;align-items:center;gap:8px}
+.chart.exp{position:absolute;left:-10000px;top:0;width:760px}
+.chart.exp text{font-size:13px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:13.5px;box-shadow:0 8px 28px rgba(0,0,0,.25);max-width:calc(100vw - 32px);text-align:center}
+#toast[hidden]{display:none}
 .cal{display:grid;gap:14px}
 .cal .next{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px;padding:14px 16px;background:var(--sunk);border-radius:10px}
 .cal .next .n{display:grid;gap:2px}
@@ -357,6 +375,8 @@ footer a{color:var(--ink2)}
   </footer>
 </div>
 
+<div id="tipbox" role="tooltip" hidden></div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
 <script>
 (function(){
   const $ = id => document.getElementById(id);
@@ -435,6 +455,7 @@ footer a{color:var(--ink2)}
   // ---- generic line chart ----
   function niceStep(raw){ const p=Math.pow(10,Math.floor(Math.log10(raw||1))); const n=raw/p; return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p; }
   function lineChart(el, ss, o={}){
+    el._exp = {fn:lineChart, a:ss, o};
     ss = ss.filter(s=>s.pts.length);
     if(!ss.length){ el.innerHTML = `<div class="empty">${loaded.d?'Sin datos en este rango.':'Cargando…'}</div>`; return; }
     const W = Math.max(300, el.clientWidth||600), H = o.h || (W<520?200:240);
@@ -501,9 +522,10 @@ footer a{color:var(--ink2)}
 
   // ---- grouped bar chart (monthly) ----
   function barChart(el, ss, o={}){
+    el._exp = {fn:barChart, a:ss, o};
     const keys = [...new Set(ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
     if(!keys.length){ el.innerHTML = `<div class="empty">${loaded.m?'Sin datos.':'Cargando…'}</div>`; return; }
-    const W=Math.max(300, el.clientWidth||600), H=W<520?200:240;
+    const W=Math.max(300, el.clientWidth||600), H=o.h || (W<520?200:240);
     const m={t:16,r:10,b:24,l:o.l??40}, iw=W-m.l-m.r, ih=H-m.t-m.b;
     const all=ss.flatMap(s=>s.pts.map(p=>p[1])).concat([0]);
     let hi=Math.max(...all)*1.12, lo=Math.min(0,Math.min(...all)*1.12);
@@ -532,8 +554,9 @@ footer a{color:var(--ink2)}
   }
   // ---- daily bars, green up / red down ----
   function dailyBars(el, pts, o={}){
+    el._exp = {fn:dailyBars, a:pts, o};
     if(!pts.length){ el.innerHTML = `<div class="empty">${loaded.d?(o.emptyMsg||'Sin datos en este rango.'):'Cargando…'}</div>`; return; }
-    const W=Math.max(300, el.clientWidth||600), H=W<520?190:220;
+    const W=Math.max(300, el.clientWidth||600), H=o.h || (W<520?190:220);
     const m={t:12,r:10,b:24,l:48}, iw=W-m.l-m.r, ih=H-m.t-m.b;
     const vals=pts.map(p=>p[1]);
     let hi=Math.max(0,...vals), lo=Math.min(0,...vals);
@@ -925,6 +948,206 @@ footer a{color:var(--ink2)}
     $('calNote').textContent = 'El INDEC publica a las 16 h. El BCRA no anuncia la fecha del REM: se estima con el cuarto día hábil del mes. Fuente: calendario de difusión del INDEC, segundo semestre de 2026.';
   }
   setInterval(()=>{ if(tab==='macro' && !document.hidden) renderCal(); }, 30000);
+
+
+  // ---- glosario: ícono (i) al lado de cada término técnico ----
+  const GLOS = {
+    oficial:['Dólar oficial','Precio al que el Banco Nación le vende dólares a las personas (home banking), sin impuestos.'],
+    mayorista:['Dólar mayorista','Precio al que operan bancos y empresas en el mercado oficial de cambios (MULC). Es la referencia de exportadores e importadores (Comunicación A 3500 del BCRA).'],
+    mep:['Dólar MEP o bolsa','Se consigue comprando un bono con pesos y vendiéndolo en dólares, todo dentro del país. Es legal y los dólares quedan en una cuenta en Argentina.'],
+    ccl:['Contado con liquidación (CCL)','Igual que el MEP, pero los dólares terminan en una cuenta en el exterior. Lo usan empresas e inversores para sacar dólares del país.'],
+    blue:['Dólar blue','Dólar informal: se compra y vende fuera del sistema (cuevas, arbolitos). Sirve como referencia de mercado.'],
+    cripto:['Dólar cripto','Precio de las stablecoins en dólares (USDT) compradas con pesos en exchanges. Opera las 24 horas, también los fines de semana.'],
+    tarjeta:['Dólar tarjeta','Lo que pagás en pesos por cada dólar gastado con tarjeta en el exterior o en servicios digitales: el oficial más un 30% de percepción de Ganancias (se puede descontar después del impuesto).'],
+    brecha:['Brecha','Cuánto más caro está un dólar alternativo que el oficial. Brecha = dólar ÷ oficial − 1. Ej.: CCL a $1.620 y oficial a $1.540 → brecha de 5,2%.'],
+    canje:['Canje CCL/MEP','Diferencia entre el CCL y el MEP: CCL ÷ MEP − 1. Mide cuánto más cuesta tener los dólares afuera que adentro del país. Si se dispara, hay más ganas (o más trabas) de sacar dólares.'],
+    usdreal:['Dólar a precios de hoy','Cotizaciones del pasado llevadas a pesos de hoy, corrigiendo por la inflación de Argentina y la de EE.UU. Sirve para ver si el dólar está caro o barato contra la historia (es una forma de tipo de cambio real).'],
+    riesgo:['Riesgo país','Cuánto más rinden por año los bonos argentinos en dólares que los del Tesoro de EE.UU. (índice EMBI de JP Morgan). 600 pb = 6 puntos porcentuales más. Más alto = el mercado ve más riesgo de que el país no pague.'],
+    reservas:['Reservas brutas','Todos los activos externos del BCRA: dólares, oro, yuanes del swap con China y los encajes de los depósitos en dólares. Son "brutas" porque incluyen plata que no es libremente del BCRA; las netas descuentan esas deudas.'],
+    compras:['Compras del BCRA en el MULC','Dólares que el BCRA compra (o vende) en el mercado oficial de cambios. Si compra, suben las reservas; si vende, bajan.'],
+    ipc:['Inflación (IPC)','Índice de precios al consumidor del INDEC: cuánto subieron en promedio los precios de una canasta de bienes y servicios.'],
+    rem:['Inflación esperada (REM)','Relevamiento de Expectativas de Mercado: encuesta mensual del BCRA a consultoras y bancos. Acá, la mediana de la inflación que esperan para los próximos 12 meses.'],
+    real:['Tasa real','Lo que rinde el plazo fijo después de descontar la inflación. Positiva: le gana a la inflación. Negativa: perdés poder de compra.'],
+    tna:['TNA','Tasa nominal anual: la tasa del año sin capitalizar intereses. Para saber cuánto rinde en un mes: TNA ÷ 12.'],
+    badlar:['BADLAR','Tasa que pagan los bancos privados por plazos fijos de más de $1 millón a 30-35 días. Es referencia de muchos créditos y bonos.'],
+    tamar:['TAMAR','Como la BADLAR, pero para plazos fijos mayoristas (más de $1.000 millones). El BCRA la creó en 2024 como nueva tasa de referencia.'],
+    pf:['Plazo fijo 30 días','Tasa promedio (TNA) que pagan los bancos a las personas por un plazo fijo a 30 días.'],
+    base:['Base monetaria','Billetes y monedas en circulación más la plata que los bancos tienen depositada en el BCRA. Es el dinero que emite directamente el BCRA.'],
+    depusd:['Depósitos privados en dólares','Dólares que personas y empresas tienen depositados en bancos argentinos.'],
+    m2t:['M2 transaccional privado','La plata que usa el sector privado para pagar: billetes y monedas más cuentas corrientes y cajas de ahorro en pesos, sin depósitos del Estado. Es el agregado que sigue el BCRA.'],
+    m2:['M2','Billetes y monedas en manos del público más cuentas corrientes y cajas de ahorro en pesos: la plata "para gastar".'],
+    pesoshoy:['Pesos de hoy','Ajustado por inflación (CER): cada mes expresado en pesos de hoy, para poder comparar épocas distintas.'],
+    pbi:['% del PBI','Cuánto representa sobre el tamaño anual de la economía. Permite comparar años con inflaciones muy distintas.'],
+    pasivos:['Pasivos remunerados del BCRA','Deuda en pesos del BCRA que paga interés a los bancos: LELIQ (hasta 2023), pases pasivos (hasta 2024) y LEFI (hasta 2025). Hoy están en cero.'],
+    bopreal:['Deuda del BCRA en dólares','Bonos en dólares del BCRA, casi todos BOPREAL: los emitió para que los importadores pudieran cancelar deudas comerciales atrasadas.'],
+    fiscal:['Resultado fiscal','Primario: ingresos menos gastos del Estado nacional, sin contar los intereses de la deuda. Financiero: el primario menos esos intereses. Positivo = superávit.'],
+    primario:['Resultado primario','Ingresos menos gastos del Estado nacional, sin contar los intereses de la deuda. Positivo = superávit.'],
+    financiero:['Resultado financiero','Resultado primario menos los intereses de la deuda. Es el número final: si es positivo, el Estado no necesita endeudarse para cubrir sus gastos.'],
+    comercio:['Exportaciones e importaciones','Ventas y compras de bienes al exterior, en dólares, según el INDEC. No incluye servicios como turismo.'],
+    saldo:['Saldo comercial','Exportaciones menos importaciones de bienes. Positivo: entran más dólares por comercio de los que salen.'],
+    mervalusd:['Merval en dólares','El Merval dividido por el CCL: cuánto valen las acciones argentinas medidas en dólares. Saca el efecto de la devaluación.'],
+    merval:['S&P Merval','Índice de las acciones argentinas más negociadas en la bolsa porteña (BYMA). Sube si en promedio suben esas acciones.'],
+    tir:['TIR','Tasa interna de retorno: lo que rinde por año el bono si lo comprás hoy, lo tenés hasta el final y el país paga todo. Más TIR = bono más barato y más riesgo percibido.'],
+    paridad:['Paridad','Precio del bono dividido por su valor técnico (el capital que falta pagar más los intereses corridos). 70% = cotiza al 70% de lo que debería pagar.'],
+    residual:['Valor residual','Parte del capital original del bono que todavía no se devolvió. Si ya pagó la mitad de las cuotas de capital, el residual es 50%.'],
+    especied:['Precio en US$ (especie D)','Precio del bono en dólares MEP (la "especie D"), por cada 100 de valor nominal original.']
+  };
+  // [expresión, clave, dónde]: se aplica sobre el texto del título o etiqueta
+  const GLOS_REGLAS = [
+    [/^Oficial$/,'oficial','q'],[/^Mayorista$/,'mayorista','q'],[/^MEP$/,'mep','q'],[/^CCL$/,'ccl','q'],[/^Blue$/,'blue','q'],[/^Cripto$/,'cripto','q'],[/^Tarjeta$/,'tarjeta','q'],
+    [/^Canje/,'canje','g'],[/^Brecha/,'brecha','g'],[/^Dólar a precios de hoy/,'usdreal','g'],
+    [/^Riesgo país/,'riesgo','g'],[/^Reservas/,'reservas','g'],[/^Compras y ventas de dólares/,'compras','g'],
+    [/^Inflación mensual/,'ipc','g'],[/^Inflación (esperada|interanual y)/,'rem','g'],[/^(Tasa real|Plazo fijo contra)/,'real','g'],[/^Tasas en pesos/,'tna','g'],
+    [/^BADLAR/,'badlar','g'],[/^TAMAR/,'tamar','g'],[/^Plazo fijo 30/,'pf','g'],[/^Base monetaria/,'base','g'],[/^Depósitos/,'depusd','g'],
+    [/^M2 transaccional/,'m2t','g'],[/^M2/,'m2','g'],[/^Agregados en pesos de hoy/,'pesoshoy','g'],[/^Agregados en % del PBI/,'pbi','g'],
+    [/^Pasivos remunerados/,'pasivos','g'],[/^Deuda (BCRA|del BCRA) en/,'bopreal','g'],[/^Resultado fiscal/,'fiscal','g'],
+    [/^Primario/,'primario','g'],[/^Financiero/,'financiero','g'],[/^Exportaciones e importaciones/,'comercio','g'],[/^Saldo comercial/,'saldo','g'],
+    [/Merval en d[óo]lares|^Merval en dólares/,'mervalusd','g'],[/^S&P Merval/,'merval','g'],
+    [/^TIR/,'tir','g'],[/^Paridad$/,'paridad','th'],[/^Valor residual$/,'residual','th'],[/^Precio US\$$/,'especied','th'],[/^Primario$/,'primario','th'],[/^Financiero$/,'financiero','th'],[/^Brecha CCL$/,'brecha','th'],[/^TIR$/,'tir','th']
+  ];
+  const GLOS_SEL = {q:'.q .name', g:'.card h2, .card h3.subh, .k .lbl, .stats .lbl', th:'th'};
+  const infoBtn = k => `<button type="button" class="info" data-tip="${k}" aria-label="¿Qué es ${esc(GLOS[k][0])}?" aria-expanded="false">i</button>`;
+  function decorar(){
+    for(const [donde, sel] of Object.entries(GLOS_SEL)){
+      document.querySelectorAll(sel).forEach(el=>{
+        if(el.querySelector('.info') || el.closest('#tipbox')) return;
+        const txt = [...el.childNodes].filter(n=>n.nodeType===3 || (n.nodeType===1 && !n.matches('i,small,.tools,button'))).map(n=>n.textContent).join('').trim();
+        const r = GLOS_REGLAS.find(([re,,d])=>d===donde && re.test(txt)); if(!r) return;
+        const tl = el.querySelector(':scope > .tools');
+        tl ? tl.insertAdjacentHTML('beforebegin', infoBtn(r[1])) : el.insertAdjacentHTML('beforeend', infoBtn(r[1]));
+      });
+    }
+    herramientas();
+  }
+  const tipbox = $('tipbox'); let tipFor = null, tipHide;
+  function showTip(b){
+    clearTimeout(tipHide);
+    const [t, x] = GLOS[b.dataset.tip]; tipbox.innerHTML = `<b>${esc(t)}</b>${esc(x)}`; tipbox.hidden = false;
+    if(tipFor && tipFor!==b) tipFor.setAttribute('aria-expanded','false');
+    tipFor = b; b.setAttribute('aria-expanded','true'); b.setAttribute('aria-describedby','tipbox');
+    const r = b.getBoundingClientRect(), w = tipbox.offsetWidth, h = tipbox.offsetHeight;
+    let left = Math.min(Math.max(12, r.left + r.width/2 - w/2), innerWidth - w - 12), top = r.bottom + 8;
+    if(top + h > innerHeight - 8) top = Math.max(8, r.top - h - 8);
+    tipbox.style.left = left+'px'; tipbox.style.top = top+'px';
+  }
+  function hideTip(){ tipbox.hidden = true; if(tipFor){ tipFor.setAttribute('aria-expanded','false'); tipFor.removeAttribute('aria-describedby'); } tipFor = null; }
+  document.addEventListener('pointerover', e=>{ const b=e.target.closest?.('.info'); if(b && e.pointerType==='mouse') showTip(b); });
+  document.addEventListener('pointerout', e=>{ const b=e.target.closest?.('.info'); if(b && e.pointerType==='mouse') tipHide=setTimeout(hideTip, 120); });
+  let ultPuntero = 'mouse'; document.addEventListener('pointerdown', e=>{ ultPuntero = e.pointerType; }, true);
+  document.addEventListener('focusin', e=>{ if(e.target.matches?.('.info:focus-visible')) showTip(e.target); });
+  document.addEventListener('focusout', e=>{ if(e.target.matches?.('.info')) tipHide=setTimeout(hideTip, 120); });
+  document.addEventListener('click', e=>{ const b=e.target.closest('.info'); if(b){ e.preventDefault(); e.stopPropagation(); (ultPuntero!=='mouse' && tipFor===b && !tipbox.hidden) ? hideTip() : showTip(b); return; } if(!e.target.closest('#tipbox')) hideTip(); }, true);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') hideTip(); });
+  addEventListener('scroll', ()=>{ if(!tipbox.hidden) hideTip(); }, {passive:true});
+
+  // ---- herramientas de cada gráfico: compartir, imagen (PNG) y datos (CSV) ----
+  const SITE = 'epherrafrancisco-gif.github.io/macro-ar';
+  const IC = {
+    share:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2.5m0 0L5 5.5m3-3l3 3M3.5 8.5v4a1 1 0 001 1h7a1 1 0 001-1v-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    png:'<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2.5 11l3.5-3.5 3 3 2-2 2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+    csv:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3z M10 2.5v3h3 M5.5 8.5h5 M5.5 11h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>'
+  };
+  const toolsHtml = id => `<span class="tools"><button type="button" data-act="share" data-ch="${id}" title="Compartir este gráfico" aria-label="Compartir este gráfico">${IC.share}</button><button type="button" data-act="png" data-ch="${id}" title="Descargar imagen (PNG)" aria-label="Descargar imagen del gráfico">${IC.png}</button><button type="button" data-act="csv" data-ch="${id}" title="Descargar los datos del gráfico (CSV)" aria-label="Descargar datos del gráfico">${IC.csv}</button></span>`;
+  function herramientas(){
+    document.querySelectorAll('.card .chart[id]').forEach(ch=>{
+      if(document.querySelector(`.tools [data-ch="${ch.id}"]`)) return;
+      // título propio (h3) si hay uno justo antes; si no, el encabezado de la tarjeta
+      let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
+      if(p && p.matches('h3.subh')){ p.classList.add('wt'); p.insertAdjacentHTML('beforeend', toolsHtml(ch.id)); return; }
+      const head = ch.closest('.card').querySelector(':scope > .head'); if(head) head.insertAdjacentHTML('beforeend', toolsHtml(ch.id));
+    });
+  }
+  function chartInfo(ch){
+    const card = ch.closest('.card');
+    let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
+    const h2 = card.querySelector('.head h2'), titulo = (p && p.matches('h3.subh') ? (h2?h2.firstChild.textContent.trim()+' · ':'') + p.firstChild.textContent.trim() : h2 ? h2.firstChild.textContent.trim() : 'Macro AR');
+    const nota = card.querySelector('.head > span.note'); const sub = nota ? nota.textContent.trim() : '';
+    const exp = ch._exp; if(!exp) return null;
+    const ss = exp.fn===dailyBars ? [{n:exp.o.unitName||titulo, c:'--pos', pts:exp.a}] : exp.a.filter(s=>s.pts.length);
+    return {titulo, sub, exp, ss};
+  }
+  const slug = t => t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50);
+  const ultimaFecha = () => days.length ? days[days.length-1].fecha : new Date().toISOString().slice(0,10);
+  function csvGrafico(ch){
+    const ci = chartInfo(ch); if(!ci) return;
+    const keys = [...new Set(ci.ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
+    const map = ci.ss.map(s=>Object.fromEntries(s.pts));
+    const head = [keys[0]&&keys[0].length===7?'mes':'fecha', ...ci.ss.map(s=>s.n)];
+    const lines = [head.join(';'), ...keys.map(k=>[k, ...map.map(m=>num(m[k]))].join(';'))];
+    bajar(new Blob(['﻿'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.csv`);
+  }
+  function bajar(blob, nombre){
+    const url = URL.createObjectURL(blob), a = Object.assign(document.createElement('a'), {href:url, download:nombre});
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  }
+  let toastT; function toast(msg){ const t=$('toast'); t.textContent=msg; t.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>t.hidden=true, 4500); }
+  // Dibuja el gráfico de nuevo a 760 px de ancho, le copia los colores calculados y lo pasa a PNG con título y marca de agua.
+  async function pngGrafico(ch){
+    const ci = chartInfo(ch); if(!ci) return null;
+    const tmp = document.createElement('div'); tmp.className = 'chart exp'; ch.closest('.card').appendChild(tmp);
+    try{
+      ci.exp.fn(tmp, ci.exp.a, {...ci.exp.o, h:340, labW:Math.round((ci.exp.o.labW??70)*1.5)});
+      const svg = tmp.querySelector('svg'); if(!svg) return null;
+      const cl = svg.cloneNode(true);
+      const orig = svg.querySelectorAll('*'), copia = cl.querySelectorAll('*');
+      orig.forEach((el,i)=>{ const cs=getComputedStyle(el), c=copia[i];
+        for(const pr of ['fill','stroke','opacity','stroke-width','stroke-dasharray','font-size','font-weight']) c.style.setProperty(pr, cs.getPropertyValue(pr));
+        c.style.setProperty('font-family', el.tagName==='text' ? 'ui-monospace, Menlo, Consolas, monospace' : ''); });
+      cl.querySelectorAll('.hit, .xh, .hov, .hl').forEach(e=>e.remove());
+      const [, , W, H] = svg.getAttribute('viewBox').split(' ').map(Number);
+      cl.setAttribute('width', W); cl.setAttribute('height', H); cl.setAttribute('xmlns','http://www.w3.org/2000/svg');
+      const img = new Image(); const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(cl)], {type:'image/svg+xml'}));
+      await new Promise((ok, mal)=>{ img.onload=ok; img.onerror=mal; img.src=url; });
+      const css = getComputedStyle(document.documentElement), v = n => css.getPropertyValue(n).trim();
+      const S = 2, pad = 32, multi = ci.ss.length>1, top = 74 + (multi?30:0), foot = 56, CW = W + pad*2, CH = top + H + foot;
+      const cv = document.createElement('canvas'); cv.width = CW*S; cv.height = CH*S; const g = cv.getContext('2d'); g.scale(S,S);
+      g.fillStyle = v('--surface'); g.fillRect(0,0,CW,CH);
+      g.fillStyle = v('--accent'); g.fillRect(0,0,CW,4);
+      const sans = '"Instrument Sans", system-ui, sans-serif', mono = '"JetBrains Mono", ui-monospace, monospace';
+      g.textBaseline = 'alphabetic';
+      g.fillStyle = v('--ink'); g.font = `600 22px ${sans}`; g.fillText(ci.titulo, pad, 42);
+      g.fillStyle = v('--muted'); g.font = `400 14px ${sans}`; g.fillText(ci.sub || '', pad, 64);
+      if(multi){ let x = pad; g.font = `400 14px ${sans}`;
+        ci.ss.forEach(s=>{ g.fillStyle = v(s.c); g.fillRect(x, top-24, 11, 11); g.fillStyle = v('--ink2'); g.fillText(s.n, x+16, top-14); x += 16 + g.measureText(s.n).width + 18; }); }
+      g.drawImage(img, pad, top, W, H); URL.revokeObjectURL(url);
+      // marca de agua
+      g.save(); g.globalAlpha = .07; g.fillStyle = v('--ink'); g.font = `700 64px ${sans}`; g.textAlign = 'center'; g.fillText('Macro AR', CW/2, top + H/2 + 22); g.restore();
+      g.strokeStyle = v('--line'); g.beginPath(); g.moveTo(pad, CH-foot+8); g.lineTo(CW-pad, CH-foot+8); g.stroke();
+      // logo
+      const lx = pad, ly = CH-foot+22; g.fillStyle = '#1d4f7a'; g.beginPath(); g.roundRect ? g.roundRect(lx, ly, 22, 22, 5) : g.rect(lx, ly, 22, 22); g.fill();
+      g.strokeStyle = '#fff'; g.lineWidth = 2.2; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); g.moveTo(lx+4,ly+15); g.lineTo(lx+8.5,ly+10); g.lineTo(lx+12,ly+13); g.lineTo(lx+18,ly+6); g.stroke();
+      g.fillStyle = v('--ink'); g.font = `700 15px ${sans}`; g.fillText('Macro AR', lx+30, ly+16);
+      g.fillStyle = v('--accent'); g.font = `500 13px ${mono}`; g.fillText(SITE, lx+30+g.measureText('Macro AR').width+12, ly+16);
+      g.textAlign = 'right'; g.fillStyle = v('--muted'); g.font = `400 13px ${sans}`; g.fillText(`Datos al ${fd(ultimaFecha())} · @macroar_diario`, CW-pad, ly+16);
+      return await new Promise(r=>cv.toBlob(r, 'image/png'));
+    } finally { tmp.remove(); }
+  }
+  document.addEventListener('click', async e=>{
+    const b = e.target.closest('.tools button'); if(!b) return;
+    const ch = $(b.dataset.ch); if(!ch || !ch._exp) return;
+    const ci = chartInfo(ch), nombre = `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.png`;
+    if(b.dataset.act==='csv') return csvGrafico(ch);
+    if(b.dataset.act==='png'){ const blob = await pngGrafico(ch); if(blob) bajar(blob, nombre); return; }
+    // compartir
+    const link = `https://${SITE}/#${tab}`, texto = `${ci.titulo} · vía Macro AR`;
+    const probe = typeof File==='function' ? new File([''], 'x.png', {type:'image/png'}) : null;
+    if(probe && navigator.canShare && navigator.canShare({files:[probe]})){
+      const blob = await pngGrafico(ch); if(!blob) return;
+      try{ await navigator.share({files:[new File([blob], nombre, {type:'image/png'})], text:`${texto} ${link}`}); }catch(err){ if(err.name!=='AbortError') bajar(blob, nombre); }
+      return;
+    }
+    // compu: copiar la imagen y abrir un posteo en X con el texto y el link
+    const w = window.open('', '_blank');
+    const pblob = pngGrafico(ch);
+    let copiada = false;
+    try{ await navigator.clipboard.write([new ClipboardItem({'image/png': pblob.then(x=>x)})]); copiada = true; }catch(err){}
+    if(!copiada){ const blob = await pblob; if(blob) bajar(blob, nombre); }
+    const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}&url=${encodeURIComponent(link)}`;
+    if(w) w.location = intent; else window.open(intent, '_blank');
+    toast(copiada ? 'Imagen copiada: pegala en el posteo (Ctrl+V o Cmd+V).' : 'Imagen descargada: adjuntala al posteo.');
+  });
+  // decorar después de cada dibujo (los gráficos y las tarjetas se regeneran seguido)
+  let decT; new MutationObserver(()=>{ clearTimeout(decT); decT=setTimeout(decorar, 60); }).observe(document.querySelector('.wrap'), {childList:true, subtree:true});
 
   // ---- descargar CSV (punto y coma y coma decimal: se abre bien en Excel en español) ----
   const num = v => v==null||!isFinite(v) ? '' : String(+v.toFixed(6)).replace('.',',');
