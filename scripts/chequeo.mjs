@@ -54,6 +54,16 @@ try {
   else if (resta <= 21) avisos.push(`El calendario de publicaciones vence el ${c.vigente_hasta}: cargar el del semestre siguiente.`);
 } catch (e) { avisos.push(`No se pudo leer calendario.json: ${e.message}`); }
 
+// 3b) Noticias
+try {
+  const n = await json('noticias.json');
+  const horas = (Date.now() - Date.parse(n.actualizado)) / 36e5;
+  if (horas > 12) avisos.push(`Las noticias no se actualizan desde hace ${Math.round(horas)} horas.`);
+  const caidos = Object.entries(n.fuentes || {}).filter(([, v]) => !String(v).startsWith('ok')).map(([k, v]) => `${k} (${v})`);
+  if (caidos.length) avisos.push('Medios de noticias con error: ' + caidos.join(', ') + '.');
+  else ok.push(`Noticias al día (${n.items.length} titulares).`);
+} catch (e) { avisos.push(`No se pudo leer noticias.json: ${e.message}`); }
+
 // 4) La página: cada pestaña, sin errores y con sus gráficos dibujados
 if (!chrome) errores.push('No hay Chrome para revisar la página.');
 else {
@@ -64,7 +74,7 @@ else {
     page.on('pageerror', e => jsErr.push(e.message));
     await page.goto(URL_SITIO + '?chequeo=' + Date.now() + '#dolares', { waitUntil: 'load', timeout: 60000 });
     await page.waitForFunction(() => !document.getElementById('stamp')?.textContent.includes('Cargando'), null, { timeout: 30000 }).catch(() => {});
-    for (const tab of ['dolares', 'macro', 'dinero', 'fiscal', 'mercado', 'calculadoras']) {
+    for (const tab of ['dolares', 'macro', 'dinero', 'fiscal', 'mercado', 'calculadoras', 'noticias']) {
       await page.evaluate(t => { location.hash = t; }, tab);
       await page.waitForTimeout(tab === 'mercado' ? 6000 : 1500);
       const r = await page.evaluate(() => {
@@ -76,7 +86,10 @@ else {
       if (r.vacios.length) avisos.push(`Pestaña ${tab}: gráficos sin datos: ${r.vacios.join(', ')}.`);
       if (r.charts && r.vacios.length === r.charts) errores.push(`Pestaña ${tab}: ningún gráfico se dibujó.`);
       if (tab === 'mercado' && !r.heat) avisos.push('Mercado: no cargaron los precios de acciones (data912).');
-      if (tab === 'calculadoras') {
+      if (tab === 'noticias') {
+        const nn = await page.evaluate(() => document.querySelectorAll('#nwList li').length);
+        nn ? ok.push(`Noticias: ${nn} titulares en la página.`) : avisos.push('Noticias: la pestaña no muestra titulares.');
+      } else if (tab === 'calculadoras') {
         const calc = await page.evaluate(() => /equilibrio/i.test(document.getElementById('pfR')?.textContent || ''));
         calc ? ok.push('Calculadoras: funcionan.') : avisos.push('Calculadoras: la de plazo fijo no muestra resultado.');
       } else ok.push(`Pestaña ${tab}: ${r.charts - r.vacios.length}/${r.charts} gráficos, ${r.kpis} indicadores.`);

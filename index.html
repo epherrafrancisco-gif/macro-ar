@@ -148,6 +148,20 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
+/* noticias */
+.nwtop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px}
+.nwtop select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.nwnew{font-size:13px;font-weight:600;color:var(--accent)}
+.nwday{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:10px 0 2px}
+.nwl{list-style:none;margin:0;padding:0;display:grid}
+.nwl li{display:grid;grid-template-columns:52px 1fr;gap:2px 12px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.nwl li:last-child{border-bottom:0}
+.nwl .h{font-family:var(--mono);font-size:12.5px;color:var(--ink2);padding-top:2px}
+.nwl a{color:var(--ink);text-decoration:none;font-size:15px;line-height:1.4;font-weight:500}
+.nwl a:hover{text-decoration:underline}
+.nwl a:visited{color:var(--ink2)}
+.nwl .m{grid-column:2;font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nwl .nv{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--accent-ink);background:var(--accent);border-radius:4px;padding:0 5px}
 /* calculadoras */
 .calcsel{justify-self:start;flex-wrap:wrap}
 .calc{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:22px 28px;align-items:start}
@@ -259,6 +273,7 @@ footer a{color:var(--ink2)}
       <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
       <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
       <a href="#calculadoras" role="tab" id="tabC" aria-selected="false">Calculadoras</a>
+      <a href="#noticias" role="tab" id="tabW" aria-selected="false">Noticias</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -403,6 +418,19 @@ footer a{color:var(--ink2)}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
   </section>
 
+
+  <!-- NOTICIAS -->
+  <section class="view" id="vW" hidden>
+    <div class="card">
+      <div class="nwtop">
+        <div class="chipsel" id="nwTemas" role="group" aria-label="Filtrar por tema"></div>
+        <select id="nwFuente" aria-label="Filtrar por medio"><option value="">Todos los medios</option></select>
+      </div>
+      <div class="nwtop"><span class="note" id="nwStamp"></span><span class="nwnew" id="nwNuevas"></span></div>
+      <div id="nwList"><div class="empty">Cargando…</div></div>
+      <p class="note">Titulares de las secciones de economía de Ámbito, Infobae, La Nación, iProfesional y Perfil, de las últimas 48 horas. Cada nota se lee en el sitio del medio. Se actualiza cada hora desde las 6 de la mañana. Los temas se asignan solos según las palabras del título.</p>
+    </div>
+  </section>
 
   <!-- CALCULADORAS -->
   <section class="view" id="vC" hidden>
@@ -819,6 +847,45 @@ footer a{color:var(--ink2)}
       + 'El plazo fijo renueva cada 30 días con la tasa promedio de ese momento (el último tramo, proporcional). El Merval no incluye dividendos. '
       + (ganan.length ? `Le ganaron: ${ganan.join(', ')}.` : 'Ninguna le ganó.');
   }
+
+
+  // ---- NOTICIAS (noticias.json, lo arma scripts/noticias.py cada hora) ----
+  let nw = null, nwAt = 0, nwTema = '', nwVisto = null;
+  const NWT = [['','Todas'],['dolar','Dólar'],['bcra','BCRA y tasas'],['inflacion','Inflación'],['mercados','Mercados'],['fiscal','Fiscal'],['actividad','Actividad']];
+  try{ nwVisto = localStorage.getItem('macro-nw-visto'); }catch(e){}
+  async function cargarNoticias(){
+    try{ const r = await fetch('noticias.json?t='+Date.now(), {cache:'no-store'}); if(r.ok){ nw = await r.json(); nwAt = Date.now(); } }catch(e){}
+    if(tab==='noticias') pintarNoticias();
+  }
+  function renderNoticias(){
+    if(!$('nwTemas').childElementCount){
+      $('nwTemas').innerHTML = NWT.map(([k,n])=>`<button type="button" data-nwt="${k}" aria-pressed="${k===nwTema}">${n}</button>`).join('');
+      $('nwTemas').addEventListener('click', e=>{ const b=e.target.closest('[data-nwt]'); if(!b) return; nwTema=b.dataset.nwt; pintarNoticias(); });
+      $('nwFuente').addEventListener('change', pintarNoticias);
+      $('nwList').addEventListener('click', e=>{ const a=e.target.closest('a[data-f]'); if(a) gc('noticia-'+a.dataset.f, true); });
+    }
+    if(!nw || Date.now()-nwAt > 10*60000) cargarNoticias(); else pintarNoticias();
+  }
+  function pintarNoticias(){
+    document.querySelectorAll('[data-nwt]').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.nwt===nwTema)));
+    if(!nw){ $('nwList').innerHTML = '<div class="empty">No se pudieron cargar las noticias. Probá en un rato.</div>'; return; }
+    const sel = $('nwFuente'), meds = [...new Set(nw.items.map(i=>i.f))].sort();
+    if(sel.options.length !== meds.length+1){ const v = sel.value; sel.innerHTML = '<option value="">Todos los medios</option>' + meds.map(m=>`<option>${esc(m)}</option>`).join(''); sel.value = v; }
+    const f = sel.value, its = nw.items.filter(i=>(!f || i.f===f) && (!nwTema || (i.k||[]).includes(nwTema)));
+    const hoy = fechaAR(Date.now()), ayer = fechaAR(Date.now()-864e5);
+    const nuevas = nwVisto ? nw.items.filter(i=>i.h > nwVisto).length : 0;
+    const min = Math.round((Date.now()-Date.parse(nw.actualizado))/60000);
+    $('nwStamp').textContent = `Actualizado ${min<60 ? `hace ${Math.max(1,min)} min` : `a las ${horaAR(Date.parse(nw.actualizado))}`} · ${nw.items.length} titulares`;
+    $('nwNuevas').textContent = nuevas ? `${nuevas} nueva${nuevas>1?'s':''} desde tu última visita` : '';
+    let html = '', dia = '';
+    its.forEach(i=>{ const d = i.h.slice(0,10);
+      if(d!==dia){ if(dia) html += '</ul>'; dia = d; html += `<div class="nwday">${d===hoy?'Hoy':d===ayer?'Ayer':fd(d)}</div><ul class="nwl">`; }
+      html += `<li><span class="h">${i.h.slice(11,16)}</span><a href="${esc(i.u)}" target="_blank" rel="noopener" data-f="${esc(i.f)}">${esc(i.t)}</a><span class="m">${esc(i.f)}${nwVisto && i.h>nwVisto?' <span class="nv">NUEVA</span>':''}</span></li>`; });
+    $('nwList').innerHTML = its.length ? html+'</ul>' : '<div class="empty">No hay titulares con ese filtro.</div>';
+    // la próxima visita marca como nuevas las que salgan después de ahora
+    try{ localStorage.setItem('macro-nw-visto', nw.items.length ? nw.items[0].h : ''); }catch(e){}
+  }
+  setInterval(()=>{ if(tab==='noticias' && !document.hidden) cargarNoticias(); }, 10*60000);
 
   // ---- CALCULADORAS ----
   // Números en formato argentino: "1.000.000", "1000000", "22,5".
@@ -1460,14 +1527,14 @@ footer a{color:var(--ink2)}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], calculadoras:['tabC','vC',()=>renderCalc()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()]};
   let tab = 'dolares';
   let tabContado = null;
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';
     if(tab !== tabContado){ tabContado = tab; gc(location.pathname + '#' + tab); }
     for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
-    $('segRange').style.visibility = tab==='calculadoras' ? 'hidden' : '';
+    $('segRange').hidden = (tab==='calculadoras' || tab==='noticias');
     try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }

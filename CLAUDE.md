@@ -21,7 +21,7 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
   Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
-  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`) y **Calculadoras** (`#calculadoras`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Calculadoras** (`#calculadoras`) y **Noticias** (`#noticias`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
   no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
@@ -252,6 +252,13 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   navegador/celular.
 - DESCARTADOS (02/10/2026): "el día en 30 segundos", dólar contra la banda cambiaria y
   curva de tasas en pesos. No volver a proponerlos.
+- HECHO: pestaña **Noticias** (`#noticias`, `renderNoticias`). `scripts/noticias.py` junta
+  titulares (solo título, link, medio, hora y temas por palabras clave) de los RSS de
+  economía de Ámbito, Infobae, La Nación, iProfesional y Perfil (verificados 02/10/2026;
+  El Cronista y Clarín no se pudieron leer) en `noticias.json`, últimas 48 h.
+  Workflow `noticias.yml`: L a V cada hora de 6 a 22 ART, fines de semana cada 3 h.
+  Filtros por tema y medio, marca "NUEVA" desde la última visita (localStorage), evento
+  `noticia-<medio>` en GoatCounter al tocar un titular. El chequeo revisa que esté al día.
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
