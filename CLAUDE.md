@@ -204,9 +204,10 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   → Pages; si se agrega el CNAME antes, el link github.io redirige a un dominio muerto.
   Al pasar: cambiar las menciones de la URL en index.html (og:url), scripts/preview.html,
   scripts/diario.html (pie y texto del posteo) y README.
-- G. **Deuda del Tesoro en pesos (LECAP/BONCAP)**: carga manual mensual desde el
-  boletín de Finanzas. Mediano.
-- H. Newsletter e inflación semanal de alimentos propia: grandes; dejar para el final.
+- G y H DESCARTADOS por Francisco (02/10/2026): deuda del Tesoro en pesos (LECAP/BONCAP),
+  newsletter e inflación semanal de alimentos propia. No volver a proponerlos.
+- Próximo: Francisco va a pasar una lista nueva de cosas para agregar (02/10/2026).
+  El dominio (F) queda para después de eso.
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
