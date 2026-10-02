@@ -170,7 +170,7 @@ footer a{color:var(--ink2)}
     <div class="brand">
       <h1>Macro AR<span>diario</span></h1>
       <span class="by">Diseñado y operado por Francisco Epherra</span>
-      <p>Dólares, riesgo país, reservas, inflación, tasas y agregados monetarios</p>
+      <p>Dólares, riesgo país, reservas, inflación, tasas, dinero, cuentas fiscales y comercio exterior</p>
     </div>
     <div class="stamp" id="stamp">Cargando datos…</div>
   </header>
@@ -179,6 +179,8 @@ footer a{color:var(--ink2)}
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <a href="#dolares" role="tab" id="tabD" aria-selected="true">Dólares</a>
       <a href="#macro" role="tab" id="tabM" aria-selected="false">Macro</a>
+      <a href="#dinero" role="tab" id="tabN" aria-selected="false">Dinero</a>
+      <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -252,8 +254,30 @@ footer a{color:var(--ink2)}
     </div>
   </section>
 
+  <!-- DINERO -->
+  <section class="view" id="vN" hidden>
+    <div class="kpis" id="kpisN"></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Agregados en pesos de hoy</h2><div class="legend" id="lgReal2"></div></div><div class="chart" id="chAggReal"></div><p class="note">Promedio mensual, en billones de pesos de hoy (ajustado por CER). Si la línea sube, hay más pesos en términos reales.</p></div>
+      <div class="card"><div class="head"><h2>Agregados en % del PBI</h2><div class="legend" id="lgPbi"></div></div><div class="chart" id="chAggPbi"></div><p class="note" id="notePbi">Mide la remonetización: cuántos pesos hay en relación al tamaño de la economía.</p></div>
+      <div class="card"><div class="head"><h2>Pasivos remunerados del BCRA</h2><div class="legend" id="lgPas"></div></div><div class="chart" id="chPas"></div><p class="note">Fin de cada mes, en billones de pesos de hoy. La liquidez de los bancos pasó de LELIQ (hasta diciembre de 2023) a pases pasivos (hasta julio de 2024) y de ahí a LEFI (hasta julio de 2025). Hoy las tres están en cero: esa plata se fue a letras del Tesoro (LECAP), que no tienen una serie pública diaria y gratuita.</p></div>
+      <div class="card"><div class="head"><h2>Deuda del BCRA en dólares</h2><span class="note">LEBAC, LEDIV y BOPREAL · millones de USD</span></div><div class="chart" id="chBop"></div><p class="note">Stock en dólares, casi todo BOPREAL (los bonos que el BCRA emitió para saldar la deuda comercial de los importadores).</p></div>
+    </div>
+  </section>
+
+  <!-- FISCAL -->
+  <section class="view" id="vF" hidden>
+    <div class="kpis" id="kpisF"></div>
+    <div class="card"><div class="head"><h2>Resultado fiscal mensual</h2><div class="legend" id="lgFis"></div></div><div class="chart" id="chFis"></div><p class="note">Sector Público Nacional, billones de pesos de cada mes. Primario = ingresos − gastos sin contar intereses de la deuda. Financiero = primario − intereses. Fuente: Secretaría de Hacienda (datos.gob.ar).</p></div>
+    <div class="card"><div class="head"><h2>Resultado fiscal por año</h2><span class="note">% del PBI</span></div><div class="tablewrap"><table style="min-width:420px"><thead><tr><th>Año</th><th>Primario</th><th>Financiero</th><th>Meses</th></tr></thead><tbody id="tFis"></tbody></table></div><p class="note" id="noteFis"></p></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Exportaciones e importaciones</h2><div class="legend" id="lgCom"></div></div><div class="chart" id="chCom"></div><p class="note">Millones de USD por mes. Fuente: INDEC, intercambio comercial argentino.</p></div>
+      <div class="card"><div class="head"><h2>Saldo comercial</h2><span class="note">Millones de USD por mes</span></div><div class="chart" id="chSal"></div><p class="note">Exportaciones − importaciones. Positivo: entran más dólares por comercio de los que salen.</p></div>
+    </div>
+  </section>
+
   <footer>
-    <span>Fuentes: BCRA (reservas, compras de divisas, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
+    <span>Fuentes: INDEC y Secretaría de Hacienda vía datos.gob.ar (PBI, resultado fiscal, comercio exterior), BCRA (reservas, compras de divisas, agregados, CER, pasivos, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
     <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
   </footer>
@@ -273,7 +297,7 @@ footer a{color:var(--ink2)}
   const T = s => Date.parse(s+'T12:00:00Z');
   const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-  let days = [], months = [], loaded = {d:false,m:false};
+  let days = [], months = [], quarters = [], loaded = {d:false,m:false};
   let range = 182;
   try{ const r = localStorage.getItem('macro-range'); if(r!==null && ['30','91','182','365','0'].includes(r)) range = +r; }catch(e){}
 
@@ -406,7 +430,7 @@ footer a{color:var(--ink2)}
     const keys = [...new Set(ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
     if(!keys.length){ el.innerHTML = `<div class="empty">${loaded.m?'Sin datos.':'Cargando…'}</div>`; return; }
     const W=Math.max(300, el.clientWidth||600), H=W<520?200:240;
-    const m={t:16,r:10,b:24,l:40}, iw=W-m.l-m.r, ih=H-m.t-m.b;
+    const m={t:16,r:10,b:24,l:o.l??40}, iw=W-m.l-m.r, ih=H-m.t-m.b;
     const all=ss.flatMap(s=>s.pts.map(p=>p[1])).concat([0]);
     let hi=Math.max(...all)*1.12, lo=Math.min(0,Math.min(...all)*1.12);
     const step=niceStep((hi-lo)/4); hi=Math.ceil(hi/step)*step; lo=Math.floor(lo/step)*step;
@@ -414,20 +438,20 @@ footer a{color:var(--ink2)}
     let g='';
     for(let v=lo; v<=hi+step*1e-6; v+=step){ const yy=y(v).toFixed(1), z=Math.abs(v)<step*1e-6;
       g+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yy}" y2="${yy}" stroke="var(${z?'--muted':'--grid'})" stroke-width="1"/>`;
-      g+=`<text x="${m.l-6}" y="${+yy+3.5}" text-anchor="end">${nf(v, step<1?1:0)}%</text>`; }
+      g+=`<text x="${m.l-6}" y="${+yy+3.5}" text-anchor="end">${(o.yfmt||(v=>nf(v, step<1?1:0)+'%'))(v)}</text>`; }
     const every=Math.ceil(keys.length/Math.max(2,Math.floor(iw/52)));
     keys.forEach((k,i)=>{ const cx=m.l+slot*(i+.5);
-      if(i%every===0 || i===keys.length-1) g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="middle">${fmes(k)}</text>`;
+      if((i%every===0 && keys.length-1-i>=Math.ceil(every*0.6)) || i===keys.length-1) g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="middle">${fmes(k)}</text>`;
       ss.forEach((s,j)=>{ const p=s.pts.find(q=>q[0]===k); if(!p) return; const x0=cx-gw/2+j*(bw+2), y0=y(Math.max(0,p[1])), y1=y(Math.min(0,p[1]));
         g+=`<rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y1-y0).toFixed(1)}" rx="2" fill="var(${s.c})"/>`; });
     });
     const lk=keys[keys.length-1];
-    if(ss.length===1){ const p=ss[0].pts.find(q=>q[0]===lk); if(p) g+=`<text x="${(m.l+slot*(keys.length-.5)).toFixed(1)}" y="${(y(p[1])-5).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${nf(p[1],1)}%</text>`; }
+    if(ss.length===1){ const p=ss[0].pts.find(q=>q[0]===lk); if(p) g+=`<text x="${(m.l+slot*(keys.length-.5)).toFixed(1)}" y="${(y(p[1])-5).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:600">${(o.vfmt||(v=>nf(v,1)+'%'))(p[1])}</text>`; }
     el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Gráfico de barras')}">${g}<rect class="hl" y="${m.t}" height="${ih}" width="${slot.toFixed(1)}" fill="var(--ink)" opacity="0.05" visibility="hidden"/><rect class="hit" x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/></svg><div class="tip" hidden></div>`;
     const svg=el.querySelector('svg'), tip=el.querySelector('.tip'), hl=el.querySelector('.hl');
     const pick=ev=>{ const r=svg.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width; const i=Math.max(0,Math.min(keys.length-1,Math.floor((px-m.l)/slot))); const k=keys[i];
       hl.setAttribute('x',(m.l+slot*i).toFixed(1)); hl.setAttribute('visibility','visible');
-      tip.hidden=false; tip.innerHTML=`<span class="t">${fmes(k)}</span>`+ss.map(s=>{ const p=s.pts.find(q=>q[0]===k); return p?`<div class="r"><span><i class="sw" style="background:var(${s.c})"></i>${s.n}</span><span>${nf(p[1],(o.dec??1))}%</span></div>`:''; }).join('')+(o.extra?o.extra(k):'');
+      tip.hidden=false; tip.innerHTML=`<span class="t">${fmes(k)}</span>`+ss.map(s=>{ const p=s.pts.find(q=>q[0]===k); return p?`<div class="r"><span><i class="sw" style="background:var(${s.c})"></i>${s.n}</span><span>${(o.vfmt||(v=>nf(v,(o.dec??1))+'%'))(p[1])}</span></div>`:''; }).join('')+(o.extra?o.extra(k):'');
       const sx=(m.l+slot*(i+.5))*r.width/W, tw=tip.offsetWidth; tip.style.left=Math.max(0,Math.min(r.width-tw, sx+(sx>r.width/2?-tw-12:12)))+'px'; tip.style.top='4px'; };
     const hide=()=>{ tip.hidden=true; hl.setAttribute('visibility','hidden'); };
     const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
@@ -600,16 +624,97 @@ footer a{color:var(--ink2)}
     lineChart($('chDep'), [{n:'Depósitos USD', c:'--s4', pts:inRange(dep), area:true}], {aria:'Depósitos privados en dólares', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Depósitos'});
   }
 
+  // ---- helpers PBI / CER ----
+  const qOf = mes => mes.slice(0,5)+String(Math.floor((+mes.slice(5)-1)/3)*3+1).padStart(2,'0');
+  function cerInfo(){ const c=months.filter(m=>m.cer).map(m=>[m.mes,m.cer]); return {map:Object.fromEntries(c), last:c.length?c[c.length-1][1]:null}; }
+  // PBI anualizado del trimestre del mes; si ese trimestre no se publicó todavía,
+  // se estima llevando el último trimestre publicado por la suba del CER.
+  function pibAt(mes, cer){
+    const qk=qOf(mes), q=quarters.find(t=>t.trim===qk); if(q) return {v:q.pib, est:false};
+    const prev=quarters.filter(t=>t.trim<qk); if(!prev.length) return null;
+    const L=prev[prev.length-1], qm=[0,1,2].map(i=>{ const d=new Date(Date.UTC(+L.trim.slice(0,4), +L.trim.slice(5)-1+i, 1)); return d.toISOString().slice(0,7); });
+    const cs=qm.map(m=>cer.map[m]).filter(Boolean), c0=cs.length?cs.reduce((a,b)=>a+b,0)/cs.length:null, c1=cer.map[mes]||cer.last;
+    return (c0&&c1) ? {v:L.pib*c1/c0, est:true, base:L.trim} : null;
+  }
+  const tileK = (lbl, v, unit, row, d) => `<div class="k"><span class="lbl">${lbl}</span><span class="v">${v}${unit?`<small>${unit}</small>`:''}</span><div class="row">${row||''}</div><span class="d">${d||''}</span></div>`;
+  const mago = (pts, n) => { if(pts.length<=n) return null; return pts[pts.length-1-n]; };
+
+  // ---- DINERO ----
+  function renderDinero(){
+    const cer = cerInfo(), AGG=[{k:'base',n:'Base monetaria',c:'--s5'},{k:'m2',n:'M2',c:'--s1'},{k:'m2t',n:'M2 transaccional privado',c:'--s3'}];
+    const real = k => months.filter(m=>m[k]!=null && m.cer).map(m=>[m.mes, m[k]/m.cer*cer.last/1e6]);
+    const pbiP = k => months.filter(m=>m[k]!=null).map(m=>{ const p=pibAt(m.mes,cer); return p?[m.mes, m[k]/p.v*100]:null; }).filter(Boolean);
+    const curMes = new Date().toISOString().slice(0,7);
+    const t=[];
+    AGG.forEach(a=>{ const r=real(a.k), p=pbiP(a.k); if(!r.length) return; const L=r[r.length-1], y=mago(r,12), Lp=p[p.length-1], yp=mago(p,12);
+      t.push(tileK(a.n+' real', '$ '+nf(L[1],1), 'billones', y?chip(L[1]/y[1]-1,{d:1})+'<span class="chip eq">12 meses</span>':'', `${fmes(L[0])}${L[0]===curMes?' (parcial)':''}${Lp?` · ${nf(Lp[1],1)}% del PBI${yp?` (hace 1 año ${nf(yp[1],1)}%)`:''}`:''}`)); });
+    const bop = series('bopreal');
+    if(bop.length){ const L=bop[bop.length-1], a=ago(bop,30); t.push(tileK('Deuda BCRA en USD', 'US$ '+nf(L[1],0), 'M', a?`<span class="chip eq">30d ${sg(L[1]-a[1],0)}</span>`:'', 'LEBAC, LEDIV y BOPREAL · '+fd(L[0]))); }
+    const pas = months.filter(m=>m.leliq!=null||m.pases!=null||m.lefi!=null);
+    if(pas.length){ const L=pas[pas.length-1], tot=(L.leliq||0)+(L.pases||0)+(L.lefi||0);
+      t.push(tileK('Pasivos remunerados BCRA', '$ '+nf(tot/1e6,1), 'billones', '', 'LELIQ + pases + LEFI · '+fmes(L.mes))); }
+    $('kpisN').innerHTML = t.join('') || `<div class="k"><span class="lbl">${loaded.m?'Todavía sin datos: se cargan en la próxima actualización':'Cargando…'}</span></div>`;
+
+    legend($('lgReal2'), AGG); legend($('lgPbi'), AGG);
+    const mo = {xfmt:fmes, tfmt:fmes, labW:52};
+    lineChart($('chAggReal'), AGG.map(a=>({n:a.n, c:a.c, pts:real(a.k)})), {...mo, aria:'Agregados monetarios en pesos de hoy', yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,1)+' bn', lfmt:v=>nf(v,1)});
+    lineChart($('chAggPbi'), AGG.map(a=>({n:a.n, c:a.c, pts:pbiP(a.k)})), {...mo, aria:'Agregados monetarios en % del PBI', yfmt:v=>nf(v,v%1?1:0)+'%', vfmt:v=>nf(v,1)+'%'});
+    const lastQ = quarters.length ? quarters[quarters.length-1].trim : null;
+    $('notePbi').textContent = 'Mide la remonetización: cuántos pesos hay en relación al tamaño de la economía. PBI a precios corrientes (INDEC, valor anual del trimestre)'
+      + (lastQ ? `; después del último trimestre publicado (${fmes(lastQ)}) se estima con la suba del CER.` : '.');
+    const PAS=[{k:'leliq',n:'LELIQ',c:'--s1'},{k:'pases',n:'Pases pasivos',c:'--s2'},{k:'lefi',n:'LEFI',c:'--s3'}];
+    legend($('lgPas'), PAS);
+    lineChart($('chPas'), PAS.map(a=>({n:a.n, c:a.c, pts:real(a.k)})), {...mo, aria:'Pasivos remunerados del BCRA', zero:true, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,1)+' bn', lfmt:v=>nf(v,1)});
+    lineChart($('chBop'), [{n:'Deuda en USD', c:'--s4', pts:inRange(bop), area:true}], {aria:'Deuda del BCRA en dólares', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Stock'});
+  }
+
+  // ---- FISCAL ----
+  function renderFiscal(){
+    const cer = cerInfo(), fis = months.filter(m=>m.prim!=null), com = months.filter(m=>m.expo!=null);
+    const bn = v => sg(v/1e6,2), t=[];
+    let yrRows='';
+    if(fis.length){
+      const L=fis[fis.length-1], yr=L.mes.slice(0,4), ytd=fis.filter(m=>m.mes.startsWith(yr));
+      const sp=ytd.reduce((a,m)=>a+m.prim,0), sf=ytd.reduce((a,m)=>a+(m.fin||0),0), p=pibAt(L.mes,cer);
+      t.push(tileK('Primario '+yr, (p?sg(sp/p.v*100,2)+'%':bn(sp)), p?'del PBI':'billones', `<span class="chip ${sp>=0?'up':'dn'}">${sp>=0?'Superávit':'Déficit'}</span>`, `$ ${bn(sp)} billones · ene–${MES[+L.mes.slice(5)-1]}`));
+      t.push(tileK('Financiero '+yr, (p?sg(sf/p.v*100,2)+'%':bn(sf)), p?'del PBI':'billones', `<span class="chip ${sf>=0?'up':'dn'}">${sf>=0?'Superávit':'Déficit'}</span>`, `$ ${bn(sf)} billones · después de intereses`));
+      t.push(tileK('Primario '+fmes(L.mes), '$ '+bn(L.prim), 'billones', '', `Financiero $ ${bn(L.fin||0)} billones`));
+      // tabla por año
+      const years=[...new Set(fis.map(m=>m.mes.slice(0,4)))].sort().reverse();
+      yrRows = years.map(y=>{ const ms=fis.filter(m=>m.mes.startsWith(y)), qs=quarters.filter(q=>q.trim.startsWith(y));
+        const full = ms.length===12 && qs.length===4, pib = full ? qs.reduce((a,q)=>a+q.pib,0)/4 : (pibAt(ms[ms.length-1].mes,cer)||{}).v;
+        const P=ms.reduce((a,m)=>a+m.prim,0), F=ms.reduce((a,m)=>a+(m.fin||0),0), c=v=>`<td class="${v>=0?'up':'dn'}">${pib?sg(v/pib*100,2)+'%':'—'}</td>`;
+        return `<tr><td>${y}${full?'':' *'}</td>${c(P)}${c(F)}<td>${ms.length===12?'12':'ene–'+MES[ms.length-1]}</td></tr>`; }).join('');
+    }
+    if(com.length){
+      const L=com[com.length-1], yr=L.mes.slice(0,4), n=+L.mes.slice(5);
+      const sum=(y,k)=>com.filter(m=>m.mes.startsWith(y) && +m.mes.slice(5)<=n).reduce((a,m)=>a+(m[k]||0),0);
+      const sy=sum(yr,'saldo'), ex=sum(yr,'expo'), exp=sum(String(+yr-1),'expo');
+      t.push(tileK('Saldo comercial '+yr, (sy<0?'−':'')+'US$ '+nf(Math.abs(sy),0), 'M', exp?chip(ex/exp-1,{d:1})+'<span class="chip eq">expo i.a.</span>':'', `ene–${MES[n-1]} · ${fmes(L.mes)}: ${sg(L.saldo,0)} M`));
+    }
+    $('kpisF').innerHTML = t.join('') || `<div class="k"><span class="lbl">${loaded.m?'Todavía sin datos: se cargan en la próxima actualización':'Cargando…'}</span></div>`;
+    $('tFis').innerHTML = yrRows || `<tr><td colspan="4" style="color:var(--muted)">${loaded.m?'Sin datos.':'Cargando…'}</td></tr>`;
+    $('noteFis').textContent = 'Suma de los meses dividida por el PBI del año. * Año incompleto o sin PBI anual publicado: se usa el PBI estimado del último mes.';
+
+    const last24 = a => a.slice(-24);
+    legend($('lgFis'), [{n:'Primario',c:'--s1'},{n:'Financiero',c:'--s2'}]);
+    barChart($('chFis'), [{n:'Primario',c:'--s1',pts:last24(fis).map(m=>[m.mes,m.prim/1e6])},{n:'Financiero',c:'--s2',pts:last24(fis).filter(m=>m.fin!=null).map(m=>[m.mes,m.fin/1e6])}],
+      {aria:'Resultado fiscal mensual', yfmt:v=>nf(v,v%1?1:0), vfmt:v=>'$ '+sg(v,2)+' bn'});
+    legend($('lgCom'), [{n:'Exportaciones',c:'--s3'},{n:'Importaciones',c:'--s2'}]);
+    barChart($('chCom'), [{n:'Exportaciones',c:'--s3',pts:last24(com).map(m=>[m.mes,m.expo])},{n:'Importaciones',c:'--s2',pts:last24(com).filter(m=>m.impo!=null).map(m=>[m.mes,m.impo])}],
+      {aria:'Exportaciones e importaciones', l:46, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', extra:k=>{ const m=com.find(x=>x.mes===k); return m&&m.saldo!=null?`<div class="r"><span>Saldo</span><span>${sg(m.saldo,0)} M</span></div>`:''; }});
+    barChart($('chSal'), [{n:'Saldo',c:'--s1',pts:last24(com).filter(m=>m.saldo!=null).map(m=>[m.mes,m.saldo])}], {aria:'Saldo comercial', l:46, yfmt:v=>nf(v,0), vfmt:v=>sg(v,0)+' M'});
+  }
+
   // ---- shell ----
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()]};
   let tab = 'dolares';
   function setTab(t){
-    tab = t==='macro'?'macro':'dolares';
-    $('vD').hidden = tab!=='dolares'; $('vM').hidden = tab!=='macro';
-    $('tabD').setAttribute('aria-selected', String(tab==='dolares')); $('tabM').setAttribute('aria-selected', String(tab==='macro'));
+    tab = TABS[t] ? t : 'dolares';
+    for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
     render();
   }
-  $('tabD').addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#dolares'); setTab('dolares'); });
-  $('tabM').addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#macro'); setTab('macro'); });
+  for(const [k,[a]] of Object.entries(TABS)) $(a).addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#'+k); setTab(k); });
   window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
   document.querySelectorAll('#segRange button').forEach(b=>{
     b.setAttribute('aria-selected', String(+b.dataset.r===range));
@@ -619,7 +724,7 @@ footer a{color:var(--ink2)}
     if(days.length){ const last=days[days.length-1]; const auto = last.fuente==='auto';
       $('stamp').innerHTML = `Último dato <b>${fd(last.fecha)}</b><br>Se actualiza cada día hábil`; }
     else if(loaded.d) $('stamp').textContent = 'Sin datos todavía';
-    if(tab==='dolares') renderDolares(); else renderMacro();
+    TABS[tab][2]();
   }
   let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
 
@@ -664,6 +769,7 @@ footer a{color:var(--ink2)}
       const j = await r.json();
       days = (j.diario||[]).filter(d=>d&&d.fecha).sort((a,b)=>a.fecha<b.fecha?-1:1);
       months = (j.mensual||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
+      quarters = (j.trimestral||[]).filter(d=>d&&d.trim&&d.pib).sort((a,b)=>a.trim<b.trim?-1:1);
     }catch(e){ $('stamp').textContent='No se pudieron cargar los datos. Recargá la página.'; }
     loaded={d:true,m:true}; render();
   })();

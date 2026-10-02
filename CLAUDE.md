@@ -20,19 +20,27 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 ## Archivos
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
-  Dos pestañas: **Dólares** (`#dolares`) y **Macro** (`#macro`), selector de rango
-  1M/3M/6M/1A/Todo. Tema claro y oscuro con tokens CSS en `:root`.
+  Cuatro pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`)
+  y **Fiscal** (`#fiscal`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
   s3 aqua #1baf7a/#199e70, s4 amarillo #eda100/#c98500, s5 magenta #e87ba4/#d55181.
   Colores por entidad: Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
-- `data.json`: `{"actualizado": "YYYY-MM-DD", "diario": [...], "mensual": [...]}`.
+- `data.json`: `{"actualizado": "YYYY-MM-DD", "diario": [...], "mensual": [...], "trimestral": [...]}`.
   - Diario (una fila por día hábil, todos los campos opcionales): `fecha`,
     `oficial {c,v}`, `blue {c,v}`, `mep {v}`, `ccl {v}`, `mayorista {v}`,
     `cripto {c,v}`, `tarjeta {c,v}`, `riesgo` (pb), `reservas` (MUSD),
     `base` (millones $), `badlar`, `tamar`, `pf` (% TNA), `depusd` (MUSD),
-    `compras` (BCRA id 78, MUSD/día; negativo = vendió; se pide siempre desde el 1/1).
-  - Mensual: `mes` (YYYY-MM), `infl`, `inflYoY`, `expect` (REM 12m).
+    `compras` (BCRA id 78, MUSD/día; negativo = vendió) y `bopreal` (id 158, MUSD);
+    estas dos se piden siempre desde el 1/1.
+  - Mensual: `mes` (YYYY-MM), `infl`, `inflYoY`, `expect` (REM 12m); desde 2023-01:
+    `base`, `m2`, `m2t`, `cer` (promedio del mes; millones $ / índice), `leliq`, `pases`,
+    `lefi` (fin de mes, millones $), `prim`, `fin` (resultado fiscal SPN, millones $),
+    `expo`, `impo`, `saldo` (MUSD).
+  - Trimestral: `trim` (YYYY-MM del 1er mes), `pib` (PBI corriente, millones $, valor
+    ANUALIZADO del trimestre: el promedio de los 4 trimestres = PBI del año).
+    En la página, meses sin trimestre publicado: PBI estimado con la suba del CER.
   - Historia desde 27/03/2026 (diario; `compras` desde 01/2026) y 08/2024 (mensual).
 - `scripts/update.py`: trae datos y mezcla en `data.json` (solo librería estándar).
   Revisa los últimos N días (default 10). Nunca inventa datos: si una fuente falla,
@@ -59,7 +67,13 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
   196 LEFI (en 0 desde 07/2025), 152 pases pasivos (en 0).
 - **DolarApi** `https://dolarapi.com/v1/dolares` (cripto, tarjeta; también oficial,
   blue, bolsa=MEP, contadoconliqui=CCL, mayorista con `fechaActualizacion`).
-- Para lo nuevo: **API de series de datos.gob.ar** (`https://apis.datos.gob.ar/series/api/series/?ids=...`)
+- **datos.gob.ar** (en uso): `452.3_RESULTADO_RIO_0_M_18_54` primario, `452.3_RESULTADO_ERO_0_M_20_25`
+  financiero, `74.3_IET_0_M_16` expo, `74.3_IIT_0_M_25` impo, `74.3_ISC_0_M_19` saldo,
+  `166.2_PPIB_0_0_3` PBI corriente trimestral. BCRA ids nuevos en uso: 109, 197, 30, 155
+  (LELIQ), 152, 196, 158. La API del BCRA acepta `limit=3000`.
+- Deuda del Tesoro en pesos (LECAP/BONCAP): NO hay serie pública gratuita por API
+  (solo el boletín mensual de Finanzas en Excel). Pendiente, ver con Francisco.
+- Para buscar más: **API de series de datos.gob.ar** (`https://apis.datos.gob.ar/series/api/series/?ids=...`)
   para resultado fiscal, balanza comercial (INDEC) y PBI. Buscar los IDs en
   `https://apis.datos.gob.ar/series/api/search/?q=...`.
 
@@ -97,7 +111,8 @@ DolarApi responde desde el navegador, CORS OK)
    Explicarle que los datos del BCRA no cambian intradía; lo que cambia son dólares
    y riesgo país. GitHub puede atrasar el cron 5-30 min.
 
-### Bloque 2 (el próximo)
+### Bloque 2 (hecho el 02/10/2026, salvo la deuda LECAP/BONCAP; falta confirmar con la
+primera corrida que datos.gob.ar responda desde GitHub Actions)
 6. **Agregados en términos reales**: base, M2 (y M2 transaccional privado)
    deflactados con CER (o IPC), y en % del PBI, para medir la remonetización.
 7. **Resultado fiscal mensual** (datos.gob.ar): primario y financiero en barras,

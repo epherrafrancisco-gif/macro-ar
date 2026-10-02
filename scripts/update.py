@@ -38,7 +38,24 @@ BCRA_MENSUAL = {27: "infl", 28: "inflYoY", 29: "expect"}
 # Series diarias que se piden desde el 1 de enero del año en curso (para los
 # acumulados anuales). 78 = variación de reservas por compra de divisas en el
 # MULC, en millones de USD (negativo = el BCRA vendió).
-BCRA_ANUAL = {78: "compras"}
+BCRA_ANUAL = {78: "compras", 158: "bopreal"}
+# Series del BCRA que se guardan por mes (desde HISTORIA): "prom" = promedio del
+# mes, "fin" = último dato del mes. Sirven para los agregados en términos reales
+# y en % del PBI, y para la historia de los pasivos remunerados del BCRA.
+HISTORIA = "2023-01-01"
+BCRA_MENSUALIZAR = {
+    15: ("base", "prom"), 109: ("m2", "prom"), 197: ("m2t", "prom"), 30: ("cer", "prom"),
+    155: ("leliq", "fin"), 152: ("pases", "fin"), 196: ("lefi", "fin"),
+}
+# API de series de datos.gob.ar (INDEC y Hacienda).
+DATOSGOB_MENSUAL = {
+    "452.3_RESULTADO_RIO_0_M_18_54": "prim",   # resultado primario SPN, millones $
+    "452.3_RESULTADO_ERO_0_M_20_25": "fin",    # resultado financiero SPN, millones $
+    "74.3_IET_0_M_16": "expo",                 # exportaciones, MUSD
+    "74.3_IIT_0_M_25": "impo",                 # importaciones, MUSD
+    "74.3_ISC_0_M_19": "saldo",                # saldo comercial, MUSD
+}
+DATOSGOB_TRIM = {"166.2_PPIB_0_0_3": "pib"}  # PBI a precios corrientes, millones $ (valor anualizado)
 
 log_ok, log_err = [], []
 
@@ -90,7 +107,7 @@ def ambito(desde, hasta):
 
 
 def bcra_puntos(var_id, desde, hasta):
-    url = f"https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{var_id}?desde={desde}&hasta={hasta}&limit=1000"
+    url = f"https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{var_id}?desde={desde}&hasta={hasta}&limit=3000"
     j = get_json(url)
     pts = {}
     for res in j.get("results", []):
@@ -125,7 +142,51 @@ def bcra(desde, hasta, mensual_desde, anual_desde):
             log_ok.append(f"BCRA {campo}: {len(pts)} meses")
         except Exception as e:  # noqa: BLE001
             log_err.append(f"BCRA {campo} (id {vid}): {e}")
+    for vid, (campo, modo) in BCRA_MENSUALIZAR.items():
+        try:
+            pts = bcra_puntos(vid, HISTORIA, hasta)
+            pormes = {}
+            for f in sorted(pts):
+                pormes.setdefault(f[:7], []).append(pts[f])
+            for mes, vals in pormes.items():
+                v = sum(vals) / len(vals) if modo == "prom" else vals[-1]
+                mensual.setdefault(mes, {})[campo] = round(v, 4 if campo == "cer" else 1)
+            log_ok.append(f"BCRA {campo} mensual: {len(pormes)} meses")
+        except Exception as e:  # noqa: BLE001
+            log_err.append(f"BCRA {campo} mensual (id {vid}): {e}")
     return diario, mensual
+
+
+def datosgob(series, desde):
+    """Devuelve {fecha: {campo: valor}} para varias series de la misma frecuencia."""
+    ids = list(series)
+    url = (f"https://apis.datos.gob.ar/series/api/series/?ids={','.join(ids)}"
+           f"&start_date={desde}&limit=1000&format=json")
+    j = get_json(url)
+    out = {}
+    for row in j.get("data", []):
+        f = row[0][:10]
+        for i, sid in enumerate(ids, start=1):
+            if i < len(row) and row[i] is not None:
+                out.setdefault(f, {})[series[sid]] = round(float(row[i]), 1)
+    return out
+
+
+def datos_gob_ar():
+    mensual, trimestral = {}, {}
+    try:
+        for f, campos in datosgob(DATOSGOB_MENSUAL, HISTORIA).items():
+            mensual.setdefault(f[:7], {}).update(campos)
+        log_ok.append(f"datos.gob.ar fiscal y comercio: {len(mensual)} meses")
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"datos.gob.ar fiscal y comercio: {e}")
+    try:
+        for f, campos in datosgob(DATOSGOB_TRIM, "2022-01-01").items():
+            trimestral.setdefault(f[:7], {}).update(campos)
+        log_ok.append(f"datos.gob.ar PBI: {len(trimestral)} trimestres")
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"datos.gob.ar PBI: {e}")
+    return mensual, trimestral
 
 
 def dolarapi():
@@ -161,6 +222,9 @@ def main():
     amb = ambito(desde, hasta)
     bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
+    gm, gt = datos_gob_ar()
+    for mes, campos in gm.items():
+        bm.setdefault(mes, {}).update(campos)
 
     # Días hábiles con dato oficial: sirven para descartar valores que Ámbito
     # repite en feriados para el MEP y el CCL.
@@ -199,8 +263,13 @@ def main():
         else:
             mensual[mes] = {"mes": mes, **campos}
 
+    trimestral = {t["trim"]: t for t in data.get("trimestral", [])}
+    for trim, campos in gt.items():
+        trimestral.setdefault(trim, {"trim": trim}).update(campos)
+
     data["diario"] = [diario[k] for k in sorted(diario)]
     data["mensual"] = [mensual[k] for k in sorted(mensual)]
+    data["trimestral"] = [trimestral[k] for k in sorted(trimestral)]
     data["actualizado"] = data["diario"][-1]["fecha"]
     DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     json.loads(DATA.read_text(encoding="utf-8"))  # verificar que quedó un JSON válido
