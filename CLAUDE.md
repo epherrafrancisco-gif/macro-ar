@@ -1,4 +1,4 @@
-# Macro AR: notas del proyecto para Claude
+# Pulso Macro (ex Macro AR): notas del proyecto para Claude
 
 Leé este archivo completo antes de tocar nada. Resume todo lo decidido con Francisco
 hasta el 02/10/2026.
@@ -10,12 +10,25 @@ hasta el 02/10/2026.
 - Su uso de Claude es limitado: trabajá por bloques, verificá cada bloque antes
   de seguir y no repitas trabajo.
 
+## Nombre y estética (02/10/2026)
+- El sitio se llama **Pulso Macro** (antes "Macro AR"). Se cambió porque `macroar.com.ar`
+  ya existe y es otro sitio de indicadores macro ("MacroAr", con un "Laboratorio" de
+  regresiones). No volver a usar "Macro AR" en nada visible. Logo/título: `Pulso<span>Macro</span>`
+  ("Macro" en mono y color de acento). Archivos descargados: `pulso-macro_<...>`.
+- El repo y la URL de GitHub siguen siendo `macro-ar` (no renombrar: rompe el link).
+  La cuenta de GoatCounter sigue siendo `macroar` (interna, no se ve).
+- Redes: se sacaron las menciones a @macroar_diario; Francisco va a crear cuentas nuevas
+  con el nombre Pulso Macro y después se agregan.
+- **Siempre en tema oscuro** (pedido de Francisco): `:root` tiene los colores oscuros fijos
+  y `color-scheme:dark`; ya no hay tema claro ni `prefers-color-scheme`. Lo mismo en /diario/.
+
 ## Qué es
 Tablero público y gratuito de la macro argentina:
 **https://epherrafrancisco-gif.github.io/macro-ar/**
 (GitHub Pages desde la rama `main`, carpeta raíz). Publicado en LinkedIn.
-Plan futuro: dominio propio `macroar.com.ar` (no tocar el nombre del usuario ni
-del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG y X).
+Plan: dominio propio `pulsomacro.com.ar` (Francisco tiene que confirmar en nic.ar que esté
+libre; el 02/10 no había ningún sitio en esa dirección). No tocar el nombre del usuario ni del
+repo: rompería la redirección del link viejo.
 
 ## Archivos
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
@@ -268,10 +281,10 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   `contacto-linkedin|mail`). Foto: `foto.jpg` (480x480, la foto original sin retocar; Francisco no quiso el fondo azul). Título: solo "Francisco Epherra".
 - El dominio (F) queda para después.
 
-### Próxima sesión: jueves 08/10/2026, dominio `macroar.com.ar`
+### Próxima sesión: jueves 08/10/2026, dominio `pulsomacro.com.ar`
 El sitio está TERMINADO para Francisco (02/10/2026) y NO se lanza hasta tener el dominio.
 Él trae la clave fiscal de ARCA (se blanquea desde el home banking). Pasos, guiándolo uno
-por uno: (1) verificar en nic.ar que `macroar.com.ar` esté libre y comprarlo (alta $8.500,
+por uno: (1) verificar en nic.ar que `pulsomacro.com.ar` esté libre y comprarlo (alta $8.500,
 renovación anual $8.500 según nic.ar al 02/10/2026; que active renovación o se agende el
 vencimiento); (2) cuenta gratis en Cloudflare, agregar el dominio, copiar los 2 nameservers
 y cargarlos en NIC.ar → Delegaciones; (3) en Cloudflare: A @ → 185.199.108.153,

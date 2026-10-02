@@ -1,12 +1,12 @@
 <!doctype html>
-<!-- Plantilla de la imagen diaria para redes (@macroar_diario), 1080x1350.
+<!-- Plantilla de la imagen diaria para redes (cuenta de Pulso Macro), 1080x1350.
      La genera scripts/diario.mjs después de cada actualización de datos y la guarda en
      diario/hoy.png, junto con el texto sugerido para el posteo (diario/texto.txt).
      Lee ../data.json. Expone window.TEXTO con el texto y marca body[data-listo]. -->
 <html lang="es-AR">
 <head>
 <meta charset="utf-8">
-<title>Macro AR · diario</title>
+<title>Pulso Macro · diario</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>
 :root{
@@ -67,7 +67,7 @@ footer .src{font-size:15px;color:var(--muted)}
   <header>
     <div class="logo">
       <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1d4f7a"/><path d="M6 22l6-7 5 4 9-10" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <h1>Macro AR<span>diario</span></h1>
+      <h1>Pulso<span>Macro</span></h1>
     </div>
     <div class="fecha"><b id="fecha"></b><span id="cuando"></span></div>
   </header>
@@ -75,7 +75,7 @@ footer .src{font-size:15px;color:var(--muted)}
   <div class="gaps" id="gaps"></div>
   <div class="chart"><div class="h"><b>Últimos 3 meses</b><div class="leg"><span style="--c:var(--s1)">Oficial</span><span style="--c:var(--s2)">MEP</span><span style="--c:var(--s3)">CCL</span><span style="--c:var(--s4)">Blue</span></div></div><div class="cv"><svg id="ch"></svg></div></div>
   <div class="kp" id="kp"></div>
-  <footer><span class="url">epherrafrancisco-gif.github.io/macro-ar</span><span>@macroar_diario</span></footer>
+  <footer><span class="url">epherrafrancisco-gif.github.io/macro-ar</span><span>Datos diarios de la economía argentina</span></footer>
 </div>
 <script>
 (async()=>{

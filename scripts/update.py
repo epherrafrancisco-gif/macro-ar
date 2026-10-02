@@ -1,4 +1,4 @@
-"""Actualiza data.json de Macro AR con los datos más recientes.
+"""Actualiza data.json de Pulso Macro con los datos más recientes.
 
 Fuentes:
   - Ámbito (históricos de dólares y riesgo país)
@@ -25,7 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data.json"
 TZ_AR = timezone(timedelta(hours=-3))
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 MacroAR/1.0"
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
 
 AMBITO = {
     # campo: (ruta, tipo)  tipo "cv" = compra/venta, "v" = un solo valor

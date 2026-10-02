@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Macro AR · Tablero diario de la economía argentina</title>
+<title>Pulso Macro · La economía argentina en un solo tablero</title>
 <meta name="description" content="Tablero de la economía argentina: Dólares y brechas, reservas, compras del BCRA, inflación, tasas, dinero, resultado fiscal, comercio exterior, Merval y bonos, noticias económicas y calculadoras. Gratis y actualizado cada día hábil.">
-<meta property="og:title" content="Macro AR · Tablero diario de la economía argentina">
+<meta property="og:title" content="Pulso Macro · La economía argentina en un solo tablero">
 <meta property="og:description" content="Dólares y brechas, reservas, compras del BCRA, inflación, tasas, dinero, resultado fiscal, comercio exterior, Merval y bonos, noticias económicas y calculadoras. Gratis y actualizado cada día hábil.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://epherrafrancisco-gif.github.io/macro-ar/">
-<meta property="og:image" content="https://epherrafrancisco-gif.github.io/macro-ar/preview.png?v=2">
+<meta property="og:image" content="https://epherrafrancisco-gif.github.io/macro-ar/preview.png?v=3">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Macro AR: tablero con gráficos de dólares, riesgo país, dinero, resultado fiscal y Merval">
-<meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Macro AR">
+<meta property="og:image:alt" content="Pulso Macro: tablero con gráficos de dólares, riesgo país, dinero, resultado fiscal y Merval">
+<meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Pulso Macro"><meta name="theme-color" content="#0e1319">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <!-- Contador de visitas privado (GoatCounter; sin cookies). Las pestañas y los eventos se cuentan a mano desde el script. -->
@@ -24,31 +24,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#f2f4f6; --surface:#ffffff; --sunk:#edf0f3;
-  --ink:#131c26; --ink2:#485563; --muted:#788593; --line:#dbe1e7; --grid:#e8ecf0;
-  --accent:#1d4f7a; --accent-ink:#ffffff;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4;
-  --pos:#1f7a4d; --pos-bg:#e3f2ea; --neg:#b3261e; --neg-bg:#fbe7e5; --neu-bg:#e9edf1;
-  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0e1319; --surface:#161d25; --sunk:#121820;
-    --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --line:#28323d; --grid:#1f2831;
-    --accent:#6aa8d8; --accent-ink:#0e1319;
-    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
-    --pos:#4cc38a; --pos-bg:#12291f; --neg:#f07a70; --neg-bg:#2d1614; --neu-bg:#1c252f;
-  }
-}
-:root[data-theme="dark"]{
+  /* Siempre oscuro (decisión de Francisco, 02/10/2026): no depende del modo del navegador. */
   color-scheme:dark;
   --bg:#0e1319; --surface:#161d25; --sunk:#121820;
   --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --line:#28323d; --grid:#1f2831;
   --accent:#6aa8d8; --accent-ink:#0e1319;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
   --pos:#4cc38a; --pos-bg:#12291f; --neg:#f07a70; --neg-bg:#2d1614; --neu-bg:#1c252f;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
@@ -277,7 +261,7 @@ footer a{color:var(--ink2)}
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Macro AR<span>diario</span></h1>
+      <h1>Pulso<span>Macro</span></h1>
       <span class="by">Diseñado y operado por Francisco Epherra</span>
       <p>La economía argentina en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
     </div>
@@ -293,7 +277,7 @@ footer a{color:var(--ink2)}
       <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
       <a href="#noticias" role="tab" id="tabW" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" aria-selected="false">Calculadoras</a>
-      <a href="#sobre" role="tab" id="tabS" aria-selected="false">Sobre Macro AR</a>
+      <a href="#sobre" role="tab" id="tabS" aria-selected="false">Sobre Pulso Macro</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -433,7 +417,7 @@ footer a{color:var(--ink2)}
     <div class="card">
       <div class="head"><h2>Bonos soberanos</h2><span class="note" id="bondStamp"></span></div>
       <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Bono</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
-      <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Macro AR con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
+      <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Pulso Macro con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
   </section>
@@ -531,16 +515,16 @@ footer a{color:var(--ink2)}
     </div>
 
     <div class="card prose">
-      <h3>Por qué hice Macro AR</h3>
-      <p>Macro AR nació para resolver un problema concreto: en Argentina, la información económica está dispersa. Cada vez que quería analizar el panorama tenía que abrir cinco o seis pestañas distintas y consolidar los datos a mano.</p>
+      <h3>Por qué hice Pulso Macro</h3>
+      <p>Pulso Macro nació para resolver un problema concreto: en Argentina, la información económica está dispersa. Cada vez que quería analizar el panorama tenía que abrir cinco o seis pestañas distintas y consolidar los datos a mano.</p>
       <p>Un día, en medio de mi análisis diario, me di cuenta de que pasaba más tiempo juntando y cruzando datos en Excel que interpretándolos. Ahí entendí que, si automatizaba la recolección y diseñaba un tablero integral, no solo me iba a ahorrar ese tiempo a mí: se lo iba a ahorrar a muchísima gente.</p>
-      <p>Así nació Macro AR: una plataforma única, rápida y visual, que no solo muestra los datos sino que permite analizarlos en tiempo real.</p>
+      <p>Así nació Pulso Macro: una plataforma única, rápida y visual, que no solo muestra los datos sino que permite analizarlos en tiempo real.</p>
       <h3>Para quién es</h3>
       <p>Para un público amplio: analistas, economistas e inversores que necesitan métricas de mercado y de bonos, y también estudiantes, pymes y cualquier persona que quiera tomar sus decisiones de todos los días mejor informada.</p>
-      <p>Por eso hay datos, gráficos, calculadoras, un glosario y noticias. Cada persona llega con intereses distintos cuando quiere entender la economía, y quiero que Macro AR sea una buena herramienta para todos.</p>
+      <p>Por eso hay datos, gráficos, calculadoras, un glosario y noticias. Cada persona llega con intereses distintos cuando quiere entender la economía, y quiero que Pulso Macro sea una buena herramienta para todos.</p>
       <h3>Lo que me mueve</h3>
       <p>El mercado me atrapó temprano. A los 16 empecé a estudiar y a hacer cursos sobre cómo funcionan las acciones, los bonos y la economía, con un objetivo claro: llegar a los 18 sabiendo lo que hacía para invertir mi propio capital. Y así fue.</p>
-      <p>Lo que más disfruto es entender el porqué de los números: cómo un dato de inflación, una decisión del Banco Central o un salto del riesgo país terminan moviendo el dólar, un bono o una acción. Macro AR es, en parte, la herramienta que me hubiera gustado tener cuando empecé.</p>
+      <p>Lo que más disfruto es entender el porqué de los números: cómo un dato de inflación, una decisión del Banco Central o un salto del riesgo país terminan moviendo el dólar, un bono o una acción. Pulso Macro es, en parte, la herramienta que me hubiera gustado tener cuando empecé.</p>
     </div>
 
     <div class="card">
@@ -550,7 +534,7 @@ footer a{color:var(--ink2)}
         <li><b>Nada se inventa.</b> Si una fuente no responde, el dato queda como estaba y cada número muestra su propia fecha. Algunas series del BCRA salen con uno o dos días de atraso.</li>
         <li><b>Dólar a precios de hoy:</b> cada cotización del pasado se ajusta por la inflación argentina (CER) y por la de Estados Unidos (CPI), para comparar épocas distintas. Arranca en 2017 porque antes el IPC oficial no era confiable.</li>
         <li><b>¿Qué le ganó a la inflación?:</b> rendimiento desde el último cierre del año anterior. La inflación es la del INDEC y, para los meses que todavía no publicó, la que espera el mercado según el REM del BCRA (se aclara como estimada).</li>
-        <li><b>Cálculos propios:</b> la TIR y la paridad de los bonos, los agregados monetarios en pesos de hoy y en % del PBI, las brechas y el canje los calcula Macro AR con datos públicos. Cada gráfico se puede descargar en imagen o en CSV.</li>
+        <li><b>Cálculos propios:</b> la TIR y la paridad de los bonos, los agregados monetarios en pesos de hoy y en % del PBI, las brechas y el canje los calcula Pulso Macro con datos públicos. Cada gráfico se puede descargar en imagen o en CSV.</li>
       </ul>
     </div>
 
@@ -569,7 +553,7 @@ footer a{color:var(--ink2)}
 
     <div class="card prose">
       <h3>Aclaraciones</h3>
-      <p>Macro AR es un proyecto independiente, gratuito y sin fines de lucro. No tiene publicidad ni relación con ninguna entidad, banco o medio.</p>
+      <p>Pulso Macro es un proyecto independiente, gratuito y sin fines de lucro. No tiene publicidad ni relación con ninguna entidad, banco o medio.</p>
       <p>La información es solo informativa y no constituye una recomendación de inversión. Los datos pueden tener errores o demoras: ante cualquier decisión, chequeá la fuente oficial.</p>
       <p>¿Encontraste un error, tenés una idea o querés sumar algo? Escribime por <a href="https://www.linkedin.com/in/francisco-epherra-8509513b4" target="_blank" rel="noopener" data-contacto="linkedin">LinkedIn</a> o a <a href="mailto:epherrafrancisco@gmail.com?subject=Macro%20AR" data-contacto="mail">epherrafrancisco@gmail.com</a>. Todas las sugerencias son bienvenidas.</p>
     </div>
@@ -577,9 +561,9 @@ footer a{color:var(--ink2)}
 
   <footer>
     <span>Fuentes: INDEC y Secretaría de Hacienda vía datos.gob.ar (PBI, resultado fiscal, comercio exterior), BCRA (reservas, compras de divisas, agregados, CER, pasivos, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
-    <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión. · <a href="diario/">Imagen del día</a> · @macroar_diario</span>
+    <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión. · <a href="diario/">Imagen del día</a></span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
-    <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Macro AR con datos de BCRA, INDEC, Hacienda y Ámbito.</span>
+    <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Pulso Macro con datos de BCRA, INDEC, Hacienda y Ámbito.</span>
   </footer>
 </div>
 
@@ -1490,7 +1474,7 @@ footer a{color:var(--ink2)}
   function chartInfo(ch){
     const card = ch.closest('.card');
     let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
-    const h2 = card.querySelector('.head h2'), titulo = (p && p.matches('h3.subh') ? (h2?h2.firstChild.textContent.trim()+' · ':'') + p.firstChild.textContent.trim() : h2 ? h2.firstChild.textContent.trim() : 'Macro AR');
+    const h2 = card.querySelector('.head h2'), titulo = (p && p.matches('h3.subh') ? (h2?h2.firstChild.textContent.trim()+' · ':'') + p.firstChild.textContent.trim() : h2 ? h2.firstChild.textContent.trim() : 'Pulso Macro');
     const nota = card.querySelector('.head > span.note'); const sub = nota ? nota.textContent.trim() : '';
     const exp = ch._exp; if(!exp) return null;
     const ss = exp.fn===dailyBars ? [{n:exp.o.unitName||titulo, c:'--pos', pts:exp.a}] : exp.fn===hBars ? [{n:'Rendimiento %', c:'--s1', pts:exp.a.map(r=>[r.n, r.v])}] : exp.a.filter(s=>s.pts.length);
@@ -1501,12 +1485,12 @@ footer a{color:var(--ink2)}
   function csvGrafico(ch){
     const ci = chartInfo(ch); if(!ci) return;
     if(ci.exp.fn===hBars){ const lines = ['activo;rendimiento_pct;real_pct', ...ci.exp.a.map(r=>[r.n, num(r.v), r.ref?'':num(r.real)].join(';'))];
-      return bajar(new Blob(['\ufeff'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.csv`); }
+      return bajar(new Blob(['\ufeff'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `pulso-macro_${slug(ci.titulo)}_${ultimaFecha()}.csv`); }
     const keys = [...new Set(ci.ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
     const map = ci.ss.map(s=>Object.fromEntries(s.pts));
     const head = [keys[0]&&keys[0].length===7?'mes':'fecha', ...ci.ss.map(s=>s.n)];
     const lines = [head.join(';'), ...keys.map(k=>[k, ...map.map(m=>num(m[k]))].join(';'))];
-    bajar(new Blob(['﻿'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.csv`);
+    bajar(new Blob(['﻿'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `pulso-macro_${slug(ci.titulo)}_${ultimaFecha()}.csv`);
   }
   function bajar(blob, nombre){
     const url = URL.createObjectURL(blob), a = Object.assign(document.createElement('a'), {href:url, download:nombre});
@@ -1543,26 +1527,26 @@ footer a{color:var(--ink2)}
         ci.ss.forEach(s=>{ g.fillStyle = v(s.c); g.fillRect(x, top-24, 11, 11); g.fillStyle = v('--ink2'); g.fillText(s.n, x+16, top-14); x += 16 + g.measureText(s.n).width + 18; }); }
       g.drawImage(img, pad, top, W, H); URL.revokeObjectURL(url);
       // marca de agua
-      g.save(); g.globalAlpha = .07; g.fillStyle = v('--ink'); g.font = `700 64px ${sans}`; g.textAlign = 'center'; g.fillText('Macro AR', CW/2, top + H/2 + 22); g.restore();
+      g.save(); g.globalAlpha = .07; g.fillStyle = v('--ink'); g.font = `700 64px ${sans}`; g.textAlign = 'center'; g.fillText('Pulso Macro', CW/2, top + H/2 + 22); g.restore();
       g.strokeStyle = v('--line'); g.beginPath(); g.moveTo(pad, CH-foot+8); g.lineTo(CW-pad, CH-foot+8); g.stroke();
       // logo
       const lx = pad, ly = CH-foot+22; g.fillStyle = '#1d4f7a'; g.beginPath(); g.roundRect ? g.roundRect(lx, ly, 22, 22, 5) : g.rect(lx, ly, 22, 22); g.fill();
       g.strokeStyle = '#fff'; g.lineWidth = 2.2; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); g.moveTo(lx+4,ly+15); g.lineTo(lx+8.5,ly+10); g.lineTo(lx+12,ly+13); g.lineTo(lx+18,ly+6); g.stroke();
-      g.fillStyle = v('--ink'); g.font = `700 15px ${sans}`; g.fillText('Macro AR', lx+30, ly+16);
-      g.fillStyle = v('--accent'); g.font = `500 13px ${mono}`; g.fillText(SITE, lx+30+g.measureText('Macro AR').width+12, ly+16);
-      g.textAlign = 'right'; g.fillStyle = v('--muted'); g.font = `400 13px ${sans}`; g.fillText(`Datos al ${fd(ultimaFecha())} · @macroar_diario`, CW-pad, ly+16);
+      g.fillStyle = v('--ink'); g.font = `700 15px ${sans}`; g.fillText('Pulso Macro', lx+30, ly+16);
+      g.fillStyle = v('--accent'); g.font = `500 13px ${mono}`; g.fillText(SITE, lx+30+g.measureText('Pulso Macro').width+12, ly+16);
+      g.textAlign = 'right'; g.fillStyle = v('--muted'); g.font = `400 13px ${sans}`; g.fillText(`Datos al ${fd(ultimaFecha())}`, CW-pad, ly+16);
       return await new Promise(r=>cv.toBlob(r, 'image/png'));
     } finally { tmp.remove(); }
   }
   document.addEventListener('click', async e=>{
     const b = e.target.closest('.tools button'); if(!b) return;
     const ch = $(b.dataset.ch); if(!ch || !ch._exp) return;
-    const ci = chartInfo(ch), nombre = `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.png`;
+    const ci = chartInfo(ch), nombre = `pulso-macro_${slug(ci.titulo)}_${ultimaFecha()}.png`;
     gc(`${b.dataset.act==='share'?'compartir':b.dataset.act}-${b.dataset.ch}`, true);
     if(b.dataset.act==='csv') return csvGrafico(ch);
     if(b.dataset.act==='png'){ const blob = await pngGrafico(ch); if(blob) bajar(blob, nombre); return; }
     // compartir
-    const link = `https://${SITE}/#${tab}`, texto = `${ci.titulo} · vía Macro AR`;
+    const link = `https://${SITE}/#${tab}`, texto = `${ci.titulo} · vía Pulso Macro`;
     const probe = typeof File==='function' ? new File([''], 'x.png', {type:'image/png'}) : null;
     if(probe && navigator.canShare && navigator.canShare({files:[probe]})){
       const blob = await pngGrafico(ch); if(!blob) return;
@@ -1609,7 +1593,7 @@ footer a{color:var(--ink2)}
     const body = rows.filter(r=>r.slice(1).some(v=>v!=null)).map(r=>[r[0], ...r.slice(1).map(num)].join(';'));
     const txt = '\ufeff' + [head.join(';'), ...body].join('\r\n') + '\r\n';
     const url = URL.createObjectURL(new Blob([txt], {type:'text/csv;charset=utf-8'}));
-    const a = Object.assign(document.createElement('a'), {href:url, download:`macro-ar_${b.dataset.csv}_${days.length?days[days.length-1].fecha:'datos'}.csv`});
+    const a = Object.assign(document.createElement('a'), {href:url, download:`pulso-macro_${b.dataset.csv}_${days.length?days[days.length-1].fecha:'datos'}.csv`});
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
   });
 

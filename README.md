@@ -1,4 +1,4 @@
-# Macro AR
+# Pulso Macro
 
 Tablero diario de la economía argentina: dólares y brechas, riesgo país, reservas, compras del BCRA, inflación, tasas, dinero en términos reales, resultado fiscal, comercio exterior, Merval y bonos, el dólar a precios de hoy, noticias económicas y calculadoras.
 
