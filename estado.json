@@ -1,7 +1,7 @@
 {
- "actualizado": "2026-10-01",
+ "actualizado": "2026-10-02",
  "ok": [
-  "Ámbito blue: 7 días",
+  "Ámbito blue: 8 días",
   "Ámbito oficial: 8 días",
   "Ámbito mep: 8 días",
   "Ámbito ccl: 8 días",
@@ -26,20 +26,17 @@
   "BCRA leliq mensual: 45 meses",
   "BCRA pases mensual: 45 meses",
   "BCRA lefi mensual: 13 meses",
-  "DolarApi: cripto ['2026-10-01'], tarjeta ['2026-10-01']",
+  "DolarApi: cripto ['2026-10-02'], tarjeta ['2026-10-01']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
   "Historia ofi: 23 días en 1 tramos",
-  "Historia blue: 22 días en 1 tramos",
-  "Historia mep: 283 días en 2 tramos",
-  "Historia ccl: 283 días en 2 tramos",
-  "Historia may: 263 días en 2 tramos",
+  "Historia blue: 23 días en 1 tramos",
+  "Historia mep: 23 días en 1 tramos",
+  "Historia ccl: 23 días en 1 tramos",
+  "Historia may: 23 días en 1 tramos",
   "Historia cer: 32 días en 1 tramos",
   "CPI EE.UU. (BLS): 115 meses",
   "CPI EE.UU., fuentes con error: FRED: The read operation timed out"
  ],
- "errores": [
-  "Historia mep, meses con error: días sin dato: 2025-08-13",
-  "Historia ccl, meses con error: días sin dato: 2025-08-13"
- ]
+ "errores": []
 }
