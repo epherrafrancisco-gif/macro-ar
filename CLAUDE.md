@@ -196,8 +196,14 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   bajarla y copiar el texto: `/diario/` (link en el pie). Antes de las 17 h dice
   "parcial, HH:MM h"; la de las 18:47 es la de cierre. Probar local:
   `ln -s <scratch>/node_modules node_modules && node scripts/diario.mjs` (sin Google Fonts).
-- F. **Dominio propio `macroar.com.ar`**: Francisco lo compra en NIC Argentina; Claude
-  agrega el archivo CNAME y lo guía con los DNS. Chico para Claude.
+- F. **Dominio propio `macroar.com.ar`**: POSTERGADO AL FINAL por decisión de Francisco
+  (02/10/2026): el sitio está "en mantenimiento", nadie usa el link todavía, y el trámite
+  en NIC Argentina pide clave fiscal de ARCA que no recuerda. Hacerlo después de G y H.
+  Orden obligatorio: comprar → DNS (NIC.ar no aloja DNS: delegar a Cloudflare gratis, A a
+  las IPs de GitHub Pages, CNAME www, nube gris) → recién ahí CNAME en el repo + Settings
+  → Pages; si se agrega el CNAME antes, el link github.io redirige a un dominio muerto.
+  Al pasar: cambiar las menciones de la URL en index.html (og:url), scripts/preview.html,
+  scripts/diario.html (pie y texto del posteo) y README.
 - G. **Deuda del Tesoro en pesos (LECAP/BONCAP)**: carga manual mensual desde el
   boletín de Finanzas. Mediano.
 - H. Newsletter e inflación semanal de alimentos propia: grandes; dejar para el final.
