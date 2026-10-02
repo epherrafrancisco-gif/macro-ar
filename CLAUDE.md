@@ -177,8 +177,9 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
 - B. HECHO (02/10/2026): tarjeta "Dólar a precios de hoy" en Dólares (`renderUsdReal`):
   promedio mensual × CER hoy/CER mes × CPI mes/CPI hoy; último punto = cotización de hoy;
   tabla con hoy, promedio desde 2017, desvío, percentil, mínimo y máximo.
-- C. **Datos descargables**: botón "Descargar CSV" en cada pestaña con los datos de
-  data.json. Chico.
+- C. HECHO (02/10/2026): barra "Datos de esta pestaña en CSV" al final de cada pestaña
+  (objeto `CSV` en index.html: una función por archivo). Formato Excel en español: `;`,
+  coma decimal, BOM UTF-8. Nombre `macro-ar_<clave>_<fecha>.csv`.
 - D. **Calendario de publicaciones**: próximas fechas de INDEC (IPC, comercio, PBI) y
   BCRA (REM), con cuenta regresiva. Mediano; fechas cargadas a mano por año.
 - E. **Gráfico diario para X/IG** (@macroar_diario): que el workflow genere cada día

@@ -146,6 +146,11 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
+.dl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 16px;border:1px dashed var(--line);border-radius:12px}
+.dl .note{margin-right:auto}
+.dl button{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.dl button:hover{border-color:var(--accent)}
+.dl button svg{width:14px;height:14px;flex:none}
 .brand .by{font-size:12px;color:var(--muted);letter-spacing:.01em}
 
 /* en vivo */
@@ -247,6 +252,7 @@ footer a{color:var(--ink2)}
         <tbody id="tDol"></tbody>
       </table></div>
     </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="dolares-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Diario</button><button type="button" data-csv="dolares-historia"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Historia mensual desde 2017</button></div>
   </section>
 
   <!-- MACRO -->
@@ -272,6 +278,7 @@ footer a{color:var(--ink2)}
       <div class="card"><div class="head"><h2>Base monetaria</h2><span class="note">Billones de pesos</span></div><div class="chart" id="chBase"></div></div>
       <div class="card"><div class="head"><h2>Depósitos privados en dólares</h2><span class="note">Millones de USD</span></div><div class="chart" id="chDep"></div></div>
     </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="macro-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Diario</button><button type="button" data-csv="macro-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Inflación mensual</button></div>
   </section>
 
   <!-- DINERO -->
@@ -283,6 +290,7 @@ footer a{color:var(--ink2)}
       <div class="card"><div class="head"><h2>Pasivos remunerados del BCRA</h2><div class="legend" id="lgPas"></div></div><div class="chart" id="chPas"></div><p class="note">Fin de cada mes, en billones de pesos de hoy. La liquidez de los bancos pasó de LELIQ (hasta diciembre de 2023) a pases pasivos (hasta julio de 2024) y de ahí a LEFI (hasta julio de 2025). Hoy las tres están en cero: esa plata se fue a letras del Tesoro (LECAP), que no tienen una serie pública diaria y gratuita.</p></div>
       <div class="card"><div class="head"><h2>Deuda del BCRA en dólares</h2><span class="note">LEBAC, LEDIV y BOPREAL · millones de USD</span></div><div class="chart" id="chBop"></div><p class="note">Stock en dólares, casi todo BOPREAL (los bonos que el BCRA emitió para saldar la deuda comercial de los importadores).</p></div>
     </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="dinero-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Agregados mensuales</button><button type="button" data-csv="dinero-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Deuda BCRA en USD</button></div>
   </section>
 
   <!-- FISCAL -->
@@ -294,6 +302,7 @@ footer a{color:var(--ink2)}
       <div class="card"><div class="head"><h2>Exportaciones e importaciones</h2><div class="legend" id="lgCom"></div></div><div class="chart" id="chCom"></div><p class="note">Millones de USD por mes. Fuente: INDEC, intercambio comercial argentino.</p></div>
       <div class="card"><div class="head"><h2>Saldo comercial</h2><span class="note">Millones de USD por mes</span></div><div class="chart" id="chSal"></div><p class="note">Exportaciones − importaciones. Positivo: entran más dólares por comercio de los que salen.</p></div>
     </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="fiscal-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Fiscal y comercio mensual</button><button type="button" data-csv="fiscal-pbi"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PBI trimestral</button></div>
   </section>
 
   <!-- MERCADO -->
@@ -316,12 +325,14 @@ footer a{color:var(--ink2)}
       <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Bono</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
       <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Macro AR con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
     </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
   </section>
 
   <footer>
     <span>Fuentes: INDEC y Secretaría de Hacienda vía datos.gob.ar (PBI, resultado fiscal, comercio exterior), BCRA (reservas, compras de divisas, agregados, CER, pasivos, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
     <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
+    <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Macro AR con datos de BCRA, INDEC, Hacienda y Ámbito.</span>
   </footer>
 </div>
 
@@ -868,6 +879,36 @@ footer a{color:var(--ink2)}
     $('bondStamp').textContent = mkt.at ? `Consultado ${horaAR(mkt.at)} · se refresca cada 10 min${mkt.err?' · última consulta falló':''}` : '';
   }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
+
+  // ---- descargar CSV (punto y coma y coma decimal: se abre bien en Excel en español) ----
+  const num = v => v==null||!isFinite(v) ? '' : String(+v.toFixed(6)).replace('.',',');
+  const CSV = {
+    'dolares-diario': ()=>[['fecha','oficial_compra','oficial_venta','mayorista','mep','ccl','blue_compra','blue_venta','cripto_venta','tarjeta_venta'],
+      days.map(d=>[d.fecha, d.oficial?.c, d.oficial?.v, get(d,'mayorista'), get(d,'mep'), get(d,'ccl'), d.blue?.c, d.blue?.v, get(d,'cripto'), get(d,'tarjeta')])],
+    'dolares-historia': ()=>[['mes','oficial_prom','mayorista_prom','mep_prom','ccl_prom','blue_prom','cer_prom','cpi_eeuu'],
+      hist.map(m=>[m.mes, m.ofi, m.may, m.mep, m.ccl, m.blue, m.cer, m.cpi])],
+    'macro-diario': ()=>[['fecha','riesgo_pais_pb','reservas_musd','compras_bcra_musd','base_monetaria_mill','badlar_tna','tamar_tna','plazo_fijo_30d_tna','depositos_usd_privados_musd'],
+      days.map(d=>[d.fecha, d.riesgo, d.reservas, d.compras, d.base, d.badlar, d.tamar, d.pf, d.depusd])],
+    'macro-mensual': ()=>[['mes','inflacion_mensual_pct','inflacion_interanual_pct','inflacion_esperada_12m_rem_pct'],
+      months.filter(m=>m.infl!=null||m.inflYoY!=null||m.expect!=null).map(m=>[m.mes, m.infl, m.inflYoY, m.expect])],
+    'dinero-mensual': ()=>[['mes','base_monetaria_prom_mill','m2_prom_mill','m2_transaccional_privado_prom_mill','cer_prom','leliq_fin_mill','pases_pasivos_fin_mill','lefi_fin_mill'],
+      months.filter(m=>m.base!=null||m.m2!=null||m.cer!=null).map(m=>[m.mes, m.base, m.m2, m.m2t, m.cer, m.leliq, m.pases, m.lefi])],
+    'dinero-diario': ()=>[['fecha','deuda_bcra_usd_lebac_lediv_bopreal_musd'], days.filter(d=>d.bopreal!=null).map(d=>[d.fecha, d.bopreal])],
+    'fiscal-mensual': ()=>[['mes','resultado_primario_spn_mill','resultado_financiero_spn_mill','exportaciones_musd','importaciones_musd','saldo_comercial_musd'],
+      months.filter(m=>m.prim!=null||m.expo!=null).map(m=>[m.mes, m.prim, m.fin, m.expo, m.impo, m.saldo])],
+    'fiscal-pbi': ()=>[['trimestre','pbi_corriente_anualizado_mill'], quarters.map(q=>[q.trim, q.pib])],
+    'mercado-diario': ()=>[['fecha','merval_puntos','ccl','merval_usd_ccl','riesgo_pais_pb'],
+      days.filter(d=>d.merval!=null).map(d=>{ const c=get(d,'ccl'); return [d.fecha, d.merval, c, c?Math.round(d.merval/c*100)/100:null, d.riesgo]; })]
+  };
+  document.addEventListener('click', e=>{
+    const b = e.target.closest('[data-csv]'); if(!b || !CSV[b.dataset.csv]) return;
+    const [head, rows] = CSV[b.dataset.csv]();
+    const body = rows.filter(r=>r.slice(1).some(v=>v!=null)).map(r=>[r[0], ...r.slice(1).map(num)].join(';'));
+    const txt = '\ufeff' + [head.join(';'), ...body].join('\r\n') + '\r\n';
+    const url = URL.createObjectURL(new Blob([txt], {type:'text/csv;charset=utf-8'}));
+    const a = Object.assign(document.createElement('a'), {href:url, download:`macro-ar_${b.dataset.csv}_${days.length?days[days.length-1].fecha:'datos'}.csv`});
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  });
 
   // ---- shell ----
   const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()]};
