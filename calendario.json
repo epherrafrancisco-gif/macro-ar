@@ -1,0 +1,24 @@
+{
+ "fuente": "INDEC, calendario de difusión del segundo semestre de 2026 (indec.gob.ar/ftp/cuadros/publicaciones/calendario_2sem2026.pdf). REM del BCRA: fecha estimada (cuarto día hábil del mes; el BCRA no publica calendario).",
+ "vigente_hasta": "2026-12-31",
+ "eventos": [
+  {"f":"2026-10-06","org":"BCRA","n":"Expectativas de mercado (REM)","p":"Septiembre","est":true},
+  {"f":"2026-10-13","org":"INDEC","n":"Inflación (IPC) y canastas básicas","p":"Septiembre","h":"16:00","tab":"macro"},
+  {"f":"2026-10-19","org":"INDEC","n":"Intercambio comercial (exportaciones e importaciones)","p":"Septiembre","h":"16:00","tab":"fiscal"},
+  {"f":"2026-10-21","org":"INDEC","n":"Actividad económica (EMAE)","p":"Agosto","h":"16:00"},
+  {"f":"2026-10-21","org":"INDEC","n":"Índice de salarios","p":"Agosto","h":"16:00"},
+  {"f":"2026-11-05","org":"BCRA","n":"Expectativas de mercado (REM)","p":"Octubre","est":true},
+  {"f":"2026-11-12","org":"INDEC","n":"Inflación (IPC) y canastas básicas","p":"Octubre","h":"16:00","tab":"macro"},
+  {"f":"2026-11-13","org":"INDEC","n":"Índice de salarios","p":"Septiembre","h":"16:00"},
+  {"f":"2026-11-19","org":"INDEC","n":"Intercambio comercial (exportaciones e importaciones)","p":"Octubre","h":"16:00","tab":"fiscal"},
+  {"f":"2026-11-24","org":"INDEC","n":"Actividad económica (EMAE)","p":"Septiembre","h":"16:00"},
+  {"f":"2026-12-04","org":"BCRA","n":"Expectativas de mercado (REM)","p":"Noviembre","est":true},
+  {"f":"2026-12-15","org":"INDEC","n":"Inflación (IPC) y canastas básicas","p":"Noviembre","h":"16:00","tab":"macro"},
+  {"f":"2026-12-16","org":"INDEC","n":"PBI (informe de avance del nivel de actividad)","p":"3er trimestre","h":"16:00","tab":"dinero"},
+  {"f":"2026-12-16","org":"INDEC","n":"Índice de salarios","p":"Octubre","h":"16:00"},
+  {"f":"2026-12-18","org":"INDEC","n":"Intercambio comercial (exportaciones e importaciones)","p":"Noviembre","h":"16:00","tab":"fiscal"},
+  {"f":"2026-12-18","org":"INDEC","n":"Mercado de trabajo (desempleo)","p":"3er trimestre","h":"16:00"},
+  {"f":"2026-12-21","org":"INDEC","n":"Actividad económica (EMAE)","p":"Octubre","h":"16:00"},
+  {"f":"2026-12-22","org":"INDEC","n":"Balanza de pagos y deuda externa","p":"3er trimestre","h":"16:00"}
+ ]
+}

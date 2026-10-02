@@ -170,7 +170,7 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 11. **Liquidación del agro (CIARA-CEC)**: mensual (no hay dato diario público),
     barras con comparación interanual. Como proxy semanal, las compras del BCRA.
 
-### Bloque 4 (menú propuesto el 02/10/2026; Francisco eligió A y B primero)
+### Bloque 4 (menú propuesto el 02/10/2026; hechos A, B, C y D)
 Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y que elija.
 - A. HECHO (02/10/2026): nueva `preview.png` (oscura, 5 pestañas con mini gráficos) y
   meta description/og actualizadas. Para que LinkedIn la tome: Post Inspector.
@@ -180,8 +180,14 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
 - C. HECHO (02/10/2026): barra "Datos de esta pestaña en CSV" al final de cada pestaña
   (objeto `CSV` en index.html: una función por archivo). Formato Excel en español: `;`,
   coma decimal, BOM UTF-8. Nombre `macro-ar_<clave>_<fecha>.csv`.
-- D. **Calendario de publicaciones**: próximas fechas de INDEC (IPC, comercio, PBI) y
-  BCRA (REM), con cuenta regresiva. Mediano; fechas cargadas a mano por año.
+- D. HECHO (02/10/2026): tarjeta "Próximas publicaciones" en Macro (`renderCal`), con
+  cuenta regresiva a la próxima y lista de las 7 siguientes. Datos en `calendario.json`
+  (`eventos`: f, org, n, p, h, est; `vigente_hasta`). Cargado: INDEC 2º semestre 2026
+  (calendario_2sem2026.pdf, publica a las 16 h) + REM estimado (4º día hábil; el BCRA no
+  publica calendario: ago-2026 salió el 6/8 y sep el 4/9). PENDIENTE cada diciembre/junio:
+  cargar el calendario del semestre siguiente
+  (indec.gob.ar/ftp/cuadros/publicaciones/calendario_1sem2027.pdf) y actualizar
+  `vigente_hasta`; si no, la tarjeta muestra "No hay fechas cargadas".
 - E. **Gráfico diario para X/IG** (@macroar_diario): que el workflow genere cada día
   una imagen con el resumen (dólares, brecha, riesgo país, reservas) lista para subir.
   Mediano-grande.

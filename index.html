@@ -146,6 +146,21 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
+.cal{display:grid;gap:14px}
+.cal .next{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px;padding:14px 16px;background:var(--sunk);border-radius:10px}
+.cal .next .n{display:grid;gap:2px}
+.cal .next .t{font-size:17px;font-weight:600}
+.cal .next .w{font-size:13px;color:var(--ink2)}
+.cal .cd{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(22px,3vw,30px);font-weight:500;letter-spacing:-.02em;line-height:1}
+.cal .cd small{font-size:.55em;color:var(--muted);margin:0 6px 0 2px;letter-spacing:0}
+.cal ul{list-style:none;margin:0;padding:0;display:grid}
+.cal li{display:grid;grid-template-columns:92px 1fr auto;gap:4px 14px;align-items:baseline;padding:8px 2px;border-bottom:1px solid var(--line);font-size:14px}
+.cal li:last-child{border-bottom:0}
+.cal li .d{font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+.cal li .p{color:var(--muted);font-size:12.5px}
+.cal li .in{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.cal .org{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px}
+@media (max-width:520px){.cal li{grid-template-columns:72px 1fr}.cal li .in{grid-column:2}}
 .dl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 16px;border:1px dashed var(--line);border-radius:12px}
 .dl .note{margin-right:auto}
 .dl button{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
@@ -258,6 +273,12 @@ footer a{color:var(--ink2)}
   <!-- MACRO -->
   <section class="view" id="vM" hidden>
     <div class="kpis" id="kpis"></div>
+
+    <div class="card">
+      <div class="head"><h2>Próximas publicaciones</h2><span class="note">INDEC y BCRA · hora de Buenos Aires</span></div>
+      <div class="cal" id="cal"></div>
+      <p class="note" id="calNote"></p>
+    </div>
 
     <div class="card">
       <div class="head"><h2>Compras y ventas de dólares del BCRA</h2><span class="note">Millones de USD por día, en el mercado de cambios (MULC)</span></div>
@@ -679,6 +700,7 @@ footer a{color:var(--ink2)}
     if(L(dep)){ const {last,prev}=lastTwo(dep), a=ago(dep,30);
       t.push(tile('Depósitos USD privados', 'US$ '+nf(last[1],0), 'M', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' M'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
     $('kpis').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
+    renderCal();
 
     // compras / ventas del BCRA
     const comp = series('compras');
@@ -880,6 +902,30 @@ footer a{color:var(--ink2)}
   }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
 
+  // ---- calendario de publicaciones (calendario.json, cargado a mano por semestre) ----
+  let cal = null;
+  const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const evT = e => Date.parse(`${e.f}T${e.h||'00:00'}:00-03:00`);
+  function renderCal(){
+    const el = $('cal'); if(!el) return;
+    if(!cal){ el.innerHTML = `<div class="empty">${loaded.m?'Calendario no disponible.':'Cargando…'}</div>`; return; }
+    const now = Date.now(), hoy = fechaAR(now);
+    // un evento sin hora sigue "próximo" durante todo su día
+    const prox = cal.eventos.filter(e => e.h ? evT(e) > now : e.f >= hoy).sort((a,b)=>evT(a)-evT(b));
+    if(!prox.length){ el.innerHTML = `<div class="empty">No hay fechas cargadas después del ${fd(cal.vigente_hasta)}: el INDEC publica el calendario del semestre siguiente en diciembre.</div>`; $('calNote').textContent=''; return; }
+    const dname = e => { const d=new Date(e.f+'T12:00:00Z'); return `${DIAS[d.getUTCDay()]} ${fds(e.f)}`; };
+    const faltan = e => { const ms = evT(e)-now; if(!e.h && e.f===hoy) return 'hoy'; const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+      return e.h ? `${d?`${d}<small>d</small>`:''}${d||h?`${h}<small>h</small>`:''}${d||h?String(m).padStart(2,'0'):m}<small>min</small>` : `${Math.ceil((Date.parse(e.f+'T00:00:00-03:00')-now)/864e5)}<small>días</small>`; };
+    const en = e => { if(e.f===hoy) return e.h ? `hoy ${e.h}` : 'hoy'; const n=Math.round((Date.parse(e.f+'T12:00:00-03:00')-Date.parse(hoy+'T12:00:00-03:00'))/864e5); return n===1?'mañana':`en ${n} días`; };
+    const [a, ...rest] = prox;
+    el.innerHTML = `<div class="next"><div class="n"><span class="lbl">Próxima</span><span class="t">${esc(a.n)} · ${esc(a.p)}</span>
+        <span class="w">${dname(a)}${a.h?` a las ${a.h}`:''} · ${a.org}${a.est?' · fecha estimada':''}</span></div>
+        <div class="cd" aria-label="Cuenta regresiva">${faltan(a)}</div></div>
+      <ul>${rest.slice(0,7).map(e=>`<li><span class="d">${dname(e).slice(0,3)} ${fds(e.f)}</span><span>${esc(e.n)} <span class="org">${e.org}</span><br><span class="p">${esc(e.p)}${e.est?' · fecha estimada':''}</span></span><span class="in">${en(e)}</span></li>`).join('')}</ul>`;
+    $('calNote').textContent = 'El INDEC publica a las 16 h. El BCRA no anuncia la fecha del REM: se estima con el cuarto día hábil del mes. Fuente: calendario de difusión del INDEC, segundo semestre de 2026.';
+  }
+  setInterval(()=>{ if(tab==='macro' && !document.hidden) renderCal(); }, 30000);
+
   // ---- descargar CSV (punto y coma y coma decimal: se abre bien en Excel en español) ----
   const num = v => v==null||!isFinite(v) ? '' : String(+v.toFixed(6)).replace('.',',');
   const CSV = {
@@ -977,6 +1023,7 @@ footer a{color:var(--ink2)}
       quarters = (j.trimestral||[]).filter(d=>d&&d.trim&&d.pib).sort((a,b)=>a.trim<b.trim?-1:1);
       hist = (j.historico||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
     }catch(e){ $('stamp').textContent='No se pudieron cargar los datos. Recargá la página.'; }
+    try{ const c = await (await fetch('calendario.json?t='+Date.now(), {cache:'no-store'})).json(); if(Array.isArray(c.eventos)) cal = c; }catch(e){}
     loaded={d:true,m:true}; render();
   })();
 })();
