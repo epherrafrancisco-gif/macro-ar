@@ -279,8 +279,18 @@ def historico(previo, hoy, forzar=False):
                     m1 = min((m0.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1), d1)
                     try:
                         partes.append(ambito_tramo(ruta, m0, m1))
-                    except Exception as e:  # noqa: BLE001
-                        fallas.append(f"{m0.isoformat()[:7]}: {e}")
+                    except Exception:  # noqa: BLE001  y si falla el mes, día por día (Ámbito
+                        malos = []     # devuelve error 500 cuando tiene un día roto en el rango)
+                        dd = m0
+                        while dd <= m1:
+                            if dd.weekday() < 5:
+                                try:
+                                    partes.append(con_reintento(get_json, f"https://mercados.ambito.com//{ruta}/historico-general/{dd.isoformat()}/{dd.isoformat()}", intentos=2, espera=1))
+                                except Exception:  # noqa: BLE001
+                                    malos.append(dd.isoformat())
+                            dd += timedelta(days=1)
+                        if malos:
+                            fallas.append(f"días sin dato: {', '.join(malos)}")
                     m0 = m1 + timedelta(days=1)
             for rows in partes:
                 for row in rows[1:]:
