@@ -642,7 +642,7 @@ footer a{color:var(--ink2)}
   // ---- DINERO ----
   function renderDinero(){
     const cer = cerInfo(), AGG=[{k:'base',n:'Base monetaria',c:'--s5'},{k:'m2',n:'M2',c:'--s1'},{k:'m2t',n:'M2 transaccional privado',c:'--s3'}];
-    const real = k => months.filter(m=>m[k]!=null && m.cer).map(m=>[m.mes, m[k]/m.cer*cer.last/1e6]);
+    const real = k => months.filter(m=>m[k]!=null && m.cer).map(m=>[m.mes, Math.max(0,m[k])/m.cer*cer.last/1e6]);
     const pbiP = k => months.filter(m=>m[k]!=null).map(m=>{ const p=pibAt(m.mes,cer); return p?[m.mes, m[k]/p.v*100]:null; }).filter(Boolean);
     const curMes = new Date().toISOString().slice(0,7);
     const t=[];
@@ -651,7 +651,7 @@ footer a{color:var(--ink2)}
     const bop = series('bopreal');
     if(bop.length){ const L=bop[bop.length-1], a=ago(bop,30); t.push(tileK('Deuda BCRA en USD', 'US$ '+nf(L[1],0), 'M', a?`<span class="chip eq">30d ${sg(L[1]-a[1],0)}</span>`:'', 'LEBAC, LEDIV y BOPREAL · '+fd(L[0]))); }
     const pas = months.filter(m=>m.leliq!=null||m.pases!=null||m.lefi!=null);
-    if(pas.length){ const L=pas[pas.length-1], tot=(L.leliq||0)+(L.pases||0)+(L.lefi||0);
+    if(pas.length){ const L=pas[pas.length-1], tot=Math.max(0,L.leliq||0)+Math.max(0,L.pases||0)+Math.max(0,L.lefi||0);
       t.push(tileK('Pasivos remunerados BCRA', '$ '+nf(tot/1e6,1), 'billones', '', 'LELIQ + pases + LEFI · '+fmes(L.mes))); }
     $('kpisN').innerHTML = t.join('') || `<div class="k"><span class="lbl">${loaded.m?'Todavía sin datos: se cargan en la próxima actualización':'Cargando…'}</span></div>`;
 
