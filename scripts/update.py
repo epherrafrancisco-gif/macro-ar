@@ -36,13 +36,16 @@ AMBITO = {
     "riesgo": ("riesgopais", "n"),
     "merval": ("indice/.merv", "idx"),  # columnas: Fecha, Apertura, Último, ...; se pide desde el 1/1
 }
-AMBITO_LARGO = {"merval"}
+# Se piden siempre desde el 1 de diciembre del año anterior: hacen falta para el
+# ranking "¿Qué le ganó a la inflación?" (rendimiento desde el último cierre del año pasado).
+AMBITO_LARGO = {"merval", "blue", "oficial", "mep", "ccl", "riesgo"}
 BCRA_DIARIO = {1: "reservas", 5: "mayorista", 15: "base", 7: "badlar", 44: "tamar", 12: "pf", 108: "depusd"}
 BCRA_MENSUAL = {27: "infl", 28: "inflYoY", 29: "expect"}
 # Series diarias que se piden desde el 1 de enero del año en curso (para los
 # acumulados anuales). 78 = variación de reservas por compra de divisas en el
 # MULC, en millones de USD (negativo = el BCRA vendió).
 BCRA_ANUAL = {78: "compras", 158: "bopreal"}
+BCRA_LARGO = {5, 12}  # mayorista y plazo fijo: también desde el 1/12 del año anterior
 # Series del BCRA que se guardan por mes (desde HISTORIA): "prom" = promedio del
 # mes, "fin" = último dato del mes. Sirven para los agregados en términos reales
 # y en % del PBI, y para la historia de los pasivos remunerados del BCRA.
@@ -166,7 +169,7 @@ def bcra(desde, hasta, mensual_desde, anual_desde):
             log_err.append(f"BCRA {campo} (id {vid}): {e}")
     for vid, campo in BCRA_DIARIO.items():
         try:
-            pts = bcra_puntos(vid, desde, hasta)
+            pts = bcra_puntos(vid, anual_desde if vid in BCRA_LARGO else desde, hasta)
             for f, v in pts.items():
                 diario.setdefault(campo, {})[f] = {"v": round(v, 2)} if campo == "mayorista" else v
             log_ok.append(f"BCRA {campo}: {len(pts)} días")
@@ -417,7 +420,7 @@ def main():
     desde = (hoy - timedelta(days=args.dias)).isoformat()
     hasta = hoy.isoformat()
     mensual_desde = (hoy - timedelta(days=120)).isoformat()
-    anual_desde = min(date(hoy.year, 1, 1), hoy - timedelta(days=args.dias)).isoformat()
+    anual_desde = min(date(hoy.year - 1, 12, 1), hoy - timedelta(days=args.dias)).isoformat()
     print(f"Ventana: {desde} a {hasta}")
 
     nuevos = {}  # fecha -> {campo: valor}
