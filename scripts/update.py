@@ -241,54 +241,76 @@ def historico(previo, hoy, forzar=False):
     campos quedan como estaban."""
     meses = {h["mes"]: dict(h) for h in previo}
     hasta = hoy.isoformat()
+    hoy = date.fromisoformat(hasta)
     # Desde el 1° del mes anterior: así se recalculan enteros este mes y el anterior.
     reciente = (hoy.replace(day=1) - timedelta(days=1)).replace(day=1).isoformat()
 
-    def desde_de(campo):
-        """Historia completa si el campo todavía no tiene datos de antes de 2021
-        (el MEP y el CCL de Ámbito no tienen 2017, por eso no se exige el inicio)."""
-        tiene = any(campo in h for m, h in meses.items() if m < "2021-01")
-        return reciente if (tiene and not forzar) else HIST_DOLAR
+    def ventanas(campo):
+        """Tramos a bajar para un campo: todo desde HIST_DOLAR la primera vez; después,
+        los años con meses faltantes (huecos de una corrida que falló) más lo reciente.
+        El MEP y el CCL de Ámbito arrancan en 2019: no se exige tener 2017."""
+        presentes = sorted(m for m, h in meses.items() if campo in h)
+        if forzar or not any(m < "2021-01" for m in presentes):
+            return list(tramos(HIST_DOLAR, hasta))
+        mes, huecos = presentes[0], set()
+        while mes < reciente[:7]:
+            if mes not in meses or campo not in meses[mes]:
+                huecos.add(int(mes[:4]))
+            y, m = int(mes[:4]), int(mes[5:]) + 1
+            mes = f"{y + (m > 12)}-{(m - 1) % 12 + 1:02d}"
+        return [(date(y, 1, 1), date(y, 12, 31)) for y in sorted(huecos)] + \
+            [(date.fromisoformat(reciente), hoy)]
 
-    diario, desdes = {}, {}
+    def ambito_tramo(ruta, d0, d1):
+        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
+        return con_reintento(get_json, url)
+
+    diario, vent = {}, {}
     for campo, ruta in HIST_AMBITO.items():
-        desde = desdes[campo] = desde_de(campo)
+        vent[campo] = ventanas(campo)
         pts, fallas = {}, []
-        for d0, d1 in tramos(desde, hasta):
-            url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
+        for d0, d1 in vent[campo]:
             try:
-                rows = con_reintento(get_json, url)
-            except Exception as e:  # noqa: BLE001  (si falla un año, los demás siguen)
-                fallas.append(f"{d0.year}: {e}")
-                continue
-            for row in rows[1:]:
-                try:
-                    f = fecha_ambito(row[0])
-                    v = num_ar(row[2] if campo in ("ofi", "blue") else row[1])
-                except (ValueError, IndexError):
-                    continue
-                if es_habil(f) and f not in pts and v > 0:
-                    pts[f] = v
-            if desde == HIST_DOLAR:
+                partes = [ambito_tramo(ruta, d0, d1)]
+            except Exception:  # noqa: BLE001  si falla el año entero, probar mes por mes
+                partes = []
+                m0 = d0
+                while m0 <= d1:
+                    m1 = min((m0.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1), d1)
+                    try:
+                        partes.append(ambito_tramo(ruta, m0, m1))
+                    except Exception as e:  # noqa: BLE001
+                        fallas.append(f"{m0.isoformat()[:7]}: {e}")
+                    m0 = m1 + timedelta(days=1)
+            for rows in partes:
+                for row in rows[1:]:
+                    try:
+                        f = fecha_ambito(row[0])
+                        v = num_ar(row[2] if campo in ("ofi", "blue") else row[1])
+                    except (ValueError, IndexError):
+                        continue
+                    if es_habil(f) and f not in pts and v > 0 and d0.isoformat() <= f <= d1.isoformat():
+                        pts[f] = v
+            if len(vent[campo]) > 2:
                 time.sleep(1)  # no saturar a Ámbito con la descarga larga
         if pts:
             diario[campo] = pts
-            log_ok.append(f"Historia {campo}: {len(pts)} días desde {desde}")
+            log_ok.append(f"Historia {campo}: {len(pts)} días en {len(vent[campo])} tramos")
         if fallas:
-            log_err.append(f"Historia {campo}, tramos con error: {'; '.join(fallas)}")
+            log_err.append(f"Historia {campo}, meses con error: {'; '.join(fallas)}")
     for vid, campo in HIST_BCRA.items():
-        desde = desde_de(campo)
+        v = ventanas(campo)
         if campo == "may":  # el mayorista marca los días hábiles: tiene que cubrir lo que se bajó de Ámbito
-            desde = min([desde] + [desdes[c] for c in ("mep", "ccl", "blue") if c in desdes])
-        desdes[campo] = desde
+            v = sorted(set(v).union(*[vent[c] for c in ("mep", "ccl", "blue") if c in vent]))
+        vent[campo] = v
         try:
             pts = {}
-            for d0, d1 in tramos(desde, hasta):
+            for d0, d1 in v:
                 pts.update(con_reintento(bcra_puntos, vid, d0.isoformat(), d1.isoformat()))
             if campo == "may":
-                pts = {f: v for f, v in pts.items() if es_habil(f)}
+                pts = {f: x for f, x in pts.items() if es_habil(f)}
             diario[campo] = pts
-            log_ok.append(f"Historia {campo}: {len(pts)} días desde {desde}")
+            log_ok.append(f"Historia {campo}: {len(pts)} días en {len(v)} tramos")
         except Exception as e:  # noqa: BLE001
             log_err.append(f"Historia {campo} (id {vid}): {e}")
     # Feriados: Ámbito repite el último valor del MEP, CCL y blue; quedarse con
@@ -300,8 +322,7 @@ def historico(previo, hoy, forzar=False):
     for campo, pts in diario.items():
         pormes = {}
         for f, v in pts.items():
-            if f >= desdes[campo]:
-                pormes.setdefault(f[:7], []).append(v)
+            pormes.setdefault(f[:7], []).append(v)
         for mes, vals in pormes.items():
             meses.setdefault(mes, {"mes": mes})[campo] = round(sum(vals) / len(vals), 4 if campo == "cer" else 2)
     cpi, errores = {}, []
