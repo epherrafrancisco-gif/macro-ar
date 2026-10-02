@@ -4,13 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Macro AR · Tablero diario de la economía argentina</title>
-<meta name="description" content="Dólares y brechas, riesgo país, reservas, inflación, tasas y agregados monetarios de Argentina, actualizados cada día hábil.">
+<meta name="description" content="Tablero de la economía argentina: Dólares y brechas, reservas, compras del BCRA, inflación, tasas, dinero en términos reales, resultado fiscal, comercio exterior, Merval y bonos. Gratis y actualizado cada día hábil.">
 <meta property="og:title" content="Macro AR · Tablero diario de la economía argentina">
-<meta property="og:description" content="Dólares y brechas, riesgo país, reservas, inflación, tasas y agregados monetarios, actualizados cada día hábil.">
+<meta property="og:description" content="Dólares y brechas, reservas, compras del BCRA, inflación, tasas, dinero en términos reales, resultado fiscal, comercio exterior, Merval y bonos. Gratis y actualizado cada día hábil.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://epherrafrancisco-gif.github.io/macro-ar/">
-<meta property="og:image" content="https://epherrafrancisco-gif.github.io/macro-ar/preview.png">
+<meta property="og:image" content="https://epherrafrancisco-gif.github.io/macro-ar/preview.png?v=2">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Macro AR: tablero con gráficos de dólares, riesgo país, dinero, resultado fiscal y Merval">
+<meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Macro AR">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
@@ -140,7 +142,7 @@ th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu
 td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 tr:last-child td{border-bottom:0}
-td.up{color:var(--pos)} td.dn{color:var(--neg)}
+td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font-size:11.5px}
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
@@ -229,6 +231,13 @@ footer a{color:var(--ink2)}
       <div class="stats" id="canjeStats"></div>
       <div class="chart" id="chCanje"></div>
       <p class="note">Canje = CCL ÷ MEP − 1. La franja gris marca el promedio del período elegido ± 1 desvío: cuando la línea sale por arriba, el canje se está disparando (sacar dólares afuera se encarece frente a tenerlos acá).</p>
+    </div>
+
+    <div class="card">
+      <div class="head"><h2>Dólar a precios de hoy</h2><div class="legend" id="lgUsdR"></div></div>
+      <div class="chart" id="chUsdR"></div>
+      <div class="tablewrap"><table style="min-width:600px"><thead><tr><th>Dólar</th><th>Hoy</th><th>Promedio desde 2017</th><th>Hoy vs promedio</th><th>Más caro que</th><th>Mínimo</th><th>Máximo</th></tr></thead><tbody id="tUsdR"></tbody></table></div>
+      <p class="note" id="noteUsdR"></p>
     </div>
 
     <div class="card">
@@ -330,7 +339,7 @@ footer a{color:var(--ink2)}
   const T = s => Date.parse(s+'T12:00:00Z');
   const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-  let days = [], months = [], quarters = [], loaded = {d:false,m:false};
+  let days = [], months = [], quarters = [], hist = [], loaded = {d:false,m:false};
   let range = 182;
   try{ const r = localStorage.getItem('macro-range'); if(r!==null && ['30','91','182','365','0'].includes(r)) range = +r; }catch(e){}
 
@@ -573,6 +582,8 @@ footer a{color:var(--ink2)}
       lineChart($('chCanje'), [{n:'Canje', c:'--s3', pts:canje}], {aria:'Canje CCL contra MEP', endLabel:true, labW:52, ref:{mid:mu, lo:mu-sd, hi:mu+sd, label:'Promedio '+nf(mu,2)+'%'}, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', unitName:'Canje'});
     } else { $('canjeStats').innerHTML=''; lineChart($('chCanje'), [], {}); }
 
+    renderUsdReal();
+
     // table
     const recent = days.filter(d=>get(d,'oficial')||get(d,'mep')).slice(-15).reverse();
     $('tDol').innerHTML = recent.map((d,i)=>{
@@ -582,6 +593,52 @@ footer a{color:var(--ink2)}
       return `<tr><td>${fd(d.fecha)}</td><td>${c(o)}</td><td>${c(get(d,'mayorista'))}</td><td>${c(mep)}</td><td>${c(ccl)}</td><td>${c(get(d,'blue'))}</td>
         <td>${(o&&ccl)?pc(ccl/o-1):'—'}</td><td class="${vm>0?'up':vm<0?'dn':''}">${vm!=null?pc(vm,2):'—'}</td></tr>`;
     }).join('') || `<tr><td colspan="8" style="color:var(--muted)">${loaded.d?'Sin datos.':'Cargando…'}</td></tr>`;
+  }
+
+  // ---- DÓLAR A PRECIOS DE HOY ----
+  // Promedio de cada mes × (CER de hoy ÷ CER de ese mes) × (CPI EE.UU. de ese mes ÷ CPI de hoy).
+  // El último punto es la cotización de hoy (en vivo o último cierre).
+  const USDR = [
+    {k:'ofi', d:'oficial',   n:'Oficial',   c:'--s1', chart:true},
+    {k:'may', d:'mayorista', n:'Mayorista', c:'--s5'},
+    {k:'mep', d:'mep',       n:'MEP',       c:'--s2', chart:true},
+    {k:'ccl', d:'ccl',       n:'CCL',       c:'--s3', chart:true},
+    {k:'blue',d:'blue',      n:'Blue',      c:'--s4', chart:true}
+  ];
+  function renderUsdReal(){
+    const h = hist.filter(m=>m.cer);
+    if(h.length<13){
+      $('lgUsdR').innerHTML=''; $('chUsdR').innerHTML=`<div class="empty">${loaded.m?'Todavía sin historia: se carga en la próxima actualización automática.':'Cargando…'}</div>`;
+      $('tUsdR').innerHTML=''; $('noteUsdR').textContent=''; return;
+    }
+    const L = h[h.length-1], cer0 = L.cer;
+    // CPI: los meses que EE.UU. todavía no publicó usan el último dato.
+    let cp=null; const cpi={}; h.forEach(m=>{ if(m.cpi) cp=m.cpi; cpi[m.mes]=cp; });
+    const cpi0 = cpi[L.mes], conCpi = cpi0!=null;
+    const fac = m => cer0/m.cer * (conCpi && cpi[m.mes] ? cpi[m.mes]/cpi0 : 1);
+    const rows = USDR.map(u=>{
+      let pts = h.filter(m=>m[u.k]>0).map(m=>[m.mes, m[u.k]*fac(m)]);
+      const sp = cardSeries(u.d).pts, spot = sp.length ? sp[sp.length-1] : null;
+      if(spot && pts.length){ pts = pts.filter(p=>p[0]<spot[0].slice(0,7)); pts.push([spot[0].slice(0,7), spot[1]]); }
+      if(pts.length<13) return null;
+      const hoy = pts[pts.length-1], prev = pts.slice(0,-1);
+      const avg = prev.reduce((a,p)=>a+p[1],0)/prev.length;
+      const pct = prev.filter(p=>p[1]<hoy[1]).length/prev.length;
+      const mn = prev.reduce((a,p)=>p[1]<a[1]?p:a), mx = prev.reduce((a,p)=>p[1]>a[1]?p:a);
+      return {...u, pts, hoy, avg, pct, mn, mx, spot};
+    }).filter(Boolean);
+    const ch = rows.filter(r=>r.chart);
+    legend($('lgUsdR'), ch);
+    lineChart($('chUsdR'), ch.map(r=>({n:r.n, c:r.c, pts:r.pts})), {aria:'Dólar a precios de hoy', xfmt:fmes, tfmt:fmes, labW:58, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,0), lfmt:v=>nf(v,0)});
+    $('tUsdR').innerHTML = rows.map(r=>{ const dv=r.hoy[1]/r.avg-1;
+      return `<tr><td><i class="sw" style="background:var(${r.c})"></i> ${r.n}</td><td>$ ${nf(r.hoy[1],0)}</td><td>$ ${nf(r.avg,0)}</td>
+        <td>${pc(dv,1)} · ${dv>0.05?'caro':dv<-0.05?'barato':'en el promedio'}</td>
+        <td>el ${nf(r.pct*100,0)}% de los meses</td><td>$ ${nf(r.mn[1],0)} <small>${fmes(r.mn[0])}</small></td><td>$ ${nf(r.mx[1],0)} <small>${fmes(r.mx[0])}</small></td></tr>`; }).join('');
+    const spotF = rows.length && rows[0].spot ? rows[0].spot[0] : null;
+    $('noteUsdR').textContent = 'Promedio de cada mes llevado a pesos de hoy: se ajusta por la inflación argentina (CER, que sigue al IPC con un mes y medio de atraso)'
+      + (conCpi ? ' y por la de Estados Unidos (CPI), porque el dólar también pierde poder de compra.' : '. Falta la inflación de EE.UU.: se agrega en la próxima actualización.')
+      + ' Si la línea está arriba de su promedio, el dólar está caro contra la historia (peso barato); abajo, barato (peso caro). El último punto es la cotización de hoy'
+      + (spotF ? ` (${fd(spotF)})` : '') + '. Arranca en 2017 porque antes el IPC oficial no era confiable.';
   }
 
   // ---- MACRO ----
@@ -877,6 +934,7 @@ footer a{color:var(--ink2)}
       days = (j.diario||[]).filter(d=>d&&d.fecha).sort((a,b)=>a.fecha<b.fecha?-1:1);
       months = (j.mensual||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
       quarters = (j.trimestral||[]).filter(d=>d&&d.trim&&d.pib).sort((a,b)=>a.trim<b.trim?-1:1);
+      hist = (j.historico||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
     }catch(e){ $('stamp').textContent='No se pudieron cargar los datos. Recargá la página.'; }
     loaded={d:true,m:true}; render();
   })();

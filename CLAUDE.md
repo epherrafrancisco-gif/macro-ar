@@ -42,6 +42,12 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
   - Trimestral: `trim` (YYYY-MM del 1er mes), `pib` (PBI corriente, millones $, valor
     ANUALIZADO del trimestre: el promedio de los 4 trimestres = PBI del año).
     En la página, meses sin trimestre publicado: PBI estimado con la suba del CER.
+  - Historico (`historico`, mensual desde 2017-01, para "Dólar a precios de hoy"): `mes`,
+    `ofi`, `blue`, `mep`, `ccl` (Ámbito, promedio de la venta), `may` (BCRA id 5), `cer`
+    (BCRA id 30, promedio) y `cpi` (CPI-U de EE.UU. sin desestacionalizar, FRED
+    `fredgraph.csv?id=CPIAUCNS`, sin clave). Primera corrida baja todo por tramos anuales;
+    después solo desde el mes anterior (`--historia` fuerza todo de nuevo). Arranca en 2017
+    porque antes el IPC (y el CER) estaba manipulado.
   - Historia desde 27/03/2026 (diario; `compras` desde 01/2026) y 08/2024 (mensual).
 - `scripts/update.py`: trae datos y mezcla en `data.json` (solo librería estándar).
   Revisa los últimos N días (default 10). Nunca inventa datos: si una fuente falla,
@@ -49,7 +55,11 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 - `.github/workflows/actualizar-datos.yml`: corre `update.py` L a V a las
   10:15, 11:30 y 18:47 ART (13:15, 14:30 y 21:47 UTC) y a mano (`workflow_dispatch`), y
   commitea `data.json` si cambió. **Funciona** (primera corrida OK el 02/10/2026).
-- `preview.png`: imagen para la vista previa de LinkedIn (og:image).
+- `preview.png`: imagen para la vista previa de LinkedIn (og:image, con `?v=N` para
+  romper la caché: subir N cada vez que cambie). Se genera con `scripts/preview.html`
+  (lee data.json, sin cifras ni fechas para que no envejezca) y captura de 1200x630 con
+  Playwright (`executablePath:'/opt/pw-browsers/chromium'`; las fuentes de Google no
+  cargan en el entorno de Claude: usar @fontsource de npm con `page.route`).
 
 ## Fuentes (todas verificadas, aceptan consultas desde GitHub Actions)
 - **Ámbito** `https://mercados.ambito.com//<ruta>/historico-general/DESDE/HASTA`
@@ -151,15 +161,13 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 11. **Liquidación del agro (CIARA-CEC)**: mensual (no hay dato diario público),
     barras con comparación interanual. Como proxy semanal, las compras del BCRA.
 
-### Próximo paso: elegir el Bloque 4 (menú propuesto el 02/10/2026, Francisco elige)
-Al arrancar una sesión nueva, mostrale este menú en criollo y que elija; no empieces nada
-sin que elija. Orden recomendado: A, B, C, D, después el resto.
-- A. **Vista previa al compartir**: `preview.png` y las meta `description`/`og:*` de
-  `index.html` todavía describen el tablero viejo (sin Dinero, Fiscal ni Mercado).
-  Rehacer la imagen (1200x630) con las 5 pestañas. Chico.
-- B. **Dólar a precios de hoy**: oficial/MEP/blue ajustados por inflación (CER o IPC),
-  para ver si el dólar está "caro" o "barato" contra la historia. Chico-mediano;
-  conviene traer historia larga de dólares (Ámbito permite rangos largos).
+### Bloque 4 (menú propuesto el 02/10/2026; Francisco eligió A y B primero)
+Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y que elija.
+- A. HECHO (02/10/2026): nueva `preview.png` (oscura, 5 pestañas con mini gráficos) y
+  meta description/og actualizadas. Para que LinkedIn la tome: Post Inspector.
+- B. HECHO (02/10/2026): tarjeta "Dólar a precios de hoy" en Dólares (`renderUsdReal`):
+  promedio mensual × CER hoy/CER mes × CPI mes/CPI hoy; último punto = cotización de hoy;
+  tabla con hoy, promedio desde 2017, desvío, percentil, mínimo y máximo.
 - C. **Datos descargables**: botón "Descargar CSV" en cada pestaña con los datos de
   data.json. Chico.
 - D. **Calendario de publicaciones**: próximas fechas de INDEC (IPC, comercio, PBI) y

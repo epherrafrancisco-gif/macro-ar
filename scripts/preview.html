@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Plantilla de preview.png (vista previa al compartir el link, 1200x630).
+     Para regenerarla: servir la carpeta del repo (python -m http.server),
+     abrir /scripts/preview.html en un navegador de 1200x630 y sacar captura.
+     Lee ../data.json; a propósito no muestra cifras ni fechas para que no envejezca. -->
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<title>Macro AR · preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0e1319; --surface:#161d25; --line:#28323d; --grid:#1f2831;
+  --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --accent:#6aa8d8;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  --pos:#4cc38a; --neg:#f07a70;
+  --sans:"Instrument Sans",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+.wrap{display:grid;grid-template-columns:470px 1fr;grid-template-rows:minmax(0,1fr);gap:36px;padding:50px 52px;height:100%}
+.left{display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:14px}
+.logo svg{width:52px;height:52px}
+h1{margin:0;font-size:48px;white-space:nowrap;font-weight:700;letter-spacing:-.025em;line-height:1}
+h1 span{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:.62em;margin-left:10px;letter-spacing:0}
+h2{margin:46px 0 0;font-size:38px;line-height:1.12;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+p.sub{margin:18px 0 0;font-size:20px;line-height:1.45;color:var(--ink2);text-wrap:pretty}
+.foot{margin-top:auto;display:grid;gap:6px}
+.foot .by{font-size:16px;color:var(--ink2)}
+.foot .url{font-family:var(--mono);font-size:16px;color:var(--accent)}
+.right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:14px;min-height:0}
+.t{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0;overflow:hidden}
+.t.big{grid-column:1/3}
+.t .h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.t b{font-size:18px;font-weight:700}
+.t i{font-style:normal;font-size:13px;color:var(--muted)}
+.t svg{width:100%;height:100%;min-height:0;display:block;margin-top:6px}
+.leg{display:flex;gap:12px;font-size:13px;color:var(--ink2)}
+.leg span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;background:var(--c)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="left">
+    <div class="logo">
+      <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1d4f7a"/><path d="M6 22l6-7 5 4 9-10" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h1>Macro AR<span>diario</span></h1>
+    </div>
+    <h2>La economía argentina en un solo tablero</h2>
+    <p class="sub">Dólares y brechas, reservas, inflación, dinero, cuentas fiscales y mercado. Gratis y actualizado cada día hábil.</p>
+    <div class="foot">
+      <span class="by">Diseñado y operado por Francisco Epherra</span>
+      <span class="url">epherrafrancisco-gif.github.io/macro-ar</span>
+    </div>
+  </div>
+  <div class="right">
+    <div class="t big"><div class="h"><b>Dólares</b><div class="leg"><span style="--c:var(--s1)">Oficial</span><span style="--c:var(--s2)">MEP</span><span style="--c:var(--s3)">CCL</span><span style="--c:var(--s4)">Blue</span></div></div><svg id="gD"></svg></div>
+    <div class="t"><div class="h"><b>Macro</b><i>riesgo país</i></div><svg id="gM"></svg></div>
+    <div class="t"><div class="h"><b>Dinero</b><i>M2 real desde abr 2024</i></div><svg id="gN"></svg></div>
+    <div class="t"><div class="h"><b>Fiscal</b><i>resultado primario</i></div><svg id="gF"></svg></div>
+    <div class="t"><div class="h"><b>Mercado</b><i>Merval en US$</i></div><svg id="gK"></svg></div>
+  </div>
+</div>
+<script>
+(async()=>{
+  const j = await (await fetch('../data.json',{cache:'no-store'})).json();
+  const days = j.diario||[], months = j.mensual||[];
+  const v = x => x==null?null:typeof x==='number'?x:x.v;
+  const ser = (k,fn,n) => days.map(d=>fn?fn(d):v(d[k])).map((y,i)=>[i,y]).filter(p=>p[1]!=null&&isFinite(p[1])).slice(-(n||9999));
+  function line(id, ss, o={}){
+    const el=document.getElementById(id), r=el.getBoundingClientRect(), W=r.width, H=r.height, pad=6;
+    const all=ss.flatMap(s=>s.pts.map(p=>p[1])), lo=Math.min(...all), hi=Math.max(...all);
+    const xs=ss.flatMap(s=>s.pts.map(p=>p[0])), x0=Math.min(...xs), x1=Math.max(...xs);
+    const X=x=>pad+(x-x0)/(x1-x0||1)*(W-2*pad-6), Y=y=>pad+(hi-y)/(hi-lo||1)*(H-2*pad);
+    let g=''; for(let i=1;i<4;i++){ const yy=(pad+i*(H-2*pad)/4).toFixed(1); g+=`<line x1="0" x2="${W}" y1="${yy}" y2="${yy}" stroke="var(--grid)"/>`; }
+    ss.forEach(s=>{ const d=s.pts.map((p,i)=>`${i?'L':'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('');
+      if(o.area) g+=`<path d="${d}L${X(s.pts.at(-1)[0])},${H}L${X(s.pts[0][0])},${H}Z" fill="var(${s.c})" opacity=".14"/>`;
+      g+=`<path d="${d}" fill="none" stroke="var(${s.c})" stroke-width="${o.w||2.5}" stroke-linejoin="round" stroke-linecap="round"/>`;
+      const e=s.pts.at(-1); g+=`<circle cx="${X(e[0])}" cy="${Y(e[1])}" r="4" fill="var(${s.c})" stroke="var(--surface)" stroke-width="2"/>`; });
+    el.setAttribute('viewBox',`0 0 ${W} ${H}`); el.innerHTML=g;
+  }
+  function bars(id, pts){
+    const el=document.getElementById(id), r=el.getBoundingClientRect(), W=r.width, H=r.height, pad=6;
+    const vals=pts.map(p=>p[1]), hi=Math.max(0,...vals), lo=Math.min(0,...vals);
+    const Y=y=>pad+(hi-y)/(hi-lo||1)*(H-2*pad), slot=W/pts.length, bw=slot*.68;
+    let g=`<line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+    pts.forEach((p,i)=>{ const y0=Y(Math.max(0,p[1])), y1=Y(Math.min(0,p[1]));
+      g+=`<rect x="${(i*slot+(slot-bw)/2).toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y1-y0).toFixed(1)}" rx="2" fill="var(${p[1]>=0?'--pos':'--neg'})"/>`; });
+    el.setAttribute('viewBox',`0 0 ${W} ${H}`); el.innerHTML=g;
+  }
+  const N=130;
+  line('gD', [['oficial','--s1'],['mep','--s2'],['ccl','--s3'],['blue','--s4']].map(([k,c])=>({c, pts:ser(k,null,N)})));
+  line('gM', [{c:'--s1', pts:ser('riesgo',null,N)}], {area:true});
+  const cerL = months.filter(m=>m.cer).at(-1).cer;
+  line('gN', [{c:'--s3', pts:months.filter(m=>m.m2&&m.cer&&m.mes>='2024-04').map((m,i)=>[i, m.m2/m.cer*cerL])}], {area:true});
+  bars('gF', months.filter(m=>m.prim!=null).slice(-24).map((m,i)=>[i,m.prim]));
+  line('gK', [{c:'--s4', pts:ser(null, d=>d.merval&&v(d.ccl)?d.merval/v(d.ccl):null, N)}], {area:true});
+  document.body.dataset.listo = '1';
+})();
+</script>
+</body>
+</html>
