@@ -1,0 +1,49 @@
+name: Chequeo del sitio
+
+# Revisa el sitio publicado una vez por día hábil, después de la actualización de
+# las 18:47. Si encuentra un problema grave abre un aviso (issue) en el repositorio,
+# que le llega por mail al dueño; cuando se arregla, lo cierra solo.
+on:
+  schedule:
+    - cron: "43 22 * * 1-5"   # 19:43 ART
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  chequear:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revisar el sitio
+        id: chequeo
+        continue-on-error: true
+        run: |
+          npm install --no-save --no-audit --no-fund playwright-core@1 >/dev/null
+          node scripts/chequeo.mjs
+          
+      - name: Resumen
+        if: always()
+        run: cat chequeo.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Avisar o cerrar el aviso
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITULO="Chequeo del sitio: hay problemas"
+          NUM=$(gh issue list --state open --search "in:title \"$TITULO\"" --json number -q '.[0].number')
+          if [ "${{ steps.chequeo.outcome }}" = "failure" ]; then
+            if [ -n "$NUM" ]; then
+              gh issue comment "$NUM" --body-file chequeo.md
+            else
+              gh issue create --title "$TITULO" --body-file chequeo.md
+            fi
+            exit 1
+          elif [ -n "$NUM" ]; then
+            gh issue close "$NUM" --comment "Resuelto: el chequeo del $(TZ=America/Argentina/Buenos_Aires date +%d/%m/%Y) salió bien."
+          fi
