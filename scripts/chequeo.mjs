@@ -74,7 +74,7 @@ else {
     page.on('pageerror', e => jsErr.push(e.message));
     await page.goto(URL_SITIO + '?chequeo=' + Date.now() + '#dolares', { waitUntil: 'load', timeout: 60000 });
     await page.waitForFunction(() => !document.getElementById('stamp')?.textContent.includes('Cargando'), null, { timeout: 30000 }).catch(() => {});
-    for (const tab of ['dolares', 'macro', 'dinero', 'fiscal', 'mercado', 'calculadoras', 'noticias']) {
+    for (const tab of ['dolares', 'macro', 'dinero', 'fiscal', 'mercado', 'noticias', 'calculadoras']) {
       await page.evaluate(t => { location.hash = t; }, tab);
       await page.waitForTimeout(tab === 'mercado' ? 6000 : 1500);
       const r = await page.evaluate(() => {

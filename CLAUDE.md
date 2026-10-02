@@ -21,7 +21,7 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
   Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
-  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Calculadoras** (`#calculadoras`) y **Noticias** (`#noticias`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Noticias** (`#noticias`) y **Calculadoras** (`#calculadoras`), en ese orden, selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
   no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
