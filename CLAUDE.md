@@ -265,7 +265,7 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   Club; NO mencionar el negocio familiar ni IG/X por ahora), por qué hizo Macro AR, para
   quién es, "lo que me mueve", cómo funciona, fuentes y aclaraciones. Contacto: LinkedIn
   www.linkedin.com/in/francisco-epherra-8509513b4 y epherrafrancisco@gmail.com (eventos
-  `contacto-linkedin|mail`). Foto: pendiente (por ahora círculo con "FE", `#foto`).
+  `contacto-linkedin|mail`). Foto: `foto.jpg` (480x480, fondo recortado con rembg modelo isnet-general-use y degradé azul de la marca #2a6aa3→#163d60). Título: solo "Francisco Epherra".
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
