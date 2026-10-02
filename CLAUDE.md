@@ -128,7 +128,7 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 - Paso (a) fuentes, HECHO: Merval histórico = Ámbito; precios del día de acciones y
   bonos = data912 (`https://data912.com/live/arg_stocks`, `/live/arg_bonds`; campos
   symbol, c, pct_change, v, px_bid, px_ask; sin timestamp; 120 req/min; su historia
-  de bonos está cortada en 2023, no usarla). Falta confirmar CORS en el sitio publicado.
+  de bonos está cortada en 2023, no usarla). CORS OK: verificado en el sitio publicado el 02/10.
 - Paso (b) HECHO: pestaña Mercado con Merval en $ y en US$ CCL, riesgo país y tabla de
   AL30/GD30 (precio D y $, TIR y paridad calculadas en la página con el cronograma
   2030; se consulta data912 cada 10 min desde el navegador).
