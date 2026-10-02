@@ -228,6 +228,23 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   (3) Sueldo en dólares → sueldo ÷ cada dólar hoy y, opcional, comparación con un sueldo
   anterior (poder de compra por CER y en dólares). Francisco eligió 1, 2 y 5 de las ideas
   (descartadas por ahora: tarjeta vs MEP y calculadora de bonos). Números con `parseAR`.
+- HECHO: ranking "¿Qué le ganó a la inflación en <año>?" arriba de Mercado (`renderRanking`,
+  barras horizontales `hBars`, con compartir/PNG/CSV). Desde el último cierre del año
+  anterior: dólares oficial/MEP/CCL/blue, S&P Merval y plazo fijo 30 días renovado con la
+  TNA vigente. Inflación: IPC publicado + REM para lo que falta ("Hasta hoy") o solo IPC
+  ("Hasta <último mes con IPC>"). Para esto update.py ahora pide Ámbito (todos), mayorista
+  y plazo fijo desde el 1/12 del año anterior (`AMBITO_LARGO`, `BCRA_LARGO`).
+- HECHO: chequeo automático diario del sitio publicado (`.github/workflows/chequeo-sitio.yml`
+  + `scripts/chequeo.mjs`, L a V 19:43 ART). Revisa atraso de datos, estado.json,
+  calendario por vencer, errores de JS y gráficos vacíos por pestaña, DolarApi, data912 e
+  imagen del día. Si hay un problema grave abre el issue "Chequeo del sitio: hay problemas"
+  (le llega por mail a Francisco) y lo cierra solo cuando vuelve a andar; los avisos
+  menores quedan en el resumen de la corrida. A mano: Run workflow, opcional `url`.
+  Probado el 02/10 (issue #1 abierto con URL rota y cerrado solo). gh: usar REST
+  (`gh api repos/...`), GraphQL está bloqueado en el entorno de Claude.
+- PENDIENTE: contador de visitas privado con GoatCounter. Francisco crea la cuenta (code
+  sugerido `macroar`) y pasa el code; después agregar el script y contar pestañas
+  (`/#tab`) y eventos (calculadoras, compartir, descargas). El panel es privado.
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
