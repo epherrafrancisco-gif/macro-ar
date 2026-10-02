@@ -32,7 +32,9 @@ AMBITO = {
     "mep": ("dolarrava/mep", "v"),
     "ccl": ("dolarrava/cl", "v"),
     "riesgo": ("riesgopais", "n"),
+    "merval": ("indice/.merv", "idx"),  # columnas: Fecha, Apertura, Último, ...; se pide desde el 1/1
 }
+AMBITO_LARGO = {"merval"}
 BCRA_DIARIO = {1: "reservas", 5: "mayorista", 15: "base", 7: "badlar", 44: "tamar", 12: "pf", 108: "depusd"}
 BCRA_MENSUAL = {27: "infl", 28: "inflYoY", 29: "expect"}
 # Series diarias que se piden desde el 1 de enero del año en curso (para los
@@ -81,21 +83,27 @@ def es_habil(f):
     return date.fromisoformat(f).weekday() < 5
 
 
-def ambito(desde, hasta):
+def ambito(desde, hasta, desde_largo):
     out = {}
     for campo, (ruta, tipo) in AMBITO.items():
-        url = f"https://mercados.ambito.com//{ruta}/historico-general/{desde}/{hasta}"
+        d0 = desde_largo if campo in AMBITO_LARGO else desde
+        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0}/{hasta}"
         try:
             rows = get_json(url)
             n = 0
             for row in rows[1:]:  # la primera fila es el encabezado
-                f = fecha_ambito(row[0])
+                try:
+                    f = fecha_ambito(row[0])
+                except ValueError:
+                    continue
                 if f in out.get(campo, {}):
                     continue  # fecha repetida: quedarse con la primera (la más reciente)
                 if tipo == "cv":
                     val = {"c": num_ar(row[1]), "v": num_ar(row[2])}
                 elif tipo == "v":
                     val = {"v": num_ar(row[1])}
+                elif tipo == "idx":
+                    val = num_ar(row[2])
                 else:
                     val = num_ar(row[1])
                 out.setdefault(campo, {})[f] = val
@@ -219,7 +227,7 @@ def main():
     print(f"Ventana: {desde} a {hasta}")
 
     nuevos = {}  # fecha -> {campo: valor}
-    amb = ambito(desde, hasta)
+    amb = ambito(desde, hasta, anual_desde)
     bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
     gm, gt = datos_gob_ar()

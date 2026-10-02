@@ -181,6 +181,7 @@ footer a{color:var(--ink2)}
       <a href="#macro" role="tab" id="tabM" aria-selected="false">Macro</a>
       <a href="#dinero" role="tab" id="tabN" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
+      <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -273,6 +274,20 @@ footer a{color:var(--ink2)}
     <div class="grid2">
       <div class="card"><div class="head"><h2>Exportaciones e importaciones</h2><div class="legend" id="lgCom"></div></div><div class="chart" id="chCom"></div><p class="note">Millones de USD por mes. Fuente: INDEC, intercambio comercial argentino.</p></div>
       <div class="card"><div class="head"><h2>Saldo comercial</h2><span class="note">Millones de USD por mes</span></div><div class="chart" id="chSal"></div><p class="note">Exportaciones − importaciones. Positivo: entran más dólares por comercio de los que salen.</p></div>
+    </div>
+  </section>
+
+  <!-- MERCADO -->
+  <section class="view" id="vK" hidden>
+    <div class="kpis" id="kpisK"></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>S&amp;P Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
+      <div class="card"><div class="head"><h2>S&amp;P Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Bonos soberanos</h2><span class="note" id="bondStamp"></span></div>
+      <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Bono</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
+      <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Macro AR con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
     </div>
   </section>
 
@@ -706,8 +721,60 @@ footer a{color:var(--ink2)}
     barChart($('chSal'), [{n:'Saldo',c:'--s1',pts:last24(com).filter(m=>m.saldo!=null).map(m=>[m.mes,m.saldo])}], {aria:'Saldo comercial', l:46, yfmt:v=>nf(v,0), vfmt:v=>sg(v,0)+' M'});
   }
 
+  // ---- MERCADO ----
+  // Cronograma AL30/GD30: pagos el 9/1 y el 9/7; amortiza 4% el 9/7/2024 y 8% cada semestre
+  // del 9/1/2025 al 9/7/2030. Cupón anual sobre el residual: 0,125% hasta 9/7/2021,
+  // 0,50% hasta 9/7/2023, 0,75% hasta 9/7/2027 y 1,75% hasta el final. Base 30/360.
+  const B30 = (()=>{ const f=[]; let res=100;
+    for(let y=2021;y<=2030;y++) for(const m of [1,7]){ const d=`${y}-${m===1?'01':'07'}-09`; if(d<'2021-01-09') continue;
+      const prev = m===1?`${y-1}-07-09`:`${y}-01-09`, r = prev<'2021-07-09'?0.125:prev<'2023-07-09'?0.5:prev<'2027-07-09'?0.75:1.75;
+      const am = d==='2024-07-09'?4:d>='2025-01-09'?8:0, cup=res*r/100/2; f.push({d, cup, am, res, r}); res-=am; }
+    return f; })();
+  function bondCalc(px, settle){
+    const fut = B30.filter(p=>p.d>settle); if(!fut.length || !(px>0)) return null;
+    const nx=fut[0], i=B30.indexOf(nx), last = i>0?B30[i-1].d:'2020-09-04';
+    const d360=(a,b)=>{ const [y1,m1,d1]=a.split('-').map(Number), [y2,m2,d2]=b.split('-').map(Number); return (y2-y1)*360+(m2-m1)*30+(Math.min(d2,30)-Math.min(d1,30)); };
+    const acc = nx.res*nx.r/100*d360(last,settle)/360, res=nx.res;
+    const cf = fut.map(p=>({t:(T(p.d)-T(settle))/864e5/365, v:p.cup+p.am}));
+    const pv = y => cf.reduce((a,c)=>a+c.v/Math.pow(1+y,c.t),0);
+    let lo=-0.5, hi=2; for(let k=0;k<80;k++){ const mid=(lo+hi)/2; if(pv(mid)>px) lo=mid; else hi=mid; }
+    return {tir:(lo+hi)/2*100, paridad:px/(res+acc)*100, res};
+  }
+  const MKT = 'https://data912.com/live/', MKT_MS = 10*60000;
+  let mkt = {bonds:null, stocks:null, at:0, err:false}, mktBusy=false, mktT;
+  async function pollMkt(){
+    clearTimeout(mktT); if(document.hidden || mktBusy) return; mktBusy=true;
+    try{
+      const [b, s] = await Promise.all(['arg_bonds','arg_stocks'].map(k=>fetch(MKT+k,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
+      const ix = a => Object.fromEntries((a||[]).filter(x=>x&&x.symbol).map(x=>[x.symbol,x]));
+      mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), err:false};
+    }catch(e){ mkt.err = true; console.warn("mercado", e); }
+    mktBusy=false; if(tab==='mercado' && loaded.d) renderMercado();
+    mktT = setTimeout(pollMkt, MKT_MS);
+  }
+  function renderMercado(){
+    if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
+    const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
+    const t=[];
+    if(mer.length){ const {last,prev}=lastTwo(mer), a=ago(mer,30); t.push(tileK('S&P Merval', nf(last[1],0), 'pts', (prev?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Cierre '+fd(last[0]))); }
+    if(merU.length){ const {last,prev}=lastTwo(merU), a=ago(merU,30); t.push(tileK('Merval en dólares', 'US$ '+nf(last[1],0), '', (prev?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Al CCL · '+fd(last[0]))); }
+    if(rp.length){ const {last,prev}=lastTwo(rp); t.push(tileK('Riesgo país', nf(last[1],0), 'pb', prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' pb',bad:true}):'', fd(last[0]))); }
+    const hoy = fechaAR(Date.now()), settle = fechaAR(Date.now()+864e5);
+    const rows = ['AL30','GD30'].map(k=>{ const D=mkt.bonds&&mkt.bonds[k+'D'], P=mkt.bonds&&mkt.bonds[k]; const px=D&&D.c, b=bondCalc(px, settle); return {k,D,P,px,b}; });
+    rows.forEach(r=>{ if(r.b) t.push(tileK('TIR '+r.k, nf(r.b.tir,2)+'%', 'anual US$', r.D?chip(r.D.pct_change/100,{d:2}):'', `US$ ${nf(r.px,2)} · paridad ${nf(r.b.paridad,1)}%`)); });
+    $('kpisK').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
+    lineChart($('chMer'), [{n:'Merval', c:'--s1', pts:inRange(mer), area:true}], {aria:'S&P Merval en pesos', endLabel:true, labW:70, l:66, yfmt:v=>nf(v/1e6,v%1e6?2:0)+' M', vfmt:v=>nf(v,0)+' pts', lfmt:v=>nf(v/1e6,2)+' M', unitName:'Merval'});
+    lineChart($('chMerU'), [{n:'Merval US$', c:'--s3', pts:inRange(merU), area:true}], {aria:'S&P Merval en dólares CCL', endLabel:true, labW:52, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0), lfmt:v=>nf(v,0), unitName:'Merval US$'});
+    const c = v => v!=null&&isFinite(v)?v:null;
+    $('tBonos').innerHTML = mkt.err && !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Precios de mercado no disponibles en este momento.</td></tr>`
+      : !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Cargando precios…</td></tr>`
+      : rows.map(r=>`<tr><td>${r.k}</td><td>${c(r.px)!=null?nf(r.px,2):'—'}</td><td class="${r.D&&r.D.pct_change>0?'up':r.D&&r.D.pct_change<0?'dn':''}">${r.D?sg(r.D.pct_change,2)+'%':'—'}</td><td>${r.P&&r.P.c?nf(r.P.c,0):'—'}</td><td>${r.b?nf(r.b.tir,2)+'%':'—'}</td><td>${r.b?nf(r.b.paridad,1)+'%':'—'}</td><td>${r.b?nf(r.b.res,0):'—'}</td></tr>`).join('');
+    $('bondStamp').textContent = mkt.at ? `Consultado ${horaAR(mkt.at)} · se refresca cada 10 min${mkt.err?' · última consulta falló':''}` : '';
+  }
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
+
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()]};
   let tab = 'dolares';
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';

@@ -20,8 +20,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 ## Archivos
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
-  Cuatro pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`)
-  y **Fiscal** (`#fiscal`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
+  **Fiscal** (`#fiscal`) y **Mercado** (`#mercado`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
   no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
@@ -33,7 +33,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
     `cripto {c,v}`, `tarjeta {c,v}`, `riesgo` (pb), `reservas` (MUSD),
     `base` (millones $), `badlar`, `tamar`, `pf` (% TNA), `depusd` (MUSD),
     `compras` (BCRA id 78, MUSD/día; negativo = vendió) y `bopreal` (id 158, MUSD);
-    estas dos se piden siempre desde el 1/1.
+    estas dos se piden siempre desde el 1/1. `merval` (S&P Merval, puntos, Ámbito
+    `indice/.merv`, columna Último; también desde el 1/1).
   - Mensual: `mes` (YYYY-MM), `infl`, `inflYoY`, `expect` (REM 12m); desde 2023-01:
     `base`, `m2`, `m2t`, `cer` (promedio del mes; millones $ / índice), `leliq`, `pases`,
     `lefi` (fin de mes, millones $), `prim`, `fin` (resultado fiscal SPN, millones $),
@@ -123,7 +124,16 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
    LEFI → LECAP. LEFI y pases están en 0 desde 07/2025: no mostrarlos como si
    fueran actuales.
 
-### Bloque 3
+### Bloque 3 (en curso, por pasos; cada paso se sube y se anota acá)
+- Paso (a) fuentes, HECHO: Merval histórico = Ámbito; precios del día de acciones y
+  bonos = data912 (`https://data912.com/live/arg_stocks`, `/live/arg_bonds`; campos
+  symbol, c, pct_change, v, px_bid, px_ask; sin timestamp; 120 req/min; su historia
+  de bonos está cortada en 2023, no usarla). Falta confirmar CORS en el sitio publicado.
+- Paso (b) HECHO: pestaña Mercado con Merval en $ y en US$ CCL, riesgo país y tabla de
+  AL30/GD30 (precio D y $, TIR y paridad calculadas en la página con el cronograma
+  2030; se consulta data912 cada 10 min desde el navegador).
+- Paso (c) PENDIENTE: tablero de acciones del panel líder (precio, variación, mapa de
+  calor) y liquidación del agro (CIARA-CEC, mensual).
 10. **Pestaña Mercado**: S&P Merval en pesos y en dólares CCL (histórico),
     tablero de las empresas del índice (precio, variación del día, mapa de calor,
     gráfico al tocar), bonos AL30/GD30 con rendimiento y riesgo país. Datos
