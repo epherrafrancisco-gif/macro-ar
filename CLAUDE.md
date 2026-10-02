@@ -92,7 +92,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 
 ## Hoja de ruta aprobada (02/10/2026)
 Descartado por Francisco: calendario de vencimientos de deuda, "BSTEP",
-balanza cambiaria. Todo lo demás va, con los agregados de cada punto.
+balanza cambiaria, liquidación del agro (CIARA-CEC) y gráfico histórico por acción
+(descartados el 02/10/2026). Todo lo demás va, con los agregados de cada punto.
 
 ### Bloque 1 (HECHO y verificado el 02/10/2026: `compras` cargó 180 días desde 02/01;
 DolarApi responde desde el navegador, CORS OK)
@@ -124,7 +125,7 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
    LEFI → LECAP. LEFI y pases están en 0 desde 07/2025: no mostrarlos como si
    fueran actuales.
 
-### Bloque 3 (en curso, por pasos; cada paso se sube y se anota acá)
+### Bloque 3 (HECHO el 02/10/2026; agro e histórico por acción descartados)
 - Paso (a) fuentes, HECHO: Merval histórico = Ámbito; precios del día de acciones y
   bonos = data912 (`https://data912.com/live/arg_stocks`, `/live/arg_bonds`; campos
   symbol, c, pct_change, v, px_bid, px_ask; sin timestamp; 120 req/min; su historia
@@ -135,7 +136,7 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 - Paso (c) HECHO en parte: mapa de calor de 21 acciones líderes (lista `LIDERES` en
   index.html), resumen suben/bajan y detalle al tocar (puntas, monto, operaciones).
   SIN gráfico histórico por acción: no hay fuente gratuita (la historia de data912 está
-  cortada). PENDIENTE: liquidación del agro (CIARA-CEC): no hay API; publican un Excel
+  cortada). DESCARTADO: liquidación del agro (CIARA-CEC): no hay API; publican un Excel
   mensual en ciaracec.com.ar/ciara/estadisticas/ con nombre que cambia (ej.
   `.../descargar/01102026_30092026liquidacion-de-divisas-ciara-cec-base-oficial.xlsx`).
   Opciones: leer ese Excel desde el workflow (sin librerías: zipfile + xml) o cargar
