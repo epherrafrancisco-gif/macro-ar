@@ -111,8 +111,8 @@ DolarApi responde desde el navegador, CORS OK)
    Explicarle que los datos del BCRA no cambian intradía; lo que cambia son dólares
    y riesgo país. GitHub puede atrasar el cron 5-30 min.
 
-### Bloque 2 (hecho el 02/10/2026, salvo la deuda LECAP/BONCAP; falta confirmar con la
-primera corrida que datos.gob.ar responda desde GitHub Actions)
+### Bloque 2 (HECHO y verificado el 02/10/2026 con datos reales, salvo la deuda
+LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde Actions)
 6. **Agregados en términos reales**: base, M2 (y M2 transaccional privado)
    deflactados con CER (o IPC), y en % del PBI, para medir la remonetización.
 7. **Resultado fiscal mensual** (datos.gob.ar): primario y financiero en barras,
