@@ -372,6 +372,15 @@ footer a{color:var(--ink2)}
   <!-- MERCADO -->
   <section class="view" id="vK" hidden>
     <div class="kpis" id="kpisK"></div>
+    <div class="card">
+      <div class="head"><h2 id="rkT">¿Qué le ganó a la inflación?</h2><span class="note" id="rkS"></span></div>
+      <div class="seg calcsel" id="rkMode" role="tablist" aria-label="Período">
+        <button type="button" data-rk="hoy" aria-selected="true">Hasta hoy</button>
+        <button type="button" data-rk="ipc" aria-selected="false" id="rkIpcB">Hasta el último IPC</button>
+      </div>
+      <div class="chart" id="chRank"></div>
+      <p class="note" id="rkN"></p>
+    </div>
     <div class="grid2">
       <div class="card"><div class="head"><h2>S&amp;P Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
       <div class="card"><div class="head"><h2>S&amp;P Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
@@ -735,6 +744,69 @@ footer a{color:var(--ink2)}
   }
 
 
+
+  // ---- ¿QUÉ LE GANÓ A LA INFLACIÓN? (barras horizontales) ----
+  function hBars(el, rows, o={}){
+    el._exp = {fn:hBars, a:rows, o};
+    if(!rows.length){ el.innerHTML = `<div class="empty">${loaded.d?'Sin datos.':'Cargando…'}</div>`; return; }
+    const W = Math.max(300, el.clientWidth||600), rh = o.rh || (W<520?36:34), labW = Math.min(170, Math.round(W*.34)), valW = W<520?112:150;
+    const H = rows.length*rh + 26, x0 = labW + 8, x1 = W - (W<520 ? 64 : valW);
+    const vals = rows.map(r=>r.v).concat([0, o.ref??0]); let lo = Math.min(...vals), hi = Math.max(...vals); const pad=(hi-lo)*.04; lo = Math.min(0, lo-pad); hi = hi+pad;
+    const X = v => x0 + (v-lo)/(hi-lo)*(x1-x0);
+    let g = '';
+    rows.forEach((r,i)=>{ const y = 6 + i*rh, bh = rh-12, a = X(Math.min(0,r.v)), b = X(Math.max(0,r.v));
+      g += `<text x="${labW}" y="${y+bh/2+4}" text-anchor="end" style="font-family:var(--sans);font-size:${W<520?12:13}px;fill:var(--ink)${r.ref?';font-weight:600':''}">${esc(r.n)}</text>`;
+      g += `<rect x="${a.toFixed(1)}" y="${y}" width="${Math.max(1,b-a).toFixed(1)}" height="${bh}" rx="3" fill="var(${r.c})"${r.ref?' opacity="0.55"':''}/>`;
+      g += `<text x="${(Math.max(X(0), b)+8).toFixed(1)}" y="${y+bh/2+4}" style="fill:var(--ink);font-weight:600;font-size:12.5px">${sg(r.v,1)}%${r.real!=null && W>=520?`<tspan style="fill:var(--muted);font-weight:400"> · real ${sg(r.real,1)}%</tspan>`:''}</text>`; });
+    g += `<line x1="${X(0).toFixed(1)}" x2="${X(0).toFixed(1)}" y1="2" y2="${H-20}" stroke="var(--muted)"/>`;
+    if(o.ref!=null){ const xr = X(o.ref).toFixed(1); g += `<line x1="${xr}" x2="${xr}" y1="2" y2="${H-20}" stroke="var(--ink2)" stroke-dasharray="4 4"/><text x="${xr}" y="${H-5}" text-anchor="middle" style="fill:var(--ink2)">inflación ${sg(o.ref,1)}%</text>`; }
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Ranking')}">${g}</svg>`;
+  }
+  let rkMode = 'hoy';
+  document.querySelectorAll('[data-rk]').forEach(b=>b.addEventListener('click', ()=>{ rkMode = b.dataset.rk; renderRanking(); }));
+  function renderRanking(){
+    document.querySelectorAll('[data-rk]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.rk===rkMode)));
+    if(!days.length){ hBars($('chRank'), []); return; }
+    const yr = days[days.length-1].fecha.slice(0,4), ini = `${yr}-01-01`;
+    const ipcM = months.filter(m=>m.mes.startsWith(yr) && m.infl!=null);
+    const lastIpc = ipcM.length ? ipcM[ipcM.length-1].mes : null;
+    $('rkIpcB').textContent = lastIpc ? `Hasta ${MESL[+lastIpc.slice(5)-1]} (último IPC)` : 'Hasta el último IPC';
+    $('rkIpcB').hidden = !lastIpc; if(!lastIpc && rkMode==='ipc') rkMode = 'hoy';
+    const finMes = m => { const d = new Date(Date.UTC(+m.slice(0,4), +m.slice(5), 0)); return d.toISOString().slice(0,10); };
+    const fin = rkMode==='ipc' ? finMes(lastIpc) : days[days.length-1].fecha;
+    // inflación: IPC publicado + (si es "hasta hoy") estimación con el REM para lo que falta
+    let pi = ipcM.filter(m=>m.mes<=fin.slice(0,7)).reduce((a,m)=>a*(1+m.infl/100), 1), est = false;
+    if(rkMode==='hoy'){
+      const ex = months.filter(m=>m.expect!=null), e = ex.length ? ex[ex.length-1].expect : null;
+      if(e!=null){ const mm = Math.pow(1+e/100, 1/12)-1; let m = lastIpc ? lastIpc : `${yr}-00`;
+        const [fy,fmn,fd2] = fin.split('-').map(Number);
+        for(let k=+m.slice(5)+1; k<=fmn; k++){ const frac = k<fmn ? 1 : fd2/new Date(Date.UTC(fy,k,0)).getUTCDate(); pi *= Math.pow(1+mm, frac); est = true; } }
+    }
+    const infl = (pi-1)*100;
+    const at = (pts, f) => { let r=null; for(const p of pts){ if(p[0]<=f) r=p; else break; } return r; };
+    const base = pts => { const b = at(pts, `${+yr-1}-12-31`); return b && b[0] >= `${+yr-1}-12-01` ? b : null; };
+    const ACT = [['oficial','Dólar oficial'],['mep','Dólar MEP'],['ccl','Dólar CCL'],['blue','Dólar blue'],['merval','S&P Merval']];
+    const rows = [];
+    ACT.forEach(([k,n])=>{ const s = series(k), b = base(s), e = at(s, fin); if(b && e && e[0]>b[0]) rows.push({n, v:(e[1]/b[1]-1)*100, desde:b[0], hasta:e[0]}); });
+    // plazo fijo a 30 días, renovando con la tasa vigente en cada renovación; el último tramo, proporcional
+    const pf = series('pf'), pb = base(pf);
+    if(pb){ let cap = 1, t = T(pb[0]); const tf = T(fin), tna = ts => { const f = new Date(ts).toISOString().slice(0,10); const p = at(pf, f); return p ? p[1] : pb[1]; };
+      while(t + 30*864e5 <= tf){ cap *= 1 + tna(t)/100*30/365; t += 30*864e5; }
+      cap *= 1 + tna(t)/100*((tf-t)/864e5)/365;
+      rows.push({n:'Plazo fijo 30 días', v:(cap-1)*100, desde:pb[0], hasta:fin}); }
+    rows.forEach(r=>{ r.real = ((1+r.v/100)/pi-1)*100; r.c = r.v>=infl ? '--pos' : '--neg'; });
+    rows.push({n:'Inflación', v:infl, c:'--muted', ref:true});
+    rows.sort((a,b)=>b.v-a.v);
+    $('rkT').firstChild.textContent = `¿Qué le ganó a la inflación en ${yr}?`;
+    $('rkS').textContent = `Desde el último cierre de ${+yr-1} hasta el ${fd(fin)} · en pesos`;
+    hBars($('chRank'), rows, {ref:infl, aria:'Rendimiento de cada inversión contra la inflación'});
+    const ganan = rows.filter(r=>!r.ref && r.v>=infl).map(r=>r.n);
+    $('rkN').textContent = `Verde: le ganó a la inflación; rojo: perdió. "Real" = rendimiento descontada la inflación. Precio de partida: último cierre de ${+yr-1}. `
+      + `Inflación: IPC del INDEC hasta ${lastIpc?MESL[+lastIpc.slice(5)-1]:'—'}${est?' y, para lo que falta, la esperada por el REM (estimada)':''}. `
+      + 'El plazo fijo renueva cada 30 días con la tasa promedio de ese momento (el último tramo, proporcional). El Merval no incluye dividendos. '
+      + (ganan.length ? `Le ganaron: ${ganan.join(', ')}.` : 'Ninguna le ganó.');
+  }
+
   // ---- CALCULADORAS ----
   // Números en formato argentino: "1.000.000", "1000000", "22,5".
   const parseAR = s => { s = String(s??'').trim().replace(/[\s$%]/g,''); if(!s) return NaN;
@@ -1091,6 +1163,7 @@ footer a{color:var(--ink2)}
     $('stkStamp').textContent = `Consultado ${horaAR(mkt.at)}${mkt.err?' · última consulta falló':''}`;
   }
   function renderMercado(){
+    renderRanking();
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
     const t=[];
@@ -1250,13 +1323,15 @@ footer a{color:var(--ink2)}
     const h2 = card.querySelector('.head h2'), titulo = (p && p.matches('h3.subh') ? (h2?h2.firstChild.textContent.trim()+' · ':'') + p.firstChild.textContent.trim() : h2 ? h2.firstChild.textContent.trim() : 'Macro AR');
     const nota = card.querySelector('.head > span.note'); const sub = nota ? nota.textContent.trim() : '';
     const exp = ch._exp; if(!exp) return null;
-    const ss = exp.fn===dailyBars ? [{n:exp.o.unitName||titulo, c:'--pos', pts:exp.a}] : exp.a.filter(s=>s.pts.length);
+    const ss = exp.fn===dailyBars ? [{n:exp.o.unitName||titulo, c:'--pos', pts:exp.a}] : exp.fn===hBars ? [{n:'Rendimiento %', c:'--s1', pts:exp.a.map(r=>[r.n, r.v])}] : exp.a.filter(s=>s.pts.length);
     return {titulo, sub, exp, ss};
   }
   const slug = t => t.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50);
   const ultimaFecha = () => days.length ? days[days.length-1].fecha : new Date().toISOString().slice(0,10);
   function csvGrafico(ch){
     const ci = chartInfo(ch); if(!ci) return;
+    if(ci.exp.fn===hBars){ const lines = ['activo;rendimiento_pct;real_pct', ...ci.exp.a.map(r=>[r.n, num(r.v), r.ref?'':num(r.real)].join(';'))];
+      return bajar(new Blob(['\ufeff'+lines.join('\r\n')+'\r\n'], {type:'text/csv;charset=utf-8'}), `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.csv`); }
     const keys = [...new Set(ci.ss.flatMap(s=>s.pts.map(p=>p[0])))].sort();
     const map = ci.ss.map(s=>Object.fromEntries(s.pts));
     const head = [keys[0]&&keys[0].length===7?'mes':'fecha', ...ci.ss.map(s=>s.n)];
@@ -1273,13 +1348,13 @@ footer a{color:var(--ink2)}
     const ci = chartInfo(ch); if(!ci) return null;
     const tmp = document.createElement('div'); tmp.className = 'chart exp'; ch.closest('.card').appendChild(tmp);
     try{
-      ci.exp.fn(tmp, ci.exp.a, {...ci.exp.o, h:340, labW:Math.round((ci.exp.o.labW??70)*1.5)});
+      ci.exp.fn(tmp, ci.exp.a, {...ci.exp.o, h:340, rh:40, labW:Math.round((ci.exp.o.labW??70)*1.5)});
       const svg = tmp.querySelector('svg'); if(!svg) return null;
       const cl = svg.cloneNode(true);
       const orig = svg.querySelectorAll('*'), copia = cl.querySelectorAll('*');
       orig.forEach((el,i)=>{ const cs=getComputedStyle(el), c=copia[i];
         for(const pr of ['fill','stroke','opacity','stroke-width','stroke-dasharray','font-size','font-weight']) c.style.setProperty(pr, cs.getPropertyValue(pr));
-        c.style.setProperty('font-family', el.tagName==='text' ? 'ui-monospace, Menlo, Consolas, monospace' : ''); });
+        c.style.setProperty('font-family', el.tagName==='text' ? (/Mono/.test(cs.fontFamily) ? 'ui-monospace, Menlo, Consolas, monospace' : 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif') : ''); });
       cl.querySelectorAll('.hit, .xh, .hov, .hl').forEach(e=>e.remove());
       const [, , W, H] = svg.getAttribute('viewBox').split(' ').map(Number);
       cl.setAttribute('width', W); cl.setAttribute('height', H); cl.setAttribute('xmlns','http://www.w3.org/2000/svg');
