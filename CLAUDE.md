@@ -242,9 +242,14 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   menores quedan en el resumen de la corrida. A mano: Run workflow, opcional `url`.
   Probado el 02/10 (issue #1 abierto con URL rota y cerrado solo). gh: usar REST
   (`gh api repos/...`), GraphQL está bloqueado en el entorno de Claude.
-- PENDIENTE: contador de visitas privado con GoatCounter. Francisco crea la cuenta (code
-  sugerido `macroar`) y pasa el code; después agregar el script y contar pestañas
-  (`/#tab`) y eventos (calculadoras, compartir, descargas). El panel es privado.
+- HECHO: contador de visitas privado con GoatCounter, cuenta `macroar` de Francisco (panel en
+  macroar.goatcounter.com, solo con su usuario). Script en el head de index.html con
+  `no_onload`: la función `gc()` cuenta cada pestaña como `/macro-ar/#pestaña` y eventos:
+  `calculadora-<pf|inf|sue>`, `glosario-<clave>` (una vez por visita), `compartir|png|csv-<id
+  del gráfico>`, `csv-pestaña-<clave>`. No cuenta navegadores automatizados
+  (navigator.webdriver, o sea el chequeo diario). La página /diario/ cuenta sola.
+  Para no contar sus propias visitas: abrir el sitio con `#toggle-goatcounter` en cada
+  navegador/celular.
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto

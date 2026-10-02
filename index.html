@@ -15,6 +15,8 @@
 <meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Macro AR">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<!-- Contador de visitas privado (GoatCounter; sin cookies). Las pestañas y los eventos se cuentan a mano desde el script. -->
+<script data-goatcounter="https://macroar.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="//gc.zgo.at/count.js"></script>
 <style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 </head>
 <body>
@@ -473,6 +475,17 @@ footer a{color:var(--ink2)}
 <script>
 (function(){
   const $ = id => document.getElementById(id);
+  // ---- contador de visitas: cada pestaña como página (/#pestaña) y algunos eventos ----
+  // No cuenta navegadores automatizados (el chequeo diario del sitio).
+  const gcCola = []; let gcT = null; const gcVistos = new Set();
+  function gc(path, evento=false){
+    if(navigator.webdriver) return;
+    gcCola.push({path, title: evento ? path : document.title, event: evento});
+    const vaciar = () => { if(!(window.goatcounter && window.goatcounter.count)) return false;
+      while(gcCola.length){ try{ window.goatcounter.count(gcCola.shift()); }catch(e){} } return true; };
+    if(!vaciar() && !gcT){ let n = 0; gcT = setInterval(()=>{ if(vaciar() || ++n > 40){ clearInterval(gcT); gcT = null; } }, 500); }
+  }
+  const gcUna = (path) => { if(gcVistos.has(path)) return; gcVistos.add(path); gc(path, true); };
   const nf = (n,d=2) => n.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
   const sg = (n,d=2) => (n>0?'+':n<0?'−':'') + nf(Math.abs(n),d);
   const pc = (n,d=1) => sg(n*100,d)+'%';
@@ -839,6 +852,8 @@ footer a{color:var(--ink2)}
       el.addEventListener('blur', ()=>{ if(el.tagName!=='INPUT' || el.id==='pfD') return; const v = parseAR(el.value); if(isFinite(v)) el.value = nf(v, el.id==='pfT' ? 2 : (v%1 ? 2 : 0)); });
     });
     document.querySelectorAll('[data-calc]').forEach(b=>b.addEventListener('click', ()=>{ calc = b.dataset.calc; try{localStorage.setItem('macro-calc', calc);}catch(e){} renderCalc(); }));
+    // usar una calculadora (la primera vez que se cambia un dato de cada una)
+    document.querySelectorAll('#vC input, #vC select').forEach(el=>el.addEventListener('change', ()=>gcUna('calculadora-' + calc)));
   }
   function renderCalc(){
     initCalc();
@@ -1281,6 +1296,7 @@ footer a{color:var(--ink2)}
   }
   const tipbox = $('tipbox'); let tipFor = null, tipHide;
   function showTip(b){
+    gcUna('glosario-' + b.dataset.tip);
     clearTimeout(tipHide);
     const [t, x] = GLOS[b.dataset.tip]; tipbox.innerHTML = `<b>${esc(t)}</b>${esc(x)}`; tipbox.hidden = false;
     if(tipFor && tipFor!==b) tipFor.setAttribute('aria-expanded','false');
@@ -1388,6 +1404,7 @@ footer a{color:var(--ink2)}
     const b = e.target.closest('.tools button'); if(!b) return;
     const ch = $(b.dataset.ch); if(!ch || !ch._exp) return;
     const ci = chartInfo(ch), nombre = `macro-ar_${slug(ci.titulo)}_${ultimaFecha()}.png`;
+    gc(`${b.dataset.act==='share'?'compartir':b.dataset.act}-${b.dataset.ch}`, true);
     if(b.dataset.act==='csv') return csvGrafico(ch);
     if(b.dataset.act==='png'){ const blob = await pngGrafico(ch); if(blob) bajar(blob, nombre); return; }
     // compartir
@@ -1433,6 +1450,7 @@ footer a{color:var(--ink2)}
   };
   document.addEventListener('click', e=>{
     const b = e.target.closest('[data-csv]'); if(!b || !CSV[b.dataset.csv]) return;
+    gc('csv-pestaña-' + b.dataset.csv, true);
     const [head, rows] = CSV[b.dataset.csv]();
     const body = rows.filter(r=>r.slice(1).some(v=>v!=null)).map(r=>[r[0], ...r.slice(1).map(num)].join(';'));
     const txt = '\ufeff' + [head.join(';'), ...body].join('\r\n') + '\r\n';
@@ -1444,8 +1462,10 @@ footer a{color:var(--ink2)}
   // ---- shell ----
   const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], calculadoras:['tabC','vC',()=>renderCalc()]};
   let tab = 'dolares';
+  let tabContado = null;
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';
+    if(tab !== tabContado){ tabContado = tab; gc(location.pathname + '#' + tab); }
     for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
     $('segRange').style.visibility = tab==='calculadoras' ? 'hidden' : '';
     try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
