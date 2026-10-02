@@ -79,8 +79,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 Descartado por Francisco: calendario de vencimientos de deuda, "BSTEP",
 balanza cambiaria. Todo lo demás va, con los agregados de cada punto.
 
-### Bloque 1 (hecho el 02/10/2026; falta confirmar con la primera corrida que cargue `compras`
-y que DolarApi responda desde el navegador en el sitio publicado)
+### Bloque 1 (HECHO y verificado el 02/10/2026: `compras` cargó 180 días desde 02/01;
+DolarApi responde desde el navegador, CORS OK)
 1. **Firma**: "Diseñado y operado por Francisco Epherra" junto al nombre del sitio,
    en chico, debajo del título.
 2. **Canje histórico**: gráfico de la prima CCL/MEP − 1 en %, con su promedio
