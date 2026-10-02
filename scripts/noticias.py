@@ -2,8 +2,8 @@
 
 Solo guarda título, link, medio y hora: la nota se lee en el sitio de cada medio.
 Uso: python scripts/noticias.py
-Lo corre .github/workflows/noticias.yml cada hora. Si un medio falla, se conservan
-sus titulares anteriores y se registra el error.
+Lo corre .github/workflows/noticias.yml cada hora. Los titulares se acumulan durante
+48 horas; si un medio falla, se conservan los anteriores y se registra el error.
 """
 
 import html
@@ -99,10 +99,10 @@ def main():
             estado[medio] = f"ok ({len(nuevos_por_medio[medio])})"
         except Exception as e:  # noqa: BLE001
             estado[medio] = f"error: {e}"
-    # Medios que fallaron: quedan sus titulares anteriores.
+    # Se acumulan: los titulares anteriores quedan hasta cumplir 48 horas (algunos feeds,
+    # como el de Ámbito, traen solo los últimos 20) y los de un medio que falló, también.
     for it in previo.get("items", []):
-        if it["f"] not in nuevos_por_medio:
-            todos[it["u"]] = it
+        todos[it["u"]] = it
     for items in nuevos_por_medio.values():
         for it in items:
             todos[it["u"]] = it
