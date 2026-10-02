@@ -6,8 +6,9 @@ Fuentes:
     tasas, depósitos, inflación, expectativas y compras de divisas del BCRA;
     estas últimas se piden siempre desde el 1 de enero para los acumulados)
   - DolarApi (cripto y tarjeta del día)
+  - FRED (inflación de EE.UU., para el dólar a precios de hoy)
 
-Uso: python scripts/update.py [--dias N]
+Uso: python scripts/update.py [--dias N] [--historia]
 Revisa los últimos N días (10 por defecto), así se completan solos los días
 que el BCRA publica con atraso o que una corrida anterior no pudo traer.
 Nunca inventa datos: si una fuente falla, ese campo queda como estaba.
@@ -58,14 +59,27 @@ DATOSGOB_MENSUAL = {
     "74.3_ISC_0_M_19": "saldo",                # saldo comercial, MUSD
 }
 DATOSGOB_TRIM = {"166.2_PPIB_0_0_3": "pib"}  # PBI a precios corrientes, millones $ (valor anualizado)
+# Historia larga de dólares para "Dólar a precios de hoy" (clave "historico" de
+# data.json, una fila por mes con promedios). Arranca en 2017 porque antes el IPC
+# oficial (y por lo tanto el CER) estaba manipulado. La primera vez (o con
+# --historia) se baja todo desde HIST_DOLAR; después, solo desde el mes anterior.
+HIST_DOLAR = "2017-01-01"
+HIST_AMBITO = {"ofi": "dolar/oficial", "blue": "dolar/informal", "mep": "dolarrava/mep", "ccl": "dolarrava/cl"}
+HIST_BCRA = {5: "may", 30: "cer"}
+# Inflación de EE.UU. (CPI-U sin desestacionalizar, BLS vía FRED, CSV sin clave).
+FRED_CPI = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS&cosd=2016-12-01"
 
 log_ok, log_err = [], []
 
 
+def get_text(url):
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json,text/csv,text/plain,*/*"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return r.read().decode("utf-8")
+
+
 def get_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json,text/plain,*/*"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    return json.loads(get_text(url))
 
 
 def num_ar(s):
@@ -197,6 +211,96 @@ def datos_gob_ar():
     return mensual, trimestral
 
 
+def tramos(desde, hasta):
+    """Parte [desde, hasta] en tramos de a un año (las APIs cortan las respuestas largas)."""
+    d0, fin = date.fromisoformat(desde), date.fromisoformat(hasta)
+    while d0 <= fin:
+        d1 = min(date(d0.year, 12, 31), fin)
+        yield d0, d1
+        d0 = d1 + timedelta(days=1)
+
+
+def historico(previo, hoy, forzar=False):
+    """Promedios mensuales de dólares, CER y CPI de EE.UU. desde HIST_DOLAR.
+
+    Devuelve la lista nueva para data["historico"]. Si una fuente falla, sus
+    campos quedan como estaban."""
+    meses = {h["mes"]: dict(h) for h in previo}
+    hasta = hoy.isoformat()
+    # Desde el 1° del mes anterior: así se recalculan enteros este mes y el anterior.
+    reciente = (hoy.replace(day=1) - timedelta(days=1)).replace(day=1).isoformat()
+
+    def desde_de(campo):
+        """Historia completa si el campo todavía no tiene datos de antes de 2019."""
+        tiene = any(campo in h for m, h in meses.items() if m < "2019-01")
+        return reciente if (tiene and not forzar) else HIST_DOLAR
+
+    diario, desdes = {}, {}
+    for campo, ruta in HIST_AMBITO.items():
+        desde = desdes[campo] = desde_de(campo)
+        try:
+            pts = {}
+            for d0, d1 in tramos(desde, hasta):
+                url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
+                for row in get_json(url)[1:]:
+                    try:
+                        f = fecha_ambito(row[0])
+                        v = num_ar(row[2] if campo in ("ofi", "blue") else row[1])
+                    except (ValueError, IndexError):
+                        continue
+                    if es_habil(f) and f not in pts and v > 0:
+                        pts[f] = v
+            diario[campo] = pts
+            log_ok.append(f"Historia {campo}: {len(pts)} días desde {desde}")
+        except Exception as e:  # noqa: BLE001
+            log_err.append(f"Historia {campo}: {e}")
+    for vid, campo in HIST_BCRA.items():
+        desde = desdes[campo] = desde_de(campo)
+        try:
+            pts = {}
+            for d0, d1 in tramos(desde, hasta):
+                pts.update(bcra_puntos(vid, d0.isoformat(), d1.isoformat()))
+            if campo == "may":
+                pts = {f: v for f, v in pts.items() if es_habil(f)}
+            diario[campo] = pts
+            log_ok.append(f"Historia {campo}: {len(pts)} días desde {desde}")
+        except Exception as e:  # noqa: BLE001
+            log_err.append(f"Historia {campo} (id {vid}): {e}")
+    # Feriados: Ámbito repite el último valor del MEP, CCL y blue; quedarse con
+    # los días en que hubo oficial o mayorista.
+    habiles = set(diario.get("ofi", {})) | set(diario.get("may", {}))
+    for campo in ("mep", "ccl", "blue"):
+        if campo in diario and habiles:
+            diario[campo] = {f: v for f, v in diario[campo].items() if f in habiles}
+    for campo, pts in diario.items():
+        pormes = {}
+        for f, v in pts.items():
+            if f >= desdes[campo]:
+                pormes.setdefault(f[:7], []).append(v)
+        for mes, vals in pormes.items():
+            meses.setdefault(mes, {"mes": mes})[campo] = round(sum(vals) / len(vals), 4 if campo == "cer" else 2)
+    try:
+        n = 0
+        for linea in get_text(FRED_CPI).strip().splitlines()[1:]:
+            partes = linea.strip().split(",")
+            if len(partes) < 2:
+                continue
+            try:
+                v = float(partes[1])
+            except ValueError:  # FRED marca con "." los meses sin dato
+                continue
+            mes = partes[0][:7]
+            if mes >= HIST_DOLAR[:7]:
+                meses.setdefault(mes, {"mes": mes})["cpi"] = round(v, 3)
+                n += 1
+        if not n:
+            raise ValueError("CSV sin datos")
+        log_ok.append(f"CPI EE.UU. (FRED): {n} meses")
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"CPI EE.UU. (FRED): {e}")
+    return [meses[k] for k in sorted(meses) if k <= hasta[:7]]
+
+
 def dolarapi():
     out = {}
     try:
@@ -217,6 +321,7 @@ def dolarapi():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dias", type=int, default=10)
+    ap.add_argument("--historia", action="store_true", help="volver a bajar toda la historia de dólares desde 2017")
     args = ap.parse_args()
 
     hoy = datetime.now(TZ_AR).date()
@@ -252,6 +357,7 @@ def main():
         sys.exit(1)
 
     data = json.loads(DATA.read_text(encoding="utf-8"))
+    hist = historico(data.get("historico", []), hoy, args.historia)
     diario = {d["fecha"]: d for d in data.get("diario", [])}
     mensual = {m["mes"]: m for m in data.get("mensual", [])}
 
@@ -278,6 +384,7 @@ def main():
     data["diario"] = [diario[k] for k in sorted(diario)]
     data["mensual"] = [mensual[k] for k in sorted(mensual)]
     data["trimestral"] = [trimestral[k] for k in sorted(trimestral)]
+    data["historico"] = hist
     data["actualizado"] = data["diario"][-1]["fecha"]
     DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     json.loads(DATA.read_text(encoding="utf-8"))  # verificar que quedó un JSON válido
