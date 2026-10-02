@@ -21,7 +21,7 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
   Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
-  **Fiscal** (`#fiscal`) y **Mercado** (`#mercado`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`) y **Calculadoras** (`#calculadoras`), selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
   no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
@@ -220,6 +220,14 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   Compartir: en celular usa navigator.share con el archivo (no se pudo probar acá:
   Chromium de Linux no lo soporta); en compu copia la imagen al portapapeles y abre
   twitter.com/intent/tweet con texto y link (si no puede copiar, la descarga).
+- HECHO: pestaña **Calculadoras** (`#calculadoras`, `renderCalc`), con selector y la última
+  elegida en localStorage: (1) ¿Plazo fijo o dólar? → dólar de equilibrio = precio × (1 +
+  TNA × días/365), TNA precargada con `pf` del BCRA, precio en vivo (editable), tasa real
+  contra REM y cuánto se movió ese dólar en los últimos N días; (2) Inflación → monto × CER
+  hoy / CER del mes (historico desde 2017) y comparación con haber comprado blue;
+  (3) Sueldo en dólares → sueldo ÷ cada dólar hoy y, opcional, comparación con un sueldo
+  anterior (poder de compra por CER y en dólares). Francisco eligió 1, 2 y 5 de las ideas
+  (descartadas por ahora: tarjeta vs MEP y calculadora de bonos). Números con `parseAR`.
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto

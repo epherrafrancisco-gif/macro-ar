@@ -146,6 +146,30 @@ td.up{color:var(--pos)} td.dn{color:var(--neg)} td small{color:var(--muted);font
 footer{color:var(--muted);font-size:12.5px;display:grid;gap:4px;max-width:80ch}
 footer a{color:var(--ink2)}
 .note{font-size:12px;color:var(--muted);margin:0}
+/* calculadoras */
+.calcsel{justify-self:start;flex-wrap:wrap}
+.calc{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:22px 28px;align-items:start}
+@media (max-width:760px){.calc{grid-template-columns:1fr}}
+.form{display:grid;gap:12px}
+.form label{display:grid;gap:4px;font-size:12.5px;color:var(--ink2);font-weight:500}
+.form .lab{display:flex;align-items:center}
+.form input,.form select{font:inherit;font-family:var(--mono);font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;min-width:0}
+.form select{font-family:var(--sans);font-size:15px}
+.form input:focus,.form select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .pre{position:relative}
+.form .pre span{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-family:var(--mono);font-size:14px;pointer-events:none}
+.form .pre input{padding-left:30px}
+.form .hint{font-size:11.5px;color:var(--muted);font-weight:400}
+.res{display:grid;gap:16px}
+.res .stats{gap:12px 30px}
+.verd{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14px;line-height:1.5}
+.verd b{font-family:var(--mono);font-weight:600}
+.minit{width:100%;font-size:13px;min-width:0}
+.minit td,.minit th{padding:6px 8px}
+.chipsel{display:flex;flex-wrap:wrap;gap:6px}
+.chipsel button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chipsel button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 /* (i) informativos */
 .info{all:unset;box-sizing:border-box;display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--muted);color:var(--muted);font:600 10px/1 var(--mono);text-transform:none;letter-spacing:0;margin-left:5px;vertical-align:1px;cursor:help;flex:none}
 .info:hover,.info[aria-expanded="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
@@ -232,6 +256,7 @@ footer a{color:var(--ink2)}
       <a href="#dinero" role="tab" id="tabN" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
       <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
+      <a href="#calculadoras" role="tab" id="tabC" aria-selected="false">Calculadoras</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -365,6 +390,65 @@ footer a{color:var(--ink2)}
       <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Macro AR con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
+  </section>
+
+
+  <!-- CALCULADORAS -->
+  <section class="view" id="vC" hidden>
+    <div class="seg calcsel" role="tablist" aria-label="Elegir calculadora">
+      <button type="button" data-calc="pf" aria-selected="true">¿Plazo fijo o dólar?</button>
+      <button type="button" data-calc="inf" aria-selected="false">Inflación</button>
+      <button type="button" data-calc="sue" aria-selected="false">Sueldo en dólares</button>
+    </div>
+
+    <div class="card" id="cPF">
+      <div class="head"><h2>¿Plazo fijo o dólar?</h2><span class="note">A qué precio tiene que llegar el dólar para que convenga</span></div>
+      <div class="calc">
+        <div class="form">
+          <label>Monto en pesos<div class="pre"><span>$</span><input id="pfM" inputmode="decimal" autocomplete="off" value="1.000.000"></div></label>
+          <div class="two">
+            <label>Plazo (días)<input id="pfD" inputmode="numeric" autocomplete="off" value="30"></label>
+            <label><span class="lab">TNA del plazo fijo (%)<button type="button" class="info" data-tip="tna" aria-label="¿Qué es TNA?" aria-expanded="false">i</button></span><input id="pfT" inputmode="decimal" autocomplete="off"></label>
+          </div>
+          <label>Dólar para comparar<select id="pfK"><option value="mep">MEP</option><option value="blue">Blue</option><option value="oficial">Oficial</option><option value="ccl">CCL</option><option value="cripto">Cripto</option></select></label>
+          <label>Precio de ese dólar hoy<div class="pre"><span>$</span><input id="pfP" inputmode="decimal" autocomplete="off"></div><span class="hint" id="pfPh"></span></label>
+        </div>
+        <div class="res" id="pfR"></div>
+      </div>
+      <p class="note">Plazo fijo tradicional: interés simple, TNA × días ÷ 365. La TNA viene cargada con el promedio de los bancos (BCRA); poné la de tu banco. No incluye comisiones de compra de dólares ni impuestos. La inflación esperada es la mediana del REM del BCRA para los próximos 12 meses.</p>
+    </div>
+
+    <div class="card" id="cINF" hidden>
+      <div class="head"><h2>Calculadora de inflación</h2><span class="note">¿Cuánto son hoy los pesos de otra época?</span></div>
+      <div class="calc">
+        <div class="form">
+          <label>Monto en pesos de esa fecha<div class="pre"><span>$</span><input id="inM" inputmode="decimal" autocomplete="off" value="50.000"></div></label>
+          <div class="two">
+            <label>Mes<select id="inMes"><option value="01">enero</option><option value="02">febrero</option><option value="03">marzo</option><option value="04">abril</option><option value="05">mayo</option><option value="06">junio</option><option value="07">julio</option><option value="08">agosto</option><option value="09">septiembre</option><option value="10">octubre</option><option value="11">noviembre</option><option value="12">diciembre</option></select></label>
+            <label>Año<select id="inAn"></select></label>
+          </div>
+        </div>
+        <div class="res" id="inR"></div>
+      </div>
+      <p class="note" id="inN"></p>
+    </div>
+
+    <div class="card" id="cSUE" hidden>
+      <div class="head"><h2>Tu sueldo en dólares</h2><span class="note">Y cuánto cambió tu poder de compra</span></div>
+      <div class="calc">
+        <div class="form">
+          <label>Tu sueldo hoy (en mano)<div class="pre"><span>$</span><input id="suS" inputmode="decimal" autocomplete="off" value="1.500.000"></div></label>
+          <label>Dólar para comparar<select id="suK"><option value="mep">MEP</option><option value="blue">Blue</option><option value="oficial">Oficial</option><option value="ccl">CCL</option></select></label>
+          <label>Para comparar: tu sueldo de antes<div class="pre"><span>$</span><input id="suA" inputmode="decimal" autocomplete="off" placeholder="opcional"></div></label>
+          <div class="two">
+            <label>Mes<select id="suMes"><option value="01">enero</option><option value="02">febrero</option><option value="03">marzo</option><option value="04">abril</option><option value="05">mayo</option><option value="06">junio</option><option value="07">julio</option><option value="08">agosto</option><option value="09">septiembre</option><option value="10">octubre</option><option value="11">noviembre</option><option value="12">diciembre</option></select></label>
+            <label>Año<select id="suAn"></select></label>
+          </div>
+        </div>
+        <div class="res" id="suR"></div>
+      </div>
+      <p class="note" id="suN"></p>
+    </div>
   </section>
 
   <footer>
@@ -648,6 +732,109 @@ footer a{color:var(--ink2)}
       return `<tr><td>${fd(d.fecha)}</td><td>${c(o)}</td><td>${c(get(d,'mayorista'))}</td><td>${c(mep)}</td><td>${c(ccl)}</td><td>${c(get(d,'blue'))}</td>
         <td>${(o&&ccl)?pc(ccl/o-1):'—'}</td><td class="${vm>0?'up':vm<0?'dn':''}">${vm!=null?pc(vm,2):'—'}</td></tr>`;
     }).join('') || `<tr><td colspan="8" style="color:var(--muted)">${loaded.d?'Sin datos.':'Cargando…'}</td></tr>`;
+  }
+
+
+  // ---- CALCULADORAS ----
+  // Números en formato argentino: "1.000.000", "1000000", "22,5".
+  const parseAR = s => { s = String(s??'').trim().replace(/[\s$%]/g,''); if(!s) return NaN;
+    if(s.includes(',')) s = s.replace(/\./g,'').replace(',','.'); else if(/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g,'');
+    return parseFloat(s); };
+  const pesos = (v,d) => '$ '+nf(v, d ?? (Math.abs(v)>=1000?0:2));
+  const usd = v => 'US$ '+nf(v, Math.abs(v)>=1000?0:2);
+  const DOLN = {oficial:'oficial', mep:'MEP', ccl:'CCL', blue:'blue', cripto:'cripto', mayorista:'mayorista'};
+  const HK = {oficial:'ofi', mep:'mep', ccl:'ccl', blue:'blue'};  // claves del histórico mensual
+  const spot = k => { const p = cardSeries(k).pts; return p.length ? p[p.length-1] : null; };
+  const stc = (l,v,d,cls='',hero=false) => `<div class="st${hero?' hero':''}"><span class="lbl">${l}</span><span class="v ${cls}">${v}</span><span class="d">${d||''}</span></div>`;
+  let calc = 'pf', calcInit = false;
+  try{ const c = localStorage.getItem('macro-calc'); if(['pf','inf','sue'].includes(c)) calc = c; }catch(e){}
+  function llenarAnios(sel, mesSel, defY, defM){
+    const ms = hist.filter(m=>m.cer).map(m=>m.mes); if(!ms.length) return;
+    const y0 = +ms[0].slice(0,4), y1 = +ms[ms.length-1].slice(0,4);
+    if(sel.options.length) return;
+    for(let y=y1; y>=y0; y--) sel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+    sel.value = String(defY); mesSel.value = defM;
+  }
+  function initCalc(){
+    if(calcInit || !loaded.m) return; calcInit = true;
+    const pf = series('pf'); if(pf.length) $('pfT').value = nf(pf[pf.length-1][1], 2);
+    const hoy = new Date(); llenarAnios($('inAn'), $('inMes'), 2019, '03'); llenarAnios($('suAn'), $('suMes'), hoy.getFullYear()-2, String(hoy.getMonth()+1).padStart(2,'0'));
+    // precio del dólar: se completa solo hasta que el usuario lo cambie
+    $('pfP').addEventListener('input', ()=>{ $('pfP').dataset.toc = '1'; });
+    $('pfK').addEventListener('change', ()=>{ delete $('pfP').dataset.toc; renderCalc(); });
+    document.querySelectorAll('#vC input, #vC select').forEach(el=>{
+      el.addEventListener('input', calcular);
+      el.addEventListener('blur', ()=>{ if(el.tagName!=='INPUT' || el.id==='pfD') return; const v = parseAR(el.value); if(isFinite(v)) el.value = nf(v, el.id==='pfT' ? 2 : (v%1 ? 2 : 0)); });
+    });
+    document.querySelectorAll('[data-calc]').forEach(b=>b.addEventListener('click', ()=>{ calc = b.dataset.calc; try{localStorage.setItem('macro-calc', calc);}catch(e){} renderCalc(); }));
+  }
+  function renderCalc(){
+    initCalc();
+    document.querySelectorAll('[data-calc]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.calc===calc)));
+    $('cPF').hidden = calc!=='pf'; $('cINF').hidden = calc!=='inf'; $('cSUE').hidden = calc!=='sue';
+    const k = $('pfK').value, sp = spot(k);
+    if(sp && !$('pfP').dataset.toc) $('pfP').value = nf(sp[1], 2);
+    $('pfPh').textContent = sp ? `Dólar ${DOLN[k]} ${live[k]?'en vivo':'al cierre del '+fd(sp[0])}. Podés cambiarlo.` : '';
+    calcular();
+  }
+  function calcular(){
+    if(!loaded.m) return;
+    if(calc==='pf') calcPF(); else if(calc==='inf') calcInf(); else calcSue();
+  }
+  function calcPF(){
+    const M = parseAR($('pfM').value), d = Math.round(parseAR($('pfD').value)), T = parseAR($('pfT').value), P = parseAR($('pfP').value), k = $('pfK').value;
+    if(!(M>0 && d>0 && T>=0 && P>0)){ $('pfR').innerHTML = '<div class="empty">Completá monto, plazo, tasa y precio del dólar.</div>'; return; }
+    const r = T/100*d/365, fin = M*(1+r), eq = P*(1+r), us = M/P;
+    const ex = months.filter(m=>m.expect!=null), e = ex.length ? ex[ex.length-1].expect : null;
+    const ie = e!=null ? Math.pow(1+e/100, d/365)-1 : null, real = ie!=null ? (1+r)/(1+ie)-1 : null;
+    // cuánto se movió ese dólar en los últimos d días (si hay historia diaria suficiente)
+    const s = series(k), lim = new Date(Date.now()-d*864e5).toISOString().slice(0,10);
+    const ant = s.filter(p=>p[0]<=lim).pop(), mov = (ant && s.length) ? s[s.length-1][1]/ant[1]-1 : null;
+    $('pfR').innerHTML = `<div class="stats">${stc('Dólar de equilibrio', pesos(eq,2), `${pc(r,2)} sobre los ${pesos(P,2)} de hoy`, '', true)}</div>
+      <div class="verd">Si en ${d} días el dólar ${DOLN[k]} vale <b>más de ${pesos(eq,2)}</b>, convenía comprar dólares. Si vale menos, convenía el plazo fijo.</div>
+      <div class="stats">${stc('Plazo fijo al vencimiento', pesos(fin), `ganás ${pesos(fin-M)}`)}${stc('Si comprás dólares hoy', usd(us), `a ${pesos(P,2)} cada uno`)}
+      ${real!=null?stc('Rinde contra la inflación esperada', sg(real*100,2)+'%', `REM: ${nf(ie*100,1)}% en ${d} días`, real>=0?'up':'dn'):''}
+      ${mov!=null?stc(`El ${DOLN[k]} en los últimos ${d} días`, pc(mov,1), `de ${pesos(ant[1],2)} (${fd(ant[0])})`):''}</div>`;
+  }
+  function mesSel(mSel, aSel){ return `${aSel.value}-${mSel.value}`; }
+  const nomMes = m => `${MESL[+m.slice(5)-1]} de ${m.slice(0,4)}`;
+  function calcInf(){
+    const M = parseAR($('inM').value), mes = mesSel($('inMes'), $('inAn'));
+    const h = hist.filter(m=>m.cer), L = h[h.length-1], H = h.find(m=>m.mes===mes);
+    if(!(M>0)){ $('inR').innerHTML = '<div class="empty">Poné un monto.</div>'; return; }
+    if(!H || !L){ $('inR').innerHTML = `<div class="empty">No hay datos para ${nomMes(mes)}. La serie arranca en ${h.length?nomMes(h[0].mes):'2017'}.</div>`; return; }
+    if(H.mes>=L.mes){ $('inR').innerHTML = '<div class="empty">Elegí un mes anterior al actual.</div>'; return; }
+    const f = L.cer/H.cer, hoy = M*f;
+    const bl = H.blue, ofi = H.ofi, sb = spot('blue'), so = spot('oficial');
+    const conBlue = bl && sb ? M/bl*sb[1] : null;
+    $('inR').innerHTML = `<div class="stats">${stc('Equivalen hoy a', pesos(hoy), `inflación acumulada: ${pc(f-1,1).replace('+','')}`, '', true)}</div>
+      <div class="verd">Para comprar hoy lo mismo que con <b>${pesos(M)}</b> en ${nomMes(H.mes)}, necesitás <b>${pesos(hoy)}</b>. Los precios se multiplicaron por <b>${nf(f, f<10?2:1)}</b>.</div>
+      <div class="stats">${bl?stc(`En dólares blue de ${MESL[+H.mes.slice(5)-1]} ${H.mes.slice(0,4)}`, usd(M/bl), `a ${pesos(bl,2)} (promedio del mes)`):''}
+      ${ofi?stc('En dólares oficiales', usd(M/ofi), `a ${pesos(ofi,2)}`):''}
+      ${conBlue!=null?stc('Esos dólares blue hoy valen', pesos(conBlue), `${pc(conBlue/hoy-1,1)} contra ajustar por inflación`, conBlue>=hoy?'up':'dn'):''}</div>`;
+    $('inN').textContent = `Ajuste por CER, el índice del BCRA que sigue al IPC del INDEC con un mes y medio de atraso; "hoy" es ${nomMes(L.mes)}. Dólares: promedio de cada mes (Ámbito). La serie arranca en 2017 porque antes el IPC oficial no era confiable.`;
+  }
+  function calcSue(){
+    const S = parseAR($('suS').value), k = $('suK').value, A = parseAR($('suA').value), mes = mesSel($('suMes'), $('suAn'));
+    const sp = spot(k);
+    if(!(S>0) || !sp){ $('suR').innerHTML = '<div class="empty">Poné tu sueldo.</div>'; return; }
+    const filas = ['oficial','mep','ccl','blue'].map(x=>{ const p = spot(x); return p ? `<tr><td>${DOLN[x][0].toUpperCase()+DOLN[x].slice(1)}</td><td>${pesos(p[1],2)}</td><td>${usd(S/p[1])}</td></tr>` : ''; }).join('');
+    let html = `<div class="stats">${stc(`Tu sueldo en dólares ${DOLN[k]}`, usd(S/sp[1]), `a ${pesos(sp[1],2)} cada uno`, '', true)}</div>
+      <div class="tablewrap"><table class="minit"><thead><tr><th>Dólar</th><th>Precio hoy</th><th>Tu sueldo</th></tr></thead><tbody>${filas}</tbody></table></div>`;
+    const h = hist.filter(m=>m.cer), L = h[h.length-1], H = h.find(m=>m.mes===mes);
+    if(A>0){
+      if(!H || !L || H.mes>=L.mes) html += `<div class="empty">Elegí un mes entre ${h.length?nomMes(h[0].mes):'2017'} y el mes pasado.</div>`;
+      else {
+        const pa = H[HK[k]], f = L.cer/H.cer, adj = A*f, realv = S/adj-1;
+        html += `<div class="stats">${stc('Poder de compra en pesos', pc(realv,1), `tu sueldo de ${nomMes(H.mes)} hoy serían ${pesos(adj)}`, realv>=0?'up':'dn')}`;
+        if(pa){ const ua = A/pa, uh = S/sp[1], need = ua*sp[1];
+          html += stc(`En dólares ${DOLN[k]}`, pc(uh/ua-1,1), `de ${usd(ua)} a ${usd(uh)}`, uh>=ua?'up':'dn') + `</div>
+          <div class="verd">Para tener el mismo poder de compra que en ${nomMes(H.mes)} tendrías que cobrar <b>${pesos(adj)}</b>. Para cobrar los mismos dólares ${DOLN[k]}, <b>${pesos(need)}</b>.</div>`; }
+        else html += `</div><div class="verd">Para tener el mismo poder de compra que en ${nomMes(H.mes)} tendrías que cobrar <b>${pesos(adj)}</b>. No hay dato del ${DOLN[k]} para ese mes${k==='mep'?' (la serie del MEP arranca en marzo de 2020)':''}.</div>`;
+      }
+    }
+    $('suR').innerHTML = html;
+    $('suN').textContent = 'Hoy: cotización en vivo o último cierre. Meses anteriores: promedio del mes. El poder de compra en pesos se ajusta por CER (sigue al IPC con un mes y medio de atraso).';
   }
 
   // ---- DÓLAR A PRECIOS DE HOY ----
@@ -1180,11 +1367,12 @@ footer a{color:var(--ink2)}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], calculadoras:['tabC','vC',()=>renderCalc()]};
   let tab = 'dolares';
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';
     for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
+    $('segRange').style.visibility = tab==='calculadoras' ? 'hidden' : '';
     try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
@@ -1219,6 +1407,7 @@ footer a{color:var(--ink2)}
       if(liveOk) for(const k in nuevo){ const a = live[k]; if(a && a.v !== nuevo[k].v) f[k] = nuevo[k].v > a.v ? 'up' : 'dn'; }
       live = nuevo; liveAt = Date.now(); liveOk = true; flash = f;
       if(loaded.d && tab==='dolares') renderDolares(); else flash = {};
+      if(loaded.d && tab==='calculadoras') renderCalc();
     }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d && tab==='dolares') renderDolares(); }
     busy = false; tick();
     lt = setTimeout(poll, LIVE_MS);
