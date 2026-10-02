@@ -115,7 +115,9 @@ def ambito(desde, hasta, desde_largo):
     out = {}
     for campo, (ruta, tipo) in AMBITO.items():
         d0 = desde_largo if campo in AMBITO_LARGO else desde
-        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0}/{hasta}"
+        # Ámbito no incluye el día final del rango: se pide hasta mañana para tener el cierre de hoy.
+        fin = (date.fromisoformat(hasta) + timedelta(days=1)).isoformat()
+        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0}/{fin}"
         try:
             rows = get_json(url)
             n = 0
@@ -261,9 +263,10 @@ def historico(previo, hoy, forzar=False):
         return [(date(y, 1, 1), date(y, 12, 31)) for y in sorted(huecos)] + \
             [(date.fromisoformat(reciente), hoy)]
 
-    def ambito_tramo(ruta, d0, d1):
-        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{d1.isoformat()}"
-        return con_reintento(get_json, url)
+    def ambito_tramo(ruta, d0, d1, **kw):
+        # Ámbito no incluye el día final del rango: se pide hasta d1 + 1.
+        url = f"https://mercados.ambito.com//{ruta}/historico-general/{d0.isoformat()}/{(d1 + timedelta(days=1)).isoformat()}"
+        return con_reintento(get_json, url, **kw)
 
     diario, vent = {}, {}
     for campo, ruta in HIST_AMBITO.items():
@@ -285,7 +288,7 @@ def historico(previo, hoy, forzar=False):
                         while dd <= m1:
                             if dd.weekday() < 5:
                                 try:
-                                    partes.append(con_reintento(get_json, f"https://mercados.ambito.com//{ruta}/historico-general/{dd.isoformat()}/{dd.isoformat()}", intentos=2, espera=1))
+                                    partes.append(ambito_tramo(ruta, dd, dd, intentos=2, espera=1))
                                 except Exception:  # noqa: BLE001
                                     malos.append(dd.isoformat())
                             dd += timedelta(days=1)
