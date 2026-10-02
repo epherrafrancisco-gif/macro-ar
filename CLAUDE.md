@@ -21,7 +21,7 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 - `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
   Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
   Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
-  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Noticias** (`#noticias`) y **Calculadoras** (`#calculadoras`), en ese orden, selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
+  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Noticias** (`#noticias`), **Calculadoras** (`#calculadoras`) y **Sobre Macro AR** (`#sobre`), en ese orden, selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
   no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
   Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
   Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
@@ -259,6 +259,13 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   Workflow `noticias.yml`: L a V cada hora de 6 a 22 ART, fines de semana cada 3 h.
   Filtros por tema y medio, marca "NUEVA" desde la última visita (localStorage), evento
   `noticia-<medio>` en GoatCounter al tocar un titular. El chequeo revisa que esté al día.
+- HECHO: última pestaña **Sobre Macro AR** (`#sobre`, sección `vS`, contenido estático en el
+  HTML): presentación en primera persona (estudiante de Economía Empresarial en UTDT, Técnico
+  en Administración de las Organizaciones, invierte desde los 17; NO está en el Finance
+  Club; NO mencionar el negocio familiar ni IG/X por ahora), por qué hizo Macro AR, para
+  quién es, "lo que me mueve", cómo funciona, fuentes y aclaraciones. Contacto: LinkedIn
+  www.linkedin.com/in/francisco-epherra-8509513b4 y epherrafrancisco@gmail.com (eventos
+  `contacto-linkedin|mail`). Foto: pendiente (por ahora círculo con "FE", `#foto`).
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
