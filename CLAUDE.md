@@ -250,6 +250,8 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   (navigator.webdriver, o sea el chequeo diario). La página /diario/ cuenta sola.
   Para no contar sus propias visitas: abrir el sitio con `#toggle-goatcounter` en cada
   navegador/celular.
+- DESCARTADOS (02/10/2026): "el día en 30 segundos", dólar contra la banda cambiaria y
+  curva de tasas en pesos. No volver a proponerlos.
 - El dominio (F) queda para después.
 
 ## Otras cosas del proyecto
