@@ -7,6 +7,11 @@ on:
   schedule:
     - cron: "43 22 * * 1-5"   # 19:43 ART
   workflow_dispatch:
+    inputs:
+      url:
+        description: "Dirección a revisar (vacío = el sitio publicado)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -24,7 +29,7 @@ jobs:
         continue-on-error: true
         run: |
           npm install --no-save --no-audit --no-fund playwright-core@1 >/dev/null
-          node scripts/chequeo.mjs
+          node scripts/chequeo.mjs ${{ inputs.url }}
           
       - name: Resumen
         if: always()
