@@ -1,0 +1,165 @@
+<!doctype html>
+<!-- Plantilla de la imagen diaria para redes (@macroar_diario), 1080x1350.
+     La genera scripts/diario.mjs después de cada actualización de datos y la guarda en
+     diario/hoy.png, junto con el texto sugerido para el posteo (diario/texto.txt).
+     Lee ../data.json. Expone window.TEXTO con el texto y marca body[data-listo]. -->
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<title>Macro AR · diario</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#0e1319; --surface:#161d25; --sunk:#121820; --line:#28323d; --grid:#1f2831;
+  --ink:#e6edf3; --ink2:#a9b6c3; --muted:#7c8a98; --accent:#6aa8d8;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181;
+  --pos:#4cc38a; --pos-bg:#12291f; --neg:#f07a70; --neg-bg:#2d1614; --neu-bg:#1c252f;
+  --sans:"Instrument Sans",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1350px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+.wrap{height:100%;padding:56px 60px 48px;display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto auto;gap:26px}
+header{display:flex;justify-content:space-between;align-items:flex-end}
+.logo{display:flex;align-items:center;gap:14px}
+.logo svg{width:54px;height:54px}
+h1{margin:0;font-size:46px;font-weight:700;letter-spacing:-.02em;line-height:1}
+h1 span{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:.62em;margin-left:8px;letter-spacing:0}
+.fecha{text-align:right;display:grid;gap:4px}
+.fecha b{font-size:34px;font-weight:600;letter-spacing:-.01em;font-family:var(--mono)}
+.fecha span{font-size:20px;color:var(--ink2)}
+.lbl{font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.dol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:grid;gap:6px}
+.q .n{font-size:24px;font-weight:600;display:flex;align-items:center;gap:10px}
+.q .n i{width:14px;height:14px;border-radius:3px;background:var(--c)}
+.q .v{font-family:var(--mono);font-size:54px;font-weight:500;letter-spacing:-.03em;line-height:1.05}
+.q .v small{font-size:.5em;color:var(--muted);margin-right:4px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:20px;font-weight:600;padding:3px 12px;border-radius:999px;background:var(--neu-bg);color:var(--ink2)}
+.chip.up{color:var(--pos);background:var(--pos-bg)} .chip.dn{color:var(--neg);background:var(--neg-bg)}
+.chip.bad.up{color:var(--neg);background:var(--neg-bg)} .chip.bad.dn{color:var(--pos);background:var(--pos-bg)}
+.q .s{font-size:18px;color:var(--muted)}
+.gaps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.g{border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:grid;gap:4px}
+.g b{font-family:var(--mono);font-size:32px;font-weight:500}
+.g span{font-size:18px;color:var(--ink2)}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px 12px;display:grid;grid-template-rows:auto minmax(0,1fr);min-height:0}
+.chart .h{display:flex;justify-content:space-between;align-items:baseline}
+.chart .h b{font-size:22px;font-weight:600}
+.leg{display:flex;gap:16px;font-size:17px;color:var(--ink2)}
+.leg span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;background:var(--c)}
+.chart .cv{position:relative;min-height:0;margin-top:8px}
+.chart svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.chart svg text{font-family:var(--mono);font-size:19px;fill:var(--muted)}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.k{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:6px;align-content:start}
+.k .v{font-family:var(--mono);font-size:30px;font-weight:500;letter-spacing:-.02em}
+.k .v small{font-size:.6em;color:var(--muted);margin-left:4px}
+.k .chip{font-size:16px;padding:2px 9px}
+.k .s{font-size:15px;color:var(--muted)}
+footer{display:flex;justify-content:space-between;align-items:center;font-size:19px;color:var(--ink2)}
+footer .url{font-family:var(--mono);color:var(--accent)}
+footer .src{font-size:15px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1d4f7a"/><path d="M6 22l6-7 5 4 9-10" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h1>Macro AR<span>diario</span></h1>
+    </div>
+    <div class="fecha"><b id="fecha"></b><span id="cuando"></span></div>
+  </header>
+  <div class="dol" id="dol"></div>
+  <div class="gaps" id="gaps"></div>
+  <div class="chart"><div class="h"><b>Últimos 3 meses</b><div class="leg"><span style="--c:var(--s1)">Oficial</span><span style="--c:var(--s2)">MEP</span><span style="--c:var(--s3)">CCL</span><span style="--c:var(--s4)">Blue</span></div></div><div class="cv"><svg id="ch"></svg></div></div>
+  <div class="kp" id="kp"></div>
+  <footer><span class="url">epherrafrancisco-gif.github.io/macro-ar</span><span>@macroar_diario</span></footer>
+</div>
+<script>
+(async()=>{
+  const j = await (await fetch('../data.json',{cache:'no-store'})).json();
+  const days = (j.diario||[]).filter(d=>d&&d.fecha).sort((a,b)=>a.fecha<b.fecha?-1:1);
+  const get = (d,k) => { const x=d[k]; return x==null?null:typeof x==='number'?x:(x.v??null); };
+  const nf = (n,d=2) => n.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const sg = (n,d=2) => (n>0?'+':n<0?'−':'')+nf(Math.abs(n),d);
+  const fd = s => s.split('-').reverse().join('/');
+  const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  // último dato y el anterior de una serie (cada uno con su fecha)
+  const ser = k => days.filter(d=>get(d,k)!=null).map(d=>[d.fecha,get(d,k)]);
+  const lt = k => { const s=ser(k); return {L:s[s.length-1], P:s[s.length-2], s}; };
+  const chip = (v,{pct=true,d=2,unit='',bad=false}={}) => v==null||!isFinite(v)?'':`<span class="chip ${bad?'bad ':''}${v>0?'up':v<0?'dn':''}">${pct?sg(v*100,d)+'%':sg(v,d)+unit}</span>`;
+
+  const ofi = lt('oficial'), F = ofi.L[0];
+  const dt = new Date(F+'T12:00:00Z');
+  document.getElementById('fecha').textContent = fd(F);
+  // Antes de las 17 h del mismo día los valores son parciales, no de cierre.
+  const ahora = new Date(), hoyAR = ahora.toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'});
+  const horaAR = +ahora.toLocaleString('en-US',{timeZone:'America/Argentina/Buenos_Aires',hour:'2-digit',hour12:false});
+  const parcial = F===hoyAR && horaAR<17;
+  const hhmm = ahora.toLocaleTimeString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',hour:'2-digit',minute:'2-digit',hour12:false});
+  document.getElementById('cuando').textContent = `${DIAS[dt.getUTCDay()]} ${dt.getUTCDate()} de ${MESES[dt.getUTCMonth()]} · ${parcial?`parcial, ${hhmm} h`:'cierre'}`;
+
+  const DOL=[['oficial','Oficial','--s1','BNA minorista'],['mep','MEP','--s2','Bolsa'],['ccl','CCL','--s3','Contado con liqui'],['blue','Blue','--s4','Informal']];
+  const vals={};
+  document.getElementById('dol').innerHTML = DOL.map(([k,n,c,s])=>{ const {L,P}=lt(k); vals[k]=L; if(!L) return '';
+    return `<div class="q"><div class="n"><i style="--c:var(${c})"></i>${n}</div><div class="v"><small>$</small>${nf(L[1])}</div>
+      <div class="row">${P?chip(L[1]/P[1]-1):''}<span class="s">${s}${L[0]!==F?' · '+fd(L[0]).slice(0,5):''}</span></div></div>`; }).join('');
+
+  const of=vals.oficial[1], br = k => vals[k]?vals[k][1]/of-1:null, canje = vals.ccl&&vals.mep?vals.ccl[1]/vals.mep[1]-1:null;
+  const GAP=[['Brecha MEP',br('mep')],['Brecha CCL',br('ccl')],['Brecha blue',br('blue')],['Canje CCL/MEP',canje]];
+  document.getElementById('gaps').innerHTML = GAP.map(([n,v])=>`<div class="g"><span>${n}</span><b>${v==null?'—':sg(v*100,1)+'%'}</b></div>`).join('');
+
+  // indicadores de abajo
+  const rp=lt('riesgo'), res=lt('reservas'), comp=lt('compras'), mer=ser('merval');
+  const k=[];
+  if(rp.L) k.push(`<div class="k"><span class="lbl">Riesgo país</span><span class="v">${nf(rp.L[1],0)}<small>pb</small></span><div class="row">${rp.P?chip(rp.L[1]-rp.P[1],{pct:false,d:0,unit:' pb',bad:true}):''}</div><span class="s">${fd(rp.L[0]).slice(0,5)}</span></div>`);
+  if(res.L) k.push(`<div class="k"><span class="lbl">Reservas</span><span class="v">${nf(res.L[1]/1000,1)}<small>mil M US$</small></span><div class="row">${res.P?chip(res.L[1]-res.P[1],{pct:false,d:0,unit:' M'}):''}</div><span class="s">BCRA · ${fd(res.L[0]).slice(0,5)}</span></div>`);
+  let accY=null;
+  if(comp.L){ const y=comp.L[0].slice(0,4); accY=comp.s.filter(p=>p[0].startsWith(y)).reduce((a,p)=>a+p[1],0);
+    k.push(`<div class="k"><span class="lbl">Compras BCRA</span><span class="v">${sg(comp.L[1],0)}<small>M US$</small></span><div class="row"><span class="chip ${accY>=0?'up':'dn'}">${y}: ${sg(accY,0)} M</span></div><span class="s">${fd(comp.L[0]).slice(0,5)}</span></div>`); }
+  const mu = days.filter(d=>d.merval&&get(d,'ccl')).map(d=>[d.fecha,d.merval/get(d,'ccl')]);
+  if(mu.length){ const L=mu[mu.length-1], P=mu[mu.length-2];
+    k.push(`<div class="k"><span class="lbl">Merval en US$</span><span class="v">${nf(L[1],0)}<small>CCL</small></span><div class="row">${P?chip(L[1]/P[1]-1,{d:1}):''}</div><span class="s">${fd(L[0]).slice(0,5)}</span></div>`); }
+  document.getElementById('kp').innerHTML=k.join('');
+
+  // el gráfico va al final: su alto depende de cuánto ocupan las otras filas
+  await document.fonts.ready;
+  // gráfico: últimos ~65 días hábiles
+  const el=document.getElementById('ch'), r=el.parentNode.getBoundingClientRect(), W=r.width, H=r.height, m={t:12,r:96,b:32,l:78};
+  const desde=(ser('oficial').slice(-65)[0]||[''])[0];
+  const ss=DOL.map(([k,,c])=>({c, pts:ser(k).filter(p=>p[0]>=desde)})).filter(s=>s.pts.length);
+  const ts=[...new Set(ss.flatMap(s=>s.pts.map(p=>p[0])))].sort(), all=ss.flatMap(s=>s.pts.map(p=>p[1]));
+  let lo=Math.min(...all), hi=Math.max(...all); const pad=(hi-lo)*.08; lo-=pad; hi+=pad;
+  const step=(x=>{const p=10**Math.floor(Math.log10(x));const n=x/p;return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p;})((hi-lo)/4);
+  lo=Math.floor(lo/step)*step; hi=Math.ceil(hi/step)*step;
+  const T=f=>Date.parse(f+'T12:00:00Z'), t0=T(ts[0]), t1=T(ts[ts.length-1]);
+  const X=f=>m.l+(T(f)-t0)/(t1-t0||1)*(W-m.l-m.r), Y=v=>m.t+(hi-v)/(hi-lo)*(H-m.t-m.b);
+  let g='';
+  for(let v=lo; v<=hi+step*1e-6; v+=step){ const y=Y(v).toFixed(1); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" stroke="var(--grid)"/><text x="${m.l-10}" y="${+y+5}" text-anchor="end">${nf(v,0)}</text>`; }
+  [0,Math.floor(ts.length/2),ts.length-1].forEach((i,n)=>{ g+=`<text x="${X(ts[i]).toFixed(1)}" y="${H-6}" text-anchor="${n===0?'start':n===2?'end':'middle'}">${fd(ts[i]).slice(0,5)}</text>`; });
+  ss.forEach(s=>{ g+=`<path d="${s.pts.map((p,i)=>`${i?'L':'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('')}" fill="none" stroke="var(${s.c})" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>`; });
+  const ends=ss.map(s=>{const p=s.pts[s.pts.length-1]; return {c:s.c,x:X(p[0]),y:Y(p[1]),ly:Y(p[1]),v:p[1]};}).sort((a,b)=>a.y-b.y);
+  for(let k=0;k<8;k++) for(let i=1;i<ends.length;i++) if(ends[i].ly-ends[i-1].ly<24){const md=(ends[i].ly+ends[i-1].ly)/2; ends[i-1].ly=md-12; ends[i].ly=md+12;}
+  ends.forEach(e=>{ g+=`<circle cx="${e.x}" cy="${e.y}" r="6" fill="var(${e.c})" stroke="var(--surface)" stroke-width="3"/><text x="${W-m.r+14}" y="${e.ly+6}" style="fill:var(--ink);font-weight:600;font-size:20px">${nf(e.v,0)}</text>`; });
+  el.setAttribute('viewBox',`0 0 ${W} ${H}`); el.innerHTML=g;
+
+  // texto sugerido para el posteo
+  const pctTxt = (L,P) => P ? ` (${sg((L[1]/P[1]-1)*100,1)}%)` : '';
+  const lines = [`Dólar ${parcial?`a las ${hhmm}`:'hoy'} · ${fd(F)}`, ''];
+  DOL.forEach(([kk,n])=>{ const {L,P}=lt(kk); if(L) lines.push(`${n}: $${nf(L[1])}${pctTxt(L,P)}`); });
+  lines.push('');
+  if(br('ccl')!=null) lines.push(`Brecha CCL: ${nf(br('ccl')*100,1)}%`);
+  if(rp.L) lines.push(`Riesgo país: ${nf(rp.L[1],0)} pb${rp.P?` (${sg(rp.L[1]-rp.P[1],0)})`:''}`);
+  if(res.L) lines.push(`Reservas: US$ ${nf(res.L[1],0)} M (${fd(res.L[0]).slice(0,5)})`);
+  if(comp.L) lines.push(`Compras del BCRA: ${sg(comp.L[1],0)} M (${fd(comp.L[0]).slice(0,5)}); en ${comp.L[0].slice(0,4)}: ${sg(accY,0)} M`);
+  lines.push('', 'Todo el tablero: epherrafrancisco-gif.github.io/macro-ar', '#dolar #economia #Argentina #riesgopais');
+  window.TEXTO = lines.join('\n');
+  await document.fonts.ready;
+  document.body.dataset.listo='1';
+})().catch(e=>{ document.body.dataset.error=String(e); });
+</script>
+</body>
+</html>

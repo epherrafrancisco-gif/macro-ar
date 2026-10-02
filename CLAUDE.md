@@ -170,7 +170,7 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 11. **Liquidación del agro (CIARA-CEC)**: mensual (no hay dato diario público),
     barras con comparación interanual. Como proxy semanal, las compras del BCRA.
 
-### Bloque 4 (menú propuesto el 02/10/2026; hechos A, B, C y D)
+### Bloque 4 (menú propuesto el 02/10/2026; hechos A, B, C, D y E)
 Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y que elija.
 - A. HECHO (02/10/2026): nueva `preview.png` (oscura, 5 pestañas con mini gráficos) y
   meta description/og actualizadas. Para que LinkedIn la tome: Post Inspector.
@@ -188,9 +188,14 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   cargar el calendario del semestre siguiente
   (indec.gob.ar/ftp/cuadros/publicaciones/calendario_1sem2027.pdf) y actualizar
   `vigente_hasta`; si no, la tarjeta muestra "No hay fechas cargadas".
-- E. **Gráfico diario para X/IG** (@macroar_diario): que el workflow genere cada día
-  una imagen con el resumen (dólares, brecha, riesgo país, reservas) lista para subir.
-  Mediano-grande.
+- E. HECHO (02/10/2026): imagen diaria 1080x1350 para @macroar_diario. Plantilla
+  `scripts/diario.html` (lee data.json; expone `window.TEXTO` con el texto del posteo),
+  generador `scripts/diario.mjs` (servidor http propio + playwright-core + Chrome del runner,
+  `CHROME_PATH` opcional). El workflow la genera cuando cambia data.json (paso con
+  `continue-on-error`) y commitea `diario/hoy.png` y `diario/texto.txt`. Página para
+  bajarla y copiar el texto: `/diario/` (link en el pie). Antes de las 17 h dice
+  "parcial, HH:MM h"; la de las 18:47 es la de cierre. Probar local:
+  `ln -s <scratch>/node_modules node_modules && node scripts/diario.mjs` (sin Google Fonts).
 - F. **Dominio propio `macroar.com.ar`**: Francisco lo compra en NIC Argentina; Claude
   agrega el archivo CNAME y lo guía con los DNS. Chico para Claude.
 - G. **Deuda del Tesoro en pesos (LECAP/BONCAP)**: carga manual mensual desde el
