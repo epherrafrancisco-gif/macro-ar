@@ -236,7 +236,7 @@ footer a{color:var(--ink2)}
     <div class="card">
       <div class="head"><h2>Dólar a precios de hoy</h2><div class="legend" id="lgUsdR"></div></div>
       <div class="chart" id="chUsdR"></div>
-      <div class="tablewrap"><table style="min-width:600px"><thead><tr><th>Dólar</th><th>Hoy</th><th>Promedio desde 2017</th><th>Hoy vs promedio</th><th>Más caro que</th><th>Mínimo</th><th>Máximo</th></tr></thead><tbody id="tUsdR"></tbody></table></div>
+      <div class="tablewrap"><table style="min-width:600px"><thead><tr><th>Dólar</th><th>Hoy</th><th>Promedio histórico</th><th>Hoy vs promedio</th><th>Más caro que</th><th>Mínimo</th><th>Máximo</th></tr></thead><tbody id="tUsdR"></tbody></table></div>
       <p class="note" id="noteUsdR"></p>
     </div>
 
@@ -631,14 +631,14 @@ footer a{color:var(--ink2)}
     legend($('lgUsdR'), ch);
     lineChart($('chUsdR'), ch.map(r=>({n:r.n, c:r.c, pts:r.pts})), {aria:'Dólar a precios de hoy', xfmt:fmes, tfmt:fmes, labW:58, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,0), lfmt:v=>nf(v,0)});
     $('tUsdR').innerHTML = rows.map(r=>{ const dv=r.hoy[1]/r.avg-1;
-      return `<tr><td><i class="sw" style="background:var(${r.c})"></i> ${r.n}</td><td>$ ${nf(r.hoy[1],0)}</td><td>$ ${nf(r.avg,0)}</td>
+      return `<tr><td><i class="sw" style="background:var(${r.c})"></i> ${r.n}</td><td>$ ${nf(r.hoy[1],0)}</td><td>$ ${nf(r.avg,0)}${r.pts[0][0]>h[0].mes?` <small>desde ${fmes(r.pts[0][0])}</small>`:''}</td>
         <td>${pc(dv,1)} · ${dv>0.05?'caro':dv<-0.05?'barato':'en el promedio'}</td>
         <td>el ${nf(r.pct*100,0)}% de los meses</td><td>$ ${nf(r.mn[1],0)} <small>${fmes(r.mn[0])}</small></td><td>$ ${nf(r.mx[1],0)} <small>${fmes(r.mx[0])}</small></td></tr>`; }).join('');
     const spotF = rows.length && rows[0].spot ? rows[0].spot[0] : null;
     $('noteUsdR').textContent = 'Promedio de cada mes llevado a pesos de hoy: se ajusta por la inflación argentina (CER, que sigue al IPC con un mes y medio de atraso)'
       + (conCpi ? ' y por la de Estados Unidos (CPI), porque el dólar también pierde poder de compra.' : '. Falta la inflación de EE.UU.: se agrega en la próxima actualización.')
       + ' Si la línea está arriba de su promedio, el dólar está caro contra la historia (peso barato); abajo, barato (peso caro). El último punto es la cotización de hoy'
-      + (spotF ? ` (${fd(spotF)})` : '') + '. Arranca en 2017 porque antes el IPC oficial no era confiable.';
+      + (spotF ? ` (${fd(spotF)})` : '') + '. Arranca en 2017 porque antes el IPC oficial no era confiable; la serie del MEP de Ámbito empieza en marzo de 2020, en pleno cepo, así que su promedio queda más alto que el de los demás.';
   }
 
   // ---- MACRO ----

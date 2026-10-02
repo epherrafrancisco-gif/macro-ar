@@ -44,17 +44,25 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
     En la página, meses sin trimestre publicado: PBI estimado con la suba del CER.
   - Historico (`historico`, mensual desde 2017-01, para "Dólar a precios de hoy"): `mes`,
     `ofi`, `blue`, `mep`, `ccl` (Ámbito, promedio de la venta), `may` (BCRA id 5), `cer`
-    (BCRA id 30, promedio) y `cpi` (CPI-U de EE.UU. sin desestacionalizar, FRED
-    `fredgraph.csv?id=CPIAUCNS`, sin clave). Primera corrida baja todo por tramos anuales;
-    después solo desde el mes anterior (`--historia` fuerza todo de nuevo). Arranca en 2017
-    porque antes el IPC (y el CER) estaba manipulado.
+    (BCRA id 30, promedio) y `cpi` (CPI-U de EE.UU. sin desestacionalizar: intenta FRED
+    `fredgraph.csv?id=CPIAUCNS` y, si falla, la API v1 del BLS por POST, serie CUUR0000SA0;
+    desde Actions FRED da timeout y anda el BLS). Primera corrida baja todo por tramos
+    anuales; después solo los años con huecos + desde el mes anterior (`--historia` fuerza
+    todo). Si un año falla en Ámbito, baja mes por mes y, si falla el mes, día por día.
+    Arranca en 2017 porque antes el IPC (y el CER) estaba manipulado. El MEP de Ámbito
+    (`dolarrava/mep`) empieza recién en 03/2020; el CCL sí tiene 2017. Ámbito devuelve 500
+    para el 13/08/2025 de MEP y CCL (día roto de la fuente, queda sin dato).
   - Historia desde 27/03/2026 (diario; `compras` desde 01/2026) y 08/2024 (mensual).
 - `scripts/update.py`: trae datos y mezcla en `data.json` (solo librería estándar).
   Revisa los últimos N días (default 10). Nunca inventa datos: si una fuente falla,
   lo registra y deja el campo como estaba.
 - `.github/workflows/actualizar-datos.yml`: corre `update.py` L a V a las
   10:15, 11:30 y 18:47 ART (13:15, 14:30 y 21:47 UTC) y a mano (`workflow_dispatch`), y
-  commitea `data.json` si cambió. **Funciona** (primera corrida OK el 02/10/2026).
+  commitea `data.json` y `estado.json` si cambió data.json. **Funciona** (primera corrida OK el 02/10/2026).
+  `estado.json` guarda las fuentes OK y con error de la última corrida que cambió datos:
+  mirarlo para diagnosticar (los logs de Actions no se pueden bajar desde el entorno de Claude).
+  Claude puede lanzar el workflow solo: `gh workflow run actualizar-datos.yml -R
+  epherrafrancisco-gif/macro-ar --ref main` y esperar con `gh run watch ID --exit-status`.
 - `preview.png`: imagen para la vista previa de LinkedIn (og:image, con `?v=N` para
   romper la caché: subir N cada vez que cambie). Se genera con `scripts/preview.html`
   (lee data.json, sin cifras ni fechas para que no envejezca) y captura de 1200x630 con
@@ -64,7 +72,8 @@ del repo: rompería la redirección del link viejo). Redes: @macroar_diario (IG 
 ## Fuentes (todas verificadas, aceptan consultas desde GitHub Actions)
 - **Ámbito** `https://mercados.ambito.com//<ruta>/historico-general/DESDE/HASTA`
   → JSON `[["Fecha","Compra","Venta"],["30/09/2026","1540,00","1560,00"],...]`
-  (fechas DD/MM/YYYY o DD-MM-YYYY, coma decimal, más reciente primero).
+  (fechas DD/MM/YYYY o DD-MM-YYYY, coma decimal, más reciente primero). OJO: el rango
+  EXCLUYE el día HASTA (se pide hasta el día siguiente; corregido el 02/10/2026).
   Rutas: `dolar/informal` (blue), `dolar/oficial`, `dolarrava/mep`, `dolarrava/cl`,
   `riesgopais`. En feriados repite MEP/CCL: se filtran con los días de oficial/mayorista.
 - **BCRA** `https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{id}?desde=&hasta=&limit=1000`
