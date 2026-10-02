@@ -132,8 +132,14 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 - Paso (b) HECHO: pestaña Mercado con Merval en $ y en US$ CCL, riesgo país y tabla de
   AL30/GD30 (precio D y $, TIR y paridad calculadas en la página con el cronograma
   2030; se consulta data912 cada 10 min desde el navegador).
-- Paso (c) PENDIENTE: tablero de acciones del panel líder (precio, variación, mapa de
-  calor) y liquidación del agro (CIARA-CEC, mensual).
+- Paso (c) HECHO en parte: mapa de calor de 21 acciones líderes (lista `LIDERES` en
+  index.html), resumen suben/bajan y detalle al tocar (puntas, monto, operaciones).
+  SIN gráfico histórico por acción: no hay fuente gratuita (la historia de data912 está
+  cortada). PENDIENTE: liquidación del agro (CIARA-CEC): no hay API; publican un Excel
+  mensual en ciaracec.com.ar/ciara/estadisticas/ con nombre que cambia (ej.
+  `.../descargar/01102026_30092026liquidacion-de-divisas-ciara-cec-base-oficial.xlsx`).
+  Opciones: leer ese Excel desde el workflow (sin librerías: zipfile + xml) o cargar
+  el dato a mano una vez por mes. Septiembre 2026: US$ 3.228 M (comunicado del 01/10).
 10. **Pestaña Mercado**: S&P Merval en pesos y en dólares CCL (histórico),
     tablero de las empresas del índice (precio, variación del día, mapa de calor,
     gráfico al tocar), bonos AL30/GD30 con rendimiento y riesgo país. Datos

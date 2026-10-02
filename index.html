@@ -49,6 +49,7 @@
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:26px 56px;display:grid;gap:20px}
+.wrap>*{min-width:0}
 @media (max-width:480px){.wrap{padding-inline:16px}}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
@@ -62,9 +63,11 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 @media (max-width:600px){.stamp{text-align:left}}
 
 .bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-block:-8px}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);max-width:100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
 .tabs a{font-weight:600;font-size:15px;color:var(--ink2);text-decoration:none;padding:8px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
 .tabs a[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+@media (max-width:480px){.tabs{gap:0}.tabs a{padding:8px 6px;font-size:13px;white-space:nowrap}}
 .tabs a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .seg{display:inline-flex;background:var(--sunk);border-radius:7px;padding:3px;gap:2px}
 .seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;background:transparent;color:var(--ink2);padding:5px 10px;border-radius:5px;cursor:pointer}
@@ -161,6 +164,13 @@ footer a{color:var(--ink2)}
 .stats .st .d{font-size:11.5px;color:var(--muted)}
 .stats .hero .v{font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em;line-height:1.1}
 .stats .up{color:var(--pos)} .stats .dn{color:var(--neg)}
+.heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
+.heat button{font:inherit;text-align:left;border:1px solid var(--line);border-radius:8px;padding:8px 9px;cursor:pointer;color:var(--ink);display:grid;gap:1px;min-width:0}
+.heat button[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
+.heat .tk{font-weight:600;font-size:13px}
+.heat .pc{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600}
+.heat .px{font-family:var(--mono);font-size:11px;color:var(--ink2)}
+.det{display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 14px;background:var(--sunk);border-radius:8px}
 .subh{margin:4px 0 -4px;font-size:13px;font-weight:600;color:var(--ink2)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -284,6 +294,14 @@ footer a{color:var(--ink2)}
       <div class="card"><div class="head"><h2>S&amp;P Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
       <div class="card"><div class="head"><h2>S&amp;P Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
     </div>
+    <div class="card">
+      <div class="head"><h2>Acciones líderes hoy</h2><span class="note" id="stkStamp"></span></div>
+      <div class="stats" id="stkStats"></div>
+      <div class="heat" id="heat"></div>
+      <div class="stats det" id="stkDet" hidden></div>
+      <p class="note">Color según la variación del día: verde sube, rojo baja; más intenso, más se movió. Tocá una acción para ver el detalle. Precios en pesos, con demora (data912).</p>
+    </div>
+
     <div class="card">
       <div class="head"><h2>Bonos soberanos</h2><span class="note" id="bondStamp"></span></div>
       <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Bono</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
@@ -752,6 +770,26 @@ footer a{color:var(--ink2)}
     mktBusy=false; if(tab==='mercado' && loaded.d) renderMercado();
     mktT = setTimeout(pollMkt, MKT_MS);
   }
+  const LIDERES = ['ALUA','BBAR','BMA','BYMA','CEPU','COME','CRES','EDN','GGAL','IRSA','LOMA','METR','PAMP','SUPV','TECO2','TGNO4','TGSU2','TRAN','TXAR','VALO','YPFD'];
+  let stkSel = null;
+  function heatBg(p){ if(p==null||!isFinite(p)) return 'var(--surface)'; const k=Math.round(Math.min(Math.abs(p)/4,1)*55+8); return Math.abs(p)<0.05?'var(--neu-bg)':`color-mix(in srgb, var(${p>0?'--pos':'--neg'}) ${k}%, var(--surface))`; }
+  function renderStocks(){
+    const S = mkt.stocks;
+    if(!S){ $('heat').innerHTML = `<div class="empty">${mkt.err?'Precios de mercado no disponibles en este momento.':'Cargando precios…'}</div>`; $('stkStats').innerHTML=''; $('stkDet').hidden=true; $('stkStamp').textContent=''; return; }
+    const L = LIDERES.map(k=>S[k]).filter(x=>x && x.c>0).sort((a,b)=>b.pct_change-a.pct_change);
+    const up=L.filter(x=>x.pct_change>0).length, dn=L.filter(x=>x.pct_change<0).length, avg=L.length?L.reduce((a,x)=>a+x.pct_change,0)/L.length:0;
+    const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    $('stkStats').innerHTML = L.length ? st('Suben / bajan', `${up} / ${dn}`, `de ${L.length} acciones`) + st('Variación promedio', sg(avg,2)+'%', 'simple, sin ponderar', avg>0?'up':avg<0?'dn':'')
+      + st('Mejor', L[0].symbol+' '+sg(L[0].pct_change,2)+'%', '', 'up') + st('Peor', L[L.length-1].symbol+' '+sg(L[L.length-1].pct_change,2)+'%', '', 'dn') : '';
+    $('heat').innerHTML = L.map(x=>`<button type="button" data-s="${esc(x.symbol)}" aria-pressed="${x.symbol===stkSel}" style="background:${heatBg(x.pct_change)}"><span class="tk">${esc(x.symbol)}</span><span class="pc">${sg(x.pct_change,2)}%</span><span class="px">$ ${nf(x.c, x.c<100?2:0)}</span></button>`).join('') || '<div class="empty">Sin datos de acciones.</div>';
+    $('heat').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ stkSel = stkSel===b.dataset.s?null:b.dataset.s; renderStocks(); }));
+    const x = stkSel && S[stkSel];
+    $('stkDet').hidden = !x;
+    if(x) $('stkDet').innerHTML = st(x.symbol, '$ '+nf(x.c,2), sg(x.pct_change,2)+'% en el día', x.pct_change>0?'up':x.pct_change<0?'dn':'')
+      + st('Compra / venta', `${x.px_bid?nf(x.px_bid,2):'—'} / ${x.px_ask?nf(x.px_ask,2):'—'}`, 'mejores puntas')
+      + st('Monto operado', x.v?'$ '+nf(x.v/1e6,1)+' M':'—', x.q_op?nf(x.q_op,0)+' operaciones':'');
+    $('stkStamp').textContent = `Consultado ${horaAR(mkt.at)}${mkt.err?' · última consulta falló':''}`;
+  }
   function renderMercado(){
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
@@ -769,6 +807,7 @@ footer a{color:var(--ink2)}
     $('tBonos').innerHTML = mkt.err && !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Precios de mercado no disponibles en este momento.</td></tr>`
       : !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Cargando precios…</td></tr>`
       : rows.map(r=>`<tr><td>${r.k}</td><td>${c(r.px)!=null?nf(r.px,2):'—'}</td><td class="${r.D&&r.D.pct_change>0?'up':r.D&&r.D.pct_change<0?'dn':''}">${r.D?sg(r.D.pct_change,2)+'%':'—'}</td><td>${r.P&&r.P.c?nf(r.P.c,0):'—'}</td><td>${r.b?nf(r.b.tir,2)+'%':'—'}</td><td>${r.b?nf(r.b.paridad,1)+'%':'—'}</td><td>${r.b?nf(r.b.res,0):'—'}</td></tr>`).join('');
+    renderStocks();
     $('bondStamp').textContent = mkt.at ? `Consultado ${horaAR(mkt.at)} · se refresca cada 10 min${mkt.err?' · última consulta falló':''}` : '';
   }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
@@ -779,6 +818,7 @@ footer a{color:var(--ink2)}
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';
     for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
+    try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
   for(const [k,[a]] of Object.entries(TABS)) $(a).addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#'+k); setTab(k); });
