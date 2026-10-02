@@ -151,6 +151,28 @@ LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde 
 11. **Liquidación del agro (CIARA-CEC)**: mensual (no hay dato diario público),
     barras con comparación interanual. Como proxy semanal, las compras del BCRA.
 
+### Próximo paso: elegir el Bloque 4 (menú propuesto el 02/10/2026, Francisco elige)
+Al arrancar una sesión nueva, mostrale este menú en criollo y que elija; no empieces nada
+sin que elija. Orden recomendado: A, B, C, D, después el resto.
+- A. **Vista previa al compartir**: `preview.png` y las meta `description`/`og:*` de
+  `index.html` todavía describen el tablero viejo (sin Dinero, Fiscal ni Mercado).
+  Rehacer la imagen (1200x630) con las 5 pestañas. Chico.
+- B. **Dólar a precios de hoy**: oficial/MEP/blue ajustados por inflación (CER o IPC),
+  para ver si el dólar está "caro" o "barato" contra la historia. Chico-mediano;
+  conviene traer historia larga de dólares (Ámbito permite rangos largos).
+- C. **Datos descargables**: botón "Descargar CSV" en cada pestaña con los datos de
+  data.json. Chico.
+- D. **Calendario de publicaciones**: próximas fechas de INDEC (IPC, comercio, PBI) y
+  BCRA (REM), con cuenta regresiva. Mediano; fechas cargadas a mano por año.
+- E. **Gráfico diario para X/IG** (@macroar_diario): que el workflow genere cada día
+  una imagen con el resumen (dólares, brecha, riesgo país, reservas) lista para subir.
+  Mediano-grande.
+- F. **Dominio propio `macroar.com.ar`**: Francisco lo compra en NIC Argentina; Claude
+  agrega el archivo CNAME y lo guía con los DNS. Chico para Claude.
+- G. **Deuda del Tesoro en pesos (LECAP/BONCAP)**: carga manual mensual desde el
+  boletín de Finanzas. Mediano.
+- H. Newsletter e inflación semanal de alimentos propia: grandes; dejar para el final.
+
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
   ya no se usa. Las tareas programadas de Claude están desactivadas.
