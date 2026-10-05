@@ -1,14 +1,14 @@
-Dólar a las 11:47 · 05/10/2026
+Dólar hoy · 05/10/2026
 
 Oficial: $1.543,18 (0,0%)
-MEP: $1.542,09 (−0,5%)
-CCL: $1.626,92 (+0,1%)
+MEP: $1.541,76 (−0,5%)
+CCL: $1.609,69 (−1,0%)
 Blue: $1.560,00 (+0,3%)
 
-Brecha CCL: 5,4%
-Riesgo país: 646 pb (−9)
-Reservas: US$ 46.092 M (30/09)
-Compras del BCRA: +71 M (29/09); en 2026: +14.421 M
+Brecha CCL: 4,3%
+Riesgo país: 633 pb (−22)
+Reservas: US$ 48.288 M (01/10)
+Compras del BCRA: +160 M (30/09); en 2026: +14.581 M
 
 Todo el tablero: epherrafrancisco-gif.github.io/macro-ar
 #dolar #economia #Argentina #riesgopais
