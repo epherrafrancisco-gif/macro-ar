@@ -281,7 +281,20 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   `contacto-linkedin|mail`). Foto: `foto.jpg` (480x480, la foto original sin retocar; Francisco no quiso el fondo azul). Título: solo "Francisco Epherra".
 - El dominio (F) queda para después.
 
-### Próxima sesión: jueves 08/10/2026, dominio `pulsomacro.com.ar`
+### ESTADO DEL DOMINIO al 08/10/2026 17:25 (retomar desde acá)
+- HECHO: `pulsomacro.com.ar` comprado en NIC (alta 08/10/2026, **vence 08/10/2027**, renovación
+  manual). En NIC todo se hace dentro de TAD: Iniciar trámite → "Registros, renovaciones y otras
+  operaciones" → Mis dominios → DELEGAR. Delegado a `irma.ns.cloudflare.com` y `olof.ns.cloudflare.com`
+  (Delegado: SÍ). Cuenta Cloudflare Free creada (dominio "pending" hasta que propague).
+- HECHO: GitHub (perfil → Settings → Pages) → Add domain pulsomacro.com.ar; TXT
+  `_github-pages-challenge-epherrafrancisco-gif` = `7a75bdf191b7db3c95d35cad8644b3` cargado en
+  Cloudflare (DNS only). Verify falló a las 17:24 porque Cloudflare seguía pending (normal).
+- FALTA: Cloudflare Active → Verify en GitHub → CNAME en el repo + Settings → Pages del repo →
+  registros A/AAAA/CNAME www en Cloudflare (nube gris) → Enforce HTTPS → cambiar URLs → lanzar.
+- Francisco pidió ir DE A UN PASO por mensaje (se pierde con muchas indicaciones juntas) y
+  explicarle lo que está en inglés.
+
+### Plan original: jueves 08/10/2026, dominio `pulsomacro.com.ar`
 El sitio está TERMINADO para Francisco (02/10/2026) y NO se lanza hasta tener el dominio.
 Él trae la clave fiscal de ARCA (se blanquea desde el home banking). Pasos, guiándolo uno
 por uno: (1) verificar en nic.ar que `pulsomacro.com.ar` esté libre y comprarlo (alta $8.500,
