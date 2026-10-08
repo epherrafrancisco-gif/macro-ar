@@ -290,8 +290,14 @@ vencimiento); (2) cuenta gratis en Cloudflare, agregar el dominio, copiar los 2 
 y cargarlos en NIC.ar → Delegaciones; (3) en Cloudflare: A @ → 185.199.108.153,
 185.199.109.153, 185.199.110.153, 185.199.111.153 y CNAME www → epherrafrancisco-gif.github.io,
 todos con nube GRIS (DNS only); verificar las IPs en la doc de GitHub Pages ese día;
-(4) recién con el DNS respondiendo: archivo `CNAME` en el repo + Settings → Pages →
-Custom domain + Enforce HTTPS; (5) cambiar las menciones de la URL (index.html og:url y
+(4) ORDEN CORREGIDO según la doc de GitHub (08/10/2026): con Cloudflare ya activo, primero
+verificar el dominio en GitHub (foto de perfil → Settings → Pages → Add a domain → registro
+TXT `_github-pages-challenge-epherrafrancisco-gif` en Cloudflare → Verify), después agregar
+el dominio en el repo (archivo `CNAME` + Settings → Pages → Custom domain) y recién ahí los
+registros A/AAAA/CNAME en Cloudflare (A: .108/.109/.110/.111.153; AAAA: 2606:50c0:8000::153,
+8001, 8002, 8003; CNAME www → epherrafrancisco-gif.github.io; sin comodines `*`). Esperar el
+certificado y activar Enforce HTTPS. Como el sitio no está lanzado, que el link github.io
+redirija unos minutos a un dominio que todavía no anda no es problema; (5) cambiar las menciones de la URL (index.html og:url y
 SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y subir
 `?v=` de preview.png; (6) verificar que el link viejo redirija; (7) recién ahí lanzarlo.
 
