@@ -36,7 +36,7 @@ button,a.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--
     <a href="hoy.png" id="lnk"><img id="img" src="hoy.png" alt="Resumen del día de Pulso Macro: dólares, brechas, riesgo país, reservas, compras del BCRA y Merval"></a>
     <div class="card">
       <div class="btns">
-        <a class="btn primary" id="dl" href="hoy.png" download="macro-ar-diario.png">Descargar imagen</a>
+        <a class="btn primary" id="dl" href="hoy.png" download="pulso-macro-diario.png">Descargar imagen</a>
         <button type="button" id="cp">Copiar texto</button>
         <span class="ok" id="okc" hidden>Copiado</span>
       </div>
@@ -53,7 +53,7 @@ button,a.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--
   let txt = '';
   try{ txt = (await (await fetch('texto.txt?v='+v, {cache:'no-store'})).text()).trim(); }catch(e){}
   document.getElementById('tx').textContent = txt || 'Todavía no hay texto generado.';
-  const m = txt.match(/(\d{2})\/(\d{2})\/(\d{4})/); if(m) document.getElementById('dl').download = `macro-ar-${m[3]}-${m[2]}-${m[1]}.png`;
+  const m = txt.match(/(\d{2})\/(\d{2})\/(\d{4})/); if(m) document.getElementById('dl').download = `pulso-macro-${m[3]}-${m[2]}-${m[1]}.png`;
   document.getElementById('cp').addEventListener('click', async ()=>{
     try{ await navigator.clipboard.writeText(txt); }
     catch(e){ const r=document.createRange(); r.selectNodeContents(document.getElementById('tx')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand('copy'); }
