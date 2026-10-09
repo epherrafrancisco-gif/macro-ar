@@ -24,8 +24,8 @@ hasta el 02/10/2026.
 
 ## Qué es
 Tablero público y gratuito de la macro argentina:
-**https://epherrafrancisco-gif.github.io/macro-ar/**
-(GitHub Pages desde la rama `main`, carpeta raíz). Publicado en LinkedIn.
+**https://pulsomacro.com.ar/** (dominio propio desde 09/10/2026; el link viejo
+epherrafrancisco-gif.github.io/macro-ar redirige solo). GitHub Pages desde la rama `main`, carpeta raíz, archivo `CNAME`. Publicado en LinkedIn.
 Plan: dominio propio `pulsomacro.com.ar` (Francisco tiene que confirmar en nic.ar que esté
 libre; el 02/10 no había ningún sitio en esa dirección). No tocar el nombre del usuario ni del
 repo: rompería la redirección del link viejo.
@@ -289,7 +289,12 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
 - HECHO: GitHub (perfil → Settings → Pages) → Add domain pulsomacro.com.ar; TXT
   `_github-pages-challenge-epherrafrancisco-gif` = `7a75bdf191b7db3c95d35cad8644b3` cargado en
   Cloudflare (DNS only). Verify falló a las 17:24 porque Cloudflare seguía pending (normal).
-- FALTA: Cloudflare Active → Verify en GitHub → CNAME en el repo + Settings → Pages del repo →
+- 09/10/2026 07:15: HECHO Verify (Verified), CNAME en el repo, Custom domain en Settings → Pages,
+  4 registros A (nube gris) y CNAME www → epherrafrancisco-gif.github.io (sin AAAA). Certificado
+  activo. URLs cambiadas a pulsomacro.com.ar en index.html (og, SITE), preview (?v=4), diario,
+  chequeo.mjs y README.
+- FALTA (si no se hizo): Enforce HTTPS y que www pase el Check again → lanzar.
+- Plan viejo: Cloudflare Active → Verify en GitHub → CNAME en el repo + Settings → Pages del repo →
   registros A/AAAA/CNAME www en Cloudflare (nube gris) → Enforce HTTPS → cambiar URLs → lanzar.
 - Francisco pidió ir DE A UN PASO por mensaje (se pierde con muchas indicaciones juntas) y
   explicarle lo que está en inglés.

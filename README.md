@@ -2,7 +2,7 @@
 
 Tablero diario de la economía argentina: dólares y brechas, riesgo país, reservas, compras del BCRA, inflación, tasas, dinero en términos reales, resultado fiscal, comercio exterior, Merval y bonos, el dólar a precios de hoy, noticias económicas y calculadoras.
 
-**Ver el tablero:** https://epherrafrancisco-gif.github.io/macro-ar/
+**Ver el tablero:** https://pulsomacro.com.ar/
 
 Se actualiza solo cada día hábil después del cierre. Las tarjetas de dólares se refrescan en vivo cada minuto. Fuentes: BCRA, INDEC y Hacienda (datos.gob.ar), Ámbito, DolarApi, data912 y FRED (inflación de EE.UU.).
 

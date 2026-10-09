@@ -7,7 +7,7 @@ import { writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
-const URL_SITIO = (process.argv[2] || 'https://epherrafrancisco-gif.github.io/macro-ar/').replace(/\/?$/, '/');
+const URL_SITIO = (process.argv[2] || 'https://pulsomacro.com.ar/').replace(/\/?$/, '/');
 const chrome = [process.env.CHROME_PATH, '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium', '/opt/pw-browsers/chromium'].find(p => p && existsSync(p));
 const errores = [], avisos = [], ok = [];

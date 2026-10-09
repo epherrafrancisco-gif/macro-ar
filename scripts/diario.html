@@ -75,7 +75,7 @@ footer .src{font-size:15px;color:var(--muted)}
   <div class="gaps" id="gaps"></div>
   <div class="chart"><div class="h"><b>Últimos 3 meses</b><div class="leg"><span style="--c:var(--s1)">Oficial</span><span style="--c:var(--s2)">MEP</span><span style="--c:var(--s3)">CCL</span><span style="--c:var(--s4)">Blue</span></div></div><div class="cv"><svg id="ch"></svg></div></div>
   <div class="kp" id="kp"></div>
-  <footer><span class="url">epherrafrancisco-gif.github.io/macro-ar</span><span>Datos diarios de la economía argentina</span></footer>
+  <footer><span class="url">pulsomacro.com.ar</span><span>Datos diarios de la economía argentina</span></footer>
 </div>
 <script>
 (async()=>{
@@ -155,7 +155,7 @@ footer .src{font-size:15px;color:var(--muted)}
   if(rp.L) lines.push(`Riesgo país: ${nf(rp.L[1],0)} pb${rp.P?` (${sg(rp.L[1]-rp.P[1],0)})`:''}`);
   if(res.L) lines.push(`Reservas: US$ ${nf(res.L[1],0)} M (${fd(res.L[0]).slice(0,5)})`);
   if(comp.L) lines.push(`Compras del BCRA: ${sg(comp.L[1],0)} M (${fd(comp.L[0]).slice(0,5)}); en ${comp.L[0].slice(0,4)}: ${sg(accY,0)} M`);
-  lines.push('', 'Todo el tablero: epherrafrancisco-gif.github.io/macro-ar', '#dolar #economia #Argentina #riesgopais');
+  lines.push('', 'Todo el tablero: pulsomacro.com.ar', '#dolar #economia #Argentina #riesgopais');
   window.TEXTO = lines.join('\n');
   await document.fonts.ready;
   document.body.dataset.listo='1';
