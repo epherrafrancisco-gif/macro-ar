@@ -293,7 +293,9 @@ Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y 
   4 registros A (nube gris) y CNAME www → epherrafrancisco-gif.github.io (sin AAAA). Certificado
   activo. URLs cambiadas a pulsomacro.com.ar en index.html (og, SITE), preview (?v=4), diario,
   chequeo.mjs y README.
-- FALTA (si no se hizo): Enforce HTTPS y que www pase el Check again → lanzar.
+- 09/10/2026 07:25: Enforce HTTPS tildado, www OK, chequeo del sitio OK contra pulsomacro.com.ar
+  y el link viejo redirige (302). DOMINIO TERMINADO. Falta solo que Francisco lo lance en LinkedIn
+  (Post Inspector para refrescar la vista previa). Renovar el dominio antes del 08/10/2027.
 - Plan viejo: Cloudflare Active → Verify en GitHub → CNAME en el repo + Settings → Pages del repo →
   registros A/AAAA/CNAME www en Cloudflare (nube gris) → Enforce HTTPS → cambiar URLs → lanzar.
 - Francisco pidió ir DE A UN PASO por mensaje (se pierde con muchas indicaciones juntas) y
