@@ -1,12 +1,12 @@
-Dólar hoy · 08/10/2026
+Dólar a las 10:36 · 09/10/2026
 
-Oficial: $1.543,08 (0,0%)
-MEP: $1.537,98 (−0,1%)
-CCL: $1.609,65 (+0,0%)
-Blue: $1.550,00 (+0,6%)
+Oficial: $1.539,30 (0,0%)
+MEP: $1.538,27 (0,0%)
+CCL: $1.609,53 (0,0%)
+Blue: $1.540,00 (−1,0%)
 
-Brecha CCL: 4,3%
-Riesgo país: 589 pb (+3)
+Brecha CCL: 4,6%
+Riesgo país: 579 pb (−9)
 Reservas: US$ 49.125 M (06/10)
 Compras del BCRA: +15 M (05/10); en 2026: +14.723 M
 
