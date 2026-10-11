@@ -20,7 +20,7 @@ import json
 import sys
 import time
 import urllib.request
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -79,11 +79,11 @@ EXPO = {  # datos.gob.ar, exportaciones argentinas por destino (millones de US$,
 errores = []
 
 
-def get(url, tries=3, timeout=40):
+def get(url, tries=3, timeout=40, headers=None):
     last = None
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*", **(headers or {})})
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read().decode("utf-8", "replace")
         except Exception as e:  # noqa: BLE001
@@ -92,13 +92,23 @@ def get(url, tries=3, timeout=40):
     raise last
 
 
+WB = {  # respaldo del Banco Mundial (último año disponible) si el FMI no responde
+    "infl": "FP.CPI.TOTL.ZG", "crec": "NY.GDP.MKTP.KD.ZG", "desemp": "SL.UEM.TOTL.ZS",
+    "pbi": "NY.GDP.MKTP.CD", "pbipc": "NY.GDP.PCAP.CD", "deuda": "GC.DOD.TOTL.GD.ZS",
+}
+
+
 def imf(prev):
+    """Devuelve (paises, indicadores_ok, fuentes por campo)."""
     year = str(date.today().year)
     out = {k: dict(v) for k, v in (prev.get("paises") or {}).items()}
+    fuentes = dict(prev.get("fuentes") or {})
     ok = 0
     for ind, campo in IMF.items():
         try:
-            j = json.loads(get(f"https://www.imf.org/external/datamapper/api/v1/{ind}"))
+            j = json.loads(get(f"https://www.imf.org/external/datamapper/api/v1/{ind}", tries=2,
+                               headers={"Accept": "application/json", "Referer": "https://www.imf.org/external/datamapper/"}))
+            n = 0
             for iso, serie in (j.get("values", {}).get(ind) or {}).items():
                 if len(iso) != 3 or not isinstance(serie, dict):
                     continue
@@ -109,10 +119,33 @@ def imf(prev):
                         continue
                     v = serie[ys[-1]]
                 out.setdefault(iso, {})[campo] = round(float(v), 2)
-            ok += 1
+                n += 1
+            if n:
+                ok += 1
+                fuentes[campo] = {"f": "FMI", "anio": int(year)}
+                continue
         except Exception as e:  # noqa: BLE001
             errores.append(f"FMI {ind}: {e}")
-    return out, ok
+        if campo not in WB:
+            continue
+        try:  # respaldo: Banco Mundial
+            j = json.loads(get(f"https://api.worldbank.org/v2/country/all/indicator/{WB[campo]}?format=json&per_page=20000&date={int(year)-4}:{year}"))
+            mejor = {}
+            for r in (j[1] if len(j) > 1 and j[1] else []):
+                iso, v, y = r.get("countryiso3code"), r.get("value"), r.get("date")
+                if not iso or v is None:
+                    continue
+                if iso not in mejor or y > mejor[iso][0]:
+                    mejor[iso] = (y, v)
+            if mejor:
+                for iso, (y, v) in mejor.items():
+                    out.setdefault(iso, {})[campo] = round(float(v), 2)
+                anios = sorted(y for y, _ in mejor.values())
+                fuentes[campo] = {"f": "Banco Mundial", "anio": int(anios[len(anios) // 2])}
+                ok += 1
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"Banco Mundial {WB[campo]}: {e}")
+    return out, ok, fuentes
 
 
 def bis(paises):
@@ -131,6 +164,10 @@ def bis(paises):
             series.setdefault(a, []).append((f, float(v)))
         except ValueError:
             continue
+    if series:  # sacar las tasas viejas antes de cargar las nuevas
+        for d in paises.values():
+            for k in ("tasa", "tasa_al", "tasa_prev", "tasa_cambio"):
+                d.pop(k, None)
     n = 0
     for a, pts in series.items():
         pts.sort()
@@ -141,6 +178,8 @@ def bis(paises):
                 prev = v
                 break
             cambio = f
+        if (date.today() - date.fromisoformat(fecha[:10])).days > 120:  # serie discontinuada (ej. BCRA desde 2025)
+            continue
         info = {"tasa": tasa, "tasa_al": fecha, "tasa_prev": prev, "tasa_cambio": cambio if prev is not None else None}
         destinos = EURO if a == "XM" else [A2A3.get(a)] if A2A3.get(a) else []
         for iso in destinos:
@@ -150,7 +189,7 @@ def bis(paises):
 
 
 def yahoo(sym):
-    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?range=10d&interval=1d", tries=2))
+    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?range=10d&interval=1d", tries=1))
     r = j["chart"]["result"][0]
     ts, cl = r.get("timestamp") or [], r["indicators"]["quote"][0].get("close") or []
     pts = [(t, c) for t, c in zip(ts, cl) if c is not None]
@@ -166,29 +205,85 @@ def yahoo(sym):
 
 
 def stooq(sym):
-    txt = get(f"https://stooq.com/q/d/l/?s={urllib.request.quote(sym)}&i=d", tries=2)
+    txt = get(f"https://stooq.com/q/d/l/?s={urllib.request.quote(sym)}&i=d", tries=1)
     rows = [r for r in csv.reader(io.StringIO(txt)) if r and r[0][:1].isdigit()]
     if len(rows) < 2:
         raise ValueError("sin datos")
     return float(rows[-1][4]), float(rows[-2][4]), rows[-1][0] + "T21:00+00:00"
 
 
+def yahoo_spark(syms):
+    """Un solo pedido para todos los símbolos (menos chances de que Yahoo limite)."""
+    out = {}
+    for host in ("query2", "query1"):
+        try:
+            q = ",".join(urllib.request.quote(x) for x in syms)
+            j = json.loads(get(f"https://{host}.finance.yahoo.com/v7/finance/spark?symbols={q}&range=5d&interval=1d", tries=1))
+            for r in (j.get("spark") or {}).get("result") or []:
+                resp = (r.get("response") or [{}])[0]
+                meta = resp.get("meta", {})
+                cl = [c for c in ((resp.get("indicators") or {}).get("quote") or [{}])[0].get("close") or [] if c is not None]
+                precio = meta.get("regularMarketPrice") or (cl[-1] if cl else None)
+                prevc = cl[-2] if len(cl) >= 2 else meta.get("chartPreviousClose")
+                if precio and prevc:
+                    t = meta.get("regularMarketTime")
+                    out[r.get("symbol")] = (float(precio), float(prevc), datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes") if t else "")
+            if out:
+                return out
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"Yahoo spark {host}: {e}")
+    return out
+
+
+def frankfurter():
+    """Monedas del BCE (Frankfurter): EUR, BRL y CNY contra el dólar, último y anterior."""
+    hoy = date.today()
+    j = json.loads(get(f"https://api.frankfurter.app/{(hoy - timedelta(days=10)).isoformat()}..?from=USD&to=EUR,BRL,CNY"))
+    fechas = sorted(j.get("rates") or {})
+    if len(fechas) < 2:
+        raise ValueError("sin datos")
+    u, a = j["rates"][fechas[-1]], j["rates"][fechas[-2]]
+    t = fechas[-1] + "T16:00+00:00"
+    return {"eurusd": (1 / u["EUR"], 1 / a["EUR"], t), "usdbrl": (u["BRL"], a["BRL"], t), "usdcny": (u["CNY"], a["CNY"], t)}
+
+
+def coingecko():
+    j = json.loads(get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_last_updated_at=true"))
+    b = j["bitcoin"]
+    v, ch = float(b["usd"]), float(b.get("usd_24h_change") or 0)
+    return {"btc": (v, v / (1 + ch / 100), datetime.fromtimestamp(b.get("last_updated_at", time.time()), timezone.utc).isoformat(timespec="minutes"))}
+
+
 def mercados(prev):
     viejo = {m["k"]: m for m in prev.get("mercados") or []}
-    out = []
-    for k, n, g, ys, ss, u, conv in MERCADOS:
-        dato, fuente, fallas = None, None, []
-        for f, fn, s in (("Yahoo", yahoo, ys), ("Stooq", stooq, ss)):
+    datos, fuente = {}, {}
+    spark = yahoo_spark([m[3] for m in MERCADOS])
+    for k, _, _, ys, *_ in MERCADOS:
+        if ys in spark:
+            datos[k], fuente[k] = spark[ys], "Yahoo"
+    for nombre, fn in (("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
+        try:
+            for k, d in fn().items():
+                if k not in datos:
+                    datos[k], fuente[k] = d, nombre
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"{nombre}: {e}")
+    for k, _, _, ys, ss, *_ in MERCADOS:  # respaldo uno por uno
+        if k in datos:
+            continue
+        for f, fn, sym in (("Yahoo", yahoo, ys), ("Stooq", stooq, ss)):
             try:
-                dato, fuente = fn(s), f
+                datos[k], fuente[k] = fn(sym), f
                 break
             except Exception as e:  # noqa: BLE001
-                fallas.append(f"{f} {s}: {e}")
-        if not dato:
-            errores.extend(fallas)
-        if dato:
-            p, pv, t = dato
-            out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p * conv, 4), "prev": round(pv * conv, 4), "t": t, "f": fuente})
+                errores.append(f"{f} {sym}: {e}")
+            time.sleep(1)
+    out = []
+    for k, n, g, ys, ss, u, conv in MERCADOS:
+        if k in datos:
+            p, pv, t = datos[k]
+            c = 1 if fuente[k] in ("BCE/Frankfurter", "CoinGecko") else conv
+            out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p * c, 4), "prev": round(pv * c, 4), "t": t, "f": fuente[k]})
         elif k in viejo:
             out.append(viejo[k])
     return out
@@ -220,12 +315,13 @@ def main():
             prev = json.loads(OUT.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001
             prev = {}
-    paises, ok_imf = imf(prev)
+    paises, ok_imf, fuentes = imf(prev)
     n_bis = bis(paises)
     data = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
         "anio_fmi": date.today().year,
         "paises": dict(sorted(paises.items())),
+        "fuentes": fuentes,
         "mercados": mercados(prev),
         "expo": expo(prev),
         "errores": errores[:60],
