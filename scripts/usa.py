@@ -11,7 +11,7 @@ Fuentes oficiales y gratuitas, sin clave:
   - Departamento de Trabajo (DOL): pedidos semanales de seguro de desempleo (como máximo cada 12 horas).
   - Freddie Mac: tasa hipotecaria a 30 años (semanal).
   - Nasdaq: calendario de balances de las empresas grandes (como máximo cada 12 horas).
-  - BEA: PBI trimestral, solo si existe el secreto BEA_KEY (clave gratis de apps.bea.gov).
+  - BEA: PBI trimestral, solo si existe el secreto BEA_KEY (clave gratis de apps.bea.gov, cargada el 11/10/2026).
 
 Uso: python scripts/usa.py
 Nunca inventa datos: si una fuente falla, queda lo que había y se anota en "errores".
