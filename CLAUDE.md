@@ -389,3 +389,17 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   país por punto con `d3.geoContains`; `DG_EX` país→bolsa, `DG_CUR` país→moneda; giran al revés del otro globo).
   La ficha del país quedó debajo, a todo el ancho. El mapa plano del globo de países ahora depende de `innerWidth<560`.
 - El chequeo diario también revisa que la portada muestre los dólares.
+
+## PRÓXIMO BLOQUE APROBADO (11/10/2026, Francisco: "me gustó todo", hacer exactamente esto)
+Mundo: (1) reloj de mercados 24 h; (2) bonos 10 años del mundo y diferencia contra EE.UU. (CNBC), con Argentina al lado;
+(3) agenda de bancos centrales (Fed, BCE, BoE, BoJ, Copom, Banxico, Chile) con cuenta regresiva, carga manual anual;
+(4) commodities completos (soja, maíz, trigo, petróleo, gas, oro, plata, cobre) con gráfico y variación en el año;
+(5) cripto top 10 (CoinGecko); (6) "¿Dónde está Argentina?": rankings con Argentina marcada (inflación, crecimiento,
+tasa, bolsa en US$, moneda en el año); (7) más capas del globo "Mundo hoy" (bonos 10 años, monedas en el año);
+(8) noticias del mundo (RSS en español, a verificar).
+EE.UU.: (1) semáforo de recesión (regla de Sahm con desempleo BLS, curva 10-2, VIX); (2) inflación por rubro (BLS);
+(3) calendario de datos (IPC, empleo, PBI) con cuenta regresiva; (4) mapa de calor top 50 del S&P 500 por sector (CNBC);
+(5) temporada de balances (a verificar); (6) PBI con clave gratis del BEA (guiar a Francisco a sacarla, paso a paso);
+(7) vacantes JOLTS y pedidos semanales de desempleo (a verificar); (8) tasa hipotecaria 30 años (a verificar).
+Extra: TERCERA cinta arriba con el reloj de mercados 24 h (cada bolsa: abierta/cerrada y cuánto falta), más finita y
+lenta que las otras; en celular más chica o solo las abiertas. Respetar: nada con datos viejos.
