@@ -373,3 +373,19 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
 - Ideas futuras ya conversadas: dólar ajustado por inflación ("a precios de hoy"),
   calendario de publicaciones (INDEC/BCRA), inflación semanal de alimentos propia,
   datos descargables, newsletter, gráfico diario para X/IG.
+
+## Portada Argentina | Global y dos globos (11/10/2026, HECHO)
+- Sin hash se abre la **portada** (`#vP`, `renderPortada()`): cintas arriba, los 7 dólares (`#quotes`, `renderQuotes()`,
+  ahora fuera de la pestaña Dólares y visibles en TODAS las vistas: requisito no negociable de Francisco: "deben verse
+  ni bien se ingresa, sin tocar nada"), y dos mitades: Argentina (riesgo, reservas, Merval, inflación con mini gráficos +
+  "terminal" con brecha, canje, compras del BCRA en el año, plazo fijo, tarjeta/oficial) y Global (globo de puntos con
+  las bolsas). En celular se apilan.
+- Selector **Argentina | Global** en el encabezado (`#modo`); el logo (`#brandH`) vuelve a la portada. La barra de
+  pestañas (`#bar`, `#tabsNav a[data-g]`) muestra solo las del grupo: arg = Dólares…Calculadoras; glo = Mundo
+  (`#global`) y Estados Unidos (`#eeuu`, nuevo hash; `setTab('eeuu')` pone `G.vista='usa'`). El viejo selector
+  `#gVista` quedó oculto. Los links directos siguen andando. "Sobre Pulso Macro" está en el pie (`#sobre`).
+- Global › Mundo: dos globos lado a lado (`.gtop.duo`): el de países de siempre y **Mundo hoy** (`#dCv`, capas Bolsas /
+  Monedas en `#dLay`). Globos de puntos: `dgStart/dgDraw/dgDots/dgItems` (puntos cada 1,6° precalculados una vez,
+  país por punto con `d3.geoContains`; `DG_EX` país→bolsa, `DG_CUR` país→moneda; giran al revés del otro globo).
+  La ficha del país quedó debajo, a todo el ancho. El mapa plano del globo de países ahora depende de `innerWidth<560`.
+- El chequeo diario también revisa que la portada muestre los dólares.

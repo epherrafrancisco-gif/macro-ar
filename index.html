@@ -317,6 +317,33 @@ footer a{color:var(--ink2)}
 @keyframes tkUp{0%,30%{color:var(--pos)}100%{color:var(--ink)}}@keyframes tkDn{0%,30%{color:var(--neg)}100%{color:var(--ink)}}
 @media (prefers-reduced-motion:reduce){.tape{overflow-x:auto}.tape-in{animation:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* Portada (Argentina | Global) y globos de puntos */
+header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;margin-left:auto}
+.modo{display:inline-flex;background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+.modo button{font:600 14px var(--sans);border:0;background:transparent;color:var(--ink2);padding:7px 16px;border-radius:7px;cursor:pointer}
+.modo button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.brand h1{cursor:pointer}
+.dolhoy{display:grid;gap:8px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.pane{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;align-content:start;min-width:0;position:relative;overflow:hidden}
+.pane::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 3px)}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.ph h2{margin:0;font:700 22px var(--mono);letter-spacing:.12em}.ph code{font:11px var(--mono);color:var(--muted);letter-spacing:.08em}
+.kp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.kc{background:var(--sunk);border:1px solid var(--grid,var(--line));border-radius:9px;padding:10px 12px;display:grid;gap:2px;min-width:0;align-content:start}
+.kc .l{font:600 10.5px var(--mono);letter-spacing:.07em;color:var(--muted)}.kc .v{font:500 19px var(--mono);font-variant-numeric:tabular-nums}.kc .d{font:11.5px var(--mono)}
+.kc .d.up{color:var(--pos)}.kc .d.dn{color:var(--neg)}.kc svg{width:100%;height:34px;display:block;margin-top:4px}
+.term{font:12px/1.7 var(--mono);color:var(--muted);background:#0b1016;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.term b{color:var(--ink);font-weight:500}.term .ok{color:var(--pos)}.term .up{color:var(--pos)}.term .dn{color:var(--neg)}
+.term div{opacity:0;animation:typ .01s linear forwards}
+@keyframes typ{to{opacity:1}}
+.go{font:600 15px var(--sans);border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:9px;padding:12px 16px;text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.go:hover{background:var(--accent);color:var(--accent-ink)}.go small{font:500 12px var(--sans);color:inherit;opacity:.8;text-align:right}
+.globe.dglobe{aspect-ratio:1/1;max-height:460px;justify-self:center}
+.gtop.duo{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.dlay button[aria-pressed="true"]{background:#3fd0c0;border-color:#3fd0c0;color:#0e1319}
+@media (max-width:900px){.split,.gtop.duo{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.go small,.ph code{display:none}.kc .v{font-size:16px}.ph h2{font-size:19px}.pane{padding:14px}}
+@media (prefers-reduced-motion:reduce){.term div{opacity:1}}
 </style>
 
 <div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
@@ -324,24 +351,32 @@ footer a{color:var(--ink2)}
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Pulso<span>Macro</span></h1>
+      <h1 id="brandH" title="Volver a la portada" role="link" tabindex="0">Pulso<span>Macro</span></h1>
       <span class="by">Diseñado y operado por Francisco Epherra</span>
-      <p>La economía argentina en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
+      <p>La economía argentina y el mundo en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
     </div>
-    <div class="stamp" id="stamp">Cargando datos…</div>
+    <div class="hright">
+      <div class="modo" id="modo" role="group" aria-label="Sección"><button type="button" data-m="arg" aria-pressed="false">Argentina</button><button type="button" data-m="glo" aria-pressed="false">Global</button></div>
+      <div class="stamp" id="stamp">Cargando datos…</div>
+    </div>
   </header>
 
-  <div class="bar">
-    <nav class="tabs" role="tablist" aria-label="Secciones">
-      <a href="#dolares" role="tab" id="tabD" aria-selected="true">Dólares</a>
-      <a href="#macro" role="tab" id="tabM" aria-selected="false">Macro</a>
-      <a href="#dinero" role="tab" id="tabN" aria-selected="false">Dinero</a>
-      <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
-      <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
-      <a href="#global" role="tab" id="tabG" aria-selected="false">Global</a>
-      <a href="#noticias" role="tab" id="tabW" aria-selected="false">Noticias</a>
-      <a href="#calculadoras" role="tab" id="tabC" aria-selected="false">Calculadoras</a>
-      <a href="#sobre" role="tab" id="tabS" aria-selected="false">Sobre Pulso Macro</a>
+  <section class="dolhoy" aria-label="Dólar hoy">
+    <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
+    <div class="quotes" id="quotes"></div>
+  </section>
+
+  <div class="bar" id="bar">
+    <nav class="tabs" id="tabsNav" role="tablist" aria-label="Secciones">
+      <a href="#dolares" role="tab" id="tabD" data-g="arg" aria-selected="true">Dólares</a>
+      <a href="#macro" role="tab" id="tabM" data-g="arg" aria-selected="false">Macro</a>
+      <a href="#dinero" role="tab" id="tabN" data-g="arg" aria-selected="false">Dinero</a>
+      <a href="#fiscal" role="tab" id="tabF" data-g="arg" aria-selected="false">Fiscal</a>
+      <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
+      <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
+      <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
+      <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
+      <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -352,11 +387,26 @@ footer a{color:var(--ink2)}
     </div>
   </div>
 
-  <!-- DÓLARES -->
-  <section class="view" id="vD">
-    <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
-    <div class="quotes" id="quotes" style="margin-top:-8px"></div>
+  <!-- PORTADA -->
+  <section class="view" id="vP" hidden>
+    <div class="split">
+      <section class="pane">
+        <div class="ph"><h2>ARGENTINA</h2><code>MACRO · DINERO · FISCAL · MERCADO</code></div>
+        <div class="kp" id="pKp"></div>
+        <div class="term" id="pTerm"></div>
+        <a class="go" href="#dolares">Entrar a Argentina <small>Dólares, Macro, Dinero, Fiscal, Mercado, Noticias, Calculadoras →</small></a>
+      </section>
+      <section class="pane">
+        <div class="ph"><h2>GLOBAL</h2><code>MUNDO HOY · BOLSAS EN EL DÍA</code></div>
+        <div class="globe dglobe"><canvas id="pCv" aria-label="Globo con las bolsas del mundo"></canvas><div class="ghud" id="pHud"></div></div>
+        <div class="term" id="pTerm2"></div>
+        <a class="go" href="#global">Entrar a Global <small>Mundo, Estados Unidos →</small></a>
+      </section>
+    </div>
+  </section>
 
+  <!-- DÓLARES -->
+  <section class="view" id="vD" hidden>
     <div class="card">
       <div class="head"><h2>Cotizaciones (venta)</h2><div class="legend" id="lgDol"></div></div>
       <div class="chart" id="chDol"></div>
@@ -489,9 +539,9 @@ footer a{color:var(--ink2)}
 
   <!-- NOTICIAS -->
   <section class="view" id="vG" hidden>
-    <div class="seg" id="gVista" role="tablist" aria-label="Vista"><button type="button" data-v="mundo" aria-selected="true">Mundo</button><button type="button" data-v="usa" aria-selected="false">Estados Unidos</button></div>
+    <div class="seg" id="gVista" role="tablist" aria-label="Vista" hidden><button type="button" data-v="mundo" aria-selected="true">Mundo</button><button type="button" data-v="usa" aria-selected="false">Estados Unidos</button></div>
     <div class="gview" id="gMundo">
-    <div class="gtop">
+    <div class="gtop duo">
       <div class="card">
         <div class="head"><h2>El mundo, país por país</h2><span class="note">Arrastrá el globo para girarlo. Tocá un país para ver su ficha.</span></div>
         <div class="glay" id="gLay" role="group" aria-label="Indicador">
@@ -504,8 +554,14 @@ footer a{color:var(--ink2)}
         <div class="gleg" id="gLeg"></div>
         <p class="note" id="gHint"></p>
       </div>
-      <div class="card gficha" id="gFicha" aria-live="polite"></div>
+      <div class="card">
+        <div class="head"><h2>Mundo hoy</h2><span class="note" id="dFecha"></span></div>
+        <div class="glay dlay" id="dLay" role="group" aria-label="Capa"><button type="button" data-l="bolsa" aria-pressed="true">Bolsas</button><button type="button" data-l="mon" aria-pressed="false">Monedas</button></div>
+        <div class="globe dglobe"><canvas id="dCv" aria-label="Globo con las bolsas y monedas del día"></canvas><div class="ghud" id="dHud"></div></div>
+        <p class="note" id="dHint"></p>
+      </div>
     </div>
+    <div class="card gficha" id="gFicha" aria-live="polite"></div>
     <div class="g3">
       <div class="card"><div class="head"><h2>Bolsas del mundo</h2></div><p class="sub">Su índice principal y cómo viene el día. Abierta o cerrada según la hora de cada ciudad (no contempla feriados). Con demora.</p><div class="glist" id="gBolsas"></div></div>
       <div class="card"><div class="head"><h2>Bancos centrales</h2></div><p class="sub">Tasa de política monetaria y su última decisión (BIS).</p><div class="glist" id="gBcs"></div></div>
@@ -720,7 +776,7 @@ footer a{color:var(--ink2)}
 
   <footer>
     <span>Fuentes: INDEC y Secretaría de Hacienda vía datos.gob.ar (PBI, resultado fiscal, comercio exterior), BCRA (reservas, compras de divisas, agregados, CER, pasivos, tasas, base monetaria, depósitos, inflación y expectativas del REM), Ámbito (historia de dólares y riesgo país) y DolarApi (cotizaciones en vivo). Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
-    <span>Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión. · <a href="diario/">Imagen del día</a></span>
+    <span><a href="#sobre">Sobre Pulso Macro</a> · <a href="diario/">Imagen del día</a> · Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
     <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Pulso Macro con datos de BCRA, INDEC, Hacienda y Ámbito.</span>
   </footer>
@@ -946,8 +1002,7 @@ footer a{color:var(--ink2)}
   const legend = (el, items) => { el.innerHTML = items.map(i=>`<span><i class="sw" style="background:var(${i.c})"></i>${i.n}</span>`).join(''); };
 
   // ---- DÓLARES ----
-  function renderDolares(){
-    // quote cards
+  function renderQuotes(){
     $('quotes').innerHTML = DOL.map(q=>{
       const {pts, c, hora} = cardSeries(q.k); if(!pts.length) return `<div class="q"><div class="name">${q.n}</div><div class="v">—</div><div class="when">${q.d}</div></div>`;
       const {last, prev} = lastTwo(pts);
@@ -960,7 +1015,8 @@ footer a{color:var(--ink2)}
         <div class="when">${q.d} · ${fds(last[0])}${hora?' '+hora:''}</div></div>`;
     }).join('');
     flash = {};
-
+  }
+  function renderDolares(){
     const main = DOL.filter(q=>q.c);
     legend($('lgDol'), main);
     lineChart($('chDol'), main.map(q=>({n:q.n, c:q.c, pts:inRange(series(q.k))})), {aria:'Cotizaciones del dólar', yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v)});
@@ -1757,19 +1813,33 @@ footer a{color:var(--ink2)}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:['tabS','vS',()=>{}]};
-  let tab = 'dolares';
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()]};
+  const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
+  let tab = 'portada';
   let tabContado = null;
+  // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
   function setTab(t){
-    tab = TABS[t] ? t : 'dolares';
-    if(tab !== tabContado){ tabContado = tab; gc(location.pathname + '#' + tab); }
-    for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
-    $('segRange').hidden = ['calculadoras','noticias','sobre','global'].includes(tab);
-    try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
+    if(t==='eeuu'){ G.vista = 'usa'; t = 'global'; } else if(t==='global') G.vista = 'mundo';
+    tab = TABS[t] ? t : 'portada';
+    const key = tab==='global' ? (G.vista==='usa' ? 'eeuu' : 'global') : tab;
+    if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
+    const view = TABS[tab][1];
+    for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
+    const grp = tab==='global' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
+    let selA = null;
+    document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
+    $('bar').hidden = !grp;
+    document.querySelectorAll('#modo button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===grp)));
+    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada'].includes(tab);
+    try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
-  for(const [k,[a]] of Object.entries(TABS)) $(a).addEventListener('click', e=>{ e.preventDefault(); history.replaceState(null,'','#'+k); setTab(k); });
+  document.querySelectorAll('#tabsNav a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
   window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
+  const irPortada = ()=>{ history.pushState(null,'',location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
+  $('brandH').addEventListener('click', irPortada);
+  $('brandH').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); irPortada(); } });
+  document.querySelectorAll('#modo button').forEach(b=>b.addEventListener('click', ()=>{ const h = b.dataset.m==='arg' ? 'dolares' : 'global'; if(location.hash.slice(1)===h) setTab(h); else location.hash = h; }));
   document.querySelectorAll('#segRange button').forEach(b=>{
     b.setAttribute('aria-selected', String(+b.dataset.r===range));
     b.addEventListener('click', ()=>{ range=+b.dataset.r; document.querySelectorAll('#segRange button').forEach(x=>x.setAttribute('aria-selected', String(x===b))); try{localStorage.setItem('macro-range', String(range));}catch(e){} render(); });
@@ -1778,6 +1848,7 @@ footer a{color:var(--ink2)}
     if(days.length){ const last=days[days.length-1]; const auto = last.fuente==='auto';
       $('stamp').innerHTML = `Último dato <b>${fd(last.fecha)}</b><br>Se actualiza cada día hábil`; }
     else if(loaded.d) $('stamp').textContent = 'Sin datos todavía';
+    renderQuotes();
     TABS[tab][2]();
     if(loaded.d) renderTape();
   }
@@ -1818,7 +1889,7 @@ footer a{color:var(--ink2)}
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='global') renderGlobal();
+    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -1881,7 +1952,7 @@ footer a{color:var(--ink2)}
     return G.loading;
   }
   function gSize(){ const w = $('gWrap').getBoundingClientRect(), d = devicePixelRatio||1, cv = $('gCv'); G.W = w.width; G.H = w.height;
-    if(G.W<2) return false; cv.width = G.W*d; cv.height = G.H*d; G.ctx.setTransform(d,0,0,d,0,0); G.flat = G.W < 560;
+    if(G.W<2) return false; cv.width = G.W*d; cv.height = G.H*d; G.ctx.setTransform(d,0,0,d,0,0); G.flat = innerWidth < 560;
     G.proj = G.flat ? d3.geoNaturalEarth1().fitExtent([[4,4],[G.W-4,G.H-4]], {type:'Sphere'}) : d3.geoOrthographic().scale(Math.min(G.W,G.H)/2-14).translate([G.W/2,G.H/2]).clipAngle(90);
     G.path = d3.geoPath(G.proj, G.ctx); return true; }
   function gDraw(now){
@@ -1941,10 +2012,12 @@ footer a{color:var(--ink2)}
     if(tab!=='global') return;
     if(!gSize()) return; gLegend(); if(glob) gFicha();
     if(!G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); }
+    dgStart('dCv','dHud','#dLay'); dgHint();
   }
   setInterval(()=>{ if(tab==='global' && !document.hidden) gListas(); }, 30000);
   setInterval(loadGlobal, 15*60000);
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='global' && G.ready && !G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); } });
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='global' && G.ready && !G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); }
+    if(!document.hidden){ if(tab==='portada') dgStart('pCv','pHud'); else if(tab==='global' && G.vista==='mundo') dgStart('dCv','dHud','#dLay'); } });
   loadGlobal();
 
   // ---- Global: acciones, gráficos, ranking, monedas y termómetro ----
@@ -1955,6 +2028,113 @@ footer a{color:var(--ink2)}
     ASML:'ASML (Países Bajos)',SAP:'SAP (Alemania)',NVO:'Novo Nordisk (Dinamarca)',AZN:'AstraZeneca (R. Unido)',SHEL:'Shell (R. Unido)',TTE:'TotalEnergies (Francia)',UL:'Unilever (R. Unido)',HSBC:'HSBC (R. Unido)',SAN:'Santander (España)',BP:'BP (R. Unido)',DEO:'Diageo (R. Unido)',SNY:'Sanofi (Francia)',
     TSM:'TSMC (Taiwán)',BABA:'Alibaba (China)',TM:'Toyota (Japón)',SONY:'Sony (Japón)',PDD:'PDD/Temu (China)',HDB:'HDFC Bank (India)',INFY:'Infosys (India)',BIDU:'Baidu (China)',JD:'JD.com (China)',MUFG:'Mitsubishi UFJ (Japón)'};
   const gpc = x => x && x.prev ? (x.v/x.prev-1)*100 : null;
+
+  // ---- globos de puntos (portada y "Mundo hoy"): cada punto es tierra; verde sube, rojo baja ----
+  const DG_EX = {USA:'NYSE',ARG:'BYMA',BRA:'B3',MEX:'BMV',CAN:'TSX',GBR:'LSE',DEU:'Xetra',FRA:'Euronext',ZAF:'JSE',SAU:'Tadawul',IND:'NSE',CHN:'SSE',JPN:'TSE',AUS:'ASX'};
+  const DG_CUR = {ARG:'ARS',BRA:'BRL',CHL:'CLP',MEX:'MXN',COL:'COP',PER:'PEN',URY:'UYU',CHN:'CNY'};
+  ['AUT','BEL','HRV','CYP','EST','FIN','FRA','DEU','GRC','IRL','ITA','LVA','LTU','LUX','MLT','NLD','PRT','SVK','SVN','ESP'].forEach(i=>DG_CUR[i]='EUR');
+  const DG_CURPOS = {ARS:'ARG',BRL:'BRA',CLP:'CHL',MXN:'MEX',COP:'COL',PEN:'PER',UYU:'URY',CNY:'CHN',EUR:'DEU'};
+  const DG_LEFT = ['TSX','LSE','CLP','PEN'], DG_DY = {TSX:-8, LSE:-8, Xetra:-12};
+  // monedas: cuánto se apreció contra el dólar (EUR viene como dólares por euro; el resto, unidades por dólar)
+  const dgMon = c => { const m = glob?.monedas?.[c]; if(!m || !m.prev) return null; const r = (m.v/m.prev-1)*100; return c==='EUR' ? r : -r; };
+  const dgVal = (iso, l) => l==='bolsa' ? gpc(glob?.bolsas?.[DG_EX[iso]]) : (DG_CUR[iso] ? dgMon(DG_CUR[iso]) : null);
+  function dgDots(){
+    if(G.dots) return G.dots;
+    const bb = G.feats.map(f=>[f, d3.geoBounds(f)]), out = [];
+    for(let la=-56; la<=78; la+=1.6){ const st = 1.6/Math.max(.25, Math.cos(la*Math.PI/180));
+      for(let lo=-180; lo<180; lo+=st){ const h = bb.find(([f,b])=>(b[0][0]<=b[1][0] ? lo>=b[0][0]&&lo<=b[1][0] : lo>=b[0][0]||lo<=b[1][0]) && la>=b[0][1] && la<=b[1][1] && d3.geoContains(f,[lo,la])); if(h) out.push([lo,la,h[0].id]); } }
+    return G.dots = out;
+  }
+  const DGS = {};
+  function dgMake(id, hud, laySel){
+    if(DGS[id]) return DGS[id];
+    const cv = $(id), S = DGS[id] = {cv, hud, ctx:cv.getContext('2d'), rot:[60,-15], layer:'bolsa', run:false, W:0, H:0};
+    cv.addEventListener('pointerdown', e=>{ S.drag = {x:e.clientX, y:e.clientY, r:[...S.rot]}; try{ cv.setPointerCapture(e.pointerId); }catch(x){} });
+    cv.addEventListener('pointermove', e=>{ if(!S.drag || !S.proj) return; const k = 120/S.proj.scale(); S.rot = [S.drag.r[0]+(e.clientX-S.drag.x)*k, Math.max(-70, Math.min(70, S.drag.r[1]-(e.clientY-S.drag.y)*k))]; });
+    const up = ()=>{ S.drag = null; S.idle = performance.now(); }; cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    if(laySel) document.querySelectorAll(laySel+' button').forEach(b=>b.addEventListener('click', ()=>{ S.layer = b.dataset.l;
+      document.querySelectorAll(laySel+' button').forEach(x=>x.setAttribute('aria-pressed', String(x===b))); dgHint(); gc('mundohoy-'+S.layer, true); }));
+    return S;
+  }
+  function dgSize(S){ const r = S.cv.getBoundingClientRect(), d = devicePixelRatio||1; if(r.width<2) return false;
+    if(r.width!==S.W || r.height!==S.H){ S.W = r.width; S.H = r.height; S.cv.width = S.W*d; S.cv.height = S.H*d; S.ctx.setTransform(d,0,0,d,0,0);
+      S.proj = d3.geoOrthographic().scale(Math.min(S.W,S.H)/2-12).translate([S.W/2,S.H/2]).clipAngle(90); S.path = d3.geoPath(S.proj, S.ctx); }
+    return true; }
+  async function dgStart(id, hud, laySel){
+    try{ await gInit(); }catch(e){ return; }
+    const S = dgMake(id, hud, laySel); dgDots();
+    if(S.run) return; S.run = true; S.last = 0; requestAnimationFrame(t=>dgDraw(S,t));
+  }
+  // qué se muestra en cada capa: [clave, nombre, variación %, lon/lat]
+  function dgItems(l){
+    if(!glob) return [];
+    if(l==='bolsa') return GEX.map(e=>{ const k = e[0].split(' ')[0], b = glob.bolsas?.[k]; return b ? [k, b.idx, gpc(b), [e[3],e[4]], (b.t||'').slice(0,10)] : null; }).filter(x=>x && x[2]!=null);
+    return Object.entries(DG_CURPOS).map(([c,iso])=>{ const v = dgMon(c), ll = G.cen?.(iso); return v==null || !ll ? null : [c, c, v, ll, (glob.monedas[c].t||'').slice(0,10)]; }).filter(Boolean);
+  }
+  function dgDraw(S, now){
+    if(document.hidden || !S.cv.offsetParent || !dgSize(S)){ S.run = false; return; }
+    const {ctx, proj, path, W, H} = S, dt = now-(S.last||now); S.last = now;
+    if(!S.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(S.idle||0)>2500) S.rot[0] -= dt*.007;
+    proj.rotate(S.rot); ctx.clearRect(0,0,W,H); const r = proj.scale();
+    const g = ctx.createRadialGradient(W/2, H/2, r*.2, W/2, H/2, r*1.05); g.addColorStop(0,'#06221f'); g.addColorStop(1,'#030d0c');
+    ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
+    ctx.save(); ctx.shadowColor = 'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+    ctx.beginPath(); path(d3.geoGraticule().step([20,20])()); ctx.strokeStyle = 'rgba(63,208,192,.07)'; ctx.lineWidth = .6; ctx.stroke();
+    const c0 = proj.invert([W/2,H/2]), cache = {};
+    for(const [lo,la,iso] of G.dots){ if(d3.geoDistance([lo,la], c0) > Math.PI/2-.02) continue; const p = proj([lo,la]);
+      let v = cache[iso]; if(v===undefined) v = cache[iso] = dgVal(iso, S.layer);
+      if(v==null) ctx.fillStyle = 'rgba(63,208,192,.3)'; else { const a = Math.min(1, .35+Math.abs(v)/2); ctx.fillStyle = v>=0 ? `rgba(76,195,138,${a})` : `rgba(240,122,112,${a})`; }
+      const z = v==null ? 1.4 : 2.2; ctx.fillRect(p[0]-z/2, p[1]-z/2, z, z); }
+    const items = dgItems(S.layer), pulse = (now%2000)/2000;
+    ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.textBaseline = 'middle';
+    for(const [k,n,v,ll] of items){ if(d3.geoDistance(ll, c0) > Math.PI/2-.15) continue; const p = proj(ll), col = v>=0 ? '76,195,138' : '240,122,112';
+      ctx.beginPath(); ctx.arc(p[0], p[1], 3+pulse*9, 0, 7); ctx.strokeStyle = `rgba(${col},${1-pulse})`; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); ctx.arc(p[0], p[1], 2.6, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill();
+      const t = `${n} ${sg(v,2)}%`, tw = ctx.measureText(t).width, dy = DG_DY[k] || 0, x0 = DG_LEFT.includes(k) ? p[0]-tw-15 : p[0]+7;
+      ctx.fillStyle = 'rgba(3,13,12,.82)'; ctx.fillRect(x0, p[1]-8+dy, tw+8, 16); ctx.fillStyle = `rgb(${col})`; ctx.fillText(t, x0+4, p[1]+dy); }
+    const su = items.filter(x=>x[2]>0).length, ba = items.filter(x=>x[2]<0).length, f = items.map(x=>x[4]).sort().pop();
+    const h = `CAPA <b>${S.layer==='bolsa' ? 'BOLSAS EN EL DÍA' : 'MONEDAS CONTRA EL DÓLAR'}</b><br><b style="color:var(--pos)">${su} SUBEN</b> · <b style="color:var(--neg)">${ba} BAJAN</b>${f ? `<br>DATOS AL <b>${fds(f)}</b>` : ''}`;
+    if(S.hudH !== h){ S.hudH = h; $(S.hud).innerHTML = h; }
+    requestAnimationFrame(t=>dgDraw(S,t));
+  }
+  function dgHint(){ const S = DGS.dCv, l = S ? S.layer : 'bolsa';
+    $('dHint').textContent = l==='bolsa' ? 'Cada punto es tierra. Los países con bolsa se pintan según cómo viene su índice principal en el día (o su último cierre): verde sube, rojo baja; más brillante, más se movió. Con demora (CNBC).'
+      : 'Monedas de la región, el euro y el yuan: verde = se fortaleció contra el dólar en el día, rojo = se debilitó. Fuente: CNBC, con demora.';
+    $('dFecha').textContent = 'Arrastralo para girarlo'; }
+
+  // ---- portada ----
+  function renderPortada(){
+    const spark = (pts, ok) => { if(pts.length<2) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*200, Y = x=>32-(x-mn)/(mx-mn||1)*28;
+      return `<svg viewBox="0 0 200 34" preserveAspectRatio="none" aria-hidden="true"><path d="${v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join('')}" fill="none" style="stroke:var(${ok?'--pos':'--neg'})" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`; };
+    const kc = (l, v, d, ok, pts) => `<div class="kc"><span class="l">${l}</span><span class="v">${v}</span><span class="d ${ok?'up':'dn'}">${d}</span>${spark(pts||[], ok)}</div>`;
+    const N = 63, rp = series('riesgo').slice(-N), rs = series('reservas').slice(-N), mv = series('merval').slice(-N), im = months.filter(m=>m.infl!=null).slice(-13);
+    const L = a => a[a.length-1][1], k = [];
+    if(rp.length>1){ const d = L(rp)-rp[0][1]; k.push(kc('RIESGO PAÍS', nf(L(rp),0)+' pb', `${sg(d,0)} pb en 3 meses`, d<=0, rp)); }
+    if(rs.length>1){ const d = L(rs)/rs[0][1]-1; k.push(kc('RESERVAS', `US$ ${nf(L(rs)/1000,1)} mil M`, `${pc(d,1)} en 3 meses`, d>=0, rs)); }
+    if(mv.length>1){ const d = L(mv)/mv[0][1]-1; k.push(kc('S&amp;P MERVAL', nf(L(mv),0), `${pc(d,1)} en 3 meses`, d>=0, mv)); }
+    if(im.length>1){ const a = im[im.length-1], b = im[im.length-2]; k.push(kc('INFLACIÓN', nf(a.infl,1)+'% mensual', `${a.inflYoY!=null ? nf(a.inflYoY,1)+'% interanual · ' : ''}${a.mes.slice(5)}/${a.mes.slice(0,4)}`, a.infl<=b.infl, im.map(m=>[m.mes, m.infl]))); }
+    $('pKp').innerHTML = k.join('') || '<p class="empty">Cargando datos…</p>';
+    const lt = k => { const p = cardSeries(k).pts; return p.length ? p[p.length-1][1] : null; };
+    const of = lt('oficial'), cc = lt('ccl'), mp = lt('mep'), tj = lt('tarjeta'), lines = [];
+    if(days.length) lines.push(`<span class="ok">●</span> CONECTADO · BCRA · INDEC · ÁMBITO · DATOS AL <b>${fd(days[days.length-1].fecha)}</b>`);
+    if(of && cc) lines.push(`&gt; brecha CCL/oficial: <b>${pc(cc/of-1,1).replace(/^\+/,'')}</b>`);
+    if(cc && mp) lines.push(`&gt; canje CCL/MEP: <b>${pc(cc/mp-1,2).replace(/^\+/,'')}</b>`);
+    const y = days.length ? days[days.length-1].fecha.slice(0,4) : '', co = days.filter(d=>d.fecha.startsWith(y) && d.compras!=null);
+    if(co.length){ const t = co.reduce((a,d)=>a+d.compras,0); lines.push(`&gt; BCRA ${t>=0?'compró':'vendió'} en ${y}: <b class="${t>=0?'up':'dn'}">US$ ${nf(Math.abs(t),0)} M</b>`); }
+    const pf = series('pf'); if(pf.length) lines.push(`&gt; plazo fijo 30 días: <b>${nf(L(pf),1)}% TNA</b>`);
+    if(of && tj) lines.push(`&gt; dólar tarjeta / oficial: <b>${nf(tj/of,2)}x</b>`);
+    const h1 = lines.map((x,i)=>`<div style="animation-delay:${i*.45}s">${x}</div>`).join('');
+    if($('pTerm').dataset.h !== h1){ $('pTerm').dataset.h = h1; $('pTerm').innerHTML = h1; }
+    const it = glob ? dgItems('bolsa') : [];
+    if(it.length){ const su = it.filter(x=>x[2]>0).length, best = it.reduce((a,x)=>x[2]>a[2]?x:a), worst = it.reduce((a,x)=>x[2]<a[2]?x:a);
+      const mo = Object.keys(DG_CURPOS).map(c=>[c, dgMon(c)]).filter(x=>x[1]!=null);
+      const h2 = [`<span class="ok">●</span> ${it.length} BOLSAS · <b class="up">${su} SUBEN</b> · <b class="dn">${it.length-su} BAJAN</b>`,
+        `&gt; mejor: <b>${esc(best[1])} <span class="up">${sg(best[2],2)}%</span></b> · peor: <b>${esc(worst[1])} <span class="${worst[2]<0?'dn':'up'}">${sg(worst[2],2)}%</span></b>`,
+        mo.length ? `&gt; monedas que se fortalecen contra el dólar: <b>${mo.filter(x=>x[1]>0).length} de ${mo.length}</b>` : ''].filter(Boolean).map((x,i)=>`<div style="animation-delay:${i*.45}s">${x}</div>`).join('');
+      if($('pTerm2').dataset.h !== h2){ $('pTerm2').dataset.h = h2; $('pTerm2').innerHTML = h2; } }
+    else if(!$('pTerm2').dataset.h) $('pTerm2').innerHTML = '<div style="opacity:1">Cargando mercados del mundo…</div>';
+    dgStart('pCv','pHud');
+  }
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
@@ -2117,7 +2297,6 @@ footer a{color:var(--ink2)}
     usaMapDraw();
   }
   G.vista = 'mundo';
-  try{ if(localStorage.getItem('global-vista')==='usa') G.vista = 'usa'; }catch(e){}
   function setVista(v){ G.vista = v; try{ localStorage.setItem('global-vista', v); }catch(e){}
     document.querySelectorAll('#gVista button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.v===v)));
     $('gMundo').hidden = v!=='mundo'; $('gUsa').hidden = v!=='usa';
@@ -2139,10 +2318,10 @@ footer a{color:var(--ink2)}
       const f = {};
       if(liveOk) for(const k in nuevo){ const a = live[k]; if(a && a.v !== nuevo[k].v) f[k] = nuevo[k].v > a.v ? 'up' : 'dn'; }
       live = nuevo; liveAt = Date.now(); liveOk = true; flash = f;
-      if(loaded.d && tab==='dolares') renderDolares(); else flash = {};
+      if(loaded.d){ renderQuotes(); if(tab==='dolares') renderDolares(); } else flash = {};
       if(loaded.d && tab==='calculadoras') renderCalc();
       if(loaded.d) renderTape();
-    }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d && tab==='dolares') renderDolares(); }
+    }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d){ renderQuotes(); if(tab==='dolares') renderDolares(); } }
     busy = false; tick();
     lt = setTimeout(poll, LIVE_MS);
   }

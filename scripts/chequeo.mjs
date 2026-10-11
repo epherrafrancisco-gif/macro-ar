@@ -74,6 +74,12 @@ else {
     page.on('pageerror', e => jsErr.push(e.message));
     await page.goto(URL_SITIO + '?chequeo=' + Date.now() + '#dolares', { waitUntil: 'load', timeout: 60000 });
     await page.waitForFunction(() => !document.getElementById('stamp')?.textContent.includes('Cargando'), null, { timeout: 30000 }).catch(() => {});
+    // Portada: sin hash tiene que mostrar los dólares de entrada
+    await page.evaluate(() => { history.replaceState(null, '', location.pathname + location.search); dispatchEvent(new HashChangeEvent('hashchange')); });
+    await page.waitForTimeout(1500);
+    const por = await page.evaluate(() => ({ v: !document.getElementById('vP')?.hidden, q: [...document.querySelectorAll('#quotes .q .v')].filter(x => /\d/.test(x.textContent)).length, k: document.querySelectorAll('#pKp .kc').length }));
+    if (!por.v || por.q < 5) errores.push(`Portada: no se ven los dólares (${por.q} cotizaciones).`);
+    else ok.push(`Portada: ${por.q} dólares y ${por.k} indicadores.`);
     for (const tab of ['dolares', 'macro', 'dinero', 'fiscal', 'mercado', 'noticias', 'calculadoras']) {
       await page.evaluate(t => { location.hash = t; }, tab);
       await page.waitForTimeout(tab === 'mercado' ? 6000 : 1500);
