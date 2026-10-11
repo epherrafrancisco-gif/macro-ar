@@ -435,13 +435,18 @@ def historia(prev_h):
     ok = 0
     for k, sym in HIST.items():
         try:
-            j = json.loads(get(f"https://ts-api.cnbc.com/harmony/app/charts/1Y.json?symbol={urllib.request.quote(sym, safe='')}",
-                               tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
             pts = []
-            for b in (j.get("barData") or {}).get("priceBars") or []:
-                t, c = str(b.get("tradeTime") or ""), b.get("close")
-                if len(t) >= 8 and c not in (None, ""):
-                    pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c) * COM_CONV.get(k, 1), 4)])
+            for intento in range(3):  # a veces CNBC devuelve la serie vacía: se reintenta con una pausa
+                j = json.loads(get(f"https://ts-api.cnbc.com/harmony/app/charts/1Y.json?symbol={urllib.request.quote(sym, safe='')}",
+                                   tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
+                for b in (j.get("barData") or {}).get("priceBars") or []:
+                    t, c = str(b.get("tradeTime") or ""), b.get("close")
+                    if len(t) >= 8 and c not in (None, ""):
+                        pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c) * COM_CONV.get(k, 1), 4)])
+                if len(pts) > 20:
+                    break
+                pts = []
+                time.sleep(3 + 3 * intento)
             if len(pts) > 20:
                 series[k] = pts
                 ok += 1
