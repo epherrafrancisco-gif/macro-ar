@@ -290,6 +290,18 @@ footer a{color:var(--ink2)}
 .gst.on{color:var(--pos);background:var(--pos-bg)}.gst.off{color:var(--muted);background:var(--sunk)}
 .gup{color:var(--pos)}.gdn{color:var(--neg)}.geq{color:var(--muted)}
 .tape2{background:var(--bg)}.tape2 .tape-in{animation-direction:reverse}
+.gview{display:grid;gap:18px}.gview>*{min-width:0}
+#gVista{justify-self:start}#gVista button{font-size:13.5px;padding:6px 16px}
+.uhero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px}.uside{display:grid;gap:18px;align-content:start}
+.umap{position:relative;width:100%}.umap canvas{width:100%;aspect-ratio:1.6/1;height:auto;display:block}
+@media (max-width:600px){#uHud{position:static;margin-bottom:6px}}
+.ubig{font:600 clamp(19px,2.3vw,27px)/1.1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.umini{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;font-size:12.5px;color:var(--muted)}.umini b{display:block;font:500 14.5px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}.umini b.up{color:var(--pos)}.umini b.dn{color:var(--neg)}
+.ucd{display:flex;gap:8px}.ucd div{flex:1;background:var(--sunk);border-radius:8px;padding:8px 0;text-align:center}.ucd b{display:block;font:600 24px var(--mono);font-variant-numeric:tabular-nums}.ucd span{font:11px var(--mono);color:var(--muted)}
+.ukpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.heat>div{border:1px solid var(--line);border-radius:8px;padding:8px 9px;display:grid;gap:1px;min-width:0}
+@media (max-width:900px){.uhero{grid-template-columns:minmax(0,1fr)}.ukpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.ukpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* Cinta de cotizaciones estilo Wall Street */
 .tape{position:relative;overflow:hidden;background:var(--sunk);border-bottom:1px solid var(--line);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
 .tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:40px;z-index:1;pointer-events:none}
@@ -477,6 +489,8 @@ footer a{color:var(--ink2)}
 
   <!-- NOTICIAS -->
   <section class="view" id="vG" hidden>
+    <div class="seg" id="gVista" role="tablist" aria-label="Vista"><button type="button" data-v="mundo" aria-selected="true">Mundo</button><button type="button" data-v="usa" aria-selected="false">Estados Unidos</button></div>
+    <div class="gview" id="gMundo">
     <div class="gtop">
       <div class="card">
         <div class="head"><h2>El mundo, país por país</h2><span class="note">Arrastrá el globo para girarlo. Tocá un país para ver su ficha.</span></div>
@@ -531,6 +545,43 @@ footer a{color:var(--ink2)}
       <div class="card"><div class="head"><h2>Termómetro del mercado</h2></div><p class="sub">El miedo de los inversores (VIX) y las tasas de los bonos del Tesoro de EE.UU.</p><div class="stats" id="gTermo"></div><div class="chart" id="chVix"></div><p class="note">Gráfico: VIX en el último año. Debajo de 15, calma; arriba de 30, pánico.</p></div>
     </div>
     <p class="note" id="gFuente"></p>
+    </div>
+    <div class="gview" id="gUsa" hidden>
+      <div class="uhero">
+        <div class="card">
+          <div class="head"><h2>Desempleo por estado</h2><span class="note">BLS · pasá el mouse por un estado</span></div>
+          <div class="umap"><canvas id="uMap" aria-label="Mapa de Estados Unidos por desempleo"></canvas><div class="ghud" id="uHud"></div></div>
+          <div class="gleg" id="uLeg"></div>
+        </div>
+        <div class="uside">
+          <div class="card uclock">
+            <div class="head"><h2>Deuda del gobierno de EE.UU.</h2><span class="note" id="uDebtF"></span></div>
+            <div class="ubig" id="uDebt">—</div>
+            <div class="umini" id="uDebtMini"></div>
+            <p class="note">Entre una publicación del Tesoro y la siguiente, el contador avanza al ritmo promedio de los últimos dos meses.</p>
+          </div>
+          <div class="card">
+            <div class="head"><h2>Próxima reunión de la Fed</h2><span class="note" id="uFedF"></span></div>
+            <div class="ucd" id="uCd"></div>
+            <div class="umini" id="uFedMini"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ukpis" id="uKpis"></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa de la Fed contra inflación</h2><span class="note">Mensual, últimos 5 años</span></div><div class="chart" id="chUFed"></div></div>
+        <div class="card"><div class="head"><h2>Curva de tasas del Tesoro</h2><span class="note">De 1 mes a 30 años</span></div><div class="chart" id="chUCurva"></div><div class="legend"><span><span class="sw" style="background:var(--accent)"></span>Hoy</span><span><span class="sw" style="background:var(--muted)"></span>Hace un año</span></div><p class="note" id="uCurvaN"></p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Empleos creados por mes</h2><span class="note">Miles de puestos, últimos 2 años</span></div><div class="chart" id="chUEmp"></div></div>
+        <div class="card"><div class="head"><h2>Sectores de la bolsa hoy</h2><span class="note">Fondos de cada sector del S&amp;P 500</span></div><div class="heat" id="uSec"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Las 7 magníficas</h2><span class="note">Las empresas más grandes del mundo</span></div><div class="tw"><table class="gcmp" id="uMag"></table></div></div>
+        <div class="card"><div class="head"><h2>Decisiones de la Fed</h2><span class="note">Últimas reuniones</span></div><div class="tw"><table class="gcmp" id="uFed"></table></div></div>
+      </div>
+      <p class="note" id="uFuente"></p>
+    </div>
   </section>
   <section class="view" id="vW" hidden>
     <div class="card">
@@ -1834,7 +1885,7 @@ footer a{color:var(--ink2)}
     G.proj = G.flat ? d3.geoNaturalEarth1().fitExtent([[4,4],[G.W-4,G.H-4]], {type:'Sphere'}) : d3.geoOrthographic().scale(Math.min(G.W,G.H)/2-14).translate([G.W/2,G.H/2]).clipAngle(90);
     G.path = d3.geoPath(G.proj, G.ctx); return true; }
   function gDraw(now){
-    if(tab!=='global' || document.hidden){ G.run = false; return; }
+    if(tab!=='global' || document.hidden || G.vista==='usa'){ G.run = false; return; }
     const ctx = G.ctx, path = G.path, dt = now-(G.last||now); G.last = now;
     if(!G.flat && !G.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(G.idle||0)>2500) G.rot[0] += dt*.006;
     if(!G.flat) G.proj.rotate(G.rot);
@@ -1881,6 +1932,9 @@ footer a{color:var(--ink2)}
     if(glob) $('gFuente').textContent = `Fuentes: FMI (World Economic Outlook) o Banco Mundial, BIS (tasas de política monetaria), CNBC, BCE y CoinGecko (mercados, con demora). Actualizado: ${new Date(glob.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} h.`;
   }
   async function renderGlobal(){
+    document.querySelectorAll('#gVista button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.v===G.vista)));
+    $('gMundo').hidden = G.vista!=='mundo'; $('gUsa').hidden = G.vista!=='usa';
+    if(G.vista==='usa'){ G.run = false; renderUsa(); return; }
     gListas(); gExtras();
     if(!glob) $('gFicha').innerHTML = '<p class="empty">Cargando datos del mundo…</p>';
     try{ await gInit(); }catch(e){ $('gHint').textContent = 'No se pudo cargar el mapa. Recargá la página.'; return; }
@@ -1969,6 +2023,106 @@ footer a{color:var(--ink2)}
   }
   document.querySelectorAll('#gLid button').forEach(b=>b.addEventListener('click', ()=>{ gLidSel = b.dataset.g; G.lidSel = null; gc('global-lideres-'+gLidSel, true); gExtras(); }));
   document.querySelectorAll('#gChR button').forEach(b=>b.addEventListener('click', ()=>{ gChR = +b.dataset.r; gExtras(); }));
+
+  // ---- Global → Estados Unidos (usa.json) ----
+  let usa = null, usaLoading = false, usaMap = null, usaTimer = null;
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const mesTxt = m => `${MESES[+m.slice(5,7)-1]} ${m.slice(0,4)}`;
+  const USA_HUB = [['Fed',-77.04,38.9,'b'],['Wall Street',-74,40.7,'t'],['Chicago',-87.6,41.9,'t'],['Silicon Valley',-122.4,37.8,'t'],['Houston',-95.4,29.8,'t']];
+  const USA_FIPS = {AL:'01',AK:'02',AZ:'04',AR:'05',CA:'06',CO:'08',CT:'09',DE:'10',DC:'11',FL:'12',GA:'13',HI:'15',ID:'16',IL:'17',IN:'18',IA:'19',KS:'20',KY:'21',LA:'22',ME:'23',MD:'24',MA:'25',MI:'26',MN:'27',MS:'28',MO:'29',MT:'30',NE:'31',NV:'32',NH:'33',NJ:'34',NM:'35',NY:'36',NC:'37',ND:'38',OH:'39',OK:'40',OR:'41',PA:'42',RI:'44',SC:'45',SD:'46',TN:'47',TX:'48',UT:'49',VT:'50',VA:'51',WA:'53',WV:'54',WI:'55',WY:'56'};
+  async function loadUsa(){
+    if(usaLoading) return; usaLoading = true;
+    try{ const r = await fetch('usa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
+    usaLoading = false; if(tab==='global' && G.vista==='usa') renderUsa();
+  }
+  const yoy = (pts, i=pts.length-1) => { const p = pts[i], q = p && pts.find(x=>x[0]===`${+p[0].slice(0,4)-1}${p[0].slice(4)}`); return p && q ? (p[1]/q[1]-1)*100 : null; };
+  async function usaMapDraw(){
+    if(!usa?.estados) return;
+    if(!usaMap){ await gInit(); const topo = await (await fetch('usa-estados.json')).json();
+      usaMap = {states: topojson.feature(topo, topo.objects.states).features, mesh: topojson.mesh(topo, topo.objects.states, (a,b)=>a!==b), alb: d3.geoAlbersUsa().scale(1300).translate([487.5,305])};
+      const cv = $('uMap');
+      cv.addEventListener('pointermove', e=>{ const r = cv.getBoundingClientRect(), x = e.clientX-r.left, y = e.clientY-r.top, ctx = cv.getContext('2d');
+        const f = usaMap.paths?.find(p=>ctx.isPointInPath(p.p, x*(devicePixelRatio||1), y*(devicePixelRatio||1))); usaMap.hover = f ? f.f : null; usaHud(); });
+      cv.addEventListener('pointerleave', ()=>{ usaMap.hover = null; usaHud(); }); }
+    const cv = $('uMap'), r = cv.getBoundingClientRect(), d = devicePixelRatio||1; if(r.width<2) return;
+    cv.width = r.width*d; cv.height = r.height*d; const ctx = cv.getContext('2d'); ctx.setTransform(1,0,0,1,0,0);
+    const proj = d3.geoIdentity().fitExtent([[6*d,30*d],[r.width*d-6*d,r.height*d-6*d]], {type:'FeatureCollection', features:usaMap.states}), path = d3.geoPath(proj);
+    const cut = [3,3.5,4,4.5,5,5.5], pal = ['#1f6f5a','#3a9c7a','#7fa86a','#e8b14a','#e67e3a','#d9483b','#9e1f3a'], col = v => { if(v==null) return '#1d2733'; let k = cut.findIndex(c=>v<c); if(k<0) k = cut.length; return pal[k]; };
+    const val = id => { const ab = Object.keys(USA_FIPS).find(k=>USA_FIPS[k]===id); return usa.estados[ab]?.[1]; };
+    usaMap.paths = usaMap.states.map(f=>({f, p:new Path2D(path(f))}));
+    for(const {f,p} of usaMap.paths){ ctx.fillStyle = col(val(f.id)); ctx.fill(p); }
+    ctx.strokeStyle = 'rgba(14,19,25,.9)'; ctx.lineWidth = .7*d; ctx.stroke(new Path2D(path(usaMap.mesh)));
+    ctx.font = `${11*d}px "JetBrains Mono", monospace`;
+    for(const [n,lo,la,pos] of USA_HUB){ const p0 = usaMap.alb([lo,la]); if(!p0) continue; const p = proj(p0); ctx.beginPath(); ctx.arc(p[0],p[1],3.5*d,0,7); ctx.fillStyle = '#e6edf3'; ctx.fill(); ctx.beginPath(); ctx.arc(p[0],p[1],7*d,0,7); ctx.strokeStyle = 'rgba(230,237,243,.45)'; ctx.lineWidth = 1*d; ctx.stroke();
+      if(r.width>520){ ctx.fillStyle = 'rgba(230,237,243,.85)'; const tw = ctx.measureText(n).width, izq = p[0]+8*d+tw > cv.width-4*d; ctx.textAlign = izq?'right':'left'; ctx.fillText(n, izq?p[0]-8*d:p[0]+8*d, pos==='b' ? p[1]+14*d : p[1]-6*d); ctx.textAlign = 'left'; } }
+    $('uLeg').innerHTML = `<span>Desempleo</span><span class="gsw">${pal.map((c,i)=>`<span><i style="background:${c}"></i>${i===0?'&lt;3':i===pal.length-1?'≥5,5':nf(cut[i-1],1)}</span>`).join('')}</span><span>%</span>`;
+    usaHud();
+  }
+  function usaHud(){ if(!usa?.estados || !usaMap) return; const E = Object.entries(usa.estados).filter(([,p])=>p), vals = E.map(([,p])=>p[1]); if(!vals.length) return;
+    const mx = E.reduce((a,b)=>b[1][1]>a[1][1]?b:a), mn = E.reduce((a,b)=>b[1][1]<a[1][1]?b:a), nom = ab => usaMap.states.find(f=>f.id===USA_FIPS[ab])?.properties.name || ab, mes = E[0][1][0];
+    const h = usaMap.hover, hv = h && usa.estados[Object.keys(USA_FIPS).find(k=>USA_FIPS[k]===h.id)];
+    $('uHud').innerHTML = h ? `<b>${esc(h.properties.name.toUpperCase())}</b><br>DESEMPLEO <b>${hv?nf(hv[1],1)+'%':'—'}</b>` : `${E.length} ESTADOS · ${mesTxt(mes).toUpperCase()}<br>MAYOR <b>${esc(nom(mx[0]).toUpperCase())} ${nf(mx[1][1],1)}%</b> · MENOR <b>${esc(nom(mn[0]).toUpperCase())} ${nf(mn[1][1],1)}%</b>`; }
+  function usaTick(){
+    if(tab!=='global' || G.vista!=='usa' || document.hidden){ clearInterval(usaTimer); usaTimer = null; return; }
+    const D = usa?.deuda; if(D){ const t = (Date.now() - Date.parse(D.fecha+'T20:00:00Z'))/1000, v = D.monto + Math.max(0,t)*(D.por_seg||0);
+      $('uDebt').textContent = 'US$ ' + nf(v,0); $('uPc').textContent = 'US$ ' + nf(v/342.1e6,0); }
+    const P = usa?.fed?.proxima; if(P){ let s = Math.max(0, (Date.parse(P.fin+'T18:00:00Z') - Date.now())/1000);
+      $('uCd').innerHTML = [[Math.floor(s/86400),'días'],[Math.floor(s%86400/3600),'horas'],[Math.floor(s%3600/60),'min'],[Math.floor(s%60),'seg']].map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`).join(''); }
+  }
+  function renderUsa(){
+    if(!usa){ loadUsa(); $('uKpis').innerHTML = '<div class="empty">Cargando datos de Estados Unidos…</div>'; return; }
+    const b = usa.bls || {}, f = usa.fed, D = usa.deuda, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    // reloj de la deuda y Fed
+    if(D){ $('uDebtF').textContent = `Tesoro · al ${fd(D.fecha)}`;
+      $('uDebtMini').innerHTML = `<div>Por habitante<b id="uPc">—</b></div><div>Crece por segundo<b>${D.por_seg?'US$ '+nf(D.por_seg,0):'—'}</b></div><div>Aumento en 12 meses<b>${D.hace_un_anio?'US$ '+nf((D.monto-D.hace_un_anio)/1e12,2)+' billones':'—'}</b></div><div>Variación anual<b>${D.hace_un_anio?pc(D.monto/D.hace_un_anio-1,1):'—'}</b></div>`; }
+    if(f){ const lo = f.actual-0.125, hi = f.actual+0.125, ult = (f.decisiones||[]).find(x=>Math.abs(x.despues-x.antes)>1e-9), dd = ult ? ult.despues-ult.antes : 0;
+      const dias = s => { const [y,m,d] = s.split('-'); return `${+d} de ${MESES[+m-1]}`; };
+      $('uFedF').textContent = f.proxima ? `${dias(f.proxima.inicio).split(' de ')[0]}-${dias(f.proxima.fin)}` : '';
+      $('uFedMini').innerHTML = `<div>Tasa actual<b>${nf(lo,2)}% – ${nf(hi,2)}%</b></div><div>Última modificación<b class="${dd>0?'dn':dd<0?'up':''}">${ult ? `${dd>0?'▲ subió':'▼ bajó'} ${nf(Math.abs(dd),2)} (${fd(ult.fecha)})` : '—'}</b></div>`; }
+    if(!usaTimer){ usaTick(); usaTimer = setInterval(usaTick, 200); }
+    // indicadores
+    const L = a => a?.length ? a[a.length-1] : null, ipcY = b.ipc?.length ? yoy(b.ipc) : null, nucY = b.nucleo?.length ? yoy(b.nucleo) : null, des = L(b.desemp), emp = b.empleo?.length>1 ? b.empleo[b.empleo.length-1][1]-b.empleo[b.empleo.length-2][1] : null, sal = b.salario?.length ? yoy(b.salario) : null;
+    $('uKpis').innerHTML = st('Inflación', ipcY==null?'—':nf(ipcY,1)+'%', b.ipc?.length?'interanual, '+mesTxt(L(b.ipc)[0]):'', ipcY>3?'dn':'')
+      + st('Inflación núcleo', nucY==null?'—':nf(nucY,1)+'%', 'sin alimentos ni energía')
+      + st('Desempleo', des?nf(des[1],1)+'%':'—', des?mesTxt(des[0]):'')
+      + st('Empleos creados', emp==null?'—':sg(emp,0)+' mil', b.empleo?.length?mesTxt(L(b.empleo)[0]):'', emp>0?'up':emp<0?'dn':'')
+      + st('Salarios', sal==null?'—':sg(sal,1)+'%', 'interanual, por hora', sal>(ipcY||0)?'up':'dn')
+      + st('Tasa de la Fed', f?nf(f.actual-0.125,2)+'–'+nf(f.actual+0.125,2)+'%':'—', f?'al '+fd(f.al):'');
+    // Fed contra inflación (5 años)
+    if(f && b.ipc?.length){ const ini = `${+L(b.ipc)[0].slice(0,4)-5}${L(b.ipc)[0].slice(4)}`;
+      const s1 = f.mensual.filter(p=>p[0]>=ini).map(p=>[p[0]+'-01', p[1]]), s2 = b.ipc.map((p,i)=>[p[0]+'-01', yoy(b.ipc,i)]).filter(p=>p[1]!=null && p[0]>=ini), s3 = b.nucleo.map((p,i)=>[p[0]+'-01', yoy(b.nucleo,i)]).filter(p=>p[1]!=null && p[0]>=ini);
+      lineChart($('chUFed'), [{n:'Tasa de la Fed', c:'--accent', pts:s1},{n:'Inflación', c:'--neg', pts:s2},{n:'Núcleo', c:'--s4', pts:s3, dash:true}], {xfmt: s=>s.slice(5,7)+'/'+s.slice(2,4), yfmt: v=>nf(v,0)+'%', aria:'Tasa de la Fed contra inflación'}); }
+    // curva de tasas
+    const C = usa.curva; if(C){ const W = Math.max(300, $('chUCurva').clientWidth||600), H = W<520?200:240, m = {t:12,r:12,b:26,l:44}, iw = W-m.l-m.r, ih = H-m.t-m.b;
+      const all = [...C.hoy, ...(C.ant||[])].filter(v=>v!=null), lo = Math.floor(Math.min(...all)*2)/2-.25, hi = Math.ceil(Math.max(...all)*2)/2+.25, n = C.plazos.length;
+      const X = i => m.l + i*(iw/(n-1)), Y = v => m.t + (hi-v)/(hi-lo)*ih; let g = '';
+      for(let v=Math.ceil(lo*2)/2; v<=hi; v+=.5){ g += `<line x1="${m.l}" x2="${m.l+iw}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-7}" y="${Y(v)+3.5}" text-anchor="end">${nf(v,1)}%</text>`; }
+      C.plazos.forEach((t,i)=>{ g += `<text x="${X(i)}" y="${H-6}" text-anchor="middle">${t}</text>`; });
+      const ln = (arr, col, dash) => { const pts = arr.map((v,i)=>v==null?null:`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).filter(Boolean); return `<polyline points="${pts.join(' ')}" fill="none" stroke="var(${col})" stroke-width="${dash?1.6:2.4}"${dash?' stroke-dasharray="5 4"':''}/>`; };
+      if(C.ant) g += ln(C.ant, '--muted', true); g += ln(C.hoy, '--accent');
+      C.hoy.forEach((v,i)=>{ if(v!=null) g += `<circle cx="${X(i)}" cy="${Y(v)}" r="3" fill="var(--accent)"><title>${C.plazos[i]}: ${nf(v,2)}%</title></circle>`; });
+      $('chUCurva').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Curva de tasas del Tesoro">${g}</svg>`;
+      const s10 = C.hoy[8], s2 = C.hoy[4]; $('uCurvaN').innerHTML = `Hoy (${fd(C.fecha)}) contra ${C.fecha_ant?fd(C.fecha_ant):'hace un año'}. Pendiente 10 − 2 años: <b class="${s10-s2<0?'dn':'up'}">${sg((s10-s2)*100,0)} pb</b>${s10-s2<0?' (invertida)':''}.`; }
+    // empleo
+    if(b.empleo?.length>13){ const E = b.empleo.slice(-25), pts = E.slice(1).map((p,i)=>[p[0], p[1]-E[i][1]]);
+      barChart($('chUEmp'), [{n:'Empleos creados', c:'--accent', pts}], {aria:'Empleos creados por mes', yfmt: v=>nf(v,0), vfmt: v=>sg(v,0)+' mil'}); }
+    // sectores y 7 magníficas
+    const S = usa.sectores || [];
+    $('uSec').innerHTML = S.map(x=>{ const p = gpc(x); return `<div style="background:${heatBg(p)}"><span class="tk">${esc(x.n)}</span><span class="pc">${p==null?'—':sg(p,2)+'%'}</span><span class="px">${esc(x.s)}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    const M = usa.mag7 || [];
+    $('uMag').innerHTML = M.length ? `<tr><th>Empresa</th><th>Precio</th><th>Hoy</th><th>Valor de mercado</th></tr>` + M.map(x=>{ const p = gpc(x); return `<tr><td style="font-family:var(--sans);text-align:left">${esc(x.n)}</td><td>US$ ${nf(x.v,2)}</td><td class="${p>0?'up':p<0?'dn':''}">${p==null?'—':sg(p,2)+'%'}</td><td>${(()=>{ const m = String(x.mcap||''), n = parseFloat(m), u = m.slice(-1); return !isFinite(n) ? '—' : u==='T' ? 'US$ '+nf(n,2)+' billones' : u==='B' ? 'US$ '+nf(n,0)+' mil millones' : esc(m); })()}</td></tr>`; }).join('') : '';
+    // decisiones de la Fed
+    $('uFed').innerHTML = f?.decisiones?.length ? `<tr><th>Reunión</th><th>Decisión</th><th>Rango</th></tr>` + f.decisiones.map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.fecha)}</td><td class="${d>0?'dn':d<0?'up':''}">${Math.abs(d)<1e-9?'= mantuvo':(d>0?'▲ subió ':'▼ bajó ')+nf(Math.abs(d),2)}</td><td>${nf(x.despues-0.125,2)} – ${nf(x.despues+0.125,2)}%</td></tr>`; }).join('') : '';
+    $('uFuente').textContent = `Fuentes: Tesoro de EE.UU. (deuda y curva de tasas), BLS (inflación, empleo y desempleo por estado), Reserva Federal vía BIS (tasa), CNBC (sectores y acciones, con demora). Población para la deuda por habitante: 342 millones (estimación de la Oficina del Censo). Actualizado: ${new Date(usa.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} h.`;
+    usaMapDraw();
+  }
+  G.vista = 'mundo';
+  try{ if(localStorage.getItem('global-vista')==='usa') G.vista = 'usa'; }catch(e){}
+  function setVista(v){ G.vista = v; try{ localStorage.setItem('global-vista', v); }catch(e){}
+    document.querySelectorAll('#gVista button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.v===v)));
+    $('gMundo').hidden = v!=='mundo'; $('gUsa').hidden = v!=='usa';
+    if(v==='usa'){ G.run = false; renderUsa(); } else renderGlobal(); }
+  document.querySelectorAll('#gVista button').forEach(b=>b.addEventListener('click', ()=>{ setVista(b.dataset.v); gc('global-vista-'+b.dataset.v, true); }));
   // ---- polling en vivo: cada 60 s, solo con la pestaña visible ----
   let lt, busy = false;
   async function poll(){

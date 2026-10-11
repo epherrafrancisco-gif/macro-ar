@@ -355,6 +355,15 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   día), "Argentinas en Wall Street" y "Líderes del mundo" (mapas de calor como el del Merval, `heatBg`), gráficos
   con rango 1M-2A, "¿Qué rindió más en el año?" (`hBars`; Merval en US$ CCL con data.json), monedas de la región
   (variación en el año) y termómetro (VIX, curva 10-2).
+- 11/10/2026: Global tiene selector **Mundo / Estados Unidos** (`#gVista`, `G.vista`, se recuerda en localStorage
+  `global-vista`; `#gMundo` y `#gUsa`). EE.UU. (`renderUsa`): mapa de desempleo por estado (BLS LAUS, canvas sin
+  animación decorativa: Francisco pidió sacar barrido y pulsos; `usa-estados.json` = us-atlas states-albers-10m),
+  reloj de la deuda (Tesoro, avanza al ritmo promedio de ~40 días hábiles), cuenta regresiva a la próxima reunión
+  de la Fed (lista `FOMC` en usa.py, actualizar cuando la Fed publique 2028), 6 indicadores (IPC, núcleo,
+  desempleo, empleos creados, salarios, tasa Fed), Fed vs inflación 5 años, curva del Tesoro hoy vs hace un año,
+  empleos por mes, sectores (fondos XL*), 7 magníficas con valor de mercado y decisiones de la Fed (tasa del BIS
+  antes y después de cada reunión). Datos: `scripts/usa.py` → `usa.json` (paso del workflow global.yml; BLS v1 sin
+  clave como máximo cada 12 h por su límite diario). Sin PBI: el BEA pide clave.
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
