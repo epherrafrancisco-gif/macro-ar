@@ -418,7 +418,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </header>
 
-  <section class="dolhoy" aria-label="Dólar hoy">
+  <section class="dolhoy" id="dolHoy" aria-label="Dólar hoy">
     <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
     <div class="quotes" id="quotes"></div>
   </section>
@@ -1967,6 +1967,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let selA = null;
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
+    $('dolHoy').hidden = grp==='glo' || tab==='sobre';  // los dólares: en la portada y en todo Argentina
     $('crumb').innerHTML = grp ? `<a href="#" id="crumbHome">← Inicio</a><span>/</span><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b>` : '';
     const cr = $('crumbHome'); if(cr) cr.addEventListener('click', e=>{ e.preventDefault(); irPortada(); });
     const hk = grp ? key : (tab==='sobre' ? 'sobre' : null);

@@ -23,7 +23,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 
 ## Estructura de la página (`index.html`, todo en un archivo, sin librerías salvo d3/topojson en Global)
 - Arriba: tres cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo; `#tape3` reloj de mercados)
-  y los 7 dólares (`#quotes`, `renderQuotes()`), visibles en TODAS las vistas: requisito no negociable.
+  y los 7 dólares (`#dolHoy`/`#quotes`, `renderQuotes()`): siempre en la portada y en todo Argentina (requisito no
+  negociable); NO en Mundo, Estados Unidos ni Sobre Pulso Macro (pedido del dueño).
   Dólar en vivo: DolarApi desde el navegador cada 60 s.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea), "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
