@@ -256,6 +256,102 @@ def cnbc():
     return out
 
 
+def cnbc_raw(symbols):
+    """Cotizaciones crudas de CNBC para una lista de símbolos (en tandas de 40)."""
+    num = lambda x: float(str(x).replace(",", "").replace("%", "").strip())
+    out = {}
+    for i in range(0, len(symbols), 40):
+        tanda = "|".join(symbols[i:i + 40])
+        try:
+            j = json.loads(get("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
+                               + urllib.request.quote(tanda, safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1",
+                               tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"CNBC tanda {i // 40}: {e}")
+            continue
+        for r in ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []:
+            try:
+                out[r["symbol"]] = {"n": r.get("name") or r.get("shortName") or r["symbol"], "v": num(r["last"]),
+                                    "prev": num(r["previous_day_closing"]), "t": str(r.get("last_time") or ""),
+                                    "estado": str(r.get("curmktstatus") or "")}
+            except Exception:  # noqa: BLE001
+                continue
+    return out
+
+
+# Índice principal de cada bolsa (clave de la bolsa en la página → símbolo CNBC, nombre del índice)
+BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": (".BVSP", "Bovespa"),
+          "BMV": (".MXX", "IPC México"), "TSX": (".GSPTSE", "S&P/TSX"), "LSE": (".FTSE", "FTSE 100"),
+          "Xetra": (".GDAXI", "DAX"), "Euronext": (".FCHI", "CAC 40"), "JSE": (".JALSH", "JSE All Share"),
+          "Tadawul": (".TASI", "Tadawul"), "NSE": (".NSEI", "Nifty 50"), "SSE": (".SSEC", "Shanghái"),
+          "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200")}
+# Acciones por grupo (todas cotizan en Wall Street, en US$)
+ACCIONES = {
+    "arg": ["YPF", "GGAL", "BMA", "BBAR", "SUPV", "PAM", "CEPU", "TGS", "EDN", "TEO", "VIST", "LOMA", "CRESY", "IRS",
+            "TX", "MELI", "GLOB", "DESP", "BIOX", "ARCO"],
+    "usa": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "BRK.B", "JPM", "LLY", "V", "XOM",
+            "WMT", "MA", "NFLX", "KO", "DIS"],
+    "bra": ["PBR", "VALE", "ITUB", "BBD", "NU", "ABEV", "ERJ", "SBS", "GGB", "XP"],
+    "eur": ["ASML", "SAP", "NVO", "AZN", "SHEL", "TTE", "UL", "HSBC", "SAN", "BP", "DEO", "SNY"],
+    "asia": ["TSM", "BABA", "TM", "SONY", "PDD", "HDB", "INFY", "BIDU", "JD", "MUFG"],
+}
+TERMO = {"vix": ".VIX", "us2y": "US2Y", "us10y": "US10Y", "us30y": "US30Y"}
+MONEDAS = {"ARS": "ARS=", "BRL": "BRL=", "CLP": "CLP=", "MXN": "MXN=", "COP": "COP=", "PEN": "PEN=", "UYU": "UYU=", "CNY": "CNY=", "EUR": "EUR="}
+# Series con historia diaria (gráficos y "¿qué rindió más en el año?")
+HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": ".BVSP", "dax": ".GDAXI",
+        "ftse": ".FTSE", "nikkei": ".N225", "shanghai": ".SSEC", "oro": "@GC.1", "brent": "@LCO.1", "soja": "@S.1",
+        "cobre": "@HG.1", "dxy": ".DXY", "t10": "US10Y", "vix": ".VIX",
+        "fx_brl": "BRL=", "fx_mxn": "MXN=", "fx_clp": "CLP=", "fx_cop": "COP=", "fx_ars": "ARS="}
+
+
+def extras():
+    syms = [v[0] for v in BOLSAS.values()] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values()) + list(MONEDAS.values())
+    q = cnbc_raw(syms)
+    bolsas = {k: {"idx": n, **q[s]} for k, (s, n) in BOLSAS.items() if s in q}
+    acciones = {g: [{"s": x, **q[x]} for x in l if x in q] for g, l in ACCIONES.items()}
+    termo = {k: q[s] for k, s in TERMO.items() if s in q}
+    monedas = {k: q[s] for k, s in MONEDAS.items() if s in q}
+    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas}
+
+
+def historia(prev_h):
+    """Cierres diarios de 1 año (CNBC). Se renueva cada 3 horas como máximo."""
+    try:
+        al = datetime.fromisoformat(prev_h.get("actualizado", "2000-01-01T00:00+00:00"))
+        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series"):
+            return prev_h
+    except Exception:  # noqa: BLE001
+        pass
+    series = dict(prev_h.get("series") or {})
+    ok = 0
+    for k, sym in HIST.items():
+        try:
+            j = json.loads(get(f"https://ts-api.cnbc.com/harmony/app/charts/1Y.json?symbol={urllib.request.quote(sym, safe='')}",
+                               tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
+            pts = []
+            for b in (j.get("barData") or {}).get("priceBars") or []:
+                t, c = str(b.get("tradeTime") or ""), b.get("close")
+                if len(t) >= 8 and c not in (None, ""):
+                    pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c), 4)])
+            if len(pts) > 20:
+                series[k] = pts
+                ok += 1
+            else:
+                errores.append(f"CNBC historia {sym}: {len(pts)} puntos")
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"CNBC historia {sym}: {e}")
+        time.sleep(0.4)
+    try:  # bitcoin: CoinGecko
+        j = json.loads(get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365&interval=daily"))
+        series["btc"] = [[datetime.fromtimestamp(t / 1000, timezone.utc).date().isoformat(), round(v, 2)] for t, v in j.get("prices", [])]
+        ok += 1
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"CoinGecko historia: {e}")
+    if not ok:
+        return prev_h
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series}
+
+
 def frankfurter():
     """Monedas del BCE (Frankfurter): EUR, BRL y CNY contra el dólar, último y anterior."""
     hoy = date.today()
@@ -321,8 +417,27 @@ def main():
             prev = {}
     paises, ok_imf, fuentes = imf(prev)
     n_bis = bis(paises)
+    try:
+        ex = extras()
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"extras: {e}")
+        ex = {}
+    for k in ("bolsas", "acciones", "termo", "monedas"):  # si una sección vino vacía, queda la anterior
+        if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
+            ex[k] = prev.get(k) or {}
+    HISTF = ROOT / "global_hist.json"
+    prev_h = {}
+    if HISTF.exists():
+        try:
+            prev_h = json.loads(HISTF.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            prev_h = {}
+    h = historia(prev_h)
+    if h is not prev_h:
+        HISTF.write_text(json.dumps(h, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     data = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
+        **ex,
         "anio_fmi": date.today().year,
         "paises": dict(sorted(paises.items())),
         "fuentes": fuentes,
