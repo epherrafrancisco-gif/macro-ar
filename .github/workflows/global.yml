@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - scripts/global.py
+      - scripts/usa.py
       - .github/workflows/global.yml
 
 permissions:
@@ -34,15 +35,19 @@ jobs:
       - name: Traer datos del mundo
         run: python scripts/global.py
 
+      - name: Traer datos de Estados Unidos
+        run: python scripts/usa.py
+        continue-on-error: true
+
       - name: Guardar cambios
         run: |
-          if git diff --quiet global.json global_hist.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json >/dev/null 2>&1; then
+          if git diff --quiet global.json global_hist.json usa.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json >/dev/null 2>&1; then
             echo "Sin cambios"
             exit 0
           fi
           git config user.name "macro-ar-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add global.json global_hist.json 2>/dev/null || git add global.json
+          git add global.json; git add global_hist.json usa.json 2>/dev/null || true
           git commit -m "Global $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
           git pull --rebase origin main
           git push
