@@ -1,0 +1,243 @@
+"""Arma global.json para la pestaña Global de Pulso Macro.
+
+Fuentes (gratuitas, sin clave):
+  - FMI, World Economic Outlook vía DataMapper: inflación, crecimiento, deuda/PBI,
+    desempleo, PBI en dólares y PBI per cápita por país (estimación del año en curso).
+  - BIS (Banco de Pagos Internacionales): tasas de política monetaria diarias de
+    unos 40 bancos centrales, con la fecha de la última decisión.
+  - Yahoo Finance (y Stooq como respaldo): índices bursátiles, monedas, bonos de
+    EE.UU., commodities y bitcoin, con el cierre anterior para la variación.
+  - datos.gob.ar (INDEC): exportaciones argentinas por país de destino (anual).
+
+Uso: python scripts/global.py
+Nunca inventa datos: si una fuente falla, deja lo que había en global.json
+y lo anota en "errores".
+"""
+
+import csv
+import io
+import json
+import sys
+import time
+import urllib.request
+from datetime import date, datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "global.json"
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
+
+IMF = {  # indicador del FMI: campo
+    "PCPIPCH": "infl",        # inflación promedio anual, %
+    "NGDP_RPCH": "crec",      # crecimiento real del PBI, %
+    "GGXWDG_NGDP": "deuda",   # deuda bruta del gobierno, % del PBI
+    "LUR": "desemp",          # desempleo, %
+    "NGDPD": "pbi",           # PBI, miles de millones de US$
+    "NGDPDPC": "pbipc",       # PBI per cápita, US$
+}
+EURO = ["AUT", "BEL", "HRV", "CYP", "EST", "FIN", "FRA", "DEU", "GRC", "IRL", "ITA", "LVA",
+        "LTU", "LUX", "MLT", "NLD", "PRT", "SVK", "SVN", "ESP", "BGR"]
+# BIS usa códigos ISO de 2 letras; XM = zona euro.
+A2A3 = {"AR": "ARG", "AU": "AUS", "BR": "BRA", "CA": "CAN", "CH": "CHE", "CL": "CHL", "CN": "CHN",
+        "CO": "COL", "CZ": "CZE", "DK": "DNK", "GB": "GBR", "HK": "HKG", "HU": "HUN", "ID": "IDN",
+        "IL": "ISR", "IN": "IND", "IS": "ISL", "JP": "JPN", "KR": "KOR", "MK": "MKD", "MX": "MEX",
+        "MY": "MYS", "NO": "NOR", "NZ": "NZL", "PE": "PER", "PH": "PHL", "PL": "POL", "RO": "ROU",
+        "RS": "SRB", "RU": "RUS", "SA": "SAU", "SE": "SWE", "TH": "THA", "TR": "TUR", "US": "USA",
+        "ZA": "ZAF", "UY": "URY", "PY": "PRY", "VN": "VNM", "KE": "KEN", "NG": "NGA", "EG": "EGY",
+        "MA": "MAR", "BG": "BGR", "HR": "HRV", "CR": "CRI", "DO": "DOM", "GT": "GTM", "AE": "ARE"}
+# Mercados: clave, nombre, grupo, símbolo Yahoo, símbolo Stooq, unidad, conversión
+MERCADOS = [
+    ("spx", "S&P 500", "indice", "^GSPC", "^spx", "pts", 1),
+    ("ndx", "Nasdaq", "indice", "^IXIC", "^ndq", "pts", 1),
+    ("dji", "Dow Jones", "indice", "^DJI", "^dji", "pts", 1),
+    ("bvsp", "Bovespa", "indice", "^BVSP", "^bvp", "pts", 1),
+    ("dax", "DAX", "indice", "^GDAXI", "^dax", "pts", 1),
+    ("ftse", "FTSE 100", "indice", "^FTSE", "^ukx", "pts", 1),
+    ("nikkei", "Nikkei", "indice", "^N225", "^nkx", "pts", 1),
+    ("shanghai", "Shanghái", "indice", "000001.SS", "^shc", "pts", 1),
+    ("t10", "Tasa 10 años EE.UU.", "tasa", "^TNX", "10usy.b", "%", 1),
+    ("dxy", "Índice dólar (DXY)", "moneda", "DX-Y.NYB", "dx.f", "pts", 1),
+    ("eurusd", "Euro", "moneda", "EURUSD=X", "eurusd", "US$", 1),
+    ("usdbrl", "Real brasileño", "moneda", "BRL=X", "usdbrl", "por US$", 1),
+    ("usdcny", "Yuan", "moneda", "CNY=X", "usdcny", "por US$", 1),
+    ("oro", "Oro", "commodity", "GC=F", "gc.f", "US$/onza", 1),
+    ("brent", "Petróleo Brent", "commodity", "BZ=F", "cb.f", "US$/barril", 1),
+    ("wti", "Petróleo WTI", "commodity", "CL=F", "cl.f", "US$/barril", 1),
+    ("soja", "Soja", "commodity", "ZS=F", "zs.f", "US$/t", 0.3674371),   # centavos/bushel → US$/t
+    ("maiz", "Maíz", "commodity", "ZC=F", "zc.f", "US$/t", 0.3936825),
+    ("trigo", "Trigo", "commodity", "ZW=F", "zw.f", "US$/t", 0.3674371),
+    ("cobre", "Cobre", "commodity", "HG=F", "hg.f", "US$/t", 2204.623),  # US$/libra → US$/t
+    ("btc", "Bitcoin", "cripto", "BTC-USD", "btcusd", "US$", 1),
+]
+EXPO = {  # datos.gob.ar, exportaciones argentinas por destino (millones de US$, anual)
+    "357.1_EXPORTACIOSIL__28": "BRA", "357.1_EXPORTACIOINA__27": "CHN", "357.1_EXPORTACIODOS__36": "USA",
+    "357.1_EXPORTACIOILE__27": "CHL", "357.1_EXPORTACIODIA__27": "IND", "357.1_EXPORTACIOJOS__34": "NLD",
+    "357.1_EXPORTACIOUAY__29": "URY", "357.1_EXPORTACIONIA__30": "DEU", "357.1_EXPORTACIOLIA__28": "ITA",
+    "357.1_EXPORTACIONIA__29": "ESP", "357.1_EXPORTACIORAL__35": "TOTAL",
+}
+
+errores = []
+
+
+def get(url, tries=3, timeout=40):
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001
+            last = e
+            time.sleep(2 * (i + 1))
+    raise last
+
+
+def imf(prev):
+    year = str(date.today().year)
+    out = {k: dict(v) for k, v in (prev.get("paises") or {}).items()}
+    ok = 0
+    for ind, campo in IMF.items():
+        try:
+            j = json.loads(get(f"https://www.imf.org/external/datamapper/api/v1/{ind}"))
+            for iso, serie in (j.get("values", {}).get(ind) or {}).items():
+                if len(iso) != 3 or not isinstance(serie, dict):
+                    continue
+                v = serie.get(year)
+                if v is None:  # si el año en curso no está, el último disponible
+                    ys = sorted(y for y, x in serie.items() if x is not None and y <= year)
+                    if not ys:
+                        continue
+                    v = serie[ys[-1]]
+                out.setdefault(iso, {})[campo] = round(float(v), 2)
+            ok += 1
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"FMI {ind}: {e}")
+    return out, ok
+
+
+def bis(paises):
+    try:
+        desde = f"{date.today().year - 2}-01-01"
+        txt = get(f"https://stats.bis.org/api/v1/data/WS_CBPOL/D./all?startPeriod={desde}&format=csv", timeout=90)
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"BIS: {e}")
+        return 0
+    series = {}
+    for row in csv.DictReader(io.StringIO(txt)):
+        a, f, v = row.get("REF_AREA"), row.get("TIME_PERIOD"), row.get("OBS_VALUE")
+        if not a or not f or v in (None, "", "NaN"):
+            continue
+        try:
+            series.setdefault(a, []).append((f, float(v)))
+        except ValueError:
+            continue
+    n = 0
+    for a, pts in series.items():
+        pts.sort()
+        tasa, fecha = pts[-1][1], pts[-1][0]
+        prev, cambio = None, None
+        for f, v in reversed(pts):  # última decisión: el último día en que cambió la tasa
+            if abs(v - tasa) > 1e-9:
+                prev = v
+                break
+            cambio = f
+        info = {"tasa": tasa, "tasa_al": fecha, "tasa_prev": prev, "tasa_cambio": cambio if prev is not None else None}
+        destinos = EURO if a == "XM" else [A2A3.get(a)] if A2A3.get(a) else []
+        for iso in destinos:
+            paises.setdefault(iso, {}).update(info)
+            n += 1
+    return n
+
+
+def yahoo(sym):
+    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?range=10d&interval=1d", tries=2))
+    r = j["chart"]["result"][0]
+    ts, cl = r.get("timestamp") or [], r["indicators"]["quote"][0].get("close") or []
+    pts = [(t, c) for t, c in zip(ts, cl) if c is not None]
+    if len(pts) < 2:
+        raise ValueError("sin datos")
+    meta = r.get("meta", {})
+    precio = meta.get("regularMarketPrice") or pts[-1][1]
+    t = meta.get("regularMarketTime") or pts[-1][0]
+    # cierre anterior: el último cierre de un día distinto al del precio actual
+    dia = datetime.fromtimestamp(t, timezone.utc).date()
+    prev = next((c for tt, c in reversed(pts) if datetime.fromtimestamp(tt, timezone.utc).date() < dia), pts[-2][1])
+    return float(precio), float(prev), datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
+
+
+def stooq(sym):
+    txt = get(f"https://stooq.com/q/d/l/?s={urllib.request.quote(sym)}&i=d", tries=2)
+    rows = [r for r in csv.reader(io.StringIO(txt)) if r and r[0][:1].isdigit()]
+    if len(rows) < 2:
+        raise ValueError("sin datos")
+    return float(rows[-1][4]), float(rows[-2][4]), rows[-1][0] + "T21:00+00:00"
+
+
+def mercados(prev):
+    viejo = {m["k"]: m for m in prev.get("mercados") or []}
+    out = []
+    for k, n, g, ys, ss, u, conv in MERCADOS:
+        dato, fuente, fallas = None, None, []
+        for f, fn, s in (("Yahoo", yahoo, ys), ("Stooq", stooq, ss)):
+            try:
+                dato, fuente = fn(s), f
+                break
+            except Exception as e:  # noqa: BLE001
+                fallas.append(f"{f} {s}: {e}")
+        if not dato:
+            errores.extend(fallas)
+        if dato:
+            p, pv, t = dato
+            out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p * conv, 4), "prev": round(pv * conv, 4), "t": t, "f": fuente})
+        elif k in viejo:
+            out.append(viejo[k])
+    return out
+
+
+def expo(prev):
+    try:
+        ids = ",".join(EXPO)
+        j = json.loads(get(f"https://apis.datos.gob.ar/series/api/series/?ids={ids}&format=json&last=2"))
+        filas = j.get("data") or []
+        if not filas:
+            raise ValueError("vacío")
+        fila = filas[-1]
+        out = {"anio": fila[0][:4], "musd": {}}
+        for i, iso in enumerate(EXPO.values()):
+            v = fila[i + 1]
+            if v is not None:
+                out["musd"][iso] = round(float(v), 1)
+        return out
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"datos.gob.ar exportaciones: {e}")
+        return prev.get("expo")
+
+
+def main():
+    prev = {}
+    if OUT.exists():
+        try:
+            prev = json.loads(OUT.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            prev = {}
+    paises, ok_imf = imf(prev)
+    n_bis = bis(paises)
+    data = {
+        "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
+        "anio_fmi": date.today().year,
+        "paises": dict(sorted(paises.items())),
+        "mercados": mercados(prev),
+        "expo": expo(prev),
+        "errores": errores[:60],
+    }
+    OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"FMI {ok_imf}/{len(IMF)} indicadores, {len(paises)} países; BIS {n_bis} países con tasa; "
+          f"{len(data['mercados'])}/{len(MERCADOS)} mercados; exportaciones {bool(data['expo'])}")
+    for e in errores:
+        print("ERROR", e)
+    if ok_imf == 0 and not data["mercados"]:
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

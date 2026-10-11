@@ -1,0 +1,48 @@
+name: Global
+
+# Arma global.json (pestaña Global y cinta de mercados del mundo).
+# Días hábiles: cada hora de 8 a 19 (hora argentina). Fines de semana: cada 6 horas (bitcoin).
+on:
+  schedule:
+    - cron: "23 11-22 * * 1-5"
+    - cron: "23 */6 * * 0,6"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/global.py
+      - .github/workflows/global.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: global
+  cancel-in-progress: false
+
+jobs:
+  global:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer datos del mundo
+        run: python scripts/global.py
+
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet global.json 2>/dev/null && git ls-files --error-unmatch global.json >/dev/null 2>&1; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add global.json
+          git commit -m "Global $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
