@@ -1,0 +1,395 @@
+{
+ "sgs432": "HTTP Error 502: Bad Gateway",
+ "sgs433": [
+  {
+   "data": "01/07/2026",
+   "valor": "0.07"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "-0.32"
+  },
+  {
+   "data": "01/09/2026",
+   "valor": "0.82"
+  }
+ ],
+ "sgs13522": [
+  {
+   "data": "01/07/2026",
+   "valor": "4.44"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "4.22"
+  },
+  {
+   "data": "01/09/2026",
+   "valor": "4.58"
+  }
+ ],
+ "sgs1": [
+  {
+   "data": "07/10/2026",
+   "valor": "4.9935"
+  },
+  {
+   "data": "08/10/2026",
+   "valor": "5.0119"
+  },
+  {
+   "data": "09/10/2026",
+   "valor": "4.9892"
+  }
+ ],
+ "sgs24364": "Expecting value: line 1 column 1 (char 0)",
+ "sgs24363": [
+  {
+   "data": "01/05/2026",
+   "valor": "109.65479"
+  },
+  {
+   "data": "01/06/2026",
+   "valor": "109.94156"
+  },
+  {
+   "data": "01/07/2026",
+   "valor": "114.40189"
+  }
+ ],
+ "sgs13621": [
+  {
+   "data": "06/10/2026",
+   "valor": "363181"
+  },
+  {
+   "data": "07/10/2026",
+   "valor": "362486"
+  },
+  {
+   "data": "08/10/2026",
+   "valor": "362367"
+  }
+ ],
+ "sgs3546": [
+  {
+   "data": "01/07/2026",
+   "valor": "369742"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "372616"
+  },
+  {
+   "data": "01/09/2026",
+   "valor": "362821"
+  }
+ ],
+ "sgs24369": [
+  {
+   "data": "01/06/2026",
+   "valor": "5.4"
+  },
+  {
+   "data": "01/07/2026",
+   "valor": "5.3"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "5.3"
+  }
+ ],
+ "sgs4380": [
+  {
+   "data": "01/06/2026",
+   "valor": "1134029.1"
+  },
+  {
+   "data": "01/07/2026",
+   "valor": "1162537.4"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "1149930.8"
+  }
+ ],
+ "sgs22099": [
+  {
+   "data": "01/10/2025",
+   "valor": "192.94"
+  },
+  {
+   "data": "01/01/2026",
+   "valor": "194.53"
+  },
+  {
+   "data": "01/04/2026",
+   "valor": "199.05"
+  }
+ ],
+ "sgs11": [
+  {
+   "data": "07/10/2026",
+   "valor": "0.050788"
+  },
+  {
+   "data": "08/10/2026",
+   "valor": "0.050788"
+  },
+  {
+   "data": "09/10/2026",
+   "valor": "0.050788"
+  }
+ ],
+ "sgs4390": [
+  {
+   "data": "01/10/2026",
+   "valor": "0.36"
+  },
+  {
+   "data": "01/09/2026",
+   "valor": "1.08"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "1.09"
+  }
+ ],
+ "sgs20542": [
+  {
+   "data": "01/06/2026",
+   "valor": "4156777"
+  },
+  {
+   "data": "01/07/2026",
+   "valor": "4137318"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "4147423"
+  }
+ ],
+ "sgs189": [
+  {
+   "data": "01/07/2026",
+   "valor": "-1.16"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "-0.22"
+  },
+  {
+   "data": "01/09/2026",
+   "valor": "1.57"
+  }
+ ],
+ "sgs22707": [
+  {
+   "data": "01/06/2026",
+   "valor": "8071.6"
+  },
+  {
+   "data": "01/07/2026",
+   "valor": "5650.2"
+  },
+  {
+   "data": "01/08/2026",
+   "valor": "6621.7"
+  }
+ ],
+ "sgs7326": [
+  {
+   "data": "01/01/2023",
+   "valor": "3.24"
+  },
+  {
+   "data": "01/01/2024",
+   "valor": "3.42"
+  },
+  {
+   "data": "01/01/2025",
+   "valor": "2.29"
+  }
+ ],
+ "sgs433_len": 81,
+ "focus_IPCA": [
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 5.0129,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2027",
+   "Mediana": 4.3007,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2028",
+   "Mediana": 3.8007,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2029",
+   "Mediana": 3.5108,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2030",
+   "Mediana": 3.5,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "IPCA",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 5.0684,
+   "baseCalculo": 1
+  }
+ ],
+ "focus_Selic": [
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 13.5,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2027",
+   "Mediana": 12.0,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2028",
+   "Mediana": 10.5,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2029",
+   "Mediana": 10.0,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2030",
+   "Mediana": 10.0,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Selic",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 13.25,
+   "baseCalculo": 1
+  }
+ ],
+ "focus_Câmbio": [
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 5.2,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2027",
+   "Mediana": 5.28,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2028",
+   "Mediana": 5.3,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2029",
+   "Mediana": 5.33,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2030",
+   "Mediana": 5.4,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "Câmbio",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 5.2,
+   "baseCalculo": 1
+  }
+ ],
+ "focus_PIB Total": [
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 1.8549,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2027",
+   "Mediana": 1.4,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2028",
+   "Mediana": 1.81,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2029",
+   "Mediana": 2.0,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2030",
+   "Mediana": 2.0,
+   "baseCalculo": 0
+  },
+  {
+   "Indicador": "PIB Total",
+   "Data": "2026-10-02",
+   "DataReferencia": "2026",
+   "Mediana": 1.827,
+   "baseCalculo": 1
+  }
+ ],
+ "sidra_desemp": "[\r\n  {\r\n    \"NC\": \"Nível Territorial (Código)\",\r\n    \"NN\": \"Nível Territorial\",\r\n    \"MC\": \"Unidade de Medida (Código)\",\r\n    \"MN\": \"Unidade de Medida\",\r\n    \"V\": \"Valor\",\r\n    \"D1C\": \"Brasil (Código)\",\r\n    \"D1N\": \"Brasil\",\r\n    \"D2C\": \"Variável (Código)\",\r\n    \"D2N\": \"Variável\",\r\n    \"D3C\": \"Trimestre (Código)\",\r\n    \"D3N\": \"Trimestre\"\r\n  },\r\n  {\r\n    \"NC\": \"1\",\r\n    \"NN\": \"Brasil\",\r\n    \"MC\": \"2\",\r\n    \"MN\": \"%\",\r\n    \"V\": \"5.1\",\r\n    \"D1C\": \"1\",\r\n    \"D1N\": \"Brasil\",\r\n    \"D2C\": \"4099\",\r\n    \"D2N\": \"Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade\",\r\n    \"D3C\": \"202504\",\r\n    \"D3N\": \"4º trimestre 2025\"\r\n  },\r\n  {\r\n    \"NC\": \"1\",\r\n    \"NN\": \"Brasil\",\r\n    \"MC\": \"2\",\r\n    \"MN\": \"%\",\r\n    \"V\": \"6.1\",\r\n    \"D1C\": \"1\",\r\n    \"D1N\": \"Brasil\",\r\n    \"D2C\": \"4099\",\r\n    \"D2N\": \"Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade\",\r\n    \"D3C\": \"202601\",\r\n    \"D3N\": \"1º trimestre 2026\"\r\n  },\r\n  {\r\n    \"NC\": \"1\",\r\n    \"NN\": \"Brasil\",\r\n    \"MC\": \"2\",\r\n    \"MN\": \"%\",\r\n    \"V\": \"5.4\",\r\n    \"D1C\": \"1\",\r\n    \"D1N\": \"Brasil\",\r\n    \"D2C\": \"4099\",\r\n    \"D2N\": \"Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade\",\r\n    \"D3C\": \"202602\",\r\n    \"D3N\": \"2º trimestre 2026\"\r\n  }\r\n]",
+ "gob_search1": "The read operation timed out",
+ "gob_search2": "The read operation timed out",
+ "gob_search3": "The read operation timed out"
+}
