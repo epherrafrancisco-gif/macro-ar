@@ -54,6 +54,17 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares.
 - Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño.
 
+### Apartados dentro de Mundo y Estados Unidos
+- Barra `.subtabs` (`#gSubM`, `#gSubU`) y bloques `.gsub[data-sub]`; `SUBS`, `aplicarSub`, `setSub` (se recuerda en
+  localStorage `sub-M` / `sub-U`). Pedido del dueño: los menos apartados posibles, lo coherente junto.
+- Mundo: arriba SIEMPRE los dos globos (no sacarlos de ahí). Apartados: Bolsas y acciones (reloj, bolsas, termómetro,
+  Argentinas en WS, Líderes, gráficos, ¿qué rindió más?, cripto) · Economías y tasas (ficha del país, ¿dónde está
+  Argentina?, agenda y tasas de bancos centrales, bonos) · Commodities y monedas · Noticias. Tocar un país del globo
+  lleva a Economías y tasas, a la ficha. Tocar un commodity lleva a Bolsas y acciones, al gráfico.
+- Estados Unidos: arriba SIEMPRE mapa, deuda, Fed y los 6 indicadores. Apartados: Economía (semáforo, rubros, próximos
+  datos, empleos, mercado laboral, PBI) · Tasas y deuda (Fed vs inflación, curva, decisiones, hipotecaria) · Wall Street
+  (50 empresas, sectores, 7 magníficas, balances).
+
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en

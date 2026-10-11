@@ -348,6 +348,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .modo a.mh{border-left:0;display:inline-flex;align-items:center;gap:6px}.modo a svg{width:16px;height:16px}
 .flhome{position:fixed;right:16px;bottom:16px;z-index:20;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:600 14px var(--sans);text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.45)}
 .flhome svg{width:18px;height:18px}
+.subtabs{display:flex;flex-wrap:wrap;gap:8px;padding:6px;background:var(--sunk);border:1px solid var(--line);border-radius:12px}
+.subtabs button{flex:1 1 0;font:600 14.5px var(--sans);color:var(--ink2);background:transparent;border:0;border-radius:8px;padding:10px 12px;cursor:pointer;white-space:nowrap}
+.subtabs button:hover{color:var(--ink)}.subtabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.gsub{display:grid;gap:18px}.gview{display:grid;gap:18px}
+@media (max-width:520px){.subtabs{display:grid;grid-template-columns:1fr 1fr}.subtabs button{white-space:normal;font-size:13.5px;padding:9px 6px}}
 @media (max-width:520px){.hright{justify-items:stretch;width:100%}.modo{display:grid;grid-template-columns:1fr 1fr}.modo a,.modo button{border-left:0;justify-content:center;text-align:center;display:inline-flex;align-items:center;gap:6px}}.flhome:hover{filter:brightness(1.1)}
 @media (max-width:520px){.flhome{right:12px;bottom:12px;padding:9px 13px;font-size:13px}}
 .modo a{font:600 14px var(--sans);color:var(--ink2);text-decoration:none;padding:7px 14px;border-radius:7px;border-left:1px solid var(--line)}
@@ -608,7 +613,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="gview" id="gMundo">
     <div class="gtop duo">
       <div class="card">
-        <div class="head"><h2>El mundo, país por país</h2><span class="note">Arrastrá el globo para girarlo. Tocá un país para ver su ficha.</span></div>
+        <div class="head"><h2>El mundo, país por país</h2><span class="note">Arrastrá el globo para girarlo. Tocá un país para ver su ficha contra Argentina.</span></div>
         <div class="glay" id="gLay" role="group" aria-label="Indicador">
           <button type="button" data-l="infl" aria-pressed="true">Inflación</button>
           <button type="button" data-l="crec" aria-pressed="false">Crecimiento</button>
@@ -626,27 +631,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <p class="note" id="dHint"></p>
       </div>
     </div>
-    <div class="card gficha" id="gFicha" aria-live="polite"></div>
+    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="mercados">
     <div class="card">
       <div class="head"><h2>Reloj de mercados</h2><span class="note" id="rljNota"></span></div>
       <p class="sub">Qué bolsa del mundo está abierta ahora, en hora argentina. La línea vertical es este momento. No contempla feriados de cada país.</p>
       <div class="rlj-wrap"><svg class="reloj" id="rlj" role="img" aria-label="Horarios de las bolsas del mundo en hora argentina"></svg></div>
     </div>
-    <div class="card">
-      <div class="head"><h2>¿Dónde está Argentina?</h2><span class="note" id="dpaN"></span></div>
-      <p class="sub">Argentina comparada con los países más grandes y los de la región, en cada indicador.</p>
-      <div class="glay" id="dpaSel" role="group" aria-label="Indicador"></div>
-      <div class="chart" id="chDpa"></div>
-      <p class="note" id="dpaNota"></p>
-    </div>
     <div class="grid2">
-      <div class="card"><div class="head"><h2>Próximas reuniones de bancos centrales</h2></div><p class="sub">Cuándo decide su tasa cada banco central y cuánto está hoy. La fecha es la del anuncio.</p><div class="agenda" id="gAgenda"></div></div>
-      <div class="card"><div class="head"><h2>Bonos a 10 años del mundo</h2><span class="note" id="gBonN"></span></div><p class="sub">Cuánto paga el bono del gobierno de cada país a 10 años y cuánto más (o menos) que el de EE.UU.</p><div class="chart" id="chBonos"></div><p class="note" id="gBonNota"></p></div>
-    </div>
-    <div class="g3">
       <div class="card"><div class="head"><h2>Bolsas del mundo</h2></div><p class="sub">Su índice principal y cómo viene el día. Abierta o cerrada según la hora de cada ciudad (no contempla feriados). Con demora.</p><div class="glist" id="gBolsas"></div></div>
-      <div class="card"><div class="head"><h2>Bancos centrales</h2></div><p class="sub">Tasa de política monetaria y su última decisión (BIS).</p><div class="glist" id="gBcs"></div></div>
-      <div class="card"><div class="head"><h2>Commodities</h2></div><p class="sub">Granos, energía y metales: precio internacional, cómo vienen hoy y en el año. Tocá uno para ver su gráfico abajo.</p><div class="glist" id="gCom"></div></div>
+      <div class="card"><div class="head"><h2>Termómetro del mercado</h2></div><p class="sub">El miedo de los inversores (VIX) y las tasas de los bonos del Tesoro de EE.UU.</p><div class="stats" id="gTermo"></div><div class="chart" id="chVix"></div><p class="note">Gráfico: VIX en el último año. Debajo de 15, calma; arriba de 30, pánico.</p></div>
     </div>
     <div class="card">
       <div class="head"><h2>Argentinas en Wall Street</h2><span class="note">ADR y acciones que cotizan en Nueva York, en dólares</span></div>
@@ -677,20 +671,40 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <p class="note">Índices en su moneda local; el Merval, en dólares contado con liqui. Commodities y bitcoin, en dólares.</p>
       </div>
     </div>
-    <div class="grid2">
-      <div class="card"><div class="head"><h2>Monedas de la región contra el dólar</h2></div><p class="sub">Cuántas unidades hay que dar por un dólar, cómo se movieron hoy y en el año.</p><div class="glist" id="gMon"></div></div>
-      <div class="card"><div class="head"><h2>Termómetro del mercado</h2></div><p class="sub">El miedo de los inversores (VIX) y las tasas de los bonos del Tesoro de EE.UU.</p><div class="stats" id="gTermo"></div><div class="chart" id="chVix"></div><p class="note">Gráfico: VIX en el último año. Debajo de 15, calma; arriba de 30, pánico.</p></div>
-    </div>
     <div class="card">
       <div class="head"><h2>Las 10 criptomonedas más grandes</h2><span class="note" id="gCripN"></span></div>
       <p class="sub">Ordenadas por valor de mercado. USDT y USDC son "dólares digitales": casi no se mueven.</p>
       <div class="tw"><table class="gtbl"><thead><tr><th>Moneda</th><th>Precio (US$)</th><th>24 h</th><th>7 días</th><th>1 año</th><th>Valor de mercado</th></tr></thead><tbody id="gCrip"></tbody></table></div>
     </div>
+    </div>
+    <div class="gsub" data-sub="economias">
+    <div class="card gficha" id="gFicha" aria-live="polite"></div>
+    <div class="card">
+      <div class="head"><h2>¿Dónde está Argentina?</h2><span class="note" id="dpaN"></span></div>
+      <p class="sub">Argentina comparada con los países más grandes y los de la región, en cada indicador.</p>
+      <div class="glay" id="dpaSel" role="group" aria-label="Indicador"></div>
+      <div class="chart" id="chDpa"></div>
+      <p class="note" id="dpaNota"></p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Próximas reuniones de bancos centrales</h2></div><p class="sub">Cuándo decide su tasa cada banco central y cuánto está hoy. La fecha es la del anuncio.</p><div class="agenda" id="gAgenda"></div></div>
+      <div class="card"><div class="head"><h2>Bancos centrales</h2></div><p class="sub">Tasa de política monetaria y su última decisión (BIS).</p><div class="glist" id="gBcs"></div></div>
+    </div>
+      <div class="card"><div class="head"><h2>Bonos a 10 años del mundo</h2><span class="note" id="gBonN"></span></div><p class="sub">Cuánto paga el bono del gobierno de cada país a 10 años y cuánto más (o menos) que el de EE.UU.</p><div class="chart" id="chBonos"></div><p class="note" id="gBonNota"></p></div>
+    </div>
+    <div class="gsub" data-sub="materias">
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Commodities</h2></div><p class="sub">Granos, energía y metales: precio internacional, cómo vienen hoy y en el año. Tocá uno para ver su gráfico abajo.</p><div class="glist" id="gCom"></div></div>
+      <div class="card"><div class="head"><h2>Monedas de la región contra el dólar</h2></div><p class="sub">Cuántas unidades hay que dar por un dólar, cómo se movieron hoy y en el año.</p><div class="glist" id="gMon"></div></div>
+    </div>
+    </div>
+    <div class="gsub" data-sub="noticias">
     <div class="card">
       <div class="head"><h2>Noticias del mundo</h2><span class="note" id="gNwN"></span></div>
       <p class="sub">Titulares de economía internacional en español, de las últimas 48 horas. Tocá uno para leerlo en el medio.</p>
       <div class="glay" id="gNwSel" role="group" aria-label="Tema"></div>
       <ul class="nwm" id="gNw"></ul>
+    </div>
     </div>
     <p class="note" id="gFuente"></p>
     </div>
@@ -716,42 +730,49 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         </div>
       </div>
       <div class="ukpis" id="uKpis"></div>
+    <div class="subtabs" id="gSubU" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y deuda</button><button type="button" data-s="wall" aria-selected="false">Wall Street</button></div>
+    <div class="gsub" data-sub="economia">
       <div class="card">
         <div class="head"><h2>Semáforo de recesión</h2><span class="note">¿Se viene una recesión en EE.UU.?</span></div>
         <p class="sub">Cuatro señales que en el pasado se encendieron antes de las recesiones. Ninguna es infalible: miradas juntas dan una idea del clima.</p>
         <div class="semaf" id="uSem"></div>
         <div class="veredicto" id="uVer"></div>
       </div>
-      <div class="grid2">
+    <div class="grid2">
         <div class="card"><div class="head"><h2>Inflación por rubro</h2><span class="note" id="uRubN"></span></div><p class="sub">Cuánto subió cada rubro en los últimos 12 meses. La línea punteada es la inflación general.</p><div class="chart" id="chURub"></div></div>
         <div class="card"><div class="head"><h2>Próximos datos importantes</h2><span class="note">Hora argentina</span></div><p class="sub">Cuándo salen los datos que mueven a los mercados del mundo.</p><div class="agenda" id="uCal"></div></div>
+    </div>
+    <div class="grid2">
+        <div class="card"><div class="head"><h2>Empleos creados por mes</h2><span class="note">Miles de puestos, últimos 2 años</span></div><div class="chart" id="chUEmp"></div></div>
+        <div class="card"><div class="head"><h2>Mercado laboral</h2><span class="note" id="uLabN"></span></div><div class="stats" id="uLabSt"></div><div class="chart" id="chUClaims"></div><p class="note">Gráfico: pedidos iniciales de seguro de desempleo por semana (promedio de 4 semanas, miles, sin desestacionalizar). Suben cuando las empresas despiden más. Fuentes: Departamento de Trabajo y BLS (vacantes, encuesta JOLTS).</p></div>
+    </div>
+      <div id="uBalPbi">
+        <div class="card" id="uPbiCard" hidden><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="uPbiN"></span></div><div class="chart" id="chUPbi"></div><p class="note">Variación del PBI real de cada trimestre, anualizada (como se informa en EE.UU.). Fuente: BEA.</p></div>
       </div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+    <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa de la Fed contra inflación</h2><span class="note">Mensual, últimos 5 años</span></div><div class="chart" id="chUFed"></div></div>
+        <div class="card"><div class="head"><h2>Curva de tasas del Tesoro</h2><span class="note">De 1 mes a 30 años</span></div><div class="chart" id="chUCurva"></div><div class="legend"><span><span class="sw" style="background:var(--accent)"></span>Hoy</span><span><span class="sw" style="background:var(--muted)"></span>Hace un año</span></div><p class="note" id="uCurvaN"></p></div>
+    </div>
+    <div class="grid2">
+        <div class="card"><div class="head"><h2>Decisiones de la Fed</h2><span class="note">Últimas reuniones</span></div><div class="tw"><table class="gcmp" id="uFed"></table></div></div>
+        <div class="card"><div class="head"><h2>Tasa hipotecaria a 30 años</h2><span class="note" id="uHipN"></span></div><div class="stats" id="uHipSt"></div><div class="chart" id="chUHip"></div><p class="note">Lo que cobra un banco por un crédito para comprar una casa a 30 años, tasa fija. Encuesta semanal de Freddie Mac.</p></div>
+    </div>
+    </div>
+    <div class="gsub" data-sub="wall">
       <div class="card">
         <div class="head"><h2>Las 50 empresas más grandes del S&amp;P 500</h2><span class="note" id="uHeatN"></span></div>
         <div class="stats" id="uHeatSt"></div>
         <div class="hsec" id="uHeat"></div>
         <p class="note">Color según la variación del día: verde sube, rojo baja. Con demora (CNBC).</p>
       </div>
-      <div class="grid2">
-        <div class="card"><div class="head"><h2>Mercado laboral</h2><span class="note" id="uLabN"></span></div><div class="stats" id="uLabSt"></div><div class="chart" id="chUClaims"></div><p class="note">Gráfico: pedidos iniciales de seguro de desempleo por semana (promedio de 4 semanas, miles, sin desestacionalizar). Suben cuando las empresas despiden más. Fuentes: Departamento de Trabajo y BLS (vacantes, encuesta JOLTS).</p></div>
-        <div class="card"><div class="head"><h2>Tasa hipotecaria a 30 años</h2><span class="note" id="uHipN"></span></div><div class="stats" id="uHipSt"></div><div class="chart" id="chUHip"></div><p class="note">Lo que cobra un banco por un crédito para comprar una casa a 30 años, tasa fija. Encuesta semanal de Freddie Mac.</p></div>
-      </div>
-      <div class="grid2" id="uBalPbi">
-        <div class="card"><div class="head"><h2>Próximos balances</h2><span class="note">Empresas de más de US$ 50 mil millones</span></div><p class="sub">Cuándo presentan sus resultados las empresas grandes de Wall Street. "Ganancia esperada" es lo que esperan los analistas por acción.</p><div class="agenda" id="uBal"></div></div>
-        <div class="card" id="uPbiCard" hidden><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="uPbiN"></span></div><div class="chart" id="chUPbi"></div><p class="note">Variación del PBI real de cada trimestre, anualizada (como se informa en EE.UU.). Fuente: BEA.</p></div>
-      </div>
-      <div class="grid2">
-        <div class="card"><div class="head"><h2>Tasa de la Fed contra inflación</h2><span class="note">Mensual, últimos 5 años</span></div><div class="chart" id="chUFed"></div></div>
-        <div class="card"><div class="head"><h2>Curva de tasas del Tesoro</h2><span class="note">De 1 mes a 30 años</span></div><div class="chart" id="chUCurva"></div><div class="legend"><span><span class="sw" style="background:var(--accent)"></span>Hoy</span><span><span class="sw" style="background:var(--muted)"></span>Hace un año</span></div><p class="note" id="uCurvaN"></p></div>
-      </div>
-      <div class="grid2">
-        <div class="card"><div class="head"><h2>Empleos creados por mes</h2><span class="note">Miles de puestos, últimos 2 años</span></div><div class="chart" id="chUEmp"></div></div>
+    <div class="grid2">
         <div class="card"><div class="head"><h2>Sectores de la bolsa hoy</h2><span class="note">Fondos de cada sector del S&amp;P 500</span></div><div class="heat" id="uSec"></div></div>
-      </div>
-      <div class="grid2">
         <div class="card"><div class="head"><h2>Las 7 magníficas</h2><span class="note">Las empresas más grandes del mundo</span></div><div class="tw"><table class="gcmp" id="uMag"></table></div></div>
-        <div class="card"><div class="head"><h2>Decisiones de la Fed</h2><span class="note">Últimas reuniones</span></div><div class="tw"><table class="gcmp" id="uFed"></table></div></div>
-      </div>
+    </div>
+        <div class="card"><div class="head"><h2>Próximos balances</h2><span class="note">Empresas de más de US$ 50 mil millones</span></div><p class="sub">Cuándo presentan sus resultados las empresas grandes de Wall Street. "Ganancia esperada" es lo que esperan los analistas por acción.</p><div class="agenda" id="uBal"></div></div>
+    </div>
       <p class="note" id="uFuente"></p>
     </div>
   </section>
@@ -2134,7 +2155,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         const k = 120/G.proj.scale(); G.rot = [G.drag.r[0]+dx*k, Math.max(-70, Math.min(70, G.drag.r[1]-dy*k))]; });
       cv.addEventListener('pointerup', e=>{ const was = G.drag; G.drag = null; G.idle = performance.now();
         if(was && !was.moved){ const r = cv.getBoundingClientRect(), ll = G.proj.invert([e.clientX-r.left, e.clientY-r.top]); if(!ll) return;
-          const f = G.feats.find(f=>d3.geoContains(f, ll)); if(f){ G.sel = f.id; gFicha(); gc('global-pais-'+f.id, true); } } });
+          const f = G.feats.find(f=>d3.geoContains(f, ll)); if(f){ G.sel = f.id; gFicha(); gc('global-pais-'+f.id, true); if(SUBS.M[2]!=='economias') setSub('M','economias'); setTimeout(()=>$('gFicha').scrollIntoView({behavior:'smooth', block:'start'}), 80); } } });
       document.querySelectorAll('#gLay button').forEach(b=>b.addEventListener('click', ()=>{ G.layer = b.dataset.l;
         document.querySelectorAll('#gLay button').forEach(x=>x.setAttribute('aria-pressed', String(x===b))); gLegend(); gc('global-capa-'+G.layer, true); }));
       G.ready = true;
@@ -2192,11 +2213,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const coms = (glob?.commodities && glob.commodities.length) ? glob.commodities : co.map(m=>({...m}));
     $('gCom').innerHTML = coms.map(m=>{ const ch = m.prev ? m.v/m.prev-1 : null, y = gHist ? gYtd(gSerie(m.k)) : null;
       return `<div role="button" tabindex="0" data-com="${m.k}" style="cursor:pointer"><span>${esc(m.n)}<small>${esc(m.u)}</small></span><span>${nf(m.v, m.v<100?2:0)}<small class="${ch==null?'':ch>0?'gup':ch<0?'gdn':''}">${ch==null?'':(ch>0?'▲ ':ch<0?'▼ ':'')+pc(ch,2)+' hoy'}</small></span><span class="${y==null?'geq':y>0?'gup':'gdn'}">${y==null?'—':sg(y,1)+'%'}<small>en el año</small></span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
-    $('gCom').querySelectorAll('[data-com]').forEach(d=>{ const go = ()=>{ if(!GCH.some(c=>c[0]===d.dataset.com)) return; gChSel = d.dataset.com; gExtras(); $('chGlob').scrollIntoView({behavior:'smooth', block:'center'}); };
+    $('gCom').querySelectorAll('[data-com]').forEach(d=>{ const go = ()=>{ if(!GCH.some(c=>c[0]===d.dataset.com)) return; gChSel = d.dataset.com; setSub('M','mercados'); setTimeout(()=>$('chGlob').scrollIntoView({behavior:'smooth', block:'center'}), 60); };
       d.addEventListener('click', go); d.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); }); });
     if(glob) $('gFuente').textContent = `Fuentes: FMI (World Economic Outlook) o Banco Mundial, BIS (tasas de política monetaria), CNBC, BCE y CoinGecko (mercados, con demora). Actualizado: ${new Date(glob.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
   }
   async function renderGlobal(){
+    aplicarSub('M');
     document.querySelectorAll('#gVista button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.v===G.vista)));
     $('gMundo').hidden = G.vista!=='mundo'; $('gUsa').hidden = G.vista!=='usa';
     if(G.vista==='usa'){ G.run = false; renderUsa(); return; }
@@ -2582,12 +2604,22 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('uBal').innerHTML = BL.map(x=>{ const d = dd(x.f); return `<div><span><b>${esc(x.n)}</b> <span style="font-family:var(--mono);color:var(--muted)">${esc(x.s)}</span><small>${DSEM[new Date(x.f+'T12:00:00Z').getUTCDay()]} ${fd(x.f)}${x.h ? ' · '+x.h : ''}${x.eps ? ' · ganancia esperada '+esc(x.eps.replace('$','US$ '))+' por acción' : ''}</small></span><span class="cd${d<=1?' pr':''}">${cdTxt(d)}</span></div>`; }).join('') || '<p class="note">No hay balances de empresas grandes en los próximos 14 días.</p>';
     // PBI (solo si hay clave del BEA)
     const PB = usa.pbi || [];
-    $('uPbiCard').hidden = !PB.length; $('uBalPbi').className = PB.length ? 'grid2' : '';
+    $('uPbiCard').hidden = !PB.length;
     if(PB.length){ const pts = PB.slice(-16).map(([q,v])=>[`${q.slice(0,4)}-${String(+q.slice(5)*3).padStart(2,'0')}`, v]);
       barChart($('chUPbi'), [{n:'PBI', c:'--accent', pts}], {aria:'Crecimiento del PBI de EE.UU.', yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'});
       const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
   }
+  // ---- apartados dentro de Mundo y Estados Unidos ----
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia']};
+  for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
+  function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
+    document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
+    document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel))); }
+  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
+    if(k==='M') renderGlobal(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+  for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   function renderUsa(){
+    aplicarSub('U');
     if(!usa){ loadUsa(); $('uKpis').innerHTML = '<div class="empty">Cargando datos de Estados Unidos…</div>'; return; }
     const b = usa.bls || {}, f = usa.fed, D = usa.deuda, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
     // reloj de la deuda y Fed
