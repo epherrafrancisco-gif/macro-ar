@@ -341,6 +341,11 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   miembro; `mercados` de Yahoo con Stooq de respaldo; `expo` de datos.gob.ar 357.1, anual, solo 10 destinos;
   `errores`). Workflow `global.yml`: L a V cada hora 08:23-19:23 ART, findes cada 6 h, y en cada push del script.
 - gh en el entorno de Claude: `env -u GH_TOKEN gh api repos/...` funciona para leer (repo público).
+- 11/10/2026: Francisco pidió SACAR las capas de exportaciones por destino (INDEC solo tenía 2024) y deuda/PBI
+  (Banco Mundial 2024, pocos países): "no quiero que haya cosas con datos viejos". No volver a ponerlas con datos
+  atrasados. Fuentes reales hoy: el FMI devuelve 403 desde Actions, así que infl/crec/desemp/pbi/pbipc salen del
+  Banco Mundial (último año, 2025); inflación de Argentina = `inflYoY` de data.json. Mercados: CNBC (índices,
+  tasa 10 años, DXY, commodities), BCE/Frankfurter (monedas), CoinGecko (bitcoin); Yahoo da 429 y Stooq no responde.
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;

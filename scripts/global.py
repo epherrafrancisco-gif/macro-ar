@@ -1,13 +1,12 @@
 """Arma global.json para la pestaña Global de Pulso Macro.
 
 Fuentes (gratuitas, sin clave):
-  - FMI, World Economic Outlook vía DataMapper: inflación, crecimiento, deuda/PBI,
+  - FMI, World Economic Outlook vía DataMapper (o Banco Mundial de respaldo): inflación, crecimiento,
     desempleo, PBI en dólares y PBI per cápita por país (estimación del año en curso).
   - BIS (Banco de Pagos Internacionales): tasas de política monetaria diarias de
     unos 40 bancos centrales, con la fecha de la última decisión.
   - Yahoo Finance (y Stooq como respaldo): índices bursátiles, monedas, bonos de
     EE.UU., commodities y bitcoin, con el cierre anterior para la variación.
-  - datos.gob.ar (INDEC): exportaciones argentinas por país de destino (anual).
 
 Uso: python scripts/global.py
 Nunca inventa datos: si una fuente falla, deja lo que había en global.json
@@ -30,7 +29,6 @@ UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chr
 IMF = {  # indicador del FMI: campo
     "PCPIPCH": "infl",        # inflación promedio anual, %
     "NGDP_RPCH": "crec",      # crecimiento real del PBI, %
-    "GGXWDG_NGDP": "deuda",   # deuda bruta del gobierno, % del PBI
     "LUR": "desemp",          # desempleo, %
     "NGDPD": "pbi",           # PBI, miles de millones de US$
     "NGDPDPC": "pbipc",       # PBI per cápita, US$
@@ -69,12 +67,6 @@ MERCADOS = [
     ("cobre", "Cobre", "commodity", "HG=F", "hg.f", "US$/t", 2204.623),  # US$/libra → US$/t
     ("btc", "Bitcoin", "cripto", "BTC-USD", "btcusd", "US$", 1),
 ]
-EXPO = {  # datos.gob.ar, exportaciones argentinas por destino (millones de US$, anual)
-    "357.1_EXPORTACIOSIL__28": "BRA", "357.1_EXPORTACIOINA__27": "CHN", "357.1_EXPORTACIODOS__36": "USA",
-    "357.1_EXPORTACIOILE__27": "CHL", "357.1_EXPORTACIODIA__27": "IND", "357.1_EXPORTACIOJOS__34": "NLD",
-    "357.1_EXPORTACIOUAY__29": "URY", "357.1_EXPORTACIONIA__30": "DEU", "357.1_EXPORTACIOLIA__28": "ITA",
-    "357.1_EXPORTACIONIA__29": "ESP", "357.1_EXPORTACIORAL__35": "TOTAL",
-}
 
 errores = []
 
@@ -94,7 +86,7 @@ def get(url, tries=3, timeout=40, headers=None):
 
 WB = {  # respaldo del Banco Mundial (último año disponible) si el FMI no responde
     "infl": "FP.CPI.TOTL.ZG", "crec": "NY.GDP.MKTP.KD.ZG", "desemp": "SL.UEM.TOTL.ZS",
-    "pbi": "NY.GDP.MKTP.CD", "pbipc": "NY.GDP.PCAP.CD", "deuda": "GC.DOD.TOTL.GD.ZS",
+    "pbi": "NY.GDP.MKTP.CD", "pbipc": "NY.GDP.PCAP.CD",
 }
 
 
@@ -102,7 +94,10 @@ def imf(prev):
     """Devuelve (paises, indicadores_ok, fuentes por campo)."""
     year = str(date.today().year)
     out = {k: dict(v) for k, v in (prev.get("paises") or {}).items()}
+    for d in out.values():  # campos que ya no se usan
+        d.pop("deuda", None)
     fuentes = dict(prev.get("fuentes") or {})
+    fuentes.pop("deuda", None)
     ok = 0
     for ind, campo in IMF.items():
         try:
@@ -317,25 +312,6 @@ def mercados(prev):
     return out
 
 
-def expo(prev):
-    try:
-        ids = ",".join(EXPO)
-        j = json.loads(get(f"https://apis.datos.gob.ar/series/api/series/?ids={ids}&format=json&last=2"))
-        filas = j.get("data") or []
-        if not filas:
-            raise ValueError("vacío")
-        fila = filas[-1]
-        out = {"anio": fila[0][:4], "musd": {}}
-        for i, iso in enumerate(EXPO.values()):
-            v = fila[i + 1]
-            if v is not None:
-                out["musd"][iso] = round(float(v), 1)
-        return out
-    except Exception as e:  # noqa: BLE001
-        errores.append(f"datos.gob.ar exportaciones: {e}")
-        return prev.get("expo")
-
-
 def main():
     prev = {}
     if OUT.exists():
@@ -351,12 +327,11 @@ def main():
         "paises": dict(sorted(paises.items())),
         "fuentes": fuentes,
         "mercados": mercados(prev),
-        "expo": expo(prev),
         "errores": errores[:60],
     }
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"FMI {ok_imf}/{len(IMF)} indicadores, {len(paises)} países; BIS {n_bis} países con tasa; "
-          f"{len(data['mercados'])}/{len(MERCADOS)} mercados; exportaciones {bool(data['expo'])}")
+          f"{len(data['mercados'])}/{len(MERCADOS)} mercados")
     for e in errores:
         print("ERROR", e)
     # No corta el workflow: los errores quedan en global.json para poder diagnosticarlos.
