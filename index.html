@@ -255,9 +255,24 @@ footer a{color:var(--ink2)}
 .heat .px{font-family:var(--mono);font-size:11px;color:var(--ink2)}
 .det{display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 14px;background:var(--sunk);border-radius:8px}
 .subh{margin:4px 0 -4px;font-size:13px;font-weight:600;color:var(--ink2)}
+/* Cinta de cotizaciones estilo Wall Street */
+.tape{position:relative;overflow:hidden;background:var(--sunk);border-bottom:1px solid var(--line);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+.tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:40px;z-index:1;pointer-events:none}
+.tape::before{left:0;background:linear-gradient(90deg,var(--sunk),transparent)}.tape::after{right:0;background:linear-gradient(-90deg,var(--sunk),transparent)}
+.tape-in{display:inline-flex;padding-block:8px;animation:tape var(--dur,60s) linear infinite;will-change:transform}
+.tape:hover .tape-in{animation-play-state:paused}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk{display:inline-flex;align-items:baseline;gap:7px;padding-inline:20px;border-right:1px solid var(--line)}
+.tk .n{color:var(--muted);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.tk .v{color:var(--ink);font-weight:500}
+.tk .d{font-size:12px}.tk .d.up{color:var(--pos)}.tk .d.dn{color:var(--neg)}.tk .d.eq{color:var(--muted)}
+.tk.fu .v{animation:tkUp 1.6s}.tk.fd .v{animation:tkDn 1.6s}
+@keyframes tkUp{0%,30%{color:var(--pos)}100%{color:var(--ink)}}@keyframes tkDn{0%,30%{color:var(--neg)}100%{color:var(--ink)}}
+@media (prefers-reduced-motion:reduce){.tape{overflow-x:auto}.tape-in{animation:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
 <div class="wrap">
   <header>
     <div class="brand">
@@ -1620,9 +1635,40 @@ footer a{color:var(--ink2)}
       $('stamp').innerHTML = `Último dato <b>${fd(last.fecha)}</b><br>Se actualiza cada día hábil`; }
     else if(loaded.d) $('stamp').textContent = 'Sin datos todavía';
     TABS[tab][2]();
+    if(loaded.d) renderTape();
   }
   let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
 
+
+  // ---- cinta de cotizaciones (arriba de todo) ----
+  let tapeKeys = '', tapePrev = {};
+  function renderTape(){
+    const items = [];
+    for(const D of DOL){ const {pts} = cardSeries(D.k); if(!pts.length) continue;
+      const {last, prev} = lastTwo(pts); items.push({k:D.k, n:'Dólar '+D.n, v:'$ '+nf(last[1],2), x:last[1], ch: prev ? last[1]/prev[1]-1 : null}); }
+    const of = cardSeries('oficial').pts, cc = cardSeries('ccl').pts;
+    if(of.length && cc.length){ const g = cc[cc.length-1][1]/of[of.length-1][1]-1; items.push({k:'brecha', n:'Brecha CCL', v:pc(g,1).replace(/^\+/,''), x:g, ch:null}); }
+    const rp = series('riesgo'); if(rp.length){ const {last, prev} = lastTwo(rp); items.push({k:'riesgo', n:'Riesgo país', v:nf(last[1],0)+' pb', x:last[1], ch: prev ? last[1]-prev[1] : null, pb:true, bad:true}); }
+    const mv = series('merval'); if(mv.length){ const {last, prev} = lastTwo(mv); items.push({k:'merval', n:'S&P Merval', v:nf(last[1],0), x:last[1], ch: prev ? last[1]/prev[1]-1 : null}); }
+    const tape = $('tape'), inn = $('tapeIn'); if(!items.length){ tape.hidden = true; return; } tape.hidden = false;
+    const d = it => { if(it.ch==null || !isFinite(it.ch)) return ''; const z = it.pb ? Math.abs(it.ch)<0.5 : Math.abs(it.ch)<0.00005;
+      const up = it.ch>0, cls = z ? 'eq' : (up !== !!it.bad) ? 'up' : 'dn';
+      return `<span class="d ${cls}">${z?'■':up?'▲':'▼'} ${it.pb ? sg(it.ch,0)+' pb' : pc(it.ch,2)}</span>`; };
+    const html = it => `<span class="n">${it.n}</span><span class="v">${it.v}</span>${d(it)}`;
+    const keys = items.map(i=>i.k).join();
+    if(keys !== tapeKeys){
+      tapeKeys = keys;
+      const one = items.map(it=>`<span class="tk" data-k="${it.k}">${html(it)}</span>`).join('');
+      inn.innerHTML = one + one.replace(/class="tk"/g,'class="tk" aria-hidden="true"');
+      requestAnimationFrame(()=>{ inn.style.setProperty('--dur', Math.max(25, inn.scrollWidth/2/55)+'s'); });
+    } else {
+      inn.querySelectorAll('.tk').forEach(el=>{ const it = items.find(i=>i.k===el.dataset.k); if(!it) return;
+        const p = tapePrev[it.k]; el.classList.remove('fu','fd');
+        if(p!=null && p!==it.x){ void el.offsetWidth; el.classList.add(it.x>p ? 'fu' : 'fd'); }
+        el.innerHTML = html(it); });
+    }
+    items.forEach(it=>tapePrev[it.k]=it.x);
+  }
   // ---- polling en vivo: cada 60 s, solo con la pestaña visible ----
   let lt, busy = false;
   async function poll(){
@@ -1641,6 +1687,7 @@ footer a{color:var(--ink2)}
       live = nuevo; liveAt = Date.now(); liveOk = true; flash = f;
       if(loaded.d && tab==='dolares') renderDolares(); else flash = {};
       if(loaded.d && tab==='calculadoras') renderCalc();
+      if(loaded.d) renderTape();
     }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d && tab==='dolares') renderDolares(); }
     busy = false; tick();
     lt = setTimeout(poll, LIVE_MS);

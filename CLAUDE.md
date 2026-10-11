@@ -321,6 +321,20 @@ redirija unos minutos a un dominio que todavía no anda no es problema; (5) camb
 SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y subir
 `?v=` de preview.png; (6) verificar que el link viejo redirija; (7) recién ahí lanzarlo.
 
+## Cinta de cotizaciones (11/10/2026, HECHO)
+- Arriba de todo (`#tape`, `renderTape()`): dólares de `DOL` (cierre de data.json + DolarApi en vivo vía
+  `cardSeries`), brecha CCL, riesgo país y S&P Merval, con variación vs cierre anterior. Corre en loop
+  (contenido duplicado, `--dur` según ancho), se pausa con el mouse, parpadea verde/rojo al cambiar un valor.
+  Se refresca en cada `render()` y en cada `poll()` en vivo. Pedido de Francisco: estilo Wall Street.
+
+## Próximo: pestaña Global (aprobada 11/10/2026)
+- Francisco quiere que Pulso Macro siga como está y sumar una pestaña **Global** (nombre exacto) con:
+  globo 3D que gira y se arrastra, países pintados por indicador (inflación, crecimiento, tasa del banco
+  central, deuda/PBI, desempleo), ficha al tocar un país comparada con Argentina, arcos de exportaciones
+  argentinas por destino, bolsas del mundo abiertas/cerradas en vivo según la hora, bancos centrales
+  (última decisión de tasa) y commodities que mueven a Argentina. Versión plana del mapa en celular.
+  Fuentes gratis (FMI DataMapper, Banco Mundial) por GitHub Actions. Primero maqueta para que la apruebe.
+
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
   ya no se usa. Las tareas programadas de Claude están desactivadas.
