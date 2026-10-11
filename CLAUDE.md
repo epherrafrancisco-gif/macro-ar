@@ -1,416 +1,121 @@
-# Pulso Macro (ex Macro AR): notas del proyecto para Claude
+# Pulso Macro: notas técnicas del proyecto
 
-Leé este archivo completo antes de tocar nada. Resume todo lo decidido con Francisco
-hasta el 02/10/2026.
+Leé este archivo antes de tocar nada. Este repositorio es PÚBLICO: acá van solo notas técnicas.
+Nada de datos personales, trámites, claves, mails ni preferencias privadas del dueño.
 
-## Quién y cómo
-- Dueño: **Francisco Epherra**, estudiante de Economía Empresarial (UTDT), inversor.
-- Hablale en español rioplatense, de "vos", conciso y directo, sin relleno ni
-  preguntas retóricas. Explicale en criollo; no es programador.
-- Su uso de Claude es limitado: trabajá por bloques, verificá cada bloque antes
-  de seguir y no repitas trabajo.
-
-## Nombre y estética (02/10/2026)
-- El sitio se llama **Pulso Macro** (antes "Macro AR"). Se cambió porque `macroar.com.ar`
-  ya existe y es otro sitio de indicadores macro ("MacroAr", con un "Laboratorio" de
-  regresiones). No volver a usar "Macro AR" en nada visible. Logo/título: `Pulso<span>Macro</span>`
-  ("Macro" en mono y color de acento). Archivos descargados: `pulso-macro_<...>`.
-- El repo y la URL de GitHub siguen siendo `macro-ar` (no renombrar: rompe el link).
-  La cuenta de GoatCounter sigue siendo `macroar` (interna, no se ve).
-- Redes: se sacaron las menciones a @macroar_diario; Francisco va a crear cuentas nuevas
-  con el nombre Pulso Macro y después se agregan.
-- **Siempre en tema oscuro** (pedido de Francisco): `:root` tiene los colores oscuros fijos
-  y `color-scheme:dark`; ya no hay tema claro ni `prefers-color-scheme`. Lo mismo en /diario/.
-
-## Qué es
-Tablero público y gratuito de la macro argentina:
-**https://pulsomacro.com.ar/** (dominio propio desde 09/10/2026; el link viejo
-epherrafrancisco-gif.github.io/macro-ar redirige solo). GitHub Pages desde la rama `main`, carpeta raíz, archivo `CNAME`. Publicado en LinkedIn.
-Plan: dominio propio `pulsomacro.com.ar` (Francisco tiene que confirmar en nic.ar que esté
-libre; el 02/10 no había ningún sitio en esa dirección). No tocar el nombre del usuario ni del
-repo: rompería la redirección del link viejo.
-
-## Archivos
-- `index.html`: toda la página (HTML + CSS + JS en un solo archivo, sin librerías).
-  Lee `data.json` con `fetch` y dibuja gráficos SVG propios (`lineChart`, `barChart`).
-  Cinco pestañas: **Dólares** (`#dolares`), **Macro** (`#macro`), **Dinero** (`#dinero`),
-  **Fiscal** (`#fiscal`), **Mercado** (`#mercado`), **Noticias** (`#noticias`), **Calculadoras** (`#calculadoras`) y **Sobre Macro AR** (`#sobre`), en ese orden, selector de rango 1M/3M/6M/1A/Todo (los gráficos mensuales
-  no lo usan). Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`. Tema claro y oscuro con tokens CSS en `:root`.
-  Fuentes: Instrument Sans + JetBrains Mono (Google Fonts).
-  Paleta de series (claro/oscuro): s1 azul #2a78d6/#3987e5, s2 naranja #eb6834/#d95926,
-  s3 aqua #1baf7a/#199e70, s4 amarillo #eda100/#c98500, s5 magenta #e87ba4/#d55181.
-  Colores por entidad: Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
-- `data.json`: `{"actualizado": "YYYY-MM-DD", "diario": [...], "mensual": [...], "trimestral": [...]}`.
-  - Diario (una fila por día hábil, todos los campos opcionales): `fecha`,
-    `oficial {c,v}`, `blue {c,v}`, `mep {v}`, `ccl {v}`, `mayorista {v}`,
-    `cripto {c,v}`, `tarjeta {c,v}`, `riesgo` (pb), `reservas` (MUSD),
-    `base` (millones $), `badlar`, `tamar`, `pf` (% TNA), `depusd` (MUSD),
-    `compras` (BCRA id 78, MUSD/día; negativo = vendió) y `bopreal` (id 158, MUSD);
-    estas dos se piden siempre desde el 1/1. `merval` (S&P Merval, puntos, Ámbito
-    `indice/.merv`, columna Último; también desde el 1/1).
-  - Mensual: `mes` (YYYY-MM), `infl`, `inflYoY`, `expect` (REM 12m); desde 2023-01:
-    `base`, `m2`, `m2t`, `cer` (promedio del mes; millones $ / índice), `leliq`, `pases`,
-    `lefi` (fin de mes, millones $), `prim`, `fin` (resultado fiscal SPN, millones $),
-    `expo`, `impo`, `saldo` (MUSD).
-  - Trimestral: `trim` (YYYY-MM del 1er mes), `pib` (PBI corriente, millones $, valor
-    ANUALIZADO del trimestre: el promedio de los 4 trimestres = PBI del año).
-    En la página, meses sin trimestre publicado: PBI estimado con la suba del CER.
-  - Historico (`historico`, mensual desde 2017-01, para "Dólar a precios de hoy"): `mes`,
-    `ofi`, `blue`, `mep`, `ccl` (Ámbito, promedio de la venta), `may` (BCRA id 5), `cer`
-    (BCRA id 30, promedio) y `cpi` (CPI-U de EE.UU. sin desestacionalizar: intenta FRED
-    `fredgraph.csv?id=CPIAUCNS` y, si falla, la API v1 del BLS por POST, serie CUUR0000SA0;
-    desde Actions FRED da timeout y anda el BLS). Primera corrida baja todo por tramos
-    anuales; después solo los años con huecos + desde el mes anterior (`--historia` fuerza
-    todo). Si un año falla en Ámbito, baja mes por mes y, si falla el mes, día por día.
-    Arranca en 2017 porque antes el IPC (y el CER) estaba manipulado. El MEP de Ámbito
-    (`dolarrava/mep`) empieza recién en 03/2020; el CCL sí tiene 2017. Ámbito devuelve 500
-    para el 13/08/2025 de MEP y CCL (día roto de la fuente, queda sin dato).
-  - Historia desde 27/03/2026 (diario; `compras` desde 01/2026) y 08/2024 (mensual).
-- `scripts/update.py`: trae datos y mezcla en `data.json` (solo librería estándar).
-  Revisa los últimos N días (default 10). Nunca inventa datos: si una fuente falla,
-  lo registra y deja el campo como estaba.
-- `.github/workflows/actualizar-datos.yml`: corre `update.py` L a V a las
-  10:15, 11:30 y 18:47 ART (13:15, 14:30 y 21:47 UTC) y a mano (`workflow_dispatch`), y
-  commitea `data.json` y `estado.json` si cambió data.json. **Funciona** (primera corrida OK el 02/10/2026).
-  `estado.json` guarda las fuentes OK y con error de la última corrida que cambió datos:
-  mirarlo para diagnosticar (los logs de Actions no se pueden bajar desde el entorno de Claude).
-  Claude puede lanzar el workflow solo: `gh workflow run actualizar-datos.yml -R
-  epherrafrancisco-gif/macro-ar --ref main` y esperar con `gh run watch ID --exit-status`.
-- `preview.png`: imagen para la vista previa de LinkedIn (og:image, con `?v=N` para
-  romper la caché: subir N cada vez que cambie). Se genera con `scripts/preview.html`
-  (lee data.json, sin cifras ni fechas para que no envejezca) y captura de 1200x630 con
-  Playwright (`executablePath:'/opt/pw-browsers/chromium'`; las fuentes de Google no
-  cargan en el entorno de Claude: usar @fontsource de npm con `page.route`).
-
-## Fuentes (todas verificadas, aceptan consultas desde GitHub Actions)
-- **Ámbito** `https://mercados.ambito.com//<ruta>/historico-general/DESDE/HASTA`
-  → JSON `[["Fecha","Compra","Venta"],["30/09/2026","1540,00","1560,00"],...]`
-  (fechas DD/MM/YYYY o DD-MM-YYYY, coma decimal, más reciente primero). OJO: el rango
-  EXCLUYE el día HASTA (se pide hasta el día siguiente; corregido el 02/10/2026).
-  Rutas: `dolar/informal` (blue), `dolar/oficial`, `dolarrava/mep`, `dolarrava/cl`,
-  `riesgopais`. En feriados repite MEP/CCL: se filtran con los días de oficial/mayorista.
-- **BCRA** `https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{id}?desde=&hasta=&limit=1000`
-  → `{"results":[{"idVariable":1,"detalle":[{"fecha":"2026-09-29","valor":47482.0}]}]}`.
-  La v3.0 ya no existe (410). Listado de variables: `.../v4.0/monetarias`.
-  IDs en uso: 1 reservas, 5 mayorista, 15 base, 7 BADLAR, 44 TAMAR, 12 PF 30d,
-  108 depósitos privados USD, 27 IPC mensual, 28 IPC interanual, 29 REM 12m.
-  IDs útiles para lo que viene: 78 variación de reservas por compra de divisas
-  (MUSD, = compras/ventas del BCRA en el MULC), 158 LEBAC/LEDIV/BOPREAL USD,
-  109 M2, 197 M2 transaccional privado, 25 var. i.a. M2 privado, 30 CER, 31 UVA,
-  196 LEFI (en 0 desde 07/2025), 152 pases pasivos (en 0).
-- **DolarApi** `https://dolarapi.com/v1/dolares` (cripto, tarjeta; también oficial,
-  blue, bolsa=MEP, contadoconliqui=CCL, mayorista con `fechaActualizacion`).
-- **datos.gob.ar** (en uso): `452.3_RESULTADO_RIO_0_M_18_54` primario, `452.3_RESULTADO_ERO_0_M_20_25`
-  financiero, `74.3_IET_0_M_16` expo, `74.3_IIT_0_M_25` impo, `74.3_ISC_0_M_19` saldo,
-  `166.2_PPIB_0_0_3` PBI corriente trimestral. BCRA ids nuevos en uso: 109, 197, 30, 155
-  (LELIQ), 152, 196, 158. La API del BCRA acepta `limit=3000`.
-- Deuda del Tesoro en pesos (LECAP/BONCAP): NO hay serie pública gratuita por API
-  (solo el boletín mensual de Finanzas en Excel). Pendiente, ver con Francisco.
-- Para buscar más: **API de series de datos.gob.ar** (`https://apis.datos.gob.ar/series/api/series/?ids=...`)
-  para resultado fiscal, balanza comercial (INDEC) y PBI. Buscar los IDs en
-  `https://apis.datos.gob.ar/series/api/search/?q=...`.
-
-## Entorno de trabajo de Claude (importante)
-- La terminal del entorno de Claude NO tiene internet salvo GitHub: no se puede
-  probar `update.py` contra las fuentes desde acá. Usá WebFetch para mirar el
-  formato de una fuente y probá el script con respuestas simuladas (mock de
-  `get_json`). La prueba real es correr el workflow.
-- Para correr el workflow, Francisco entra a
-  `github.com/epherrafrancisco-gif/macro-ar/actions/workflows/actualizar-datos.yml`
-  → **Run workflow**. Guialo paso a paso (no usa la app de escritorio de GitHub;
-  si le aparece "Authorize your device", es esa app: que la cierre).
-- Push a `main` funciona (app de Claude instalada en el repo).
+## Cómo trabajar
+- El dueño no es programador: hablale en español rioplatense, de "vos", conciso, en criollo.
+  Cuando tenga que hacer algo él (GitHub, configuraciones), de a un paso por mensaje, explicando lo que esté en inglés.
+- Trabajá por bloques y verificá cada bloque antes de seguir. Para cambios visuales grandes, primero una maqueta.
+- Nunca mostrar datos viejos como si fueran actuales: si una fuente está atrasada, se saca o se aclara la fecha.
 - Commits: terminar con las líneas de atribución que indique el sistema.
 
-## Hoja de ruta aprobada (02/10/2026)
-Descartado por Francisco: calendario de vencimientos de deuda, "BSTEP",
-balanza cambiaria, liquidación del agro (CIARA-CEC) y gráfico histórico por acción
-(descartados el 02/10/2026). Todo lo demás va, con los agregados de cada punto.
+## Nombre, estética y URLs
+- Sitio: **Pulso Macro** en **https://pulsomacro.com.ar/** (GitHub Pages, rama `main`, carpeta raíz, archivo `CNAME`;
+  DNS en Cloudflare con nube gris; el link viejo epherrafrancisco-gif.github.io/macro-ar redirige solo).
+  El repo sigue llamándose `macro-ar`: no renombrar (rompe la redirección). Nunca usar "Macro AR" en nada visible.
+- Logo: `Pulso<span>Macro</span>` ("Macro" en mono y color de acento). Archivos descargados: `pulso-macro_<...>`.
+- Siempre tema oscuro (`:root` con colores fijos y `color-scheme:dark`), también en /diario/.
+- Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
+  s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
+- Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
+  automatizados. Para no contar las visitas propias: abrir el sitio con `#toggle-goatcounter`.
 
-### Bloque 1 (HECHO y verificado el 02/10/2026: `compras` cargó 180 días desde 02/01;
-DolarApi responde desde el navegador, CORS OK)
-1. **Firma**: "Diseñado y operado por Francisco Epherra" junto al nombre del sitio,
-   en chico, debajo del título.
-2. **Canje histórico**: gráfico de la prima CCL/MEP − 1 en %, con su promedio
-   como referencia (banda o línea) para ver cuándo se dispara. Ya hay datos.
-3. **Compras/ventas del BCRA en el MULC** (BCRA id 78, MUSD/día): barras diarias
-   verde/rojo, acumulado del mes y del año, contador grande "Compras en 2026".
-   Agregar al `update.py`, cargar historia (al menos desde 27/03/2026 o el año).
-4. **Dólar en vivo**: la página consulta DolarApi desde el navegador **cada 60 s**
-   (no menos: la fuente no cambia tan rápido y es gratis) y actualiza las tarjetas
-   sin recargar; cartel "En vivo · hace N s" con punto verde y parpadeo verde/rojo
-   al cambiar. Verificar que DolarApi permita CORS. Los gráficos siguen usando el
-   cierre de `data.json`.
-5. **Corrida extra a las 11:30 ART** (14:30 UTC), media hora después de la apertura.
-   Explicarle que los datos del BCRA no cambian intradía; lo que cambia son dólares
-   y riesgo país. GitHub puede atrasar el cron 5-30 min.
+## Estructura de la página (`index.html`, todo en un archivo, sin librerías salvo d3/topojson en Global)
+- Arriba: tres cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo; `#tape3` reloj de mercados)
+  y los 7 dólares (`#quotes`, `renderQuotes()`), visibles en TODAS las vistas: requisito no negociable.
+  Dólar en vivo: DolarApi desde el navegador cada 60 s.
+- Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
+  sección (`SECC` + `ICO`: nombre claro, ícono y una línea), "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
+- Encabezado: selector `#modo` (Argentina | El mundo | Sobre Pulso Macro `#modoS`); el logo (`#brandH`) vuelve a la portada.
+- Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas), recuadro
+  `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
+- Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
+  `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
+  El mundo = `#global` (Mundo) y `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`); `#sobre`.
+- Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
+  `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
+- Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
+- CSV por pestaña: objeto `CSV` (`;`, coma decimal, BOM UTF-8).
 
-### Bloque 2 (HECHO y verificado el 02/10/2026 con datos reales, salvo la deuda
-LECAP/BONCAP, que no tiene fuente gratuita por API; datos.gob.ar responde desde Actions)
-6. **Agregados en términos reales**: base, M2 (y M2 transaccional privado)
-   deflactados con CER (o IPC), y en % del PBI, para medir la remonetización.
-7. **Resultado fiscal mensual** (datos.gob.ar): primario y financiero en barras,
-   acumulado del año y en % del PBI.
-8. **Balanza comercial** (INDEC vía datos.gob.ar): exportaciones, importaciones, saldo.
-9. **Pasivos/deuda en pesos**: stock de BOPREAL (id 158), deuda del Tesoro en
-   pesos (LECAP/BONCAP), y gráfico histórico de la migración LELIQ → pases →
-   LEFI → LECAP. LEFI y pases están en 0 desde 07/2025: no mostrarlos como si
-   fueran actuales.
+### Argentina
+- Dólares: cotizaciones, brechas, canje CCL/MEP con banda, "Dólar a precios de hoy" (`renderUsdReal`), últimos días.
+- Macro: inflación, REM, reservas, compras del BCRA en el MULC, riesgo país, "Próximas publicaciones" (`renderCal`,
+  datos en `calendario.json`; PENDIENTE cada diciembre/junio: cargar el calendario del INDEC del semestre siguiente
+  y actualizar `vigente_hasta`).
+- Dinero: base, M2, M2 transaccional en términos reales y % del PBI, tasas, pasivos (LELIQ → pases → LEFI → LECAP;
+  LEFI y pases en 0 desde 07/2025: no mostrarlos como actuales), BOPREAL.
+- Fiscal: resultado primario y financiero, acumulado y % del PBI, balanza comercial.
+- Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
+  data912 desde el navegador cada 10 min), AL30/GD30 con TIR y paridad.
+- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
+- Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares.
+- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño.
 
-### Bloque 3 (HECHO el 02/10/2026; agro e histórico por acción descartados)
-- Paso (a) fuentes, HECHO: Merval histórico = Ámbito; precios del día de acciones y
-  bonos = data912 (`https://data912.com/live/arg_stocks`, `/live/arg_bonds`; campos
-  symbol, c, pct_change, v, px_bid, px_ask; sin timestamp; 120 req/min; su historia
-  de bonos está cortada en 2023, no usarla). CORS OK: verificado en el sitio publicado el 02/10.
-- Paso (b) HECHO: pestaña Mercado con Merval en $ y en US$ CCL, riesgo país y tabla de
-  AL30/GD30 (precio D y $, TIR y paridad calculadas en la página con el cronograma
-  2030; se consulta data912 cada 10 min desde el navegador).
-- Paso (c) HECHO en parte: mapa de calor de 21 acciones líderes (lista `LIDERES` en
-  index.html), resumen suben/bajan y detalle al tocar (puntas, monto, operaciones).
-  SIN gráfico histórico por acción: no hay fuente gratuita (la historia de data912 está
-  cortada). DESCARTADO: liquidación del agro (CIARA-CEC): no hay API; publican un Excel
-  mensual en ciaracec.com.ar/ciara/estadisticas/ con nombre que cambia (ej.
-  `.../descargar/01102026_30092026liquidacion-de-divisas-ciara-cec-base-oficial.xlsx`).
-  Opciones: leer ese Excel desde el workflow (sin librerías: zipfile + xml) o cargar
-  el dato a mano una vez por mes. Septiembre 2026: US$ 3.228 M (comunicado del 01/10).
-10. **Pestaña Mercado**: S&P Merval en pesos y en dólares CCL (histórico),
-    tablero de las empresas del índice (precio, variación del día, mapa de calor,
-    gráfico al tocar), bonos AL30/GD30 con rendimiento y riesgo país. Datos
-    gratuitos con 15-20 min de demora (BYMA demorado u otra fuente; verificar
-    disponibilidad), actualizados cada 10-15 min. Aclarar en la página que son
-    demorados. Ojo: si el sitio pasa a generar ingresos, redistribuir precios de
-    BYMA puede requerir licencia.
-11. **Liquidación del agro (CIARA-CEC)**: mensual (no hay dato diario público),
-    barras con comparación interanual. Como proxy semanal, las compras del BCRA.
+### Global › Mundo
+- Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
+  `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
+  el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 de cdnjs, solo al abrir la pestaña. Mapa `world.json`.
+- Reloj de mercados 24 h (`renderReloj`, `gEstado`, `gProx`, lista `GEX` sin feriados).
+- `gMundoExtra`: ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`, fechas de anuncio
+  cargadas a mano hasta dic-2027; Banxico solo 2026: agregar 2027 cuando lo publique), bonos a 10 años vs EE.UU.
+  (Argentina = riesgo país), cripto top 10, noticias del mundo.
+- `gExtras`: bolsas, bancos centrales (BIS), commodities (9, con variación en el año y clic al gráfico), Argentinas en
+  Wall Street, Líderes del mundo, gráficos 1M-2A (`GCH`), "¿Qué rindió más en el año?", monedas, termómetro (VIX, 10-2).
 
-### Bloque 4 (menú propuesto el 02/10/2026; hechos A, B, C, D y E)
-Al arrancar una sesión nueva, mostrale lo que falta de este menú en criollo y que elija.
-- A. HECHO (02/10/2026): nueva `preview.png` (oscura, 5 pestañas con mini gráficos) y
-  meta description/og actualizadas. Para que LinkedIn la tome: Post Inspector.
-- B. HECHO (02/10/2026): tarjeta "Dólar a precios de hoy" en Dólares (`renderUsdReal`):
-  promedio mensual × CER hoy/CER mes × CPI mes/CPI hoy; último punto = cotización de hoy;
-  tabla con hoy, promedio desde 2017, desvío, percentil, mínimo y máximo.
-- C. HECHO (02/10/2026): barra "Datos de esta pestaña en CSV" al final de cada pestaña
-  (objeto `CSV` en index.html: una función por archivo). Formato Excel en español: `;`,
-  coma decimal, BOM UTF-8. Nombre `macro-ar_<clave>_<fecha>.csv`.
-- D. HECHO (02/10/2026): tarjeta "Próximas publicaciones" en Macro (`renderCal`), con
-  cuenta regresiva a la próxima y lista de las 7 siguientes. Datos en `calendario.json`
-  (`eventos`: f, org, n, p, h, est; `vigente_hasta`). Cargado: INDEC 2º semestre 2026
-  (calendario_2sem2026.pdf, publica a las 16 h) + REM estimado (4º día hábil; el BCRA no
-  publica calendario: ago-2026 salió el 6/8 y sep el 4/9). PENDIENTE cada diciembre/junio:
-  cargar el calendario del semestre siguiente
-  (indec.gob.ar/ftp/cuadros/publicaciones/calendario_1sem2027.pdf) y actualizar
-  `vigente_hasta`; si no, la tarjeta muestra "No hay fechas cargadas".
-- E. HECHO (02/10/2026): imagen diaria 1080x1350 para @macroar_diario. Plantilla
-  `scripts/diario.html` (lee data.json; expone `window.TEXTO` con el texto del posteo),
-  generador `scripts/diario.mjs` (servidor http propio + playwright-core + Chrome del runner,
-  `CHROME_PATH` opcional). El workflow la genera cuando cambia data.json (paso con
-  `continue-on-error`) y commitea `diario/hoy.png` y `diario/texto.txt`. Página para
-  bajarla y copiar el texto: `/diario/` (link en el pie). Antes de las 17 h dice
-  "parcial, HH:MM h"; la de las 18:47 es la de cierre. Probar local:
-  `ln -s <scratch>/node_modules node_modules && node scripts/diario.mjs` (sin Google Fonts).
-- F. **Dominio propio `macroar.com.ar`**: POSTERGADO AL FINAL por decisión de Francisco
-  (02/10/2026): el sitio está "en mantenimiento", nadie usa el link todavía, y el trámite
-  en NIC Argentina pide clave fiscal de ARCA que no recuerda. Hacerlo después de G y H.
-  Orden obligatorio: comprar → DNS (NIC.ar no aloja DNS: delegar a Cloudflare gratis, A a
-  las IPs de GitHub Pages, CNAME www, nube gris) → recién ahí CNAME en el repo + Settings
-  → Pages; si se agrega el CNAME antes, el link github.io redirige a un dominio muerto.
-  Al pasar: cambiar las menciones de la URL en index.html (og:url), scripts/preview.html,
-  scripts/diario.html (pie y texto del posteo) y README.
-- G y H DESCARTADOS por Francisco (02/10/2026): deuda del Tesoro en pesos (LECAP/BONCAP),
-  newsletter e inflación semanal de alimentos propia. No volver a proponerlos.
+### Global › Estados Unidos (`renderUsa`, `usaExtra`)
+- Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda, cuenta regresiva a la Fed, 6 indicadores,
+  Fed vs inflación, curva del Tesoro, empleos por mes, sectores, 7 magníficas, decisiones de la Fed.
+- Semáforo de recesión (regla de Sahm, curva 10-2, VIX, pedidos de desempleo vs un año), inflación por rubro,
+  próximos datos (`CAL_US`, fechas BLS/BEA a mano hasta 2027; PBI/PCE solo hasta dic-2026: cargar 2027 cuando salgan),
+  mapa de 50 empresas por sector, mercado laboral, hipotecaria 30 años, próximos balances y PBI.
 
-### Bloque 5 (lista de Francisco del 02/10/2026)
-- HECHO: íconos (i) con glosario en criollo. Objeto `GLOS` (clave → [título, texto]) y
-  `GLOS_REGLAS` ([regex sobre el texto, clave, dónde: q = tarjetas de dólar, g = h2/h3/
-  etiquetas de KPI y stats, th = encabezados]). `decorar()` los agrega solo después de cada
-  dibujo (MutationObserver sobre .wrap). Para sumar un término: agregar a GLOS y una regla.
-  Popover único `#tipbox`: hover con mouse, tap en celular, foco con teclado, Esc cierra.
-- HECHO: en cada gráfico (`.card .chart[id]`) tres íconos: compartir, PNG y CSV
-  (`herramientas()`). Cada función de gráfico guarda `el._exp = {fn, a, o}`; el PNG
-  redibuja el gráfico a 760 px, copia los colores calculados y arma un canvas 2x con
-  título, subtítulo, leyenda, marca de agua "Macro AR", logo, URL y @macroar_diario.
-  Compartir: en celular usa navigator.share con el archivo (no se pudo probar acá:
-  Chromium de Linux no lo soporta); en compu copia la imagen al portapapeles y abre
-  twitter.com/intent/tweet con texto y link (si no puede copiar, la descarga).
-- HECHO: pestaña **Calculadoras** (`#calculadoras`, `renderCalc`), con selector y la última
-  elegida en localStorage: (1) ¿Plazo fijo o dólar? → dólar de equilibrio = precio × (1 +
-  TNA × días/365), TNA precargada con `pf` del BCRA, precio en vivo (editable), tasa real
-  contra REM y cuánto se movió ese dólar en los últimos N días; (2) Inflación → monto × CER
-  hoy / CER del mes (historico desde 2017) y comparación con haber comprado blue;
-  (3) Sueldo en dólares → sueldo ÷ cada dólar hoy y, opcional, comparación con un sueldo
-  anterior (poder de compra por CER y en dólares). Francisco eligió 1, 2 y 5 de las ideas
-  (descartadas por ahora: tarjeta vs MEP y calculadora de bonos). Números con `parseAR`.
-- HECHO: ranking "¿Qué le ganó a la inflación en <año>?" arriba de Mercado (`renderRanking`,
-  barras horizontales `hBars`, con compartir/PNG/CSV). Desde el último cierre del año
-  anterior: dólares oficial/MEP/CCL/blue, S&P Merval y plazo fijo 30 días renovado con la
-  TNA vigente. Inflación: IPC publicado + REM para lo que falta ("Hasta hoy") o solo IPC
-  ("Hasta <último mes con IPC>"). Para esto update.py ahora pide Ámbito (todos), mayorista
-  y plazo fijo desde el 1/12 del año anterior (`AMBITO_LARGO`, `BCRA_LARGO`).
-- HECHO: chequeo automático diario del sitio publicado (`.github/workflows/chequeo-sitio.yml`
-  + `scripts/chequeo.mjs`, L a V 19:43 ART). Revisa atraso de datos, estado.json,
-  calendario por vencer, errores de JS y gráficos vacíos por pestaña, DolarApi, data912 e
-  imagen del día. Si hay un problema grave abre el issue "Chequeo del sitio: hay problemas"
-  (le llega por mail a Francisco) y lo cierra solo cuando vuelve a andar; los avisos
-  menores quedan en el resumen de la corrida. A mano: Run workflow, opcional `url`.
-  Probado el 02/10 (issue #1 abierto con URL rota y cerrado solo). gh: usar REST
-  (`gh api repos/...`), GraphQL está bloqueado en el entorno de Claude.
-- HECHO: contador de visitas privado con GoatCounter, cuenta `macroar` de Francisco (panel en
-  macroar.goatcounter.com, solo con su usuario). Script en el head de index.html con
-  `no_onload`: la función `gc()` cuenta cada pestaña como `/macro-ar/#pestaña` y eventos:
-  `calculadora-<pf|inf|sue>`, `glosario-<clave>` (una vez por visita), `compartir|png|csv-<id
-  del gráfico>`, `csv-pestaña-<clave>`. No cuenta navegadores automatizados
-  (navigator.webdriver, o sea el chequeo diario). La página /diario/ cuenta sola.
-  Para no contar sus propias visitas: abrir el sitio con `#toggle-goatcounter` en cada
-  navegador/celular.
-- DESCARTADOS (02/10/2026): "el día en 30 segundos", dólar contra la banda cambiaria y
-  curva de tasas en pesos. No volver a proponerlos.
-- HECHO: pestaña **Noticias** (`#noticias`, `renderNoticias`). `scripts/noticias.py` junta
-  titulares (solo título, link, medio, hora y temas por palabras clave) de los RSS de
-  economía de Ámbito, Infobae, La Nación, iProfesional y Perfil (verificados 02/10/2026;
-  El Cronista y Clarín no se pudieron leer) en `noticias.json`, últimas 48 h.
-  Workflow `noticias.yml`: L a V cada hora de 6 a 22 ART, fines de semana cada 3 h.
-  Filtros por tema y medio, marca "NUEVA" desde la última visita (localStorage), evento
-  `noticia-<medio>` en GoatCounter al tocar un titular. El chequeo revisa que esté al día.
-- HECHO: última pestaña **Sobre Macro AR** (`#sobre`, sección `vS`, contenido estático en el
-  HTML): presentación en primera persona (estudiante de Economía Empresarial en UTDT, Técnico
-  en Administración de las Organizaciones, invierte desde los 17; NO está en el Finance
-  Club; NO mencionar el negocio familiar ni IG/X por ahora), por qué hizo Macro AR, para
-  quién es, "lo que me mueve", cómo funciona, fuentes y aclaraciones. Contacto: LinkedIn
-  www.linkedin.com/in/francisco-epherra-8509513b4 y epherrafrancisco@gmail.com (eventos
-  `contacto-linkedin|mail`). Foto: `foto.jpg` (480x480, la foto original sin retocar; Francisco no quiso el fondo azul). Título: solo "Francisco Epherra".
-- El dominio (F) queda para después.
+## Datos y robots (GitHub Actions)
+- `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):
+  - `diario`: `fecha`, `oficial {c,v}`, `blue {c,v}`, `mep {v}`, `ccl {v}`, `mayorista {v}`, `cripto {c,v}`,
+    `tarjeta {c,v}`, `riesgo`, `reservas`, `base`, `badlar`, `tamar`, `pf`, `depusd`, `compras` (BCRA 78), `bopreal`
+    (158), `merval`. Historia desde 27/03/2026 (`compras`, `bopreal`, `merval` desde el 1/1; Ámbito, mayorista y plazo
+    fijo desde el 1/12 del año anterior: `AMBITO_LARGO`, `BCRA_LARGO`).
+  - `mensual`: `mes`, `infl`, `inflYoY`, `expect`; desde 2023-01 `base`, `m2`, `m2t`, `cer`, `leliq`, `pases`, `lefi`,
+    `prim`, `fin`, `expo`, `impo`, `saldo`.
+  - `trimestral`: `trim`, `pib` (corriente, anualizado). Meses sin trimestre: PBI estimado con el CER.
+  - `historico` (mensual desde 2017-01): `ofi`, `blue`, `mep`, `ccl`, `may`, `cer`, `cpi` (CPI-U de EE.UU.: FRED da
+    timeout desde Actions, se usa la API v1 del BLS).
+  - Nunca inventa datos: si una fuente falla, deja lo que había. `estado.json` guarda fuentes OK y con error.
+  - Genera también la imagen diaria (`scripts/diario.html` + `diario.mjs` → `diario/hoy.png`, `diario/texto.txt`).
+- `global.json` + `global_hist.json` (scripts/global.py) y `usa.json` (scripts/usa.py), workflow `global.yml`:
+  L a V cada hora 08:23-19:23 ART, findes cada 6 h y en cada push de esos scripts. Errores en el campo `errores`.
+- `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
+- Chequeo diario del sitio publicado (`chequeo-sitio.yml` + `scripts/chequeo.mjs`, L a V 19:43 ART): si hay problemas
+  graves abre un issue (avisa por mail al dueño) y lo cierra solo cuando se arregla. Revisa también la portada.
+- Secreto del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.). Si falta, la tarjeta de PBI no aparece.
 
-### ESTADO DEL DOMINIO al 08/10/2026 17:25 (retomar desde acá)
-- HECHO: `pulsomacro.com.ar` comprado en NIC (alta 08/10/2026, **vence 08/10/2027**, renovación
-  manual). En NIC todo se hace dentro de TAD: Iniciar trámite → "Registros, renovaciones y otras
-  operaciones" → Mis dominios → DELEGAR. Delegado a `irma.ns.cloudflare.com` y `olof.ns.cloudflare.com`
-  (Delegado: SÍ). Cuenta Cloudflare Free creada (dominio "pending" hasta que propague).
-- HECHO: GitHub (perfil → Settings → Pages) → Add domain pulsomacro.com.ar; TXT
-  `_github-pages-challenge-epherrafrancisco-gif` = `7a75bdf191b7db3c95d35cad8644b3` cargado en
-  Cloudflare (DNS only). Verify falló a las 17:24 porque Cloudflare seguía pending (normal).
-- 09/10/2026 07:15: HECHO Verify (Verified), CNAME en el repo, Custom domain en Settings → Pages,
-  4 registros A (nube gris) y CNAME www → epherrafrancisco-gif.github.io (sin AAAA). Certificado
-  activo. URLs cambiadas a pulsomacro.com.ar en index.html (og, SITE), preview (?v=4), diario,
-  chequeo.mjs y README.
-- 09/10/2026 07:25: Enforce HTTPS tildado, www OK, chequeo del sitio OK contra pulsomacro.com.ar
-  y el link viejo redirige (302). DOMINIO TERMINADO. Falta solo que Francisco lo lance en LinkedIn
-  (Post Inspector para refrescar la vista previa). Renovar el dominio antes del 08/10/2027.
-- Plan viejo: Cloudflare Active → Verify en GitHub → CNAME en el repo + Settings → Pages del repo →
-  registros A/AAAA/CNAME www en Cloudflare (nube gris) → Enforce HTTPS → cambiar URLs → lanzar.
-- Francisco pidió ir DE A UN PASO por mensaje (se pierde con muchas indicaciones juntas) y
-  explicarle lo que está en inglés.
+## Fuentes (verificadas desde Actions)
+- Ámbito `https://mercados.ambito.com//<ruta>/historico-general/DESDE/HASTA` (el rango EXCLUYE HASTA; rutas
+  `dolar/informal`, `dolar/oficial`, `dolarrava/mep`, `dolarrava/cl`, `riesgopais`, `indice/.merv`). En feriados repite
+  MEP/CCL: se filtran con los días de oficial/mayorista. El 13/08/2025 de MEP y CCL da error (queda sin dato).
+- BCRA `https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{id}` (acepta `limit=3000`). IDs: 1 reservas, 5 mayorista,
+  15 base, 7 BADLAR, 44 TAMAR, 12 PF 30d, 108 depósitos USD, 27/28 IPC, 29 REM, 78 compras, 158 BOPREAL, 109 M2,
+  197 M2 transaccional, 30 CER, 155 LELIQ, 152 pases, 196 LEFI.
+- datos.gob.ar: `452.3_RESULTADO_RIO_0_M_18_54`, `452.3_RESULTADO_ERO_0_M_20_25`, `74.3_IET_0_M_16`,
+  `74.3_IIT_0_M_25`, `74.3_ISC_0_M_19`, `166.2_PPIB_0_0_3`.
+- DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (desde el navegador).
+- Mundo: CNBC (`quote.cnbc.com/...restQuote` y `ts-api.cnbc.com/harmony/app/charts/1Y.json`; a veces devuelve historia
+  vacía: se reintenta), Banco Mundial (el FMI da 403), BIS WS_CBPOL, Frankfurter, CoinGecko, RSS (El País, DW,
+  Expansión, France 24, Euronews, BBC Mundo filtrado). Yahoo da 429 y Stooq no responde.
+- EE.UU.: Tesoro (deuda y curva), BLS v1 sin clave (máximo cada 12 h; series nacionales, rubros `r_*`, JOLTS y 51
+  estados), BIS (Fed), CNBC, DOL `oui.doleta.gov/unemploy/csv/ar539.csv` (c3 iniciales, c8 continuos, suma de estados,
+  sin desestacionalizar), Freddie Mac `PMMS_history.csv`, Nasdaq `api.nasdaq.com/api/calendar/earnings`, BEA (con clave).
+- Sin fuente gratuita: deuda del Tesoro en pesos (LECAP/BONCAP), historia por acción argentina, liquidación del agro.
 
-### Plan original: jueves 08/10/2026, dominio `pulsomacro.com.ar`
-El sitio está TERMINADO para Francisco (02/10/2026) y NO se lanza hasta tener el dominio.
-Él trae la clave fiscal de ARCA (se blanquea desde el home banking). Pasos, guiándolo uno
-por uno: (1) verificar en nic.ar que `pulsomacro.com.ar` esté libre y comprarlo (alta $8.500,
-renovación anual $8.500 según nic.ar al 02/10/2026; que active renovación o se agende el
-vencimiento); (2) cuenta gratis en Cloudflare, agregar el dominio, copiar los 2 nameservers
-y cargarlos en NIC.ar → Delegaciones; (3) en Cloudflare: A @ → 185.199.108.153,
-185.199.109.153, 185.199.110.153, 185.199.111.153 y CNAME www → epherrafrancisco-gif.github.io,
-todos con nube GRIS (DNS only); verificar las IPs en la doc de GitHub Pages ese día;
-(4) ORDEN CORREGIDO según la doc de GitHub (08/10/2026): con Cloudflare ya activo, primero
-verificar el dominio en GitHub (foto de perfil → Settings → Pages → Add a domain → registro
-TXT `_github-pages-challenge-epherrafrancisco-gif` en Cloudflare → Verify), después agregar
-el dominio en el repo (archivo `CNAME` + Settings → Pages → Custom domain) y recién ahí los
-registros A/AAAA/CNAME en Cloudflare (A: .108/.109/.110/.111.153; AAAA: 2606:50c0:8000::153,
-8001, 8002, 8003; CNAME www → epherrafrancisco-gif.github.io; sin comodines `*`). Esperar el
-certificado y activar Enforce HTTPS. Como el sitio no está lanzado, que el link github.io
-redirija unos minutos a un dominio que todavía no anda no es problema; (5) cambiar las menciones de la URL (index.html og:url y
-SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y subir
-`?v=` de preview.png; (6) verificar que el link viejo redirija; (7) recién ahí lanzarlo.
+## Entorno de Claude
+- La terminal no tiene internet salvo GitHub: las fuentes se miran con WebFetch y la prueba real es correr el workflow
+  (un push a los scripts dispara `global.yml`). `env -u GH_TOKEN gh api repos/...` sirve para leer (repo público).
+- Para probar la página: servidor local en el repo y Playwright con Chromium de `/opt/pw-browsers`; d3/topojson y
+  fuentes no cargan desde la red: servirlos locales con `page.route`.
 
-## Cinta de cotizaciones (11/10/2026, HECHO)
-- Arriba de todo (`#tape`, `renderTape()`): dólares de `DOL` (cierre de data.json + DolarApi en vivo vía
-  `cardSeries`), brecha CCL, riesgo país y S&P Merval, con variación vs cierre anterior. Corre en loop
-  (contenido duplicado, `--dur` según ancho), se pausa con el mouse, parpadea verde/rojo al cambiar un valor.
-  Se refresca en cada `render()` y en cada `poll()` en vivo. Pedido de Francisco: estilo Wall Street.
-
-## Pestaña Global y segunda cinta (11/10/2026)
-- Pestaña **Global** (`#global`, sección `vG`, `renderGlobal()`), entre Mercado y Noticias. Globo 3D en canvas con
-  d3 7.8.5 + topojson 3.0.2 cargados de cdnjs SOLO al abrir la pestaña (`gInit`); mapa `world.json` (world-atlas
-  110m con ids ISO3 y `properties.a2`; nombres en español con `Intl.DisplayNames`). Capas: inflación, crecimiento,
-  tasa, deuda/PBI, desempleo, exportaciones argentinas (arcos animados). En pantallas < 560 px, mapa plano.
-  Ficha del país vs Argentina, bolsas abiertas/cerradas calculadas en el navegador (`GEX`, sin feriados),
-  bancos centrales (`BC` en `gListas`) y commodities. La animación se frena fuera de la pestaña.
-- Segunda cinta (`#tape2`, `renderTape2`, corre al revés): `global.json → mercados` (índices, tasa 10 años,
-  monedas, commodities, bitcoin).
-- Datos: `scripts/global.py` → `global.json` (`paises` por ISO3: infl, crec, deuda, desemp, pbi, pbipc del FMI
-  DataMapper año en curso; tasa, tasa_al, tasa_prev, tasa_cambio del BIS WS_CBPOL diario, zona euro XM a cada
-  miembro; `mercados` de Yahoo con Stooq de respaldo; `expo` de datos.gob.ar 357.1, anual, solo 10 destinos;
-  `errores`). Workflow `global.yml`: L a V cada hora 08:23-19:23 ART, findes cada 6 h, y en cada push del script.
-- gh en el entorno de Claude: `env -u GH_TOKEN gh api repos/...` funciona para leer (repo público).
-- 11/10/2026: Francisco pidió SACAR las capas de exportaciones por destino (INDEC solo tenía 2024) y deuda/PBI
-  (Banco Mundial 2024, pocos países): "no quiero que haya cosas con datos viejos". No volver a ponerlas con datos
-  atrasados. Fuentes reales hoy: el FMI devuelve 403 desde Actions, así que infl/crec/desemp/pbi/pbipc salen del
-  Banco Mundial (último año, 2025); inflación de Argentina = `inflYoY` de data.json. Mercados: CNBC (índices,
-  tasa 10 años, DXY, commodities), BCE/Frankfurter (monedas), CoinGecko (bitcoin); Yahoo da 429 y Stooq no responde.
-- 11/10/2026 (ampliación de Global): `global.json` suma `bolsas` (índice principal de cada bolsa de `GEX`, CNBC;
-  JSE y Tadawul prueban varios símbolos), `acciones` (grupos arg/usa/bra/eur/asia, todas tickers de Wall Street en
-  US$, lista `ACCIONES` en global.py, nombres en `GNOM` de index.html), `termo` (VIX, bonos EE.UU. 2/10/30) y
-  `monedas` (ARS, BRL, CLP, MXN, COP, PEN, UYU, CNY, EUR por US$). `global_hist.json`: cierres diarios ~2 años
-  (CNBC `ts-api.cnbc.com/harmony/app/charts/1Y.json`, se renueva cada 3 h; bitcoin de CoinGecko; Nasdaq y Dow no
-  tienen historia). Pantalla (`gExtras`): bolsas con índice y variación (y el punto del globo verde/rojo según el
-  día), "Argentinas en Wall Street" y "Líderes del mundo" (mapas de calor como el del Merval, `heatBg`), gráficos
-  con rango 1M-2A, "¿Qué rindió más en el año?" (`hBars`; Merval en US$ CCL con data.json), monedas de la región
-  (variación en el año) y termómetro (VIX, curva 10-2).
-- 11/10/2026: Global tiene selector **Mundo / Estados Unidos** (`#gVista`, `G.vista`, se recuerda en localStorage
-  `global-vista`; `#gMundo` y `#gUsa`). EE.UU. (`renderUsa`): mapa de desempleo por estado (BLS LAUS, canvas sin
-  animación decorativa: Francisco pidió sacar barrido y pulsos; `usa-estados.json` = us-atlas states-albers-10m),
-  reloj de la deuda (Tesoro, avanza al ritmo promedio de ~40 días hábiles), cuenta regresiva a la próxima reunión
-  de la Fed (lista `FOMC` en usa.py, actualizar cuando la Fed publique 2028), 6 indicadores (IPC, núcleo,
-  desempleo, empleos creados, salarios, tasa Fed), Fed vs inflación 5 años, curva del Tesoro hoy vs hace un año,
-  empleos por mes, sectores (fondos XL*), 7 magníficas con valor de mercado y decisiones de la Fed (tasa del BIS
-  antes y después de cada reunión). Datos: `scripts/usa.py` → `usa.json` (paso del workflow global.yml; BLS v1 sin
-  clave como máximo cada 12 h por su límite diario). Sin PBI: el BEA pide clave.
-
-## Otras cosas del proyecto
-- El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;
-  ya no se usa. Las tareas programadas de Claude están desactivadas.
-- El tracker del QQQ de Francisco es privado (artifact de Claude, no va a GitHub)
-  y su tarea automática también está desactivada.
-- Ideas futuras ya conversadas: dólar ajustado por inflación ("a precios de hoy"),
-  calendario de publicaciones (INDEC/BCRA), inflación semanal de alimentos propia,
-  datos descargables, newsletter, gráfico diario para X/IG.
-
-## Portada Argentina | Global y dos globos (11/10/2026, HECHO)
-- Sin hash se abre la **portada** (`#vP`, `renderPortada()`): cintas arriba, los 7 dólares (`#quotes`, `renderQuotes()`,
-  ahora fuera de la pestaña Dólares y visibles en TODAS las vistas: requisito no negociable de Francisco: "deben verse
-  ni bien se ingresa, sin tocar nada"), y dos mitades: Argentina (riesgo, reservas, Merval, inflación con mini gráficos +
-  "terminal" con brecha, canje, compras del BCRA en el año, plazo fijo, tarjeta/oficial) y Global (globo de puntos con
-  las bolsas). En celular se apilan.
-- Selector **Argentina | Global** en el encabezado (`#modo`); el logo (`#brandH`) vuelve a la portada. La barra de
-  pestañas (`#bar`, `#tabsNav a[data-g]`) muestra solo las del grupo: arg = Dólares…Calculadoras; glo = Mundo
-  (`#global`) y Estados Unidos (`#eeuu`, nuevo hash; `setTab('eeuu')` pone `G.vista='usa'`). El viejo selector
-  `#gVista` quedó oculto. Los links directos siguen andando. "Sobre Pulso Macro" es un link en el encabezado, dentro de `#modo` (`#modoS`), y también en el pie: Francisco no quiere que quede escondido.
-- Global › Mundo: dos globos lado a lado (`.gtop.duo`): el de países de siempre y **Mundo hoy** (`#dCv`, capas Bolsas /
-  Monedas en `#dLay`). Globos de puntos: `dgStart/dgDraw/dgDots/dgItems` (puntos cada 1,6° precalculados una vez,
-  país por punto con `d3.geoContains`; `DG_EX` país→bolsa, `DG_CUR` país→moneda; giran al revés del otro globo).
-  La ficha del país quedó debajo, a todo el ancho. El mapa plano del globo de países ahora depende de `innerWidth<560`.
-- El chequeo diario también revisa que la portada muestre los dólares.
-
-## Bloque Mundo + EE.UU. + portada simple (11/10/2026, HECHO)
-- Portada simple: "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por sección (`SECC` + `ICO` en
-  index.html: nombre claro, ícono y una línea; los hashes no cambian), "Hoy en números" (`#pHoy`) y globo de puntos chico
-  con resumen (`#pTerm2`). Adentro: migas (`#crumb`), pestañas como píldoras con ícono (`.tabs.pills`, en celular grilla
-  de 2 columnas), recuadro "qué es esta sección" (`#here`). La barra ya no es sticky. Los dólares siguen arriba siempre.
-- Tercera cinta (`#tape3`, `renderTape3`, cada 30 s): reloj de mercados (abierta/cerrada y cuánto falta, `gEstado`,
-  `gProx`); en celular solo las abiertas. Tarjeta "Reloj de mercados" 24 h en hora argentina (`renderReloj`, SVG).
-- Mundo (`gMundoExtra`): ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`: fechas
-  de anuncio cargadas a mano hasta dic-2027; Banxico solo 2026: agregar 2027 cuando lo publique en diciembre), bonos a
-  10 años vs EE.UU. (`global.json → bonos`, CNBC `BONOS` en global.py; Argentina = riesgo país), commodities completos
-  (`commodities`, 9, con variación en el año y clic al gráfico), cripto top 10 (`cripto`, CoinGecko markets), noticias del
-  mundo (`noticias`, RSS: El País, DW, Expansión, France 24, Euronews, BBC Mundo filtrado). Globo "Mundo hoy": capas
-  bolsas hoy, monedas hoy, monedas en el año, bonos a 10 años. `global_hist.json` ahora guarda commodities en la unidad
-  mostrada (`conv: true`) y suma maíz, trigo, WTI, gas, plata y monedas PEN/UYU/CNY/EUR. CNBC a veces devuelve
-  historia vacía: se reintenta.
-- EE.UU. (`usaExtra`): semáforo de recesión (Sahm con desempleo BLS, curva 10-2, VIX, pedidos de desempleo vs un año),
-  inflación por rubro (BLS `r_*`), próximos datos (`CAL_US`, fechas BLS/BEA cargadas a mano hasta 2027; PBI/PCE solo
-  hasta dic-2026: cargar 2027 cuando el BEA lo publique), mapa de calor de 50 empresas por sector (`HEAT50` en usa.py),
-  mercado laboral (DOL ar539.csv, suma de estados c3 = pedidos iniciales, c8 = continuos, sin desestacionalizar; JOLTS
-  del BLS), tasa hipotecaria 30 años (Freddie Mac PMMS_history.csv), próximos balances (api.nasdaq.com, empresas
-  > US$ 50 mil M, 14 días) y PBI (BEA, SOLO si existe el secreto `BEA_KEY` en el repo; si no, la tarjeta no aparece).
-  DOL y Nasdaq se renuevan cada 12 h; BLS cada 12 h (fuerza si falta `jolts`).
-- HECHO 11/10/2026: clave gratis del BEA cargada como secreto `BEA_KEY` (cuenta epherrafrancisco@gmail.com); el PBI
-  de EE.UU. ya llega (primera corrida OK, último dato 2026Q2). Si deja de andar, revisar `errores` de usa.json.
+## Decisiones del dueño (no volver a proponer)
+- Descartados: calendario de vencimientos de deuda, "BSTEP", balanza cambiaria, liquidación del agro, gráfico histórico
+  por acción, deuda del Tesoro en pesos, newsletter, inflación semanal de alimentos propia, "el día en 30 segundos",
+  dólar contra la banda cambiaria, curva de tasas en pesos, capas del globo con datos viejos (exportaciones por destino,
+  deuda/PBI), sección China, rediseño "sala de situación".
