@@ -346,6 +346,15 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   atrasados. Fuentes reales hoy: el FMI devuelve 403 desde Actions, así que infl/crec/desemp/pbi/pbipc salen del
   Banco Mundial (último año, 2025); inflación de Argentina = `inflYoY` de data.json. Mercados: CNBC (índices,
   tasa 10 años, DXY, commodities), BCE/Frankfurter (monedas), CoinGecko (bitcoin); Yahoo da 429 y Stooq no responde.
+- 11/10/2026 (ampliación de Global): `global.json` suma `bolsas` (índice principal de cada bolsa de `GEX`, CNBC;
+  JSE y Tadawul prueban varios símbolos), `acciones` (grupos arg/usa/bra/eur/asia, todas tickers de Wall Street en
+  US$, lista `ACCIONES` en global.py, nombres en `GNOM` de index.html), `termo` (VIX, bonos EE.UU. 2/10/30) y
+  `monedas` (ARS, BRL, CLP, MXN, COP, PEN, UYU, CNY, EUR por US$). `global_hist.json`: cierres diarios ~2 años
+  (CNBC `ts-api.cnbc.com/harmony/app/charts/1Y.json`, se renueva cada 3 h; bitcoin de CoinGecko; Nasdaq y Dow no
+  tienen historia). Pantalla (`gExtras`): bolsas con índice y variación (y el punto del globo verde/rojo según el
+  día), "Argentinas en Wall Street" y "Líderes del mundo" (mapas de calor como el del Merval, `heatBg`), gráficos
+  con rango 1M-2A, "¿Qué rindió más en el año?" (`hBars`; Merval en US$ CCL con data.json), monedas de la región
+  (variación en el año) y termómetro (VIX, curva 10-2).
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;

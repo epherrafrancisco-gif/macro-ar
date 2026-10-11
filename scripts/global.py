@@ -282,8 +282,8 @@ def cnbc_raw(symbols):
 # Índice principal de cada bolsa (clave de la bolsa en la página → símbolo CNBC, nombre del índice)
 BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": (".BVSP", "Bovespa"),
           "BMV": (".MXX", "IPC México"), "TSX": (".GSPTSE", "S&P/TSX"), "LSE": (".FTSE", "FTSE 100"),
-          "Xetra": (".GDAXI", "DAX"), "Euronext": (".FCHI", "CAC 40"), "JSE": (".JALSH", "JSE All Share"),
-          "Tadawul": (".TASI", "Tadawul"), "NSE": (".NSEI", "Nifty 50"), "SSE": (".SSEC", "Shanghái"),
+          "Xetra": (".GDAXI", "DAX"), "Euronext": (".FCHI", "CAC 40"), "JSE": ((".JALSH", ".JTOPI", ".J203"), "JSE"),
+          "Tadawul": ((".TASI", "TASI", ".TASI.SE", ".TASIX"), "Tadawul"), "NSE": (".NSEI", "Nifty 50"), "SSE": (".SSEC", "Shanghái"),
           "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200")}
 # Acciones por grupo (todas cotizan en Wall Street, en US$)
 ACCIONES = {
@@ -305,9 +305,15 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
 
 
 def extras():
-    syms = [v[0] for v in BOLSAS.values()] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values()) + list(MONEDAS.values())
+    alt = lambda s: s if isinstance(s, tuple) else (s,)
+    syms = [x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values()) + list(MONEDAS.values())
     q = cnbc_raw(syms)
-    bolsas = {k: {"idx": n, **q[s]} for k, (s, n) in BOLSAS.items() if s in q}
+    bolsas = {}
+    for k, (s, n) in BOLSAS.items():
+        varios = isinstance(s, tuple)
+        s = next((x for x in alt(s) if x in q), None)
+        if s:
+            bolsas[k] = {"idx": q[s]["n"] if varios else n, **q[s]}
     acciones = {g: [{"s": x, **q[x]} for x in l if x in q] for g, l in ACCIONES.items()}
     termo = {k: q[s] for k, s in TERMO.items() if s in q}
     monedas = {k: q[s] for k, s in MONEDAS.items() if s in q}
