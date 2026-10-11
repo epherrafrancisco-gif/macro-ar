@@ -390,25 +390,27 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   La ficha del país quedó debajo, a todo el ancho. El mapa plano del globo de países ahora depende de `innerWidth<560`.
 - El chequeo diario también revisa que la portada muestre los dólares.
 
-## PRÓXIMO BLOQUE APROBADO (11/10/2026, Francisco: "me gustó todo", hacer exactamente esto)
-Mundo: (1) reloj de mercados 24 h; (2) bonos 10 años del mundo y diferencia contra EE.UU. (CNBC), con Argentina al lado;
-(3) agenda de bancos centrales (Fed, BCE, BoE, BoJ, Copom, Banxico, Chile) con cuenta regresiva, carga manual anual;
-(4) commodities completos (soja, maíz, trigo, petróleo, gas, oro, plata, cobre) con gráfico y variación en el año;
-(5) cripto top 10 (CoinGecko); (6) "¿Dónde está Argentina?": rankings con Argentina marcada (inflación, crecimiento,
-tasa, bolsa en US$, moneda en el año); (7) más capas del globo "Mundo hoy" (bonos 10 años, monedas en el año);
-(8) noticias del mundo (RSS en español, a verificar).
-EE.UU.: (1) semáforo de recesión (regla de Sahm con desempleo BLS, curva 10-2, VIX); (2) inflación por rubro (BLS);
-(3) calendario de datos (IPC, empleo, PBI) con cuenta regresiva; (4) mapa de calor top 50 del S&P 500 por sector (CNBC);
-(5) temporada de balances (a verificar); (6) PBI con clave gratis del BEA (guiar a Francisco a sacarla, paso a paso);
-(7) vacantes JOLTS y pedidos semanales de desempleo (a verificar); (8) tasa hipotecaria 30 años (a verificar).
-Extra: TERCERA cinta arriba con el reloj de mercados 24 h (cada bolsa: abierta/cerrada y cuánto falta), más finita y
-lenta que las otras; en celular más chica o solo las abiertas. Respetar: nada con datos viejos.
-- APROBADO también (11/10/2026, hacer en el mismo bloque, cuando Francisco diga "empezá"): PORTADA MÁS SIMPLE para el
-  usuario común (maqueta aprobada: artifact "Pulso Macro · Portada simple", scratchpad simple.html). "¿Qué querés ver?"
-  con dos puertas: Argentina (bandera, borde celeste #74acdf) y El mundo (globo, borde #3fd0c0); cada una con tarjetas
-  grandes por sección (ícono + nombre claro + una línea de qué hay). Nombres visibles: Dólares, "Inflación y reservas"
-  (Macro), "Tasas y pesos" (Dinero), "Cuentas del Estado" (Fiscal), "Bolsa y bonos" (Mercado), Noticias, Calculadoras;
-  Mundo, Estados Unidos (los hashes NO cambian). Abajo, chico: "Hoy en números" (riesgo, inflación, reservas, Merval)
-  y en El mundo el globo de puntos + resumen en criollo. Selector del encabezado: "Argentina | El mundo" con íconos.
-  Adentro: migas "← Inicio / Argentina", pestañas como botones-píldora con ícono (en celular, grilla de 2 columnas,
-  sin scroll lateral) y recuadro "qué es esta sección". Los dólares siguen arriba de todo, siempre.
+## Bloque Mundo + EE.UU. + portada simple (11/10/2026, HECHO)
+- Portada simple: "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por sección (`SECC` + `ICO` en
+  index.html: nombre claro, ícono y una línea; los hashes no cambian), "Hoy en números" (`#pHoy`) y globo de puntos chico
+  con resumen (`#pTerm2`). Adentro: migas (`#crumb`), pestañas como píldoras con ícono (`.tabs.pills`, en celular grilla
+  de 2 columnas), recuadro "qué es esta sección" (`#here`). La barra ya no es sticky. Los dólares siguen arriba siempre.
+- Tercera cinta (`#tape3`, `renderTape3`, cada 30 s): reloj de mercados (abierta/cerrada y cuánto falta, `gEstado`,
+  `gProx`); en celular solo las abiertas. Tarjeta "Reloj de mercados" 24 h en hora argentina (`renderReloj`, SVG).
+- Mundo (`gMundoExtra`): ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`: fechas
+  de anuncio cargadas a mano hasta dic-2027; Banxico solo 2026: agregar 2027 cuando lo publique en diciembre), bonos a
+  10 años vs EE.UU. (`global.json → bonos`, CNBC `BONOS` en global.py; Argentina = riesgo país), commodities completos
+  (`commodities`, 9, con variación en el año y clic al gráfico), cripto top 10 (`cripto`, CoinGecko markets), noticias del
+  mundo (`noticias`, RSS: El País, DW, Expansión, France 24, Euronews, BBC Mundo filtrado). Globo "Mundo hoy": capas
+  bolsas hoy, monedas hoy, monedas en el año, bonos a 10 años. `global_hist.json` ahora guarda commodities en la unidad
+  mostrada (`conv: true`) y suma maíz, trigo, WTI, gas, plata y monedas PEN/UYU/CNY/EUR. CNBC a veces devuelve
+  historia vacía: se reintenta.
+- EE.UU. (`usaExtra`): semáforo de recesión (Sahm con desempleo BLS, curva 10-2, VIX, pedidos de desempleo vs un año),
+  inflación por rubro (BLS `r_*`), próximos datos (`CAL_US`, fechas BLS/BEA cargadas a mano hasta 2027; PBI/PCE solo
+  hasta dic-2026: cargar 2027 cuando el BEA lo publique), mapa de calor de 50 empresas por sector (`HEAT50` en usa.py),
+  mercado laboral (DOL ar539.csv, suma de estados c3 = pedidos iniciales, c8 = continuos, sin desestacionalizar; JOLTS
+  del BLS), tasa hipotecaria 30 años (Freddie Mac PMMS_history.csv), próximos balances (api.nasdaq.com, empresas
+  > US$ 50 mil M, 14 días) y PBI (BEA, SOLO si existe el secreto `BEA_KEY` en el repo; si no, la tarjeta no aparece).
+  DOL y Nasdaq se renuevan cada 12 h; BLS cada 12 h (fuerza si falta `jolts`).
+- PENDIENTE: que Francisco saque la clave gratis del BEA (apps.bea.gov/API/signup) y la cargue como secreto BEA_KEY
+  (repo → Settings → Secrets and variables → Actions → New repository secret). Guiarlo de a un paso.

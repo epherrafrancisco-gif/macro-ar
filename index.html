@@ -297,6 +297,8 @@ footer a{color:var(--ink2)}
 .reloj{width:100%;display:block;font-family:var(--mono)}
 .reloj text{font-size:11px;fill:var(--muted)}.reloj .nm{fill:var(--ink);font-family:var(--sans);font-size:12.5px;font-weight:600}.reloj .st{font-size:11px}
 .rlj-wrap{overflow-x:auto}.rlj-wrap svg{min-width:640px}
+.gview>*,.gview .card,.gview .card>*{min-width:0}.gview .tw{overflow-x:auto}
+@media (max-width:520px){.gtbl th:nth-child(4),.gtbl td:nth-child(4),.gtbl th:nth-child(6),.gtbl td:nth-child(6){display:none}.gtbl td,.gtbl th{padding:8px 5px}}
 .gtbl{width:100%;border-collapse:collapse;font-size:13.5px}.gtbl th{font:600 11px var(--mono);letter-spacing:.05em;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
 .gtbl th:first-child,.gtbl td:first-child{text-align:left}.gtbl td{padding:8px;border-bottom:1px solid var(--grid);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 .gtbl td:first-child{font-family:var(--sans)}.gtbl td small{display:block;color:var(--muted);font-size:11.5px;font-family:var(--sans)}.gtbl .up{color:var(--pos)}.gtbl .dn{color:var(--neg)}.gtbl tr.hl td{background:color-mix(in srgb,var(--accent) 12%,transparent)}
@@ -2170,7 +2172,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       ${p ? `<div class="tw"><table class="gcmp"><thead><tr><th>Indicador</th><th>${esc(name.length>14?name.slice(0,13)+'…':name)}</th>${yo?'':'<th>Argentina</th>'}</tr></thead><tbody>${rows.map(([n,k,u,d])=>`<tr><td>${n}</td><td>${p[k]==null?'—':nf(p[k],d)+u}</td>${yo?'':`<td class="ar">${a[k]==null?'—':nf(a[k],d)+u}</td>`}</tr>`).join('')}</tbody></table></div>${rk}` : ''}`;
   }
   function gListas(){
-    $('gBolsas').innerHTML = GEX.map(e=>{ const s = gEx(e), b = glob?.bolsas?.[e[0].split(' ')[0]], p = gpc(b);
+    $('gBolsas').innerHTML = GEX.map(e=>{ const s = gEstado(e), b = glob?.bolsas?.[e[0].split(' ')[0]], p = gpc(b);
       return `<div><span>${e[0]} <span class="gst ${s.open?'on':'off'}">${s.open?'ABIERTA':'CERRADA'}</span><small>${e[1]} · ${s.hora} h · ${s.txt}</small></span><span>${b ? `${esc(b.idx)}<small>${nf(b.v, b.v<1000?2:0)}</small>` : '<small>—</small>'}</span><span class="${p==null?'geq':p>0?'gup':p<0?'gdn':'geq'}">${p==null?'':(p>0?'▲ ':p<0?'▼ ':'')+sg(p,2)+'%'}${b ? `<small>${s.open?'en vivo':'último cierre'}</small>` : ''}</span></div>`; }).join('');
     const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía']];
     const ps = glob?.paises || {};
