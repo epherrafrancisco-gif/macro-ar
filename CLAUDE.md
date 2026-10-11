@@ -403,3 +403,12 @@ EE.UU.: (1) semáforo de recesión (regla de Sahm con desempleo BLS, curva 10-2,
 (7) vacantes JOLTS y pedidos semanales de desempleo (a verificar); (8) tasa hipotecaria 30 años (a verificar).
 Extra: TERCERA cinta arriba con el reloj de mercados 24 h (cada bolsa: abierta/cerrada y cuánto falta), más finita y
 lenta que las otras; en celular más chica o solo las abiertas. Respetar: nada con datos viejos.
+- APROBADO también (11/10/2026, hacer en el mismo bloque, cuando Francisco diga "empezá"): PORTADA MÁS SIMPLE para el
+  usuario común (maqueta aprobada: artifact "Pulso Macro · Portada simple", scratchpad simple.html). "¿Qué querés ver?"
+  con dos puertas: Argentina (bandera, borde celeste #74acdf) y El mundo (globo, borde #3fd0c0); cada una con tarjetas
+  grandes por sección (ícono + nombre claro + una línea de qué hay). Nombres visibles: Dólares, "Inflación y reservas"
+  (Macro), "Tasas y pesos" (Dinero), "Cuentas del Estado" (Fiscal), "Bolsa y bonos" (Mercado), Noticias, Calculadoras;
+  Mundo, Estados Unidos (los hashes NO cambian). Abajo, chico: "Hoy en números" (riesgo, inflación, reservas, Merval)
+  y en El mundo el globo de puntos + resumen en criollo. Selector del encabezado: "Argentina | El mundo" con íconos.
+  Adentro: migas "← Inicio / Argentina", pestañas como botones-píldora con ícono (en celular, grilla de 2 columnas,
+  sin scroll lateral) y recuadro "qué es esta sección". Los dólares siguen arriba de todo, siempre.
