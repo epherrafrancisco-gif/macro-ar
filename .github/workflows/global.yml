@@ -37,6 +37,8 @@ jobs:
 
       - name: Traer datos de Estados Unidos
         run: python scripts/usa.py
+        env:
+          BEA_KEY: ${{ secrets.BEA_KEY }}
         continue-on-error: true
 
       - name: Guardar cambios

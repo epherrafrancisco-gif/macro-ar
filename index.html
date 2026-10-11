@@ -312,6 +312,14 @@ footer a{color:var(--ink2)}
 .umini{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;font-size:12.5px;color:var(--muted)}.umini b{display:block;font:500 14.5px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}.umini b.up{color:var(--pos)}.umini b.dn{color:var(--neg)}
 .ucd{display:flex;gap:8px}.ucd div{flex:1;background:var(--sunk);border-radius:8px;padding:8px 0;text-align:center}.ucd b{display:block;font:600 24px var(--mono);font-variant-numeric:tabular-nums}.ucd span{font:11px var(--mono);color:var(--muted)}
 .ukpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.semaf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.semaf>div{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.semaf .luz{display:flex;align-items:center;gap:8px;font-weight:600}.semaf .luz i{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:0 0 10px currentColor}
+.semaf .v{font:500 18px var(--mono)}.semaf small{color:var(--muted);font-size:12px;line-height:1.4}
+.semaf .verde{color:var(--pos)}.semaf .amarillo{color:#e8b14a}.semaf .rojo{color:var(--neg)}.semaf .gris{color:var(--muted)}
+.veredicto{padding:12px 16px;border-radius:10px;background:var(--sunk);font-size:15px}.veredicto b{font-weight:700}
+.hsec{display:grid;gap:12px}.hsec h3{margin:0 0 -4px;font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+@media (max-width:900px){.semaf{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .heat>div{border:1px solid var(--line);border-radius:8px;padding:8px 9px;display:grid;gap:1px;min-width:0}
 @media (max-width:900px){.uhero{grid-template-columns:minmax(0,1fr)}.ukpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){.ukpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -701,6 +709,30 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         </div>
       </div>
       <div class="ukpis" id="uKpis"></div>
+      <div class="card">
+        <div class="head"><h2>Semáforo de recesión</h2><span class="note">¿Se viene una recesión en EE.UU.?</span></div>
+        <p class="sub">Cuatro señales que en el pasado se encendieron antes de las recesiones. Ninguna es infalible: miradas juntas dan una idea del clima.</p>
+        <div class="semaf" id="uSem"></div>
+        <div class="veredicto" id="uVer"></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación por rubro</h2><span class="note" id="uRubN"></span></div><p class="sub">Cuánto subió cada rubro en los últimos 12 meses. La línea punteada es la inflación general.</p><div class="chart" id="chURub"></div></div>
+        <div class="card"><div class="head"><h2>Próximos datos importantes</h2><span class="note">Hora argentina</span></div><p class="sub">Cuándo salen los datos que mueven a los mercados del mundo.</p><div class="agenda" id="uCal"></div></div>
+      </div>
+      <div class="card">
+        <div class="head"><h2>Las 50 empresas más grandes del S&amp;P 500</h2><span class="note" id="uHeatN"></span></div>
+        <div class="stats" id="uHeatSt"></div>
+        <div class="hsec" id="uHeat"></div>
+        <p class="note">Color según la variación del día: verde sube, rojo baja. Con demora (CNBC).</p>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Mercado laboral</h2><span class="note" id="uLabN"></span></div><div class="stats" id="uLabSt"></div><div class="chart" id="chUClaims"></div><p class="note">Gráfico: pedidos iniciales de seguro de desempleo por semana (promedio de 4 semanas, miles, sin desestacionalizar). Suben cuando las empresas despiden más. Fuentes: Departamento de Trabajo y BLS (vacantes, encuesta JOLTS).</p></div>
+        <div class="card"><div class="head"><h2>Tasa hipotecaria a 30 años</h2><span class="note" id="uHipN"></span></div><div class="stats" id="uHipSt"></div><div class="chart" id="chUHip"></div><p class="note">Lo que cobra un banco por un crédito para comprar una casa a 30 años, tasa fija. Encuesta semanal de Freddie Mac.</p></div>
+      </div>
+      <div class="grid2" id="uBalPbi">
+        <div class="card"><div class="head"><h2>Próximos balances</h2><span class="note">Empresas de más de US$ 50 mil millones</span></div><p class="sub">Cuándo presentan sus resultados las empresas grandes de Wall Street. "Ganancia esperada" es lo que esperan los analistas por acción.</p><div class="agenda" id="uBal"></div></div>
+        <div class="card" id="uPbiCard" hidden><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="uPbiN"></span></div><div class="chart" id="chUPbi"></div><p class="note">Variación del PBI real de cada trimestre, anualizada (como se informa en EE.UU.). Fuente: BEA.</p></div>
+      </div>
       <div class="grid2">
         <div class="card"><div class="head"><h2>Tasa de la Fed contra inflación</h2><span class="note">Mensual, últimos 5 años</span></div><div class="chart" id="chUFed"></div></div>
         <div class="card"><div class="head"><h2>Curva de tasas del Tesoro</h2><span class="note">De 1 mes a 30 años</span></div><div class="chart" id="chUCurva"></div><div class="legend"><span><span class="sw" style="background:var(--accent)"></span>Hoy</span><span><span class="sw" style="background:var(--muted)"></span>Hace un año</span></div><p class="note" id="uCurvaN"></p></div>
@@ -2473,6 +2505,76 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const P = usa?.fed?.proxima; if(P){ let s = Math.max(0, (Date.parse(P.fin+'T18:00:00Z') - Date.now())/1000);
       $('uCd').innerHTML = [[Math.floor(s/86400),'días'],[Math.floor(s%86400/3600),'horas'],[Math.floor(s%3600/60),'min'],[Math.floor(s%60),'seg']].map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`).join(''); }
   }
+  // ---- EE.UU.: semáforo, rubros, calendario, mapa de 50, laboral, hipotecaria, balances y PBI ----
+  const CAL_US = [
+    ...['2026-11-10','2026-12-10','2027-01-13','2027-02-11','2027-03-10','2027-04-13','2027-05-12','2027-06-10','2027-07-14','2027-08-11','2027-09-14','2027-10-14','2027-11-10','2027-12-10'].map(f=>[f,'Inflación (IPC)','BLS','08:30']),
+    ...['2026-11-06','2026-12-04','2027-01-08','2027-02-05','2027-03-05','2027-04-02','2027-05-07','2027-06-04','2027-07-02','2027-08-06','2027-09-03','2027-10-08','2027-11-05','2027-12-03'].map(f=>[f,'Empleo y desempleo','BLS','08:30']),
+    ['2026-10-29','PBI del 3.er trimestre (adelanto) e inflación PCE','BEA','08:30'],['2026-11-25','PBI del 3.er trimestre (2.ª estimación) e inflación PCE','BEA','08:30'],['2026-12-23','PBI del 3.er trimestre (final) e inflación PCE','BEA','08:30'],
+    ...BCAL[0][2].map(f=>[f,'Decisión de tasa de la Fed','Reserva Federal','14:00'])];
+  const HN = {AAPL:'Apple',MSFT:'Microsoft',NVDA:'Nvidia',AVGO:'Broadcom',ORCL:'Oracle',CRM:'Salesforce',AMD:'AMD',ADBE:'Adobe',CSCO:'Cisco',ACN:'Accenture',IBM:'IBM',QCOM:'Qualcomm',INTU:'Intuit',TXN:'Texas Instruments',NOW:'ServiceNow',
+    GOOGL:'Alphabet (Google)',META:'Meta',NFLX:'Netflix',DIS:'Disney',VZ:'Verizon',AMZN:'Amazon',TSLA:'Tesla',COST:'Costco',HD:'Home Depot',WMT:'Walmart',PG:'Procter & Gamble',KO:'Coca-Cola',PEP:'PepsiCo',MCD:"McDonald's",PM:'Philip Morris',
+    'BRK.B':'Berkshire Hathaway',JPM:'JPMorgan',V:'Visa',MA:'Mastercard',BAC:'Bank of America',WFC:'Wells Fargo',GS:'Goldman Sachs',LLY:'Eli Lilly',UNH:'UnitedHealth',JNJ:'Johnson & Johnson',ABBV:'AbbVie',MRK:'Merck',TMO:'Thermo Fisher',ABT:'Abbott',AMGN:'Amgen',XOM:'ExxonMobil',CVX:'Chevron',GE:'GE Aerospace',CAT:'Caterpillar',LIN:'Linde'};
+  const etAr = (f, hhmm) => { const d = new Date(f+'T12:00:00Z'), h = +new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',hour12:false}).format(d), off = 12-h, [a,b] = hhmm.split(':'); const m = (+a)*60 + (+b) + (off-3)*60; return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; };
+  function usaExtra(){
+    const b = usa.bls || {}, hoy = hoyAR(), dd = f => Math.round((T(f)-T(hoy))/864e5), cdTxt = d => d===0 ? 'HOY' : d===1 ? 'mañana' : `en ${d} días`;
+    const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    // semáforo
+    const luces = [];
+    const U = b.desemp || [];
+    if(U.length > 16){ const a3 = U.map((p,i)=> i<2 ? null : (U[i][1]+U[i-1][1]+U[i-2][1])/3), n = U.length-1, prev = a3.slice(Math.max(2,n-12), n).filter(x=>x!=null), sahm = a3[n] - Math.min(...prev);
+      luces.push(['Regla de Sahm', sahm>=.5 ? 'rojo' : sahm>=.3 ? 'amarillo' : 'verde', `${sg(sahm,2)} puntos`, `Cuánto subió el desempleo (promedio de 3 meses) contra su mínimo del último año. Desde 0,5 punto, en el pasado siempre hubo recesión. Dato de ${mesTxt(U[n][0])}.`]); }
+    const C = usa.curva; if(C && C.hoy[8]!=null && C.hoy[4]!=null){ const sp = (C.hoy[8]-C.hoy[4])*100;
+      luces.push(['Curva de tasas', sp < -25 ? 'rojo' : sp < 25 ? 'amarillo' : 'verde', `${sg(sp,0)} pb`, `Bono a 10 años menos bono a 2 años. Cuando queda negativa ("invertida"), el mercado espera que la economía se enfríe. Al ${fd(C.fecha)}.`]); }
+    const vix = glob?.termo?.vix; if(vix){ luces.push(['Miedo en la bolsa (VIX)', vix.v>=30 ? 'rojo' : vix.v>=20 ? 'amarillo' : 'verde', nf(vix.v,1), 'Cuánta volatilidad esperan los inversores. Debajo de 20, calma; arriba de 30, pánico.']); }
+    const PI = usa.pedidos?.iniciales || [];
+    if(PI.length > 60){ const m4 = i => (PI[i][1]+PI[i-1][1]+PI[i-2][1]+PI[i-3][1])/4, n = PI.length-1, ya = PI.findIndex(p=>p[0] >= (()=>{ const d = new Date(PI[n][0]); d.setUTCDate(d.getUTCDate()-364); return d.toISOString().slice(0,10); })());
+      if(ya>3){ const v = (m4(n)/m4(ya)-1)*100; luces.push(['Pedidos de desempleo', v>=20 ? 'rojo' : v>=8 ? 'amarillo' : 'verde', `${sg(v,1)}% en un año`, `Promedio de 4 semanas de pedidos iniciales de seguro de desempleo contra el mismo momento del año pasado. Semana al ${fd(PI[n][0])}.`]); } }
+    $('uSem').innerHTML = luces.map(([n,c,v,d])=>`<div><span class="luz ${c}"><i style="background:currentColor"></i>${n}</span><span class="v">${v}</span><small>${d}</small></div>`).join('') || '<div class="empty">Cargando…</div>';
+    const rojas = luces.filter(l=>l[1]==='rojo').length, amar = luces.filter(l=>l[1]==='amarillo').length;
+    $('uVer').innerHTML = !luces.length ? '' : rojas>=2 ? `<b class="dn">Alerta:</b> ${rojas} de ${luces.length} señales en rojo. Varias alarmas que antes anticiparon recesiones están encendidas.`
+      : rojas===1 || amar>=2 ? `<b style="color:#e8b14a">Precaución:</b> ${rojas ? 'una señal en rojo' : ''}${rojas && amar ? ' y ' : ''}${amar ? amar+' en amarillo' : ''}. La economía muestra algo de desgaste, pero no hay un cuadro de recesión claro.`
+      : `<b class="up">Tranquilo:</b> ${luces.length - amar} de ${luces.length} señales en verde. Por ahora no hay signos fuertes de recesión.`;
+    // inflación por rubro
+    const RB = [['r_vivienda','Vivienda'],['r_alimentos','Alimentos'],['r_energia','Energía'],['r_salud','Salud'],['r_transporte','Transporte'],['r_autos0','Autos nuevos'],['r_autosu','Autos usados'],['r_ropa','Ropa'],['r_servicios','Servicios']];
+    const ipcY = b.ipc?.length ? yoy(b.ipc) : null, rr = RB.map(([k,n])=>({n, v: b[k]?.length ? yoy(b[k]) : null})).filter(r=>r.v!=null).sort((x,y)=>y.v-x.v).map(r=>({...r, c: r.v>=(ipcY??0) ? '--neg' : '--s1'}));
+    hBars($('chURub'), rr, {aria:'Inflación por rubro', ref: ipcY ?? undefined, vfmt:v=>sg(v,1)+'%', rh:30});
+    $('uRubN').textContent = b.r_vivienda?.length ? `Interanual, ${mesTxt(b.r_vivienda[b.r_vivienda.length-1][0])}` : '';
+    // calendario
+    const prox = CAL_US.filter(([f])=>f>=hoy).sort((x,y)=>x[0]<y[0]?-1:1).slice(0,7);
+    $('uCal').innerHTML = prox.map(([f,n,o,h])=>{ const d = dd(f); return `<div><span><b>${n}</b><small>${DSEM[new Date(f+'T12:00:00Z').getUTCDay()]} ${fd(f)} · ${etAr(f,h)} h · ${o}</small></span><span class="cd${d<=3?' pr':''}">${cdTxt(d)}</span></div>`; }).join('') || '<p class="note">Sin fechas cargadas.</p>';
+    // mapa de las 50
+    const H = (usa.heat || []).map(x=>({...x, p:gpc(x)}));
+    if(H.length){ const up = H.filter(x=>x.p>0).length, srt = [...H].sort((a,c)=>(c.p??-99)-(a.p??-99));
+      $('uHeatSt').innerHTML = st('Suben / bajan', `${up} / ${H.filter(x=>x.p<0).length}`, `de ${H.length} empresas`) + st('Mejor', `${srt[0].s} ${sg(srt[0].p,2)}%`, HN[srt[0].s]||'', 'up') + st('Peor', `${srt[srt.length-1].s} ${sg(srt[srt.length-1].p,2)}%`, HN[srt[srt.length-1].s]||'', 'dn');
+      const grupos = [...new Set(H.map(x=>x.g))];
+      $('uHeat').innerHTML = grupos.map(g=>{ const L = H.filter(x=>x.g===g), avg = L.reduce((a,x)=>a+(x.p||0),0)/L.length;
+        return `<h3>${esc(g)} <span class="${avg>0?'up':avg<0?'dn':''}" style="font-family:var(--mono)">${sg(avg,2)}%</span></h3><div class="heat">${L.map(x=>`<div title="${esc(HN[x.s]||x.s)}" style="background:${heatBg(x.p)}"><span class="tk">${esc(x.s)}</span><span class="pc">${x.p==null?'—':sg(x.p,2)+'%'}</span><span class="px">${esc(HN[x.s]||'')}</span></div>`).join('')}</div>`; }).join('');
+      $('uHeatN').textContent = H[0].t ? `Dato: ${String(H[0].t).slice(0,16).replace('T',' ')}` : ''; }
+    else $('uHeat').innerHTML = '<div class="empty">Cargando…</div>';
+    // mercado laboral
+    if(PI.length > 8){ const avg4 = PI.slice(3).map((p,i)=>[p[0], (PI[i][1]+PI[i+1][1]+PI[i+2][1]+PI[i+3][1])/4/1000]), J = b.jolts || [], jl = J[J.length-1], ja = J.length>12 ? J[J.length-13] : null, n = PI.length-1;
+      $('uLabSt').innerHTML = st('Pedidos iniciales', nf(PI[n][1]/1000,0)+' mil', `semana al ${fd(PI[n][0])}`) + st('Promedio 4 semanas', nf(avg4[avg4.length-1][1],0)+' mil', 'sin desestacionalizar')
+        + (jl ? st('Vacantes de empleo', nf(jl[1]/1000,2)+' millones', `${mesTxt(jl[0])}${ja ? ' · '+sg((jl[1]/ja[1]-1)*100,1)+'% en un año' : ''}`, ja && jl[1]<ja[1] ? 'dn' : '') : '');
+      lineChart($('chUClaims'), [{n:'Pedidos iniciales (prom. 4 semanas)', c:'--accent', pts: avg4.slice(-104), area:true}], {h:190, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mil', aria:'Pedidos de seguro de desempleo'});
+      $('uLabN').textContent = 'Semanal'; }
+    else $('chUClaims').innerHTML = '<div class="empty">Cargando…</div>';
+    // hipotecaria
+    const HP = usa.hipotecaria || [];
+    if(HP.length){ const l = HP[HP.length-1], a = HP.length>52 ? HP[HP.length-53] : null;
+      $('uHipSt').innerHTML = st('Tasa a 30 años', nf(l[1],2)+'%', `semana al ${fd(l[0])}`) + (a ? st('Hace un año', nf(a[1],2)+'%', `${sg((l[1]-a[1])*100,0)} pb`, l[1]<a[1]?'up':'dn') : '');
+      lineChart($('chUHip'), [{n:'Tasa hipotecaria 30 años', c:'--s4', pts: HP.slice(-156)}], {h:190, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', aria:'Tasa hipotecaria a 30 años'});
+      $('uHipN').textContent = 'Freddie Mac'; }
+    else $('chUHip').innerHTML = '<div class="empty">Cargando…</div>';
+    // balances
+    const BL = (usa.balances || []).filter(x=>x.f>=hoy).slice(0,12);
+    $('uBal').innerHTML = BL.map(x=>{ const d = dd(x.f); return `<div><span><b>${esc(x.n)}</b> <span style="font-family:var(--mono);color:var(--muted)">${esc(x.s)}</span><small>${DSEM[new Date(x.f+'T12:00:00Z').getUTCDay()]} ${fd(x.f)}${x.h ? ' · '+x.h : ''}${x.eps ? ' · ganancia esperada '+esc(x.eps.replace('$','US$ '))+' por acción' : ''}</small></span><span class="cd${d<=1?' pr':''}">${cdTxt(d)}</span></div>`; }).join('') || '<p class="note">No hay balances de empresas grandes en los próximos 14 días.</p>';
+    // PBI (solo si hay clave del BEA)
+    const PB = usa.pbi || [];
+    $('uPbiCard').hidden = !PB.length; $('uBalPbi').className = PB.length ? 'grid2' : '';
+    if(PB.length){ const pts = PB.slice(-16).map(([q,v])=>[`${q.slice(0,4)}-${String(+q.slice(5)*3).padStart(2,'0')}`, v]);
+      barChart($('chUPbi'), [{n:'PBI', c:'--accent', pts}], {aria:'Crecimiento del PBI de EE.UU.', yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'});
+      const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
+  }
   function renderUsa(){
     if(!usa){ loadUsa(); $('uKpis').innerHTML = '<div class="empty">Cargando datos de Estados Unidos…</div>'; return; }
     const b = usa.bls || {}, f = usa.fed, D = usa.deuda, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
@@ -2517,6 +2619,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('uMag').innerHTML = M.length ? `<tr><th>Empresa</th><th>Precio</th><th>Hoy</th><th>Valor de mercado</th></tr>` + M.map(x=>{ const p = gpc(x); return `<tr><td style="font-family:var(--sans);text-align:left">${esc(x.n)}</td><td>US$ ${nf(x.v,2)}</td><td class="${p>0?'up':p<0?'dn':''}">${p==null?'—':sg(p,2)+'%'}</td><td>${(()=>{ const m = String(x.mcap||''), n = parseFloat(m), u = m.slice(-1); return !isFinite(n) ? '—' : u==='T' ? 'US$ '+nf(n,2)+' billones' : u==='B' ? 'US$ '+nf(n,0)+' mil millones' : esc(m); })()}</td></tr>`; }).join('') : '';
     // decisiones de la Fed
     $('uFed').innerHTML = f?.decisiones?.length ? `<tr><th>Reunión</th><th>Decisión</th><th>Rango</th></tr>` + f.decisiones.map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.fecha)}</td><td class="${d>0?'dn':d<0?'up':''}">${Math.abs(d)<1e-9?'= mantuvo':(d>0?'▲ subió ':'▼ bajó ')+nf(Math.abs(d),2)}</td><td>${nf(x.despues-0.125,2)} – ${nf(x.despues+0.125,2)}%</td></tr>`; }).join('') : '';
+    usaExtra();
     $('uFuente').textContent = `Fuentes: Tesoro de EE.UU. (deuda y curva de tasas), BLS (inflación, empleo y desempleo por estado), Reserva Federal vía BIS (tasa), CNBC (sectores y acciones, con demora). Población para la deuda por habitante: 342 millones (estimación de la Oficina del Censo). Actualizado: ${new Date(usa.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
     usaMapDraw();
   }

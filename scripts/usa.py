@@ -7,7 +7,11 @@ Fuentes oficiales y gratuitas, sin clave:
     empleos creados, salarios y desempleo por estado. Su API sin clave permite pocas
     consultas por día: se renueva como máximo cada 12 horas.
   - BIS: tasa de la Reserva Federal (diaria), para el historial y las decisiones.
-  - CNBC: sectores del S&P 500 (fondos XLK, XLE, ...) y las 7 magníficas.
+  - CNBC: sectores del S&P 500 (fondos XLK, XLE, ...), las 7 magníficas y las 50 empresas más grandes.
+  - Departamento de Trabajo (DOL): pedidos semanales de seguro de desempleo (como máximo cada 12 horas).
+  - Freddie Mac: tasa hipotecaria a 30 años (semanal).
+  - Nasdaq: calendario de balances de las empresas grandes (como máximo cada 12 horas).
+  - BEA: PBI trimestral, solo si existe el secreto BEA_KEY (clave gratis de apps.bea.gov).
 
 Uso: python scripts/usa.py
 Nunca inventa datos: si una fuente falla, queda lo que había y se anota en "errores".
@@ -16,6 +20,7 @@ Nunca inventa datos: si una fuente falla, queda lo que había y se anota en "err
 import csv
 import io
 import json
+import os
 import time
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
@@ -38,7 +43,18 @@ ESTADOS = {"01": "AL", "02": "AK", "04": "AZ", "05": "AR", "06": "CA", "08": "CO
            "24": "MD", "25": "MA", "26": "MI", "27": "MN", "28": "MS", "29": "MO", "30": "MT", "31": "NE", "32": "NV", "33": "NH",
            "34": "NJ", "35": "NM", "36": "NY", "37": "NC", "38": "ND", "39": "OH", "40": "OK", "41": "OR", "42": "PA", "44": "RI",
            "45": "SC", "46": "SD", "47": "TN", "48": "TX", "49": "UT", "50": "VT", "51": "VA", "53": "WA", "54": "WV", "55": "WI", "56": "WY"}
-BLS_NAC = {"CUUR0000SA0": "ipc", "CUUR0000SA0L1E": "nucleo", "LNS14000000": "desemp", "CES0000000001": "empleo", "CES0500000003": "salario"}
+BLS_NAC = {"CUUR0000SA0": "ipc", "CUUR0000SA0L1E": "nucleo", "LNS14000000": "desemp", "CES0000000001": "empleo", "CES0500000003": "salario",
+           # inflación por rubro (índices sin desestacionalizar) y vacantes de empleo (JOLTS, miles)
+           "CUUR0000SAH1": "r_vivienda", "CUUR0000SAF1": "r_alimentos", "CUUR0000SA0E": "r_energia", "CUUR0000SAM": "r_salud",
+           "CUUR0000SETA01": "r_autos0", "CUUR0000SETA02": "r_autosu", "CUUR0000SAA": "r_ropa", "CUUR0000SAT": "r_transporte",
+           "CUUR0000SAS": "r_servicios", "JTS000000000000000JOL": "jolts"}
+# Las 50 empresas más grandes del S&P 500, con su sector (para el mapa de calor)
+HEAT50 = {"Tecnología": ["AAPL", "MSFT", "NVDA", "AVGO", "ORCL", "CRM", "AMD", "ADBE", "CSCO", "ACN", "IBM", "QCOM", "INTU", "TXN", "NOW"],
+          "Comunicaciones": ["GOOGL", "META", "NFLX", "DIS", "VZ"],
+          "Consumo": ["AMZN", "TSLA", "COST", "HD", "WMT", "PG", "KO", "PEP", "MCD", "PM"],
+          "Finanzas": ["BRK.B", "JPM", "V", "MA", "BAC", "WFC", "GS"],
+          "Salud": ["LLY", "UNH", "JNJ", "ABBV", "MRK", "TMO", "ABT", "AMGN"],
+          "Energía e industria": ["XOM", "CVX", "GE", "CAT", "LIN"]}
 SECTORES = [("XLK", "Tecnología"), ("XLC", "Comunicaciones"), ("XLY", "Consumo discrecional"), ("XLF", "Finanzas"),
             ("XLI", "Industria"), ("XLV", "Salud"), ("XLB", "Materiales"), ("XLP", "Consumo básico"), ("XLRE", "Inmobiliario"),
             ("XLU", "Servicios públicos"), ("XLE", "Energía")]
@@ -152,6 +168,86 @@ def cnbc(symbols):
     return out
 
 
+def claims():
+    """Pedidos semanales de seguro de desempleo (DOL, suma de los estados, sin desestacionalizar)."""
+    txt = get("https://oui.doleta.gov/unemploy/csv/ar539.csv", timeout=120)
+    ini, cont = {}, {}
+    desde = (date.today() - timedelta(days=760)).isoformat()
+    for r in csv.DictReader(io.StringIO(txt)):
+        f = r.get("rptdate") or ""
+        if f < desde:
+            continue
+        try:
+            ini[f] = ini.get(f, 0) + float(r.get("c3") or 0)
+            cont[f] = cont.get(f, 0) + float(r.get("c8") or 0)
+        except ValueError:
+            continue
+    fechas = sorted(ini)
+    if len(fechas) < 10:
+        raise ValueError("sin datos")
+    return {"iniciales": [[f, ini[f]] for f in fechas], "continuos": [[f, cont[f]] for f in fechas]}
+
+
+def hipotecaria():
+    """Tasa hipotecaria fija a 30 años (Freddie Mac, encuesta semanal)."""
+    txt = get("https://www.freddiemac.com/pmms/docs/PMMS_history.csv")
+    pts = []
+    for r in csv.DictReader(io.StringIO(txt)):
+        try:
+            m, d, y = r["date"].strip().split("/")
+            if r.get("pmms30", "").strip():
+                pts.append([f"{y}-{int(m):02d}-{int(d):02d}", float(r["pmms30"])])
+        except (KeyError, ValueError):
+            continue
+    pts.sort()
+    if not pts:
+        raise ValueError("sin datos")
+    return pts[-260:]
+
+
+def balances():
+    """Próximos balances de empresas grandes (Nasdaq), para los próximos 14 días."""
+    out = []
+    for i in range(0, 15):
+        dia = date.today() + timedelta(days=i)
+        if dia.weekday() >= 5:
+            continue
+        try:
+            j = json.loads(get(f"https://api.nasdaq.com/api/calendar/earnings?date={dia.isoformat()}", tries=2, timeout=30,
+                               headers={"Accept": "application/json", "Origin": "https://www.nasdaq.com", "Referer": "https://www.nasdaq.com/"}))
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"Nasdaq {dia}: {e}")
+            continue
+        for r in ((j.get("data") or {}).get("rows")) or []:
+            try:
+                mcap = float(str(r.get("marketCap") or "0").replace("$", "").replace(",", "") or 0)
+            except ValueError:
+                mcap = 0
+            if mcap >= 50e9:
+                out.append({"f": dia.isoformat(), "s": r.get("symbol"), "n": r.get("name"), "mcap": mcap,
+                            "h": {"time-pre-market": "antes de la apertura", "time-after-hours": "después del cierre"}.get(r.get("time"), ""),
+                            "eps": r.get("epsForecast") or "", "q": r.get("fiscalQuarterEnding") or ""})
+        time.sleep(0.5)
+    return sorted(out, key=lambda x: (x["f"], -x["mcap"]))
+
+
+def pbi():
+    """PBI real de EE.UU.: variación trimestral anualizada (BEA, tabla NIPA T10101). Necesita BEA_KEY."""
+    key = os.environ.get("BEA_KEY", "").strip()
+    if not key:
+        return None
+    anios = ",".join(str(y) for y in range(date.today().year - 6, date.today().year + 1))
+    j = json.loads(get(f"https://apps.bea.gov/api/data?UserID={key}&method=GetData&DataSetName=NIPA&TableName=T10101"
+                       f"&Frequency=Q&Year={anios}&ResultFormat=JSON", timeout=90))
+    res = (j.get("BEAAPI") or {}).get("Results") or {}
+    if res.get("Error"):
+        raise ValueError(str(res["Error"])[:200])
+    pts = sorted((d["TimePeriod"], float(d["DataValue"].replace(",", ""))) for d in res.get("Data", []) if str(d.get("LineNumber")) == "1")
+    if not pts:
+        raise ValueError("sin datos")
+    return [[t, v] for t, v in pts]
+
+
 def main():
     prev = {}
     if OUT.exists():
@@ -171,7 +267,7 @@ def main():
         viejo = (datetime.now(timezone.utc) - al).total_seconds() > 12 * 3600
     except Exception:  # noqa: BLE001
         viejo = True
-    if viejo or not prev.get("bls"):
+    if viejo or not prev.get("bls") or "jolts" not in (prev.get("bls") or {}):
         try:
             nac = bls(list(BLS_NAC), date.today().year - 6)
             b = {campo: nac.get(sid, []) for sid, campo in BLS_NAC.items()}
@@ -199,11 +295,44 @@ def main():
             data["mag7"] = [{"s": s, "n": n, **q[s]} for s, n in MAG7 if s in q]
     except Exception as e:  # noqa: BLE001
         errores.append(f"CNBC: {e}")
+    try:
+        todos = [x for l in HEAT50.values() for x in l]
+        q = {}
+        for i in range(0, len(todos), 25):
+            q.update(cnbc(todos[i:i + 25]))
+        if q:
+            data["heat"] = [{"g": g, "s": x, **q[x]} for g, l in HEAT50.items() for x in l if x in q]
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"CNBC 50: {e}")
+    for clave, fn in (("hipotecaria", hipotecaria), ("pbi", pbi)):
+        try:
+            r = fn()
+            if r:
+                data[clave] = r
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"{clave}: {e}")
+    # DOL y Nasdaq: como máximo cada 12 horas
+    for clave, fn in (("pedidos", claims), ("balances", balances)):
+        try:
+            al = datetime.fromisoformat((data.get(clave + "_al") or "2000-01-01T00:00+00:00"))
+            if (datetime.now(timezone.utc) - al).total_seconds() < 12 * 3600 and data.get(clave):
+                continue
+        except Exception:  # noqa: BLE001
+            pass
+        try:
+            r = fn()
+            if r:
+                data[clave] = r
+                data[clave + "_al"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"{clave}: {e}")
     data["actualizado"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
     data["errores"] = errores[:30]
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print("deuda", bool(data.get("deuda")), "curva", bool(data.get("curva")), "fed", bool(data.get("fed")),
-          "bls", bool(data.get("bls")), "estados", len(data.get("estados") or {}), "sectores", len(data.get("sectores") or []))
+          "bls", bool(data.get("bls")), "estados", len(data.get("estados") or {}), "sectores", len(data.get("sectores") or []),
+          "heat", len(data.get("heat") or []), "pedidos", bool(data.get("pedidos")), "hipotecaria", bool(data.get("hipotecaria")),
+          "balances", len(data.get("balances") or []), "pbi", bool(data.get("pbi")))
     for e in errores:
         print("ERROR", e)
 
