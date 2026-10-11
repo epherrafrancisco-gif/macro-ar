@@ -255,6 +255,40 @@ footer a{color:var(--ink2)}
 .heat .px{font-family:var(--mono);font-size:11px;color:var(--ink2)}
 .det{display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 14px;background:var(--sunk);border-radius:8px}
 .subh{margin:4px 0 -4px;font-size:13px;font-weight:600;color:var(--ink2)}
+/* Pestaña Global */
+.gtop{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.gtop,.g3{grid-template-columns:minmax(0,1fr)}}
+.glay{display:flex;gap:6px;flex-wrap:wrap}
+.glay button{font:500 13px var(--sans);color:var(--ink2);background:var(--sunk);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
+.glay button[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.glay button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.globe{position:relative;width:100%;aspect-ratio:1/1;max-height:600px}
+.globe canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.globe canvas:active{cursor:grabbing}
+@media (max-width:600px){.globe{aspect-ratio:1.7/1}}
+.ghud{position:absolute;left:0;top:0;font:11px var(--mono);color:var(--muted);line-height:1.6;pointer-events:none}
+.ghud b{color:var(--ink);font-weight:500}
+.gleg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font:11.5px var(--mono);color:var(--muted)}
+.gleg .gsw{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(24px,38px);flex:1 1 180px;max-width:270px;min-width:0}.gleg .gsw span{display:block;text-align:center;font-size:10.5px;line-height:1.3;min-width:0;overflow:hidden}.gleg .gsw i{display:block;width:100%;height:9px}
+.gficha{grid-template-columns:minmax(0,1fr)}.gficha .tw{overflow-x:auto}
+.gficha h3{margin:0;font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gficha .tag{font:500 11px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.gcmp{width:100%;min-width:0;border-collapse:collapse;font-size:13.5px}
+.gcmp th{font:500 11px var(--mono);color:var(--muted);text-align:right;padding:6px 0;border-bottom:1px solid var(--line)}
+.gcmp th:first-child,.gcmp td:first-child{text-align:left}
+.gcmp td,.gcmp th{white-space:normal}
+.gcmp td{padding:8px 0;border-bottom:1px solid var(--grid);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.gcmp td:first-child{font-family:var(--sans);color:var(--ink2)}
+.gcmp td.ar{color:var(--accent)}
+.glist{display:flex;flex-direction:column;font-size:13.5px}
+.glist>div{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--grid)}
+.glist>div>span:nth-child(n+2){font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+.glist small{display:block;color:var(--muted);font-size:11.5px}
+.gst{font:600 10.5px var(--mono);letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+.gst.on{color:var(--pos);background:var(--pos-bg)}.gst.off{color:var(--muted);background:var(--sunk)}
+.gup{color:var(--pos)}.gdn{color:var(--neg)}.geq{color:var(--muted)}
+.tape2{background:var(--bg)}.tape2 .tape-in{animation-direction:reverse}
 /* Cinta de cotizaciones estilo Wall Street */
 .tape{position:relative;overflow:hidden;background:var(--sunk);border-bottom:1px solid var(--line);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
 .tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:40px;z-index:1;pointer-events:none}
@@ -273,6 +307,7 @@ footer a{color:var(--ink2)}
 </style>
 
 <div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
+<div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
 <div class="wrap">
   <header>
     <div class="brand">
@@ -290,6 +325,7 @@ footer a{color:var(--ink2)}
       <a href="#dinero" role="tab" id="tabN" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" aria-selected="false">Fiscal</a>
       <a href="#mercado" role="tab" id="tabK" aria-selected="false">Mercado</a>
+      <a href="#global" role="tab" id="tabG" aria-selected="false">Global</a>
       <a href="#noticias" role="tab" id="tabW" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" aria-selected="false">Calculadoras</a>
       <a href="#sobre" role="tab" id="tabS" aria-selected="false">Sobre Pulso Macro</a>
@@ -439,6 +475,31 @@ footer a{color:var(--ink2)}
 
 
   <!-- NOTICIAS -->
+  <section class="view" id="vG" hidden>
+    <div class="gtop">
+      <div class="card">
+        <div class="head"><h2>El mundo, país por país</h2><span class="note">Arrastrá el globo para girarlo. Tocá un país para ver su ficha.</span></div>
+        <div class="glay" id="gLay" role="group" aria-label="Indicador">
+          <button type="button" data-l="infl" aria-pressed="true">Inflación</button>
+          <button type="button" data-l="crec" aria-pressed="false">Crecimiento</button>
+          <button type="button" data-l="tasa" aria-pressed="false">Tasa del banco central</button>
+          <button type="button" data-l="deuda" aria-pressed="false">Deuda / PBI</button>
+          <button type="button" data-l="desemp" aria-pressed="false">Desempleo</button>
+          <button type="button" data-l="expo" aria-pressed="false">Exportaciones argentinas</button>
+        </div>
+        <div class="globe" id="gWrap"><canvas id="gCv" aria-label="Globo terráqueo interactivo"></canvas><div class="ghud" id="gHud"></div></div>
+        <div class="gleg" id="gLeg"></div>
+        <p class="note" id="gHint"></p>
+      </div>
+      <div class="card gficha" id="gFicha" aria-live="polite"></div>
+    </div>
+    <div class="g3">
+      <div class="card"><div class="head"><h2>Bolsas del mundo</h2></div><p class="sub">Abiertas o cerradas ahora, según la hora de cada ciudad. En el globo, puntos verdes. No contempla feriados.</p><div class="glist" id="gBolsas"></div></div>
+      <div class="card"><div class="head"><h2>Bancos centrales</h2></div><p class="sub">Tasa de política monetaria y su última decisión (BIS).</p><div class="glist" id="gBcs"></div></div>
+      <div class="card"><div class="head"><h2>Commodities que mueven a Argentina</h2></div><p class="sub">Precio de referencia internacional y variación contra el cierre anterior.</p><div class="glist" id="gCom"></div></div>
+    </div>
+    <p class="note" id="gFuente"></p>
+  </section>
   <section class="view" id="vW" hidden>
     <div class="card">
       <div class="nwtop">
@@ -1613,14 +1674,14 @@ footer a{color:var(--ink2)}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:['tabS','vS',()=>{}]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:['tabS','vS',()=>{}]};
   let tab = 'dolares';
   let tabContado = null;
   function setTab(t){
     tab = TABS[t] ? t : 'dolares';
     if(tab !== tabContado){ tabContado = tab; gc(location.pathname + '#' + tab); }
     for(const [k,[a,v]] of Object.entries(TABS)){ $(v).hidden = k!==tab; $(a).setAttribute('aria-selected', String(k===tab)); }
-    $('segRange').hidden = ['calculadoras','noticias','sobre'].includes(tab);
+    $('segRange').hidden = ['calculadoras','noticias','sobre','global'].includes(tab);
     try{ $(TABS[tab][0]).scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
@@ -1669,6 +1730,140 @@ footer a{color:var(--ink2)}
     }
     items.forEach(it=>tapePrev[it.k]=it.x);
   }
+
+  // ---- pestaña Global y cinta de mercados del mundo (global.json) ----
+  let glob = null;
+  async function loadGlobal(){
+    try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
+    renderTape2(); if(tab==='global') renderGlobal();
+  }
+  function renderTape2(){
+    const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
+    if(!ms.length){ tape.hidden = true; return; } tape.hidden = false;
+    const dec = m => m.u==='%' ? 2 : m.k==='eurusd' ? 4 : (m.v<20 ? 2 : m.v<1000 ? 1 : 0);
+    const one = ms.map(m=>{ const ch = m.prev ? (m.u==='%' ? (m.v-m.prev)*100 : m.v/m.prev-1) : null;
+      const cls = ch==null ? 'eq' : Math.abs(ch) < (m.u==='%'?0.5:0.00005) ? 'eq' : ch>0 ? 'up' : 'dn';
+      const d = ch==null ? '' : m.u==='%' ? `${cls==='eq'?'■':ch>0?'▲':'▼'} ${sg(ch,0)} pb` : `${cls==='eq'?'■':ch>0?'▲':'▼'} ${pc(ch,2)}`;
+      const v = m.u==='%' ? nf(m.v,2)+'%' : (m.u.startsWith('US$') && m.g!=='moneda' ? 'US$ ' : '') + nf(m.v, dec(m));
+      return `<span class="tk"><span class="n">${esc(m.n)}</span><span class="v">${v}</span><span class="d ${cls}">${d}</span></span>`; }).join('');
+    if(inn.dataset.h === one) return; inn.dataset.h = one;
+    inn.innerHTML = one + one.replace(/class="tk"/g,'class="tk" aria-hidden="true"');
+    requestAnimationFrame(()=>{ inn.style.setProperty('--dur', Math.max(30, inn.scrollWidth/2/50)+'s'); });
+  }
+  const G = {ready:false, loading:null, layer:'infl', sel:'ARG', rot:[60,-15], run:false};
+  const GL = {
+    infl:{t:'Inflación anual',u:'%',cut:[2,4,8,15,30,100],pal:['#1f5f8b','#2a8ab0','#5fb3a8','#e8b14a','#e67e3a','#d9483b','#9e1f3a'],why:'Inflación promedio del año.'},
+    crec:{t:'Crecimiento del PBI',u:'%',cut:[0,1,2,3,5],pal:['#c4473a','#c9884a','#8a8f6a','#5aa078','#3a9c7a','#1f7a5a'],why:'Crecimiento real del PBI en el año.'},
+    tasa:{t:'Tasa de política monetaria',u:'%',cut:[1,3,5,10,20],pal:['#264b73','#2f6f9e','#4b97b8','#e8b14a','#e67e3a','#c4473a'],why:'Tasa que fija cada banco central, último dato del BIS. Solo para los países que informa el BIS.'},
+    deuda:{t:'Deuda pública / PBI',u:'%',cut:[30,50,70,90,120],pal:['#1f6f5a','#4a9a6e','#a8a65a','#e8b14a','#e67e3a','#c4473a'],why:'Deuda bruta del gobierno sobre el PBI.'},
+    desemp:{t:'Desempleo',u:'%',cut:[3,5,7,10,15],pal:['#1f6f5a','#4a9a6e','#a8a65a','#e8b14a','#e67e3a','#c4473a'],why:'Porcentaje de la fuerza laboral sin trabajo.'},
+    expo:{t:'Exportaciones argentinas por destino',u:'miles de millones de US$',cut:[1500,3000,6000,10000],pal:['#1d3550','#285a85','#3a86b8','#6aa8d8','#a7d0f0'],why:'Lo que Argentina le vendió a cada país en el año (INDEC). Las líneas salen de Argentina hacia sus compradores.'}
+  };
+  // Argentina: inflación interanual del INDEC (data.json), más actual que el dato anual internacional
+  const gArgInfl = () => { const m = months.filter(x=>x.inflYoY!=null).pop(); return m ? {v:m.inflYoY, mes:m.mes} : null; };
+  const gval = (iso, l=G.layer) => { if(!glob) return null; if(l==='expo') return glob.expo?.musd?.[iso] ?? null;
+    if(iso==='ARG' && l==='infl'){ const a = gArgInfl(); if(a) return a.v; } const v = glob.paises?.[iso]?.[l]; return v==null ? null : v; };
+  const gcol = v => { const C = GL[G.layer]; if(v==null) return null; let k = C.cut.findIndex(c=>v<c); if(k<0) k = C.cut.length; return C.pal[k]; };
+  let regionNames = null; try{ regionNames = new Intl.DisplayNames(['es'], {type:'region'}); }catch(e){}
+  const gname = iso => { const f = G.byId?.[iso], a2 = f?.properties?.a2; try{ if(a2 && regionNames) return regionNames.of(a2); }catch(e){} return iso; };
+  const GEX = [['NYSE / Nasdaq','Nueva York','America/New_York',-74,40.7,[['09:30','16:00']],[1,2,3,4,5]],['BYMA','Buenos Aires','America/Argentina/Buenos_Aires',-58.4,-34.6,[['11:00','17:00']],[1,2,3,4,5]],['B3','San Pablo','America/Sao_Paulo',-46.6,-23.5,[['10:00','17:00']],[1,2,3,4,5]],['BMV','Ciudad de México','America/Mexico_City',-99.1,19.4,[['08:30','15:00']],[1,2,3,4,5]],['TSX','Toronto','America/Toronto',-79.4,43.7,[['09:30','16:00']],[1,2,3,4,5]],['LSE','Londres','Europe/London',-.1,51.5,[['08:00','16:30']],[1,2,3,4,5]],['Xetra','Fráncfort','Europe/Berlin',8.7,50.1,[['09:00','17:30']],[1,2,3,4,5]],['Euronext','París','Europe/Paris',2.35,48.86,[['09:00','17:30']],[1,2,3,4,5]],['JSE','Johannesburgo','Africa/Johannesburg',28,-26.2,[['09:00','17:00']],[1,2,3,4,5]],['Tadawul','Riad','Asia/Riyadh',46.7,24.7,[['10:00','15:00']],[0,1,2,3,4]],['NSE','Bombay','Asia/Kolkata',72.9,19.1,[['09:15','15:30']],[1,2,3,4,5]],['SSE','Shanghái','Asia/Shanghai',121.5,31.2,[['09:30','11:30'],['13:00','15:00']],[1,2,3,4,5]],['HKEX','Hong Kong','Asia/Hong_Kong',114.2,22.3,[['09:30','12:00'],['13:00','16:00']],[1,2,3,4,5]],['TSE','Tokio','Asia/Tokyo',139.7,35.7,[['09:00','11:30'],['12:30','15:30']],[1,2,3,4,5]],['ASX','Sídney','Australia/Sydney',151.2,-33.9,[['10:00','16:00']],[1,2,3,4,5]]];
+  const gLocal = z => { const p = new Intl.DateTimeFormat('en-US',{timeZone:z,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()), g = t=>p.find(x=>x.type===t).value;
+    return {wd:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g('weekday')), m:(+g('hour')%24)*60 + +g('minute'), hhmm:`${String(+g('hour')%24).padStart(2,'0')}:${g('minute')}`}; };
+  const gMin = s => { const [a,b] = s.split(':'); return +a*60 + +b; };
+  function gEx(e){ const t = gLocal(e[2]), dayOk = e[6].includes(t.wd), tr = dayOk ? e[5].find(([a,b])=>t.m>=gMin(a) && t.m<gMin(b)) : null; let txt;
+    if(tr){ const r = gMin(tr[1])-t.m; txt = `cierra en ${Math.floor(r/60)} h ${r%60} min`; }
+    else { const nx = dayOk ? e[5].find(([a])=>gMin(a)>t.m) : null; txt = nx ? `abre a las ${nx[0]}` : 'abre el próximo día hábil'; }
+    return {open:!!tr, hora:t.hhmm, txt}; }
+  function gLoadScript(src){ return new Promise((ok,ko)=>{ const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); }); }
+  function gInit(){
+    if(G.loading) return G.loading;
+    G.loading = (async ()=>{
+      await gLoadScript('https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js');
+      await gLoadScript('https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js');
+      const topo = await (await fetch('world.json')).json();
+      G.feats = topojson.feature(topo, topo.objects.countries).features.filter(f=>f.id);
+      G.borders = topojson.mesh(topo, topo.objects.countries, (a,b)=>a!==b);
+      G.byId = Object.fromEntries(G.feats.map(f=>[f.id,f]));
+      const fix = {USA:[-98,39],CAN:[-100,57],FRA:[2.5,46.5],NLD:[5.3,52.2],RUS:[60,58],CHL:[-71,-33],IDN:[115,-2],NOR:[9,61]};
+      G.cen = id => fix[id] || (G.byId[id] ? d3.geoCentroid(G.byId[id]) : null);
+      const cv = $('gCv'); G.ctx = cv.getContext('2d');
+      cv.addEventListener('pointerdown', e=>{ G.drag = {x:e.clientX, y:e.clientY, r:[...G.rot], moved:false}; try{ cv.setPointerCapture(e.pointerId); }catch(x){} });
+      cv.addEventListener('pointermove', e=>{ if(!G.drag || G.flat) return; const dx = e.clientX-G.drag.x, dy = e.clientY-G.drag.y; if(Math.abs(dx)+Math.abs(dy)>3) G.drag.moved = true;
+        const k = 120/G.proj.scale(); G.rot = [G.drag.r[0]+dx*k, Math.max(-70, Math.min(70, G.drag.r[1]-dy*k))]; });
+      cv.addEventListener('pointerup', e=>{ const was = G.drag; G.drag = null; G.idle = performance.now();
+        if(was && !was.moved){ const r = cv.getBoundingClientRect(), ll = G.proj.invert([e.clientX-r.left, e.clientY-r.top]); if(!ll) return;
+          const f = G.feats.find(f=>d3.geoContains(f, ll)); if(f){ G.sel = f.id; gFicha(); gc('global-pais-'+f.id, true); } } });
+      document.querySelectorAll('#gLay button').forEach(b=>b.addEventListener('click', ()=>{ G.layer = b.dataset.l;
+        document.querySelectorAll('#gLay button').forEach(x=>x.setAttribute('aria-pressed', String(x===b))); gLegend(); gc('global-capa-'+G.layer, true); }));
+      G.ready = true;
+    })();
+    return G.loading;
+  }
+  function gSize(){ const w = $('gWrap').getBoundingClientRect(), d = devicePixelRatio||1, cv = $('gCv'); G.W = w.width; G.H = w.height;
+    if(G.W<2) return false; cv.width = G.W*d; cv.height = G.H*d; G.ctx.setTransform(d,0,0,d,0,0); G.flat = G.W < 560;
+    G.proj = G.flat ? d3.geoNaturalEarth1().fitExtent([[4,4],[G.W-4,G.H-4]], {type:'Sphere'}) : d3.geoOrthographic().scale(Math.min(G.W,G.H)/2-14).translate([G.W/2,G.H/2]).clipAngle(90);
+    G.path = d3.geoPath(G.proj, G.ctx); return true; }
+  function gDraw(now){
+    if(tab!=='global' || document.hidden){ G.run = false; return; }
+    const ctx = G.ctx, path = G.path, dt = now-(G.last||now); G.last = now;
+    if(!G.flat && !G.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(G.idle||0)>2500) G.rot[0] += dt*.006;
+    if(!G.flat) G.proj.rotate(G.rot);
+    ctx.clearRect(0,0,G.W,G.H);
+    const cs = getComputedStyle(document.documentElement), tok = n=>cs.getPropertyValue('--'+n).trim();
+    if(!G.flat){ const r = G.proj.scale(), g = ctx.createRadialGradient(G.W/2-r*.3, G.H/2-r*.35, r*.1, G.W/2, G.H/2, r*1.05); g.addColorStop(0,'#13304b'); g.addColorStop(1,'#0a1622');
+      ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
+      ctx.save(); ctx.shadowColor = 'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
+    else { ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = '#0a1622'; ctx.fill(); }
+    ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = 'rgba(106,168,216,.08)'; ctx.lineWidth = .6; ctx.stroke();
+    for(const f of G.feats){ ctx.beginPath(); path(f); ctx.fillStyle = gcol(gval(f.id)) || '#1d2733'; ctx.fill(); }
+    ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(14,19,25,.85)'; ctx.lineWidth = .6; ctx.stroke();
+    for(const [id,col,w] of [['ARG','#e6edf3',1.4],[G.sel,tok('accent'),2.2]]){ if(!G.byId[id]) continue; ctx.beginPath(); path(G.byId[id]); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke(); }
+    if(G.layer==='expo' && glob?.expo?.musd){ const a = G.cen('ARG'), ph = (now/1400)%1;
+      for(const [id,v] of Object.entries(glob.expo.musd)){ if(id==='TOTAL') continue; const b = G.cen(id); if(!b) continue; const ip = d3.geoInterpolate(a,b), pts = d3.range(0,1.0001,.02).map(ip), ls = {type:'LineString', coordinates:pts};
+        ctx.beginPath(); path(ls); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = .8 + v/1000*.28; ctx.stroke();
+        ctx.save(); ctx.setLineDash([6,14]); ctx.lineDashOffset = -ph*20; ctx.beginPath(); path(ls); ctx.strokeStyle = '#cfe6f7'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); } }
+    const pulse = (Math.sin(now/400)+1)/2; let abiertas = 0;
+    for(const e of GEX){ const o = gEx(e).open; abiertas += o; const p = [e[3],e[4]]; if(!G.flat && d3.geoDistance(p, [-G.rot[0], -G.rot[1]]) > Math.PI/2) continue; const xy = G.proj(p); if(!xy) continue;
+      ctx.beginPath(); ctx.arc(xy[0], xy[1], o?3.2:2.4, 0, 7); ctx.fillStyle = o ? tok('pos') : '#5a6672'; ctx.fill();
+      if(o){ ctx.beginPath(); ctx.arc(xy[0], xy[1], 5+pulse*7, 0, 7); ctx.strokeStyle = `rgba(76,195,138,${.55-pulse*.45})`; ctx.lineWidth = 1.2; ctx.stroke(); } }
+    $('gHud').innerHTML = G.flat ? '' : `LAT ${nf(-G.rot[1],1)}° · LON ${nf(-((G.rot[0]%360+540)%360-180),1)}°<br>CAPA <b>${GL[G.layer].t.toUpperCase()}</b><br>BOLSAS ABIERTAS <b>${abiertas}/${GEX.length}</b>`;
+    requestAnimationFrame(gDraw);
+  }
+  function gLegend(){ const C = GL[G.layer], cut = C.cut, fm = v => G.layer==='expo' ? nf(v/1000,1).replace(',0','') : nf(v,0);
+    $('gLeg').innerHTML = `<span>${C.t}</span><span class="gsw">${C.pal.map((c,i)=>`<span><i style="background:${c}"></i>${i===0?'&lt;'+fm(cut[0]):i===C.pal.length-1?'≥'+fm(cut[cut.length-1]):fm(cut[i-1])}</span>`).join('')}</span><span>${C.u}</span><span><i style="display:inline-block;width:12px;height:9px;background:#1d2733;vertical-align:-1px"></i> sin dato</span>`;
+    $('gHint').textContent = C.why + (G.layer==='expo' && glob?.expo?.anio ? ` Año ${glob.expo.anio}.` : '') + (gFte(G.layer) ? ` Fuente: ${gFte(G.layer)}.` : ''); }
+  const gFte = k => { const f = glob?.fuentes?.[k]; return f ? (f.f==='FMI' ? `FMI, estimación ${f.anio}` : `${f.f}, último dato (${f.anio})`) : ''; };
+  function gFicha(){
+    const iso = G.sel, ai = gArgInfl(), pp = glob?.paises?.[iso], p = pp && iso==='ARG' && ai ? {...pp, infl:ai.v} : pp, a = {...(glob?.paises?.ARG || {}), ...(ai ? {infl:ai.v} : {})}, yo = iso==='ARG', name = gname(iso);
+    const rows = [['Inflación anual','infl','%',1],['Crecimiento del PBI','crec','%',1],['Tasa del banco central','tasa','%',2],['Deuda pública / PBI','deuda','%',0],['Desempleo','desemp','%',1],['PBI (miles de millones US$)','pbi','',0],['PBI per cápita (US$)','pbipc','',0]];
+    let rk = '';
+    if(p && p.infl!=null){ const all = Object.entries(glob.paises).map(([id,x])=>[id, id==='ARG'&&ai ? {...x, infl:ai.v} : x]).filter(([id,x])=>x.infl!=null && G.byId?.[id]).sort((x,y)=>y[1].infl-x[1].infl), pos = all.findIndex(([id])=>id===iso)+1;
+      rk = `<p class="note">En inflación, <b>${esc(name)}</b> está <b>${pos}.º</b> entre ${all.length} países (1.º = la más alta).${!yo && glob.expo?.musd?.[iso] ? ` Argentina le exportó <b>US$ ${nf(glob.expo.musd[iso],0)} millones</b> en ${glob.expo.anio}.` : ''}${p.tasa_cambio ? ` Su banco central ${p.tasa>p.tasa_prev?'subió':'bajó'} la tasa el ${fd(p.tasa_cambio)}.` : ''}</p>`; }
+    $('gFicha').innerHTML = `<h3>${esc(name)}${yo?'':'<span class="tag">vs Argentina</span>'}</h3><p class="sub">${p ? `${gFte('infl') ? 'Inflación y crecimiento: '+gFte('infl') : ''}${p.tasa_al ? '; tasa del BIS al '+fd(p.tasa_al) : ''}${ai ? `. Inflación de Argentina: interanual INDEC a ${ai.mes.slice(5)}/${ai.mes.slice(0,4)}` : ''}.` : 'No hay datos de este país.'}</p>
+      ${p ? `<div class="tw"><table class="gcmp"><thead><tr><th>Indicador</th><th>${esc(name.length>14?name.slice(0,13)+'…':name)}</th>${yo?'':'<th>Argentina</th>'}</tr></thead><tbody>${rows.map(([n,k,u,d])=>`<tr><td>${n}</td><td>${p[k]==null?'—':nf(p[k],d)+u}</td>${yo?'':`<td class="ar">${a[k]==null?'—':nf(a[k],d)+u}</td>`}</tr>`).join('')}</tbody></table></div>${rk}` : ''}`;
+  }
+  function gListas(){
+    $('gBolsas').innerHTML = GEX.map(e=>{ const s = gEx(e); return `<div><span>${e[0]}<small>${e[1]} · ${s.txt}</small></span><span>${s.hora}</span><span class="gst ${s.open?'on':'off'}">${s.open?'ABIERTA':'CERRADA'}</span></div>`; }).join('');
+    const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía']];
+    const ps = glob?.paises || {};
+    $('gBcs').innerHTML = BC.filter(([i])=>ps[i]?.tasa!=null).map(([i,n])=>{ const p = ps[i], d = p.tasa_prev==null ? 0 : p.tasa-p.tasa_prev;
+      return `<div><span>${n}<small>${p.tasa_cambio ? 'Último cambio: '+fd(p.tasa_cambio) : 'Sin cambios en los últimos dos años'}</small></span><span>${nf(p.tasa,2)}%</span><span class="${d<0?'gup':d>0?'gdn':'geq'}">${d<0?'▼ bajó '+nf(-d,2):d>0?'▲ subió '+nf(d,2):'='}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
+    const co = (glob?.mercados || []).filter(m=>m.g==='commodity');
+    $('gCom').innerHTML = co.map(m=>{ const ch = m.prev ? m.v/m.prev-1 : null; return `<div><span>${esc(m.n)}<small>${esc(m.u)}</small></span><span>${nf(m.v, m.v<100?2:0)}</span><span class="${ch==null?'geq':ch>0?'gup':ch<0?'gdn':'geq'}">${ch==null?'':(ch>0?'▲ ':ch<0?'▼ ':'')+pc(ch,2)}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
+    if(glob) $('gFuente').textContent = `Fuentes: FMI (World Economic Outlook) o Banco Mundial, BIS (tasas de política monetaria), INDEC vía datos.gob.ar (exportaciones), Yahoo Finance, BCE y CoinGecko (mercados, con demora). Actualizado: ${new Date(glob.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} h.`;
+  }
+  async function renderGlobal(){
+    gListas();
+    if(!glob) $('gFicha').innerHTML = '<p class="empty">Cargando datos del mundo…</p>';
+    try{ await gInit(); }catch(e){ $('gHint').textContent = 'No se pudo cargar el mapa. Recargá la página.'; return; }
+    if(tab!=='global') return;
+    if(!gSize()) return; gLegend(); if(glob) gFicha();
+    if(!G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); }
+  }
+  setInterval(()=>{ if(tab==='global' && !document.hidden) gListas(); }, 30000);
+  setInterval(loadGlobal, 15*60000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='global' && G.ready && !G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); } });
+  loadGlobal();
   // ---- polling en vivo: cada 60 s, solo con la pestaña visible ----
   let lt, busy = false;
   async function poll(){

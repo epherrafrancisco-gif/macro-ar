@@ -327,13 +327,20 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   (contenido duplicado, `--dur` según ancho), se pausa con el mouse, parpadea verde/rojo al cambiar un valor.
   Se refresca en cada `render()` y en cada `poll()` en vivo. Pedido de Francisco: estilo Wall Street.
 
-## Próximo: pestaña Global (aprobada 11/10/2026)
-- Francisco quiere que Pulso Macro siga como está y sumar una pestaña **Global** (nombre exacto) con:
-  globo 3D que gira y se arrastra, países pintados por indicador (inflación, crecimiento, tasa del banco
-  central, deuda/PBI, desempleo), ficha al tocar un país comparada con Argentina, arcos de exportaciones
-  argentinas por destino, bolsas del mundo abiertas/cerradas en vivo según la hora, bancos centrales
-  (última decisión de tasa) y commodities que mueven a Argentina. Versión plana del mapa en celular.
-  Fuentes gratis (FMI DataMapper, Banco Mundial) por GitHub Actions. Primero maqueta para que la apruebe.
+## Pestaña Global y segunda cinta (11/10/2026)
+- Pestaña **Global** (`#global`, sección `vG`, `renderGlobal()`), entre Mercado y Noticias. Globo 3D en canvas con
+  d3 7.8.5 + topojson 3.0.2 cargados de cdnjs SOLO al abrir la pestaña (`gInit`); mapa `world.json` (world-atlas
+  110m con ids ISO3 y `properties.a2`; nombres en español con `Intl.DisplayNames`). Capas: inflación, crecimiento,
+  tasa, deuda/PBI, desempleo, exportaciones argentinas (arcos animados). En pantallas < 560 px, mapa plano.
+  Ficha del país vs Argentina, bolsas abiertas/cerradas calculadas en el navegador (`GEX`, sin feriados),
+  bancos centrales (`BC` en `gListas`) y commodities. La animación se frena fuera de la pestaña.
+- Segunda cinta (`#tape2`, `renderTape2`, corre al revés): `global.json → mercados` (índices, tasa 10 años,
+  monedas, commodities, bitcoin).
+- Datos: `scripts/global.py` → `global.json` (`paises` por ISO3: infl, crec, deuda, desemp, pbi, pbipc del FMI
+  DataMapper año en curso; tasa, tasa_al, tasa_prev, tasa_cambio del BIS WS_CBPOL diario, zona euro XM a cada
+  miembro; `mercados` de Yahoo con Stooq de respaldo; `expo` de datos.gob.ar 357.1, anual, solo 10 destinos;
+  `errores`). Workflow `global.yml`: L a V cada hora 08:23-19:23 ART, findes cada 6 h, y en cada push del script.
+- gh en el entorno de Claude: `env -u GH_TOKEN gh api repos/...` funciona para leer (repo público).
 
 ## Otras cosas del proyecto
 - El tablero viejo dentro de Claude (artifact) quedó congelado al 25/09/2026;

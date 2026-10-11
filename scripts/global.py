@@ -283,10 +283,6 @@ def coingecko():
 def mercados(prev):
     viejo = {m["k"]: m for m in prev.get("mercados") or []}
     datos, fuente = {}, {}
-    spark = yahoo_spark([m[3] for m in MERCADOS])
-    for k, _, _, ys, *_ in MERCADOS:
-        if ys in spark:
-            datos[k], fuente[k] = spark[ys], "Yahoo"
     for nombre, fn in (("CNBC", cnbc), ("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
         try:
             for k, d in fn().items():
@@ -294,6 +290,12 @@ def mercados(prev):
                     datos[k], fuente[k] = d, nombre
         except Exception as e:  # noqa: BLE001
             errores.append(f"{nombre}: {e}")
+    faltan = [m for m in MERCADOS if m[0] not in datos]
+    if faltan:
+        spark = yahoo_spark([m[3] for m in faltan])
+        for k, _, _, ys, *_ in faltan:
+            if ys in spark:
+                datos[k], fuente[k] = spark[ys], "Yahoo"
     for k, _, _, ys, ss, *_ in MERCADOS:  # respaldo uno por uno
         if k in datos:
             continue
