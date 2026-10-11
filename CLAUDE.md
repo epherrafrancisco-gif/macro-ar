@@ -412,5 +412,5 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
   del BLS), tasa hipotecaria 30 años (Freddie Mac PMMS_history.csv), próximos balances (api.nasdaq.com, empresas
   > US$ 50 mil M, 14 días) y PBI (BEA, SOLO si existe el secreto `BEA_KEY` en el repo; si no, la tarjeta no aparece).
   DOL y Nasdaq se renuevan cada 12 h; BLS cada 12 h (fuerza si falta `jolts`).
-- PENDIENTE: que Francisco saque la clave gratis del BEA (apps.bea.gov/API/signup) y la cargue como secreto BEA_KEY
-  (repo → Settings → Secrets and variables → Actions → New repository secret). Guiarlo de a un paso.
+- HECHO 11/10/2026: clave gratis del BEA cargada como secreto `BEA_KEY` (cuenta epherrafrancisco@gmail.com); el PBI
+  de EE.UU. ya llega (primera corrida OK, último dato 2026Q2). Si deja de andar, revisar `errores` de usa.json.
