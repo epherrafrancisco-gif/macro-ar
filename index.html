@@ -321,7 +321,10 @@ footer a{color:var(--ink2)}
 header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;margin-left:auto}
 .modo{display:inline-flex;background:var(--sunk);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
 .modo button{font:600 14px var(--sans);border:0;background:transparent;color:var(--ink2);padding:7px 16px;border-radius:7px;cursor:pointer}
-.modo button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.modo button[aria-pressed="true"],.modo a[aria-current="true"]{background:var(--accent);color:var(--accent-ink)}
+.modo a{font:600 14px var(--sans);color:var(--ink2);text-decoration:none;padding:7px 14px;border-radius:7px;border-left:1px solid var(--line)}
+.modo a:hover{color:var(--ink)}
+@media (max-width:420px){.modo button,.modo a{padding:7px 10px;font-size:13px}}
 .brand h1{cursor:pointer}
 .dolhoy{display:grid;gap:8px}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
@@ -356,7 +359,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p>La economía argentina y el mundo en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
     </div>
     <div class="hright">
-      <div class="modo" id="modo" role="group" aria-label="Sección"><button type="button" data-m="arg" aria-pressed="false">Argentina</button><button type="button" data-m="glo" aria-pressed="false">Global</button></div>
+      <div class="modo" id="modo" role="group" aria-label="Sección"><button type="button" data-m="arg" aria-pressed="false">Argentina</button><button type="button" data-m="glo" aria-pressed="false">Global</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
       <div class="stamp" id="stamp">Cargando datos…</div>
     </div>
   </header>
@@ -1830,6 +1833,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
     document.querySelectorAll('#modo button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===grp)));
+    $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada'].includes(tab);
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();

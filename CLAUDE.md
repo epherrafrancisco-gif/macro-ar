@@ -383,7 +383,7 @@ SITE, scripts/preview.html, scripts/diario.html, diario/, chequeo.mjs, README) y
 - Selector **Argentina | Global** en el encabezado (`#modo`); el logo (`#brandH`) vuelve a la portada. La barra de
   pestañas (`#bar`, `#tabsNav a[data-g]`) muestra solo las del grupo: arg = Dólares…Calculadoras; glo = Mundo
   (`#global`) y Estados Unidos (`#eeuu`, nuevo hash; `setTab('eeuu')` pone `G.vista='usa'`). El viejo selector
-  `#gVista` quedó oculto. Los links directos siguen andando. "Sobre Pulso Macro" está en el pie (`#sobre`).
+  `#gVista` quedó oculto. Los links directos siguen andando. "Sobre Pulso Macro" es un link en el encabezado, dentro de `#modo` (`#modoS`), y también en el pie: Francisco no quiere que quede escondido.
 - Global › Mundo: dos globos lado a lado (`.gtop.duo`): el de países de siempre y **Mundo hoy** (`#dCv`, capas Bolsas /
   Monedas en `#dLay`). Globos de puntos: `dgStart/dgDraw/dgDots/dgItems` (puntos cada 1,6° precalculados una vez,
   país por punto con `d3.geoContains`; `DG_EX` país→bolsa, `DG_CUR` país→moneda; giran al revés del otro globo).
