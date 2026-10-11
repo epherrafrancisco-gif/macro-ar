@@ -235,8 +235,7 @@ def main():
           f"{len(data['mercados'])}/{len(MERCADOS)} mercados; exportaciones {bool(data['expo'])}")
     for e in errores:
         print("ERROR", e)
-    if ok_imf == 0 and not data["mercados"]:
-        sys.exit(1)
+    # No corta el workflow: los errores quedan en global.json para poder diagnosticarlos.
 
 
 if __name__ == "__main__":
