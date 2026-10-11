@@ -14,8 +14,12 @@ y lo anota en "errores".
 """
 
 import csv
+import html
 import io
 import json
+import re
+import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
 import sys
 import time
 import urllib.request
@@ -295,18 +299,31 @@ ACCIONES = {
     "eur": ["ASML", "SAP", "NVO", "AZN", "SHEL", "TTE", "UL", "HSBC", "SAN", "BP", "DEO", "SNY"],
     "asia": ["TSM", "BABA", "TM", "SONY", "PDD", "HDB", "INFY", "BIDU", "JD", "MUFG"],
 }
+# Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
+BONOS = {"USA": "US10Y", "DEU": "DE10Y-DE", "GBR": "GB10Y-GB", "JPN": "JP10Y-JP", "FRA": "FR10Y-FR", "ITA": "IT10Y-IT",
+         "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR",
+         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
+# Commodities (clave, nombre, símbolo CNBC, conversión a la unidad mostrada, unidad)
+COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 0.3936825, "US$/t"),
+        ("trigo", "Trigo", "@W.1", 0.3674371, "US$/t"), ("wti", "Petróleo WTI", "@CL.1", 1, "US$/barril"),
+        ("brent", "Petróleo Brent", "@LCO.1", 1, "US$/barril"), ("gas", "Gas natural (EE.UU.)", "@NG.1", 1, "US$/MMBtu"),
+        ("oro", "Oro", "@GC.1", 1, "US$/onza"), ("plata", "Plata", "@SI.1", 1, "US$/onza"), ("cobre", "Cobre", "@HG.1", 2204.623, "US$/t")]
+COM_CONV = {k: c for k, _, _, c, _ in COMS}
 TERMO = {"vix": ".VIX", "us2y": "US2Y", "us10y": "US10Y", "us30y": "US30Y"}
 MONEDAS = {"ARS": "ARS=", "BRL": "BRL=", "CLP": "CLP=", "MXN": "MXN=", "COP": "COP=", "PEN": "PEN=", "UYU": "UYU=", "CNY": "CNY=", "EUR": "EUR="}
 # Series con historia diaria (gráficos y "¿qué rindió más en el año?")
 HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": ".BVSP", "dax": ".GDAXI",
         "ftse": ".FTSE", "nikkei": ".N225", "shanghai": ".SSEC", "oro": "@GC.1", "brent": "@LCO.1", "soja": "@S.1",
         "cobre": "@HG.1", "dxy": ".DXY", "t10": "US10Y", "vix": ".VIX",
-        "fx_brl": "BRL=", "fx_mxn": "MXN=", "fx_clp": "CLP=", "fx_cop": "COP=", "fx_ars": "ARS="}
+        "fx_brl": "BRL=", "fx_mxn": "MXN=", "fx_clp": "CLP=", "fx_cop": "COP=", "fx_ars": "ARS=",
+        "maiz": "@C.1", "trigo": "@W.1", "wti": "@CL.1", "gas": "@NG.1", "plata": "@SI.1",
+        "fx_pen": "PEN=", "fx_uyu": "UYU=", "fx_cny": "CNY=", "fx_eur": "EUR="}
 
 
 def extras():
     alt = lambda s: s if isinstance(s, tuple) else (s,)
-    syms = [x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values()) + list(MONEDAS.values())
+    syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
+            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS])
     q = cnbc_raw(syms)
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
@@ -317,18 +334,104 @@ def extras():
     acciones = {g: [{"s": x, **q[x]} for x in l if x in q] for g, l in ACCIONES.items()}
     termo = {k: q[s] for k, s in TERMO.items() if s in q}
     monedas = {k: q[s] for k, s in MONEDAS.items() if s in q}
-    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas}
+    bonos = {k: q[s] for k, s in BONOS.items() if s in q}
+    coms = [{**q[s], "k": k, "n": n, "u": u, "contrato": q[s]["n"], "v": round(q[s]["v"] * c, 4), "prev": round(q[s]["prev"] * c, 4)}
+            for k, n, s, c, u in COMS if s in q]
+    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms}
+
+
+def cripto():
+    """Las 10 criptomonedas más grandes por valor de mercado (CoinGecko)."""
+    j = json.loads(get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1"
+                       "&price_change_percentage=24h,7d,1y"))
+    out = []
+    for c in j:
+        out.append({"s": str(c.get("symbol", "")).upper(), "n": c.get("name"), "v": c.get("current_price"), "mcap": c.get("market_cap"),
+                    "d1": c.get("price_change_percentage_24h_in_currency"), "d7": c.get("price_change_percentage_7d_in_currency"),
+                    "a1": c.get("price_change_percentage_1y_in_currency"), "t": c.get("last_updated")})
+    if not out:
+        raise ValueError("sin datos")
+    return out
+
+
+# Titulares de economía internacional (RSS en español). BBC Mundo es general: se filtra por palabras de economía.
+FEEDS_MUNDO = [("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", False),
+               ("DW", "https://rss.dw.com/xml/rss-sp-eco", False),
+               ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", False),
+               ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", False),
+               ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", False),
+               ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", True)]
+ECON = r"econom|mercad|bolsa|wall street|inflaci|tasa|inter[eé]s|banco central|reserva federal|\bfed\b|\bbce\b|d[oó]lar|euro\b|petr[oó]le|arancel|comercio|exporta|importa|deuda|pib|recesi[oó]n|empleo|desempleo|precio|bitcoin|cripto|oro\b|acciones|empresa"
+TEMAS_M = {"mercados": r"bolsa|wall street|acciones|[ií]ndice|mercado|nasdaq|s&p|dow jones|ibex|dax|bitcoin|cripto",
+           "bancos": r"banco central|reserva federal|\bfed\b|\bbce\b|tasas? de inter[eé]s|tipos de inter[eé]s|powell|lagarde",
+           "eeuu": r"estados unidos|ee\.? ?uu|trump|washington|wall street|\bfed\b|reserva federal",
+           "europa": r"europ|\bbce\b|alemania|francia|espa[nñ]a|italia|reino unido|bruselas",
+           "china": r"china|chin[oa]s|pek[ií]n|xi jinping|asia|jap[oó]n",
+           "energia": r"petr[oó]le|gas\b|energ[ií]a|opep|crudo|brent",
+           "comercio": r"arancel|comercio|exporta|importa|aduana|guerra comercial"}
+
+
+def noticias_mundo(prev):
+    def limpiar(t):
+        return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", t or "")).strip())
+    def fecha(txt):
+        txt = (txt or "").strip()
+        try:
+            d = parsedate_to_datetime(txt)
+        except (TypeError, ValueError):
+            try:
+                d = datetime.fromisoformat(txt.replace("Z", "+00:00"))
+            except ValueError:
+                return None
+        return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+    corte = datetime.now(timezone.utc) - timedelta(hours=48)
+    items, fuentes = [], {}
+    for medio, url, filtrar in FEEDS_MUNDO:
+        try:
+            raiz = ET.fromstring(get(url, tries=2, timeout=30).encode("utf-8"))
+            n = 0
+            for it in raiz.iter():
+                if it.tag.split("}")[-1] not in ("item", "entry"):
+                    continue
+                h = {c.tag.split("}")[-1]: c for c in it}
+                t = limpiar(h["title"].text if "title" in h else "")
+                link = ((h["link"].text or h["link"].get("href") or "").strip()) if "link" in h else ""
+                d = fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), ""))
+                if not t or not link.startswith("http") or not d or d < corte:
+                    continue
+                if filtrar and not re.search(ECON, t, re.I):
+                    continue
+                items.append({"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes"),
+                              "k": [k for k, rx in TEMAS_M.items() if re.search(rx, t, re.I)]})
+                n += 1
+            fuentes[medio] = f"ok ({n})"
+        except Exception as e:  # noqa: BLE001
+            fuentes[medio] = f"error: {str(e)[:80]}"
+            errores.append(f"Noticias {medio}: {e}")
+    if not items:
+        return prev.get("noticias") or {}
+    vistos, unicos = set(), []
+    for x in sorted(items, key=lambda x: x["h"], reverse=True):
+        clave = re.sub(r"\W+", "", x["t"].lower())[:60]
+        if clave not in vistos:
+            vistos.add(clave)
+            unicos.append(x)
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "fuentes": fuentes, "items": unicos[:60]}
 
 
 def historia(prev_h):
     """Cierres diarios de 1 año (CNBC). Se renueva cada 3 horas como máximo."""
     try:
         al = datetime.fromisoformat(prev_h.get("actualizado", "2000-01-01T00:00+00:00"))
-        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series"):
+        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series") and prev_h.get("conv"):
             return prev_h
     except Exception:  # noqa: BLE001
         pass
     series = dict(prev_h.get("series") or {})
+    if not prev_h.get("conv"):  # historia vieja guardada en la unidad de CNBC: pasarla a la unidad mostrada
+        for k, c in COM_CONV.items():
+            if k in series and c != 1:
+                series[k] = [[d, round(v * c, 4)] for d, v in series[k]]
     ok = 0
     for k, sym in HIST.items():
         try:
@@ -338,7 +441,7 @@ def historia(prev_h):
             for b in (j.get("barData") or {}).get("priceBars") or []:
                 t, c = str(b.get("tradeTime") or ""), b.get("close")
                 if len(t) >= 8 and c not in (None, ""):
-                    pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c), 4)])
+                    pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c) * COM_CONV.get(k, 1), 4)])
             if len(pts) > 20:
                 series[k] = pts
                 ok += 1
@@ -355,7 +458,7 @@ def historia(prev_h):
         errores.append(f"CoinGecko historia: {e}")
     if not ok:
         return prev_h
-    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series}
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series, "conv": True}
 
 
 def frankfurter():
@@ -414,6 +517,14 @@ def mercados(prev):
     return out
 
 
+def cripto_seguro(prev):
+    try:
+        return cripto()
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"CoinGecko top 10: {e}")
+        return prev.get("cripto") or []
+
+
 def main():
     prev = {}
     if OUT.exists():
@@ -428,7 +539,7 @@ def main():
     except Exception as e:  # noqa: BLE001
         errores.append(f"extras: {e}")
         ex = {}
-    for k in ("bolsas", "acciones", "termo", "monedas"):  # si una sección vino vacía, queda la anterior
+    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities"):  # si una sección vino vacía, queda la anterior
         if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
             ex[k] = prev.get(k) or {}
     HISTF = ROOT / "global_hist.json"
@@ -448,6 +559,8 @@ def main():
         "paises": dict(sorted(paises.items())),
         "fuentes": fuentes,
         "mercados": mercados(prev),
+        "cripto": cripto_seguro(prev),
+        "noticias": noticias_mundo(prev),
         "errores": errores[:60],
     }
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

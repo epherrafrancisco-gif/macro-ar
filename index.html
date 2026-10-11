@@ -297,6 +297,12 @@ footer a{color:var(--ink2)}
 .reloj{width:100%;display:block;font-family:var(--mono)}
 .reloj text{font-size:11px;fill:var(--muted)}.reloj .nm{fill:var(--ink);font-family:var(--sans);font-size:12.5px;font-weight:600}.reloj .st{font-size:11px}
 .rlj-wrap{overflow-x:auto}.rlj-wrap svg{min-width:640px}
+.gtbl{width:100%;border-collapse:collapse;font-size:13.5px}.gtbl th{font:600 11px var(--mono);letter-spacing:.05em;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.gtbl th:first-child,.gtbl td:first-child{text-align:left}.gtbl td{padding:8px;border-bottom:1px solid var(--grid);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gtbl td:first-child{font-family:var(--sans)}.gtbl td small{display:block;color:var(--muted);font-size:11.5px;font-family:var(--sans)}.gtbl .up{color:var(--pos)}.gtbl .dn{color:var(--neg)}.gtbl tr.hl td{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.agenda{display:flex;flex-direction:column}.agenda>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid var(--grid);align-items:center}
+.agenda b{font-weight:600}.agenda small{color:var(--muted);font-size:12px;display:block}.agenda .cd{font-family:var(--mono);text-align:right;font-size:13px}.agenda .cd.pr{color:var(--warn,#e8b14a)}
+.nwm{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}.nwm li{padding:9px 0;border-bottom:1px solid var(--grid)}.nwm a{color:var(--ink);text-decoration:none;font-weight:500}.nwm a:hover{color:var(--accent)}.nwm small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .gview{display:grid;gap:18px}.gview>*{min-width:0}
 #gVista{justify-self:start}#gVista button{font-size:13.5px;padding:6px 16px}
 .uhero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px}.uside{display:grid;gap:18px;align-content:start}
@@ -600,7 +606,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       </div>
       <div class="card">
         <div class="head"><h2>Mundo hoy</h2><span class="note" id="dFecha"></span></div>
-        <div class="glay dlay" id="dLay" role="group" aria-label="Capa"><button type="button" data-l="bolsa" aria-pressed="true">Bolsas</button><button type="button" data-l="mon" aria-pressed="false">Monedas</button></div>
+        <div class="glay dlay" id="dLay" role="group" aria-label="Capa"><button type="button" data-l="bolsa" aria-pressed="true">Bolsas hoy</button><button type="button" data-l="mon" aria-pressed="false">Monedas hoy</button><button type="button" data-l="monA" aria-pressed="false">Monedas en el año</button><button type="button" data-l="bono" aria-pressed="false">Bonos a 10 años</button></div>
         <div class="globe dglobe"><canvas id="dCv" aria-label="Globo con las bolsas y monedas del día"></canvas><div class="ghud" id="dHud"></div></div>
         <p class="note" id="dHint"></p>
       </div>
@@ -611,10 +617,21 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="sub">Qué bolsa del mundo está abierta ahora, en hora argentina. La línea vertical es este momento. No contempla feriados de cada país.</p>
       <div class="rlj-wrap"><svg class="reloj" id="rlj" role="img" aria-label="Horarios de las bolsas del mundo en hora argentina"></svg></div>
     </div>
+    <div class="card">
+      <div class="head"><h2>¿Dónde está Argentina?</h2><span class="note" id="dpaN"></span></div>
+      <p class="sub">Argentina comparada con los países más grandes y los de la región, en cada indicador.</p>
+      <div class="glay" id="dpaSel" role="group" aria-label="Indicador"></div>
+      <div class="chart" id="chDpa"></div>
+      <p class="note" id="dpaNota"></p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Próximas reuniones de bancos centrales</h2></div><p class="sub">Cuándo decide su tasa cada banco central y cuánto está hoy. La fecha es la del anuncio.</p><div class="agenda" id="gAgenda"></div></div>
+      <div class="card"><div class="head"><h2>Bonos a 10 años del mundo</h2><span class="note" id="gBonN"></span></div><p class="sub">Cuánto paga el bono del gobierno de cada país a 10 años y cuánto más (o menos) que el de EE.UU.</p><div class="chart" id="chBonos"></div><p class="note" id="gBonNota"></p></div>
+    </div>
     <div class="g3">
       <div class="card"><div class="head"><h2>Bolsas del mundo</h2></div><p class="sub">Su índice principal y cómo viene el día. Abierta o cerrada según la hora de cada ciudad (no contempla feriados). Con demora.</p><div class="glist" id="gBolsas"></div></div>
       <div class="card"><div class="head"><h2>Bancos centrales</h2></div><p class="sub">Tasa de política monetaria y su última decisión (BIS).</p><div class="glist" id="gBcs"></div></div>
-      <div class="card"><div class="head"><h2>Commodities que mueven a Argentina</h2></div><p class="sub">Precio de referencia internacional y variación contra el cierre anterior.</p><div class="glist" id="gCom"></div></div>
+      <div class="card"><div class="head"><h2>Commodities</h2></div><p class="sub">Granos, energía y metales: precio internacional, cómo vienen hoy y en el año. Tocá uno para ver su gráfico abajo.</p><div class="glist" id="gCom"></div></div>
     </div>
     <div class="card">
       <div class="head"><h2>Argentinas en Wall Street</h2><span class="note">ADR y acciones que cotizan en Nueva York, en dólares</span></div>
@@ -648,6 +665,17 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="grid2">
       <div class="card"><div class="head"><h2>Monedas de la región contra el dólar</h2></div><p class="sub">Cuántas unidades hay que dar por un dólar, cómo se movieron hoy y en el año.</p><div class="glist" id="gMon"></div></div>
       <div class="card"><div class="head"><h2>Termómetro del mercado</h2></div><p class="sub">El miedo de los inversores (VIX) y las tasas de los bonos del Tesoro de EE.UU.</p><div class="stats" id="gTermo"></div><div class="chart" id="chVix"></div><p class="note">Gráfico: VIX en el último año. Debajo de 15, calma; arriba de 30, pánico.</p></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Las 10 criptomonedas más grandes</h2><span class="note" id="gCripN"></span></div>
+      <p class="sub">Ordenadas por valor de mercado. USDT y USDC son "dólares digitales": casi no se mueven.</p>
+      <div class="tw"><table class="gtbl"><thead><tr><th>Moneda</th><th>Precio (US$)</th><th>24 h</th><th>7 días</th><th>1 año</th><th>Valor de mercado</th></tr></thead><tbody id="gCrip"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Noticias del mundo</h2><span class="note" id="gNwN"></span></div>
+      <p class="sub">Titulares de economía internacional en español, de las últimas 48 horas. Tocá uno para leerlo en el medio.</p>
+      <div class="glay" id="gNwSel" role="group" aria-label="Tema"></div>
+      <ul class="nwm" id="gNw"></ul>
     </div>
     <p class="note" id="gFuente"></p>
     </div>
@@ -1129,9 +1157,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const X = v => x0 + (v-lo)/(hi-lo)*(x1-x0);
     let g = '';
     rows.forEach((r,i)=>{ const y = 6 + i*rh, bh = rh-12, a = X(Math.min(0,r.v)), b = X(Math.max(0,r.v));
-      g += `<text x="${labW}" y="${y+bh/2+4}" text-anchor="end" style="font-family:var(--sans);font-size:${W<520?12:13}px;fill:var(--ink)${r.ref?';font-weight:600':''}">${esc(r.n)}</text>`;
+      g += `<text x="${labW}" y="${y+bh/2+4}" text-anchor="end" style="font-family:var(--sans);font-size:${W<520?12:13}px;fill:var(--ink)${r.ref||r.hl?';font-weight:700':''}">${esc(r.n)}</text>`;
       g += `<rect x="${a.toFixed(1)}" y="${y}" width="${Math.max(1,b-a).toFixed(1)}" height="${bh}" rx="3" fill="var(${r.c})"${r.ref?' opacity="0.55"':''}/>`;
-      g += `<text x="${(Math.max(X(0), b)+8).toFixed(1)}" y="${y+bh/2+4}" style="fill:var(--ink);font-weight:600;font-size:12.5px">${sg(r.v,1)}%${r.real!=null && W>=520?`<tspan style="fill:var(--muted);font-weight:400"> · real ${sg(r.real,1)}%</tspan>`:''}</text>`; });
+      g += `<text x="${(Math.max(X(0), b)+8).toFixed(1)}" y="${y+bh/2+4}" style="fill:var(--ink);font-weight:600;font-size:12.5px">${o.vfmt ? o.vfmt(r.v, r) : sg(r.v,1)+'%'}${r.real!=null && W>=520?`<tspan style="fill:var(--muted);font-weight:400"> · real ${sg(r.real,1)}%</tspan>`:''}</text>`; });
     g += `<line x1="${X(0).toFixed(1)}" x2="${X(0).toFixed(1)}" y1="2" y2="${H-20}" stroke="var(--muted)"/>`;
     if(o.ref!=null){ const xr = X(o.ref).toFixed(1); g += `<line x1="${xr}" x2="${xr}" y1="2" y2="${H-20}" stroke="var(--ink2)" stroke-dasharray="4 4"/><text x="${xr}" y="${H-5}" text-anchor="middle" style="fill:var(--ink2)">inflación ${sg(o.ref,1)}%</text>`; }
     el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||'Ranking')}">${g}</svg>`;
@@ -2117,8 +2145,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('gBcs').innerHTML = BC.filter(([i])=>ps[i]?.tasa!=null).map(([i,n])=>{ const p = ps[i], d = p.tasa_prev==null ? 0 : p.tasa-p.tasa_prev;
       return `<div><span>${n}<small>${p.tasa_cambio ? 'Último cambio: '+fd(p.tasa_cambio) : 'Sin cambios en los últimos dos años'}</small></span><span>${nf(p.tasa,2)}%</span><span class="${d<0?'gup':d>0?'gdn':'geq'}">${d<0?'▼ bajó '+nf(-d,2):d>0?'▲ subió '+nf(d,2):'='}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
     const co = (glob?.mercados || []).filter(m=>m.g==='commodity');
-    $('gCom').innerHTML = co.map(m=>{ const ch = m.prev ? m.v/m.prev-1 : null; return `<div><span>${esc(m.n)}<small>${esc(m.u)}</small></span><span>${nf(m.v, m.v<100?2:0)}</span><span class="${ch==null?'geq':ch>0?'gup':ch<0?'gdn':'geq'}">${ch==null?'':(ch>0?'▲ ':ch<0?'▼ ':'')+pc(ch,2)}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
-    if(glob) $('gFuente').textContent = `Fuentes: FMI (World Economic Outlook) o Banco Mundial, BIS (tasas de política monetaria), CNBC, BCE y CoinGecko (mercados, con demora). Actualizado: ${new Date(glob.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} h.`;
+    const coms = (glob?.commodities && glob.commodities.length) ? glob.commodities : co.map(m=>({...m}));
+    $('gCom').innerHTML = coms.map(m=>{ const ch = m.prev ? m.v/m.prev-1 : null, y = gHist ? gYtd(gSerie(m.k)) : null;
+      return `<div role="button" tabindex="0" data-com="${m.k}" style="cursor:pointer"><span>${esc(m.n)}<small>${esc(m.u)}</small></span><span>${nf(m.v, m.v<100?2:0)}<small class="${ch==null?'':ch>0?'gup':ch<0?'gdn':''}">${ch==null?'':(ch>0?'▲ ':ch<0?'▼ ':'')+pc(ch,2)+' hoy'}</small></span><span class="${y==null?'geq':y>0?'gup':'gdn'}">${y==null?'—':sg(y,1)+'%'}<small>en el año</small></span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
+    $('gCom').querySelectorAll('[data-com]').forEach(d=>{ const go = ()=>{ if(!GCH.some(c=>c[0]===d.dataset.com)) return; gChSel = d.dataset.com; gExtras(); $('chGlob').scrollIntoView({behavior:'smooth', block:'center'}); };
+      d.addEventListener('click', go); d.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); }); });
+    if(glob) $('gFuente').textContent = `Fuentes: FMI (World Economic Outlook) o Banco Mundial, BIS (tasas de política monetaria), CNBC, BCE y CoinGecko (mercados, con demora). Actualizado: ${new Date(glob.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
   }
   async function renderGlobal(){
     document.querySelectorAll('#gVista button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.v===G.vista)));
@@ -2155,7 +2187,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const DG_LEFT = ['TSX','LSE','CLP','PEN'], DG_DY = {TSX:-8, LSE:-8, Xetra:-12};
   // monedas: cuánto se apreció contra el dólar (EUR viene como dólares por euro; el resto, unidades por dólar)
   const dgMon = c => { const m = glob?.monedas?.[c]; if(!m || !m.prev) return null; const r = (m.v/m.prev-1)*100; return c==='EUR' ? r : -r; };
-  const dgVal = (iso, l) => l==='bolsa' ? gpc(glob?.bolsas?.[DG_EX[iso]]) : (DG_CUR[iso] ? dgMon(DG_CUR[iso]) : null);
+  const DG_FX = {ARS:'fx_ars',BRL:'fx_brl',CLP:'fx_clp',MXN:'fx_mxn',COP:'fx_cop',PEN:'fx_pen',UYU:'fx_uyu',CNY:'fx_cny',EUR:'fx_eur'};
+  const dgMonA = c => { if(!gHist || !DG_FX[c]) return null; const y = gYtd(gSerie(DG_FX[c])); return y==null ? null : c==='EUR' ? y : (100/(100+y)-1)*100; };
+  const dgBono = iso => { const x = glob?.bonos?.[iso]; return x && x.t && (Date.now()-Date.parse(x.t)) < 10*864e5 ? x.v : null; };
+  const dgVal = (iso, l) => l==='bolsa' ? gpc(glob?.bolsas?.[DG_EX[iso]]) : l==='bono' ? dgBono(iso) : (DG_CUR[iso] ? (l==='monA' ? dgMonA(DG_CUR[iso]) : dgMon(DG_CUR[iso])) : null);
+  const dgRamp = v => { const t = Math.max(0, Math.min(1, v/14)); return `rgba(${Math.round(63+t*177)},${Math.round(208-t*86)},${Math.round(192-t*80)},${.45+t*.55})`; };
   function dgDots(){
     if(G.dots) return G.dots;
     const bb = G.feats.map(f=>[f, d3.geoBounds(f)]), out = [];
@@ -2186,6 +2222,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // qué se muestra en cada capa: [clave, nombre, variación %, lon/lat]
   function dgItems(l){
     if(!glob) return [];
+    if(l==='bono') return Object.keys(glob.bonos||{}).map(iso=>{ const v = dgBono(iso), ll = G.cen?.(iso); return v==null || !ll ? null : [iso, (GPA[iso]||iso), v, ll, (glob.bonos[iso].t||'').slice(0,10)]; }).filter(Boolean);
+    if(l==='monA') return Object.entries(DG_CURPOS).map(([c,iso])=>{ const v = dgMonA(c), ll = G.cen?.(iso); return v==null || !ll ? null : [c, c, v, ll, (gHist?.series?.[DG_FX[c]]||[]).slice(-1)[0]?.[0] || '']; }).filter(Boolean);
     if(l==='bolsa') return GEX.map(e=>{ const k = e[0].split(' ')[0], b = glob.bolsas?.[k]; return b ? [k, b.idx, gpc(b), [e[3],e[4]], (b.t||'').slice(0,10)] : null; }).filter(x=>x && x[2]!=null);
     return Object.entries(DG_CURPOS).map(([c,iso])=>{ const v = dgMon(c), ll = G.cen?.(iso); return v==null || !ll ? null : [c, c, v, ll, (glob.monedas[c].t||'').slice(0,10)]; }).filter(Boolean);
   }
@@ -2201,22 +2239,26 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const c0 = proj.invert([W/2,H/2]), cache = {};
     for(const [lo,la,iso] of G.dots){ if(d3.geoDistance([lo,la], c0) > Math.PI/2-.02) continue; const p = proj([lo,la]);
       let v = cache[iso]; if(v===undefined) v = cache[iso] = dgVal(iso, S.layer);
-      if(v==null) ctx.fillStyle = 'rgba(63,208,192,.3)'; else { const a = Math.min(1, .35+Math.abs(v)/2); ctx.fillStyle = v>=0 ? `rgba(76,195,138,${a})` : `rgba(240,122,112,${a})`; }
+      if(v==null) ctx.fillStyle = 'rgba(63,208,192,.3)'; else if(S.layer==='bono') ctx.fillStyle = dgRamp(v); else { const a = Math.min(1, .35+Math.abs(v)/(S.layer==='monA'?12:2)); ctx.fillStyle = v>=0 ? `rgba(76,195,138,${a})` : `rgba(240,122,112,${a})`; }
       const z = v==null ? 1.4 : 2.2; ctx.fillRect(p[0]-z/2, p[1]-z/2, z, z); }
     const items = dgItems(S.layer), pulse = (now%2000)/2000;
     ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.textBaseline = 'middle';
-    for(const [k,n,v,ll] of (W>330 ? items : [])){ if(d3.geoDistance(ll, c0) > Math.PI/2-.15) continue; const p = proj(ll), col = v>=0 ? '76,195,138' : '240,122,112';
+    for(const [k,n,v,ll] of (W>330 ? items : [])){ if(d3.geoDistance(ll, c0) > Math.PI/2-.15) continue; const p = proj(ll), col = S.layer==='bono' ? '232,177,74' : v>=0 ? '76,195,138' : '240,122,112';
       ctx.beginPath(); ctx.arc(p[0], p[1], 3+pulse*9, 0, 7); ctx.strokeStyle = `rgba(${col},${1-pulse})`; ctx.lineWidth = 1; ctx.stroke();
       ctx.beginPath(); ctx.arc(p[0], p[1], 2.6, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill();
-      const t = `${n} ${sg(v,2)}%`, tw = ctx.measureText(t).width, dy = DG_DY[k] || 0, x0 = DG_LEFT.includes(k) ? p[0]-tw-15 : p[0]+7;
+      const t = S.layer==='bono' ? `${n} ${nf(v,2)}%` : `${n} ${sg(v, S.layer==='monA'?1:2)}%`, tw = ctx.measureText(t).width, dy = DG_DY[k] || 0, x0 = DG_LEFT.includes(k) ? p[0]-tw-15 : p[0]+7;
       ctx.fillStyle = 'rgba(3,13,12,.82)'; ctx.fillRect(x0, p[1]-8+dy, tw+8, 16); ctx.fillStyle = `rgb(${col})`; ctx.fillText(t, x0+4, p[1]+dy); }
     const su = items.filter(x=>x[2]>0).length, ba = items.filter(x=>x[2]<0).length, f = items.map(x=>x[4]).sort().pop();
-    const h = `CAPA <b>${S.layer==='bolsa' ? 'BOLSAS EN EL DÍA' : 'MONEDAS CONTRA EL DÓLAR'}</b><br><b style="color:var(--pos)">${su} SUBEN</b> · <b style="color:var(--neg)">${ba} BAJAN</b>${f ? `<br>DATOS AL <b>${fds(f)}</b>` : ''}`;
+    const capa = {bolsa:'BOLSAS EN EL DÍA', mon:'MONEDAS CONTRA EL DÓLAR HOY', monA:'MONEDAS CONTRA EL DÓLAR EN EL AÑO', bono:'TASA DEL BONO A 10 AÑOS'}[S.layer];
+    const h = `CAPA <b>${capa}</b><br>${S.layer==='bono' ? `${items.length} PAÍSES · MÁS ALTA <b>${items.length ? esc(items.reduce((a,x)=>x[2]>a[2]?x:a)[1]).toUpperCase() : '—'}</b>` : `<b style="color:var(--pos)">${su} ${S.layer==='bolsa'?'SUBEN':'SE FORTALECEN'}</b> · <b style="color:var(--neg)">${ba} ${S.layer==='bolsa'?'BAJAN':'SE DEBILITAN'}</b>`}${f ? `<br>DATOS AL <b>${fds(f)}</b>` : ''}`;
     if(S.hudH !== h && !$(S.hud).hidden){ S.hudH = h; $(S.hud).innerHTML = h; }
     requestAnimationFrame(t=>dgDraw(S,t));
   }
   function dgHint(){ const S = DGS.dCv, l = S ? S.layer : 'bolsa';
-    $('dHint').textContent = l==='bolsa' ? 'Cada punto es tierra. Los países con bolsa se pintan según cómo viene su índice principal en el día (o su último cierre): verde sube, rojo baja; más brillante, más se movió. Con demora (CNBC).'
+ if(l==='monA' && !gHist) loadHist();
+    $('dHint').textContent = l==='bono' ? 'Cada punto es tierra. Los países se pintan según cuánto paga su bono del gobierno a 10 años: más claro, tasa más baja; más cálido, tasa más alta. Con demora (CNBC).'
+      : l==='monA' ? 'Monedas de la región, el euro y el yuan: verde = se fortaleció contra el dólar desde fin del año pasado, rojo = se devaluó.'
+      : l==='bolsa' ? 'Cada punto es tierra. Los países con bolsa se pintan según cómo viene su índice principal en el día (o su último cierre): verde sube, rojo baja; más brillante, más se movió. Con demora (CNBC).'
       : 'Monedas de la región, el euro y el yuan: verde = se fortaleció contra el dólar en el día, rojo = se debilitó. Fuente: CNBC, con demora.';
     $('dFecha').textContent = 'Arrastralo para girarlo'; }
 
@@ -2262,10 +2304,82 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gDetalle(elId, x){ const el = $(elId); el.hidden = !x; if(!x) return; const p = gpc(x);
     const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
     el.innerHTML = st(x.s, 'US$ '+nf(x.v,2), (p==null?'':sg(p,2)+'% en el día'), p>0?'up':p<0?'dn':'') + st('Empresa', esc(GNOM[x.s]||x.n), esc(x.n)) + st('Cierre anterior', 'US$ '+nf(x.prev,2), x.t ? 'Dato: '+esc(String(x.t).slice(0,16).replace('T',' ')) : ''); }
-  const GCH = [['spx','S&P 500',1,''],['merv','S&P Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['soja','Soja (US$/t)',0.3674371,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (DXY)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
-  const gSerie = (k, conv=1) => (gHist?.series?.[k] || []).map(p=>[p[0], p[1]*conv]);
+  const GCH = [['spx','S&P 500',1,''],['merv','S&P Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['wti','Petróleo WTI (US$/barril)',1,''],['gas','Gas natural EE.UU. (US$/MMBtu)',1,''],['soja','Soja (US$/t)',0.3674371,''],['maiz','Maíz (US$/t)',1,''],['trigo','Trigo (US$/t)',1,''],['plata','Plata (US$/onza)',1,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (DXY)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
+  const gSerie = (k, conv=1) => (gHist?.series?.[k] || []).map(p=>[p[0], p[1]*(gHist.conv ? 1 : conv)]);
   const gCut = (pts, d) => { if(!d || !pts.length) return pts; const t = T(pts[pts.length-1][0]) - d*864e5; return pts.filter(p=>T(p[0])>=t); };
   function gYtd(pts){ if(pts.length<2) return null; const yr = pts[pts.length-1][0].slice(0,4), base = [...pts].reverse().find(p=>p[0] < yr+'-01-01'); return base ? (pts[pts.length-1][1]/base[1]-1)*100 : null; }
+  // ---- Mundo: agenda de bancos centrales, bonos, "¿dónde está Argentina?", cripto y noticias ----
+  // Fechas de anuncio publicadas por cada banco (cargar las del año siguiente cuando salgan; Banxico publica 2027 en diciembre)
+  const BCAL = [
+    ['USA','Fed (EE.UU.)',['2026-10-28','2026-12-09','2027-01-27','2027-03-17','2027-04-28','2027-06-09','2027-07-28','2027-09-15','2027-10-27','2027-12-08']],
+    ['DEU','BCE (zona euro)',['2026-10-29','2026-12-17','2027-02-04','2027-03-18','2027-04-29','2027-06-10','2027-07-22','2027-09-09','2027-10-28','2027-12-16']],
+    ['GBR','Banco de Inglaterra',['2026-11-05','2026-12-17','2027-02-04','2027-03-18','2027-04-29','2027-06-17','2027-07-29','2027-09-16','2027-11-04','2027-12-16']],
+    ['JPN','Banco de Japón',['2026-10-30','2026-12-18','2027-01-22','2027-03-18','2027-04-28','2027-06-11','2027-07-22','2027-09-22','2027-10-29','2027-12-17']],
+    ['BRA','Banco Central de Brasil (Copom)',['2026-11-04','2026-12-09','2027-01-27','2027-03-17','2027-04-28','2027-06-16','2027-08-04','2027-09-22','2027-10-27','2027-12-08']],
+    ['MEX','Banxico (México)',['2026-11-05','2026-12-17']],
+    ['CHL','Banco Central de Chile',['2026-10-27','2026-12-15','2027-01-26','2027-03-30','2027-04-27','2027-06-15','2027-07-27','2027-08-31','2027-10-26','2027-12-14']]];
+  const GPA = {ARG:'Argentina',BRA:'Brasil',CHL:'Chile',URY:'Uruguay',PRY:'Paraguay',BOL:'Bolivia',PER:'Perú',COL:'Colombia',MEX:'México',VEN:'Venezuela',ECU:'Ecuador',
+    USA:'EE.UU.',CAN:'Canadá',GBR:'Reino Unido',DEU:'Alemania',FRA:'Francia',ITA:'Italia',ESP:'España',CHE:'Suiza',JPN:'Japón',CHN:'China',IND:'India',KOR:'Corea del Sur',
+    AUS:'Australia',ZAF:'Sudáfrica',TUR:'Turquía',IDN:'Indonesia',SAU:'Arabia Saudita',RUS:'Rusia',EGY:'Egipto',NGA:'Nigeria'};
+  const DPA_P = ['ARG','BRA','CHL','URY','PRY','PER','COL','MEX','USA','CAN','GBR','DEU','ESP','JPN','CHN','IND','TUR'];
+  let dpaSel = 'infl', gNwSel = '';
+  const hoyAR = () => new Date().toLocaleDateString('en-CA', {timeZone:'America/Argentina/Buenos_Aires'});
+  function gMundoExtra(){
+    const g = glob || {}, hoy = hoyAR(), dd = f => Math.round((T(f)-T(hoy))/864e5);
+    // agenda
+    const ag = BCAL.map(([iso,n,fs])=>({iso, n, f: fs.find(f=>f>=hoy), tasa: g.paises?.[iso]?.tasa})).sort((a,b)=>(a.f||'9')<(b.f||'9')?-1:1);
+    $('gAgenda').innerHTML = ag.map(x=>{ const d = x.f ? dd(x.f) : null, cd = d==null ? 'fecha a confirmar' : d===0 ? 'HOY' : d===1 ? 'mañana' : `en ${d} días`;
+      return `<div><span><b>${x.n}</b><small>${x.f ? `${DSEM[new Date(x.f+'T12:00:00Z').getUTCDay()]} ${fd(x.f)}` : 'todavía no publicó las fechas del año que viene'}${x.tasa!=null ? ` · tasa hoy ${nf(x.tasa,2)}%` : ''}</small></span><span class="cd${d!=null && d<=7 ? ' pr' : ''}">${cd}</span></div>`; }).join('');
+    // bonos
+    const B = g.bonos || {}, us = B.USA, fresco = x => x && x.t && (Date.now() - Date.parse(x.t)) < 10*864e5;
+    if(us && fresco(us)){
+      const rp = series('riesgo'), rows = Object.entries(B).filter(([iso,x])=>iso!=='USA' && fresco(x)).map(([iso,x])=>({n: `${GPA[iso]||iso} (${nf(x.v,2)}%)`, v:(x.v-us.v)*100, y:x.v}));
+      if(rp.length) rows.push({n:'Argentina (riesgo país)', v:rp[rp.length-1][1], y:null, hl:true});
+      rows.sort((a,b)=>b.v-a.v).forEach(r=>{ r.c = r.hl ? '--s4' : r.v>=0 ? '--s2' : '--s1'; });
+      hBars($('chBonos'), rows, {aria:'Diferencia contra el bono de EE.UU.', vfmt:v=>`${sg(v,0)} pb`, rh:28});
+      $('gBonN').textContent = `EE.UU. paga ${nf(us.v,2)}%`;
+      $('gBonNota').textContent = 'Entre paréntesis, la tasa que paga cada bono. Barras: diferencia contra el bono de EE.UU., en puntos básicos (100 pb = 1 punto porcentual). Los demás países son bonos en su propia moneda; Argentina es el riesgo país, que mide sus bonos en dólares contra los de EE.UU. Con demora (CNBC).';
+    } else $('chBonos').innerHTML = '<div class="empty">Cargando…</div>';
+    // ¿dónde está Argentina?
+    const ai = gArgInfl(), P = g.paises || {}, val = (iso,k) => iso==='ARG' && k==='infl' && ai ? ai.v : P[iso]?.[k];
+    const ytdUsd = (idx, fx, inv) => { if(!gHist) return null; const a = gHist.series?.[idx], b = gHist.series?.[fx]; if(!a || !b) return null;
+      const m = new Map(b.map(p=>[p[0],p[1]])), pts = a.filter(p=>m.has(p[0])).map(p=>[p[0], inv ? p[1]*m.get(p[0]) : p[1]/m.get(p[0])]); return gYtd(pts); };
+    const mervUsd = (()=>{ const yr = hoy.slice(0,4), base = [...days].reverse().find(d=>d.fecha < yr+'-01-01' && d.merval && get(d,'ccl')), last = [...days].reverse().find(d=>d.merval && get(d,'ccl')); return base && last ? (last.merval/get(last,'ccl'))/(base.merval/get(base,'ccl'))*100-100 : null; })();
+    const monY = (k, inv) => { const y = gHist ? gYtd(gSerie(k)) : null; return y==null ? null : inv ? y : (100/(100+y)-1)*100; };
+    const DPA = {
+      infl:['Inflación anual', 'Más alta arriba', ()=>DPA_P.map(i=>[i, val(i,'infl')]), v=>nf(v,1)+'%'],
+      crec:['Crecimiento del PBI', 'Más alto arriba', ()=>DPA_P.map(i=>[i, val(i,'crec')]), v=>sg(v,1)+'%'],
+      desemp:['Desempleo', 'Más alto arriba', ()=>DPA_P.map(i=>[i, val(i,'desemp')]), v=>nf(v,1)+'%'],
+      tasa:['Tasa del banco central', 'Más alta arriba', ()=>DPA_P.map(i=>[i, val(i,'tasa')]), v=>nf(v,2)+'%'],
+      bolsa:['Bolsa en dólares en el año', 'La que más rindió arriba', ()=>[['ARG',mervUsd],['USA',gHist?gYtd(gSerie('spx')):null],['BRA',ytdUsd('bvsp','fx_brl')],['DEU',ytdUsd('dax','fx_eur',true)],['CHN',ytdUsd('shanghai','fx_cny')]], v=>sg(v,1)+'%'],
+      moneda:['Moneda contra el dólar en el año', 'La que más se fortaleció arriba', ()=>[['ARG',monY('fx_ars')],['BRA',monY('fx_brl')],['CHL',monY('fx_clp')],['MEX',monY('fx_mxn')],['COL',monY('fx_cop')],['PER',monY('fx_pen')],['URY',monY('fx_uyu')],['CHN',monY('fx_cny')],['DEU',monY('fx_eur',true)]], v=>sg(v,1)+'%']};
+    $('dpaSel').innerHTML = Object.entries(DPA).map(([k,[n]])=>`<button type="button" data-k="${k}" aria-pressed="${k===dpaSel}">${n}</button>`).join('');
+    $('dpaSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ dpaSel = b.dataset.k; gc('donde-argentina-'+dpaSel, true); gMundoExtra(); }));
+    if((dpaSel==='bolsa' || dpaSel==='moneda') && !gHist) loadHist();
+    const [dn, orden, fn, fmt] = DPA[dpaSel], rows = fn().filter(([,v])=>v!=null && isFinite(v)).map(([i,v])=>({iso:i, n: i==='DEU' && dpaSel==='moneda' ? 'Zona euro' : i==='DEU' && dpaSel==='bolsa' ? 'Alemania (DAX)' : GPA[i]||i, v, hl:i==='ARG'})).sort((a,b)=>b.v-a.v);
+    rows.forEach(r=>{ r.c = r.hl ? '--s4' : '--s1'; });
+    hBars($('chDpa'), rows, {aria:dn, vfmt:v=>fmt(v), rh:28});
+    const pos = rows.findIndex(r=>r.hl)+1;
+    $('dpaN').textContent = pos ? `Argentina: ${pos}.º de ${rows.length}` : 'Sin dato de Argentina';
+    $('dpaNota').textContent = `${dn}. ${orden}. ` + ({infl:`Argentina: interanual del INDEC${ai?` (${ai.mes.slice(5)}/${ai.mes.slice(0,4)})`:''}; el resto, Banco Mundial (último año completo).`,
+      crec:'Banco Mundial, último año completo.', desemp:'Banco Mundial, último año completo.',
+      tasa:'BIS. Argentina no figura: el BCRA no tiene hoy una tasa de política monetaria que informe el BIS.',
+      bolsa:'S&P Merval al dólar CCL; S&P 500; Bovespa al real; DAX al euro; Shanghái al yuan. Desde el último cierre del año pasado.',
+      moneda:'Positivo: la moneda se fortaleció contra el dólar; negativo: se devaluó. Argentina: dólar oficial.'})[dpaSel];
+    // cripto
+    const C = g.cripto || [];
+    $('gCrip').innerHTML = C.map((c,i)=>{ const cl = v => v==null ? '' : v>0 ? 'up' : v<0 ? 'dn' : '', p = v => v==null ? '—' : sg(v, Math.abs(v)<10?2:1)+'%';
+      return `<tr><td>${i+1}. ${esc(c.n)}<small>${esc(c.s)}</small></td><td>${nf(c.v, c.v<1?4:c.v<100?2:0)}</td><td class="${cl(c.d1)}">${p(c.d1)}</td><td class="${cl(c.d7)}">${p(c.d7)}</td><td class="${cl(c.a1)}">${p(c.a1)}</td><td>US$ ${c.mcap>=1e12 ? nf(c.mcap/1e12,2)+' billones' : nf(c.mcap/1e9,0)+' mil M'}</td></tr>`; }).join('') || '<tr><td colspan="6">Sin datos todavía.</td></tr>';
+    $('gCripN').textContent = C[0]?.t ? `CoinGecko · ${new Date(C[0].t).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h` : '';
+    // noticias del mundo
+    const N = g.noticias?.items || [], TM = {mercados:'Mercados',bancos:'Bancos centrales',eeuu:'EE.UU.',europa:'Europa',china:'China y Asia',energia:'Energía',comercio:'Comercio'};
+    $('gNwSel').innerHTML = [['','Todas'], ...Object.entries(TM).filter(([k])=>N.some(x=>x.k.includes(k)))].map(([k,n])=>`<button type="button" data-k="${k}" aria-pressed="${k===gNwSel}">${n}</button>`).join('');
+    $('gNwSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ gNwSel = b.dataset.k; gMundoExtra(); }));
+    const ls = N.filter(x=>!gNwSel || x.k.includes(gNwSel)).slice(0,25);
+    $('gNw').innerHTML = ls.map(x=>`<li><a href="${esc(x.u)}" target="_blank" rel="noopener" data-medio="${esc(x.f)}">${esc(x.t)}</a><small>${esc(x.f)} · ${new Date(x.h).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})} h</small></li>`).join('') || '<li>Sin titulares todavía.</li>';
+    $('gNw').querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>gc('noticia-mundo-'+a.dataset.medio, true)));
+    $('gNwN').textContent = N.length ? `${N.length} titulares · ${[...new Set(N.map(x=>x.f))].join(', ')}` : '';
+  }
   function gExtras(){
     const g = glob || {};
     // acciones
@@ -2288,7 +2402,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       // ranking del año
       const yr = (gHist.series.spx||[]).slice(-1)[0]?.[0]?.slice(0,4) || '';
       const mervUsd = (()=>{ const base = [...days].reverse().find(d=>d.fecha < yr+'-01-01' && d.merval && get(d,'ccl')), last = [...days].reverse().find(d=>d.merval && get(d,'ccl')); return base && last ? (last.merval/get(last,'ccl'))/(base.merval/get(base,'ccl'))*100-100 : null; })();
-      const R = [['S&P 500','spx'],['Bovespa','bvsp'],['DAX','dax'],['FTSE 100','ftse'],['Nikkei','nikkei'],['Shanghái','shanghai'],['Oro','oro'],['Petróleo Brent','brent'],['Soja','soja'],['Cobre','cobre'],['Índice dólar','dxy'],['Bitcoin','btc']]
+      const R = [['S&P 500','spx'],['Bovespa','bvsp'],['DAX','dax'],['FTSE 100','ftse'],['Nikkei','nikkei'],['Shanghái','shanghai'],['Oro','oro'],['Petróleo Brent','brent'],['Soja','soja'],['Maíz','maiz'],['Trigo','trigo'],['Cobre','cobre'],['Plata','plata'],['Índice dólar','dxy'],['Bitcoin','btc']]
         .map(([n,k])=>({n, v:gYtd(gSerie(k))})).concat(mervUsd!=null ? [{n:'S&P Merval (US$ CCL)', v:mervUsd, ref:true}] : [])
         .filter(r=>r.v!=null && isFinite(r.v)).sort((a,b)=>b.v-a.v).map(r=>({...r, c: r.v>=0 ? '--pos' : '--neg'}));
       $('gRkT').textContent = `¿Qué rindió más en ${yr}?`;
@@ -2296,6 +2410,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       // VIX
       lineChart($('chVix'), [{pts: gCut(gSerie('vix'), 365), c:'--s4'}], {h:150, yfmt: v=>nf(v,0)});
     }
+    gMundoExtra();
     // monedas
     const M = [['ARS','Peso argentino (oficial)','fx_ars'],['BRL','Real brasileño','fx_brl'],['CLP','Peso chileno','fx_clp'],['MXN','Peso mexicano','fx_mxn'],['COP','Peso colombiano','fx_cop'],['PEN','Sol peruano',null],['UYU','Peso uruguayo',null],['CNY','Yuan chino',null],['EUR','Euro',null]];
     $('gMon').innerHTML = M.filter(([k])=>g.monedas?.[k]).map(([k,n,h])=>{ const m = g.monedas[k], inv = k==='EUR', v = inv ? 1/m.v : m.v, pv = inv ? 1/m.prev : m.prev, d = (v/pv-1)*100, y = h && gHist ? gYtd(gSerie(h)) : null;
@@ -2402,7 +2517,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('uMag').innerHTML = M.length ? `<tr><th>Empresa</th><th>Precio</th><th>Hoy</th><th>Valor de mercado</th></tr>` + M.map(x=>{ const p = gpc(x); return `<tr><td style="font-family:var(--sans);text-align:left">${esc(x.n)}</td><td>US$ ${nf(x.v,2)}</td><td class="${p>0?'up':p<0?'dn':''}">${p==null?'—':sg(p,2)+'%'}</td><td>${(()=>{ const m = String(x.mcap||''), n = parseFloat(m), u = m.slice(-1); return !isFinite(n) ? '—' : u==='T' ? 'US$ '+nf(n,2)+' billones' : u==='B' ? 'US$ '+nf(n,0)+' mil millones' : esc(m); })()}</td></tr>`; }).join('') : '';
     // decisiones de la Fed
     $('uFed').innerHTML = f?.decisiones?.length ? `<tr><th>Reunión</th><th>Decisión</th><th>Rango</th></tr>` + f.decisiones.map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.fecha)}</td><td class="${d>0?'dn':d<0?'up':''}">${Math.abs(d)<1e-9?'= mantuvo':(d>0?'▲ subió ':'▼ bajó ')+nf(Math.abs(d),2)}</td><td>${nf(x.despues-0.125,2)} – ${nf(x.despues+0.125,2)}%</td></tr>`; }).join('') : '';
-    $('uFuente').textContent = `Fuentes: Tesoro de EE.UU. (deuda y curva de tasas), BLS (inflación, empleo y desempleo por estado), Reserva Federal vía BIS (tasa), CNBC (sectores y acciones, con demora). Población para la deuda por habitante: 342 millones (estimación de la Oficina del Censo). Actualizado: ${new Date(usa.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} h.`;
+    $('uFuente').textContent = `Fuentes: Tesoro de EE.UU. (deuda y curva de tasas), BLS (inflación, empleo y desempleo por estado), Reserva Federal vía BIS (tasa), CNBC (sectores y acciones, con demora). Población para la deuda por habitante: 342 millones (estimación de la Oficina del Censo). Actualizado: ${new Date(usa.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
     usaMapDraw();
   }
   G.vista = 'mundo';
