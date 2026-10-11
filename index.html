@@ -50,7 +50,7 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 .stamp b{color:var(--ink);font-weight:600}
 @media (max-width:600px){.stamp{text-align:left}}
 
-.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;margin-block:-8px}
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);max-width:100%;min-width:0;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tabs a{font-weight:600;font-size:15px;color:var(--ink2);text-decoration:none;padding:8px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
@@ -347,6 +347,36 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 @media (max-width:900px){.split,.gtop.duo{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:520px){.go small,.ph code{display:none}.kc .v{font-size:16px}.ph h2{font-size:19px}.pane{padding:14px}}
 @media (prefers-reduced-motion:reduce){.term div{opacity:1}}
+/* Portada simple (puertas) y navegación con píldoras */
+.modo button svg{width:16px;height:16px;vertical-align:-3px;margin-right:6px}
+.hello{display:grid;gap:4px}.hello h2{margin:0;font-size:26px;font-weight:700;letter-spacing:-.01em}.hello p{margin:0;color:var(--ink2)}
+.door{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:16px;align-content:start;min-width:0}
+.door.ar{border-top:4px solid #74acdf}.door.gl{border-top:4px solid #3fd0c0}
+.dh{display:flex;gap:14px;align-items:center}.dh .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none}.dh .ic svg{width:28px;height:28px}
+.ar .dh .ic{background:#16283a}.gl .dh .ic{background:#0d2a28;color:#3fd0c0}
+.dh h2{margin:0;font-size:24px;font-weight:700}.dh p{margin:2px 0 0;color:var(--ink2);font-size:14px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;background:var(--sunk);border:1px solid var(--line);border-radius:11px;padding:13px 14px;text-decoration:none;color:var(--ink);min-height:70px}
+.tile:hover,.tile:focus-visible{border-color:#74acdf;background:#162231}.gl .tile:hover,.gl .tile:focus-visible{border-color:#3fd0c0;background:#0f2422}
+.tile svg{width:24px;height:24px;grid-row:span 2;color:#74acdf}.gl .tile svg{color:#3fd0c0}
+.tile b{font-size:15.5px;font-weight:600}.tile span{grid-column:2;font-size:12.5px;color:var(--muted);line-height:1.35}.tile i{grid-row:1/3;grid-column:3;color:var(--muted);font-style:normal;font-size:18px}
+.tile.big{grid-column:1/-1}
+.hoy{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hoy div{background:var(--sunk);border-radius:9px;padding:8px 10px;display:grid;gap:1px;min-width:0}.hoy small{font-size:11.5px;color:var(--muted)}.hoy b{font:500 15px var(--mono)}.hoy i{font:normal 11px var(--mono)}.hoy i.up{color:var(--pos)}.hoy i.dn{color:var(--neg)}
+.sub2{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin:0 0 -6px}
+.gmini{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center}.gmini .globe.dglobe{max-height:260px}
+.gmini .sum{font-size:13.5px;color:var(--ink2);display:grid;gap:6px}.gmini .sum b{color:var(--ink)}.gmini .sum .up{color:var(--pos)}.gmini .sum .dn{color:var(--neg)}
+.crumb{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);flex-wrap:wrap;width:100%}.crumb a{color:var(--accent);text-decoration:none}.crumb b{color:var(--ink)}
+.tabs.pills{display:flex;flex-wrap:wrap;gap:8px;border-bottom:0;overflow:visible}
+.tabs.pills a{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;margin:0;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);font-weight:600;font-size:14.5px}
+.tabs.pills a svg{width:18px;height:18px;flex:none}.tabs.pills a:hover{color:var(--ink);border-color:var(--accent)}
+.tabs.pills a[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+#segRange::before{content:"Período de los gráficos";align-self:center;font-size:12.5px;color:var(--muted);padding:0 8px 0 4px}
+.here{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}.here h2{margin:0 0 2px;font-size:18px}.here p{margin:0;color:var(--ink2);font-size:14px}
+@media (max-width:860px){.gmini{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.tiles{grid-template-columns:minmax(0,1fr)}.hoy{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs.pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.tabs.pills a{justify-content:center;padding:9px 8px;font-size:13.5px;white-space:normal;text-align:center}
+  .hello h2{font-size:22px}.door{padding:16px}.modo a{font-size:12.5px}}
 </style>
 
 <div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
@@ -359,7 +389,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p>La economía argentina y el mundo en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
     </div>
     <div class="hright">
-      <div class="modo" id="modo" role="group" aria-label="Sección"><button type="button" data-m="arg" aria-pressed="false">Argentina</button><button type="button" data-m="glo" aria-pressed="false">Global</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
+      <div class="modo" id="modo" role="group" aria-label="Sección"><button type="button" data-m="arg" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-m="glo" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
       <div class="stamp" id="stamp">Cargando datos…</div>
     </div>
   </header>
@@ -370,7 +400,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   </section>
 
   <div class="bar" id="bar">
-    <nav class="tabs" id="tabsNav" role="tablist" aria-label="Secciones">
+    <div class="crumb" id="crumb"></div>
+    <nav class="tabs pills" id="tabsNav" role="tablist" aria-label="Secciones">
       <a href="#dolares" role="tab" id="tabD" data-g="arg" aria-selected="true">Dólares</a>
       <a href="#macro" role="tab" id="tabM" data-g="arg" aria-selected="false">Macro</a>
       <a href="#dinero" role="tab" id="tabN" data-g="arg" aria-selected="false">Dinero</a>
@@ -389,21 +420,23 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <button type="button" data-r="0">Todo</button>
     </div>
   </div>
+  <div class="here" id="here" hidden></div>
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
+    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p></div>
     <div class="split">
-      <section class="pane">
-        <div class="ph"><h2>ARGENTINA</h2><code>MACRO · DINERO · FISCAL · MERCADO</code></div>
-        <div class="kp" id="pKp"></div>
-        <div class="term" id="pTerm"></div>
-        <a class="go" href="#dolares">Entrar a Argentina <small>Dólares, Macro, Dinero, Fiscal, Mercado, Noticias, Calculadoras →</small></a>
+      <section class="door ar">
+        <div class="dh"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg></div><div><h2>Argentina</h2><p>La economía de acá: dólar, inflación, tasas, bolsa y más</p></div></div>
+        <div class="tiles" id="tilesA"></div>
+        <p class="sub2">Hoy en números</p>
+        <div class="hoy" id="pHoy"></div>
       </section>
-      <section class="pane">
-        <div class="ph"><h2>GLOBAL</h2><code>MUNDO HOY · BOLSAS EN EL DÍA</code></div>
-        <div class="globe dglobe"><canvas id="pCv" aria-label="Globo con las bolsas del mundo"></canvas><div class="ghud" id="pHud"></div></div>
-        <div class="term" id="pTerm2"></div>
-        <a class="go" href="#global">Entrar a Global <small>Mundo, Estados Unidos →</small></a>
+      <section class="door gl">
+        <div class="dh"><div class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg></div><div><h2>El mundo</h2><p>Bolsas, monedas y economías de otros países</p></div></div>
+        <div class="tiles" id="tilesG"></div>
+        <p class="sub2">Hoy en el mundo</p>
+        <div class="gmini"><div class="globe dglobe"><canvas id="pCv" aria-label="Globo con las bolsas del mundo"></canvas><div class="ghud" id="pHud" hidden></div></div><div class="sum" id="pTerm2"></div></div>
       </section>
     </div>
   </section>
@@ -1818,6 +1851,33 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // ---- shell ----
   const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
+  // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
+  const ICO = {
+    dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
+    macro:'<path d="M3 20h18M5 16l4-5 4 3 6-8"/><circle cx="19" cy="6" r="1.3"/>',
+    dinero:'<path d="M3 9l9-5 9 5M5 9v9M10 9v9M14 9v9M19 9v9M3 20h18"/>',
+    fiscal:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
+    noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
+    calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
+    global:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>',
+    eeuu:'<path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.5-4 6-.6z"/>'};
+  const SECC = {
+    dolares:['Dólares','Todas las cotizaciones, las brechas y su historia'],
+    macro:['Inflación y reservas','Inflación, lo que esperan los analistas, reservas del BCRA y riesgo país'],
+    dinero:['Tasas y pesos','Plazo fijo, tasas y cuánta plata circula'],
+    fiscal:['Cuentas del Estado','Si el Estado gasta más o menos de lo que recauda, y el comercio exterior'],
+    mercado:['Bolsa y bonos','S&P Merval, acciones y bonos argentinos'],
+    noticias:['Noticias','Los titulares de economía del día'],
+    calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación y sueldo en dólares'],
+    global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
+    eeuu:['Estados Unidos','La Fed, empleo, inflación, deuda y Wall Street'],
+    sobre:['Sobre Pulso Macro','Quién lo hace, por qué y de dónde salen los datos']};
+  const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
+  document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
+  const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
+  $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1)).join('');
+  $('tilesG').innerHTML = ['global','eeuu'].map(k=>tile(k)).join('');
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
@@ -1832,6 +1892,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let selA = null;
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
+    $('crumb').innerHTML = grp ? `<a href="#" id="crumbHome">← Inicio</a><span>/</span><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b>` : '';
+    const cr = $('crumbHome'); if(cr) cr.addEventListener('click', e=>{ e.preventDefault(); irPortada(); });
+    const hk = grp ? key : (tab==='sobre' ? 'sobre' : null);
+    $('here').hidden = !hk || tab==='sobre'; if(hk && SECC[hk]) $('here').innerHTML = `<h2>${SECC[hk][0]}</h2><p>${SECC[hk][1]}</p>`;
     document.querySelectorAll('#modo button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.m===grp)));
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada'].includes(tab);
@@ -2091,14 +2155,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const z = v==null ? 1.4 : 2.2; ctx.fillRect(p[0]-z/2, p[1]-z/2, z, z); }
     const items = dgItems(S.layer), pulse = (now%2000)/2000;
     ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.textBaseline = 'middle';
-    for(const [k,n,v,ll] of items){ if(d3.geoDistance(ll, c0) > Math.PI/2-.15) continue; const p = proj(ll), col = v>=0 ? '76,195,138' : '240,122,112';
+    for(const [k,n,v,ll] of (W>330 ? items : [])){ if(d3.geoDistance(ll, c0) > Math.PI/2-.15) continue; const p = proj(ll), col = v>=0 ? '76,195,138' : '240,122,112';
       ctx.beginPath(); ctx.arc(p[0], p[1], 3+pulse*9, 0, 7); ctx.strokeStyle = `rgba(${col},${1-pulse})`; ctx.lineWidth = 1; ctx.stroke();
       ctx.beginPath(); ctx.arc(p[0], p[1], 2.6, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill();
       const t = `${n} ${sg(v,2)}%`, tw = ctx.measureText(t).width, dy = DG_DY[k] || 0, x0 = DG_LEFT.includes(k) ? p[0]-tw-15 : p[0]+7;
       ctx.fillStyle = 'rgba(3,13,12,.82)'; ctx.fillRect(x0, p[1]-8+dy, tw+8, 16); ctx.fillStyle = `rgb(${col})`; ctx.fillText(t, x0+4, p[1]+dy); }
     const su = items.filter(x=>x[2]>0).length, ba = items.filter(x=>x[2]<0).length, f = items.map(x=>x[4]).sort().pop();
     const h = `CAPA <b>${S.layer==='bolsa' ? 'BOLSAS EN EL DÍA' : 'MONEDAS CONTRA EL DÓLAR'}</b><br><b style="color:var(--pos)">${su} SUBEN</b> · <b style="color:var(--neg)">${ba} BAJAN</b>${f ? `<br>DATOS AL <b>${fds(f)}</b>` : ''}`;
-    if(S.hudH !== h){ S.hudH = h; $(S.hud).innerHTML = h; }
+    if(S.hudH !== h && !$(S.hud).hidden){ S.hudH = h; $(S.hud).innerHTML = h; }
     requestAnimationFrame(t=>dgDraw(S,t));
   }
   function dgHint(){ const S = DGS.dCv, l = S ? S.layer : 'bolsa';
@@ -2111,32 +2175,23 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const spark = (pts, ok) => { if(pts.length<2) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*200, Y = x=>32-(x-mn)/(mx-mn||1)*28;
       return `<svg viewBox="0 0 200 34" preserveAspectRatio="none" aria-hidden="true"><path d="${v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join('')}" fill="none" style="stroke:var(${ok?'--pos':'--neg'})" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`; };
     const kc = (l, v, d, ok, pts) => `<div class="kc"><span class="l">${l}</span><span class="v">${v}</span><span class="d ${ok?'up':'dn'}">${d}</span>${spark(pts||[], ok)}</div>`;
-    const N = 63, rp = series('riesgo').slice(-N), rs = series('reservas').slice(-N), mv = series('merval').slice(-N), im = months.filter(m=>m.infl!=null).slice(-13);
-    const L = a => a[a.length-1][1], k = [];
-    if(rp.length>1){ const d = L(rp)-rp[0][1]; k.push(kc('RIESGO PAÍS', nf(L(rp),0)+' pb', `${sg(d,0)} pb en 3 meses`, d<=0, rp)); }
-    if(rs.length>1){ const d = L(rs)/rs[0][1]-1; k.push(kc('RESERVAS', `US$ ${nf(L(rs)/1000,1)} mil M`, `${pc(d,1)} en 3 meses`, d>=0, rs)); }
-    if(mv.length>1){ const d = L(mv)/mv[0][1]-1; k.push(kc('S&amp;P MERVAL', nf(L(mv),0), `${pc(d,1)} en 3 meses`, d>=0, mv)); }
-    if(im.length>1){ const a = im[im.length-1], b = im[im.length-2]; k.push(kc('INFLACIÓN', nf(a.infl,1)+'% mensual', `${a.inflYoY!=null ? nf(a.inflYoY,1)+'% interanual · ' : ''}${a.mes.slice(5)}/${a.mes.slice(0,4)}`, a.infl<=b.infl, im.map(m=>[m.mes, m.infl]))); }
-    $('pKp').innerHTML = k.join('') || '<p class="empty">Cargando datos…</p>';
-    const lt = k => { const p = cardSeries(k).pts; return p.length ? p[p.length-1][1] : null; };
-    const of = lt('oficial'), cc = lt('ccl'), mp = lt('mep'), tj = lt('tarjeta'), lines = [];
-    if(days.length) lines.push(`<span class="ok">●</span> CONECTADO · BCRA · INDEC · ÁMBITO · DATOS AL <b>${fd(days[days.length-1].fecha)}</b>`);
-    if(of && cc) lines.push(`&gt; brecha CCL/oficial: <b>${pc(cc/of-1,1).replace(/^\+/,'')}</b>`);
-    if(cc && mp) lines.push(`&gt; canje CCL/MEP: <b>${pc(cc/mp-1,2).replace(/^\+/,'')}</b>`);
-    const y = days.length ? days[days.length-1].fecha.slice(0,4) : '', co = days.filter(d=>d.fecha.startsWith(y) && d.compras!=null);
-    if(co.length){ const t = co.reduce((a,d)=>a+d.compras,0); lines.push(`&gt; BCRA ${t>=0?'compró':'vendió'} en ${y}: <b class="${t>=0?'up':'dn'}">US$ ${nf(Math.abs(t),0)} M</b>`); }
-    const pf = series('pf'); if(pf.length) lines.push(`&gt; plazo fijo 30 días: <b>${nf(L(pf),1)}% TNA</b>`);
-    if(of && tj) lines.push(`&gt; dólar tarjeta / oficial: <b>${nf(tj/of,2)}x</b>`);
-    const h1 = lines.map((x,i)=>`<div style="animation-delay:${i*.45}s">${x}</div>`).join('');
-    if($('pTerm').dataset.h !== h1){ $('pTerm').dataset.h = h1; $('pTerm').innerHTML = h1; }
+    const L = a => a[a.length-1][1], P = a => a[a.length-2][1], h = [];
+    const rp = series('riesgo'), rs = series('reservas'), mv = series('merval'), im = months.filter(m=>m.infl!=null);
+    const cel = (n, v, d) => `<div><small>${n}</small><b>${v}</b>${d}</div>`;
+    const dd = (x, txt, bad) => `<i class="${Math.abs(x)<1e-9 ? '' : (x>0)!==!!bad ? 'up' : 'dn'}">${txt}</i>`;
+    if(rp.length>1) h.push(cel('Riesgo país', nf(L(rp),0)+' pb', dd(L(rp)-P(rp), `${sg(L(rp)-P(rp),0)} pb en el día`, true)));
+    if(im.length){ const a = im[im.length-1]; h.push(cel('Inflación del mes', nf(a.infl,1)+'%', `<i style="color:var(--muted)">${a.inflYoY!=null ? nf(a.inflYoY,1)+'% en 12 meses' : a.mes}</i>`)); }
+    if(rs.length>1) h.push(cel('Reservas', `US$ ${nf(L(rs)/1000,1)} mil M`, dd(L(rs)-P(rs), `${sg(L(rs)-P(rs),0)} M en el día`)));
+    if(mv.length>1) h.push(cel('S&amp;P Merval', nf(L(mv),0), dd(L(mv)/P(mv)-1, `${pc(L(mv)/P(mv)-1,2)} en el día`)));
+    $('pHoy').innerHTML = h.join('') || '<p class="empty">Cargando datos…</p>';
     const it = glob ? dgItems('bolsa') : [];
-    if(it.length){ const su = it.filter(x=>x[2]>0).length, best = it.reduce((a,x)=>x[2]>a[2]?x:a), worst = it.reduce((a,x)=>x[2]<a[2]?x:a);
-      const mo = Object.keys(DG_CURPOS).map(c=>[c, dgMon(c)]).filter(x=>x[1]!=null);
-      const h2 = [`<span class="ok">●</span> ${it.length} BOLSAS · <b class="up">${su} SUBEN</b> · <b class="dn">${it.length-su} BAJAN</b>`,
-        `&gt; mejor: <b>${esc(best[1])} <span class="up">${sg(best[2],2)}%</span></b> · peor: <b>${esc(worst[1])} <span class="${worst[2]<0?'dn':'up'}">${sg(worst[2],2)}%</span></b>`,
-        mo.length ? `&gt; monedas que se fortalecen contra el dólar: <b>${mo.filter(x=>x[1]>0).length} de ${mo.length}</b>` : ''].filter(Boolean).map((x,i)=>`<div style="animation-delay:${i*.45}s">${x}</div>`).join('');
+    if(it.length){ const su = it.filter(x=>x[2]>0).length, best = it.reduce((a,x)=>x[2]>a[2]?x:a), worst = it.reduce((a,x)=>x[2]<a[2]?x:a), f = it.map(x=>x[4]).sort().pop();
+      const h2 = `<div><b class="${su>=it.length/2?'up':'dn'}">${su} de ${it.length}</b> bolsas del mundo subieron${f ? ` en su último día (${fds(f)})` : ''}.</div>
+        <div>La que más subió: <b>${esc(best[1])}</b> <span class="up">${sg(best[2],2)}%</span></div>
+        <div>La que más bajó: <b>${esc(worst[1])}</b> <span class="${worst[2]<0?'dn':'up'}">${sg(worst[2],2)}%</span></div>
+        <div style="color:var(--muted);font-size:12.5px">En el globo: verde sube, rojo baja. Tocá "Mundo" para ver todo.</div>`;
       if($('pTerm2').dataset.h !== h2){ $('pTerm2').dataset.h = h2; $('pTerm2').innerHTML = h2; } }
-    else if(!$('pTerm2').dataset.h) $('pTerm2').innerHTML = '<div style="opacity:1">Cargando mercados del mundo…</div>';
+    else if(!$('pTerm2').dataset.h) $('pTerm2').innerHTML = '<div>Cargando mercados del mundo…</div>';
     dgStart('pCv','pHud');
   }
   async function loadHist(){
