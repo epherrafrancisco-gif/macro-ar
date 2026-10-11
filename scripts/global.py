@@ -139,7 +139,7 @@ def imf(prev):
                     mejor[iso] = (y, v)
             if mejor:
                 for iso, (y, v) in mejor.items():
-                    out.setdefault(iso, {})[campo] = round(float(v), 2)
+                    out.setdefault(iso, {})[campo] = round(float(v) / (1e9 if campo == "pbi" else 1), 2)
                 anios = sorted(y for y, _ in mejor.values())
                 fuentes[campo] = {"f": "Banco Mundial", "anio": int(anios[len(anios) // 2])}
                 ok += 1
@@ -235,6 +235,32 @@ def yahoo_spark(syms):
     return out
 
 
+CNBC = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "bvsp": ".BVSP", "dax": ".GDAXI", "ftse": ".FTSE",
+        "nikkei": ".N225", "shanghai": ".SSEC", "t10": "US10Y", "dxy": ".DXY", "oro": "@GC.1", "brent": "@LCO.1",
+        "wti": "@CL.1", "soja": "@S.1", "maiz": "@C.1", "trigo": "@W.1", "cobre": "@HG.1"}
+
+
+def cnbc():
+    """Cotizaciones públicas de CNBC (un solo pedido, sin clave)."""
+    syms = "|".join(CNBC.values())
+    j = json.loads(get("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
+                       + urllib.request.quote(syms, safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1",
+                       tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
+    q = ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []
+    num = lambda x: float(str(x).replace(",", "").replace("%", "").strip())
+    por = {r.get("symbol"): r for r in q}
+    out = {}
+    for k, sym in CNBC.items():
+        r = por.get(sym)
+        try:
+            out[k] = (num(r["last"]), num(r["previous_day_closing"]), str(r.get("last_time") or ""))
+        except Exception:  # noqa: BLE001
+            continue
+    if not out:
+        raise ValueError("sin cotizaciones")
+    return out
+
+
 def frankfurter():
     """Monedas del BCE (Frankfurter): EUR, BRL y CNY contra el dólar, último y anterior."""
     hoy = date.today()
@@ -261,7 +287,7 @@ def mercados(prev):
     for k, _, _, ys, *_ in MERCADOS:
         if ys in spark:
             datos[k], fuente[k] = spark[ys], "Yahoo"
-    for nombre, fn in (("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
+    for nombre, fn in (("CNBC", cnbc), ("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
         try:
             for k, d in fn().items():
                 if k not in datos:
