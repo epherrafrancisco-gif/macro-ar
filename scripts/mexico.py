@@ -52,7 +52,7 @@ def filas(txt):
             pts.append([t, float(v)])
         except ValueError:
             continue
-    pts = sorted(p for p in pts if p[0] <= hoy)
+    pts = sorted(p for p in pts if "-Q" in p[0] or p[0] <= hoy)  # los trimestres ("2026-Q2") no se comparan con fechas
     if not pts:
         raise ValueError("sin datos")
     return pts
