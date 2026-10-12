@@ -34,7 +34,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
-  El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`) y `#brasil`; `#sobre`.
+  El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
+  y `#mexico`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -83,8 +84,19 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Fuentes: BCE `data-api.ecb.europa.eu` (FM tasa de depósito, EXR euro, IRS bonos 10 años mensual, LFSI I9 desempleo
   zona euro) y Eurostat (`prc_hicp_minr`: desde 2026 el HICP usa ECOICOP 2 y el viejo `prc_hicp_manr` quedó en 12/2025;
   `une_rt_m` países; `namq_10_gdp`). europa.py descarta series atrasadas (más de 5 meses; PBI 8) en vez de mostrarlas.
-- Próximo: "Latinoamérica" (México y Chile con detalle + comparación regional). Banxico y el Banco Central de Chile piden
-  registrarse gratis para una clave.
+
+### México (`#mexico`, sección `vX`, `renderMexico`, datos `mexico.json` de scripts/mexico.py en `global.yml`)
+- Pedido del dueño: cada país con su propia sección (Brasil, Europa, México, ...), NO agrupar en "Latinoamérica".
+- Arriba siempre: peso mexicano por dólar (BIS completado con CNBC `fx_mxn`/`monedas.MXN`; con clave, FIX), un peso mexicano
+  en pesos (mayorista ÷ dólar en México del mismo día), tasa de Banxico con cuenta regresiva (`BCAL` MEX), inflación,
+  desempleo e IPC México. Apartados (`#gSubX`, `SUBS.X`): Economía (inflación 12 meses y del mes, PBI trimestral,
+  desempleo; remesas y reservas solo con clave) · Tasas y bonos (Banxico vs inflación, decisiones sacadas de los cambios,
+  bono a 10 años vs EE.UU. con `mx10`/`t10`) · Mercados y el peso (peso/dólar, peso en pesos, IPC `mxx`, ADR `acciones.mex`).
+- Fuentes sin clave: BIS (WS_CBPOL D.MX, WS_XRU D.MX.MXN.A, WS_LONG_CPI M.MX.771 y .628; viene con ~1 mes de atraso) y
+  OCDE (`sdmx.oecd.org`: DF_IALFS_UNE_M desempleo, DF_QNA_EXPENDITURE_GROWTH_OECD PBI G1/GY; los períodos "2026-Q2" no se
+  comparan con fechas). Banxico SIE pide clave (secreto opcional `BANXICO_TOKEN`: FIX SF43718, reservas SF43707,
+  remesas SE27803). INEGI pide clave; Frankfurter y FRED dan timeout desde Actions.
+- Próximo posible: Chile (el Banco Central de Chile pide registrarse para una clave).
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
@@ -122,7 +134,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
 - Chequeo diario del sitio publicado (`chequeo-sitio.yml` + `scripts/chequeo.mjs`, L a V 19:43 ART): si hay problemas
   graves abre un issue (avisa por mail al dueño) y lo cierra solo cuando se arregla. Revisa también la portada.
-- Secreto del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.). Si falta, la tarjeta de PBI no aparece.
+- Secretos del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.; si falta, la tarjeta de PBI no aparece) y
+  `BANXICO_TOKEN` (opcional, SIE de Banxico; si falta, México no muestra remesas, reservas ni FIX).
+- `global.yml` tiene 20 min de límite: cuando se suman claves a `HIST`, global.py vuelve a bajar toda la historia (~6 min).
 
 ## Fuentes (verificadas desde Actions)
 - Ámbito `https://mercados.ambito.com//<ruta>/historico-general/DESDE/HASTA` (el rango EXCLUYE HASTA; rutas
