@@ -1,0 +1,423 @@
+{
+ "bis_cbpol_PE": [
+  [
+   "2026-09-30",
+   "4.25"
+  ],
+  [
+   "2026-10-01",
+   "4.25"
+  ],
+  [
+   "2026-10-02",
+   "4.25"
+  ]
+ ],
+ "bis_cpi_PE": [
+  [
+   "2026-06",
+   "4.0089096567"
+  ],
+  [
+   "2026-07",
+   "4.0651139603"
+  ],
+  [
+   "2026-08",
+   "4.437809298"
+  ]
+ ],
+ "oecd_une_PER": "<HTTPError 404: 'Not Found'>",
+ "oecd_gdp_PER": "<HTTPError 404: 'Not Found'>",
+ "bis_cbpol_IN": "<HTTPError 404: ''>",
+ "bis_cpi_IN": [
+  [
+   "2026-05",
+   "3.935231"
+  ],
+  [
+   "2026-06",
+   "4.38006"
+  ],
+  [
+   "2026-07",
+   "4.441219"
+  ]
+ ],
+ "oecd_une_IND": "<HTTPError 404: 'Not Found'>",
+ "oecd_gdp_IND": [
+  [
+   "2025-Q4",
+   "1.8322"
+  ],
+  [
+   "2026-Q1",
+   "2.11701"
+  ],
+  [
+   "2026-Q2",
+   "1.78847"
+  ]
+ ],
+ "bis_cbpol_UY": "<HTTPError 404: ''>",
+ "bis_cpi_UY": "<HTTPError 404: ''>",
+ "oecd_une_URY": "<HTTPError 404: 'Not Found'>",
+ "oecd_gdp_URY": "<HTTPError 404: 'Not Found'>",
+ "bis_xru_PE": [
+  [
+   "2026-09-30",
+   "3.433"
+  ],
+  [
+   "2026-10-01",
+   "3.4505"
+  ],
+  [
+   "2026-10-02",
+   "NaN"
+  ]
+ ],
+ "bis_xru_IN": [
+  [
+   "2026-10-02",
+   "96.324722"
+  ],
+  [
+   "2026-10-05",
+   "96.297305"
+  ],
+  [
+   "2026-10-06",
+   "96.425149"
+  ]
+ ],
+ "bis_xru_UY": [
+  [
+   "2026-09-30",
+   "40.286"
+  ],
+  [
+   "2026-10-01",
+   "40.463"
+  ],
+  [
+   "2026-10-02",
+   "40.342"
+  ]
+ ],
+ "pe_tasa": [
+  "Tasas de interés del Banco Central de Reserva - Tasa de Referencia de la Política Monetaria",
+  [
+   {
+    "name": "Ago.2026",
+    "values": [
+     "4.25"
+    ]
+   },
+   {
+    "name": "Sep.2026",
+    "values": [
+     "4.25"
+    ]
+   }
+  ]
+ ],
+ "pe_infl12": [
+  "Índice de precios Lima Metropolitana (var% 12 meses) - IPC",
+  [
+   {
+    "name": "Ago.2026",
+    "values": [
+     "4.43780929778608"
+    ]
+   },
+   {
+    "name": "Sep.2026",
+    "values": [
+     "4.54865469481509"
+    ]
+   }
+  ]
+ ],
+ "pe_tc": [
+  "Tipo de cambio - TC Sistema bancario SBS (S/ por US$) - Venta",
+  [
+   {
+    "name": "30.Nov.26",
+    "values": [
+     "n.d."
+    ]
+   },
+   {
+    "name": "01.Dic.26",
+    "values": [
+     "n.d."
+    ]
+   }
+  ]
+ ],
+ "pe_pbi": [
+  "Producto bruto interno y demanda interna (variación porcentual interanual) - PBI",
+  [
+   {
+    "name": "Jun.2026",
+    "values": [
+     "1.7513508584607"
+    ]
+   },
+   {
+    "name": "Jul.2026",
+    "values": [
+     "3.5592604174106"
+    ]
+   }
+  ]
+ ],
+ "pe_desemp": [
+  "Empleo Mensual en Lima Metropolitana - Promedio móvil tres meses (porcentaje) - Tasa de Desempleo (%)",
+  [
+   {
+    "name": "Jul.2026",
+    "values": [
+     "4.68136660632325"
+    ]
+   },
+   {
+    "name": "Ago.2026",
+    "values": [
+     "4.80377918575145"
+    ]
+   }
+  ]
+ ],
+ "pe_reservas": [
+  "Cuentas monetarias del Banco Central de Reserva del Perú - Reservas Internacionales Netas (millones S/)",
+  [
+   {
+    "name": "Ago.2026",
+    "values": [
+     "324300.163606"
+    ]
+   },
+   {
+    "name": "Sep.2026",
+    "values": [
+     "316175.73142"
+    ]
+   }
+  ]
+ ],
+ "uy_bcu_tpm": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)",
+ "uy_ine_ipc": "<HTTPError 404: 'Not Found'>",
+ "cnbc": [
+  [
+   ".NSEI",
+   "NIFTY 50",
+   "22,363.35"
+  ],
+  [
+   ".BSESN",
+   null,
+   null
+  ],
+  [
+   "INR=",
+   "US Dollar/Indian Rupee FX Spot Rate",
+   "95.77"
+  ],
+  [
+   "IN10Y",
+   "Indian 10-Year",
+   "7.386%"
+  ],
+  [
+   "IN2Y",
+   null,
+   null
+  ],
+  [
+   "INFY",
+   "Infosys Limited",
+   "10.77"
+  ],
+  [
+   "HDB",
+   "HDFC Bank Limited",
+   "22.55"
+  ],
+  [
+   "IBN",
+   "ICICI Bank Limited",
+   "28.02"
+  ],
+  [
+   "WIT",
+   "Wipro Limited",
+   "1.71"
+  ],
+  [
+   "RDY",
+   "Dr. Reddy's Laboratories Limited",
+   "12.90"
+  ],
+  [
+   "MMYT",
+   "MakeMyTrip Limited",
+   "44.10"
+  ],
+  [
+   "INDA",
+   "iShares MSCI India ETF",
+   "46.35"
+  ],
+  [
+   "PEN=",
+   "US Dollar/Peruvian Sol FX Spot Rate",
+   "3.4381"
+  ],
+  [
+   ".SPBLPGPT",
+   "S&P/BVL Peru General Index",
+   null
+  ],
+  [
+   "EPU",
+   "iShares MSCI Peru ETF",
+   "90.72"
+  ],
+  [
+   "BAP",
+   "Credicorp Ltd",
+   "382.52"
+  ],
+  [
+   "SCCO",
+   "Southern Copper Corp",
+   "207.36"
+  ],
+  [
+   "BVN",
+   "Compania de Minas Buenaventura SAA",
+   "32.27"
+  ],
+  [
+   "IFS",
+   "Intercorp Financial Services Inc",
+   "53.60"
+  ],
+  [
+   "UYU=",
+   "US Dollar/Uruguayan New Peso FX Spot Rate",
+   "40.21"
+  ],
+  [
+   "PE10Y",
+   null,
+   null
+  ],
+  [
+   "PE10Y-PE",
+   null,
+   null
+  ],
+  [
+   "UY10Y",
+   null,
+   null
+  ]
+ ],
+ "hist_.NSEI": 495,
+ "hist_INR=": 520,
+ "hist_IN10Y": 0,
+ "hist_.SPBLPGPT": 219,
+ "hist_EPU": 499,
+ "hist_PEN=": 525,
+ "rss_gestion": {
+  "total": 38,
+  "48h": 38,
+  "ej": [
+   "Fénix espera hasta triplicar su capacidad en Perú y evalúa su cartera de proyectos",
+   "Claro lidera la portabilidad móvil en setiembre: ¿cómo les fue a Movistar y Bitel?",
+   "Unión Europea: “Creemos que Perú es clave y es el momento para elevar nuestra ambición”",
+   "Claro lideró portabilidad numérica en septiembre: ¿cómo les fue a las otras operadoras?",
+   "LATAM pone a Perú entre sus opciones para expandir aviones de la nueva generación de Embraer"
+  ]
+ },
+ "rss_gestion2": {
+  "total": 38,
+  "48h": 38,
+  "ej": [
+   "Fénix espera hasta triplicar su capacidad en Perú y evalúa su cartera de proyectos",
+   "Claro lidera la portabilidad móvil en setiembre: ¿cómo les fue a Movistar y Bitel?",
+   "Unión Europea: “Creemos que Perú es clave y es el momento para elevar nuestra ambición”",
+   "Claro lideró portabilidad numérica en septiembre: ¿cómo les fue a las otras operadoras?",
+   "LATAM pone a Perú entre sus opciones para expandir aviones de la nueva generación de Embraer"
+  ]
+ },
+ "rss_elcomercio_eco": {
+  "total": 13,
+  "48h": 13,
+  "ej": [
+   "Precio del dólar en Perú hoy: apertura del tipo de cambio, lunes 12 de octubre",
+   "Apenas el 17% de los puntos críticos por el Fenómeno El Niño tiene intervenciones en ejecución",
+   "Nobel de Economía a Hall y Woodford por fundamentos micro de estabilización macroecnómica",
+   "La IA agnóstica",
+   "Luis Felipe Gazitúa, del Consejo Empresarial Chileno- Peruano: “El principal destino de la inversión extranjera chilena es el Perú”"
+  ]
+ },
+ "rss_larepublica_pe": {
+  "total": 7,
+  "48h": 7,
+  "ej": [
+   "Precio del dólar hoy en Perú, lunes 12 de octubre: consulta el tipo de cambio para compra y venta",
+   "Julio Velarde defiende la meta de inflación de 2% y rechaza que controlar los precios frene el crecimiento",
+   "AFP: informalidad superior al 60% en ciudades del norte limita el alcance del nuevo retiro, advierte la CCL",
+   "Precio del dólar hoy en Perú, domingo 11 de octubre: consulta el tipo de cambio para compra y venta",
+   "Agroexportaciones peruanas crecen solo 1,9% a agosto y se alejan de los avances de años anteriores"
+  ]
+ },
+ "rss_andina": {
+  "total": 20,
+  "48h": 20,
+  "ej": [
+   "Bolsa de Valores de Lima presenta pérdidas mientras Wall Street inicia con índices mixtos",
+   "Barcelona: El ascenso del brasileño Gabriel Jesús al cielo azulgrana",
+   "Ofensiva contra incendio forestal: aeronaves se suman a combate contra siniestro en Calca",
+   "¿Cuál es la cotización del dólar hoy lunes 12 de octubre del 2026?",
+   "Alcaraz tras marcharse de Shanghái: \"Es una de las derrotas que más me han dolido\""
+  ]
+ },
+ "rss_rpp_eco": {
+  "total": 50,
+  "48h": 2,
+  "ej": [
+   "Precio del dólar Perú y tipo de cambio hoy 12 de octubre del 2026",
+   "Discrepancias en el Gobierno sobre la TUUA internacional: MTC plantea tarifa reducida y Mincetur que se elimine el cobro"
+  ]
+ },
+ "rss_elobservador": "<HTTPError 404: 'Not Found'>",
+ "rss_elpais_uy": "<HTTPError 403: 'Forbidden'>",
+ "rss_elpais_uy2": "<HTTPError 403: 'Forbidden'>",
+ "rss_montevideo": {
+  "total": 8,
+  "48h": 8,
+  "ej": [
+   "El papa León XIV será operado este martes de un nódulo en el pulmón",
+   "Volvió de Panamá y habló del sismo: “Si pudiera comparar, es como subir al Rock & Samba”",
+   "Dos economistas de EE. UU. ganaron el Nobel por su aporte a la estabilización económica",
+   "Prendieron fuego un auto en pleno centro de Punta del Este: las imágenes de las llamas",
+   "“Uruguayo en Singapur”: el día a día entre cientos de reglas como “prohibido el chicle”"
+  ]
+ },
+ "rss_ladiaria": {
+  "total": 287,
+  "48h": 46,
+  "ej": [
+   "¿Por qué la economía global es tan resiliente?",
+   "Vecinos buscan frenar que uno de los “últimos grandes pulmones verdes” de Marindia se vea afectado por proyecto inmobiliario",
+   "¿Uruguay, país caro?",
+   "Chances y ciclos progresistas",
+   "Enrique Antía afirma que sus 591 hectáreas no le alcanzan para llegar a fin de mes"
+  ]
+ }
+}
