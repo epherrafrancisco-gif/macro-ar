@@ -448,6 +448,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#mexico" role="tab" id="tabX" data-g="glo" aria-selected="false">México</a>
       <a href="#chile" role="tab" id="tabCl" data-g="glo" aria-selected="false">Chile</a>
       <a href="#japon" role="tab" id="tabJp" data-g="glo" aria-selected="false">Japón</a>
+      <a href="#reinounido" role="tab" id="tabUk" data-g="glo" aria-selected="false">Reino Unido</a>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
     </nav>
@@ -961,6 +962,42 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Noticias de economía: Japón</h2><span class="note" id="npJN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Japón, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npJ"></ul><p class="note" id="npJF"></p></div>
     </div>
     <p class="note" id="jpFuente"></p>
+  </section>
+
+  <!-- REINO UNIDO -->
+  <section class="view" id="vUk" hidden>
+    <div class="ukpis" id="ukKpis"></div>
+    <div class="subtabs" id="gSubR" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y la libra</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación del Reino Unido</h2><span class="note" id="ukInfN"></span></div><div class="chart" id="chUkInf"></div><p class="note">Precios al consumidor (IPC de la ONS, la oficina de estadística), variación en 12 meses, últimos 5 años. La meta del Banco de Inglaterra es 2%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="ukMesN"></span></div><div class="chart" id="chUkMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="ukPbiN"></span></div><div class="chart" id="chUkPbi"></div><p class="note" id="ukPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="ukDesN"></span></div><div class="chart" id="chUkDes"></div><p class="note">Porcentaje de la fuerza laboral sin trabajo, desestacionalizado (encuesta de la ONS, trimestres móviles; sale con unos meses de atraso). Fuente: ONS vía OCDE.</p></div>
+      </div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Banco de Inglaterra contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chUkTasa"></div><p class="note">Azul: tasa de referencia del Banco de Inglaterra (Bank Rate). Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Banco de Inglaterra</h2><span class="note" id="ukBcN"></span></div><div class="tw"><table class="gcmp" id="ukBc"></table></div></div>
+      </div>
+      <div class="card"><div class="head"><h2>Por qué los mercados miran tanto los bonos británicos</h2></div><p class="sub">En septiembre de 2022 el gobierno anunció bajas de impuestos sin decir cómo las iba a pagar. En pocos días la libra tocó su mínimo histórico contra el dólar, las tasas de los bonos se dispararon, el Banco de Inglaterra tuvo que salir a comprar bonos para frenar el pánico y la primera ministra renunció a los 45 días. Desde entonces, cada presupuesto británico se mira con lupa: si las cuentas no cierran, los inversores lo cobran en la tasa de los bonos (los "gilts").</p></div>
+      <div class="card"><div class="head"><h2>Bonos del gobierno británico (gilts)</h2><span class="note" id="ukBonN"></span></div><p class="sub">Cuánto paga el Reino Unido por endeudarse a 2, 10 y 30 años, en libras, contra el bono a 10 años de EE.UU.</p><div class="stats" id="ukBonSt"></div><div class="chart" id="chUkBon"></div><div class="legend" id="lgUkBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>La libra contra el dólar</h2><span class="note">Dólares por libra</span></div><div class="chart" id="chUkUsd"></div><p class="note">Cuántos dólares vale una libra. Si sube, la libra se fortalece. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Una libra en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chUkArs"></div><p class="note">Cuántos pesos argentinos vale una libra: dólar mayorista argentino por la cotización de la libra en dólares, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bolsa de Londres</h2><span class="note" id="ukFtN"></span></div><div class="stats" id="ukFtSt"></div><div class="chart" id="chUkFt"></div><p class="note">FTSE 100: las 100 empresas más grandes de la bolsa de Londres; muchas son multinacionales que ganan en dólares. FTSE 250: las 250 que siguen, más atadas a la economía británica. En libras, con demora (CNBC).</p></div>
+      <div class="card"><div class="head"><h2>Empresas británicas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="ukAccSt"></div><div class="heat" id="ukAccH"></div><div class="stats det" id="ukAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Reino Unido</h2><span class="note" id="npRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre el Reino Unido, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npR"></ul><p class="note" id="npRF"></p></div>
+    </div>
+    <p class="note" id="ukFuente"></p>
   </section>
 
   <section class="view" id="vW" hidden>
@@ -2138,7 +2175,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
@@ -2155,7 +2192,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     europa:'<circle cx="12" cy="12" r="8.5" stroke-dasharray="1.5 3.3"/><path d="M14.8 8.6a4.2 4.2 0 1 0 0 6.8M7.6 11h5.4M7.6 13.2h5.4"/>',
     mexico:'<path d="M12 3.5c-3.6 0-6.5 2.6-6.5 6.2 0 4.6 6.5 10.8 6.5 10.8s6.5-6.2 6.5-10.8c0-3.6-2.9-6.2-6.5-6.2z"/><circle cx="12" cy="9.8" r="2.4"/>',
     chile:'<path d="M12 4l2.2 4.6 5 .5-3.8 3.3 1.1 4.9L12 14.8l-4.5 2.5 1.1-4.9-3.8-3.3 5-.5z"/><path d="M4 20.5h16"/>',
-    japon:'<circle cx="12" cy="12" r="4.2"/><rect x="3" y="5" width="18" height="14" rx="2"/>'};
+    japon:'<circle cx="12" cy="12" r="4.2"/><rect x="3" y="5" width="18" height="14" rx="2"/>',
+    reinounido:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 5l18 14M21 5L3 19M12 5v14M3 12h18"/>'};
   const SECC = {
     dolares:['Dólares','Todas las cotizaciones, las brechas y su historia'],
     macro:['Inflación y reservas','Inflación, lo que esperan los analistas, reservas del BCRA y riesgo país'],
@@ -2171,12 +2209,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     mexico:['México','El peso, Banxico, la inflación y la bolsa de la segunda economía de Latinoamérica'],
     chile:['Chile','El peso chileno, el Banco Central, la inflación, el cobre y la bolsa de nuestro vecino'],
     japon:['Japón','El yen, el Banco de Japón, los bonos y la bolsa de Tokio'],
+    reinounido:['Reino Unido','La libra, el Banco de Inglaterra, los bonos británicos y la bolsa de Londres'],
     sobre:['Sobre Pulso Macro','Quién lo hace, por qué y de dónde salen los datos']};
   const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
   document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','brasil','europa','mexico','chile','japon'].map(k=>tile(k)).join('');
+  $('tilesG').innerHTML = ['global','eeuu','brasil','europa','mexico','chile','japon','reinounido'].map(k=>tile(k)).join('');
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
@@ -2187,7 +2226,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
-    const grp = tab==='global' || tab==='brasil' || tab==='europa' || tab==='mexico' || tab==='chile' || tab==='japon' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
+    const grp = tab==='global' || tab==='brasil' || tab==='europa' || tab==='mexico' || tab==='chile' || tab==='japon' || tab==='reinounido' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
     let selA = null;
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
@@ -2200,7 +2239,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon'].includes(tab);
+    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido'].includes(tab);
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
@@ -2260,7 +2299,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon();
+    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -2552,7 +2591,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon();
+    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -3072,6 +3111,82 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     $('jpFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de Japón, yen e inflación) y OCDE (desempleo y PBI); bolsa, bonos y acciones: CNBC, con demora. Actualizado: ${new Date(C.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
   }
+  // ---- Reino Unido (reinounido.json: BIS y OCDE) ----
+  let gbr = null, gbrLoading = false, ukAccSel = null;
+  async function loadGbr(){
+    if(gbrLoading) return; gbrLoading = true;
+    try{ const r = await fetch('reinounido.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gbr = await r.json(); }catch(e){}
+    gbrLoading = false; if(tab==='reinounido') renderReino();
+  }
+  function renderReino(){
+    aplicarSub('R');
+    if(!gbr){ loadGbr(); $('ukKpis').innerHTML = '<div class="empty">Cargando datos del Reino Unido…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist();
+    const C = gbr, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    const L = a => a?.length ? a[a.length-1] : null, hoy = hoyAR(), anio = new Date().getFullYear();
+    // dólares por libra: BIS (viene en libras por dólar: se invierte) (diario, con unos días de atraso) completado con CNBC y el dato de hoy
+    const fxM = new Map((C.usdgbp || []).map(p=>[p[0], 1/p[1]]));
+    for(const p of (gHist?.series?.fx_gbp || [])) fxM.set(p[0], p[1]);
+    const mq = glob?.reino?.gbp, mqF = mq?.t ? String(mq.t).slice(0,10) : null;
+    if(mq && mqF) fxM.set(mqF, mq.v);
+    const fx = [...fxM].sort((a,b)=>a[0]<b[0]?-1:1), fl = L(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const may = new Map(days.filter(d=>get(d,'mayorista')).map(d=>[d.fecha, get(d,'mayorista')]));
+    const ars = fx.filter(p=>may.has(p[0])).map(p=>[p[0], may.get(p[0])*p[1]]), ra = L(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = L(C.tasa), inf = L(C.infl), des = L(C.desemp), nik = glob?.bolsas?.LSE;
+    const bc = BCAL.find(b=>b[0]==='GBR'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('ukKpis').innerHTML = st('Libra en dólares', fl ? 'US$ '+nf(fl[1],4) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'up' : 'dn')
+      + st('Una libra en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + st('Tasa del Banco de Inglaterra', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + st('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>3 ? 'dn' : '')
+      + st('Desempleo', des ? nf(des[1],1)+'%' : '—', des ? mesTxt(des[0]) : '')
+      + st('FTSE 100', nik ? nf(nik.v,0) : '—', nik ? sg(gpc(nik),2)+'% en el día' : '', nik && gpc(nik)>0 ? 'up' : nik && gpc(nik)<0 ? 'dn' : '');
+    const sub = SUBS.R[2], cut = (a, y) => (a||[]).filter(p=>p[0] >= String(anio-y)), xf = x=>x.slice(5,7)+'/'+x.slice(2,4);
+    const ind = C.ipc_ind || [], mm = ind.map((p,i)=>i ? [p[0], (p[1]/ind[i-1][1]-1)*100] : null).filter(Boolean);
+    if(sub==='economia'){
+      const i5 = cut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(i5.length) lineChart($('chUkInf'), [{n:'Inflación 12 meses', c:'--neg', pts:i5}], {xfmt:xf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', zero:true, aria:'Inflación del Reino Unido'});
+      const um = L(mm); $('ukInfN').textContent = inf ? `${mesTxt(inf[0])}: ${nf(inf[1],1)}%${um && um[0]===inf[0] ? `, ${sg(um[1],2)}% en el mes` : ''}` : '';
+      const m3 = mm.slice(-36);
+      if(m3.length){ barChart($('chUkMes'), [{n:'Inflación del mes', c:'--s1', pts:m3}], {aria:'Inflación mensual del Reino Unido', yfmt:v=>nf(v,1)+'%', vfmt:v=>sg(v,2)+'%'}); $('ukMesN').textContent = mesTxt(L(m3)[0]); }
+      const pq = cut(C.pbi_tri,4).map(p=>[eTri(p[0]),p[1]]), pa = L(C.pbi_anual);
+      if(pq.length){ barChart($('chUkPbi'), [{n:'PBI', c:'--s3', pts:pq}], {aria:'PBI del Reino Unido', yfmt:v=>nf(v,1)+'%', vfmt:v=>sg(v,1)+'%'});
+        $('ukPbiN').textContent = `${L(C.pbi_tri)[0].replace('-Q',' · trimestre ')}: ${sg(L(pq)[1],1)}%`; } else { $('chUkPbi').innerHTML = '<div class="empty">Sin un dato reciente por ahora.</div>'; $('ukPbiN').textContent = ''; }
+      $('ukPbiT').textContent = `Barras: crecimiento contra el trimestre anterior, desestacionalizado.${pa ? ` Contra el mismo trimestre del año anterior: ${sg(pa[1],1)}% (${pa[0].replace('-Q',' · T')}).` : ''} Fuente: ONS vía OCDE.`;
+      const de = cut(C.desemp,5).map(p=>[eMes(p[0]),p[1]]);
+      if(de.length){ lineChart($('chUkDes'), [{n:'Desempleo', c:'--s4', pts:de}], {xfmt:xf, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,1)+'%', aria:'Desempleo en el Reino Unido'}); $('ukDesN').textContent = mesTxt(L(de)[0].slice(0,7)); }
+    }
+    if(sub==='tasas'){
+      const tl = C.tasa || [], mes = []; if(tl.length){ const ini = new Date(Date.UTC(anio-5, new Date().getUTCMonth(), 1));
+        for(let d = new Date(ini); d <= new Date(); d.setUTCMonth(d.getUTCMonth()+1)){ const f = d.toISOString().slice(0,10); let v = null; for(const p of tl){ if(p[0] <= f) v = p[1]; } if(v!=null) mes.push([f, v]); } }
+      const i12 = (C.infl||[]).map(p=>[eMes(p[0]),p[1]]).filter(p=>p[0] >= (mes[0]?.[0]||'0'));
+      if(mes.length) lineChart($('chUkTasa'), [{n:'Tasa del Banco de Inglaterra', c:'--accent', pts: mes},{n:'Inflación', c:'--neg', pts: i12}], {xfmt:xf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Tasa del Banco de Inglaterra contra inflación'});
+      const cambios = []; for(let i=1;i<tl.length;i++) if(tl[i][1]!==tl[i-1][1]) cambios.push({f:tl[i][0], antes:tl[i-1][1], despues:tl[i][1]});
+      $('ukBc').innerHTML = cambios.length ? `<tr><th>Vigente desde</th><th>Decisión</th><th>Tasa</th></tr>` + cambios.slice(-8).reverse().map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.f)}</td><td class="${d>0?'dn':'up'}">${d>0?'▲ subió':'▼ bajó'} ${nf(Math.abs(d),2)}</td><td>${nf(x.despues,2)}%</td></tr>`; }).join('') : '<tr><td>Sin cambios en los últimos años.</td></tr>';
+      $('ukBcN').textContent = prox ? `Próxima reunión: ${fd(prox)}` : '';
+      const GB = glob?.bonos || {}, K = glob?.reino || {}, g10 = GB.GBR, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('ukBonSt').innerHTML = bst('Gilt 2 años', K.gb2, 'en libras') + bst('Gilt 10 años', g10, 'en libras') + bst('Gilt 30 años', K.gb30, 'en libras') + bst('EE.UU. 10 años', us, g10 && us ? `${nf(Math.abs(us.v-g10.v)*100,0)} pb ${us.v>g10.v?'más':'menos'} que el gilt` : 'en dólares');
+      $('ukBonN').textContent = g10?.t ? 'Dato: '+String(g10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.gb10 || [], s0 = gHist?.series?.gb2 || [], s2 = gHist?.series?.t10 || [], d0 = (s1[0] || s0[0])?.[0] || '';
+      const bs = [{n:'Gilt 10 años', c:'--s3', pts:s1},{n:'Gilt 2 años', c:'--s4', pts:s0.filter(p=>p[0]>=d0)},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgUkBon'), bs);
+      if(s1.length || s0.length) lineChart($('chUkBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', aria:'Bonos del Reino Unido y EE.UU.'});
+      else $('chUkBon').innerHTML = '<div class="empty">'+(gHist ? 'Sin historia todavía.' : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chUkUsd'), [{n:'Dólares por libra', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'US$ '+nf(v,4), aria:'Libra contra dólar'});
+      if(ars.length) lineChart($('chUkArs'), [{n:'Pesos argentinos por libra', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Una libra en pesos argentinos'});
+      const ix = gHist?.series?.ftse || [], f2 = glob?.reino?.ftmc, f1 = glob?.bolsas?.LSE, y2 = gYtd(gHist?.series?.ftmc || []);
+      $('ukFtSt').innerHTML = (f1 ? `<div class="st"><span class="lbl">FTSE 100</span><span class="v">${nf(f1.v,0)}</span><span class="d ${gpc(f1)>0?'up':gpc(f1)<0?'dn':''}">${sg(gpc(f1),2)}% hoy</span></div>` : '')
+        + (f2 ? `<div class="st"><span class="lbl">FTSE 250</span><span class="v">${nf(f2.v,0)}</span><span class="d ${gpc(f2)>0?'up':gpc(f2)<0?'dn':''}">${sg(gpc(f2),2)}% hoy${y2!=null ? ` · ${sg(y2,1)}% en el año` : ''}</span></div>` : '');
+      if(ix.length){ lineChart($('chUkFt'), [{n:'FTSE 100', c:'--accent', pts: ix, area:true}], {h:200, yfmt:v=>nf(v/1000,1)+' mil', vfmt:v=>nf(v,0), aria:'FTSE 100'});
+        const y = gYtd(ix); $('ukFtN').textContent = `FTSE 100: ${nf(L(ix)[1],0)} puntos${y!=null ? ` · ${sg(y,1)}% en el año (en libras)` : ''}`; }
+      else $('chUkFt').innerHTML = '<div class="empty">'+(gHist ? 'Sin historia todavía.' : 'Cargando…')+'</div>';
+      gHeat('ukAccH', 'ukAccSt', glob?.acciones?.gbr, ukAccSel, s=>{ ukAccSel = ukAccSel===s ? null : s; renderReino(); });
+      gDetalle('ukAccDet', ukAccSel && (glob?.acciones?.gbr||[]).find(x=>x.s===ukAccSel));
+    }
+    $('ukFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de Inglaterra, libra e inflación) y OCDE (desempleo y PBI); bolsa, bonos y acciones: CNBC, con demora. Actualizado: ${new Date(C.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
+  }
   async function loadUsa(){
     if(usaLoading) return; usaLoading = true;
     try{ const r = await fetch('usa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
@@ -3182,7 +3297,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
   }
   // ---- noticias por país (noticias_paises.json) ----
-  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon'};
+  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino'};
   let npData = null, npLoading = false, npAt = 0;
   async function loadNP(k){
     if(npLoading) return; npLoading = true;
@@ -3198,14 +3313,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.` : '';
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
-  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia']};
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia']};
   for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
   function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
     document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel)));
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
-    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   function renderUsa(){
     aplicarSub('U');
