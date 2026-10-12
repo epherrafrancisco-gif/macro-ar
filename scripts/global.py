@@ -302,6 +302,7 @@ ACCIONES = {
     "gbr": ["SHEL", "AZN", "HSBC", "UL", "BP", "DEO", "GSK", "BTI", "RIO", "BCS", "LYG", "NWG", "VOD", "RELX", "ARM"],
     "can": ["SHOP", "RY", "TD", "ENB", "CNQ", "CP", "CNI", "BMO", "BNS", "SU", "BAM", "TRI", "CM", "NTR", "B", "CVE", "MFC"],
     "col": ["EC", "CIB", "AVAL", "TGLS"],
+    "per": ["BAP", "SCCO", "BVN", "IFS"],
     "mex": ["AMX", "FMX", "KOF", "CX", "ASR", "PAC", "OMAB", "TV", "VLRS", "SCCO"],
     "asia": ["TSM", "BABA", "TM", "SONY", "PDD", "HDB", "INFY", "BIDU", "JD", "MUFG"],
 }
@@ -329,7 +330,8 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "fx_jpy": "JPY=", "topix": ".TOPX", "jp10": "JP10Y-JP", "jp2": "JP2Y-JP",
         "fx_gbp": "GBP=", "ftmc": ".FTMC", "gb10": "GB10Y-GB", "gb2": "GB2Y-GB",
         "fx_cad": "CAD=", "tsx": ".GSPTSE", "ca10": "CA10Y", "ca2": "CA2Y",
-        "colcap": ".COLCAP", "xu100": ".XU100", "fx_try": "TRY=", "tr10": "TR10Y-TR", "tr2": "TR2Y-TR"}
+        "colcap": ".COLCAP", "xu100": ".XU100", "fx_try": "TRY=", "tr10": "TR10Y-TR", "tr2": "TR2Y-TR",
+        "bvl": ".SPBLPGPT", "epu": "EPU"}
 # Bolsas europeas para la sección Europa
 # Bolsa chilena: CNBC no tiene el IPSA; se usa el fondo iShares MSCI Chile (ECH, en dólares)
 CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
