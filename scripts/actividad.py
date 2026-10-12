@@ -80,11 +80,13 @@ def tanda(series, desde, prev):
         paso = 3 if clave == "desoc" else 1
         junt = {p[0]: p[1] for p in prev.get(clave, []) if p[0] >= desde[:7]}
         nuevos = {}
-        for intento in range(4):
+        for intento in range(5):
             try:
-                nuevos.update(una(sid, clave, desde))
+                # la API cachea por dirección: cada intento pide desde un año distinto para no recibir el mismo hueco
+                d = desde if intento == 0 else f"{int(desde[:4]) - intento}{desde[4:]}"
+                nuevos.update({k: v for k, v in una(sid, clave, d).items() if k >= desde[:7]})
             except Exception as e:  # noqa: BLE001
-                if intento == 3 and not nuevos:
+                if intento == 4 and not nuevos:
                     raise
             pts = sorted({**junt, **nuevos}.items())
             if nuevos and huecos([list(p) for p in pts], paso) == 0:
