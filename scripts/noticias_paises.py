@@ -24,13 +24,16 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "noticias_paises.json"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
 
-ECON = (r"econom|mercados?\b|bolsas?\b|wall street|inflaci|tasas?\b|tipos? de inter|banco central|reserva federal|\bfed\b|"
-        r"\bbce\b|banxico|copom|selic|d[oó]lar|\beuros?\b|\breales\b|\bpesos\b|petr[oó]le|crudo|arancel|comerci|export|import|"
-        r"deuda|\bpib\b|\bpbi\b|recesi[oó]n|empleo|desempleo|salari|precios?\b|acciones|inversi|\bbancos?\b|bancari|fiscal|"
-        r"impuest|presupuesto|remesas|industria|petrobras|pemex|nasdaq|s&p|dow jones|\bbonos?\b|financier|bitcoin|cripto|"
-        r"\boro\b|hipotec|\bopa\b|ganancias|ingresos|millones|\bmdp\b|\bmdd\b|empresa|econ[oó]mic|negocio|riesgo pa[ií]s|tlc|t-mec")
+ECON = (r"econom|\bmercados?\b|\bbolsas?\b|wall street|inflaci|\btasas?\b|tipos? de inter|banco central|reserva federal|\bfed\b|"
+        r"\bbce\b|banxico|copom|selic|d[oó]lar|\beuros?\b|\breales\b|\bpesos\b|petr[oó]leo\b|\bcrudo\b|arancel|comerci|exportaci|"
+        r"importaci|exportador|importador|deuda|\bpib\b|\bpbi\b|recesi[oó]n|empleo|desempleo|salari|precios?\b|acciones|inversi|"
+        r"\bbancos?\b|bancari|d[eé]ficit|super[aá]vit|pol[ií]tica fiscal|impuest|presupuesto|remesas|industria|nasdaq|s&p|"
+        r"dow jones|\bbonos?\b|financier|bitcoin|cripto|\boro\b|hipotec|\bopa\b|ganancias|ingresos|mil millones|"
+        r"millones de (d[oó]lares|pesos|euros|reales)|\bmdp\b|\bmdd\b|empresa|econ[oó]mic|negocio|riesgo pa[ií]s|\btlc\b|t-mec")
 # otros países: en los medios propios se saltean los titulares que hablan de otro país y no del propio
-OTROS = r"argentin|milei|colombia|chile|per[uú]\b|venezuel|ecuador|uruguay|paraguay|bolivia|china|chin[oa]s\b|jap[oó]n|india|rusia|ucrani|ir[aá]n\b|israel|gaza|arabia|turqu[ií]a|corea|canad[aá]"
+OTROS = (r"argentin|milei|colombia|chile|per[uú]\b|venezuel|ecuador|uruguay|paraguay|bolivia|china|chin[oa]s\b|jap[oó]n|india|"
+         r"rusia|ucrani|ir[aá]n\b|israel|gaza|arabia|turqu[ií]a|corea|canad[aá]|reino unido|brit[aá]nic|alemania|francia|"
+         r"espa[nñ]a|italia|europ|\bue\b|estados unidos|ee\.? ?uu|\beu\b|trump|wall street|brasil|m[eé]xic")
 PAIS = {
     "eeuu": r"ee\.? ?uu|\beu\b|estados unidos|estadounidense|norteamerican|\bfed\b|reserva federal|powell|wall street|"
             r"washington|nueva york|nasdaq|dow jones|s&p 500|trump|casa blanca|tesoro de ee",
