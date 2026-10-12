@@ -50,21 +50,48 @@ def get(url, tries=3, timeout=90):
     raise last
 
 
-def tanda(series, desde):
-    """Una consulta por serie: pedidas juntas, la API a veces devuelve columnas vacías."""
+def huecos(pts, paso):
+    """Cuántos meses faltan entre el primero y el último (paso 1 = mensual, 3 = trimestral)."""
+    if not pts:
+        return 99
+    y, m = map(int, pts[0][0].split("-"))
+    y2, m2 = map(int, pts[-1][0].split("-"))
+    esperados = ((y2 - y) * 12 + (m2 - m)) // paso + 1
+    return esperados - len(pts)
+
+
+def una(sid, clave, desde):
+    j = get(API.format(ids=sid, desde=desde))
+    pts = {}
+    for row in j.get("data", []):
+        if len(row) > 1 and row[1] is not None:
+            v = float(row[1])
+            if clave == "desoc" and v < 1:
+                v *= 100  # viene como fracción (0,079)
+            pts[row[0][:7]] = round(v, 4)
+    return pts
+
+
+def tanda(series, desde, prev):
+    """Una consulta por serie. La API a veces devuelve meses vacíos al azar: se pide hasta 4 veces,
+    se juntan los resultados y se completa con lo que ya estaba guardado (los datos publicados no cambian)."""
     out = {}
     for sid, clave in series.items():
-        j = get(API.format(ids=sid, desde=desde))
-        pts = []
-        for row in j.get("data", []):
-            if len(row) > 1 and row[1] is not None:
-                v = float(row[1])
-                if clave == "desoc" and v < 1:
-                    v *= 100  # viene como fracción (0,079)
-                pts.append([row[0][:7], round(v, 4)])
-        if pts:
-            out[clave] = pts
-        time.sleep(0.3)
+        paso = 3 if clave == "desoc" else 1
+        junt = {p[0]: p[1] for p in prev.get(clave, []) if p[0] >= desde[:7]}
+        nuevos = {}
+        for intento in range(4):
+            try:
+                nuevos.update(una(sid, clave, desde))
+            except Exception as e:  # noqa: BLE001
+                if intento == 3 and not nuevos:
+                    raise
+            pts = sorted({**junt, **nuevos}.items())
+            if nuevos and huecos([list(p) for p in pts], paso) == 0:
+                break
+            time.sleep(2)
+        if nuevos:
+            out[clave] = [list(p) for p in sorted({**junt, **nuevos}.items())]
     return out
 
 
@@ -77,7 +104,8 @@ def main():
             prev = {}
     try:
         al = datetime.fromisoformat(prev.get("actualizado", "2000-01-01T00:00+00:00"))
-        if (datetime.now(timezone.utc) - al) < timedelta(hours=6) and not prev.get("errores"):
+        completo = all(huecos(v, 3 if k == "desoc" else 1) == 0 for k, v in prev.items() if isinstance(v, list) and v and isinstance(v[0], list))
+        if (datetime.now(timezone.utc) - al) < timedelta(hours=6) and not prev.get("errores") and completo:
             print("actividad.json reciente: no se renueva")
             return
     except ValueError:
@@ -85,7 +113,7 @@ def main():
     data, errores, hoy = dict(prev), [], date.today()
     for nombre, (series, desde, meses) in TANDAS.items():
         try:
-            res = tanda(series, desde)
+            res = tanda(series, desde, prev)
             if not res:
                 raise ValueError("sin datos")
             lim = (hoy - timedelta(days=31 * meses)).isoformat()[:7]
@@ -95,6 +123,9 @@ def main():
                     data.pop(k, None)
                 else:
                     data[k] = pts
+                    h = huecos(pts, 3 if k == "desoc" else 1)
+                    if h:
+                        errores.append(f"{k}: faltan {h} meses (la API los devolvió vacíos; se completa en la próxima vuelta)")
         except Exception as e:  # noqa: BLE001
             errores.append(f"{nombre}: {e}")
         time.sleep(1)
