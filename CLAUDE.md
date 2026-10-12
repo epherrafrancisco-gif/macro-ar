@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
-  y `#mexico`; `#sobre`.
+  `#mexico` y `#chile`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -97,7 +97,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   comparan con fechas). Banxico SIE pide clave (secreto opcional `BANXICO_TOKEN`: FIX SF43718, reservas SF43707,
   remesas SE27803). INEGI pide clave; Frankfurter y FRED dan timeout desde Actions.
 - Todas las secciones de país tienen un cuarto apartado "Noticias" (ver noticias_paises.json).
-- Próximo posible: Chile (el Banco Central de Chile pide registrarse para una clave).
+
+### Chile (`#chile`, sección `vCl`, `renderChile`, datos `chile.json` de scripts/chile.py en `global.yml`)
+- Mismo formato que México, sin clave: BIS (WS_CBPOL D.CL, WS_XRU D.CL.CLP.A, WS_LONG_CPI M.CL.771/.628) y OCDE (CHL).
+  Arriba: peso chileno por dólar, mil pesos chilenos en pesos (mayorista ÷ dólar en Chile), tasa del Banco Central
+  (`BCAL` CHL), inflación, desempleo y bolsa chilena. CNBC no tiene el IPSA: se usa el ETF ECH (`global.json → chile.ech`,
+  historia `ech`). Apartados (`#gSubC`, `SUBS.C`): Economía (+ cobre, `cobre` en US$/t) · Tasas y bonos (`cl10` vs `t10`)
+  · Mercados y el peso (ADR `acciones.chl`) · Noticias (La Tercera Pulso, Diario Financiero, Cooperativa, Ex-Ante).
+- Próximos posibles: Reino Unido, Japón; Uruguay solo si hay datos gratis suficientes.
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
@@ -134,7 +141,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   L a V cada hora 08:23-19:23 ART, findes cada 6 h y en cada push de esos scripts. Errores en el campo `errores`.
 - `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
 - `noticias_paises.json` (scripts/noticias_paises.py, mismo workflow `noticias.yml`): titulares de 48 h para el apartado
-  "Noticias" de EE.UU., Brasil, Europa y México (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
+  "Noticias" de EE.UU., Brasil, Europa, México y Chile (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
   medio: "econ" (medio del país: solo economía y sin titulares de otro país, `OTROS`) o "pais" (medio de afuera: tiene que
   nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
