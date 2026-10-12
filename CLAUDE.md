@@ -30,7 +30,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea), "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
-- Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas), recuadro
+- Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
+  solo Mundo, Estados Unidos y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con los 10 países
+  (`PAISES_T`, `data-g="pais"`; un país nuevo se agrega ahí y en `PAISES_T`), recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;

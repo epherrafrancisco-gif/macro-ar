@@ -451,6 +451,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .gmini{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center}.gmini .globe.dglobe{max-height:260px}
 .gmini .sum{font-size:13.5px;color:var(--ink2);display:grid;gap:6px}.gmini .sum b{color:var(--ink)}.gmini .sum .up{color:var(--pos)}.gmini .sum .dn{color:var(--neg)}
 .crumb{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);flex-wrap:wrap;width:100%}.crumb a{color:var(--accent);text-decoration:none}.crumb b{color:var(--ink)}
+.tabs.pills .pbtn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);font:inherit;font-weight:600;font-size:14.5px;cursor:pointer}
+.tabs.pills .pbtn svg{width:18px;height:18px;flex:none}.tabs.pills .pbtn:hover{color:var(--ink);border-color:var(--accent)}
+.tabs.pills .pbtn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}.tabs.pills .pbtn .car{transition:transform .2s}.tabs.pills .pbtn[aria-expanded="true"] .car{transform:rotate(180deg)}
+.paispanel{flex:1 1 100%;width:100%;box-sizing:border-box;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0 2px;padding:10px;background:var(--sunk);border:1px solid var(--line);border-radius:12px}
+.paispanel[hidden]{display:none}.paispanel a{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);font-weight:600;font-size:14px;text-decoration:none}
+.paispanel a svg{width:18px;height:18px;flex:none}.paispanel a:hover{color:var(--ink);border-color:var(--accent)}.paispanel a[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+@media (max-width:520px){.paispanel{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs.pills .pbtn{grid-column:1/-1;justify-content:center;font-size:13.5px}}
 .tabs.pills{display:flex;flex-wrap:wrap;gap:8px;border-bottom:0;overflow:visible}
 .tabs.pills a{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;margin:0;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink2);font-weight:600;font-size:14.5px}
 .tabs.pills a svg{width:18px;height:18px;flex:none}.tabs.pills a:hover{color:var(--ink);border-color:var(--accent)}
@@ -495,18 +502,21 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
-      <a href="#brasil" role="tab" id="tabB" data-g="glo" aria-selected="false">Brasil</a>
-      <a href="#europa" role="tab" id="tabE" data-g="glo" aria-selected="false">Europa</a>
-      <a href="#mexico" role="tab" id="tabX" data-g="glo" aria-selected="false">México</a>
-      <a href="#chile" role="tab" id="tabCl" data-g="glo" aria-selected="false">Chile</a>
-      <a href="#japon" role="tab" id="tabJp" data-g="glo" aria-selected="false">Japón</a>
-      <a href="#reinounido" role="tab" id="tabUk" data-g="glo" aria-selected="false">Reino Unido</a>
-      <a href="#canada" role="tab" id="tabCa" data-g="glo" aria-selected="false">Canadá</a>
-      <a href="#colombia" role="tab" id="tabCo" data-g="glo" aria-selected="false">Colombia</a>
-      <a href="#turquia" role="tab" id="tabTr" data-g="glo" aria-selected="false">Turquía</a>
-      <a href="#peru" role="tab" id="tabPe" data-g="glo" aria-selected="false">Perú</a>
+      <button type="button" class="pbtn" id="tabPaises" data-g="glo" aria-expanded="false" aria-controls="paisPanel">Países</button>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
+    </nav>
+    <nav class="paispanel" id="paisPanel" aria-label="Países" hidden>
+      <a href="#brasil" role="tab" id="tabB" data-g="pais" aria-selected="false">Brasil</a>
+      <a href="#europa" role="tab" id="tabE" data-g="pais" aria-selected="false">Europa</a>
+      <a href="#mexico" role="tab" id="tabX" data-g="pais" aria-selected="false">México</a>
+      <a href="#chile" role="tab" id="tabCl" data-g="pais" aria-selected="false">Chile</a>
+      <a href="#japon" role="tab" id="tabJp" data-g="pais" aria-selected="false">Japón</a>
+      <a href="#reinounido" role="tab" id="tabUk" data-g="pais" aria-selected="false">Reino Unido</a>
+      <a href="#canada" role="tab" id="tabCa" data-g="pais" aria-selected="false">Canadá</a>
+      <a href="#colombia" role="tab" id="tabCo" data-g="pais" aria-selected="false">Colombia</a>
+      <a href="#turquia" role="tab" id="tabTr" data-g="pais" aria-selected="false">Turquía</a>
+      <a href="#peru" role="tab" id="tabPe" data-g="pais" aria-selected="false">Perú</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -2213,7 +2223,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(edl && edp){ const l = edl, p = [0, edp], y = L(ey);
       t.push(tileK('Actividad (EMAE)', sg((l[1]/p[1]-1)*100,1)+'%', 'en el mes', y ? chip(y[1]/100,{d:1})+'<span class="chip eq">interanual</span>' : '', fmes(l[0])+' · sin estacionalidad')); }
     const sp = tab12('sal_priv');
-    if(sp && sp.real!=null) t.push(tileK('Salario registrado real', sg(sp.real,1)+'%', 'en 12 meses', `<span class="chip ${sp.real>=0?'up':'dn'}">${sp.real>=0?'Le gana a la inflación':'Pierde contra la inflación'}</span>`, `Privados en blanco · ${fmes(sp.m)}`));
+    if(sp && sp.real!=null) t.push(tileK('Salario real', sg(sp.real,1)+'%', 'en 12 meses', `<span class="chip ${sp.real>=0?'up':'dn'}">${sp.real>=0?'Le gana':'Pierde'}</span>`, `Privados registrados, contra la inflación · ${fmes(sp.m)}`));
     const de = A.desoc || [], dl = L(de);
     if(dl){ const dy = de.find(p=>p[0]===mAdd(dl[0],-12));
       t.push(tileK('Desocupación', nf(dl[1],1)+'%', '', dy ? chip(dl[1]-dy[1],{pct:false,d:1,unit:' pp',bad:true})+'<span class="chip eq">vs. un año</span>' : '', qTxt(dl[0])+' · EPH')); }
@@ -2397,7 +2407,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   };
   // [expresión, clave, dónde]: se aplica sobre el texto del título o etiqueta
   const GLOS_REGLAS = [
-    [/^Actividad económica|^Actividad \(EMAE|^Actividad contra/,'emae','g'],[/^Salarios contra|^Salario (registrado|real)/,'salarios','g'],[/^Desocupación/,'desoc','g'],[/^Canasta (básica|alimentaria)/,'canasta','g'],[/^Inflación por rubro/,'rubros','g'],[/^Núcleo/,'nucleo','g'],
+    [/^Actividad económica|^Actividad \(EMAE|^Actividad contra/,'emae','g'],[/^Salarios contra|^Salario real/,'salarios','g'],[/^Desocupación/,'desoc','g'],[/^Canasta (básica|alimentaria)/,'canasta','g'],[/^Inflación por rubro/,'rubros','g'],[/^Núcleo/,'nucleo','g'],
     [/^Oficial$/,'oficial','q'],[/^Mayorista$/,'mayorista','q'],[/^MEP$/,'mep','q'],[/^CCL$/,'ccl','q'],[/^Blue$/,'blue','q'],[/^Cripto$/,'cripto','q'],[/^Tarjeta$/,'tarjeta','q'],
     [/^Canje/,'canje','g'],[/^Brecha/,'brecha','g'],[/^Dólar a precios de hoy/,'usdreal','g'],
     [/^Riesgo país/,'riesgo','g'],[/^Reservas/,'reservas','g'],[/^Compras y ventas de dólares/,'compras','g'],
@@ -2640,10 +2650,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     peru:['Perú','El sol, el BCRP, la inflación y la bolsa'],
     sobre:['Sobre Pulso Macro','Quién lo hace, por qué y de dónde salen los datos']};
   const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
-  document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
+  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
   $('tilesG').innerHTML = ['global','eeuu','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].map(k=>tile(k)).join('');
+  const PAISES_T = ['brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'];
+  function paisPanel(on){ $('paisPanel').hidden = !on; $('tabPaises').setAttribute('aria-expanded', String(on)); }
+  $('tabPaises').addEventListener('click', ()=>{ paisPanel($('paisPanel').hidden); gcUna('menu-paises'); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('paisPanel').hidden){ paisPanel(false); $('tabPaises').focus(); } });
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
@@ -2654,9 +2668,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
-    const grp = tab==='global' || tab==='brasil' || tab==='europa' || tab==='mexico' || tab==='chile' || tab==='japon' || tab==='reinounido' || tab==='canada' || tab==='colombia' || tab==='turquia' || tab==='peru' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
+    const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
     let selA = null;
-    document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
+    document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!=='pais' && a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
+    { const esPais = PAISES_T.includes(tab), b = $('tabPaises'); b.hidden = grp!=='glo'; b.classList.toggle('on', esPais);
+      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h12l-2.5 4 2.5 4H5"/></svg>' + (esPais ? 'Países · '+SECC[tab][0] : 'Países') + '<span class="car" aria-hidden="true">▾</span>';
+      paisPanel(false); if(esPais && selA) selA = b; }
     $('bar').hidden = !grp;
     $('dolHoy').hidden = grp==='glo' || tab==='sobre';  // los dólares: en la portada y en todo Argentina
     $('crumb').innerHTML = grp ? `<a href="#" id="crumbHome">← Inicio</a><span>/</span><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b>` : '';
@@ -2671,7 +2688,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
-  document.querySelectorAll('#tabsNav a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
+  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
   window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
   const irPortada = ()=>{ history.pushState(null,'',location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
   $('brandH').addEventListener('click', irPortada);
