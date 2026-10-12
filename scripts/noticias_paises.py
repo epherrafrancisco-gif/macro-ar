@@ -1,5 +1,5 @@
 """Arma noticias_paises.json: titulares de economía de las últimas 48 horas para las secciones Estados Unidos, Brasil,
-Europa, México y Chile de Pulso Macro.
+Europa, México, Chile y Japón de Pulso Macro.
 
 Cada medio se baja una sola vez y sus titulares se reparten por país:
   - medios propios del país (por ejemplo El Economista de México o Cinco Días): entran todos o, si el medio es
@@ -42,6 +42,7 @@ PAIS = {
               r"italian|espa[nñ]a|español|reino unido|brit[aá]nic|\bdax\b|\bibex\b|\beuros?\b",
     "mexico": r"m[eé]xic|banxico|sheinbaum|pemex|\bt-?mec\b|usmca|monterrey|guadalajara|\bbmv\b",
     "chile": r"chile|chilen|codelco|\bipsa\b|santiago de chile|\btpm\b|\bboric\b|\bkast\b|valpara[ií]so|antofagasta",
+    "japon": r"jap[oó]n|japones|tokio|nikkei|topix|banco de jap|\bboj\b|\byen(es)?\b|toyota|sony|honda|takaichi|ishiba|osaka",
 }
 # (medio, url, {país: "todo" | "econ" | "pais"})
 #   todo = entra todo · econ = solo titulares de economía (medio del país; se saltean los que hablan de otro país)
@@ -52,27 +53,28 @@ FEEDS = [
     ("La Jornada", "https://www.jornada.com.mx/rss/economia.xml", {"mexico": "econ"}),
     ("Expansión México", "https://expansion.mx/rss", {"mexico": "econ"}),
     ("El Universal", "https://www.eluniversal.com.mx/arc/outboundfeeds/rss/category/cartera/?outputType=xml", {"mexico": "econ"}),
-    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
     ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "pais"}),
-    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
-    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
+    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/estados-unidos/", {"eeuu": "econ"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
-    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/economia.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+    ("NHK World", "https://www3.nhk.or.jp/nhkworld/data/es/news/all.json", {"japon": "econ"}),
     ("La Tercera", "https://www.latercera.com/arc/outboundfeeds/rss/category/pulso/?outputType=xml", {"chile": "econ"}),
     ("Diario Financiero", "https://www.df.cl/noticias/site/list/port/rss.xml", {"chile": "econ"}),
     ("Cooperativa", "https://www.cooperativa.cl/noticias/site/tax/port/all/rss_6___1.xml", {"chile": "econ"}),
     ("Ex-Ante", "https://www.ex-ante.cl/feed/", {"chile": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/economia/feed.xml", {"brasil": "econ"}),
-    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais"}),
     ("La Nación", "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("iProfesional", "https://www.iprofesional.com/rss/economia", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/mundo.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
@@ -114,6 +116,27 @@ def fecha(txt):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
+def entradas(url):
+    """(título, link, fecha, es de la sección economía) de un RSS/Atom o del JSON de NHK World."""
+    raw = get(url)
+    if url.endswith(".json"):  # NHK World en español: {"data": [{title, page_url, public_at (ms), categories{name}}]}
+        for x in json.loads(raw.decode("utf-8", "replace")).get("data") or []:
+            try:
+                d = datetime.fromtimestamp(int(x.get("public_at") or x.get("updated_at")) / 1000, timezone.utc)
+            except (TypeError, ValueError):
+                continue
+            cat = str((x.get("categories") or {}).get("name") or "").upper()
+            yield limpiar(x.get("title")), "https://www3.nhk.or.jp" + str(x.get("page_url") or ""), d, cat == "BUSINESS"
+        return
+    for it in ET.fromstring(raw).iter():
+        if it.tag.split("}")[-1] not in ("item", "entry"):
+            continue
+        h = {c.tag.split("}")[-1]: c for c in it}
+        t = limpiar(h["title"].text if "title" in h else "")
+        link = ((h["link"].text or h["link"].get("href") or "").strip()) if "link" in h else ""
+        yield t, link, fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), "")), False
+
+
 def main():
     ahora = datetime.now(timezone.utc)
     corte = ahora - timedelta(hours=48)
@@ -128,18 +151,11 @@ def main():
     for medio, url, reglas in FEEDS:
         clave_f = f"{medio} · {url.split('/')[2]}"
         try:
-            raiz = ET.fromstring(get(url))
             n = 0
-            for it in raiz.iter():
-                if it.tag.split("}")[-1] not in ("item", "entry"):
-                    continue
-                h = {c.tag.split("}")[-1]: c for c in it}
-                t = limpiar(h["title"].text if "title" in h else "")
-                link = ((h["link"].text or h["link"].get("href") or "").strip()) if "link" in h else ""
-                d = fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), ""))
+            for t, link, d, cat_econ in entradas(url):
                 if not t or BASURA.match(t) or RUIDO.search(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
                     continue
-                es_econ = bool(re.search(ECON, t, re.I))
+                es_econ = cat_econ or bool(re.search(ECON, t, re.I))
                 for pais, regla in reglas.items():
                     nombra = bool(re.search(PAIS[pais], t, re.I))
                     otro = not nombra and bool(re.search(OTROS, t, re.I))
