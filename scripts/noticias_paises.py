@@ -24,10 +24,13 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "noticias_paises.json"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
 
-ECON = (r"econom|mercad|bolsa|wall street|inflaci|tasas?\b|tipos? de inter|inter[eé]s|banco central|reserva federal|\bfed\b|"
-        r"\bbce\b|banxico|copom|selic|d[oó]lar|\beuros?\b|\breales\b|\bpeso\b|petr[oó]le|arancel|comercio|export|import|deuda|"
-        r"\bpib\b|\bpbi\b|recesi[oó]n|empleo|desempleo|salari|precio|acciones|empresa|inversi|bancos?\b|fiscal|impuest|"
-        r"presupuesto|remesas|crecimiento|industria|petrobras|pemex|nasdaq|s&p|dow jones|bono|financ|ventas|consumo|vivienda")
+ECON = (r"econom|mercados?\b|bolsas?\b|wall street|inflaci|tasas?\b|tipos? de inter|banco central|reserva federal|\bfed\b|"
+        r"\bbce\b|banxico|copom|selic|d[oó]lar|\beuros?\b|\breales\b|\bpesos\b|petr[oó]le|crudo|arancel|comerci|export|import|"
+        r"deuda|\bpib\b|\bpbi\b|recesi[oó]n|empleo|desempleo|salari|precios?\b|acciones|inversi|\bbancos?\b|bancari|fiscal|"
+        r"impuest|presupuesto|remesas|industria|petrobras|pemex|nasdaq|s&p|dow jones|\bbonos?\b|financier|bitcoin|cripto|"
+        r"\boro\b|hipotec|\bopa\b|ganancias|ingresos|millones|\bmdp\b|\bmdd\b|empresa|econ[oó]mic|negocio|riesgo pa[ií]s|tlc|t-mec")
+# otros países: en los medios propios se saltean los titulares que hablan de otro país y no del propio
+OTROS = r"argentin|milei|colombia|chile|per[uú]\b|venezuel|ecuador|uruguay|paraguay|bolivia|china|chin[oa]s\b|jap[oó]n|india|rusia|ucrani|ir[aá]n\b|israel|gaza|arabia|turqu[ií]a|corea|canad[aá]"
 PAIS = {
     "eeuu": r"ee\.? ?uu|\beu\b|estados unidos|estadounidense|norteamerican|\bfed\b|reserva federal|powell|wall street|"
             r"washington|nueva york|nasdaq|dow jones|s&p 500|trump|casa blanca|tesoro de ee",
@@ -37,20 +40,20 @@ PAIS = {
     "mexico": r"m[eé]xic|banxico|sheinbaum|pemex|\bt-?mec\b|usmca|monterrey|guadalajara|\bbmv\b",
 }
 # (medio, url, {país: "todo" | "econ" | "pais"})
-#   todo = entra todo (medio de economía del país) · econ = solo titulares de economía (medio general del país)
+#   todo = entra todo · econ = solo titulares de economía (medio del país; se saltean los que hablan de otro país)
 #   pais = solo si nombra al país y es de economía (medio de otro lado)
 FEEDS = [
-    ("El Economista (México)", "https://www.eleconomista.com.mx/rss/ultimas-noticias", {"mexico": "todo"}),
+    ("El Economista (México)", "https://www.eleconomista.com.mx/rss/ultimas-noticias", {"mexico": "econ"}),
     ("El Financiero", "https://www.elfinanciero.com.mx/arc/outboundfeeds/rss/?outputType=xml", {"mexico": "econ"}),
-    ("La Jornada", "https://www.jornada.com.mx/rss/economia.xml", {"mexico": "todo"}),
+    ("La Jornada", "https://www.jornada.com.mx/rss/economia.xml", {"mexico": "econ"}),
     ("Expansión México", "https://expansion.mx/rss", {"mexico": "econ"}),
-    ("El Universal", "https://www.eluniversal.com.mx/arc/outboundfeeds/rss/category/cartera/?outputType=xml", {"mexico": "todo"}),
-    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "todo", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "todo", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "todo", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
+    ("El Universal", "https://www.eluniversal.com.mx/arc/outboundfeeds/rss/category/cartera/?outputType=xml", {"mexico": "econ"}),
+    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
+    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
+    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
     ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
     ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais"}),
-    ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "econ"}),
+    ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "pais"}),
     ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
     ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
     ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais"}),
@@ -59,6 +62,11 @@ FEEDS = [
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/economia.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
+    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/economia/feed.xml", {"brasil": "econ"}),
+    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais"}),
+    ("La Nación", "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+    ("iProfesional", "https://www.iprofesional.com/rss/economia", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/mundo.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
 ]
 # títulos que no son noticias (secciones, columnas fijas)
@@ -122,7 +130,8 @@ def main():
                 es_econ = bool(re.search(ECON, t, re.I))
                 for pais, regla in reglas.items():
                     nombra = bool(re.search(PAIS[pais], t, re.I))
-                    if regla == "todo" or (regla == "econ" and es_econ) or (regla == "pais" and nombra and es_econ):
+                    otro = not nombra and bool(re.search(OTROS, t, re.I))
+                    if (regla == "todo" and not otro) or (regla == "econ" and es_econ and not otro) or (regla == "pais" and nombra and es_econ):
                         por_pais[pais].append({"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes")})
                         n += 1
             fuentes[clave_f] = f"ok ({n})"
