@@ -2492,6 +2492,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     G.path = d3.geoPath(G.proj, G.ctx); return true; }
   function gDraw(now){
     if(tab!=='global' || document.hidden || G.vista==='usa'){ G.run = false; return; }
+    { const gr = $('gWrap').getBoundingClientRect(); if(gr.bottom < 0 || gr.top > innerHeight){ G.last = now; requestAnimationFrame(gDraw); return; } }
     const ctx = G.ctx, path = G.path, dt = now-(G.last||now); G.last = now;
     if(!G.flat && !G.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(G.idle||0)>2500) G.rot[0] += dt*.006;
     if(!G.flat) G.proj.rotate(G.rot);
@@ -2619,6 +2620,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   function dgDraw(S, now){
     if(document.hidden || !S.cv.offsetParent || !dgSize(S)){ S.run = false; return; }
+    { const vr = S.cv.getBoundingClientRect(); if(vr.bottom < 0 || vr.top > innerHeight){ S.last = now; requestAnimationFrame(t=>dgDraw(S,t)); return; } }
     const {ctx, proj, path, W, H} = S, dt = now-(S.last||now); S.last = now;
     if(!S.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(S.idle||0)>2500) S.rot[0] -= dt*.007;
     proj.rotate(S.rot); ctx.clearRect(0,0,W,H); const r = proj.scale();
@@ -3536,7 +3538,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         const b = el.querySelector('.bar'); b.style.width = (Math.abs(x.v)/mx*100).toFixed(0)+'%'; b.style.background = col; } });
     for(const [k,el] of Object.entries(XP.rk)) if(!keep.has(k)){ el.remove(); delete XP.rk[k]; }
   }
-  function xpSize(){ const cv = $('xpCv'), r = cv.getBoundingClientRect(), d = devicePixelRatio||1; if(r.width<2) return false;
+  function xpSize(){ const cv = $('xpCv'), r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio||1, 1.25); if(r.width<2) return false;
     if(r.width!==XP.W || r.height!==XP.H){ XP.W = r.width; XP.H = r.height; cv.width = XP.W*d; cv.height = XP.H*d; XP.ctx = cv.getContext('2d'); XP.ctx.setTransform(d,0,0,d,0,0);
       XP.proj = d3.geoOrthographic().translate([XP.W/2, XP.H/2-22]).clipAngle(90); XP.path = d3.geoPath(XP.proj, XP.ctx); }
     XP.proj.scale(Math.min(XP.W-540, XP.H-130)/2*XP.zoom); return true; }
@@ -3546,6 +3548,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       dec = -23.44*Math.cos(2*Math.PI/365*(n+10)), h = d.getUTCHours() + d.getUTCMinutes()/60 + d.getUTCSeconds()/3600; return [-15*(h-12), dec]; }
   function xpDraw(now){
     if(tab!=='global' || G.vista!=='mundo' || SUBS.M[2]!=='explorar' || document.hidden || !xpSize()){ XP.run = false; return; }
+    const vr = $('xpW').getBoundingClientRect(); if(vr.bottom < 0 || vr.top > innerHeight || now-(XP.last||0) < 30){ requestAnimationFrame(xpDraw); return; }
     const ctx = XP.ctx, proj = XP.proj, path = XP.path, W = XP.W, H = XP.H, dt = Math.min(100, now-(XP.last||now)); XP.last = now;
     // movimiento: vuelo, recorrido o giro lento
     if(XP.fly){ const t = Math.min(1, (now-XP.fly.t0)/XP.fly.dur), e = t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; XP.rot = [XP.fly.from[0]+(XP.fly.to[0]-XP.fly.from[0])*e, XP.fly.from[1]+(XP.fly.to[1]-XP.fly.from[1])*e]; XP.zoom = XP.fly.z0+(XP.fly.z1-XP.fly.z0)*e; if(t>=1) XP.fly = null; }
@@ -3561,18 +3564,22 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ctx.beginPath(); ctx.arc(c[0], c[1], r*1.25, 0, 7); ctx.fillStyle = ga; ctx.fill();
     const g = ctx.createRadialGradient(c[0]-r*.35, c[1]-r*.4, r*.1, c[0], c[1], r); g.addColorStop(0,'#16354f'); g.addColorStop(1,'#071421');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    ctx.beginPath(); path(d3.geoGraticule().step([15,15])()); ctx.strokeStyle = 'rgba(106,168,216,.09)'; ctx.lineWidth = .6; ctx.stroke();
+    XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = 'rgba(106,168,216,.09)'; ctx.lineWidth = .6; ctx.stroke();
     // países
-    for(const f of G.feats){ ctx.beginPath(); path(f); ctx.fillStyle = xpFillC(xpFillV(f.id)) || '#1a2531'; ctx.fill(); }
+    if(!XP.fb) XP.fb = G.feats.map(f=>{ const c = d3.geoCentroid(f), b = d3.geoBounds(f); return [f, c, Math.max(d3.geoDistance(c, b[0]), d3.geoDistance(c, b[1]), d3.geoDistance(c, [b[0][0], b[1][1]]), d3.geoDistance(c, [b[1][0], b[0][1]])), b]; });
+    if(!XP.fc || now-(XP.fcAt||0) > 2000 || XP.fcL!==XP.fillL){ XP.fcAt = now; XP.fcL = XP.fillL; XP.fc = new Map(G.feats.map(f=>[f.id, xpFillC(xpFillV(f.id)) || '#1a2531'])); }
+    const grp = new Map(); for(const [f,cc,rad] of XP.fb){ if(d3.geoDistance(cc, c0) - rad > Math.PI/2) continue; const col = XP.fc.get(f.id); if(!grp.has(col)) grp.set(col, []); grp.get(col).push(f); }
+    for(const [col, fs] of grp){ ctx.beginPath(); for(const f of fs) path(f); ctx.fillStyle = col; ctx.fill(); }
     ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(8,14,20,.9)'; ctx.lineWidth = .6; ctx.stroke();
     if(G.byId.ARG){ ctx.beginPath(); path(G.byId.ARG); ctx.strokeStyle = 'rgba(230,237,243,.85)'; ctx.lineWidth = 1.3; ctx.stroke(); }
     if(XP.hover && G.byId[XP.hover]){ ctx.beginPath(); path(G.byId[XP.hover]); ctx.strokeStyle = 'rgba(106,168,216,.9)'; ctx.lineWidth = 1.4; ctx.stroke(); }
-    if(XP.sel && G.byId[XP.sel]){ ctx.save(); ctx.shadowColor = 'rgba(106,168,216,.9)'; ctx.shadowBlur = 14; ctx.beginPath(); path(G.byId[XP.sel]); ctx.strokeStyle = '#9fd0f5'; ctx.lineWidth = 2.2; ctx.stroke(); ctx.restore(); }
+    if(XP.sel && G.byId[XP.sel]){ ctx.beginPath(); path(G.byId[XP.sel]); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 7; ctx.stroke(); ctx.strokeStyle = '#9fd0f5'; ctx.lineWidth = 2; ctx.stroke(); }
     // noche
-    if(XP.noche){ const sun = xpSun(), anti = [sun[0]+180, -sun[1]];
-      for(const [rad, a] of [[90,.42],[84,.16],[78,.1]]){ ctx.beginPath(); path(d3.geoCircle().center(anti).radius(rad)()); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
+    if(XP.noche){ if(!XP.nt || now-XP.ntAt > 30000){ XP.ntAt = now; const sn = xpSun(), an = [sn[0]+180, -sn[1]]; XP.nt = {sun:sn, c:[[d3.geoCircle().center(an).radius(90)(), .42],[d3.geoCircle().center(an).radius(82)(), .2]]}; }
+      const sun = XP.nt.sun;
+      for(const [geo, a] of XP.nt.c){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
       if(d3.geoDistance(sun, c0) < Math.PI/2){ const sp = proj(sun); const gs = ctx.createRadialGradient(sp[0], sp[1], 0, sp[0], sp[1], r*.5); gs.addColorStop(0,'rgba(255,224,150,.10)'); gs.addColorStop(1,'rgba(255,224,150,0)'); ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = gs; ctx.fill(); } }
-    ctx.save(); ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.45)'; ctx.lineWidth = 1.2; ctx.shadowColor = 'rgba(106,168,216,.6)'; ctx.shadowBlur = 24; ctx.stroke(); ctx.restore();
+    ctx.beginPath(); ctx.arc(c[0], c[1], r+1, 0, 7); ctx.strokeStyle = 'rgba(106,168,216,.14)'; ctx.lineWidth = 6; ctx.stroke(); ctx.strokeStyle = 'rgba(106,168,216,.5)'; ctx.lineWidth = 1.2; ctx.stroke();
     const vis = ll => d3.geoDistance(ll, c0) < Math.PI/2 - .03;
     // luces de las bolsas
     let abiertas = 0;
@@ -3597,8 +3604,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const front = items.filter(x=>vis(x.ll)).sort((a,b)=>d3.geoDistance(b.ll,c0)-d3.geoDistance(a.ll,c0));
     for(const x of front){ const key = x.iso, tgt = Math.pow(Math.min(1, Math.abs(x.v)/D[3]), .6) * .32 + .012; let cur = XP.anim[key] ?? 0; cur += (tgt-cur)*Math.min(1, dt/220); XP.anim[key] = cur;
       const p = proj(x.ll), top = xpUp(p, cur), col = D[2]==='div' ? (x.v>=0 ? [76,195,138] : [240,122,112]) : [232,177,74];
-      const gr = ctx.createLinearGradient(p[0],p[1],top[0],top[1]); gr.addColorStop(0, `rgba(${col},.15)`); gr.addColorStop(1, `rgba(${col},.95)`);
-      ctx.strokeStyle = gr; ctx.lineWidth = XP.sel===key ? 5 : 3.2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
+      ctx.strokeStyle = `rgba(${col},.85)`; ctx.lineWidth = XP.sel===key ? 5 : 3.2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
       ctx.beginPath(); ctx.arc(top[0],top[1], 2.6, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill();
       if(Math.abs(x.v) >= D[3]*.25 || XP.sel===key || XP.hover===key){ ctx.font = '600 10.5px "JetBrains Mono",monospace'; const t = `${(GPA[key]||key).slice(0,10)} ${D[4](x.v)}`, tw = ctx.measureText(t).width;
         ctx.fillStyle = 'rgba(4,10,16,.78)'; ctx.fillRect(top[0]+5, top[1]-15, tw+8, 15); ctx.fillStyle = `rgb(${col})`; ctx.fillText(t, top[0]+9, top[1]-4); } }
@@ -3619,7 +3625,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('xpHud').innerHTML = `<span class="big">${XP.tm.on ? fd(XP.tm.dates[XP.tm.i]) : hh+' UTC'}</span><br>BUENOS AIRES <b>${ar}</b> · LAT <b>${nf(-XP.rot[1],1)}°</b> LON <b>${nf(-((XP.rot[0]%360+540)%360-180),1)}°</b> · ZOOM <b>${nf(XP.zoom,2)}×</b><br>COLUMNAS <b>${esc(D[0].toUpperCase())}</b> · COLOR <b>${XP_FILL[XP.fillL][0].toUpperCase()}</b> · BOLSAS ABIERTAS <b>${abiertas}/${GEX.length}</b>`; }
     requestAnimationFrame(xpDraw);
   }
-  function xpHit(e){ const r = $('xpCv').getBoundingClientRect(), ll = XP.proj?.invert([e.clientX-r.left, e.clientY-r.top]); if(!ll || d3.geoDistance(ll, XP.proj.invert(XP.proj.translate())) > Math.PI/2) return null; const f = G.feats.find(f=>d3.geoContains(f, ll)); return f ? f.id : null; }
+  function xpHit(e){ const r = $('xpCv').getBoundingClientRect(), ll = XP.proj?.invert([e.clientX-r.left, e.clientY-r.top]); if(!ll || d3.geoDistance(ll, XP.proj.invert(XP.proj.translate())) > Math.PI/2) return null; const inB = (b,[lo,la]) => la>=b[0][1] && la<=b[1][1] && (b[0][0]<=b[1][0] ? lo>=b[0][0] && lo<=b[1][0] : lo>=b[0][0] || lo<=b[1][0]); const h = (XP.fb||[]).find(([f,,,b])=>inB(b,ll) && d3.geoContains(f, ll)); return h ? h[0].id : null; }
   async function xpStart(){
     if(!xpDesk()) return;
     if(!gHist) loadHist(); if(!npData) loadNP(); if(!nw) cargarNoticias?.();
