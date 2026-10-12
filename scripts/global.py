@@ -317,13 +317,16 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "cobre": "@HG.1", "dxy": ".DXY", "t10": "US10Y", "vix": ".VIX",
         "fx_brl": "BRL=", "fx_mxn": "MXN=", "fx_clp": "CLP=", "fx_cop": "COP=", "fx_ars": "ARS=",
         "maiz": "@C.1", "trigo": "@W.1", "wti": "@CL.1", "gas": "@NG.1", "plata": "@SI.1",
-        "fx_pen": "PEN=", "fx_uyu": "UYU=", "fx_cny": "CNY=", "fx_eur": "EUR="}
+        "fx_pen": "PEN=", "fx_uyu": "UYU=", "fx_cny": "CNY=", "fx_eur": "EUR=",
+        "cac": ".FCHI", "ibex": ".IBEX", "ftmib": ".FTMIB", "sx5e": ".STOXX50E", "de10": "DE10Y-DE", "it10": "IT10Y-IT", "fr10": "FR10Y-FR", "es10": "ES10Y-ES"}
+# Bolsas europeas para la sección Europa
+EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
 
 
 def extras():
     alt = lambda s: s if isinstance(s, tuple) else (s,)
     syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
-            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS])
+            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()])
     q = cnbc_raw(syms)
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
@@ -337,7 +340,8 @@ def extras():
     bonos = {k: q[s] for k, s in BONOS.items() if s in q}
     coms = [{**q[s], "k": k, "n": n, "u": u, "contrato": q[s]["n"], "v": round(q[s]["v"] * c, 4), "prev": round(q[s]["prev"] * c, 4)}
             for k, n, s, c, u in COMS if s in q]
-    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms}
+    europa = {k: {"idx": n, **q[s]} for k, (s, n) in EUROPA.items() if s in q}
+    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa}
 
 
 def cripto():
@@ -544,7 +548,7 @@ def main():
     except Exception as e:  # noqa: BLE001
         errores.append(f"extras: {e}")
         ex = {}
-    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities"):  # si una sección vino vacía, queda la anterior
+    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa"):  # si una sección vino vacía, queda la anterior
         if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
             ex[k] = prev.get(k) or {}
     HISTF = ROOT / "global_hist.json"
