@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
-  `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia` y `#turquia`; `#sobre`.
+  `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia` y `#peru`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -137,7 +137,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Turquía: una lira en pesos, BIST 100 (`turquia.xu100`, historia `xu100`), bonos 2 y 10 años (`tr2`, `tr10`), ETF TUR
   y Turkcell; tarjetas "Inflación: Turquía contra Argentina" y "Lira contra peso" (base 100 con `fx_try` y `fx_ars`).
   En español casi no hay noticias de Turquía.
-- Próximos posibles: Perú, India; Uruguay solo si hay datos gratis suficientes.
+
+### Perú (`#peru`, sección `vPe`, `renderPeru`, `SUBS.P`, datos `peru.json` de scripts/peru.py en `global.yml`)
+- Fuente: API del BCRP sin clave (`estadisticas.bcrp.gob.pe/estadisticas/series/api/{serie}/json/{desde}/{hasta}`; períodos
+  "Sep.2026" y "01.Oct.26", "n.d." = sin dato): PD04722MM tasa, PN01273PM inflación 12 meses (Lima), PN01271PM del mes,
+  PN01728AM PBI mensual interanual, PN38063GM desempleo Lima, PD04640PD soles por dólar. Sin bono (CNBC no lo tiene) y sin
+  `BCAL` (el BCRP no publica un calendario fácil de verificar). CNBC dejó de actualizar el S&P/BVL: se usa el ETF EPU
+  (`global.json → peru.epu`, historia `epu`). ADR `acciones.per` (BAP, SCCO, BVN, IFS). Noticias de Gestión, El Comercio,
+  La República (Perú), Andina y RPP.
+- Probados y descartados por falta de datos gratis al día: India (BIS no tiene su tasa, no hay desempleo ni noticias en
+  español) y Uruguay (BIS no tiene tasa ni inflación; el BCU y el INE no responden desde Actions).
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
