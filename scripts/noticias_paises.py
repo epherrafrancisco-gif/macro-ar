@@ -72,6 +72,10 @@ FEEDS = [
     ("iProfesional", "https://www.iprofesional.com/rss/economia", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/mundo.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
 ]
+# temas que no son de economía aunque nombren plata (deportes, policiales, espectáculos, clima)
+RUIDO = re.compile(r"golea|\bgol(es)?\b|f[uú]tbol|\bliga\b|partido de|campeonato|\bnba\b|\bnfl\b|secuestr|asesin|homicid|"
+                   r"tiroteo|\bmuere\b|\bmuerto|cantante|\bactor\b|actriz|pel[ií]cula|taquilla|hurac[aá]n|sismo|terremoto|"
+                   r"mercado negro|celular|hor[oó]scopo", re.I)
 # títulos que no son noticias (secciones, columnas fijas)
 BASURA = re.compile(r"^(pol[ií]tica|econom[ií]a|mercados|guerra en .+|opini[oó]n|tendencias y señales|para tomar en cuenta)$", re.I)
 
@@ -128,7 +132,7 @@ def main():
                 t = limpiar(h["title"].text if "title" in h else "")
                 link = ((h["link"].text or h["link"].get("href") or "").strip()) if "link" in h else ""
                 d = fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), ""))
-                if not t or BASURA.match(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
+                if not t or BASURA.match(t) or RUIDO.search(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
                     continue
                 es_econ = bool(re.search(ECON, t, re.I))
                 for pais, regla in reglas.items():

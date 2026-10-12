@@ -733,7 +733,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         </div>
       </div>
       <div class="ukpis" id="uKpis"></div>
-    <div class="subtabs" id="gSubU" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y deuda</button><button type="button" data-s="wall" aria-selected="false">Wall Street</button></div>
+    <div class="subtabs" id="gSubU" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y deuda</button><button type="button" data-s="wall" aria-selected="false">Wall Street</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
     <div class="gsub" data-sub="economia">
       <div class="card">
         <div class="head"><h2>Semáforo de recesión</h2><span class="note">¿Se viene una recesión en EE.UU.?</span></div>
@@ -776,13 +776,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
         <div class="card"><div class="head"><h2>Próximos balances</h2><span class="note">Empresas de más de US$ 50 mil millones</span></div><p class="sub">Cuándo presentan sus resultados las empresas grandes de Wall Street. "Ganancia esperada" es lo que esperan los analistas por acción.</p><div class="agenda" id="uBal"></div></div>
     </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Estados Unidos</h2><span class="note" id="npUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre EE.UU., de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npU"></ul><p class="note" id="npUF"></p></div>
+    </div>
       <p class="note" id="uFuente"></p>
     </div>
   </section>
   <!-- BRASIL -->
   <section class="view" id="vB" hidden>
     <div class="ukpis" id="bKpis"></div>
-    <div class="subtabs" id="gSubB" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y expectativas</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el real</button></div>
+    <div class="subtabs" id="gSubB" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y expectativas</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el real</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
     <div class="gsub" data-sub="economia">
       <div class="card"><div class="head"><h2>Inflación de Brasil (IPCA)</h2><span class="note" id="bIpcN"></span></div><div class="chart" id="chBIpc"></div><p class="note">Inflación de cada mes, últimos 3 años. Arriba, el dato de los últimos 12 meses. La meta del Banco Central de Brasil es 3% anual (con tolerancia entre 1,5% y 4,5%). Fuente: IBGE vía Banco Central de Brasil.</p></div>
       <div class="grid2">
@@ -806,13 +809,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Bovespa</h2><span class="note" id="bBovN"></span></div><div class="chart" id="chBBov"></div></div>
       <div class="card"><div class="head"><h2>Empresas brasileñas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="bAccSt"></div><div class="heat" id="bAccH"></div><div class="stats det" id="bAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
     </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Brasil</h2><span class="note" id="npBN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Brasil, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npB"></ul><p class="note" id="npBF"></p></div>
+    </div>
     <p class="note" id="bFuente"></p>
   </section>
 
   <!-- EUROPA -->
   <section class="view" id="vE" hidden>
     <div class="ukpis" id="eKpis"></div>
-    <div class="subtabs" id="gSubE" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el euro</button></div>
+    <div class="subtabs" id="gSubE" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el euro</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
     <div class="gsub" data-sub="economia">
       <div class="grid2">
         <div class="card"><div class="head"><h2>Inflación de la zona euro</h2><div class="legend" id="lgEInf"></div></div><div class="chart" id="chEInf"></div><p class="note" id="eInfN"></p></div>
@@ -838,13 +844,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Bolsas europeas</h2><span class="note">Índice principal, hoy y en el año</span></div><div class="glist" id="eBol"></div><p class="note">Con demora (CNBC). La variación en el año es en euros, desde el último cierre del año pasado.</p></div>
       <div class="card"><div class="head"><h2>Empresas europeas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="eAccSt"></div><div class="heat" id="eAccH"></div><div class="stats det" id="eAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
     </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Europa</h2><span class="note" id="npEN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Europa, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npE"></ul><p class="note" id="npEF"></p></div>
+    </div>
     <p class="note" id="eFuente"></p>
   </section>
 
   <!-- MÉXICO -->
   <section class="view" id="vX" hidden>
     <div class="ukpis" id="xKpis"></div>
-    <div class="subtabs" id="gSubX" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el peso</button></div>
+    <div class="subtabs" id="gSubX" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el peso</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
     <div class="gsub" data-sub="economia">
       <div class="grid2">
         <div class="card"><div class="head"><h2>Inflación de México</h2><span class="note" id="xInfN"></span></div><div class="chart" id="chXInf"></div><p class="note">Precios al consumidor (INPC del INEGI), variación en 12 meses, últimos 5 años. La meta de Banxico es 3% anual, con tolerancia entre 2% y 4%.</p></div>
@@ -873,6 +882,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       </div>
       <div class="card"><div class="head"><h2>IPC México</h2><span class="note" id="xIpcN"></span></div><div class="chart" id="chXIpc"></div><p class="note">Índice de las 35 acciones más negociadas de la Bolsa Mexicana de Valores. Con demora (CNBC).</p></div>
       <div class="card"><div class="head"><h2>Empresas mexicanas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="xAccSt"></div><div class="heat" id="xAccH"></div><div class="stats det" id="xAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: México</h2><span class="note" id="npXN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre México, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npX"></ul><p class="note" id="npXF"></p></div>
     </div>
     <p class="note" id="xFuente"></p>
   </section>
@@ -2936,12 +2948,29 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       barChart($('chUPbi'), [{n:'PBI', c:'--accent', pts}], {aria:'Crecimiento del PBI de EE.UU.', yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'});
       const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
   }
+  // ---- noticias por país (noticias_paises.json) ----
+  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico'};
+  let npData = null, npLoading = false, npAt = 0;
+  async function loadNP(k){
+    if(npLoading) return; npLoading = true;
+    try{ const r = await fetch('noticias_paises.json?t='+Date.now(), {cache:'no-store'}); if(r.ok){ npData = await r.json(); npAt = Date.now(); } }catch(e){}
+    npLoading = false; if(k && SUBS[k][2]==='noticias') renderNP(k);
+  }
+  function renderNP(k){
+    if(!npData || Date.now()-npAt > 15*60e3){ if(!npData) $('np'+k).innerHTML = '<li>Cargando titulares…</li>'; loadNP(k); if(!npData) return; }
+    const corte = new Date(Date.now()-48*36e5).toISOString(), N = (npData[NP_PAIS[k]] || []).filter(x=>new Date(x.h).toISOString() >= corte);
+    $('np'+k).innerHTML = N.slice(0,30).map(x=>`<li><a href="${esc(x.u)}" target="_blank" rel="noopener" data-medio="${esc(x.f)}">${esc(x.t)}</a><small>${esc(x.f)} · ${new Date(x.h).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})} h</small></li>`).join('') || '<li>No hay titulares de las últimas 48 horas.</li>';
+    $('np'+k).querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>gc('noticia-'+NP_PAIS[k]+'-'+a.dataset.medio, true)));
+    $('np'+k+'N').textContent = N.length ? `${N.length} titulares` : '';
+    $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.` : '';
+  }
   // ---- apartados dentro de Mundo y Estados Unidos ----
   const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia']};
   for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
   function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
-    document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel))); }
+    document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel)));
+    if(sel==='noticias' && NP_PAIS[k]) renderNP(k); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
