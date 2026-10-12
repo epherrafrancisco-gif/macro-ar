@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
-  `#mexico`, `#chile`, `#japon`, `#reinounido` y `#canada`; `#sobre`.
+  `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia` y `#turquia`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -127,7 +127,17 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   dic-2027), inflación, desempleo y S&P/TSX (`bolsas.TSX`). `global.json → canada` (C$, bonos a 2 y 30 años) e historia
   `fx_cad`, `tsx`, `ca10`, `ca2`. Apartados (`#gSubK`, `SUBS.K`): Economía · Tasas y bonos · Mercados y el dólar canadiense
   (petróleo WTI con la explicación de la "petrodivisa", TSX, ADR `acciones.can`) · Noticias (en español casi no hay).
-- Próximos posibles: Colombia, Turquía, Perú, India; Uruguay solo si hay datos gratis suficientes.
+
+### Colombia y Turquía (`#colombia` `vCo` `renderColombia` `SUBS.O`; `#turquia` `vTr` `renderTurquia` `SUBS.T`)
+- Mismo formato que Japón, datos `colombia.json`/`turquia.json` (scripts/colombia.py y turquia.py: BIS D.CO/D.TR, XRU COP/TRY,
+  CPI 771/628; OCDE COL/TUR). `BCAL` COL y TUR solo con fechas de 2026: cargar 2027 cuando las publiquen.
+- Colombia: mil pesos colombianos en pesos, MSCI COLCAP (`global.json → colombia.colcap`, historia `colcap`), ADR
+  `acciones.col` (EC, CIB, AVAL, TGLS); sin bono a 10 años (CNBC no lo tiene), por eso el apartado se llama "Tasas".
+  Noticias de El Tiempo, Portafolio, La República, Semana y Valora Analitik.
+- Turquía: una lira en pesos, BIST 100 (`turquia.xu100`, historia `xu100`), bonos 2 y 10 años (`tr2`, `tr10`), ETF TUR
+  y Turkcell; tarjetas "Inflación: Turquía contra Argentina" y "Lira contra peso" (base 100 con `fx_try` y `fx_ars`).
+  En español casi no hay noticias de Turquía.
+- Próximos posibles: Perú, India; Uruguay solo si hay datos gratis suficientes.
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
@@ -177,7 +187,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   L a V cada hora 08:23-19:23 ART, findes cada 6 h y en cada push de esos scripts. Errores en el campo `errores`.
 - `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
 - `noticias_paises.json` (scripts/noticias_paises.py, mismo workflow `noticias.yml`): titulares de 48 h para el apartado
-  "Noticias" de EE.UU., Brasil, Europa, México, Chile, Japón, Reino Unido y Canadá (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
+  "Noticias" de todas las secciones de país (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
   medio: "econ" (medio del país: solo economía y sin titulares de otro país, `OTROS`) o "pais" (medio de afuera: tiene que
   nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
