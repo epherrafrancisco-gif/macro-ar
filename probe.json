@@ -1,0 +1,269 @@
+{
+ "bis_cbpol": [
+  [
+   " the monetary policy rate was defined in terms of a commonly used unit of account",
+   " indexed to one-month-lagged CPI.\""
+  ],
+  [
+   " the monetary policy rate was defined in terms of a commonly used unit of account",
+   " indexed to one-month-lagged CPI.\""
+  ],
+  [
+   " the monetary policy rate was defined in terms of a commonly used unit of account",
+   " indexed to one-month-lagged CPI.\""
+  ],
+  [
+   " the monetary policy rate was defined in terms of a commonly used unit of account",
+   " indexed to one-month-lagged CPI.\""
+  ]
+ ],
+ "bis_xru": [
+  [
+   "2026-10-03",
+   "NaN"
+  ],
+  [
+   "2026-10-04",
+   "NaN"
+  ],
+  [
+   "2026-10-05",
+   "984.82"
+  ],
+  [
+   "2026-10-06",
+   "977.25"
+  ]
+ ],
+ "bis_cpi": [
+  [
+   "2026-05",
+   "3.9308176"
+  ],
+  [
+   "2026-06",
+   "4.3369242"
+  ],
+  [
+   "2026-07",
+   "3.5260541"
+  ],
+  [
+   "2026-08",
+   "4.1321553"
+  ]
+ ],
+ "oecd_une": [
+  [
+   "2026-04",
+   "9.284329"
+  ],
+  [
+   "2026-05",
+   "9.296486"
+  ],
+  [
+   "2026-06",
+   "9.277683"
+  ],
+  [
+   "2026-07",
+   "9.355367"
+  ]
+ ],
+ "oecd_gdp": [
+  [
+   "2025-Q3",
+   "-0.440574741"
+  ],
+  [
+   "2025-Q4",
+   "0.381760778"
+  ],
+  [
+   "2026-Q1",
+   "-0.252408528"
+  ],
+  [
+   "2026-Q2",
+   "-0.01516316"
+  ]
+ ],
+ "cnbc": [
+  [
+   ".SPIPSA",
+   null,
+   null,
+   1
+  ],
+  [
+   ".IPSA",
+   null,
+   null,
+   1
+  ],
+  [
+   "SPIPSA",
+   null,
+   null,
+   1
+  ],
+  [
+   ".SPCLXIPSA",
+   null,
+   null,
+   1
+  ],
+  [
+   "SQM",
+   "Sociedad Quimica y Minera de Chile SA",
+   "63.91",
+   0
+  ],
+  [
+   "LTM",
+   "LATAM Airlines Group S.A.",
+   "50.25",
+   0
+  ],
+  [
+   "BCH",
+   "Banco de Chile",
+   "38.89",
+   0
+  ],
+  [
+   "BSAC",
+   "Banco Santander Chile",
+   "32.22",
+   0
+  ],
+  [
+   "ENIC",
+   "Enel Chile SA",
+   "4.48",
+   0
+  ],
+  [
+   "CCU",
+   "Compania Cervecerias Unidas SA",
+   "10.91",
+   0
+  ],
+  [
+   "AKO.B",
+   "Embotelladora Andina S.A.",
+   "29.61",
+   0
+  ],
+  [
+   "AKO/B",
+   null,
+   null,
+   1
+  ],
+  [
+   "CL10Y-CL",
+   "Reuters CLP 10Y Govt Bond (p)",
+   "6.10%",
+   0
+  ],
+  [
+   "CLP=",
+   "US Dollar/Chilean Peso FX Spot Rate",
+   "975.06",
+   0
+  ]
+ ],
+ "hist_.SPIPSA": 0,
+ "hist_.IPSA": 0,
+ "hist_SPIPSA": 0,
+ "rss_latercera": {
+  "total": 100,
+  "48h": 100,
+  "ej": [
+   "Nuevo ataque de hutíes contra aeropuerto en Arabia Saudita deja una persona muerta y otras once heridas",
+   "Muere a los 65 años Gabriel Prieto, renocido actor de teatro y de la televisión chilena",
+   "Cadem: 51% cree que aluvión en Las Condes se pudo haber evitado si autoridades se hubieran anticipado",
+   "Hombre permanece grave tras recibir dos disparos en La Florida: desconocido lo increpó antes de atacarlo",
+   "Cobreloa pone en riesgo el liderato de la Primera B tras perder contra Deportes Copiapó",
+   "Dron impacta contra buque petrolero en el estrecho de Ormuz y obliga a evacuar a su tripulación",
+   "Descartan intervención de terceros en muerte de joven encontrado en un canal de regadío en Lo Barnechea",
+   "Premio Nobel de la Paz",
+   "Prevenir antes de construir",
+   "Modalidad de cobertura complementaria de Fonasa",
+   "“La opaca receta de Junaeb”",
+   "Tragedia en El Teniente: hallan muertos a dos trabajadores tras alud y sindicato pide indagar por qué efectuaban labores en zona crítica"
+  ]
+ },
+ "rss_latercera_pulso": {
+  "total": 20,
+  "48h": 20,
+  "ej": [
+   "Biministro Mas dice que no esperaba que existiría hoy un escenario económico adverso, pero proyecta un repunte para 2027",
+   "Los grandes fondos de inversión bajan su exposición en Socovesa",
+   "Jurado define a ganadores  del Premio Impulsa Liderazgo",
+   "Andrés Sansone: “Chile debe acostumbrarse a una economía mundial más volátil y disruptiva”",
+   "La negociación para bajar el precio del Tag entra a su último tramo",
+   "Bancos interesados en compra de Transbank presentarán ofertas no vinculantes este mes",
+   "La batería de proyectos laborales que prepara el gobierno para combatir la crisis de empleo",
+   "Inversiones en Luxemburgo y Suiza y acciones chilenas: el patrimonio declarado por el embajador Gabriel Zaliasnik",
+   "Semana de la pyme: Los dolores y los alivios del sector para lo que queda de año",
+   "MK4: Desenredar para empezar a tejer",
+   "Una cordillera, oportunidades compartidas",
+   "El costo de no anticiparse a los riesgos climáticos en el sistema de salud"
+  ]
+ },
+ "rss_df": {
+  "total": 50,
+  "48h": 20,
+  "ej": [
+   "Alud en El Teniente: Codelco confirma el fallecimiento de dos trabajadores en la mina",
+   "Biministro Daniel Mas: \"El 2027 va a ser el año del crecimiento y el empleo\"",
+   "Trump afirma que Rusia y Ucrania acordaron un \"alto el fuego energético\"",
+   "Nuevo aluvión en Nepal: inundación repentina de un río arrasa un pueblo y deja 5 desaparecidos",
+   "La creciente deuda de China limita el margen para el estímulo económico",
+   "La izquierda vuelve a disputar la FEUC: quiénes son Florencia Yáñez y Maksim Baeza, los dos candidatos que van al balotaje",
+   "La columna de J.J.Jinks: ¿Quién tiembla con Bachelet?",
+   "Claudio Hidalgo, presidente de WeWork latam y los costos personales de su carrera internacional: “Es una carga que tengo hasta el día de hoy”",
+   "El Ingeniero UC de 25 años que recibió US$ 50 millones para formar gente en seguridad de IA",
+   "La Primavera: La desconocida fundación de viviendas de Eduardo Fernandez León",
+   "Inmobiliaria de Gabriela Luksic se fusiona con Patagonland",
+   "Jorge Alessandri: “Sería bueno saber qué hace hoy día el Segundo Piso”"
+  ]
+ },
+ "rss_df2": "<HTTPError 404: 'Not Found'>",
+ "rss_biobio_eco": "<HTTPError 404: 'Not Found'>",
+ "rss_biobio": "<HTTPError 404: 'Not Found'>",
+ "rss_emol_eco": "ConnectionResetError(104, 'Connection reset by peer')",
+ "rss_elmostrador": "<HTTPError 404: 'Not Found'>",
+ "rss_elmostrador_mercados": "<HTTPError 404: 'Not Found'>",
+ "rss_cooperativa_eco": {
+  "total": 15,
+  "48h": 3,
+  "ej": [
+   "Diputados consideran \"populista\" la propuesta del PDG que busca reemplazar contratos en UF",
+   "Presupuesto: Colegio Médico llama a financiar Salud con recursos más realistas",
+   "Cecilia Pérez pide mantener Prodemu: \"No se puede borrar de un plumazo\""
+  ]
+ },
+ "rss_t13": "<HTTPError 404: 'Not Found'>",
+ "rss_cnnchile": "ParseError('syntax error: line 99, column 0')",
+ "rss_ex_ante": {
+  "total": 10,
+  "48h": 10,
+  "ej": [
+   "Nuevo accidente en División El Teniente deja dos trabajadores fallecidos",
+   "Cadem: Bachelet se alza como la principal líder de izquierda y centroizquierda (Lea aquí la encuesta)",
+   "Presupuesto 2027: Los recortes que pondrían en jaque el financiamiento universitario y que alertó el rector de la UC",
+   "Crónica: alfombra roja, Inca Kola al almuerzo y una visita a Keiko Fujimori marcaron el encuentro empresarial en Lima",
+   "Muere Juan Pablo Cárdenas, exdirector de revista Análisis y Premio Nacional de Periodismo",
+   "Susana Sierra, experta en ciberseguridad: “el hacker del futuro es un niño de 15 años”",
+   "[Opinión] ¿Qué tan bueno es el aeropuerto de Santiago? El ranking mundial lo revela. Por Ignacia Munita",
+   "Teleférico Bicentenario: la “pata coja” del esperado proyecto que une Huechuraba con Providencia",
+   "Criteria: Kast llega a su más bajo nivel de aprobación (27%) y desaprobación sube a 64% (Lea aquí la encuesta)",
+   "Muere el exlautarista condenado por homicidio Juan Aliste Vega, seis días después de solicitar indulto al Presidente"
+  ]
+ },
+ "rss_eldinamo": "<HTTPError 404: 'Not Found'>"
+}
