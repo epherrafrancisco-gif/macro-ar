@@ -34,7 +34,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
-  El mundo = `#global` (Mundo) y `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`); `#sobre`.
+  El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`) y `#brasil`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -64,6 +64,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Estados Unidos: arriba SIEMPRE mapa, deuda, Fed y los 6 indicadores. Apartados: Economía (semáforo, rubros, próximos
   datos, empleos, mercado laboral, PBI) · Tasas y deuda (Fed vs inflación, curva, decisiones, hipotecaria) · Wall Street
   (50 empresas, sectores, 7 magníficas, balances).
+
+### Brasil (`#brasil`, sección `vB`, `renderBrasil`, datos `brasil.json` de scripts/brasil.py en `global.yml`)
+- Arriba siempre 6 indicadores: real por dólar (PTAX), un real en pesos (mayorista de data.json ÷ PTAX del mismo día),
+  Selic con cuenta regresiva al Copom (`BCAL` BRA), IPCA 12 meses, desempleo y Bovespa. Apartados (`#gSubB`, `SUBS.B`):
+  Economía (IPCA mensual, IBC-Br interanual, desempleo, reservas) · Tasas y expectativas (Selic vs IPCA, decisiones del
+  Copom sacadas de los cambios de la Selic, encuesta Focus) · Mercados y el real (PTAX, real en pesos, Bovespa, acciones).
+- Fuentes: BCB SGS `api.bcb.gov.br/dados/serie/bcdata.sgs.{código}/dados` (432 Selic meta: viene cargada hasta la próxima
+  reunión, se cortan fechas futuras; 1 PTAX; 433/13522 IPCA; 24363 IBC-Br sin desestacionalizar, el 24364 falla; 24369
+  desempleo; 13621 reservas) y Focus (`olinda.bcb.gov.br/.../ExpectativasMercadoAnuais`). El BCB a veces da 502: se reintenta.
+- Próximo: Europa (zona euro), con el mismo formato.
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si

@@ -51,7 +51,8 @@ def sgs(codigo, anios, cambios):
             pts.append([f"{y}-{m}-{d}", float(r["valor"])])
         except (TypeError, ValueError):
             continue
-    pts.sort()
+    hoy = date.today().isoformat()
+    pts = sorted(p for p in pts if p[0] <= hoy)  # la Selic meta viene cargada hasta la próxima reunión
     if not pts:
         raise ValueError("sin datos")
     if cambios:  # series diarias que casi no cambian (Selic): solo los días en que cambia + el último

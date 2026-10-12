@@ -443,6 +443,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
+      <a href="#brasil" role="tab" id="tabB" data-g="glo" aria-selected="false">Brasil</a>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
     </nav>
@@ -776,6 +777,36 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="note" id="uFuente"></p>
     </div>
   </section>
+  <!-- BRASIL -->
+  <section class="view" id="vB" hidden>
+    <div class="ukpis" id="bKpis"></div>
+    <div class="subtabs" id="gSubB" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y expectativas</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el real</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>Inflación de Brasil (IPCA)</h2><span class="note" id="bIpcN"></span></div><div class="chart" id="chBIpc"></div><p class="note">Inflación de cada mes, últimos 3 años. Arriba, el dato de los últimos 12 meses. La meta del Banco Central de Brasil es 3% anual (con tolerancia entre 1,5% y 4,5%). Fuente: IBGE vía Banco Central de Brasil.</p></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Actividad económica (IBC-Br)</h2><span class="note" id="bIbcN"></span></div><div class="chart" id="chBIbc"></div><p class="note">El "PBI mensual" que calcula el Banco Central de Brasil: cuánto creció la economía contra el mismo mes del año anterior.</p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="bDesN"></span></div><div class="chart" id="chBDes"></div><p class="note">Porcentaje de la fuerza laboral sin trabajo (encuesta PNAD del IBGE, trimestres móviles).</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Reservas internacionales</h2><span class="note" id="bResN"></span></div><div class="stats" id="bResSt"></div><div class="chart" id="chBRes"></div><p class="note">Dólares que tiene el Banco Central de Brasil, en miles de millones. Dato diario.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Selic contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chBSel"></div><p class="note">Azul: Selic. Rojo: inflación de los últimos 12 meses. La Selic es la tasa que fija el Banco Central de Brasil en cada reunión del Copom. Si está muy por encima de la inflación, la política es dura (frena la economía para bajar la inflación).</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Copom</h2><span class="note" id="bCopN"></span></div><div class="tw"><table class="gcmp" id="bCop"></table></div></div>
+      </div>
+      <div class="card"><div class="head"><h2>Qué esperan los analistas (encuesta Focus)</h2><span class="note" id="bFocN"></span></div><p class="sub">La encuesta semanal del Banco Central de Brasil a más de 100 analistas: es como nuestro REM. Mediana de lo que esperan para cada año y cuánto cambió en las últimas 4 semanas.</p><div class="tw"><table class="gtbl" id="bFoc"></table></div></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>El real contra el dólar</h2><span class="note">Dólar PTAX, venta</span></div><div class="chart" id="chBUsd"></div><p class="note">Cuántos reales hay que dar por un dólar (cotización oficial PTAX). Si sube, el real se devalúa.</p></div>
+        <div class="card"><div class="head"><h2>El real en pesos</h2><span class="note">Oficial</span></div><div class="chart" id="chBArs"></div><p class="note">Cuántos pesos argentinos vale un real: dólar mayorista argentino dividido el dólar PTAX de Brasil, del mismo día. Si sube, Brasil se encarece para los argentinos.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bovespa</h2><span class="note" id="bBovN"></span></div><div class="chart" id="chBBov"></div></div>
+      <div class="card"><div class="head"><h2>Empresas brasileñas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="bAccSt"></div><div class="heat" id="bAccH"></div><div class="stats det" id="bAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
+    </div>
+    <p class="note" id="bFuente"></p>
+  </section>
+
   <section class="view" id="vW" hidden>
     <div class="card">
       <div class="nwtop">
@@ -1951,7 +1982,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
@@ -1963,7 +1994,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
     global:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>',
-    eeuu:'<path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.5-4 6-.6z"/>'};
+    eeuu:'<path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.5-4 6-.6z"/>',
+    brasil:'<path d="M12 3.5l9 8.5-9 8.5-9-8.5z"/><circle cx="12" cy="12" r="3.4"/>'};
   const SECC = {
     dolares:['Dólares','Todas las cotizaciones, las brechas y su historia'],
     macro:['Inflación y reservas','Inflación, lo que esperan los analistas, reservas del BCRA y riesgo país'],
@@ -1974,12 +2006,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación y sueldo en dólares'],
     global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
     eeuu:['Estados Unidos','La Fed, empleo, inflación, deuda y Wall Street'],
+    brasil:['Brasil','El real, la Selic, la inflación y la bolsa de nuestro principal socio'],
     sobre:['Sobre Pulso Macro','Quién lo hace, por qué y de dónde salen los datos']};
   const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
   document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu'].map(k=>tile(k)).join('');
+  $('tilesG').innerHTML = ['global','eeuu','brasil'].map((k,i)=>tile(k, i===2)).join('');
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
@@ -1990,7 +2023,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
-    const grp = tab==='global' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
+    const grp = tab==='global' || tab==='brasil' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
     let selA = null;
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
@@ -2003,7 +2036,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada'].includes(tab);
+    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil'].includes(tab);
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
@@ -2063,7 +2096,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada();
+    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -2355,7 +2388,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='global') gExtras();
+    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -2500,6 +2533,72 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const mesTxt = m => `${MESES[+m.slice(5,7)-1]} ${m.slice(0,4)}`;
   const USA_HUB = [['Fed',-77.04,38.9,'b'],['Wall Street',-74,40.7,'t'],['Chicago',-87.6,41.9,'t'],['Silicon Valley',-122.4,37.8,'t'],['Houston',-95.4,29.8,'t']];
   const USA_FIPS = {AL:'01',AK:'02',AZ:'04',AR:'05',CA:'06',CO:'08',CT:'09',DE:'10',DC:'11',FL:'12',GA:'13',HI:'15',ID:'16',IL:'17',IN:'18',IA:'19',KS:'20',KY:'21',LA:'22',ME:'23',MD:'24',MA:'25',MI:'26',MN:'27',MS:'28',MO:'29',MT:'30',NE:'31',NV:'32',NH:'33',NJ:'34',NM:'35',NY:'36',NC:'37',ND:'38',OH:'39',OK:'40',OR:'41',PA:'42',RI:'44',SC:'45',SD:'46',TN:'47',TX:'48',UT:'49',VT:'50',VA:'51',WA:'53',WV:'54',WI:'55',WY:'56'};
+  // ---- Brasil (brasil.json, Banco Central de Brasil) ----
+  let bra = null, braLoading = false, bAccSel = null;
+  async function loadBra(){
+    if(braLoading) return; braLoading = true;
+    try{ const r = await fetch('brasil.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) bra = await r.json(); }catch(e){}
+    braLoading = false; if(tab==='brasil') renderBrasil();
+  }
+  function renderBrasil(){
+    aplicarSub('B');
+    if(!bra){ loadBra(); $('bKpis').innerHTML = '<div class="empty">Cargando datos de Brasil…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist();
+    const B = bra, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    const L = a => a?.length ? a[a.length-1] : null, P = a => a?.length>1 ? a[a.length-2] : null, hoy = hoyAR();
+    const pt = L(B.ptax), ptp = P(B.ptax), sel = L(B.selic), ip = L(B.ipca_12), ds = L(B.desemp), bov = glob?.bolsas?.B3;
+    // real en pesos: mayorista argentino / PTAX del mismo día
+    const may = new Map(days.filter(d=>get(d,'mayorista')).map(d=>[d.fecha, get(d,'mayorista')]));
+    const ars = (B.ptax||[]).filter(p=>may.has(p[0])).map(p=>[p[0], may.get(p[0])/p[1]]), ra = L(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const cop = BCAL.find(b=>b[0]==='BRA'), prox = cop ? cop[2].find(f=>f>=hoy) : null, dcop = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('bKpis').innerHTML = st('Real por dólar', pt ? 'R$ '+nf(pt[1],3) : '—', pt ? `${ptp ? sg((pt[1]/ptp[1]-1)*100,2)+'% · ' : ''}PTAX ${fds(pt[0])}` : '', ptp && pt[1]>ptp[1] ? 'dn' : 'up')
+      + st('Un real en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + st('Tasa Selic', sel ? nf(sel[1],2)+'%' : '—', prox ? `Copom ${dcop===0?'HOY':dcop===1?'mañana':'en '+dcop+' días'}` : 'anual')
+      + st('Inflación (IPCA)', ip ? nf(ip[1],2)+'%' : '—', ip ? 'en 12 meses, '+mesTxt(ip[0].slice(0,7)) : '', ip && ip[1]>4.5 ? 'dn' : '')
+      + st('Desempleo', ds ? nf(ds[1],1)+'%' : '—', ds ? mesTxt(ds[0].slice(0,7)) : '')
+      + st('Bovespa', bov ? nf(bov.v,0) : '—', bov ? sg(gpc(bov),2)+'% en el día' : '', bov && gpc(bov)>0 ? 'up' : bov && gpc(bov)<0 ? 'dn' : '');
+    const m = a => (a||[]).map(p=>[p[0].slice(0,7), p[1]]);
+    const sub = SUBS.B[2];
+    if(sub==='economia'){
+      const im = m(B.ipca_m).slice(-36), i12 = m(B.ipca_12).slice(-36);
+      if(im.length){ barChart($('chBIpc'), [{n:'Inflación del mes', c:'--s1', pts: im}], {aria:'Inflación mensual de Brasil', yfmt:v=>nf(v,1)+'%', vfmt:v=>sg(v,2)+'%'});
+        $('bIpcN').textContent = `${mesTxt(im[im.length-1][0])}: ${sg(im[im.length-1][1],2)}% en el mes, ${nf(L(i12)[1],2)}% en 12 meses`; }
+      const ib = m(B.ibc), iy = ib.map((p,i)=>{ const q = ib.find(x=>x[0]===`${+p[0].slice(0,4)-1}${p[0].slice(4)}`); return q ? [p[0], (p[1]/q[1]-1)*100] : null; }).filter(Boolean).slice(-36);
+      if(iy.length){ barChart($('chBIbc'), [{n:'Actividad', c:'--s3', pts: iy}], {aria:'Actividad económica de Brasil', yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'}); $('bIbcN').textContent = `${mesTxt(L(iy)[0])}: ${sg(L(iy)[1],1)}% interanual`; }
+      const de = m(B.desemp).slice(-48);
+      if(de.length){ lineChart($('chBDes'), [{n:'Desempleo', c:'--s4', pts: de.map(p=>[p[0]+'-01',p[1]])}], {xfmt:s=>s.slice(5,7)+'/'+s.slice(2,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Desempleo en Brasil'}); $('bDesN').textContent = mesTxt(L(de)[0]); }
+      const rs = B.reservas || [];
+      if(rs.length){ const l = L(rs), a = rs.find(p=>p[0] >= (()=>{ const d = new Date(l[0]); d.setUTCFullYear(d.getUTCFullYear()-1); return d.toISOString().slice(0,10); })());
+        $('bResSt').innerHTML = `<div class="st"><span class="lbl">Reservas</span><span class="v">US$ ${nf(l[1]/1000,1)} mil M</span><span class="d">al ${fd(l[0])}</span></div>` + (a ? `<div class="st"><span class="lbl">En un año</span><span class="v ${l[1]>=a[1]?'up':'dn'}">${sg((l[1]-a[1])/1000,1)} mil M</span><span class="d">${sg((l[1]/a[1]-1)*100,1)}%</span></div>` : '');
+        lineChart($('chBRes'), [{n:'Reservas', c:'--accent', pts: rs.map(p=>[p[0], p[1]/1000]), area:true}], {h:180, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,1)+' mil M', aria:'Reservas de Brasil'}); $('bResN').textContent = 'Banco Central de Brasil'; }
+    }
+    if(sub==='tasas'){
+      // Selic (escalones) contra IPCA 12 meses, mensual
+      const sl = B.selic || [], mes = []; if(sl.length){ const ini = new Date(Date.UTC(new Date().getUTCFullYear()-5, new Date().getUTCMonth(), 1));
+        for(let d = new Date(ini); d <= new Date(); d.setUTCMonth(d.getUTCMonth()+1)){ const f = d.toISOString().slice(0,10); let v = null; for(const p of sl){ if(p[0] <= f) v = p[1]; } if(v!=null) mes.push([f, v]); } }
+      const i12 = (B.ipca_12||[]).filter(p=>p[0] >= (mes[0]?.[0]||'0'));
+      lineChart($('chBSel'), [{n:'Selic', c:'--accent', pts: mes},{n:'Inflación 12 meses', c:'--neg', pts: i12}], {xfmt:s=>s.slice(5,7)+'/'+s.slice(2,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,2)+'%', aria:'Selic contra inflación'});
+      const cambios = []; for(let i=1;i<sl.length;i++) if(sl[i][1]!==sl[i-1][1]) cambios.push({f:sl[i][0], antes:sl[i-1][1], despues:sl[i][1]});
+      $('bCop').innerHTML = cambios.length ? `<tr><th>Vigente desde</th><th>Decisión</th><th>Selic</th></tr>` + cambios.slice(-8).reverse().map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.f)}</td><td class="${d>0?'dn':'up'}">${d>0?'▲ subió':'▼ bajó'} ${nf(Math.abs(d),2)}</td><td>${nf(x.despues,2)}%</td></tr>`; }).join('') : '<tr><td>Sin cambios en los últimos años.</td></tr>';
+      $('bCopN').textContent = prox ? `Próxima reunión: ${fd(prox)}` : '';
+      const F = B.focus || {}, anios = Object.keys(F.ipca?.anios || {}), NOM = {ipca:['Inflación (IPCA)','%',2], selic:['Tasa Selic a fin de año','%',2], cambio:['Dólar a fin de año','R$ ',2], pib:['Crecimiento del PBI','%',2]};
+      $('bFoc').innerHTML = anios.length ? `<thead><tr><th>Qué esperan</th>${anios.map(a=>`<th>${a}</th>`).join('')}</tr></thead><tbody>` + Object.entries(NOM).filter(([k])=>F[k]).map(([k,[n,u,d]])=>`<tr><td>${n}</td>${anios.map(a=>{ const x = F[k].anios[a] || {}; if(x.v==null) return '<td>—</td>'; const c = x.ant!=null ? x.v-x.ant : null;
+        return `<td>${u==='R$ ' ? 'R$ '+nf(x.v,d) : nf(x.v,d)+'%'}${c!=null && Math.abs(c)>=0.005 ? `<small>${c>0?'▲':'▼'} ${nf(Math.abs(c),2)} en 4 semanas</small>` : '<small>sin cambios</small>'}</td>`; }).join('')}</tr>`).join('') + '</tbody>' : '<tbody><tr><td>Sin datos todavía.</td></tr></tbody>';
+      $('bFocN').textContent = F.ipca ? `Encuesta del ${fd(F.ipca.fecha)}` : '';
+    }
+    if(sub==='mercados'){
+      const pt2 = (B.ptax||[]).slice(-500);
+      if(pt2.length) lineChart($('chBUsd'), [{n:'Real por dólar', c:'--s3', pts: pt2}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'R$ '+nf(v,3), aria:'Real contra dólar'});
+      if(ars.length) lineChart($('chBArs'), [{n:'Pesos por real', c:'--s4', pts: ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'El real en pesos'});
+      const bv = gHist?.series?.bvsp || [];
+      if(bv.length){ lineChart($('chBBov'), [{n:'Bovespa', c:'--accent', pts: bv, area:true}], {h:200, yfmt:v=>nf(v/1000,0)+' mil', vfmt:v=>nf(v,0), aria:'Bovespa'});
+        const y = gYtd(bv); $('bBovN').textContent = `${nf(L(bv)[1],0)} puntos${y!=null ? ` · ${sg(y,1)}% en el año (en reales)` : ''}`; }
+      else $('chBBov').innerHTML = '<div class="empty">Cargando…</div>';
+      gHeat('bAccH', 'bAccSt', glob?.acciones?.bra, bAccSel, s=>{ bAccSel = bAccSel===s ? null : s; renderBrasil(); });
+      gDetalle('bAccDet', bAccSel && (glob?.acciones?.bra||[]).find(x=>x.s===bAccSel));
+    }
+    $('bFuente').textContent = `Fuentes: Banco Central de Brasil (Selic, dólar PTAX, reservas, IBC-Br y encuesta Focus) e IBGE (inflación y desempleo); Bovespa y acciones: CNBC, con demora. Actualizado: ${new Date(B.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
+  }
   async function loadUsa(){
     if(usaLoading) return; usaLoading = true;
     try{ const r = await fetch('usa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
@@ -2610,13 +2709,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
-  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia']};
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia']};
   for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
   function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
     document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel))); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
-    if(k==='M') renderGlobal(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   function renderUsa(){
     aplicarSub('U');
