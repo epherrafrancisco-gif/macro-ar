@@ -300,6 +300,7 @@ ACCIONES = {
     "chl": ["SQM", "LTM", "BCH", "BSAC", "ENIC", "CCU", "AKO.B"],
     "jpn": ["TM", "SONY", "MUFG", "SMFG", "MFG", "HMC", "NMR", "IX", "TAK", "CAJPY"],
     "gbr": ["SHEL", "AZN", "HSBC", "UL", "BP", "DEO", "GSK", "BTI", "RIO", "BCS", "LYG", "NWG", "VOD", "RELX", "ARM"],
+    "can": ["SHOP", "RY", "TD", "ENB", "CNQ", "CP", "CNI", "BMO", "BNS", "SU", "BAM", "TRI", "CM", "NTR", "B", "CVE", "MFC"],
     "mex": ["AMX", "FMX", "KOF", "CX", "ASR", "PAC", "OMAB", "TV", "VLRS", "SCCO"],
     "asia": ["TSM", "BABA", "TM", "SONY", "PDD", "HDB", "INFY", "BIDU", "JD", "MUFG"],
 }
@@ -325,7 +326,8 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "cac": ".FCHI", "ibex": ".IBEX", "ftmib": ".FTMIB", "sx5e": ".STOXX50E", "de10": "DE10Y-DE", "it10": "IT10Y-IT", "fr10": "FR10Y-FR", "es10": "ES10Y-ES",
         "mxx": ".MXX", "mx10": "MX10Y", "ech": "ECH", "cl10": "CL10Y-CL",
         "fx_jpy": "JPY=", "topix": ".TOPX", "jp10": "JP10Y-JP", "jp2": "JP2Y-JP",
-        "fx_gbp": "GBP=", "ftmc": ".FTMC", "gb10": "GB10Y-GB", "gb2": "GB2Y-GB"}
+        "fx_gbp": "GBP=", "ftmc": ".FTMC", "gb10": "GB10Y-GB", "gb2": "GB2Y-GB",
+        "fx_cad": "CAD=", "tsx": ".GSPTSE", "ca10": "CA10Y", "ca2": "CA2Y"}
 # Bolsas europeas para la sección Europa
 # Bolsa chilena: CNBC no tiene el IPSA; se usa el fondo iShares MSCI Chile (ECH, en dólares)
 CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
@@ -333,13 +335,15 @@ CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
 JAPON = {"topix": (".TOPX", "TOPIX"), "jpy": ("JPY=", "Yen por dólar"), "jp2": ("JP2Y-JP", "Bono a 2 años"), "jp30": ("JP30Y-JP", "Bono a 30 años")}
 # Reino Unido: FTSE 250, libra (dólares por libra) y gilts a 2 y 30 años (el de 10 está en BONOS)
 REINO = {"ftmc": (".FTMC", "FTSE 250"), "gbp": ("GBP=", "Dólares por libra"), "gb2": ("GB2Y-GB", "Gilt a 2 años"), "gb30": ("GB30Y-GB", "Gilt a 30 años")}
+# Canadá: dólar canadiense (por dólar) y bonos a 2 y 30 años (el de 10 está en BONOS; el TSX en BOLSAS)
+CANADA = {"cad": ("CAD=", "Dólares canadienses por dólar"), "ca2": ("CA2Y", "Bono a 2 años"), "ca30": ("CA30Y", "Bono a 30 años")}
 EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
 
 
 def extras():
     alt = lambda s: s if isinstance(s, tuple) else (s,)
     syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
-            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()])
+            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()] + [v[0] for v in CANADA.values()])
     q = cnbc_raw(syms)
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
@@ -357,7 +361,8 @@ def extras():
     chile = {k: {"idx": n, **q[s]} for k, (s, n) in CHILE.items() if s in q}
     japon = {k: {"idx": n, **q[s]} for k, (s, n) in JAPON.items() if s in q}
     reino = {k: {"idx": n, **q[s]} for k, (s, n) in REINO.items() if s in q}
-    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa, "chile": chile, "japon": japon, "reino": reino}
+    canada = {k: {"idx": n, **q[s]} for k, (s, n) in CANADA.items() if s in q}
+    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa, "chile": chile, "japon": japon, "reino": reino, "canada": canada}
 
 
 def cripto():
@@ -564,7 +569,7 @@ def main():
     except Exception as e:  # noqa: BLE001
         errores.append(f"extras: {e}")
         ex = {}
-    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa", "chile", "japon", "reino"):  # si una sección vino vacía, queda la anterior
+    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa", "chile", "japon", "reino", "canada"):  # si una sección vino vacía, queda la anterior
         if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
             ex[k] = prev.get(k) or {}
     HISTF = ROOT / "global_hist.json"
