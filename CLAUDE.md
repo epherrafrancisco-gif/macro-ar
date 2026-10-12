@@ -65,7 +65,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Barra `.subtabs` (`#gSubM`, `#gSubU`) y bloques `.gsub[data-sub]`; `SUBS`, `aplicarSub`, `setSub` (se recuerda en
   localStorage `sub-M` / `sub-U`). Pedido del dueño: los menos apartados posibles, lo coherente junto.
 - Mundo: arriba SIEMPRE los dos globos (no sacarlos de ahí). Apartados: Bolsas y acciones (reloj, bolsas, termómetro,
-  Argentinas en WS, Líderes, gráficos, ¿qué rindió más?, cripto) · Economías y tasas (ficha del país, ¿dónde está
+  Argentinas en WS, Líderes, gráficos, ¿qué rindió más?, cripto) · Economías y tasas (comparador de países `renderComparador`, `CMP_P`:
+  12 países con el último dato de cada sección; ficha del país, ¿dónde está
   Argentina?, agenda y tasas de bancos centrales, bonos) · Commodities y monedas · Noticias · Explorador (solo compu). Tocar un país del globo
   lleva a Economías y tasas, a la ficha. Tocar un commodity lleva a Bolsas y acciones, al gráfico.
 - Estados Unidos: arriba SIEMPRE mapa, deuda, Fed y los 6 indicadores. Apartados: Economía (semáforo, rubros, próximos

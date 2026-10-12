@@ -437,6 +437,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .dh{display:flex;gap:14px;align-items:center}.dh .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:none}.dh .ic svg{width:28px;height:28px}
 .ar .dh .ic{background:#16283a}.gl .dh .ic{background:#0d2a28;color:#3fd0c0}
 .dh h2{margin:0;font-size:24px;font-weight:700}.dh p{margin:2px 0 0;color:var(--ink2);font-size:14px}
+.cmpsel{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:4px 0 12px}.cmpsel select{width:100%;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}.cmpsel select:focus{outline:2px solid var(--accent);border-color:var(--accent)}.cmpsel button{background:var(--sunk);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:16px;cursor:pointer}
+.cmpt{width:100%;table-layout:fixed}.cmpt td,.cmpt th{text-align:right;vertical-align:top;white-space:normal}.cmpt td:first-child{font-family:var(--sans);font-size:13.5px;width:34%}@media (max-width:520px){.cmpt td,.cmpt th{padding:7px 5px}.cmpt td b{font-size:15px}}.cmpt td:first-child,.cmpt th:first-child{text-align:left}.cmpt td b{font-size:17px;display:block}.cmpt td small{color:var(--muted);font-size:11.5px;display:block;font-family:var(--sans)}.cmpt td.w b{color:var(--pos)}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tile{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;background:var(--sunk);border:1px solid var(--line);border-radius:11px;padding:13px 14px;text-decoration:none;color:var(--ink);min-height:70px}
 .tile:hover,.tile:focus-visible{border-color:#74acdf;background:#162231}.gl .tile:hover,.gl .tile:focus-visible{border-color:#3fd0c0;background:#0f2422}
@@ -766,6 +768,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     </div>
     <div class="gsub" data-sub="economias">
+    <div class="card" id="cmpCard">
+      <div class="head"><h2>Comparador de países</h2><span class="note">El último dato de cada uno</span></div>
+      <div class="cmpsel"><select id="cmpA" aria-label="Primer país"></select><button type="button" id="cmpSw" aria-label="Dar vuelta">⇄</button><select id="cmpB" aria-label="Segundo país"></select></div>
+      <div class="tablewrap"><table class="cmpt" style="min-width:0"><thead><tr><th></th><th id="cmpHA"></th><th id="cmpHB"></th></tr></thead><tbody id="cmpT"></tbody></table></div>
+      <p class="note" id="cmpN"></p>
+    </div>
     <div class="card gficha" id="gFicha" aria-live="polite"></div>
     <div class="card">
       <div class="head"><h2>¿Dónde está Argentina?</h2><span class="note" id="dpaN"></span></div>
@@ -2164,7 +2172,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadAct(){
     if(actLoading) return; actLoading = true;
     try{ const r = await fetch('actividad.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
-    actLoading = false; if(tab==='actividad' || tab==='macro') render();
+    actLoading = false; if(tab==='actividad' || tab==='macro') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
   }
   const RUB = [['alimentos','Alimentos'],['bebidas','Alcohol y tabaco'],['prendas','Ropa y calzado'],['vivienda','Vivienda y servicios'],['equipamiento','Equipamiento hogar'],
     ['salud','Salud'],['transporte','Transporte'],['comunicacion','Comunicación'],['recreacion','Recreación'],['educacion','Educación'],['restaurantes','Restaurantes'],['varios','Otros']];
@@ -3013,7 +3021,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='calculadoras') renderCalc(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
+    gHistLoading = false; if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -4029,10 +4037,74 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
     document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel)));
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k);
-    if(k==='M' && sel==='explorar') xpStart(); }
+    if(k==='M' && sel==='explorar') xpStart();
+    if(k==='M' && sel==='economias') renderComparador(); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
+  // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
+  const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú']];
+  const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru'};
+  const CMP_FX = {ARG:['fx_ars'], BRA:['fx_brl'], EUR:['fx_eur',1], MEX:['fx_mxn'], CHL:['fx_clp'], JPN:['fx_jpy'], GBR:['fx_gbp',1], CAN:['fx_cad'], COL:['fx_cop'], TUR:['fx_try'], PER:['fx_pen']};
+  const CMP_BX = {USA:['spx','S&P 500'], BRA:['bvsp','Bovespa'], EUR:['sx5e','Euro Stoxx 50'], MEX:['mxx','IPC México'], CHL:['ech','ETF de Chile',1], JPN:['nikkei','Nikkei'], GBR:['ftse','FTSE 100'], CAN:['tsx','S&P/TSX'], COL:['colcap','COLCAP'], TUR:['xu100','BIST 100'], PER:['epu','ETF de Perú',1]};
+  const CMP = {}, cmpCarg = {};
+  let cmpSel = ['ARG','BRA'];
+  try{ const v = JSON.parse(localStorage.getItem('cmp-sel')||'null'); if(Array.isArray(v) && v.length===2 && v.every(x=>CMP_P.some(p=>p[0]===x))) cmpSel = v; }catch(e){}
+  async function cmpLoad(iso){
+    const f = iso==='ARG' ? null : CMP_F[iso]; if(!f || CMP[iso] || cmpCarg[iso]) return; cmpCarg[iso] = true;
+    try{ const r = await fetch(f+'.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) CMP[iso] = await r.json(); }catch(e){}
+    cmpCarg[iso] = false; renderComparador();
+  }
+  const cL = a => a?.length ? a[a.length-1] : null;
+  const cYoY = (pts, mes) => { const m = new Map(pts||[]), l = mes ? [mes, m.get(mes)] : cL(pts); if(!l || l[1]==null) return null; const y = String(+l[0].slice(0,4)-1)+l[0].slice(4); const a = m.get(y); return a ? [l[0], (l[1]/a-1)*100] : null; };
+  const cPer = f => !f ? '' : /Q\d/.test(f) ? `${f.slice(-1)}º trim ${f.slice(0,4)}` : f.length===7 ? mesTxt(f) : fd(f);
+  // devuelve {infl, tasa, real, desemp, crec, mon, bolsa}: cada uno [valor, aclaración] o null
+  function cmpDatos(iso){
+    const o = {}, D = CMP[iso];
+    if(iso==='ARG'){
+      const y = monthly('inflYoY'), yl = cL(y); if(yl) o.infl = [yl[1], mesTxt(yl[0])];
+      const pf = series('pf'), pl = cL(pf); if(pl) o.tasa = [pl[1], 'plazo fijo 30 días (el BCRA no fija una tasa de referencia)'];
+      if(act){ const d = cL(act.desoc); if(d) o.desemp = [d[1], `${Math.floor((+d[0].slice(5)-1)/3)+1}º trim ${d[0].slice(0,4)}`];
+        const e = cYoY(act.emae); if(e) o.crec = [e[1], 'actividad (EMAE), '+mesTxt(e[0])]; } else loadAct();
+      const mv = series('merval'), cc = new Map(series('ccl')), mu = mv.filter(p=>cc.has(p[0])).map(p=>[p[0], p[1]/cc.get(p[0])]), yt = gYtd(mu);
+      if(yt!=null) o.bolsa = [yt, 'S&P Merval en dólares CCL'];
+    } else if(D){
+      const pick = (inf, tas, des, cre) => { if(inf) o.infl = [inf[1], cPer(inf[0])]; if(tas) o.tasa = [tas[1], cPer(tas[0])]; if(des) o.desemp = [des[1], cPer(des[0])]; if(cre) o.crec = cre; };
+      if(iso==='USA'){ const i = cYoY(D.bls?.ipc), u = cL(D.bls?.desemp), g = glob?.paises?.USA;
+        pick(i, g?.tasa!=null ? [g.tasa_al, g.tasa] : null, u, D.pbi?.length ? [cL(D.pbi)[1], `PBI ${cL(D.pbi)[0].slice(-1)}º trim, anualizado`] : null); }
+      else if(iso==='BRA'){ const ib = cYoY(D.ibc); pick(cL(D.ipca_12)?.[0] ? [cL(D.ipca_12)[0].slice(0,7), cL(D.ipca_12)[1]] : null, cL(D.selic), cL(D.desemp) ? [cL(D.desemp)[0].slice(0,7), cL(D.desemp)[1]] : null, ib ? [ib[1], 'actividad (IBC-Br), '+mesTxt(ib[0].slice(0,7))] : null); }
+      else if(iso==='EUR'){ const pa = cL(D.pbi_anual?.EA); pick(cL(D.infl?.EA), cL(D.bce), cL(D.desemp?.EA), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
+      else if(iso==='PER'){ const pb = cL(D.pbi); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pb ? [pb[1], 'PBI mensual interanual, '+mesTxt(pb[0])] : null); if(o.desemp) o.desemp[1] += ' (Lima)'; }
+      else { const pa = cL(D.pbi_anual); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
+    } else cmpLoad(iso);
+    if(o.tasa && o.infl) o.real = [o.tasa[0]-o.infl[0], 'tasa menos inflación'];
+    const fx = CMP_FX[iso]; if(fx && gHist){ const h = gHist.series?.[fx[0]]; const y = h && gYtd(h); if(y!=null) o.mon = [fx[1] ? y : (1/(1+y/100)-1)*100, '+ = se fortaleció']; }
+    if(iso==='USA') o.mon = [0, 'es la referencia'];
+    const bx = CMP_BX[iso]; if(bx && gHist){ const h = gHist.series?.[bx[0]], y = h && gYtd(h);
+      if(y!=null){ let u = y; if(!bx[2] && fx && gHist.series?.[fx[0]]){ const fy = gYtd(gHist.series[fx[0]]); if(fy!=null){ const f = fx[1] ? 1/(1+fy/100) : 1+fy/100; u = ((1+y/100)/f-1)*100; } }
+        o.bolsa = [u, bx[1]+' en dólares']; } }
+    return o;
+  }
+  const CMP_R = [['infl','Inflación (12 meses)',-1,v=>nf(v,1)+'%'],['tasa','Tasa de interés',0,v=>nf(v,2)+'%'],['real','Tasa real',0,v=>sg(v,1)+' pp'],
+    ['desemp','Desempleo',-1,v=>nf(v,1)+'%'],['crec','Crecimiento',1,v=>sg(v,1)+'%'],['mon','Moneda contra el dólar, en el año',1,v=>sg(v,1)+'%'],['bolsa','Bolsa en el año (en dólares)',1,v=>sg(v,1)+'%']];
+  let cmpInit = false;
+  function renderComparador(){
+    if(!$('cmpA')) return;
+    if(!cmpInit){ cmpInit = true; const op = CMP_P.map(([k,n])=>`<option value="${k}">${n}</option>`).join(''); $('cmpA').innerHTML = op; $('cmpB').innerHTML = op;
+      const upd = ()=>{ cmpSel = [$('cmpA').value, $('cmpB').value]; try{ localStorage.setItem('cmp-sel', JSON.stringify(cmpSel)); }catch(e){} gcUna('comparador'); renderComparador(); };
+      $('cmpA').addEventListener('change', upd); $('cmpB').addEventListener('change', upd);
+      $('cmpSw').addEventListener('click', ()=>{ $('cmpA').value = cmpSel[1]; $('cmpB').value = cmpSel[0]; upd(); }); }
+    if(!gHist) loadHist();
+    $('cmpA').value = cmpSel[0]; $('cmpB').value = cmpSel[1];
+    const nom = k => CMP_P.find(p=>p[0]===k)[1], [a, b] = cmpSel, A = cmpDatos(a), B = cmpDatos(b);
+    $('cmpHA').textContent = nom(a); $('cmpHB').textContent = nom(b);
+    const cel = (x, w) => x ? `<td class="${w?'w':''}"><b>${x.f}</b><small>${esc(x.d)}</small></td>` : `<td><b>—</b><small>${(a!=='ARG'&&!CMP[a]&&!cmpCarg[a])||(b!=='ARG'&&!CMP[b])?'cargando…':'sin dato'}</small></td>`;
+    $('cmpT').innerHTML = CMP_R.map(([k,n,dir,f])=>{ const x = A[k] ? {v:A[k][0], f:f(A[k][0]), d:A[k][1]} : null, y = B[k] ? {v:B[k][0], f:f(B[k][0]), d:B[k][1]} : null;
+      const wx = dir && x && y && a!==b && (dir>0 ? x.v>y.v : x.v<y.v), wy = dir && x && y && a!==b && (dir>0 ? y.v>x.v : y.v<x.v);
+      return `<tr><td>${n}</td>${cel(x, wx)}${cel(y, wy)}</tr>`; }).join('');
+    $('cmpN').textContent = 'En verde, el mejor de los dos en cada fila (menos inflación y desempleo; más crecimiento, moneda más firme y bolsa más arriba). La tasa no se compara: alta o baja depende de la inflación de cada país; por eso está la tasa real. Cada dato es el último publicado por cada país, así que las fechas pueden no coincidir. Moneda y bolsa: últimos cierres (CNBC).';
+  }
+
   // ---- Mundo › Monitor: globo gigante que se maneja solo (solo computadora) ----
   const xpDesk = () => matchMedia('(min-width:1024px) and (pointer:fine)').matches;
   { const b = document.querySelector('#gSubM [data-s="explorar"]'); if(b) b.hidden = !xpDesk(); if(SUBS.M[2]==='explorar' && !xpDesk()) SUBS.M[2] = 'mercados'; }
