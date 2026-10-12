@@ -57,7 +57,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
   data912 desde el navegador cada 10 min), AL30/GD30 con TIR y paridad.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
-- Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares.
+- Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
+  cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
 - Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño.
 
 ### Apartados dentro de Mundo y Estados Unidos

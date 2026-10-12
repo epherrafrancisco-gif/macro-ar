@@ -1264,6 +1264,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <button type="button" data-calc="pf" aria-selected="true">¿Plazo fijo o dólar?</button>
       <button type="button" data-calc="inf" aria-selected="false">Inflación</button>
       <button type="button" data-calc="sue" aria-selected="false">Sueldo en dólares</button>
+      <button type="button" data-calc="via" aria-selected="false">De viaje</button>
     </div>
 
     <div class="card" id="cPF">
@@ -1313,6 +1314,19 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div class="res" id="suR"></div>
       </div>
       <p class="note" id="suN"></p>
+    </div>
+    <div class="card" id="cVIA" hidden>
+      <div class="head"><h2>Calculadora de viaje</h2><span class="note">Cuánta plata del lugar te dan tus pesos</span></div>
+      <div class="calc">
+        <div class="form">
+          <label>¿Cuántos pesos llevás?<div class="pre"><span>$</span><input id="viM" inputmode="decimal" autocomplete="off" value="1.000.000"></div></label>
+          <label>¿A dónde viajás?<select id="viD"></select></label>
+          <label>¿Cómo pagás?<select id="viK"><option value="tarjeta">Con tarjeta (dólar tarjeta)</option><option value="mep">Con dólares comprados por MEP</option><option value="blue">Con dólares blue</option><option value="cripto">Con cripto (dólar cripto)</option></select></label>
+          <label>Al revés: ¿cuánto sale algo de allá?<div class="pre"><span id="viSym">R$</span><input id="viP" inputmode="decimal" autocomplete="off" placeholder="opcional, por ejemplo 50"></div><span class="hint">Poné un precio en la moneda del lugar y te lo pasamos a pesos.</span></label>
+        </div>
+        <div class="res" id="viR"></div>
+      </div>
+      <p class="note" id="viN"></p>
     </div>
   </section>
 
@@ -1793,7 +1807,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const spot = k => { const p = cardSeries(k).pts; return p.length ? p[p.length-1] : null; };
   const stc = (l,v,d,cls='',hero=false) => `<div class="st${hero?' hero':''}"><span class="lbl">${l}</span><span class="v ${cls}">${v}</span><span class="d">${d||''}</span></div>`;
   let calc = 'pf', calcInit = false;
-  try{ const c = localStorage.getItem('macro-calc'); if(['pf','inf','sue'].includes(c)) calc = c; }catch(e){}
+  try{ const c = localStorage.getItem('macro-calc'); if(['pf','inf','sue','via'].includes(c)) calc = c; }catch(e){}
   function llenarAnios(sel, mesSel, defY, defM){
     const ms = hist.filter(m=>m.cer).map(m=>m.mes); if(!ms.length) return;
     const y0 = +ms[0].slice(0,4), y1 = +ms[ms.length-1].slice(0,4);
@@ -1804,6 +1818,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function initCalc(){
     if(calcInit || !loaded.m) return; calcInit = true;
     const pf = series('pf'); if(pf.length) $('pfT').value = nf(pf[pf.length-1][1], 2);
+    $('viD').innerHTML = VIA.map(v=>`<option value="${v.k}">${v.d} (${v.n})</option>`).join('');
+    try{ const d = localStorage.getItem('macro-viaje'); if(VIA.some(v=>v.k===d)) $('viD').value = d; }catch(e){}
+    $('viD').addEventListener('change', ()=>{ try{ localStorage.setItem('macro-viaje', $('viD').value); }catch(e){} });
     const hoy = new Date(); llenarAnios($('inAn'), $('inMes'), 2019, '03'); llenarAnios($('suAn'), $('suMes'), hoy.getFullYear()-2, String(hoy.getMonth()+1).padStart(2,'0'));
     // precio del dólar: se completa solo hasta que el usuario lo cambie
     $('pfP').addEventListener('input', ()=>{ $('pfP').dataset.toc = '1'; });
@@ -1819,7 +1836,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function renderCalc(){
     initCalc();
     document.querySelectorAll('[data-calc]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.calc===calc)));
-    $('cPF').hidden = calc!=='pf'; $('cINF').hidden = calc!=='inf'; $('cSUE').hidden = calc!=='sue';
+    $('cPF').hidden = calc!=='pf'; $('cINF').hidden = calc!=='inf'; $('cSUE').hidden = calc!=='sue'; $('cVIA').hidden = calc!=='via';
+    if(calc==='via'){ if(!glob) loadGlobal(); if(!gHist) loadHist(); }
     const k = $('pfK').value, sp = spot(k);
     if(sp && !$('pfP').dataset.toc) $('pfP').value = nf(sp[1], 2);
     $('pfPh').textContent = sp ? `Dólar ${DOLN[k]} ${live[k]?'en vivo':'al cierre del '+fd(sp[0])}. Podés cambiarlo.` : '';
@@ -1827,7 +1845,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   function calcular(){
     if(!loaded.m) return;
-    if(calc==='pf') calcPF(); else if(calc==='inf') calcInf(); else calcSue();
+    if(calc==='pf') calcPF(); else if(calc==='inf') calcInf(); else if(calc==='via') calcVia(); else calcSue();
   }
   function calcPF(){
     const M = parseAR($('pfM').value), d = Math.round(parseAR($('pfD').value)), T = parseAR($('pfT').value), P = parseAR($('pfP').value), k = $('pfK').value;
@@ -1883,6 +1901,59 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     $('suR').innerHTML = html;
     $('suN').textContent = 'Hoy: cotización en vivo o último cierre. Meses anteriores: promedio del mes. El poder de compra en pesos se ajusta por CER (sigue al IPC con un mes y medio de atraso).';
+  }
+
+  // ---- CALCULADORA DE VIAJE ----
+  // u = unidades de la moneda por dólar. inv: la cotización viene en dólares por unidad (euro, libra).
+  const VIA = [
+    {k:'BRL', one:'Un real', d:'Brasil', n:'reales', s:'R$', q:()=>glob?.monedas?.BRL, h:'fx_brl'},
+    {k:'UYU', one:'Un peso uruguayo', d:'Uruguay', n:'pesos uruguayos', s:'$U', q:()=>glob?.monedas?.UYU, h:'fx_uyu'},
+    {k:'CLP', one:'Un peso chileno', d:'Chile', n:'pesos chilenos', s:'CLP', q:()=>glob?.monedas?.CLP, h:'fx_clp'},
+    {k:'USD', one:'Un dólar', d:'Estados Unidos', n:'dólares', s:'US$'},
+    {k:'EUR', one:'Un euro', d:'Europa (zona euro)', n:'euros', s:'€', inv:true, q:()=>glob?.monedas?.EUR, h:'fx_eur'},
+    {k:'MXN', one:'Un peso mexicano', d:'México', n:'pesos mexicanos', s:'MXN', q:()=>glob?.monedas?.MXN, h:'fx_mxn'},
+    {k:'PEN', one:'Un sol', d:'Perú', n:'soles', s:'S/', q:()=>glob?.monedas?.PEN, h:'fx_pen'},
+    {k:'COP', one:'Un peso colombiano', d:'Colombia', n:'pesos colombianos', s:'COP', q:()=>glob?.monedas?.COP, h:'fx_cop'},
+    {k:'GBP', one:'Una libra', d:'Reino Unido', n:'libras', s:'£', inv:true, q:()=>glob?.reino?.gbp, h:'fx_gbp'},
+    {k:'JPY', one:'Cien yenes', d:'Japón', n:'yenes', s:'¥', q:()=>glob?.japon?.jpy, h:'fx_jpy'},
+    {k:'CAD', one:'Un dólar canadiense', d:'Canadá', n:'dólares canadienses', s:'C$', q:()=>glob?.canada?.cad, h:'fx_cad'},
+    {k:'TRY', one:'Una lira', d:'Turquía', n:'liras', s:'₺', q:()=>glob?.turquia?.try, h:'fx_try'}];
+  const VIA_K = [['tarjeta','Tarjeta'],['mep','MEP'],['blue','Blue'],['cripto','Cripto']];
+  // unidades por dólar hoy (cotización de CNBC; si falta, el último cierre de la historia) y la fecha
+  function viaU(v){
+    if(v.k==='USD') return {u:1, f:null};
+    const q = v.q && v.q(); if(q?.v>0) return {u: v.inv ? 1/q.v : q.v, f: String(q.t||'').slice(0,10)};
+    const h = gHist?.series?.[v.h]; if(h?.length){ const l = h[h.length-1]; return {u: v.inv ? 1/l[1] : l[1], f:l[0]}; }
+    return null;
+  }
+  function calcVia(){
+    const v = VIA.find(x=>x.k===$('viD').value) || VIA[0], k = $('viK').value, M = parseAR($('viM').value), P = parseAR($('viP').value);
+    $('viSym').textContent = v.s;
+    const U = viaU(v);
+    if(!U){ $('viR').innerHTML = `<div class="empty">${glob ? 'Sin cotización de esa moneda por ahora.' : 'Cargando cotizaciones…'}</div>`; return; }
+    if(!(M>0)){ $('viR').innerHTML = '<div class="empty">Poné cuántos pesos llevás.</div>'; return; }
+    const dec = x => x>=100 ? 0 : 2, loc = x => v.s+' '+nf(x, dec(x));
+    const opc = VIA_K.map(([kk,n])=>{ const sp = spot(kk); return sp ? {k:kk, n, d:sp[1], c1:sp[1]/U.u, f:sp[0]} : null; }).filter(Boolean);
+    const sel = opc.find(o=>o.k===k);
+    if(!sel){ $('viR').innerHTML = '<div class="empty">Sin cotización de ese dólar por ahora.</div>'; return; }
+    const best = opc.reduce((a,o)=>o.c1<a.c1?o:a, opc[0]), tj = opc.find(o=>o.k==='tarjeta');
+    const unidad = v.k==='JPY' ? 100 : 1, cu = sel.c1*unidad;
+    let html = `<div class="stats">${stc('Te alcanza para', loc(M/sel.c1), `pagando ${sel.n==='Tarjeta'?'con tarjeta':'con dólar '+sel.n}`, '', true)}
+      ${stc(v.one+(unidad===1?' te sale':' te salen'), pesos(cu, cu>=100?0:2), `dólar ${sel.k==='tarjeta'?'tarjeta':sel.n} a ${pesos(sel.d,2)}`)}</div>`;
+    if(P>0) html += `<div class="verd"><b>${v.s} ${nf(P, P%1?2:0)}</b> te salen <b>${pesos(P*sel.c1, P*sel.c1>=100?0:2)}</b> pagando ${sel.k==='tarjeta'?'con tarjeta':'con dólar '+sel.n}${opc.length>1?' · '+opc.filter(o=>o!==sel).map(o=>`${o.k==='tarjeta'?'tarjeta':o.n} ${pesos(P*o.c1,0)}`).join(' · '):''}.</div>`;
+    html += `<div class="tablewrap"><table class="minit"><thead><tr><th>Pagando con</th><th>${unidad===1?'1 '+v.s:unidad+' '+v.s}</th><th>Te dan</th></tr></thead><tbody>${opc.map(o=>`<tr${o===sel?' style="font-weight:700"':''}><td style="text-align:left">${o.n}${o===best?' <span class="chip up">más barato</span>':''}</td><td>${pesos(o.c1*unidad, o.c1*unidad>=100?0:2)}</td><td>${loc(M/o.c1)}</td></tr>`).join('')}</tbody></table></div>`;
+    if(tj && best!==tj) html += `<div class="verd">Pagar con dólar ${best.n} rinde <b>${nf((tj.c1/best.c1-1)*100,1)}% más</b> que con tarjeta. Ojo: el dólar tarjeta incluye una percepción de Ganancias que en muchos casos se puede recuperar.</div>`;
+    // ¿más caro o más barato que hace un año? (dólar MEP promedio del mes de hace un año, ajustado por inflación con el CER)
+    const h12 = (()=>{ const hl = hist.filter(m=>m.cer && m.mep); if(hl.length<13) return null; const L = hl[hl.length-1], ref = new Date(); ref.setUTCMonth(ref.getUTCMonth()-12);
+      const mes = ref.toISOString().slice(0,7), H = hl.find(m=>m.mes===mes); if(!H) return null;
+      let uA = 1; if(v.k!=='USD'){ const hs = (gHist?.series?.[v.h]||[]).filter(p=>p[0].startsWith(mes)); if(!hs.length) return null; const a = hs.reduce((s2,p)=>s2+p[1],0)/hs.length; uA = v.inv ? 1/a : a; }
+      const mp = spot('mep'); if(!mp) return null;
+      const antes = H.mep/uA, hoyP = mp[1]/U.u, inf = L.cer/H.cer; return {mes, antes, hoyP, nom: hoyP/antes-1, real: hoyP/antes/inf-1, cerMes:L.mes}; })();
+    if(h12) html += `<div class="stats">${stc(`${v.one} con dólar MEP, hace un año`, pesos(h12.antes*unidad, h12.antes*unidad>=100?0:2), `promedio de ${MESL[+h12.mes.slice(5)-1]} ${h12.mes.slice(0,4)}`)}
+      ${stc('Hoy', pesos(h12.hoyP*unidad, h12.hoyP*unidad>=100?0:2), `${pc(h12.nom,1)} en pesos`)}
+      ${stc('Descontando la inflación', pc(h12.real,1), h12.real<0 ? `viajar a ${v.d.replace(/ \(.*/,'')} está más barato que hace un año` : `viajar a ${v.d.replace(/ \(.*/,'')} está más caro que hace un año`, h12.real<0?'up':'dn')}</div>`;
+    $('viR').innerHTML = html;
+    $('viN').textContent = `Dólares: cotización en vivo o último cierre (DolarApi/Ámbito). ${v.k==='USD' ? '' : `${v.n[0].toUpperCase()+v.n.slice(1)} por dólar: mercado internacional${U.f ? ' ('+fd(U.f)+')' : ''}, sin la comisión de la casa de cambio o la tarjeta.`} Con tarjeta se paga al dólar tarjeta (oficial + percepción de Ganancias); si pagás el resumen con dólares propios, se paga al precio al que compraste esos dólares. "Hace un año" usa el dólar MEP y la inflación según el CER.`;
   }
 
   // ---- DÓLAR A PRECIOS DE HOY ----
@@ -2546,7 +2617,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     mercado:['Bolsa y bonos','S&P Merval, acciones y bonos argentinos'],
     noticias:['Noticias','Los titulares de economía del día'],
-    calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación y sueldo en dólares'],
+    calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación, sueldo en dólares y viajes'],
     global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
     eeuu:['Estados Unidos','La Fed, empleo, inflación, deuda y Wall Street'],
     brasil:['Brasil','El real, la Selic, la inflación y la bolsa de nuestro principal socio'],
@@ -2648,7 +2719,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
+    renderTape2(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -2942,7 +3013,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
+    gHistLoading = false; if(tab==='calculadoras') renderCalc(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
