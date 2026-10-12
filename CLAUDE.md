@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
-  `#mexico`, `#chile`, `#japon` y `#reinounido`; `#sobre`.
+  `#mexico`, `#chile`, `#japon`, `#reinounido` y `#canada`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
@@ -120,7 +120,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (FTSE 250, libra, gilts a 2 y 30 años) e historia `fx_gbp`, `ftmc`, `gb10`, `gb2`. Apartados (`#gSubR`, `SUBS.R`):
   Economía · Tasas y bonos (con la explicación de la crisis de los gilts de 2022) · Mercados y la libra (ADR
   `acciones.gbr`) · Noticias (`reino` en noticias_paises.py: en español hay pocas; los findes puede quedar vacío).
-- Próximos posibles: Canadá, Colombia, Perú, Turquía, India; Uruguay solo si hay datos gratis suficientes.
+
+### Canadá (`#canada`, sección `vCa`, `renderCanada`, datos `canada.json` de scripts/canada.py en `global.yml`)
+- Mismo formato que Japón (BIS D.CA / D.CA.CAD.A en C$ por dólar / M.CA.771 y .628; OCDE CAN). Arriba: dólar canadiense
+  por dólar, un dólar canadiense en pesos (mayorista ÷ C$ por dólar), tasa del Banco de Canadá (`BCAL` CAN, fechas hasta
+  dic-2027), inflación, desempleo y S&P/TSX (`bolsas.TSX`). `global.json → canada` (C$, bonos a 2 y 30 años) e historia
+  `fx_cad`, `tsx`, `ca10`, `ca2`. Apartados (`#gSubK`, `SUBS.K`): Economía · Tasas y bonos · Mercados y el dólar canadiense
+  (petróleo WTI con la explicación de la "petrodivisa", TSX, ADR `acciones.can`) · Noticias (en español casi no hay).
+- Próximos posibles: Colombia, Turquía, Perú, India; Uruguay solo si hay datos gratis suficientes.
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
@@ -170,7 +177,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   L a V cada hora 08:23-19:23 ART, findes cada 6 h y en cada push de esos scripts. Errores en el campo `errores`.
 - `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
 - `noticias_paises.json` (scripts/noticias_paises.py, mismo workflow `noticias.yml`): titulares de 48 h para el apartado
-  "Noticias" de EE.UU., Brasil, Europa, México, Chile, Japón y Reino Unido (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
+  "Noticias" de EE.UU., Brasil, Europa, México, Chile, Japón, Reino Unido y Canadá (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
   medio: "econ" (medio del país: solo economía y sin titulares de otro país, `OTROS`) o "pais" (medio de afuera: tiene que
   nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
