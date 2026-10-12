@@ -444,6 +444,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
       <a href="#brasil" role="tab" id="tabB" data-g="glo" aria-selected="false">Brasil</a>
+      <a href="#europa" role="tab" id="tabE" data-g="glo" aria-selected="false">Europa</a>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
     </nav>
@@ -805,6 +806,38 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Empresas brasileñas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="bAccSt"></div><div class="heat" id="bAccH"></div><div class="stats det" id="bAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
     </div>
     <p class="note" id="bFuente"></p>
+  </section>
+
+  <!-- EUROPA -->
+  <section class="view" id="vE" hidden>
+    <div class="ukpis" id="eKpis"></div>
+    <div class="subtabs" id="gSubE" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el euro</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de la zona euro</h2><div class="legend" id="lgEInf"></div></div><div class="chart" id="chEInf"></div><p class="note" id="eInfN"></p></div>
+        <div class="card"><div class="head"><h2>Inflación por país</h2><span class="note" id="ePaisN"></span></div><div class="chart" id="chEPais"></div><p class="note">Inflación de los últimos 12 meses (HICP, la medida que usa el BCE). La línea punteada es la meta del BCE: 2%.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="ePbiN"></span></div><div class="chart" id="chEPbi"></div><div class="tw"><table class="gtbl" id="ePbiT"></table></div><p class="note">Barras: crecimiento de la zona euro contra el trimestre anterior. Tabla: contra el mismo trimestre del año anterior. Fuente: Eurostat.</p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><div class="legend" id="lgEDes"></div></div><div class="chart" id="chEDes"></div><p class="note" id="eDesN"></p></div>
+      </div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del BCE contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chETasa"></div><p class="note">Azul: tasa de depósito del Banco Central Europeo (la de referencia). Rojo: inflación de la zona euro en 12 meses. La meta del BCE es 2%.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del BCE</h2><span class="note" id="eBceN"></span></div><div class="tw"><table class="gcmp" id="eBce"></table></div></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bonos a 10 años y prima de riesgo</h2><span class="note" id="eBonN"></span></div><p class="sub">Cuánto paga cada gobierno por endeudarse a 10 años. La "prima de riesgo" es cuánto más paga Italia o España que Alemania, el país más seguro: es el riesgo país de los europeos.</p><div class="stats" id="eBonSt"></div><div class="chart" id="chEPrima"></div><div class="legend" id="lgEPrima"></div><p class="note">Gráfico: prima de riesgo en puntos básicos (100 pb = 1 punto porcentual), con datos mensuales del BCE. Arriba, el dato del día (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>El euro contra el dólar</h2><span class="note">Dólares por euro</span></div><div class="chart" id="chEUsd"></div><p class="note">Cotización de referencia del BCE. Si sube, el euro se fortalece.</p></div>
+        <div class="card"><div class="head"><h2>El euro en pesos</h2><span class="note">Oficial</span></div><div class="chart" id="chEArs"></div><p class="note">Cuántos pesos argentinos vale un euro: dólar mayorista argentino por la cotización del euro del BCE, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bolsas europeas</h2><span class="note">Índice principal, hoy y en el año</span></div><div class="glist" id="eBol"></div><p class="note">Con demora (CNBC). La variación en el año es en euros, desde el último cierre del año pasado.</p></div>
+      <div class="card"><div class="head"><h2>Empresas europeas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="eAccSt"></div><div class="heat" id="eAccH"></div><div class="stats det" id="eAccDet" hidden></div><p class="note">Color según la variación del día. Con demora (CNBC).</p></div>
+    </div>
+    <p class="note" id="eFuente"></p>
   </section>
 
   <section class="view" id="vW" hidden>
@@ -1982,7 +2015,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
@@ -1995,7 +2028,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
     global:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>',
     eeuu:'<path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.5-4 6-.6z"/>',
-    brasil:'<path d="M12 3.5l9 8.5-9 8.5-9-8.5z"/><circle cx="12" cy="12" r="3.4"/>'};
+    brasil:'<path d="M12 3.5l9 8.5-9 8.5-9-8.5z"/><circle cx="12" cy="12" r="3.4"/>',
+    europa:'<circle cx="12" cy="12" r="8.5" stroke-dasharray="1.5 3.3"/><path d="M14.8 8.6a4.2 4.2 0 1 0 0 6.8M7.6 11h5.4M7.6 13.2h5.4"/>'};
   const SECC = {
     dolares:['Dólares','Todas las cotizaciones, las brechas y su historia'],
     macro:['Inflación y reservas','Inflación, lo que esperan los analistas, reservas del BCRA y riesgo país'],
@@ -2007,12 +2041,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
     eeuu:['Estados Unidos','La Fed, empleo, inflación, deuda y Wall Street'],
     brasil:['Brasil','El real, la Selic, la inflación y la bolsa de nuestro principal socio'],
+    europa:['Europa','El euro, el BCE, la inflación, los bonos y las bolsas de la zona euro'],
     sobre:['Sobre Pulso Macro','Quién lo hace, por qué y de dónde salen los datos']};
   const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
   document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','brasil'].map((k,i)=>tile(k, i===2)).join('');
+  $('tilesG').innerHTML = ['global','eeuu','brasil','europa'].map(k=>tile(k)).join('');
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
@@ -2023,7 +2058,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
-    const grp = tab==='global' || tab==='brasil' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
+    const grp = tab==='global' || tab==='brasil' || tab==='europa' ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
     let selA = null;
     document.querySelectorAll('#tabsNav a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
     $('bar').hidden = !grp;
@@ -2036,7 +2071,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil'].includes(tab);
+    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil','europa'].includes(tab);
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
@@ -2096,7 +2131,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil();
+    renderTape2(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -2388,7 +2423,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil();
+    gHistLoading = false; if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -2599,6 +2634,76 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     $('bFuente').textContent = `Fuentes: Banco Central de Brasil (Selic, dólar PTAX, reservas, IBC-Br y encuesta Focus) e IBGE (inflación y desempleo); Bovespa y acciones: CNBC, con demora. Actualizado: ${new Date(B.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
   }
+  // ---- Europa (europa.json: BCE y Eurostat) ----
+  let eur = null, eurLoading = false, eAccSel = null;
+  const EPA = {EA:['Zona euro','--accent'], DE:['Alemania','--s4'], FR:['Francia','--s1'], IT:['Italia','--s3'], ES:['España','--s2']};
+  async function loadEur(){
+    if(eurLoading) return; eurLoading = true;
+    try{ const r = await fetch('europa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) eur = await r.json(); }catch(e){}
+    eurLoading = false; if(tab==='europa') renderEuropa();
+  }
+  const eMes = p => p.length===7 ? p+'-01' : p;   // '2026-08' → fecha
+  const eTri = p => `${p.slice(0,4)}-${String(+p.slice(-1)*3).padStart(2,'0')}`; // '2026-Q2' → '2026-06'
+  function renderEuropa(){
+    aplicarSub('E');
+    if(!eur){ loadEur(); $('eKpis').innerHTML = '<div class="empty">Cargando datos de Europa…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist();
+    const E = eur, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
+    const L = a => a?.length ? a[a.length-1] : null, P = a => a?.length>1 ? a[a.length-2] : null, hoy = hoyAR();
+    const eu = L(E.eurusd), eup = P(E.eurusd), bce = L(E.bce), inf = L(E.infl?.EA), des = L(E.desemp?.EA), sx = glob?.europa?.sx5e;
+    const may = new Map(days.filter(d=>get(d,'mayorista')).map(d=>[d.fecha, get(d,'mayorista')]));
+    const ars = (E.eurusd||[]).filter(p=>may.has(p[0])).map(p=>[p[0], may.get(p[0])*p[1]]), ra = L(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const bc = BCAL.find(b=>b[0]==='DEU'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('eKpis').innerHTML = st('Euro en dólares', eu ? 'US$ '+nf(eu[1],4) : '—', eu ? `${eup ? sg((eu[1]/eup[1]-1)*100,2)+'% · ' : ''}BCE ${fds(eu[0])}` : '', eup && eu[1]>eup[1] ? 'up' : 'dn')
+      + st('Un euro en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + st('Tasa del BCE', bce ? nf(bce[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de depósito')
+      + st('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>2.5 ? 'dn' : '')
+      + st('Desempleo', des ? nf(des[1],1)+'%' : '—', des ? mesTxt(des[0]) : '')
+      + st('Euro Stoxx 50', sx ? nf(sx.v,0) : '—', sx ? sg(gpc(sx),2)+'% en el día' : '', sx && gpc(sx)>0 ? 'up' : sx && gpc(sx)<0 ? 'dn' : '');
+    const sub = SUBS.E[2], cut = (a, y) => (a||[]).filter(p=>p[0] >= String(new Date().getFullYear()-y));
+    if(sub==='economia'){
+      const s1 = cut(E.infl?.EA,5).map(p=>[eMes(p[0]),p[1]]), s2 = cut(E.infl_nucleo?.EA,5).map(p=>[eMes(p[0]),p[1]]);
+      legend($('lgEInf'), [{n:'General',c:'--neg'},{n:'Núcleo',c:'--s4'}]);
+      if(s1.length) lineChart($('chEInf'), [{n:'General', c:'--neg', pts:s1},{n:'Núcleo', c:'--s4', pts:s2, dash:true}], {xfmt:x=>x.slice(5,7)+'/'+x.slice(2,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de la zona euro'});
+      const im = L(E.infl_mes?.EA); $('eInfN').textContent = inf ? `${mesTxt(inf[0])}: ${nf(inf[1],1)}% en 12 meses${im && im[0]===inf[0] ? `, ${sg(im[1],1)}% en el mes` : ''}. Núcleo: sin energía ni alimentos. Fuente: Eurostat.` : '';
+      const rows = ['EA','DE','FR','IT','ES'].map(g=>{ const x = L(E.infl?.[g]); return x ? {n:EPA[g][0], v:x[1], hl:g==='EA', c: g==='EA' ? '--s4' : '--s1', m:x[0]} : null; }).filter(Boolean).sort((a,b)=>b.v-a.v);
+      hBars($('chEPais'), rows, {aria:'Inflación por país', ref:2, vfmt:v=>nf(v,1)+'%', rh:32}); $('ePaisN').textContent = rows[0] ? mesTxt(rows[0].m) : '';
+      const pq = cut(E.pbi_tri?.EA,4).map(p=>[eTri(p[0]),p[1]]);
+      if(pq.length) barChart($('chEPbi'), [{n:'PBI zona euro', c:'--accent', pts:pq}], {aria:'PBI de la zona euro', yfmt:v=>nf(v,1)+'%', vfmt:v=>sg(v,1)+'%'});
+      const ya = E.pbi_anual || {}, ul = L(ya.EA);
+      $('ePbiT').innerHTML = ul ? `<thead><tr><th>Interanual</th>${['EA','DE','FR','IT','ES'].map(g=>`<th>${EPA[g][0]}</th>`).join('')}</tr></thead><tbody><tr><td>${ul[0].replace('-Q',' · T')}</td>${['EA','DE','FR','IT','ES'].map(g=>{ const x = (ya[g]||[]).find(p=>p[0]===ul[0]); return `<td class="${x&&x[1]>0?'up':x&&x[1]<0?'dn':''}">${x?sg(x[1],1)+'%':'—'}</td>`; }).join('')}</tr></tbody>` : '';
+      $('ePbiN').textContent = pq.length ? `${L(E.pbi_tri.EA)[0].replace('-Q',' · trimestre ')}: ${sg(L(pq)[1],1)}%` : '';
+      legend($('lgEDes'), ['EA','DE','FR','IT','ES'].map(g=>({n:EPA[g][0], c:EPA[g][1]})));
+      const ds = ['EA','DE','FR','IT','ES'].filter(g=>E.desemp?.[g]).map(g=>({n:EPA[g][0], c:EPA[g][1], pts: cut(E.desemp[g],5).map(p=>[eMes(p[0]),p[1]])}));
+      if(ds.length) lineChart($('chEDes'), ds, {xfmt:x=>x.slice(5,7)+'/'+x.slice(2,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Desempleo en Europa'});
+      $('eDesN').textContent = des ? `Porcentaje de la fuerza laboral sin trabajo, ${mesTxt(des[0])}. España ${nf(L(E.desemp.ES)?.[1]??NaN,1)}%, Alemania ${nf(L(E.desemp.DE)?.[1]??NaN,1)}%. Fuente: Eurostat.` : '';
+    }
+    if(sub==='tasas'){
+      const bl = E.bce || [], mes = []; if(bl.length){ const ini = new Date(Date.UTC(new Date().getUTCFullYear()-5, new Date().getUTCMonth(), 1));
+        for(let d = new Date(ini); d <= new Date(); d.setUTCMonth(d.getUTCMonth()+1)){ const f = d.toISOString().slice(0,10); let v = null; for(const p of bl){ if(p[0] <= f) v = p[1]; } if(v!=null) mes.push([f, v]); } }
+      const i12 = (E.infl?.EA||[]).map(p=>[eMes(p[0]),p[1]]).filter(p=>p[0] >= (mes[0]?.[0]||'0'));
+      lineChart($('chETasa'), [{n:'Tasa del BCE', c:'--accent', pts: mes},{n:'Inflación', c:'--neg', pts: i12}], {xfmt:x=>x.slice(5,7)+'/'+x.slice(2,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,2)+'%', aria:'Tasa del BCE contra inflación'});
+      const cambios = []; for(let i=1;i<bl.length;i++) if(bl[i][1]!==bl[i-1][1]) cambios.push({f:bl[i][0], antes:bl[i-1][1], despues:bl[i][1]});
+      $('eBce').innerHTML = cambios.length ? `<tr><th>Vigente desde</th><th>Decisión</th><th>Tasa</th></tr>` + cambios.slice(-8).reverse().map(x=>{ const d = x.despues-x.antes; return `<tr><td style="text-align:left">${fd(x.f)}</td><td class="${d>0?'dn':'up'}">${d>0?'▲ subió':'▼ bajó'} ${nf(Math.abs(d),2)}</td><td>${nf(x.despues,2)}%</td></tr>`; }).join('') : '';
+      $('eBceN').textContent = prox ? `Próxima reunión: ${fd(prox)}` : '';
+      const GB = glob?.bonos || {}, de = GB.DEU;
+      $('eBonSt').innerHTML = [['DEU','Alemania'],['FRA','Francia'],['ITA','Italia'],['ESP','España']].filter(([k])=>GB[k]).map(([k,n])=>`<div class="st"><span class="lbl">${n}</span><span class="v">${nf(GB[k].v,2)}%</span><span class="d">${k==='DEU' ? 'referencia' : de ? 'prima '+sg((GB[k].v-de.v)*100,0)+' pb' : ''}</span></div>`).join('');
+      $('eBonN').textContent = GB.DEU?.t ? 'Dato: '+String(GB.DEU.t).slice(0,10).split('-').reverse().join('/') : '';
+      const BO = E.bonos || {}, prima = g => (BO[g]||[]).map(p=>{ const d = (BO.DE||[]).find(x=>x[0]===p[0]); return d ? [eMes(p[0]), (p[1]-d[1])*100] : null; }).filter(Boolean).filter(p=>p[0] >= String(new Date().getFullYear()-5));
+      const ps = [{n:'Italia', c:'--s3', pts:prima('IT')},{n:'España', c:'--s2', pts:prima('ES')},{n:'Francia', c:'--s1', pts:prima('FR')}].filter(x=>x.pts.length);
+      legend($('lgEPrima'), ps); if(ps.length) lineChart($('chEPrima'), ps, {xfmt:x=>x.slice(5,7)+'/'+x.slice(2,4), yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' pb', zero:true, aria:'Prima de riesgo'});
+    }
+    if(sub==='mercados'){
+      if(E.eurusd?.length) lineChart($('chEUsd'), [{n:'Dólares por euro', c:'--s1', pts:E.eurusd.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'US$ '+nf(v,4), aria:'Euro contra dólar'});
+      if(ars.length) lineChart($('chEArs'), [{n:'Pesos por euro', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'El euro en pesos'});
+      const EB = glob?.europa || {}, HK = {sx5e:'sx5e', dax:'dax', cac:'cac', ibex:'ibex', ftmib:'ftmib'};
+      $('eBol').innerHTML = Object.entries(EB).map(([k,b])=>{ const p = gpc(b), y = HK[k] && gHist?.series?.[HK[k]] ? gYtd(gHist.series[HK[k]]) : null;
+        return `<div><span>${esc(b.idx)}<small>${k==='sx5e'?'las 50 más grandes de la zona euro':k==='stoxx600'?'600 empresas de toda Europa':k==='dax'?'Alemania':k==='cac'?'Francia':k==='ibex'?'España':'Italia'}</small></span><span>${nf(b.v,0)}<small class="${p>0?'gup':p<0?'gdn':''}">${p==null?'':sg(p,2)+'% hoy'}</small></span><span class="${y==null?'geq':y>0?'gup':'gdn'}">${y==null?'—':sg(y,1)+'%'}<small>en el año</small></span></div>`; }).join('') || '<p class="note">Cargando…</p>';
+      gHeat('eAccH', 'eAccSt', glob?.acciones?.eur, eAccSel, s=>{ eAccSel = eAccSel===s ? null : s; renderEuropa(); });
+      gDetalle('eAccDet', eAccSel && (glob?.acciones?.eur||[]).find(x=>x.s===eAccSel));
+    }
+    $('eFuente').textContent = `Fuentes: Banco Central Europeo (tasa, euro y bonos mensuales) y Eurostat (inflación, desempleo y PBI); bolsas, bonos del día y acciones: CNBC, con demora. Actualizado: ${new Date(E.actualizado).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})} h.`;
+  }
   async function loadUsa(){
     if(usaLoading) return; usaLoading = true;
     try{ const r = await fetch('usa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
@@ -2709,13 +2814,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const l = PB[PB.length-1]; $('uPbiN').textContent = `Último: ${l[0].slice(5)}.º trimestre de ${l[0].slice(0,4)}, ${sg(l[1],1)}%`; }
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
-  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia']};
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia']};
   for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
   function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
     document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel))); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
-    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   function renderUsa(){
     aplicarSub('U');

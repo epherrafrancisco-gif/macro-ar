@@ -73,7 +73,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Fuentes: BCB SGS `api.bcb.gov.br/dados/serie/bcdata.sgs.{código}/dados` (432 Selic meta: viene cargada hasta la próxima
   reunión, se cortan fechas futuras; 1 PTAX; 433/13522 IPCA; 24363 IBC-Br sin desestacionalizar, el 24364 falla; 24369
   desempleo; 13621 reservas) y Focus (`olinda.bcb.gov.br/.../ExpectativasMercadoAnuais`). El BCB a veces da 502: se reintenta.
-- Próximo: Europa (zona euro), con el mismo formato.
+
+### Europa (`#europa`, sección `vE`, `renderEuropa`, datos `europa.json` de scripts/europa.py en `global.yml`)
+- Arriba siempre: euro en dólares (BCE), un euro en pesos (mayorista × euro del BCE del mismo día), tasa del BCE con
+  cuenta regresiva (`BCAL` DEU), inflación, desempleo y Euro Stoxx 50. Apartados (`#gSubE`, `SUBS.E`): Economía
+  (inflación general y núcleo, por país, PBI trimestral, desempleo) · Tasas y bonos (BCE vs inflación, decisiones, bonos
+  del día y prima de riesgo Italia/España/Francia vs Alemania) · Mercados y el euro (euro/dólar, euro en pesos, bolsas
+  europeas `global.json → europa`, empresas europeas).
+- Fuentes: BCE `data-api.ecb.europa.eu` (FM tasa de depósito, EXR euro, IRS bonos 10 años mensual, LFSI I9 desempleo
+  zona euro) y Eurostat (`prc_hicp_minr`: desde 2026 el HICP usa ECOICOP 2 y el viejo `prc_hicp_manr` quedó en 12/2025;
+  `une_rt_m` países; `namq_10_gdp`). europa.py descarta series atrasadas (más de 5 meses; PBI 8) en vez de mostrarlas.
+- Próximo: "Latinoamérica" (México y Chile con detalle + comparación regional). Banxico y el Banco Central de Chile piden
+  registrarse gratis para una clave.
 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si

@@ -427,7 +427,7 @@ def historia(prev_h):
     """Cierres diarios de 1 año (CNBC). Se renueva cada 3 horas como máximo."""
     try:
         al = datetime.fromisoformat(prev_h.get("actualizado", "2000-01-01T00:00+00:00"))
-        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series") and prev_h.get("conv"):
+        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series") and prev_h.get("conv") and set(HIST) <= set(prev_h.get("claves") or []):
             return prev_h
     except Exception:  # noqa: BLE001
         pass
@@ -467,7 +467,7 @@ def historia(prev_h):
         errores.append(f"CoinGecko historia: {e}")
     if not ok:
         return prev_h
-    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series, "conv": True}
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series, "conv": True, "claves": list(HIST)}
 
 
 def frankfurter():

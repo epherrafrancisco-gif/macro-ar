@@ -89,18 +89,30 @@ def main():
         "bce": lambda: ecb("FM/D.U2.EUR.4F.KR.DFR.LEV", f"{hoy.year - 6}-01-01", cambios=True),
         "eurusd": lambda: ecb("EXR/D.USD.EUR.SP00.A", (hoy - timedelta(days=760)).isoformat()),
         "bonos": lambda: {p: ecb(f"IRS/M.{p}.L.L40.CI.0000.EUR.N.Z", f"{hoy.year - 6}-01") for p in ["DE", "FR", "IT", "ES"]},
-        "infl": lambda: eurostat("prc_hicp_manr", {"geo": PAISES, "coicop": "CP00", "unit": "RCH_A", "sinceTimePeriod": f"{hoy.year - 6}-01"}),
-        "infl_nucleo": lambda: eurostat("prc_hicp_manr", {"geo": "EA", "coicop": "TOT_X_NRG_FOOD", "unit": "RCH_A", "sinceTimePeriod": f"{hoy.year - 6}-01"}),
-        "infl_mes": lambda: eurostat("prc_hicp_mmor", {"geo": "EA", "coicop": "CP00", "unit": "RCH_M", "sinceTimePeriod": f"{hoy.year - 3}-01"}),
-        "desemp": lambda: eurostat("une_rt_m", {"geo": PAISES, "age": "TOTAL", "sex": "T", "unit": "PC_ACT", "s_adj": "SA", "sinceTimePeriod": f"{hoy.year - 6}-01"}),
+        # desde 2026 el HICP se publica con la clasificación ECOICOP 2 (dataset prc_hicp_minr; el viejo prc_hicp_manr quedó en 12/2025)
+        "infl": lambda: eurostat("prc_hicp_minr", {"geo": PAISES, "coicop18": "TOTAL", "unit": "RCH_A", "sinceTimePeriod": f"{hoy.year - 6}-01"}),
+        "infl_nucleo": lambda: eurostat("prc_hicp_minr", {"geo": "EA", "coicop18": "TOT_X_NRG_FOOD", "unit": "RCH_A", "sinceTimePeriod": f"{hoy.year - 6}-01"}),
+        "infl_mes": lambda: eurostat("prc_hicp_minr", {"geo": "EA", "coicop18": "TOTAL", "unit": "RCH_M", "sinceTimePeriod": f"{hoy.year - 3}-01"}),
+        # desempleo: zona euro del BCE (I9 = composición vigente), países de Eurostat
+        "desemp": lambda: {"EA": ecb("LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T", f"{hoy.year - 6}-01"),
+                           **eurostat("une_rt_m", {"geo": ["DE", "FR", "IT", "ES"], "age": "TOTAL", "sex": "T", "unit": "PC_ACT", "s_adj": "SA", "sinceTimePeriod": f"{hoy.year - 6}-01"})},
         "pbi_tri": lambda: eurostat("namq_10_gdp", {"geo": PAISES, "unit": "CLV_PCH_PRE", "s_adj": "SCA", "na_item": "B1GQ", "sinceTimePeriod": f"{hoy.year - 5}-Q1"}),
         "pbi_anual": lambda: eurostat("namq_10_gdp", {"geo": PAISES, "unit": "CLV_PCH_SM", "s_adj": "SCA", "na_item": "B1GQ", "sinceTimePeriod": f"{hoy.year - 5}-Q1"}),
     }
+    def fresco(v, meses=5):
+        ult = max((s[-1][0] for s in (v.values() if isinstance(v, dict) else [v]) if s), default="")
+        lim = (hoy - timedelta(days=31 * meses)).isoformat()[:7]
+        return ult[:7] >= lim if "-Q" not in ult else ult[:4] >= str(hoy.year - 1)
     for k, fn in tareas.items():
         try:
-            data[k] = fn()
+            v = fn()
+            if not fresco(v, 8 if k.startswith("pbi") else 5):
+                raise ValueError("los datos están atrasados (último: %s)" % max(s[-1][0] for s in (v.values() if isinstance(v, dict) else [v]) if s))
+            data[k] = v
         except Exception as e:  # noqa: BLE001
             errores.append(f"{k}: {e}")
+            if "atrasados" in str(e):
+                data.pop(k, None)  # nunca mostrar datos viejos como actuales
         time.sleep(0.5)
     data["actualizado"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
     data["errores"] = errores[:30]
