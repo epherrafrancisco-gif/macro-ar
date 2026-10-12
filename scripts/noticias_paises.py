@@ -1,5 +1,5 @@
 """Arma noticias_paises.json: titulares de economía de las últimas 48 horas para las secciones Estados Unidos, Brasil,
-Europa y México de Pulso Macro.
+Europa, México y Chile de Pulso Macro.
 
 Cada medio se baja una sola vez y sus titulares se reparten por país:
   - medios propios del país (por ejemplo El Economista de México o Cinco Días): entran todos o, si el medio es
@@ -41,6 +41,7 @@ PAIS = {
     "europa": r"europ|\bbce\b|lagarde|zona euro|eurozona|\bue\b|bruselas|alemania|alem[aá]n|francia|franc[eé]s|italia|"
               r"italian|espa[nñ]a|español|reino unido|brit[aá]nic|\bdax\b|\bibex\b|\beuros?\b",
     "mexico": r"m[eé]xic|banxico|sheinbaum|pemex|\bt-?mec\b|usmca|monterrey|guadalajara|\bbmv\b",
+    "chile": r"chile|chilen|codelco|\bipsa\b|santiago de chile|\btpm\b|\bboric\b|\bkast\b|valpara[ií]so|antofagasta",
 }
 # (medio, url, {país: "todo" | "econ" | "pais"})
 #   todo = entra todo · econ = solo titulares de economía (medio del país; se saltean los que hablan de otro país)
@@ -51,23 +52,27 @@ FEEDS = [
     ("La Jornada", "https://www.jornada.com.mx/rss/economia.xml", {"mexico": "econ"}),
     ("Expansión México", "https://expansion.mx/rss", {"mexico": "econ"}),
     ("El Universal", "https://www.eluniversal.com.mx/arc/outboundfeeds/rss/category/cartera/?outputType=xml", {"mexico": "econ"}),
-    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais"}),
+    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
     ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "pais"}),
-    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
-    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais"}),
-    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais"}),
+    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
+    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/estados-unidos/", {"eeuu": "econ"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
-    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais"}),
+    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/economia.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+    ("La Tercera", "https://www.latercera.com/arc/outboundfeeds/rss/category/pulso/?outputType=xml", {"chile": "econ"}),
+    ("Diario Financiero", "https://www.df.cl/noticias/site/list/port/rss.xml", {"chile": "econ"}),
+    ("Cooperativa", "https://www.cooperativa.cl/noticias/site/tax/port/all/rss_6___1.xml", {"chile": "econ"}),
+    ("Ex-Ante", "https://www.ex-ante.cl/feed/", {"chile": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/economia/feed.xml", {"brasil": "econ"}),
-    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais"}),
+    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais", "chile": "pais"}),
     ("La Nación", "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("iProfesional", "https://www.iprofesional.com/rss/economia", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/mundo.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
