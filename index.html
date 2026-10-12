@@ -265,62 +265,53 @@ footer a{color:var(--ink2)}
 .glay button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .xpmob{display:none;color:var(--muted)}
 @media (max-width:1023px),(pointer:coarse){.xpmob{display:block}.xpw{display:none}}
-.xpw{position:relative;height:min(84vh,880px);min-height:640px;margin-top:6px;border:1px solid rgba(106,168,216,.22);border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#0b1d2e 0%,#060e17 55%,#03070c 100%)}
-.xpw:fullscreen{height:100vh;border-radius:0;border:0}
-.xpw::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px);z-index:1}
-.xpw canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
-.xpw canvas:active{cursor:grabbing}
-.xphud{position:absolute;left:16px;top:12px;font:11px/1.6 var(--mono);color:var(--muted);z-index:2;pointer-events:none;letter-spacing:.03em}
-.xphud b{color:var(--ink);font-weight:500}.xphud .big{font-size:20px;color:var(--accent);letter-spacing:.06em}
-.xpcon{position:absolute;left:14px;top:92px;width:226px;max-height:calc(100% - 166px);overflow:auto;background:rgba(5,12,20,.8);border:1px solid rgba(106,168,216,.22);border-radius:10px;padding:4px 10px 10px;z-index:2;backdrop-filter:blur(3px)}
-.xpcon h4{font:600 10px var(--mono);letter-spacing:.1em;color:var(--accent);margin:10px 0 5px;text-transform:uppercase}
-.xpcon button{display:flex;justify-content:space-between;align-items:center;width:100%;font:12px var(--sans);color:var(--ink2);background:none;border:1px solid transparent;border-radius:6px;padding:2px 7px;cursor:pointer;text-align:left}
-.xpcon button:hover{background:rgba(106,168,216,.08)}
-.xpcon button[aria-pressed="true"]{color:var(--ink);background:rgba(106,168,216,.16);border-color:rgba(106,168,216,.4)}
-.xpcon button kbd{font:10px var(--mono);color:var(--muted)}
-.xpcon button .sw{width:26px;height:12px;border-radius:7px;background:var(--line);position:relative;flex:none}
-.xpcon button .sw::after{content:'';position:absolute;top:2px;left:2px;width:8px;height:8px;border-radius:50%;background:var(--muted);transition:left .2s}
-.xpcon button[aria-pressed="true"] .sw{background:rgba(106,168,216,.5)}.xpcon button[aria-pressed="true"] .sw::after{left:16px;background:var(--ink)}
-.xpleg{display:flex;flex-wrap:wrap;gap:2px 6px;font:10px var(--mono);color:var(--muted);margin:4px 2px 0}
-.xpleg i{display:inline-block;width:10px;height:8px;border-radius:2px;margin-right:3px;vertical-align:0}
-.xprk{position:absolute;right:14px;top:14px;width:236px;z-index:2;font:12px var(--mono);transition:opacity .3s}
-.xprk.off{opacity:0;pointer-events:none}
-.xprt{font:600 10px var(--mono);letter-spacing:.1em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;text-align:right}
-.xprb{position:relative;height:250px}
-.xprb>div{position:absolute;left:0;right:0;height:22px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:5px;background:rgba(5,12,20,.72);border:1px solid rgba(106,168,216,.14);cursor:pointer;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
-.xprb>div:hover{border-color:rgba(106,168,216,.5)}
-.xprb .n{flex:1;color:var(--ink2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:var(--sans)}
-.xprb .bar{position:absolute;left:0;bottom:0;height:2px;border-radius:2px;transition:width .7s}
-.xprb .sep{background:none;border:0;justify-content:center;color:var(--muted);cursor:default}
-.xpcard{position:absolute;right:14px;top:14px;width:318px;max-height:calc(100% - 104px);overflow:auto;z-index:3;background:rgba(6,14,23,.92);border:1px solid rgba(106,168,216,.4);border-radius:12px;padding:12px 14px;box-shadow:0 0 32px rgba(106,168,216,.15);animation:xpIn .35s ease}
-@keyframes xpIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
-.xpcard h3{margin:0 0 2px;font:600 17px var(--sans);display:flex;justify-content:space-between;align-items:center}
-.xpcard h3 button{background:none;border:0;color:var(--muted);font-size:18px;cursor:pointer;line-height:1}
-.xpcard .sub{font:11px var(--mono);color:var(--muted);margin:0 0 8px}
-.xpcard table{width:100%;min-width:0;border-collapse:collapse;font:12px var(--mono);margin:4px 0 8px}
-.xpcard td,.xpcard th{padding:3px 0;text-align:right;border-bottom:1px solid rgba(40,50,61,.7)}
-.xpcard th{font:600 10px var(--mono);color:var(--muted);letter-spacing:.06em}
-.xpcard td:first-child,.xpcard th:first-child{text-align:left;font-family:var(--sans);color:var(--ink2)}
-.xpcard td.ar{color:var(--s4)}
-.xpsp{margin:6px 0 2px}.xpsp .l{display:flex;justify-content:space-between;font:11px var(--mono);color:var(--muted)}.xpsp .l b{color:var(--ink);font-weight:500}
-.xpsp svg{width:100%;height:42px;display:block}
-.xpsp path.ln{fill:none;stroke-width:1.6;stroke-dasharray:1200;stroke-dashoffset:1200;animation:xpDraw 1.4s ease forwards}
+.xpw{position:relative;height:min(86vh,900px);min-height:640px;margin-top:6px;border:1px solid rgba(106,168,216,.22);border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#0b1d2e 0%,#060e17 55%,#03070c 100%);font-family:var(--mono)}
+.xpw::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);z-index:5}
+.xpw canvas{position:absolute;inset:0;width:100%;height:100%}
+body.mon{overflow:hidden}
+body.mon .xpw{position:fixed;left:0;right:0;bottom:0;top:var(--monTop,0px);height:auto;min-height:0;margin:0;border:0;border-radius:0;z-index:60;cursor:none}
+body.mon #flHome{display:none}
+.mnTop{position:absolute;left:0;right:0;top:0;height:34px;display:flex;align-items:center;gap:18px;padding:0 16px;border-bottom:1px solid rgba(106,168,216,.18);background:rgba(4,10,17,.6);z-index:3;font-size:11px;color:var(--muted);letter-spacing:.08em}
+.mnLogo{color:var(--ink2)}.mnLogo b{color:var(--accent);font-weight:600}
+.mnScn{color:#8fd3c4}
+.mnDots{display:flex;gap:5px;margin-left:auto}.mnDots i{width:22px;height:3px;border-radius:2px;background:rgba(106,168,216,.2);overflow:hidden;position:relative}
+.mnDots i.on::after{content:'';position:absolute;inset:0;background:var(--accent);transform-origin:left;animation:mnProg var(--d,22s) linear forwards}.mnDots i.done{background:rgba(106,168,216,.6)}
+@keyframes mnProg{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.mnTop button{font:11px var(--mono);color:var(--accent-ink);background:var(--accent);border:0;border-radius:5px;padding:4px 10px;cursor:pointer;letter-spacing:.04em}
+body.mon .mnTop button{display:none}
+.mnTitle{position:absolute;left:50%;top:48px;transform:translateX(-50%);z-index:3;font:600 22px var(--mono);letter-spacing:.14em;color:var(--accent);text-shadow:0 0 18px rgba(106,168,216,.55);white-space:nowrap;pointer-events:none}
+.mnTitle small{display:block;text-align:center;font:400 11px var(--mono);letter-spacing:.1em;color:var(--muted);margin-top:4px;text-shadow:none}
+.mnL{position:absolute;left:14px;top:48px;bottom:118px;width:244px;display:flex;flex-direction:column;gap:10px;z-index:3}
+.mnR{position:absolute;right:14px;top:48px;bottom:118px;width:236px;z-index:3;display:flex;flex-direction:column}
+.mnBox{background:rgba(4,10,17,.72);border:1px solid rgba(106,168,216,.2);border-radius:8px;padding:8px 10px}
+.mnH{font:600 9.5px var(--mono);letter-spacing:.14em;color:var(--accent);margin-bottom:6px}
+#mnClk div{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(40,50,61,.6);font-size:11px;color:var(--muted)}
+#mnClk div:last-child{border:0}#mnClk b{font:500 17px var(--mono);color:var(--ink);letter-spacing:.04em}
+#mnClk .st{font-size:9.5px;letter-spacing:.08em}#mnClk .st.on{color:#ffe3a1}#mnClk .st.off{color:var(--muted)}
+#mnVix .g{height:8px;border-radius:4px;background:linear-gradient(90deg,#4cc38a,#e8b14a 45%,#f07a70);position:relative;margin:6px 0 4px}
+#mnVix .g i{position:absolute;top:-4px;width:3px;height:16px;background:#fff;border-radius:2px;box-shadow:0 0 8px #fff;transition:left 1s}
+#mnVix .row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}#mnVix .row b{color:var(--ink);font-weight:500;font-size:14px}
+.mnAr .row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;font-size:11px;color:var(--muted)}.mnAr .row b{font:500 14px var(--mono);color:var(--ink)}
+.mnAr .up{color:var(--pos)}.mnAr .dn{color:var(--neg)}
+.mnRain{flex:1;overflow:hidden;position:relative;background:rgba(4,10,17,.55);border:1px solid rgba(106,168,216,.16);border-radius:8px;-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+.mnRainIn{position:absolute;left:0;right:0;top:0;animation:mnRain var(--rd,60s) linear infinite}
+.mnRainIn div{display:flex;justify-content:space-between;gap:8px;padding:3px 10px;font-size:11px;color:#8fb3cf;white-space:nowrap}
+.mnRainIn div span:first-child{overflow:hidden;text-overflow:ellipsis}
+.mnRainIn .k{color:var(--muted);font-size:9.5px;letter-spacing:.12em;padding-top:8px}
+.mnRainIn .up{color:var(--pos)}.mnRainIn .dn{color:var(--neg)}
+@keyframes mnRain{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.mnCall{position:absolute;z-index:4;width:250px;background:rgba(5,13,22,.92);border:1px solid rgba(106,168,216,.55);border-radius:8px;padding:9px 11px;box-shadow:0 0 26px rgba(106,168,216,.22);animation:xpIn .4s ease}
+@keyframes xpIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.mnCall .n{font:600 15px var(--sans);color:var(--ink)}.mnCall .v{font:600 22px var(--mono);margin:2px 0}.mnCall .s{font-size:10.5px;color:var(--muted)}
+.mnCall svg{width:100%;height:40px;display:block;margin-top:4px}
+.mnCall path.ln{fill:none;stroke-width:1.6;stroke-dasharray:1200;stroke-dashoffset:1200;animation:xpDraw 2.2s ease forwards}
 @keyframes xpDraw{to{stroke-dashoffset:0}}
-.xpcard a.go{display:block;margin-top:10px;text-align:center;font:600 12.5px var(--sans);color:var(--accent-ink);background:var(--accent);border-radius:8px;padding:7px;text-decoration:none}
-.xplog{position:absolute;left:256px;bottom:62px;width:min(540px,calc(100% - 520px));z-index:2;font:11.5px/1.55 var(--mono);color:#8fd3c4;pointer-events:none}
-.xplog div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.95;transition:opacity .6s}
-.xplog div:nth-last-child(n+3){opacity:.55}.xplog div:nth-last-child(n+5){opacity:.3}
-.xplog a{color:inherit;text-decoration:none;pointer-events:auto}.xplog a:hover{color:var(--ink);text-decoration:underline}
+.xplog{position:absolute;left:14px;right:14px;bottom:10px;height:100px;z-index:3;font:12px/1.6 var(--mono);color:#8fd3c4;background:rgba(4,10,17,.72);border:1px solid rgba(106,168,216,.2);border-radius:8px;padding:6px 12px;overflow:hidden}
+.xplog div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xplog div:nth-last-child(n+3){opacity:.6}.xplog div:nth-last-child(n+4){opacity:.35}
 .xplog .c{display:inline-block;width:7px;height:12px;background:#8fd3c4;vertical-align:-2px;animation:xpBlink 1s steps(1) infinite}
+.xplog .tg{color:var(--accent)}
 @keyframes xpBlink{50%{opacity:0}}
-.xptip{position:absolute;z-index:4;pointer-events:none;background:rgba(6,14,23,.94);border:1px solid rgba(106,168,216,.4);border-radius:8px;padding:6px 9px;font:11.5px var(--mono);color:var(--ink2);white-space:nowrap}
-.xptip b{color:var(--ink);font-family:var(--sans);font-size:13px}
-.xptm{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;display:flex;align-items:center;gap:10px;background:rgba(5,12,20,.82);border:1px solid rgba(106,168,216,.22);border-radius:10px;padding:7px 10px;font:11px var(--mono);color:var(--muted)}
-.xptm button,.xptm select{font:12px var(--mono);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer}
-.xptm #xpPlay{width:34px;color:var(--accent)}
-.xptm .xptl{letter-spacing:.1em;color:var(--accent);font-weight:600}
-.xptm input[type=range]{flex:1;accent-color:var(--accent)}
-.xptm .xptd{min-width:92px;text-align:right;color:var(--ink);font-size:13px}
 .globe{position:relative;width:100%;aspect-ratio:1/1;max-height:600px}
 .globe canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
 .globe canvas:active{cursor:grabbing}
@@ -695,7 +686,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <p class="note" id="dHint"></p>
       </div>
     </div>
-    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Explorador ✦</button></div>
+    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Monitor ✦</button></div>
     <div class="gsub" data-sub="mercados">
     <div class="card">
       <div class="head"><h2>Reloj de mercados</h2><span class="note" id="rljNota"></span></div>
@@ -772,32 +763,22 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="explorar">
     <div class="card">
-      <div class="head"><h2>Explorador del mundo</h2><span class="note">Atajos: 1 a 7 cambian las columnas · N noche · R recorrido · espacio máquina del tiempo · F pantalla completa · Esc cierra</span></div>
-      <p class="xpmob">El explorador está pensado para computadora: abrilo desde una pantalla grande con mouse.</p>
+      <div class="head"><h2>Monitor del mundo</h2><span class="note">Se maneja solo: dejalo prendido. Para verlo a pantalla completa tocá "Modo monitor" (Esc para salir).</span></div>
+      <p class="xpmob">El monitor está pensado para computadora: abrilo desde una pantalla grande.</p>
       <div class="xpw" id="xpW">
-        <canvas id="xpCv" aria-label="Globo terráqueo interactivo a pantalla grande"></canvas>
-        <div class="xphud" id="xpHud"></div>
-        <div class="xpcon" id="xpCon">
-          <h4>Columnas</h4><div id="xpCols"></div>
-          <h4>Color de los países</h4><div id="xpFill"></div><div class="xpleg" id="xpLeg"></div>
-          <h4>Capas</h4><div id="xpTog"></div>
-          <h4>Arcos</h4><div id="xpArc"></div>
+        <canvas id="xpCv" aria-label="Monitor del mundo: globo terráqueo animado con datos"></canvas>
+        <div class="mnTop"><span class="mnLogo">PULSO<b>MACRO</b> · MONITOR GLOBAL</span><span class="mnScn" id="mnScn"></span><span class="mnDots" id="mnDots"></span><button type="button" id="xpFs">⛶ Modo monitor</button></div>
+        <div class="mnTitle" id="mnTitle"></div>
+        <div class="mnL">
+          <div class="mnBox"><div class="mnH">RELOJES · BOLSAS</div><div id="mnClk"></div></div>
+          <div class="mnBox"><div class="mnH">TERMÓMETRO DEL MERCADO</div><div id="mnVix"></div></div>
+          <div class="mnBox mnAr"><div class="mnH">ARGENTINA</div><div id="mnAr"></div></div>
         </div>
-        <div class="xprk" id="xpRk"><div class="xprt" id="xpRkT"></div><div class="xprb" id="xpRkB"></div></div>
-        <div class="xpcard" id="xpPais" hidden></div>
+        <div class="mnR"><div class="mnH">FLUJO DE DATOS</div><div class="mnRain"><div class="mnRainIn" id="mnRain"></div></div></div>
+        <div class="mnCall" id="mnCall" hidden></div>
         <div class="xplog" id="xpLog" aria-live="polite"></div>
-        <div class="xptip" id="xpTip" hidden></div>
-        <div class="xptm" id="xpTm">
-          <button type="button" id="xpPlay" aria-label="Reproducir la máquina del tiempo">▶</button>
-          <span class="xptl">MÁQUINA DEL TIEMPO</span>
-          <select id="xpTmK" aria-label="Qué reproducir"><option value="bolsa">Bolsas</option><option value="mon">Monedas contra el dólar</option></select>
-          <input type="range" id="xpTmR" min="0" max="0" value="0" aria-label="Fecha">
-          <span class="xptd" id="xpTmD">—</span>
-          <button type="button" id="xpTmX" hidden>Volver a hoy</button>
-          <button type="button" id="xpFs" aria-label="Pantalla completa">⛶</button>
-        </div>
       </div>
-      <p class="note" id="xpNota">Arrastrá para girar, la ruedita acerca y aleja, y tocando un país el globo vuela hasta él. Las columnas y los colores se combinan: por ejemplo, color por inflación y columnas por tasa muestran de un vistazo dónde la tasa le gana a la inflación. Datos: CNBC (mercados, con demora), BIS (tasas), FMI o Banco Mundial (inflación, crecimiento y desempleo anuales; Argentina con el dato del INDEC) y los titulares de las secciones de noticias.</p>
+      <p class="note">Va cambiando solo de tema cada unos 20 segundos (bolsas, monedas, tasas, inflación y bonos), vuela hacia el país más destacado de cada uno y escribe abajo los titulares de cada país. La sombra es la noche real; las luces amarillas, las bolsas abiertas; los arcos, el carry trade desde Japón. Datos: CNBC (mercados, con demora), BIS (tasas), FMI o Banco Mundial (inflación anual; Argentina con el dato del INDEC), BCRA, Ámbito y DolarApi.</p>
     </div>
     </div>
     <p class="note" id="gFuente"></p>
@@ -3413,252 +3394,201 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
-  // ---- Mundo › Explorador: globo gigante interactivo (solo computadora) ----
+  // ---- Mundo › Monitor: globo gigante que se maneja solo (solo computadora) ----
   const xpDesk = () => matchMedia('(min-width:1024px) and (pointer:fine)').matches;
   { const b = document.querySelector('#gSubM [data-s="explorar"]'); if(b) b.hidden = !xpDesk(); if(SUBS.M[2]==='explorar' && !xpDesk()) SUBS.M[2] = 'mercados'; }
-  const XP = {rot:[40,-18], zoom:1, colL:'bolsa', fillL:'infl', noche:true, luces:true, pulsos:true, pings:true, tour:false, arco:'carry', sel:null, fly:null, run:false, log:[], tm:{play:false, i:0, kind:'bolsa', on:false}, rk:{}, ping:[], nextPing:0, tourAt:0, tourI:0, hover:null};
+  const XP = {rot:[40,-18], zoom:1, run:false, log:[], ping:[], nextPing:0, lab:[], anim:{}, scn:-1, scnAt:0, fly:null};
   const XP_EX = {...DG_EX, FRA:'Euronext'};
-  const XP_SEC = {USA:'eeuu', BRA:'brasil', DEU:'europa', FRA:'europa', ITA:'europa', ESP:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', ARG:'macro'};
-  const XP_TOUR = ['ARG','BRA','USA','MEX','CHL','GBR','DEU','FRA','ESP','ITA','JPN','CHN','IND','KOR','AUS','ZAF','TUR','CAN'];
   const xpN = iso => GPA[iso] || gname(iso);
   const xpBolsa = iso => iso==='ESP' ? gpc(glob?.europa?.ibex) : iso==='ITA' ? gpc(glob?.europa?.ftmib) : iso==='CHL' ? gpc(glob?.chile?.ech) : XP_EX[iso] ? gpc(glob?.bolsas?.[XP_EX[iso]]) : null;
   const xpCur = iso => iso==='JPN' ? 'JPY' : iso==='GBR' ? 'GBP' : DG_CUR[iso]==='EUR' ? (iso==='DEU' ? 'EUR' : null) : DG_CUR[iso];
   const xpMon = iso => { const c = xpCur(iso); if(!c) return null; if(c==='JPY'){ const m = glob?.japon?.jpy; return m?.prev ? -(m.v/m.prev-1)*100 : null; }
     if(c==='GBP'){ const m = glob?.reino?.gbp; return m?.prev ? (m.v/m.prev-1)*100 : null; } return dgMon(c); };
-  const xpMonA = iso => { const c = xpCur(iso); if(!c || !gHist) return null; if(c==='JPY' || c==='GBP'){ const y = gYtd(gHist.series?.[c==='JPY'?'fx_jpy':'fx_gbp'] || []); return y==null ? null : c==='GBP' ? y : (100/(100+y)-1)*100; } return dgMonA(c); };
   const xpInfl = iso => gval(iso,'infl');
-  const xpReal = iso => { const t = glob?.paises?.[iso]?.tasa, i = xpInfl(iso); return t==null || i==null ? null : t-i; };
-  // columnas: [nombre, valor(iso), tipo ('div' verde/rojo según signo | 'seq' escala), máximo para la altura, formato, tecla]
-  const XP_COLS = {
-    bolsa:['Bolsa hoy', xpBolsa, 'div', 3, v=>sg(v,2)+'%'],
-    mon:['Moneda hoy', xpMon, 'div', 1.5, v=>sg(v,2)+'%'],
-    monA:['Moneda en el año', xpMonA, 'div', 25, v=>sg(v,1)+'%'],
-    bono:['Bono a 10 años', iso=>dgBono(iso), 'seq', 30, v=>nf(v,2)+'%'],
-    tasa:['Tasa del banco central', iso=>glob?.paises?.[iso]?.tasa ?? null, 'seq', 40, v=>nf(v,2)+'%'],
-    infl:['Inflación anual', xpInfl, 'seq', 60, v=>nf(v,1)+'%'],
-    real:['Tasa real (tasa − inflación)', xpReal, 'div', 15, v=>sg(v,1)+' pts']};
-  const XP_FILL = {no:['Sin color'], infl:['Inflación'], crec:['Crecimiento'], tasa:['Tasa del banco central'], desemp:['Desempleo'], real:['Tasa real']};
-  const XP_REAL = {cut:[-6,-2,0,2,5], pal:['#9e1f3a','#d9483b','#e8b14a','#5aa078','#2a8ab0','#1f5f8b']};
-  const xpFillV = iso => XP.fillL==='real' ? xpReal(iso) : XP.fillL==='no' ? null : gval(iso, XP.fillL);
-  const xpFillC = v => { if(v==null) return null; const C = XP.fillL==='real' ? XP_REAL : GL[XP.fillL]; let k = C.cut.findIndex(c=>v<c); if(k<0) k = C.cut.length; return C.pal[k]; };
-  // máquina del tiempo: series de global_hist por país
-  const XP_TMS = {bolsa:{USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech'},
-    mon:{ARG:'fx_ars', BRA:'fx_brl', CHL:'fx_clp', MEX:'fx_mxn', COL:'fx_cop', PER:'fx_pen', URY:'fx_uyu', CHN:'fx_cny', DEU:'fx_eur', JPN:'fx_jpy', GBR:'fx_gbp'}};
-  function xpTmPrep(){
-    const kind = XP.tm.kind, S = XP_TMS[kind], ser = Object.entries(S).map(([iso,k])=>[iso, gHist?.series?.[k] || []]).filter(x=>x[1].length>20);
-    if(!ser.length){ XP.tm.dates = []; return; }
-    const dates = [...new Set(ser.flatMap(x=>x[1].map(p=>p[0])))].sort().filter(d=>d >= ser.reduce((a,x)=>x[1][0][0]>a?x[1][0][0]:a, ''));
-    const dirMon = iso => iso==='DEU' || iso==='GBR';   // euro y libra vienen en dólares por unidad: sube = se fortalece
-    XP.tm.dates = dates; XP.tm.val = {};
-    for(const [iso, pts] of ser){ let j = 0, last = null; const base = pts.find(p=>p[0]>=dates[0])?.[1], out = [];
-      for(const d of dates){ while(j<pts.length && pts[j][0]<=d){ last = pts[j][1]; j++; } let v = last==null || !base ? null : (last/base-1)*100;
-        if(v!=null && kind==='mon' && !dirMon(iso)) v = (base/last-1)*100; out.push(v); }
-      XP.tm.val[iso] = out; }
-    const r = $('xpTmR'); r.max = String(dates.length-1); if(XP.tm.i>dates.length-1) XP.tm.i = dates.length-1; r.value = String(XP.tm.i);
-  }
-  const xpColV = iso => XP.tm.on ? (XP.tm.val?.[iso]?.[XP.tm.i] ?? null) : XP_COLS[XP.colL][1](iso);
-  const xpColDef = () => XP.tm.on ? [XP.tm.kind==='bolsa' ? 'Bolsas desde el inicio' : 'Monedas contra el dólar desde el inicio', null, 'div', XP.tm.kind==='bolsa' ? 60 : 40, v=>sg(v,1)+'%'] : XP_COLS[XP.colL];
-  function xpItems(){
+  const XP_BK = {USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech'};
+  const XP_MK = {ARG:'fx_ars', BRA:'fx_brl', CHL:'fx_clp', MEX:'fx_mxn', COL:'fx_cop', PER:'fx_pen', URY:'fx_uyu', CHN:'fx_cny', DEU:'fx_eur', JPN:'fx_jpy', GBR:'fx_gbp'};
+  const XP_BO = {USA:'t10', DEU:'de10', ITA:'it10', FRA:'fr10', ESP:'es10', MEX:'mx10', CHL:'cl10', JPN:'jp10', GBR:'gb10'};
+  // escenas: [clave, título, bajada, valor(iso), tipo, máximo de altura, formato, color de países, a quién se acerca, serie para el mini gráfico]
+  const XP_SCN = [
+    ['bolsa','BOLSAS DEL MUNDO','Cuánto se movió hoy el índice principal de cada país', xpBolsa, 'div', 3, v=>sg(v,2)+'%', 'no', 'abs', iso=>XP_BK[iso]],
+    ['mon','MONEDAS CONTRA EL DÓLAR','Verde: se fortaleció hoy · rojo: se debilitó', xpMon, 'div', 1.5, v=>sg(v,2)+'%', 'no', 'abs', iso=>XP_MK[iso]],
+    ['tasa','TASAS DE LOS BANCOS CENTRALES','Altura y color: tasa de interés de referencia de cada país', iso=>glob?.paises?.[iso]?.tasa ?? null, 'seq', 40, v=>nf(v,2)+'%', 'tasa', 'max', null],
+    ['infl','INFLACIÓN','Color: inflación anual · columnas: los países más seguidos', iso=>GPA[iso] ? xpInfl(iso) : null, 'seq', 60, v=>nf(v,1)+'%', 'infl', 'ARG', null],
+    ['bono','BONOS A 10 AÑOS','Cuánto paga cada gobierno por endeudarse a 10 años', iso=>dgBono(iso), 'seq', 30, v=>nf(v,2)+'%', 'no', 'max', iso=>XP_BO[iso]]];
+  const XP_DUR = 22000;
+  const xpFillC = (l, v) => { if(v==null || l==='no') return null; const C = GL[l]; let k = C.cut.findIndex(c=>v<c); if(k<0) k = C.cut.length; return C.pal[k]; };
+  function xpItems(S){
     if(!glob || !G.feats) return [];
-    const isos = XP.tm.on ? Object.keys(XP.tm.val||{}) : Object.keys(glob.paises||{}).concat(Object.keys(XP_EX), Object.keys(DG_CUR), ['JPN','GBR','ESP','ITA','CHL']);
-    const seen = new Set(), out = [];
-    for(const iso of isos){ if(seen.has(iso) || !G.byId[iso]) continue; seen.add(iso); const v = xpColV(iso); if(v==null || !isFinite(v)) continue; const ll = G.cen(iso); if(ll) out.push({iso, v, ll}); }
+    const isos = new Set([...Object.keys(glob.paises||{}), ...Object.keys(XP_EX), ...Object.keys(DG_CUR), 'JPN','GBR','ESP','ITA','CHL']), out = [];
+    for(const iso of isos){ if(!G.byId[iso]) continue; const v = S[3](iso); if(v==null || !isFinite(v)) continue; const ll = G.cen(iso); if(ll) out.push({iso, v, ll}); }
     return out;
   }
-  function xpLogAdd(txt, url){ XP.log.push({txt, url, t:performance.now()}); if(XP.log.length>7) XP.log.shift(); xpLogRender(); }
-  function xpLogRender(){ const now = performance.now();
-    $('xpLog').innerHTML = XP.log.map((l,i)=>{ const n = Math.min(l.txt.length, Math.floor((now-l.t)/14)), s = esc(l.txt.slice(0,n)), cur = i===XP.log.length-1 && n<l.txt.length ? '<span class="c"></span>' : '';
-      return `<div>&gt; ${l.url ? `<a href="${esc(l.url)}" target="_blank" rel="noopener">${s}</a>` : s}${cur}</div>`; }).join('') + (XP.log.length && XP.log[XP.log.length-1].txt.length <= Math.floor((now-XP.log[XP.log.length-1].t)/14) ? '<div>&gt; <span class="c"></span></div>' : ''); }
-  function xpSeedLog(){
-    const it = dgItems('bolsa');
-    if(it.length){ const b = it.reduce((a,x)=>x[2]>a[2]?x:a), w = it.reduce((a,x)=>x[2]<a[2]?x:a), su = it.filter(x=>x[2]>0).length;
-      xpLogAdd(`BOLSAS: ${su} de ${it.length} suben · mejor ${b[1]} ${sg(b[2],2)}% · peor ${w[1]} ${sg(w[2],2)}%`); }
-    const ps = glob?.paises || {}, rec = Object.entries(ps).filter(([i,p])=>p.tasa_cambio && (Date.now()-Date.parse(p.tasa_cambio))<45*864e5).sort((a,b)=>a[1].tasa_cambio<b[1].tasa_cambio?1:-1).slice(0,3);
-    for(const [i,p] of rec) xpLogAdd(`TASAS: ${xpN(i).toUpperCase()} ${p.tasa>p.tasa_prev?'subió':'bajó'} a ${nf(p.tasa,2)}% el ${fd(p.tasa_cambio)}`);
-    const bo = Object.entries(glob?.bonos||{}).filter(([i])=>dgBono(i)!=null).sort((a,b)=>b[1].v-a[1].v)[0]; if(bo) xpLogAdd(`BONOS: la tasa a 10 años más alta es la de ${xpN(bo[0])} (${nf(bo[1].v,2)}%)`);
-  }
-  // titulares para los destellos: [iso, titular, link]
+  function xpLogAdd(tag, txt){ XP.log.push({tag, txt, t:performance.now()}); if(XP.log.length>5) XP.log.shift(); }
+  function xpLogRender(now){
+    const last = XP.log[XP.log.length-1];
+    $('xpLog').innerHTML = XP.log.map(l=>{ const n = Math.min(l.txt.length, Math.floor((now-l.t)/16)); return `<div>&gt; <span class="tg">[${esc(l.tag)}]</span> ${esc(l.txt.slice(0,n))}${l===last && n<l.txt.length ? '<span class="c"></span>' : ''}</div>`; }).join('')
+      + (last && last.txt.length <= Math.floor((now-last.t)/16) ? '<div>&gt; <span class="c"></span></div>' : ''); }
   function xpNews(){ const out = [], M = {eeuu:'USA', brasil:'BRA', europa:'BEL', mexico:'MEX', chile:'CHL', japon:'JPN', reino:'GBR'};
-    for(const [k,iso] of Object.entries(M)) for(const x of (npData?.[k]||[]).slice(0,4)) out.push([iso, x.t, x.u]);
-    for(const x of (glob?.noticias?.items||[]).filter(x=>x.k?.includes('china')).slice(0,3)) out.push(['CHN', x.t, x.u]);
-    for(const x of (nw?.items||[]).slice(0,4)) out.push(['ARG', x.t, x.u]);
+    for(const [k,iso] of Object.entries(M)) for(const x of (npData?.[k]||[]).slice(0,4)) out.push([iso, x.t]);
+    for(const x of (glob?.noticias?.items||[]).slice(0,6)) out.push(['MUNDO', x.t]);
+    for(const x of (nw?.items||[]).slice(0,5)) out.push(['ARG', x.t]);
     for(let i=out.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [out[i],out[j]] = [out[j],out[i]]; }
-    return out; }
-  function xpBuildUI(){
-    const opt = (k,n,key,pr) => `<button type="button" data-k="${k}" aria-pressed="${pr}"><span>${n}</span>${key?`<kbd>${key}</kbd>`:''}</button>`;
-    $('xpCols').innerHTML = Object.entries(XP_COLS).map(([k,c],i)=>opt(k, c[0], i+1, k===XP.colL)).join('') + opt('no','Sin columnas','',XP.colL==='no');
-    $('xpFill').innerHTML = Object.entries(XP_FILL).map(([k,c])=>opt(k, c[0], '', k===XP.fillL)).join('');
-    const tg = [['noche','Día y noche en vivo','N'],['luces','Bolsas abiertas (luces)',''],['pulsos','Pulsos si se mueve fuerte',''],['pings','Noticias como destellos',''],['tour','Recorrido automático','R']];
-    $('xpTog').innerHTML = tg.map(([k,n,key])=>`<button type="button" data-t="${k}" aria-pressed="${!!XP[k]}"><span>${n}${key?` <kbd>${key}</kbd>`:''}</span><span class="sw"></span></button>`).join('');
-    $('xpArc').innerHTML = [['carry','Carry trade (desde Japón)'],['arg','Argentina ↔ país elegido'],['no','Sin arcos']].map(([k,n])=>opt(k,n,'',k===XP.arco)).join('');
-    $('xpCols').onclick = e=>{ const b = e.target.closest('button'); if(b) xpSetCol(b.dataset.k); };
-    $('xpFill').onclick = e=>{ const b = e.target.closest('button'); if(!b) return; XP.fillL = b.dataset.k; xpBuildUI(); gc('explorar-color-'+XP.fillL, true); };
-    $('xpTog').onclick = e=>{ const b = e.target.closest('button'); if(b) xpToggle(b.dataset.t); };
-    $('xpArc').onclick = e=>{ const b = e.target.closest('button'); if(!b) return; XP.arco = b.dataset.k; xpBuildUI(); };
-    const C = XP.fillL==='real' ? XP_REAL : GL[XP.fillL];
-    $('xpLeg').innerHTML = XP.fillL==='no' ? '' : C.pal.map((c,i)=>`<span><i style="background:${c}"></i>${i===0?'&lt;'+nf(C.cut[0],0):i===C.pal.length-1?'≥'+nf(C.cut[C.cut.length-1],0):nf(C.cut[i-1],0)}</span>`).join('') + '<span>%</span>';
+    const vis = new Set(); return out.filter(x=>{ const k = x[1].toLowerCase().slice(0,50); if(vis.has(k)) return false; vis.add(k); return true; }); }
+  const xpTag = iso => iso==='BEL' ? 'EUROPA' : iso==='MUNDO' ? 'MUNDO' : xpN(iso).toUpperCase();
+  function xpSpark(pts, col){ if(!pts || pts.length<3) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*240, Y = x=>37-(x-mn)/(mx-mn||1)*33;
+    return `<svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="${v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join('')}" style="stroke:${col}" vector-effect="non-scaling-stroke"/></svg>`; }
+  // paneles laterales (1 vez por segundo)
+  const XP_CLK = [['BUENOS AIRES','BYMA'],['NUEVA YORK','NYSE'],['SAN PABLO','B3'],['LONDRES','LSE'],['FRÁNCFORT','Xetra'],['TOKIO','TSE'],['HONG KONG','HKEX']];
+  function xpPanels(){
+    $('mnClk').innerHTML = XP_CLK.map(([n,k])=>{ const e = GEX.find(x=>x[0].split(' ')[0]===k); if(!e) return ''; const s = gEx(e), h = new Date().toLocaleTimeString('es-AR',{timeZone:e[2], hour12:false});
+      return `<div><span>${n}<br><span class="st ${s.open?'on':'off'}">${s.open?'● ABIERTA':'○ CERRADA'}</span></span><b>${h}</b></div>`; }).join('');
+    const vx = glob?.termo?.vix, t10 = glob?.termo?.us10y;
+    if(vx){ const p = Math.max(0, Math.min(100, (vx.v-10)/30*100)), est = vx.v<15 ? 'CALMA' : vx.v<25 ? 'NORMAL' : vx.v<35 ? 'NERVIOSO' : 'PÁNICO';
+      $('mnVix').innerHTML = `<div class="row"><span>VIX · índice del miedo</span><b>${nf(vx.v,2)}</b></div><div class="g"><i style="left:calc(${p.toFixed(0)}% - 1px)"></i></div><div class="row"><span>${est}</span><span>${sg(gpc(vx),1)}% hoy</span></div>${t10 ? `<div class="row" style="margin-top:6px"><span>Tasa 10 años EE.UU.</span><b>${nf(t10.v,2)}%</b></div>` : ''}`; }
+    const L = a => a.length ? a[a.length-1] : null, P = a => a.length>1 ? a[a.length-2] : null, row = (n, v, d, bad) => `<div class="row"><span>${n}</span><span><b>${v}</b> ${d==null ? '' : `<span class="${(d>0)!==!!bad ? 'up' : d===0 ? '' : 'dn'}">${sg(d, Math.abs(d)<10?2:0)}${typeof bad==='string' ? bad : '%'}</span>`}</span></div>`;
+    const lastDay = days[days.length-1] || {}, bl = live.blue?.v ?? get(lastDay,'blue'), cl = live.ccl?.v ?? get(lastDay,'ccl'), rp = series('riesgo'), mv = series('merval'), im = months.filter(m=>m.infl!=null);
+    $('mnAr').innerHTML = (bl ? row('Dólar blue', '$ '+nf(bl,0), null) : '') + (cl ? row('Dólar CCL', '$ '+nf(cl,2), null) : '')
+      + (rp.length>1 ? `<div class="row"><span>Riesgo país</span><span><b>${nf(L(rp)[1],0)}</b> <span class="${L(rp)[1]<=P(rp)[1]?'up':'dn'}">${sg(L(rp)[1]-P(rp)[1],0)} pb</span></span></div>` : '')
+      + (mv.length>1 ? row('Merval', nf(L(mv)[1],0), (L(mv)[1]/P(mv)[1]-1)*100) : '')
+      + (im.length ? `<div class="row"><span>Inflación ${mesTxt(im[im.length-1].mes)}</span><b>${nf(im[im.length-1].infl,1)}%</b></div>` : '');
   }
-  function xpSetCol(k){ if(XP.tm.on) xpTmOff(); XP.colL = k; xpBuildUI(); gc('explorar-columnas-'+k, true); }
-  function xpToggle(k){ XP[k] = !XP[k]; if(k==='tour'){ XP.tourAt = 0; if(!XP.tour) xpCardClose(); } xpBuildUI(); gc('explorar-'+k+'-'+(XP[k]?'on':'off'), true); }
-  function xpTmOff(){ XP.tm.on = false; XP.tm.play = false; $('xpPlay').textContent = '▶'; $('xpTmX').hidden = true; $('xpTmD').textContent = 'hoy'; }
-  function xpTmGo(i){ if(!gHist){ loadHist(); return; } if(!XP.tm.dates || XP.tm.prepK!==XP.tm.kind){ XP.tm.prepK = XP.tm.kind; xpTmPrep(); } if(!XP.tm.dates.length) return;
-    XP.tm.on = true; XP.tm.i = Math.max(0, Math.min(XP.tm.dates.length-1, i)); $('xpTmR').value = String(XP.tm.i); $('xpTmD').textContent = fd(XP.tm.dates[XP.tm.i]); $('xpTmX').hidden = false; }
-  function xpTmPlay(){ if(!XP.tm.on || XP.tm.i >= (XP.tm.dates?.length||1)-1) xpTmGo(0); if(!XP.tm.on) return; XP.tm.play = !XP.tm.play; XP.tm.acc = 0; $('xpPlay').textContent = XP.tm.play ? '❚❚' : '▶'; gc('explorar-tiempo', true); }
-  // vuelo: rotación hacia el país, por el camino más corto
-  function xpFlyTo(iso){ const ll = G.cen(iso); if(!ll) return; let to0 = -ll[0], d = ((to0 - XP.rot[0]) % 360 + 540) % 360 - 180;
-    XP.fly = {from:[...XP.rot], to:[XP.rot[0]+d, Math.max(-60, Math.min(60, -ll[1]))], z0:XP.zoom, z1:Math.max(XP.zoom, 1.35), t0:performance.now(), dur:1300}; }
-  function xpSelect(iso, fromTour){ XP.sel = iso; xpFlyTo(iso); xpCard(iso); if(!fromTour && XP.tour){ XP.tour = false; xpBuildUI(); } gc('explorar-pais-'+iso, true); }
-  function xpCardClose(){ XP.sel = null; $('xpPais').hidden = true; $('xpRk').classList.remove('off'); }
-  function xpSpark(pts, col){ if(!pts || pts.length<3) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*290, Y = x=>38-(x-mn)/(mx-mn||1)*34;
-    return `<svg viewBox="0 0 290 42" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="${v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join('')}" style="stroke:${col}" vector-effect="non-scaling-stroke"/></svg>`; }
-  function xpCard(iso){
-    const p = glob?.paises?.[iso] || {}, a = glob?.paises?.ARG || {}, ai = gArgInfl(), yo = iso==='ARG', S = gHist?.series || {};
-    const av = k => k==='infl' && ai ? ai.v : a[k], pv = k => k==='infl' ? xpInfl(iso) : p[k];
-    const rows = [['Inflación','infl',1],['Crecimiento','crec',1],['Tasa del BC','tasa',2],['Desempleo','desemp',1]].filter(([n,k])=>pv(k)!=null || av(k)!=null);
-    const tb = rows.length ? `<table><tr><th></th><th>${esc(xpN(iso).slice(0,12))}</th>${yo?'':'<th>Argentina</th>'}</tr>${rows.map(([n,k,d])=>`<tr><td>${n}</td><td>${pv(k)==null?'—':nf(pv(k),d)+'%'}</td>${yo?'':`<td class="ar">${av(k)==null?'—':nf(av(k),d)+'%'}</td>`}</tr>`).join('')}</table>` : '';
-    const cut1 = pts => { if(!pts?.length) return pts; const t = T(pts[pts.length-1][0]) - 365*864e5; return pts.filter(q=>T(q[0])>=t); };
-    const sp = [];
-    const bk = XP_TMS.bolsa[iso], mk = XP_TMS.mon[iso], bonoK = {USA:'t10', DEU:'de10', ITA:'it10', FRA:'fr10', ESP:'es10', MEX:'mx10', CHL:'cl10', JPN:'jp10', GBR:'gb10'}[iso];
-    if(bk && S[bk]?.length){ const s = cut1(S[bk]), ch = (s[s.length-1][1]/s[0][1]-1)*100, h = xpBolsa(iso); sp.push(`<div class="xpsp"><div class="l"><span>Bolsa, último año</span><b class="${ch>=0?'up':'dn'}">${sg(ch,1)}%${h!=null?` · hoy ${sg(h,2)}%`:''}</b></div>${xpSpark(s, ch>=0?'var(--pos)':'var(--neg)')}</div>`); }
-    if(mk && S[mk]?.length){ const s = cut1(S[mk]), up = s[s.length-1][1] >= s[0][1], fuerte = (iso==='DEU'||iso==='GBR') ? up : !up; sp.push(`<div class="xpsp"><div class="l"><span>${iso==='DEU'?'Euro':iso==='GBR'?'Libra':'Moneda'} ${iso==='DEU'||iso==='GBR'?'(dólares por unidad)':'(unidades por dólar)'}</span><b>${nf(s[s.length-1][1], s[s.length-1][1]<10?3:1)}</b></div>${xpSpark(s, fuerte?'var(--pos)':'var(--neg)')}</div>`); }
-    if(bonoK && S[bonoK]?.length){ const s = cut1(S[bonoK]); sp.push(`<div class="xpsp"><div class="l"><span>Bono a 10 años</span><b>${nf(s[s.length-1][1],2)}%</b></div>${xpSpark(s, 'var(--s4)')}</div>`); }
-    if(iso==='ARG'){ const rp = series('riesgo').slice(-250); if(rp.length) sp.push(`<div class="xpsp"><div class="l"><span>Riesgo país</span><b>${nf(rp[rp.length-1][1],0)} pb</b></div>${xpSpark(rp, 'var(--s4)')}</div>`); }
-    const sec = XP_SEC[iso];
-    $('xpPais').innerHTML = `<h3><span>${esc(xpN(iso))}</span><button type="button" aria-label="Cerrar" id="xpX">×</button></h3><p class="sub">${p.tasa_cambio ? `Último cambio de tasa: ${fd(p.tasa_cambio)}` : 'Datos anuales: FMI o Banco Mundial; tasa: BIS'}</p>${tb}${sp.join('') || '<p class="sub">Sin series de mercado para este país.</p>'}${sec ? `<a class="go" href="#${sec}">Ver la sección ${iso==='ARG'?'de Argentina':esc(SECC[sec]?.[0]||xpN(iso))} →</a>` : ''}`;
-    $('xpPais').hidden = false; $('xpRk').classList.add('off'); $('xpX').onclick = ()=>{ xpCardClose(); if(XP.tour){ XP.tour = false; xpBuildUI(); } };
-  }
-  function xpRank(items){ const D = xpColDef(), div = D[2]==='div', s = [...items].sort((a,b)=>b.v-a.v), pick = div && s.length>10 ? [...s.slice(0,5), null, ...s.slice(-5)] : s.slice(0,10);
-    const box = $('xpRkB'), mx = Math.max(...items.map(x=>Math.abs(x.v)), 1e-9);
-    $('xpRkT').textContent = (D[0] + (XP.tm.on ? ' · ' + fd(XP.tm.dates[XP.tm.i]) : '')).toUpperCase();
-    const keep = new Set();
-    pick.forEach((x,i)=>{ const key = x ? x.iso : '__sep'; keep.add(key); let el = XP.rk[key];
-      if(!el){ el = document.createElement('div'); if(!x){ el.className = 'sep'; el.textContent = '· · ·'; } else { el.innerHTML = '<span class="n"></span><span class="v"></span><span class="bar"></span>'; el.onclick = ()=>xpSelect(x.iso); } el.style.opacity = '0'; box.appendChild(el); XP.rk[key] = el; requestAnimationFrame(()=>{ el.style.opacity = '1'; }); }
-      el.style.transform = `translateY(${i*23}px)`;
-      if(x){ const col = div ? (x.v>=0 ? 'var(--pos)' : 'var(--neg)') : 'var(--s4)'; el.querySelector('.n').textContent = xpN(x.iso); const v = el.querySelector('.v'); v.textContent = D[4](x.v); v.style.color = col;
-        const b = el.querySelector('.bar'); b.style.width = (Math.abs(x.v)/mx*100).toFixed(0)+'%'; b.style.background = col; } });
-    for(const [k,el] of Object.entries(XP.rk)) if(!keep.has(k)){ el.remove(); delete XP.rk[k]; }
-  }
+  function xpRain(){ if(!glob) return; const it = [], k = t=>it.push(`<div class="k">${t}</div>`), r = (n, v, d) => it.push(`<div><span>${esc(n)}</span><span>${v} <span class="${d==null?'':d>0?'up':d<0?'dn':''}">${d==null?'':sg(d,2)+'%'}</span></span></div>`);
+    k('BOLSAS'); for(const [x,b] of Object.entries(glob.bolsas||{})) r(b.idx, nf(b.v, b.v<1000?2:0), gpc(b));
+    k('MONEDAS · POR DÓLAR'); for(const [c,m] of Object.entries(glob.monedas||{})) r(c, nf(m.v, m.v<10?3:1), gpc(m));
+    k('COMMODITIES'); for(const m of glob.commodities||[]) r(m.n, nf(m.v, m.v<100?2:0), m.prev ? (m.v/m.prev-1)*100 : null);
+    k('CRIPTO'); for(const c of (glob.cripto||[]).slice(0,8)) r(c.s, 'US$ '+nf(c.v, c.v<10?3:0), c.d1);
+    k('BONOS A 10 AÑOS'); for(const [i,b] of Object.entries(glob.bonos||{})) if(dgBono(i)!=null) r(GPA[i]||i, nf(b.v,2)+'%', null);
+    const h = it.join(''); if(h===XP.rainH) return; XP.rainH = h; const el = $('mnRain'); el.innerHTML = h + h; el.style.setProperty('--rd', Math.max(40, it.length*1.5)+'s'); }
   function xpSize(){ const cv = $('xpCv'), r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio||1, 1.25); if(r.width<2) return false;
     if(r.width!==XP.W || r.height!==XP.H){ XP.W = r.width; XP.H = r.height; cv.width = XP.W*d; cv.height = XP.H*d; XP.ctx = cv.getContext('2d'); XP.ctx.setTransform(d,0,0,d,0,0);
-      XP.proj = d3.geoOrthographic().translate([XP.W/2, XP.H/2-22]).clipAngle(90); XP.path = d3.geoPath(XP.proj, XP.ctx); }
-    XP.proj.scale(Math.min(XP.W-540, XP.H-130)/2*XP.zoom); return true; }
-  // posición elevada (orthographic: la altura escala el desplazamiento desde el centro)
-  const xpUp = (p, h) => { const c = XP.proj.translate(); return [c[0]+(p[0]-c[0])*(1+h), c[1]+(p[1]-c[1])*(1+h)]; };
+      XP.proj = d3.geoOrthographic().clipAngle(90); XP.path = d3.geoPath(XP.proj, XP.ctx); }
+    const x0 = 270, x1 = XP.W-262, y0 = 100, y1 = XP.H-122; XP.cx = (x0+x1)/2; XP.cy = (y0+y1)/2;
+    XP.R = Math.max(120, Math.min(x1-x0, y1-y0)/2/1.2); XP.proj.translate([XP.cx, XP.cy]).scale(XP.R*XP.zoom); return true; }
+  const xpUp = (p, h) => [XP.cx+(p[0]-XP.cx)*(1+h), XP.cy+(p[1]-XP.cy)*(1+h)];
   function xpSun(){ const d = new Date(), n = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - Date.UTC(d.getUTCFullYear(),0,0))/864e5,
       dec = -23.44*Math.cos(2*Math.PI/365*(n+10)), h = d.getUTCHours() + d.getUTCMinutes()/60 + d.getUTCSeconds()/3600; return [-15*(h-12), dec]; }
+  function xpFlyTo(ll, z){ let d = ((-ll[0] - XP.rot[0]) % 360 + 540) % 360 - 180; XP.fly = {from:[...XP.rot], to:[XP.rot[0]+d, Math.max(-50, Math.min(50, -ll[1]))], z0:XP.zoom, z1:z, t0:performance.now(), dur:2200}; }
+  function xpScene(now){
+    XP.scn = (XP.scn+1) % XP_SCN.length; XP.scnAt = now; XP.anim = {}; XP.lab = []; XP.pick = null; XP.called = false; $('mnCall').hidden = true;
+    const S = XP_SCN[XP.scn];
+    $('mnDots').innerHTML = XP_SCN.map((x,i)=>`<i class="${i===XP.scn?'on':i<XP.scn?'done':''}" style="--d:${XP_DUR/1000}s"></i>`).join('');
+    $('mnScn').textContent = `ESCENA ${XP.scn+1}/${XP_SCN.length}`;
+    const it = xpItems(S);
+    if(it.length){ XP.pick = S[8]==='ARG' ? it.find(x=>x.iso==='ARG') : S[8]==='abs' ? it.reduce((a,x)=>Math.abs(x.v)>Math.abs(a.v)?x:a) : it.reduce((a,x)=>x.v>a.v?x:a);
+      const su = it.filter(x=>x.v>0).length; xpLogAdd(S[1].split(' ')[0], S[4]==='div' ? `${S[1].toLowerCase()}: ${su} de ${it.length} en verde · máximo ${xpN(XP.pick.iso)} ${S[6](XP.pick.v)}` : `${S[1].toLowerCase()}: ${it.length} países · destacado ${xpN(XP.pick.iso)} ${S[6](XP.pick.v)}`); }
+  }
+  function xpCallout(){ const S = XP_SCN[XP.scn], x = XP.pick; if(!x) return; const sk = S[9]?.(x.iso), pts = sk ? (gHist?.series?.[sk] || []).slice(-260) : null;
+    const col = S[4]==='div' ? (x.v>=0 ? 'var(--pos)' : 'var(--neg)') : 'var(--s4)', el = $('mnCall');
+    el.innerHTML = `<div class="s">${S[0]==='infl' ? 'ARGENTINA EN EL MUNDO' : S[8]==='abs' ? 'EL MOVIMIENTO MÁS FUERTE' : 'EL MÁS ALTO'}</div><div class="n">${esc(xpN(x.iso))}</div><div class="v" style="color:${col}">${S[6](x.v)}</div><div class="s">${esc(S[2])}</div>${pts && pts.length>3 ? xpSpark(pts, col) + '<div class="s">último año</div>' : ''}`;
+    el.style.left = (XP.cx + XP.R*.42) + 'px'; el.style.top = (XP.cy - 150) + 'px'; el.hidden = false; }
   function xpDraw(now){
     if(tab!=='global' || G.vista!=='mundo' || SUBS.M[2]!=='explorar' || document.hidden || !xpSize()){ XP.run = false; return; }
     const vr = $('xpW').getBoundingClientRect(); if(vr.bottom < 0 || vr.top > innerHeight || now-(XP.last||0) < 30){ requestAnimationFrame(xpDraw); return; }
     const ctx = XP.ctx, proj = XP.proj, path = XP.path, W = XP.W, H = XP.H, dt = Math.min(100, now-(XP.last||now)); XP.last = now;
-    // movimiento: vuelo, recorrido o giro lento
+    // guion de cada escena: título, acercamiento al destacado, recuadro y alejamiento
+    if(XP.scn<0 || now-XP.scnAt > XP_DUR) xpScene(now);
+    const S = XP_SCN[XP.scn], st = now-XP.scnAt;
+    if(XP.pick && st>4500 && !XP.flew){ XP.flew = true; xpFlyTo(XP.pick.ll, 1.25); }
+    if(st<4500) XP.flew = false;
+    if(XP.pick && st>6800 && !XP.called){ XP.called = true; xpCallout(); }
+    if(st>15500 && XP.called && !$('mnCall').hidden){ $('mnCall').hidden = true; XP.fly = {from:[...XP.rot], to:[XP.rot[0]+25, -15], z0:XP.zoom, z1:1, t0:now, dur:2500}; }
+    const ttl = S[1], n = Math.min(ttl.length, Math.floor(st/45)); $('mnTitle').innerHTML = `${esc(ttl.slice(0,n))}${n<ttl.length?'▌':''}<small>${esc(S[2])}</small>`;
     if(XP.fly){ const t = Math.min(1, (now-XP.fly.t0)/XP.fly.dur), e = t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; XP.rot = [XP.fly.from[0]+(XP.fly.to[0]-XP.fly.from[0])*e, XP.fly.from[1]+(XP.fly.to[1]-XP.fly.from[1])*e]; XP.zoom = XP.fly.z0+(XP.fly.z1-XP.fly.z0)*e; if(t>=1) XP.fly = null; }
-    else if(!XP.drag && !XP.sel && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(XP.idle||0)>3000) XP.rot[0] += dt*.005;
-    if(XP.tour && now-XP.tourAt > 6500){ XP.tourAt = now; const lst = XP_TOUR.filter(i=>G.byId[i]); XP.tourI = (XP.tourI+1) % lst.length; xpSelect(lst[XP.tourI], true); }
-    if(XP.tm.play && XP.tm.dates?.length){ XP.tm.acc = (XP.tm.acc||0) + dt; while(XP.tm.acc > 45){ XP.tm.acc -= 45; if(XP.tm.i < XP.tm.dates.length-1){ XP.tm.i++; } else { XP.tm.play = false; $('xpPlay').textContent = '▶'; break; } }
-      $('xpTmR').value = String(XP.tm.i); $('xpTmD').textContent = fd(XP.tm.dates[XP.tm.i]); }
+    else if(!(XP.called && !$('mnCall').hidden) && !matchMedia('(prefers-reduced-motion: reduce)').matches) XP.rot[0] += dt*.006;
     xpSize(); proj.rotate(XP.rot);
-    const r = proj.scale(), c = proj.translate(), c0 = proj.invert(c);
+    const r = proj.scale(), cx = XP.cx, cy = XP.cy, c0 = proj.invert([cx,cy]);
     ctx.clearRect(0,0,W,H);
+    // anillos de radar y miras
+    const R0 = XP.R*1.06*Math.max(1, XP.zoom), rotA = -now*.00004;
+    ctx.strokeStyle = 'rgba(106,168,216,.22)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, R0, 0, 7); ctx.stroke();
+    for(let i=0;i<72;i++){ const a = rotA + i*Math.PI/36, l = i%6===0 ? 10 : 4; ctx.beginPath(); ctx.moveTo(cx+Math.cos(a)*R0, cy+Math.sin(a)*R0); ctx.lineTo(cx+Math.cos(a)*(R0+l), cy+Math.sin(a)*(R0+l)); ctx.stroke(); }
+    ctx.font = '9.5px "JetBrains Mono",monospace'; ctx.fillStyle = 'rgba(106,168,216,.5)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for(let i=0;i<12;i++){ const a = rotA + i*Math.PI/6; ctx.fillText(String(i*30).padStart(3,'0'), cx+Math.cos(a)*(R0+20), cy+Math.sin(a)*(R0+20)); }
+    ctx.textAlign = 'left';
+    ctx.setLineDash([3,7]); ctx.strokeStyle = 'rgba(106,168,216,.16)'; ctx.beginPath(); ctx.arc(cx, cy, R0+34, now*.00006, now*.00006+Math.PI*1.6); ctx.stroke(); ctx.setLineDash([]);
+    const B = R0+46; ctx.strokeStyle = 'rgba(106,168,216,.45)'; ctx.lineWidth = 1.4;
+    for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){ ctx.beginPath(); ctx.moveTo(cx+sx*B, cy+sy*(B-18)); ctx.lineTo(cx+sx*B, cy+sy*B); ctx.lineTo(cx+sx*(B-18), cy+sy*B); ctx.stroke(); }
     // atmósfera y océano
-    const ga = ctx.createRadialGradient(c[0], c[1], r*.95, c[0], c[1], r*1.25); ga.addColorStop(0,'rgba(106,168,216,.22)'); ga.addColorStop(1,'rgba(106,168,216,0)');
-    ctx.beginPath(); ctx.arc(c[0], c[1], r*1.25, 0, 7); ctx.fillStyle = ga; ctx.fill();
-    const g = ctx.createRadialGradient(c[0]-r*.35, c[1]-r*.4, r*.1, c[0], c[1], r); g.addColorStop(0,'#16354f'); g.addColorStop(1,'#071421');
+    const ga = ctx.createRadialGradient(cx, cy, r*.95, cx, cy, r*1.2); ga.addColorStop(0,'rgba(106,168,216,.22)'); ga.addColorStop(1,'rgba(106,168,216,0)');
+    ctx.beginPath(); ctx.arc(cx, cy, r*1.2, 0, 7); ctx.fillStyle = ga; ctx.fill();
+    const g = ctx.createRadialGradient(cx-r*.35, cy-r*.4, r*.1, cx, cy, r); g.addColorStop(0,'#16354f'); g.addColorStop(1,'#071421');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
     XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = 'rgba(106,168,216,.09)'; ctx.lineWidth = .6; ctx.stroke();
-    // países
-    if(!XP.fb) XP.fb = G.feats.map(f=>{ const c = d3.geoCentroid(f), b = d3.geoBounds(f); return [f, c, Math.max(d3.geoDistance(c, b[0]), d3.geoDistance(c, b[1]), d3.geoDistance(c, [b[0][0], b[1][1]]), d3.geoDistance(c, [b[1][0], b[0][1]])), b]; });
-    if(!XP.fc || now-(XP.fcAt||0) > 2000 || XP.fcL!==XP.fillL){ XP.fcAt = now; XP.fcL = XP.fillL; XP.fc = new Map(G.feats.map(f=>[f.id, xpFillC(xpFillV(f.id)) || '#1a2531'])); }
+    // países (agrupados por color, solo la cara visible)
+    if(!XP.fb) XP.fb = G.feats.map(f=>{ const c = d3.geoCentroid(f), b = d3.geoBounds(f); return [f, c, Math.max(d3.geoDistance(c, b[0]), d3.geoDistance(c, b[1]), d3.geoDistance(c, [b[0][0], b[1][1]]), d3.geoDistance(c, [b[1][0], b[0][1]]))]; });
+    if(!XP.fc || XP.fcK!==XP.scn || now-(XP.fcAt||0) > 5000){ XP.fcK = XP.scn; XP.fcAt = now; XP.fc = new Map(G.feats.map(f=>[f.id, xpFillC(S[7], S[7]==='no' ? null : gval(f.id, S[7])) || '#1a2836'])); }
     const grp = new Map(); for(const [f,cc,rad] of XP.fb){ if(d3.geoDistance(cc, c0) - rad > Math.PI/2) continue; const col = XP.fc.get(f.id); if(!grp.has(col)) grp.set(col, []); grp.get(col).push(f); }
     for(const [col, fs] of grp){ ctx.beginPath(); for(const f of fs) path(f); ctx.fillStyle = col; ctx.fill(); }
     ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(8,14,20,.9)'; ctx.lineWidth = .6; ctx.stroke();
     if(G.byId.ARG){ ctx.beginPath(); path(G.byId.ARG); ctx.strokeStyle = 'rgba(230,237,243,.85)'; ctx.lineWidth = 1.3; ctx.stroke(); }
-    if(XP.hover && G.byId[XP.hover]){ ctx.beginPath(); path(G.byId[XP.hover]); ctx.strokeStyle = 'rgba(106,168,216,.9)'; ctx.lineWidth = 1.4; ctx.stroke(); }
-    if(XP.sel && G.byId[XP.sel]){ ctx.beginPath(); path(G.byId[XP.sel]); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 7; ctx.stroke(); ctx.strokeStyle = '#9fd0f5'; ctx.lineWidth = 2; ctx.stroke(); }
+    if(XP.pick && G.byId[XP.pick.iso] && st>4500 && st<15500){ ctx.beginPath(); path(G.byId[XP.pick.iso]); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 7; ctx.stroke(); ctx.strokeStyle = '#9fd0f5'; ctx.lineWidth = 2; ctx.stroke(); }
     // noche
-    if(XP.noche){ if(!XP.nt || now-XP.ntAt > 30000){ XP.ntAt = now; const sn = xpSun(), an = [sn[0]+180, -sn[1]]; XP.nt = {sun:sn, c:[[d3.geoCircle().center(an).radius(90)(), .42],[d3.geoCircle().center(an).radius(82)(), .2]]}; }
-      const sun = XP.nt.sun;
-      for(const [geo, a] of XP.nt.c){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
-      if(d3.geoDistance(sun, c0) < Math.PI/2){ const sp = proj(sun); const gs = ctx.createRadialGradient(sp[0], sp[1], 0, sp[0], sp[1], r*.5); gs.addColorStop(0,'rgba(255,224,150,.10)'); gs.addColorStop(1,'rgba(255,224,150,0)'); ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = gs; ctx.fill(); } }
-    ctx.beginPath(); ctx.arc(c[0], c[1], r+1, 0, 7); ctx.strokeStyle = 'rgba(106,168,216,.14)'; ctx.lineWidth = 6; ctx.stroke(); ctx.strokeStyle = 'rgba(106,168,216,.5)'; ctx.lineWidth = 1.2; ctx.stroke();
+    if(!XP.nt || now-XP.ntAt > 30000){ XP.ntAt = now; const sn = xpSun(), an = [sn[0]+180, -sn[1]]; XP.nt = [[d3.geoCircle().center(an).radius(90)(), .3],[d3.geoCircle().center(an).radius(82)(), .16]]; }
+    for(const [geo, a] of XP.nt){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
+    ctx.beginPath(); ctx.arc(cx, cy, r+1, 0, 7); ctx.strokeStyle = 'rgba(106,168,216,.14)'; ctx.lineWidth = 6; ctx.stroke(); ctx.strokeStyle = 'rgba(106,168,216,.5)'; ctx.lineWidth = 1.2; ctx.stroke();
     const vis = ll => d3.geoDistance(ll, c0) < Math.PI/2 - .03;
-    // luces de las bolsas
-    let abiertas = 0;
-    if(XP.luces) for(const e of GEX){ const o = gEx(e).open; abiertas += o; const ll = [e[3],e[4]]; if(!vis(ll)) continue; const p = proj(ll);
+    // luces de las bolsas abiertas
+    for(const e of GEX){ const o = gEx(e).open, ll = [e[3],e[4]]; if(!vis(ll)) continue; const p = proj(ll);
       if(o){ const gl = ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],16); gl.addColorStop(0,'rgba(255,214,120,.9)'); gl.addColorStop(1,'rgba(255,214,120,0)'); ctx.fillStyle = gl; ctx.beginPath(); ctx.arc(p[0],p[1],16,0,7); ctx.fill(); }
       ctx.beginPath(); ctx.arc(p[0],p[1], o?2.6:1.8, 0, 7); ctx.fillStyle = o ? '#ffe3a1' : 'rgba(160,170,180,.55)'; ctx.fill(); }
-    else for(const e of GEX) abiertas += gEx(e).open;
-    // arcos
-    const arcs = [];
-    if(XP.arco==='carry' && glob?.paises?.JPN?.tasa!=null){ const tj = glob.paises.JPN.tasa;
-      Object.entries(glob.paises).filter(([i,p])=>p.tasa!=null && p.tasa-tj>=3 && G.byId[i] && i!=='JPN').sort((a,b)=>(b[1].tasa-tj)-(a[1].tasa-tj)).slice(0,9).forEach(([i,p])=>arcs.push([G.cen('JPN'), G.cen(i), p.tasa-tj, i])); }
-    if(XP.arco==='arg' && XP.sel && XP.sel!=='ARG') arcs.push([G.cen('ARG'), G.cen(XP.sel), 8, XP.sel]);
-    for(const [a,b,w,iso] of arcs){ if(!a || !b) continue; const ip = d3.geoInterpolate(a,b), dist = d3.geoDistance(a,b), hmax = Math.min(.2, .05+dist*.08), N = 48, pts = [];
-      for(let k=0;k<=N;k++){ const t = k/N, ll = ip(t), p = proj(ll); pts.push(vis(ll) ? xpUp(p, Math.sin(Math.PI*t)*hmax) : null); }
-      ctx.lineWidth = XP.arco==='carry' ? Math.min(4, .8+w/6) : 2.2; const col = XP.arco==='carry' ? '232,177,74' : '159,208,245';
-      ctx.strokeStyle = `rgba(${col},.35)`; ctx.beginPath(); let on = false; for(const p of pts){ if(!p){ on = false; continue; } if(on) ctx.lineTo(p[0],p[1]); else { ctx.moveTo(p[0],p[1]); on = true; } } ctx.stroke();
-      const head = ((now/1600) % 1) * N; for(let s=0;s<3;s++){ const k = Math.floor((head + s*N/3) % N), p = pts[k]; if(!p) continue; ctx.beginPath(); ctx.arc(p[0],p[1], 2.4, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill(); }
-      const pe = pts[N]; if(pe && XP.arco==='carry'){ ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.fillStyle = `rgb(${col})`; ctx.fillText(`+${nf(w,1)} pts`, pe[0]+6, pe[1]-6); } }
-    // columnas
-    const D = xpColDef(), items = (XP.colL==='no' && !XP.tm.on) ? [] : xpItems();
-    XP.anim = XP.anim || {};
-    const front = items.filter(x=>vis(x.ll)).sort((a,b)=>d3.geoDistance(b.ll,c0)-d3.geoDistance(a.ll,c0));
-    for(const x of front){ const key = x.iso, tgt = Math.pow(Math.min(1, Math.abs(x.v)/D[3]), .6) * .32 + .012; let cur = XP.anim[key] ?? 0; cur += (tgt-cur)*Math.min(1, dt/220); XP.anim[key] = cur;
-      const p = proj(x.ll), top = xpUp(p, cur), col = D[2]==='div' ? (x.v>=0 ? [76,195,138] : [240,122,112]) : [232,177,74];
-      ctx.strokeStyle = `rgba(${col},.85)`; ctx.lineWidth = XP.sel===key ? 5 : 3.2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
-      ctx.beginPath(); ctx.arc(top[0],top[1], 2.6, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill();
-      if(Math.abs(x.v) >= D[3]*.25 || XP.sel===key || XP.hover===key){ ctx.font = '600 10.5px "JetBrains Mono",monospace'; const t = `${(GPA[key]||key).slice(0,10)} ${D[4](x.v)}`, tw = ctx.measureText(t).width;
-        ctx.fillStyle = 'rgba(4,10,16,.78)'; ctx.fillRect(top[0]+5, top[1]-15, tw+8, 15); ctx.fillStyle = `rgb(${col})`; ctx.fillText(t, top[0]+9, top[1]-4); } }
-    // pulsos de movimientos fuertes
-    if(XP.pulsos && glob && !XP.tm.on){ const ph = (now%1800)/1800;
-      for(const e of GEX){ const v = gpc(glob.bolsas?.[e[0].split(' ')[0]]); if(v==null || Math.abs(v)<1.2) continue; const ll = [e[3],e[4]]; if(!vis(ll)) continue; const p = proj(ll), col = v>0 ? '76,195,138' : '240,122,112';
-        for(const q of [ph, (ph+.5)%1]){ ctx.beginPath(); ctx.arc(p[0],p[1], 4+q*26, 0, 7); ctx.strokeStyle = `rgba(${col},${(1-q)*.8})`; ctx.lineWidth = 1.4; ctx.stroke(); } } }
-    // destellos de noticias
-    if(XP.pings && now > XP.nextPing){ XP.nextPing = now + 4200; if(!XP.news?.length) XP.news = xpNews(); const n = XP.news?.shift();
-      if(n){ const ll = n[0]==='BEL' ? [4.35,50.85] : G.cen(n[0]); if(ll){ XP.ping.push({ll, t:now, iso:n[0]}); xpLogAdd(`[${(n[0]==='BEL'?'EUROPA':xpN(n[0])).toUpperCase()}] ${n[1]}`, n[2]); } } }
+    // arcos del carry trade
+    if(glob?.paises?.JPN?.tasa!=null){ const tj = glob.paises.JPN.tasa, a = G.cen('JPN');
+      for(const [i,p] of Object.entries(glob.paises).filter(([i,p])=>p.tasa!=null && p.tasa-tj>=3 && G.byId[i] && i!=='JPN').sort((x,y)=>(y[1].tasa-tj)-(x[1].tasa-tj)).slice(0,8)){
+        const b = G.cen(i); if(!a || !b) continue; const ip = d3.geoInterpolate(a,b), hmax = Math.min(.2, .05+d3.geoDistance(a,b)*.08), N = 40, pts = [];
+        for(let k=0;k<=N;k++){ const t = k/N, ll = ip(t); pts.push(vis(ll) ? xpUp(proj(ll), Math.sin(Math.PI*t)*hmax) : null); }
+        ctx.strokeStyle = 'rgba(232,177,74,.28)'; ctx.lineWidth = 1.2; ctx.beginPath(); let on = false; for(const q of pts){ if(!q){ on = false; continue; } if(on) ctx.lineTo(q[0],q[1]); else { ctx.moveTo(q[0],q[1]); on = true; } } ctx.stroke();
+        const hd = ((now/1800) % 1) * N; for(let s=0;s<2;s++){ const q = pts[Math.floor((hd + s*N/2) % N)]; if(q){ ctx.beginPath(); ctx.arc(q[0],q[1], 2.2, 0, 7); ctx.fillStyle = '#e8b14a'; ctx.fill(); } } } }
+    // columnas de la escena
+    const items = xpItems(S), front = items.filter(x=>vis(x.ll)).sort((a,b)=>d3.geoDistance(b.ll,c0)-d3.geoDistance(a.ll,c0)), grow = Math.min(1, st/1800);
+    for(const x of front){ const tgt = (Math.pow(Math.min(1, Math.abs(x.v)/S[5]), .6) * .3 + .012) * grow; let cur = XP.anim[x.iso] ?? 0; cur += (tgt-cur)*Math.min(1, dt/200); XP.anim[x.iso] = cur;
+      const p = proj(x.ll), top = xpUp(p, cur), col = S[4]==='div' ? (x.v>=0 ? '76,195,138' : '240,122,112') : '232,177,74', hl = XP.pick?.iso===x.iso;
+      ctx.strokeStyle = `rgba(${col},.85)`; ctx.lineWidth = hl ? 5 : 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
+      ctx.beginPath(); ctx.arc(top[0],top[1], hl?3.6:2.4, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill(); x.top = top; x.col = col; }
+    // barrido de radar: detecta países a su paso y les muestra el dato un rato
+    const sw = (now*.0011) % (Math.PI*2), sw0 = XP.sw ?? sw; XP.sw = sw;
+    for(let k=0;k<18;k++){ const a1 = sw - k*.035, a2 = a1 - .035; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx, cy, R0, a2, a1); ctx.closePath(); ctx.fillStyle = `rgba(106,200,190,${.10*(1-k/18)})`; ctx.fill(); }
+    ctx.strokeStyle = 'rgba(143,211,196,.7)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(sw)*R0, cy+Math.sin(sw)*R0); ctx.stroke();
+    const crossed = a => { const n2 = x=>(x%(2*Math.PI)+2*Math.PI)%(2*Math.PI); const A = n2(a), s0 = n2(sw0), s1 = n2(sw); return s0<=s1 ? A>s0 && A<=s1 : A>s0 || A<=s1; };
+    for(const x of front){ if(!x.top) continue; if(crossed(Math.atan2(x.top[1]-cy, x.top[0]-cx)) && !XP.lab.some(l=>l.iso===x.iso)) XP.lab.push({iso:x.iso, t:now}); }
+    XP.lab = XP.lab.filter(l=>now-l.t < 2600);
+    ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.textBaseline = 'middle';
+    const showLab = (x, a) => { const t = `${xpN(x.iso).toUpperCase().slice(0,12)} ${S[6](x.v)}`, tw = ctx.measureText(t).width; ctx.globalAlpha = a; ctx.fillStyle = 'rgba(4,10,16,.8)'; ctx.fillRect(x.top[0]+6, x.top[1]-8, tw+8, 16); ctx.fillStyle = `rgb(${x.col})`; ctx.fillText(t, x.top[0]+10, x.top[1]); ctx.globalAlpha = 1; };
+    for(const l of XP.lab){ const x = front.find(y=>y.iso===l.iso); if(x?.top) showLab(x, Math.min(1, (2600-(now-l.t))/600)); }
+    if(XP.pick){ const x = front.find(y=>y.iso===XP.pick.iso); if(x?.top) showLab(x, 1); }
+    // destellos de titulares
+    if(now > XP.nextPing){ XP.nextPing = now + 5200; if(!XP.news?.length) XP.news = xpNews(); const nn = XP.news?.shift();
+      if(nn){ const ll = nn[0]==='BEL' ? [4.35,50.85] : nn[0]==='MUNDO' ? null : G.cen(nn[0]); if(ll) XP.ping.push({ll, t:now}); xpLogAdd(xpTag(nn[0]), nn[1]); } }
     XP.ping = XP.ping.filter(pg=>now-pg.t < 3200);
     for(const pg of XP.ping){ if(!vis(pg.ll)) continue; const q = (now-pg.t)/3200, p = proj(pg.ll);
-      ctx.beginPath(); ctx.arc(p[0],p[1], 3+q*42, 0, 7); ctx.strokeStyle = `rgba(143,211,196,${(1-q)*.9})`; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(p[0],p[1], 3+q*44, 0, 7); ctx.strokeStyle = `rgba(143,211,196,${(1-q)*.9})`; ctx.lineWidth = 2; ctx.stroke();
       ctx.beginPath(); ctx.arc(p[0],p[1], 3.5, 0, 7); ctx.fillStyle = `rgba(200,255,240,${1-q})`; ctx.fill(); }
-    // ranking (4 veces por segundo) y consola
-    if(now - (XP.rkAt||0) > 250){ XP.rkAt = now; if(!XP.sel) xpRank(items); xpLogRender();
-      const t = new Date(), hh = t.toISOString().slice(11,19), ar = t.toLocaleTimeString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',hour12:false});
-      $('xpHud').innerHTML = `<span class="big">${XP.tm.on ? fd(XP.tm.dates[XP.tm.i]) : hh+' UTC'}</span><br>BUENOS AIRES <b>${ar}</b> · LAT <b>${nf(-XP.rot[1],1)}°</b> LON <b>${nf(-((XP.rot[0]%360+540)%360-180),1)}°</b> · ZOOM <b>${nf(XP.zoom,2)}×</b><br>COLUMNAS <b>${esc(D[0].toUpperCase())}</b> · COLOR <b>${XP_FILL[XP.fillL][0].toUpperCase()}</b> · BOLSAS ABIERTAS <b>${abiertas}/${GEX.length}</b>`; }
+    xpLogRender(now);
+    if(now-(XP.pnAt||0) > 1000){ XP.pnAt = now; xpPanels(); if(now-(XP.rnAt||0) > 60000){ XP.rnAt = now; xpRain(); } }
     requestAnimationFrame(xpDraw);
   }
-  function xpHit(e){ const r = $('xpCv').getBoundingClientRect(), ll = XP.proj?.invert([e.clientX-r.left, e.clientY-r.top]); if(!ll || d3.geoDistance(ll, XP.proj.invert(XP.proj.translate())) > Math.PI/2) return null; const inB = (b,[lo,la]) => la>=b[0][1] && la<=b[1][1] && (b[0][0]<=b[1][0] ? lo>=b[0][0] && lo<=b[1][0] : lo>=b[0][0] || lo<=b[1][0]); const h = (XP.fb||[]).find(([f,,,b])=>inB(b,ll) && d3.geoContains(f, ll)); return h ? h[0].id : null; }
+  // modo monitor: pantalla completa, solo cintas + monitor, pantalla siempre prendida
+  async function xpModo(on){
+    if(on){ scrollTo(0,0); document.body.classList.add('mon'); const t3 = $('tape3').getBoundingClientRect().bottom; document.body.style.setProperty('--monTop', Math.max(0, t3)+'px');
+      try{ await document.documentElement.requestFullscreen(); }catch(e){}
+      try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){}
+      setTimeout(()=>document.body.style.setProperty('--monTop', Math.max(0, $('tape3').getBoundingClientRect().bottom)+'px'), 400); gc('monitor-pantalla-completa', true); }
+    else { document.body.classList.remove('mon'); try{ XP.wl?.release(); }catch(e){} XP.wl = null; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+  }
   async function xpStart(){
     if(!xpDesk()) return;
-    if(!gHist) loadHist(); if(!npData) loadNP(); if(!nw) cargarNoticias?.();
+    if(!gHist) loadHist(); if(!npData) loadNP(); if(!nw) cargarNoticias();
     try{ await gInit(); }catch(e){ return; }
-    if(!XP.init){ XP.init = true; const cv = $('xpCv');
-      cv.addEventListener('pointerdown', e=>{ XP.drag = {x:e.clientX, y:e.clientY, r:[...XP.rot], moved:false}; XP.fly = null; try{ cv.setPointerCapture(e.pointerId); }catch(x){} });
-      cv.addEventListener('pointermove', e=>{ if(XP.drag){ const dx = e.clientX-XP.drag.x, dy = e.clientY-XP.drag.y; if(Math.abs(dx)+Math.abs(dy)>3) XP.drag.moved = true; const k = 110/XP.proj.scale(); XP.rot = [XP.drag.r[0]+dx*k, Math.max(-75, Math.min(75, XP.drag.r[1]-dy*k))]; $('xpTip').hidden = true; return; }
-        if(XP.hvAt && performance.now()-XP.hvAt < 40) return; XP.hvAt = performance.now(); const iso = xpHit(e); XP.hover = iso; const tip = $('xpTip');
-        if(!iso){ tip.hidden = true; return; } const D = xpColDef(), cv2 = xpColV(iso), fv = xpFillV(iso), r = $('xpW').getBoundingClientRect();
-        tip.innerHTML = `<b>${esc(xpN(iso))}</b>${cv2!=null?`<br>${esc(D[0])}: ${D[4](cv2)}`:''}${fv!=null && XP.fillL!=='no'?`<br>${XP_FILL[XP.fillL][0]}: ${nf(fv,1)}${XP.fillL==='real'?' pts':'%'}`:''}`;
-        tip.style.left = (e.clientX-r.left+14)+'px'; tip.style.top = (e.clientY-r.top+12)+'px'; tip.hidden = false; });
-      cv.addEventListener('pointerleave', ()=>{ XP.hover = null; $('xpTip').hidden = true; });
-      cv.addEventListener('pointerup', e=>{ const was = XP.drag; XP.drag = null; XP.idle = performance.now(); if(was && !was.moved){ const iso = xpHit(e); if(iso) xpSelect(iso); else xpCardClose(); } });
-      cv.addEventListener('wheel', e=>{ e.preventDefault(); XP.fly = null; XP.zoom = Math.max(.7, Math.min(2.6, XP.zoom*(e.deltaY>0 ? .92 : 1.08))); }, {passive:false});
-      $('xpPlay').onclick = xpTmPlay;
-      $('xpTmR').oninput = e=>{ XP.tm.play = false; $('xpPlay').textContent = '▶'; xpTmGo(+e.target.value); };
-      $('xpTmK').onchange = e=>{ XP.tm.kind = e.target.value; XP.tm.dates = null; if(XP.tm.on) xpTmGo(XP.tm.i); };
-      $('xpTmX').onclick = xpTmOff;
-      $('xpFs').onclick = ()=>{ const w = $('xpW'); if(document.fullscreenElement) document.exitFullscreen(); else w.requestFullscreen?.(); gc('explorar-pantalla-completa', true); };
-      document.addEventListener('keydown', e=>{ if(tab!=='global' || SUBS.M[2]!=='explorar' || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
-        const ks = Object.keys(XP_COLS), n = parseInt(e.key,10);
-        if(n>=1 && n<=ks.length){ xpSetCol(ks[n-1]); e.preventDefault(); }
-        else if(e.key==='n' || e.key==='N') xpToggle('noche');
-        else if(e.key==='r' || e.key==='R') xpToggle('tour');
-        else if(e.key===' '){ xpTmPlay(); e.preventDefault(); }
-        else if(e.key==='f' || e.key==='F') $('xpFs').click();
-        else if(e.key==='Escape'){ xpCardClose(); if(XP.tm.on) xpTmOff(); } });
-      xpBuildUI(); $('xpTmD').textContent = 'hoy';
+    if(!XP.init){ XP.init = true;
+      $('xpFs').onclick = ()=>xpModo(true);
+      $('xpW').addEventListener('click', e=>{ if(document.body.classList.contains('mon') && e.target.id!=='xpFs') xpModo(false); });
+      document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && document.body.classList.contains('mon')) xpModo(false); });
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('mon')) xpModo(false); });
+      setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden){ loadNP(); cargarNoticias(); XP.rnAt = 0; } }, 15*60000);
     }
-    if(glob && !XP.seeded){ XP.seeded = true; xpSeedLog(); }
+    xpPanels(); xpRain();
     if(!XP.run){ XP.run = true; XP.last = 0; requestAnimationFrame(xpDraw); }
   }
-  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='global' && SUBS.M[2]==='explorar') xpStart(); });
+  document.addEventListener('visibilitychange', async ()=>{ if(!document.hidden && tab==='global' && SUBS.M[2]==='explorar'){ xpStart(); if(document.body.classList.contains('mon') && !XP.wl){ try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){} } } });
   function renderUsa(){
     aplicarSub('U');
     if(!usa){ loadUsa(); $('uKpis').innerHTML = '<div class="empty">Cargando datos de Estados Unidos…</div>'; return; }

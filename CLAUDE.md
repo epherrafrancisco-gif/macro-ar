@@ -133,15 +133,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - `gExtras`: bolsas, bancos centrales (BIS), commodities (9, con variación en el año y clic al gráfico), Argentinas en
   Wall Street, Líderes del mundo, gráficos 1M-2A (`GCH`), "¿Qué rindió más en el año?", monedas, termómetro (VIX, 10-2).
 
-### Global › Mundo › Explorador (`data-sub="explorar"`, objeto `XP`, `xpStart`/`xpDraw`)
-- Solo computadora: `xpDesk()` = `(min-width:1024px) and (pointer:fine)`; en celular/tablet el botón se oculta y si quedó
-  guardado en localStorage vuelve a "mercados". Se arranca desde `aplicarSub('M')`.
-- Globo gigante en canvas (d3 orthographic): columnas `XP_COLS` (teclas 1-7; altura con `xpUp`, que escala el desplazamiento
-  desde el centro), color `XP_FILL` (GL + tasa real `XP_REAL`), noche con el punto subsolar (`xpSun`), luces de `GEX`,
-  pulsos (|bolsa| ≥ 1,2%), arcos (carry trade desde Japón o Argentina ↔ país elegido), destellos de titulares
-  (`xpNews`: noticias_paises, mundo y Argentina), consola (`xpLog`), ranking animado (`xpRank`), tarjeta con mini
-  gráficos (`xpCard`, `XP_SEC` lleva a la sección), recorrido (`XP_TOUR`), máquina del tiempo (`XP_TMS`, historia de
-  global_hist: bolsas o monedas acumuladas desde el inicio), zoom con la ruedita y pantalla completa.
+### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦", objeto `XP`, `xpStart`/`xpDraw`)
+- Pedido del dueño: NO interactivo, para dejar prendido de ambiente (el Explorador interactivo se descartó: "no se entiende").
+  Nunca escribir "escaneando" ni textos que finjan procesos. Solo computadora: `xpDesk()` = `(min-width:1024px) and
+  (pointer:fine)`; en celular/tablet el botón se oculta. Se arranca desde `aplicarSub('M')`.
+- Globo gigante en canvas (d3 orthographic) con anillos de radar, barrido que muestra el dato de cada país al pasar, noche
+  real (`xpSun`), luces de `GEX`, arcos del carry trade y destellos de titulares (`xpNews`). Escenas automáticas
+  `XP_SCN` cada `XP_DUR` (22 s): bolsas, monedas, tasas, inflación (se acerca a Argentina) y bonos; vuela al destacado y
+  muestra un recuadro con su serie de global_hist (`XP_BK`, `XP_MK`, `XP_BO`). Paneles: relojes `XP_CLK`, VIX, Argentina
+  (`live`, `series`), flujo de datos (`xpRain`) y consola (`xpLog`).
+- "Modo monitor" (`xpModo`): clase `body.mon` (deja visibles las cintas y fija el monitor debajo con `--monTop`),
+  pantalla completa, Wake Lock para que no se apague; Esc o clic para salir. Rendimiento: DPR máx. 1,25, 30 cuadros por
+  segundo, países agrupados por color y solo la cara visible; los globos de arriba se pausan si no están en pantalla.
 
 ### Global › Estados Unidos (`renderUsa`, `usaExtra`)
 - Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda, cuenta regresiva a la Fed, 6 indicadores,
