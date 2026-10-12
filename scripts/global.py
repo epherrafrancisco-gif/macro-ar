@@ -297,6 +297,7 @@ ACCIONES = {
             "WMT", "MA", "NFLX", "KO", "DIS"],
     "bra": ["PBR", "VALE", "ITUB", "BBD", "NU", "ABEV", "ERJ", "SBS", "GGB", "XP"],
     "eur": ["ASML", "SAP", "NVO", "AZN", "SHEL", "TTE", "UL", "HSBC", "SAN", "BP", "DEO", "SNY"],
+    "mex": ["AMX", "FMX", "KOF", "CX", "ASR", "PAC", "OMAB", "TV", "VLRS", "SCCO"],
     "asia": ["TSM", "BABA", "TM", "SONY", "PDD", "HDB", "INFY", "BIDU", "JD", "MUFG"],
 }
 # Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
@@ -318,7 +319,8 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "fx_brl": "BRL=", "fx_mxn": "MXN=", "fx_clp": "CLP=", "fx_cop": "COP=", "fx_ars": "ARS=",
         "maiz": "@C.1", "trigo": "@W.1", "wti": "@CL.1", "gas": "@NG.1", "plata": "@SI.1",
         "fx_pen": "PEN=", "fx_uyu": "UYU=", "fx_cny": "CNY=", "fx_eur": "EUR=",
-        "cac": ".FCHI", "ibex": ".IBEX", "ftmib": ".FTMIB", "sx5e": ".STOXX50E", "de10": "DE10Y-DE", "it10": "IT10Y-IT", "fr10": "FR10Y-FR", "es10": "ES10Y-ES"}
+        "cac": ".FCHI", "ibex": ".IBEX", "ftmib": ".FTMIB", "sx5e": ".STOXX50E", "de10": "DE10Y-DE", "it10": "IT10Y-IT", "fr10": "FR10Y-FR", "es10": "ES10Y-ES",
+        "mxx": ".MXX", "mx10": "MX10Y"}
 # Bolsas europeas para la sección Europa
 EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
 
