@@ -33,7 +33,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas), recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
-  `#fiscal` ("Cuentas del Estado"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
+  `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
   `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia` y `#peru`; `#sobre`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
@@ -49,6 +49,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Dinero: base, M2, M2 transaccional en términos reales y % del PBI, tasas, pasivos (LELIQ → pases → LEFI → LECAP;
   LEFI y pases en 0 desde 07/2025: no mostrarlos como actuales), BOPREAL.
 - Fiscal: resultado primario y financiero, acumulado y % del PBI, balanza comercial.
+- Actividad y empleo (`#actividad`, `vA`, `renderActividad`; datos `actividad.json` de scripts/actividad.py en `global.yml`,
+  máx. cada 6 h): EMAE desestacionalizado e interanual, salarios reales (÷ IPC nacional, nov-2023 = 100; no registrados
+  corridos 5 meses atrás por el rezago del INDEC), desocupación EPH trimestral, canasta básica total y alimentaria × 3,09
+  (familia tipo). En Macro, "Inflación por rubro" (`renderRubros`, `RUB`: 12 divisiones + núcleo/regulados/estacionales).
+  La API de datos.gob.ar devuelve meses vacíos al azar: el script pide cada serie sola, reintenta y junta con lo guardado.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
   data912 desde el navegador cada 10 min), AL30/GD30 con TIR y paridad.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).

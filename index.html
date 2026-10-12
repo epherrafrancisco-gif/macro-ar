@@ -489,6 +489,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#macro" role="tab" id="tabM" data-g="arg" aria-selected="false">Macro</a>
       <a href="#dinero" role="tab" id="tabN" data-g="arg" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" data-g="arg" aria-selected="false">Fiscal</a>
+      <a href="#actividad" role="tab" id="tabA" data-g="arg" aria-selected="false">Actividad</a>
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
@@ -596,6 +597,18 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="note">Verde: el BCRA compró dólares ese día. Rojo: vendió. Fuente: BCRA, variación de reservas por compra de divisas (se publica con uno o dos días de atraso).</p>
     </div>
 
+    <div class="card">
+      <div class="head"><h2>Inflación por rubro</h2><span class="note" id="rubS"></span></div>
+      <div class="seg calcsel" id="rubMode" role="tablist" aria-label="Período">
+        <button type="button" data-rub="mes" aria-selected="true">Último mes</button>
+        <button type="button" data-rub="anio" aria-selected="false">En el año</button>
+        <button type="button" data-rub="12m" aria-selected="false">Últimos 12 meses</button>
+      </div>
+      <div class="stats" id="rubSt"></div>
+      <div class="chart" id="chRub"></div>
+      <p class="note">Cuánto subieron los precios de cada rubro del IPC nacional. La línea punteada es el nivel general. Abajo de los rubros: núcleo (sin regulados ni estacionales, la inflación "de fondo"), regulados (tarifas, combustibles, prepagas, colegios) y estacionales (frutas, verduras, ropa, turismo). Fuente: INDEC (datos.gob.ar).</p>
+    </div>
+
     <div class="grid2">
       <div class="card"><div class="head"><h2>Riesgo país</h2><span class="note">Puntos básicos (EMBI)</span></div><div class="chart" id="chRiesgo"></div></div>
       <div class="card"><div class="head"><h2>Reservas brutas del BCRA</h2><span class="note">Millones de USD</span></div><div class="chart" id="chRes"></div></div>
@@ -606,7 +619,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Base monetaria</h2><span class="note">Billones de pesos</span></div><div class="chart" id="chBase"></div></div>
       <div class="card"><div class="head"><h2>Depósitos privados en dólares</h2><span class="note">Millones de USD</span></div><div class="chart" id="chDep"></div></div>
     </div>
-    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="macro-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Diario</button><button type="button" data-csv="macro-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Inflación mensual</button></div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="macro-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Diario</button><button type="button" data-csv="macro-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Inflación mensual</button><button type="button" data-csv="ipc-rubros"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Inflación por rubro</button></div>
   </section>
 
   <!-- DINERO -->
@@ -631,6 +644,22 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Saldo comercial</h2><span class="note">Millones de USD por mes</span></div><div class="chart" id="chSal"></div><p class="note">Exportaciones − importaciones. Positivo: entran más dólares por comercio de los que salen.</p></div>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="fiscal-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Fiscal y comercio mensual</button><button type="button" data-csv="fiscal-pbi"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PBI trimestral</button></div>
+  </section>
+
+  <!-- ACTIVIDAD Y EMPLEO -->
+  <section class="view" id="vA" hidden>
+    <div class="kpis" id="kpisA"></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Actividad económica (EMAE)</h2><span class="note">Índice sin estacionalidad · 2004 = 100</span></div><div class="chart" id="chEmae"></div><p class="note" id="nEmae"></p></div>
+      <div class="card"><div class="head"><h2>Actividad contra un año atrás</h2><span class="note">EMAE, % interanual</span></div><div class="chart" id="chEmaeY"></div><p class="note">Cada mes contra el mismo mes del año anterior (serie original). El EMAE es el adelanto mensual del PBI que publica el INDEC, con unos dos meses de atraso.</p></div>
+    </div>
+    <div class="card"><div class="head"><h2>Salarios contra la inflación</h2><div class="legend" id="lgSal"></div></div><div class="chart" id="chSalR"></div><p class="note" id="nSal"></p>
+      <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Salarios</th><th>Último dato</th><th>Suba en 12 meses</th><th>Inflación en 12 meses</th><th>Poder de compra en 12 meses</th><th>Desde nov 2023</th></tr></thead><tbody id="tSal"></tbody></table></div></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Desocupación</h2><span class="note">% de la población activa, por trimestre</span></div><div class="chart" id="chDesoc"></div><p class="note" id="nDesoc"></p></div>
+      <div class="card"><div class="head"><h2>Canasta básica de una familia tipo</h2><div class="legend" id="lgCan"></div></div><div class="chart" id="chCan"></div><p class="note" id="nCan"></p></div>
+    </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="actividad-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Actividad, salarios y canasta</button></div>
   </section>
 
   <!-- MERCADO -->
@@ -1534,7 +1563,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       g+=`<text x="${m.l-6}" y="${+yy+3.5}" text-anchor="end">${(o.yfmt||(v=>nf(v, step<1?1:0)+'%'))(v)}</text>`; }
     const every=Math.ceil(keys.length/Math.max(2,Math.floor(iw/52)));
     keys.forEach((k,i)=>{ const cx=m.l+slot*(i+.5);
-      if((i%every===0 && keys.length-1-i>=Math.ceil(every*0.6)) || i===keys.length-1) g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="middle">${fmes(k)}</text>`;
+      if((i%every===0 && keys.length-1-i>=Math.ceil(every*0.6)) || i===keys.length-1) g+=`<text x="${cx.toFixed(1)}" y="${H-5}" text-anchor="middle">${(o.kfmt||fmes)(k)}</text>`;
       ss.forEach((s,j)=>{ const p=s.pts.find(q=>q[0]===k); if(!p) return; const x0=cx-gw/2+j*(bw+2), y0=y(Math.max(0,p[1])), y1=y(Math.min(0,p[1]));
         g+=`<rect x="${x0.toFixed(1)}" y="${y0.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1,y1-y0).toFixed(1)}" rx="2" fill="var(${s.c})"/>`; });
     });
@@ -1544,7 +1573,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const svg=el.querySelector('svg'), tip=el.querySelector('.tip'), hl=el.querySelector('.hl');
     const pick=ev=>{ const r=svg.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width; const i=Math.max(0,Math.min(keys.length-1,Math.floor((px-m.l)/slot))); const k=keys[i];
       hl.setAttribute('x',(m.l+slot*i).toFixed(1)); hl.setAttribute('visibility','visible');
-      tip.hidden=false; tip.innerHTML=`<span class="t">${fmes(k)}</span>`+ss.map(s=>{ const p=s.pts.find(q=>q[0]===k); return p?`<div class="r"><span><i class="sw" style="background:var(${s.c})"></i>${s.n}</span><span>${(o.vfmt||(v=>nf(v,(o.dec??1))+'%'))(p[1])}</span></div>`:''; }).join('')+(o.extra?o.extra(k):'');
+      tip.hidden=false; tip.innerHTML=`<span class="t">${(o.kfmt||fmes)(k)}</span>`+ss.map(s=>{ const p=s.pts.find(q=>q[0]===k); return p?`<div class="r"><span><i class="sw" style="background:var(${s.c})"></i>${s.n}</span><span>${(o.vfmt||(v=>nf(v,(o.dec??1))+'%'))(p[1])}</span></div>`:''; }).join('')+(o.extra?o.extra(k):'');
       const sx=(m.l+slot*(i+.5))*r.width/W, tw=tip.offsetWidth; tip.style.left=Math.max(0,Math.min(r.width-tw, sx+(sx>r.width/2?-tw-12:12)))+'px'; tip.style.top='4px'; };
     const hide=()=>{ tip.hidden=true; hl.setAttribute('visibility','hidden'); };
     const hit=el.querySelector('.hit'); hit.addEventListener('pointermove',pick); hit.addEventListener('pointerdown',pick); hit.addEventListener('pointerleave',hide);
@@ -1930,6 +1959,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       t.push(tile('Depósitos USD privados', 'US$ '+nf(last[1],0), 'M', (prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' M'}):'')+(a?`<span class="chip eq">30d ${sg(last[1]-a[1],0)}</span>`:''), fd(last[0]))); }
     $('kpis').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
     renderCal();
+    renderRubros();
 
     // compras / ventas del BCRA
     const comp = series('compras');
@@ -2058,6 +2088,87 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     barChart($('chSal'), [{n:'Saldo',c:'--s1',pts:last24(com).filter(m=>m.saldo!=null).map(m=>[m.mes,m.saldo])}], {aria:'Saldo comercial', l:46, yfmt:v=>nf(v,0), vfmt:v=>sg(v,0)+' M'});
   }
 
+  // ---- ACTIVIDAD Y EMPLEO + INFLACIÓN POR RUBRO (actividad.json, de scripts/actividad.py) ----
+  let act = null, actLoading = false, rubMode = 'mes';
+  async function loadAct(){
+    if(actLoading) return; actLoading = true;
+    try{ const r = await fetch('actividad.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
+    actLoading = false; if(tab==='actividad' || tab==='macro') render();
+  }
+  const RUB = [['alimentos','Alimentos'],['bebidas','Alcohol y tabaco'],['prendas','Ropa y calzado'],['vivienda','Vivienda y servicios'],['equipamiento','Equipamiento hogar'],
+    ['salud','Salud'],['transporte','Transporte'],['comunicacion','Comunicación'],['recreacion','Recreación'],['educacion','Educación'],['restaurantes','Restaurantes'],['varios','Otros']];
+  const mAdd = (m, n) => { const d = new Date(Date.UTC(+m.slice(0,4), +m.slice(5,7)-1+n, 1)); return d.toISOString().slice(0,7); };
+  const qTxt = m => `${Math.floor((+m.slice(5,7)-1)/3)+1}T ${m.slice(2,4)}`;
+  const aMap = k => new Map(act?.[k] || []);
+  document.querySelectorAll('[data-rub]').forEach(b=>b.addEventListener('click', ()=>{ rubMode = b.dataset.rub; renderRubros(); }));
+  function renderRubros(){
+    document.querySelectorAll('[data-rub]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.rub===rubMode)));
+    if(!act){ loadAct(); $('chRub').innerHTML = '<div class="empty">Cargando…</div>'; return; }
+    const g = act.general || []; if(!g.length){ $('chRub').innerHTML = '<div class="empty">Sin datos por ahora.</div>'; $('rubSt').innerHTML=''; return; }
+    const m = g[g.length-1][0], base = rubMode==='mes' ? mAdd(m,-1) : rubMode==='anio' ? `${+m.slice(0,4)-1}-12` : mAdd(m,-12);
+    const vr = k => { const mp = aMap(k), a = mp.get(base), b = mp.get(m); return a && b ? (b/a-1)*100 : null; };
+    const gen = vr('general'), per = rubMode==='mes' ? MESL[+m.slice(5)-1]+' '+m.slice(0,4) : rubMode==='anio' ? `enero a ${MESL[+m.slice(5)-1]} ${m.slice(0,4)}` : `${fmes(mAdd(base,1))} a ${fmes(m)}`;
+    $('rubS').textContent = per + ' · % de suba';
+    const rows = RUB.map(([k,n])=>({n, v:vr(k)})).filter(r=>r.v!=null).sort((a,b)=>b.v-a.v).map(r=>({...r, c: gen!=null && r.v>gen ? '--s2' : '--s1'}));
+    const falta = RUB.filter(([k])=>vr(k)==null).map(r=>r[1]);
+    hBars($('chRub'), rows, {aria:'Inflación por rubro', ref:gen, refLabel:'nivel general', vfmt:v=>sg(v,1)+'%'});
+    if(falta.length) $('chRub').insertAdjacentHTML('beforeend', `<p class="note">Todavía sin dato para: ${falta.join(', ')} (la fuente no lo devolvió en esta actualización).</p>`);
+    const st=(l,v,d,hero=false)=>`<div class="st${hero?' hero':''}"><span class="lbl">${l}</span><span class="v">${v==null?'—':sg(v,1)+'%'}</span><span class="d">${d}</span></div>`;
+    $('rubSt').innerHTML = st('Nivel general', gen, per, true) + st('Núcleo', vr('nucleo'), 'sin regulados ni estacionales') + st('Regulados', vr('regulados'), 'tarifas, nafta, prepagas') + st('Estacionales', vr('estacionales'), 'frutas, verduras, ropa');
+    decorar();
+  }
+  function renderActividad(){
+    if(!act){ loadAct(); $('kpisA').innerHTML = '<div class="empty">Cargando datos de actividad y empleo…</div>'; return; }
+    const L = a => a?.length ? a[a.length-1] : null, A = act, t = [];
+    const ed = A.emae_d || [], eo = A.emae || [], eom = new Map(eo);
+    const ey = eo.filter(p=>eom.has(mAdd(p[0],-12))).map(p=>[p[0], (p[1]/eom.get(mAdd(p[0],-12))-1)*100]);
+    const gm = aMap('general'), FT = 3.09;
+    // salarios reales (base nov 2023 = 100)
+    const SAL = [['sal_priv','Registrados privados','--s1'],['sal_pub','Públicos','--s3'],['sal_noreg','No registrados (5 meses de rezago)','--s2'],['sal_total','Total','--s4']];
+    const sal = k => k==='sal_noreg' ? (A[k]||[]).map(p=>[mAdd(p[0],-5), p[1]]) : (A[k]||[]);  // no registrados: el INDEC lo publica con 5 meses de rezago
+    const real = k => { const s = sal(k).filter(p=>gm.has(p[0])), b = s.find(p=>p[0]==='2023-11'); if(!b) return []; const r0 = b[1]/gm.get('2023-11'); return s.map(p=>[p[0], p[1]/gm.get(p[0])/r0*100]); };
+    const tab12 = k => { const s = sal(k), mp = new Map(s), l = L(s); if(!l) return null; const a = mp.get(mAdd(l[0],-12)), i0 = gm.get(mAdd(l[0],-12)), i1 = gm.get(l[0]);
+      const nom = a ? (l[1]/a-1)*100 : null, inf = i0&&i1 ? (i1/i0-1)*100 : null, rr = real(k), rl = rr.find(p=>p[0]===l[0]);
+      return {m:l[0], nom, inf, real: nom!=null&&inf!=null ? ((1+nom/100)/(1+inf/100)-1)*100 : null, desde: rl ? rl[1]-100 : null}; };
+    const edm = new Map(ed), edl = L(ed), edp = edl ? edm.get(mAdd(edl[0],-1)) : null;
+    if(edl && edp){ const l = edl, p = [0, edp], y = L(ey);
+      t.push(tileK('Actividad (EMAE)', sg((l[1]/p[1]-1)*100,1)+'%', 'en el mes', y ? chip(y[1]/100,{d:1})+'<span class="chip eq">interanual</span>' : '', fmes(l[0])+' · sin estacionalidad')); }
+    const sp = tab12('sal_priv');
+    if(sp && sp.real!=null) t.push(tileK('Salario registrado real', sg(sp.real,1)+'%', 'en 12 meses', `<span class="chip ${sp.real>=0?'up':'dn'}">${sp.real>=0?'Le gana a la inflación':'Pierde contra la inflación'}</span>`, `Privados en blanco · ${fmes(sp.m)}`));
+    const de = A.desoc || [], dl = L(de);
+    if(dl){ const dy = de.find(p=>p[0]===mAdd(dl[0],-12));
+      t.push(tileK('Desocupación', nf(dl[1],1)+'%', '', dy ? chip(dl[1]-dy[1],{pct:false,d:1,unit:' pp',bad:true})+'<span class="chip eq">vs. un año</span>' : '', qTxt(dl[0])+' · EPH')); }
+    const cb = A.cbt || [], ca = A.cba || [], cl = L(cb), cal = L(ca);
+    if(cl){ const cp = cb.length>1 ? cb[cb.length-2] : null, im = gm.get(cl[0]) && gm.get(mAdd(cl[0],-1)) ? (gm.get(cl[0])/gm.get(mAdd(cl[0],-1))-1) : null;
+      t.push(tileK('Canasta básica total', '$ '+nf(cl[1]*FT,0), '', cp ? chip(cl[1]/cp[1]-1,{d:1,bad:true})+(im!=null?`<span class="chip eq">IPC ${pc(im,1)}</span>`:'') : '', `Familia tipo · línea de pobreza · ${fmes(cl[0])}`)); }
+    if(cal){ const cp = ca.length>1 ? ca[ca.length-2] : null;
+      t.push(tileK('Canasta alimentaria', '$ '+nf(cal[1]*FT,0), '', cp ? chip(cal[1]/cp[1]-1,{d:1,bad:true}) : '', `Familia tipo · línea de indigencia · ${fmes(cal[0])}`)); }
+    $('kpisA').innerHTML = t.join('') || '<div class="empty">Sin datos por ahora.</div>';
+    // EMAE
+    const desde = String(new Date().getFullYear()-5);
+    lineChart($('chEmae'), [{n:'EMAE', c:'--s1', pts:ed.filter(p=>p[0]>=desde), area:true}], {aria:'Actividad económica', endLabel:true, labW:44, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), lfmt:v=>nf(v,1), xfmt:fmes, tfmt:fmes, unitName:'EMAE'});
+    if(ed.length){ const l = L(ed), mx = ed.reduce((a,p)=>p[1]>a[1]?p:a, ed[0]), a12 = ed.find(p=>p[0]===mAdd(l[0],-12));
+      $('nEmae').textContent = `${MESL[+l[0].slice(5)-1]} ${l[0].slice(0,4)}: ${nf(l[1],1)} puntos${a12?`, ${sg((l[1]/a12[1]-1)*100,1)}% contra un año atrás`:''}. ${mx[0]===l[0] ? 'Es el nivel más alto de la serie.' : `El máximo de la serie es ${nf(mx[1],1)} (${fmes(mx[0])}).`}`; }
+    barChart($('chEmaeY'), [{n:'Interanual', c:'--s3', pts:ey.slice(-24)}], {aria:'EMAE interanual', yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'});
+    // salarios
+    const ss = SAL.slice(0,3).map(([k,n,c])=>({n, c, pts:real(k)})).filter(s=>s.pts.length);
+    legend($('lgSal'), ss.map(s=>({n:s.n, c:s.c})));
+    lineChart($('chSalR'), ss, {aria:'Salarios reales', labW:52, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), xfmt:fmes, tfmt:fmes});
+    $('nSal').innerHTML = 'Sueldos divididos por la inflación (IPC nacional), noviembre de 2023 = 100. Arriba de 100: hoy se compra más que en noviembre de 2023; abajo, menos. El dato de los no registrados el INDEC lo publica con cinco meses de rezago: acá se lo ubica en el mes que realmente refleja y se lo compara con la inflación de ese mes. Fuente: INDEC, índice de salarios.';
+    $('tSal').innerHTML = SAL.map(([k,n])=>{ const r = tab12(k); if(!r) return ''; const c = v => v==null ? '<td>—</td>' : `<td class="${v>=0?'up':'dn'}">${sg(v,1)}%</td>`;
+      return `<tr><td style="text-align:left">${n}</td><td>${fmes(r.m)}</td><td>${r.nom!=null?sg(r.nom,1)+'%':'—'}</td><td>${r.inf!=null?nf(r.inf,1)+'%':'—'}</td>${c(r.real)}${c(r.desde)}</tr>`; }).join('');
+    // desocupación
+    barChart($('chDesoc'), [{n:'Desocupación', c:'--s4', pts:de.slice(-16)}], {aria:'Desocupación', kfmt:qTxt, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%'});
+    $('nDesoc').textContent = dl ? `${Math.floor((+dl[0].slice(5,7)-1)/3)+1}º trimestre de ${dl[0].slice(0,4)}: ${nf(dl[1],1)}%. Los primeros trimestres suelen dar más alto por la estacionalidad: conviene comparar con el mismo trimestre del año anterior. Fuente: INDEC, EPH (31 aglomerados urbanos).` : '';
+    // canasta
+    const c3 = String(new Date().getFullYear()-3);
+    legend($('lgCan'), [{n:'Canasta total (pobreza)', c:'--s2'},{n:'Alimentaria (indigencia)', c:'--s1'}]);
+    lineChart($('chCan'), [{n:'Total', c:'--s2', pts:cb.filter(p=>p[0]>=c3).map(p=>[p[0], p[1]*FT])},{n:'Alimentaria', c:'--s1', pts:ca.filter(p=>p[0]>=c3).map(p=>[p[0], p[1]*FT])}],
+      {aria:'Canasta básica de una familia tipo', labW:64, l:60, yfmt:v=>'$ '+nf(v/1e6,1)+' M', vfmt:v=>'$ '+nf(v,0), xfmt:fmes, tfmt:fmes});
+    if(cl){ const a12 = cb.find(p=>p[0]===mAdd(cl[0],-12));
+      $('nCan').textContent = `Pesos por mes que necesita un hogar de dos adultos y dos chicos (6 y 8 años) para no ser pobre o indigente, en GBA. ${fmes(cl[0])}: $ ${nf(cl[1]*FT,0)}${a12?`, ${sg((cl[1]/a12[1]-1)*100,1)}% en un año`:''}. Fuente: INDEC.`; }
+  }
+
   // ---- MERCADO ----
   // Cronograma AL30/GD30: pagos el 9/1 y el 9/7; amortiza 4% el 9/7/2024 y 8% cada semestre
   // del 9/1/2025 al 9/7/2030. Cupón anual sobre el residual: 0,125% hasta 9/7/2021,
@@ -2159,6 +2270,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- glosario: ícono (i) al lado de cada término técnico ----
   const GLOS = {
+    emae:['EMAE','Estimador Mensual de Actividad Económica del INDEC: un adelanto mes a mes del PBI. "Sin estacionalidad" quiere decir que se le saca el efecto de cada época del año (cosecha, vacaciones) para poder comparar un mes con el anterior.'],
+    salarios:['Salarios reales','Índice de salarios del INDEC dividido por la inflación. Si la línea sube, los sueldos le ganan a los precios (más poder de compra); si baja, pierden. Registrados = en blanco; no registrados = en negro, cuentapropistas aparte.'],
+    desoc:['Desocupación','Porcentaje de las personas que buscan trabajo y no lo consiguen, sobre el total de las que trabajan o buscan. Sale de la Encuesta Permanente de Hogares (EPH) del INDEC, en 31 ciudades, cada trimestre.'],
+    canasta:['Canasta básica','Lo que necesita un hogar para no ser pobre (canasta básica total: comida, ropa, transporte, salud, educación) o para no ser indigente (canasta alimentaria: solo comida). La familia tipo es de cuatro personas: dos adultos y dos chicos de 6 y 8 años.'],
+    rubros:['Inflación por rubro','El IPC se arma con 12 rubros. Cada uno pesa distinto según cuánto gastan los hogares: alimentos es el que más pesa.'],
+    nucleo:['Inflación núcleo','La inflación sin los precios regulados por el Estado (tarifas, nafta) ni los estacionales (frutas, verduras, ropa). Muestra la tendencia de fondo.'],
     oficial:['Dólar oficial','Precio al que el Banco Nación le vende dólares a las personas (home banking), sin impuestos.'],
     mayorista:['Dólar mayorista','Precio al que operan bancos y empresas en el mercado oficial de cambios (MULC). Es la referencia de exportadores e importadores (Comunicación A 3500 del BCRA).'],
     mep:['Dólar MEP o bolsa','Se consigue comprando un bono con pesos y vendiéndolo en dólares, todo dentro del país. Es legal y los dólares quedan en una cuenta en Argentina.'],
@@ -2201,6 +2318,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   };
   // [expresión, clave, dónde]: se aplica sobre el texto del título o etiqueta
   const GLOS_REGLAS = [
+    [/^Actividad económica|^Actividad \(EMAE|^Actividad contra/,'emae','g'],[/^Salarios contra|^Salario (registrado|real)/,'salarios','g'],[/^Desocupación/,'desoc','g'],[/^Canasta (básica|alimentaria)/,'canasta','g'],[/^Inflación por rubro/,'rubros','g'],[/^Núcleo/,'nucleo','g'],
     [/^Oficial$/,'oficial','q'],[/^Mayorista$/,'mayorista','q'],[/^MEP$/,'mep','q'],[/^CCL$/,'ccl','q'],[/^Blue$/,'blue','q'],[/^Cripto$/,'cripto','q'],[/^Tarjeta$/,'tarjeta','q'],
     [/^Canje/,'canje','g'],[/^Brecha/,'brecha','g'],[/^Dólar a precios de hoy/,'usdreal','g'],
     [/^Riesgo país/,'riesgo','g'],[/^Reservas/,'reservas','g'],[/^Compras y ventas de dólares/,'compras','g'],
@@ -2377,6 +2495,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     'fiscal-mensual': ()=>[['mes','resultado_primario_spn_mill','resultado_financiero_spn_mill','exportaciones_musd','importaciones_musd','saldo_comercial_musd'],
       months.filter(m=>m.prim!=null||m.expo!=null).map(m=>[m.mes, m.prim, m.fin, m.expo, m.impo, m.saldo])],
     'fiscal-pbi': ()=>[['trimestre','pbi_corriente_anualizado_mill'], quarters.map(q=>[q.trim, q.pib])],
+    'actividad-mensual': ()=>{ const K=['emae_d','emae','sal_total','sal_priv','sal_pub','sal_noreg','desoc','cbt','cba','general'], ms=[...new Set(K.flatMap(k=>(act?.[k]||[]).map(p=>p[0])))].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
+      return [['mes','emae_desestacionalizado','emae_original','salarios_total_indice','salarios_registrados_privados','salarios_publicos','salarios_no_registrados','desocupacion_pct_trimestre','canasta_basica_total_adulto','canasta_alimentaria_adulto','ipc_nacional_indice'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m))])]; },
+    'ipc-rubros': ()=>{ const K=['general',...RUB.map(r=>r[0]),'nucleo','regulados','estacionales'], ms=[...new Set((act?.general||[]).map(p=>p[0]))].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
+      return [['mes',...K.map(k=>'ipc_'+k)], ms.map(m=>[m, ...K.map(k=>mp[k].get(m))])]; },
     'mercado-diario': ()=>[['fecha','merval_puntos','ccl','merval_usd_ccl','riesgo_pais_pb'],
       days.filter(d=>d.merval!=null).map(d=>{ const c=get(d,'ccl'); return [d.fecha, d.merval, c, c?Math.round(d.merval/c*100)/100:null, d.riesgo]; })]
   };
@@ -2392,14 +2514,15 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()]};
-  const ARG_T = ['dolares','macro','dinero','fiscal','mercado','noticias','calculadoras'];
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()]};
+  const ARG_T = ['dolares','macro','dinero','fiscal','actividad','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
     macro:'<path d="M3 20h18M5 16l4-5 4 3 6-8"/><circle cx="19" cy="6" r="1.3"/>',
     dinero:'<path d="M3 9l9-5 9 5M5 9v9M10 9v9M14 9v9M19 9v9M3 20h18"/>',
     fiscal:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    actividad:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18M11 13v2h2v-2"/>',
     mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
     noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
@@ -2420,6 +2543,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     macro:['Inflación y reservas','Inflación, lo que esperan los analistas, reservas del BCRA y riesgo país'],
     dinero:['Tasas y pesos','Plazo fijo, tasas y cuánta plata circula'],
     fiscal:['Cuentas del Estado','Si el Estado gasta más o menos de lo que recauda, y el comercio exterior'],
+    actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     mercado:['Bolsa y bonos','S&P Merval, acciones y bonos argentinos'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación y sueldo en dólares'],
@@ -2439,7 +2563,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
   document.querySelectorAll('#tabsNav a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
-  $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1)).join('');
+  $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
   $('tilesG').innerHTML = ['global','eeuu','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].map(k=>tile(k)).join('');
   let tab = 'portada';
   let tabContado = null;
@@ -2464,7 +2588,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].includes(tab);
+    $('segRange').hidden = ['actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].includes(tab);
     try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
   }
