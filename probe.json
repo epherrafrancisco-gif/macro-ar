@@ -1,0 +1,244 @@
+{
+ "bis_cbpol": [
+  [
+   " Central bank policy rates - Japan - Daily - End of period",
+   "2026-10-01"
+  ],
+  [
+   " Central bank policy rates - Japan - Daily - End of period",
+   "2026-10-02"
+  ],
+  [
+   " Central bank policy rates - Japan - Daily - End of period",
+   "2026-10-05"
+  ],
+  [
+   " Central bank policy rates - Japan - Daily - End of period",
+   "2026-10-06"
+  ]
+ ],
+ "bis_xru": [
+  [
+   "2026-10-01",
+   "157.983714"
+  ],
+  [
+   "2026-10-02",
+   "157.674833"
+  ],
+  [
+   "2026-10-05",
+   "158.229204"
+  ],
+  [
+   "2026-10-06",
+   "158.088562"
+  ]
+ ],
+ "bis_cpi": [
+  [
+   "2026-04",
+   "1.303912"
+  ],
+  [
+   "2026-05",
+   "1.5"
+  ],
+  [
+   "2026-06",
+   "1.701702"
+  ],
+  [
+   "2026-07",
+   "1.898102"
+  ]
+ ],
+ "oecd_une": [
+  [
+   "2026-05",
+   "2.5"
+  ],
+  [
+   "2026-06",
+   "2.5"
+  ],
+  [
+   "2026-07",
+   "2.4"
+  ],
+  [
+   "2026-08",
+   "2.5"
+  ]
+ ],
+ "oecd_gdp": [
+  [
+   "2025-Q3",
+   "-0.373694818"
+  ],
+  [
+   "2025-Q4",
+   "0.261897427"
+  ],
+  [
+   "2026-Q1",
+   "0.47819799"
+  ],
+  [
+   "2026-Q2",
+   "0.360456187"
+  ]
+ ],
+ "cnbc": [
+  [
+   ".N225",
+   "Nikkei 225 Index",
+   "69,030.92",
+   0
+  ],
+  [
+   ".TOPX",
+   "Topix Index",
+   "4,104.81",
+   0
+  ],
+  [
+   ".TOPIX",
+   null,
+   null,
+   1
+  ],
+  [
+   "TOPIX",
+   null,
+   null,
+   1
+  ],
+  [
+   "JP10Y-JP",
+   "Japan 10 Year Bond",
+   "3.016%",
+   0
+  ],
+  [
+   "JP2Y-JP",
+   "Japan 2 Year Note",
+   "1.912%",
+   0
+  ],
+  [
+   "JP30Y-JP",
+   "Japan 30 Year Treasury",
+   "4.068%",
+   0
+  ],
+  [
+   "JPY=",
+   "USD/JPY",
+   "158.21",
+   0
+  ],
+  [
+   "TM",
+   "TOYOTA MOTOR CORPORATION",
+   "185.30",
+   0
+  ],
+  [
+   "SONY",
+   "Sony Group Corporation",
+   "24.12",
+   0
+  ],
+  [
+   "MUFG",
+   "Mitsubishi UFJ Financial Group, Inc.",
+   "22.38",
+   0
+  ],
+  [
+   "SMFG",
+   "Sumitomo Mitsui Financial Group, Inc.",
+   "25.13",
+   0
+  ],
+  [
+   "MFG",
+   "Mizuho Financial Group, Inc.",
+   "10.61",
+   0
+  ],
+  [
+   "HMC",
+   "HONDA MOTOR CO., LTD.",
+   "32.70",
+   0
+  ],
+  [
+   "NMR",
+   "Nomura Holdings, Inc.",
+   "9.59",
+   0
+  ],
+  [
+   "IX",
+   "ORIX CORPORATION",
+   "36.95",
+   0
+  ],
+  [
+   "TAK",
+   "Takeda Pharmaceutical Company Limited",
+   "18.73",
+   0
+  ],
+  [
+   "CAJPY",
+   "CANON INC.",
+   "29.83",
+   0
+  ],
+  [
+   "EWJ",
+   "iShares MSCI Japan ETF",
+   "97.86",
+   0
+  ],
+  [
+   "DXJ",
+   "WisdomTree Japan Hedged Equity Fund",
+   "60.71",
+   0
+  ]
+ ],
+ "hist_.TOPX": 484,
+ "hist_JPY=": 0,
+ "hist_JP10Y-JP": 595,
+ "hist_JP2Y-JP": 594,
+ "rss_nhk_es": "<HTTPError 404: 'Not Found'>",
+ "rss_nhk_es2": {
+  "total": 86,
+  "48h": 0,
+  "ej": []
+ },
+ "rss_nhk_es3": "ParseError('not well-formed (invalid token): line 1, column 0')",
+ "rss_efe_asia": "<HTTPError 403: 'Forbidden'>",
+ "rss_efe_eco": "<HTTPError 403: 'Forbidden'>",
+ "rss_europapress_asia": {
+  "total": 10,
+  "48h": 0,
+  "ej": []
+ },
+ "rss_europapress_eco": {
+  "total": 10,
+  "48h": 0,
+  "ej": []
+ },
+ "rss_xinhua_es": "<HTTPError 404: 'Not Found'>",
+ "rss_elpais_asia": {
+  "total": 24,
+  "48h": 0,
+  "ej": []
+ },
+ "rss_japantimes_biz": "ParseError('not well-formed (invalid token): line 2, column 17')"
+}
