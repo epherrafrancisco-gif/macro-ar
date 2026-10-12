@@ -96,6 +96,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   OCDE (`sdmx.oecd.org`: DF_IALFS_UNE_M desempleo, DF_QNA_EXPENDITURE_GROWTH_OECD PBI G1/GY; los períodos "2026-Q2" no se
   comparan con fechas). Banxico SIE pide clave (secreto opcional `BANXICO_TOKEN`: FIX SF43718, reservas SF43707,
   remesas SE27803). INEGI pide clave; Frankfurter y FRED dan timeout desde Actions.
+- Todas las secciones de país tienen un cuarto apartado "Noticias" (ver noticias_paises.json).
 - Próximo posible: Chile (el Banco Central de Chile pide registrarse para una clave).
 
 ### Global › Mundo
@@ -132,6 +133,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - `global.json` + `global_hist.json` (scripts/global.py) y `usa.json` (scripts/usa.py), workflow `global.yml`:
   L a V cada hora 08:23-19:23 ART, findes cada 6 h y en cada push de esos scripts. Errores en el campo `errores`.
 - `noticias.json` (workflow `noticias.yml`, L a V cada hora 6 a 22 ART, findes cada 3 h).
+- `noticias_paises.json` (scripts/noticias_paises.py, mismo workflow `noticias.yml`): titulares de 48 h para el apartado
+  "Noticias" de EE.UU., Brasil, Europa y México (`renderNP`, `NP_PAIS`; se dispara solo desde `aplicarSub`). Reglas por
+  medio: "econ" (medio del país: solo economía y sin titulares de otro país, `OTROS`) o "pais" (medio de afuera: tiene que
+  nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
+  pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
+  Medios que dan 403 desde Actions: El Economista México por sección, Forbes México, elEconomista.es.
 - Chequeo diario del sitio publicado (`chequeo-sitio.yml` + `scripts/chequeo.mjs`, L a V 19:43 ART): si hay problemas
   graves abre un issue (avisa por mail al dueño) y lo cierra solo cuando se arregla. Revisa también la portada.
 - Secretos del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.; si falta, la tarjeta de PBI no aparece) y
