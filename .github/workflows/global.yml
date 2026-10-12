@@ -19,6 +19,8 @@ on:
       - scripts/japon.py
       - scripts/reinounido.py
       - scripts/canada.py
+      - scripts/colombia.py
+      - scripts/turquia.py
       - .github/workflows/global.yml
 
 permissions:
@@ -78,15 +80,23 @@ jobs:
         run: python scripts/canada.py
         continue-on-error: true
 
+      - name: Traer datos de Colombia
+        run: python scripts/colombia.py
+        continue-on-error: true
+
+      - name: Traer datos de Turquía
+        run: python scripts/turquia.py
+        continue-on-error: true
+
       - name: Guardar cambios
         run: |
-          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json >/dev/null 2>&1; then
+          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json >/dev/null 2>&1; then
             echo "Sin cambios"
             exit 0
           fi
           git config user.name "macro-ar-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json 2>/dev/null || true
+          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json 2>/dev/null || true
           git commit -m "Global $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
           git pull --rebase origin main
           git push
