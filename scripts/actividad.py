@@ -26,7 +26,7 @@ TANDAS = {
     "emae": ({"143.3_NO_PR_2004_A_31": "emae_d", "143.3_NO_PR_2004_A_21": "emae"}, "2016-01-01", 5),
     "salarios": ({"149.1_TL_INDIIOS_OCTU_0_21": "sal_total", "149.1_SOR_PRIADO_OCTU_0_25": "sal_priv", "149.1_SOR_PUBICO_OCTU_0_14": "sal_pub",
                   "149.1_SOR_PRIADO_OCTU_0_28": "sal_noreg"}, "2016-10-01", 6),
-    "desocupacion": ({"42.3_EPH_PUNTUAL_0_M_30": "desoc"}, "2016-01-01", 9),
+    "desocupacion": ({"45.2_ECTDT_0_T_33": "desoc"}, "2016-01-01", 9),
     "canasta": ({"150.1_CSTA_BATAL_0_D_20": "cbt", "150.1_CSTA_BARIA_0_D_26": "cba"}, "2016-04-01", 5),
     "rubros": ({"145.3_INGNACNAL_DICI_M_15": "general", "146.3_IALIMENNAL_DICI_M_45": "alimentos", "146.3_IBEBIDANAL_DICI_M_39": "bebidas",
                 "146.3_IPRENDANAL_DICI_M_35": "prendas", "146.3_IVIVIENNAL_DICI_M_52": "vivienda", "146.3_IEQUIPANAL_DICI_M_46": "equipamiento",
@@ -51,15 +51,21 @@ def get(url, tries=3, timeout=90):
 
 
 def tanda(series, desde):
-    ids = list(series)
-    j = get(API.format(ids=",".join(ids), desde=desde))
-    out = {series[s]: [] for s in ids}
-    for row in j.get("data", []):
-        f = row[0][:7]
-        for i, sid in enumerate(ids, start=1):
-            if i < len(row) and row[i] is not None:
-                out[series[sid]].append([f, round(float(row[i]), 4)])
-    return {k: v for k, v in out.items() if v}
+    """Una consulta por serie: pedidas juntas, la API a veces devuelve columnas vacías."""
+    out = {}
+    for sid, clave in series.items():
+        j = get(API.format(ids=sid, desde=desde))
+        pts = []
+        for row in j.get("data", []):
+            if len(row) > 1 and row[1] is not None:
+                v = float(row[1])
+                if clave == "desoc" and v < 1:
+                    v *= 100  # viene como fracción (0,079)
+                pts.append([row[0][:7], round(v, 4)])
+        if pts:
+            out[clave] = pts
+        time.sleep(0.3)
+    return out
 
 
 def main():
