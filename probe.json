@@ -1,0 +1,436 @@
+{
+ "mx_economista_eco": {
+  "ok": false,
+  "err": "<HTTPError 403: 'Forbidden'>"
+ },
+ "mx_economista_mer": {
+  "ok": false,
+  "err": "<HTTPError 403: 'Forbidden'>"
+ },
+ "mx_economista_all": {
+  "ok": true,
+  "total": 100,
+  "48h": 100,
+  "ej": [
+   "Tendencias y señales",
+   "Philip Morris apuesta por productos sin humo: busca que representen más del 66% de sus ingresos en 2030",
+   "SpaceX compra espectro para impulsar a Starlink",
+   "Petróleo avanzó en la semana pese a señales de diálogo entre EU e Irán",
+   "¿Es hora de poner un taller de ‘compus’?",
+   "El futuro del crédito: más inclusión, mejores decisiones y confianza",
+   "Nuevo León entrega 20,898 millones de pesos a municipios",
+   "Motor exportador mantiene a flote economía argentina",
+   "Colombia busca regreso de ensamble de Mazda",
+   "Huracán Simon se mantiene en categoría 4 y se aproxima a Playa Pérula, Jalisco",
+   "Huracán Simon tiene nueva categoría: ¿qué estados siguen bajo amenaza?",
+   "Max Verstappen en el GP de Singapur: “Ha llevado su tiempo regresar a la victoria”",
+   "Rays contra Guardians, final inédita y austera",
+   "Spotify estrena audiolibros en México: cómo funcionan y cuántas horas puedes escuchar gratis con Premium",
+   "Clima en México: lluvias fuertes y frente frío marcarán el inicio de semana; ¿qué estados serán afectados?",
+   "¿Cuánto costarán las nuevas tabletas de Amazon en México y qué modelos estarán disponibles?",
+   "¿Es la inteligencia artificial el recurso definitivo para aprender idiomas?",
+   "Zheng Qinwen completa su redención con título del Abierto de China",
+   "Auditorías a instituciones públicas siguen bajo revisión, aclara Secretaría Anticorrupción",
+   "Para protección de familias, en Puebla hay cero impunidad y rechazo a puerta giratoria",
+   "IMSS: ¿conflicto puramente sindical?",
+   "​Gobierno de la Ciudad de México inaugura la Utopía Temictli Tecómitl en Milpa Alta con inversión de 190 millones de pesos",
+   "Hoy No Circula lunes 12 de octubre de 2026: ¿qué autos descansan en CDMX y Edomex?",
+   "IMPI retira del mercado más de 153,000 productos pirata valuados en 18.7 millones de pesos",
+   "Ojo del huracán Simon continúa avanzando paralelo a las costas de Jalisco sin impactar tierra"
+  ]
+ },
+ "mx_financiero": {
+  "ok": true,
+  "total": 84,
+  "48h": 84,
+  "ej": [
+   "Pumas vs. Cruz Azul EN VIVO HOY: Marcador y momentos destacados del partido del Apertura 2026",
+   "‘Exatlón México’ se despide de dos atletas: Una azul se va eliminada y una roja abandona por lesión",
+   "Frente frío y onda tropical acompañarán al huracán ‘Simón’ esta semana: ¿Qué estados prevén lluvias?",
+   "¿Revancha de Trump?: Departamento de Justicia investiga si puede sancionar boicot de la prensa",
+   "¿Hay gasolina Magna en CDMX y Edomex? Pemex responde a los reportes de estaciones sin combustible",
+   "¿De qué murió Álvaro Pava, cantante de ‘Mil horas’ con La Sonora Dinamita? Esto sabemos",
+   "Conchasúchil: ¿Dónde comprar los panes virales de Día de Muertos y cuánto cuestan?",
+   "Día de muertos 2026: ¿Cuándo y dónde es la Mega Procesión de Catrinas en CDMX?",
+   "Brugada inaugura la Utopía Temictli Tecómitl en Milpa Alta con inversión de 190 mdp",
+   "EN VIVO del huracán ‘Simón’ categoría 4: El ojo de la tormenta se acerca a tierra por Jalisco",
+   "(VIDEOS) Protesta por agua contaminada en Guadalajara escala a enfrentamientos frente a Casa Jalisco",
+   "Quinto eliminado de ‘La Granja VIP’ HOY: ¿Dónde y a qué hora ver la gala del reality show EN VIVO?",
+   "Toca ‘navegar’ en las carabelas: Hoy No Circula del lunes 12 de octubre en CDMX y Edomex",
+   "Papá León XIV entra al quirófano: ¿Qué es un nódulo pulmonar y cuáles son sus causas?",
+   "Osvaldo Benavides defiende la serie Timbiriche: ‘Habría sido un error hacer como que no pasó nada’",
+   "Estreno de ‘¿Quién es la máscara?’ 2026 HOY: ¿Dónde y a qué hora ver el primer programa?",
+   "Huracán ‘Simón’ deja severos daños en Guerrero: Reportan un muerto y 20 municipios afectados",
+   "Legado de Karl Lagerfeld: Innovan con proyecto residencial en Bosque Real",
+   "Netanyahu pide procesar a participantes de ‘NAZA’, documental sobre el genocidio en Gaza",
+   "Series de Campeonato 2026 de MLB: ¿Dónde y cuándo ver EN VIVO Dodgers vs. Brewers y Rays vs. Guardians?",
+   "México pide a sus ciudadanos en Arabia Saudí evitar aeropuertos ante escalada de violencia",
+   "Detienen a ‘El Junior’ en Acapulco: Es parte de ‘Los Rusos’ que atacaron a agentes federales",
+   "Muere trabajador de Pemex en ataque armado en refinería de Minatitlán; reportan uno más herido",
+   "IMPI retira más de 153 mil productos pirata tras operativos en Tepito y Puebla",
+   "Muere Álvaro Pava, voz original de La Sonora Dinamita que cantaba ‘Mil horas’: ‘Hoy la cumbia llora’"
+  ]
+ },
+ "mx_financiero_eco": {
+  "ok": true,
+  "total": 3,
+  "48h": 3,
+  "ej": [
+   "¿Hay gasolina Magna en CDMX y Edomex? Pemex responde a los reportes de estaciones sin combustible",
+   "IMPI retira más de 153 mil productos pirata tras operativos en Tepito y Puebla",
+   "EU dice que exportó 600 mil barriles de crudo a México; Pemex no tiene ‘ni idea’ dónde están"
+  ]
+ },
+ "mx_expansion": {
+  "ok": true,
+  "total": 49,
+  "48h": 1,
+  "ej": [
+   "Mantendrá México de las inflaciones médicas más altas en América Latina en 2027"
+  ]
+ },
+ "mx_expansion2": {
+  "ok": true,
+  "total": 39,
+  "48h": 4,
+  "ej": [
+   "¿Por qué Tiendas 3B vende tan barato y sigue ganando millones? El secreto del \"Hard Discount\"",
+   "¿Dejaste una prenda en Monte de Piedad? Esta es la fecha límite para recuperarla",
+   "Nerds llega oficialmente a México tras años de venta por distribuidores",
+   "Mantendrá México de las inflaciones médicas más altas en América Latina en 2027"
+  ]
+ },
+ "mx_jornada": {
+  "ok": true,
+  "total": 9,
+  "48h": 9,
+  "ej": [
+   "Para tomar en cuenta",
+   "Brasil reclama 108 mdd a Shell por catastróficas inundaciones de 2024",
+   "Endurecerá EU su postura sobre el comercio con México: experto",
+   "El acuerdo, sólo “un parche” en el mercado del diésel: expertos",
+   "El magnate da la espalda a Zelensky y plantea su salida",
+   "Luis Ángeles: Paradojas",
+   "Impulsa la industria química atracción de inversiones",
+   "Aumentaron 19.4% los pagos con tarjetas de enero a agosto",
+   "Apoyo energético de Putin a Trump indigna a ucranios y extraña a rusos"
+  ]
+ },
+ "mx_universal": {
+  "ok": true,
+  "total": 1,
+  "48h": 1,
+  "ej": [
+   "Automotrices chinas mejoran su servicio al cliente, dice consultora; \"están logrando avances evidentes\""
+  ]
+ },
+ "mx_forbes": {
+  "ok": false,
+  "err": "<HTTPError 403: 'Forbidden'>"
+ },
+ "eu_expansion_eco": {
+  "ok": true,
+  "total": 49,
+  "48h": 9,
+  "ej": [
+   "POLÍTICA",
+   "ECONOMÍA",
+   "GUERRA EN UCRANIA",
+   "ECONOMÍA",
+   "ECONOMÍA",
+   "ECONOMÍA",
+   "ECONOMÍA",
+   "ECONOMÍA",
+   "ECONOMÍA"
+  ]
+ },
+ "eu_cincodias": {
+  "ok": true,
+  "total": 77,
+  "48h": 30,
+  "ej": [
+   "Del colchón a la Bolsa: la nueva cuenta que aspira a movilizar ahorro por un billón de euros",
+   "La AIE anima a una nueva liberación de reservas de diésel para detener la escalada de precios",
+   "A tortas por el dinero de los ricos: un negocio de 10.000 millones en comisiones que ningún banco se quiere perder",
+   "El movimiento de vivienda señala a los pequeños caseros: ¿son responsables del alza de los precios?",
+   "El Sabadell, con escudo francés y sin prima de opa",
+   "Natarajan Chandrasekaran, el corredor de fondo que lucha por seguir en la cima de Tata",
+   "El periodo de prueba de seis meses no es la ley de la selva para los despidos: estos son los límites de los jueces",
+   "El patrocinio, una oportunidad para que más mujeres lleguen a ser jefas",
+   "Las claves: el acercamiento entre China y la UE recuerda que están condenados a entenderse",
+   "Las gestoras dudan del margen de maniobra de Francia ante una crisis de deuda",
+   "Las inmobiliarias, atrapadas entre la regulación y los tipos de interés",
+   "Seat negocia con Volkswagen producir el Audi Q4 eléctrico en Barcelona a partir de 2032",
+   "Gabriel Escarrer (Meliá): “El nuevo Gobierno tiene que acabar con los pisos turísticos ilegales”",
+   "Salman Ahmed (Fidelity): “No sé cómo se puede hacer una salida a Bolsa y decir que te puedo matar, no tiene sentido”",
+   "La UE asume los recortes en su próximo presupuesto ante las exigencias alemanas",
+   "Las eléctricas elevan ante la CNMC los costes extra tras el apagón y meten presión a Ganuza",
+   "Las ‘telecos’ se tambalean ante la entrada de Starlink en el mercado móvil",
+   "Palantir se dispara a máximos históricos en Bolsa y supera el medio billón de capitalización con el apoyo de Barclays y Goldman",
+   "Trump anima a los ucranios a que “busquen un nuevo líder” tras un ataque de Kiev contra el sector petrolero ruso",
+   "¿Estás con Sol o con Ceuta? Las dos Españas de la polarización",
+   "La ESMA veta sin excepciones la oferta de Tether y cualquier activo que no cumpla con MiCA",
+   "Europa avanza a trompicones en su gran reto financiero",
+   "Salir del sanatorio",
+   "Las claves para hacer rentable un negocio de restauración: “Abrimos hace nueve meses y facturamos el doble de lo previsto”",
+   "Muy amigos, pero solo en el trabajo: “Fuera de la oficina esas personas no me interesaban especialmente”"
+  ]
+ },
+ "eu_euronews_eco": {
+  "ok": true,
+  "total": 50,
+  "48h": 2,
+  "ej": [
+   "Salón Mundial del Automóvil: Macron defiende la preferencia europea frente a China",
+   "Salarios de los docentes en Europa: ¿Qué países pagan mejor?"
+  ]
+ },
+ "eu_eleconomista_es": {
+  "ok": false,
+  "err": "<HTTPError 403: 'Forbidden'>"
+ },
+ "eu_dw": {
+  "ok": true,
+  "total": 10,
+  "48h": 0,
+  "ej": []
+ },
+ "br_infobae_am": {
+  "ok": true,
+  "total": 100,
+  "48h": 100,
+  "ej": [
+   "Pizza, minutas y cremas locales: el gran banquete del Jocote Corona en El Salvador",
+   "Comunidad del Caribe expresó solidaridad con Panamá tras el terremoto que dejó más de 1,400 estructuras afectadas",
+   "Productores siembran 20,000 hectáreas de tabaco en medio de las restricciones que amenazan la cosecha",
+   "Honduras reducirá los racionamientos de agua en Tegucigalpa tras nivelar una de las represas",
+   "El Centro por la Justicia y el Derecho Internacional exige a Nicaragua proteger a la defensora de derechos Thelma Montenegro",
+   "Guatemala: Capturan a dos madres por intentar ingresar droga al penal juvenil Las Gaviotas",
+   "En fotos: La megafiesta que la capital salvadoreña organizó para miles de familias en el Parque Cuscatlán durante el Mes de la Niñez",
+   "“Hablar, sanar y vivir”: la campaña dominicana que busca promover el diálogo sobre la salud mental",
+   "Costarricense murió ahogado en poza del Río Cuarto, tras no poder salir del agua por sus propios medios",
+   "Honduras reporta 78 detenidos en operativos contra estructuras criminales",
+   "Contar las gotas de aceite para cocinar se vuelve una actividad de rigor ante la crisis en Cuba",
+   "El presidente Abinader invitará al Papa León XIV a visitar República Dominicana",
+   "Honduras mantiene alerta amarilla y verde en otras regiones por lluvias",
+   "Roma se vistió de merengue y banderas dominicanas en una jornada dedicada a la diáspora",
+   "San Salvador reunió a más de 15 mil personas de 24 nacionalidades en una carrera familiar",
+   "Médicos sudafricanos reciben diez años de formación en Cuba y ahora están sin trabajo",
+   "Salió a ver a su abuela y la hallaron muerta entre cafetales: niña reportada como desaparecida en Guatemala",
+   "Aeropuerto de Tocumen en Panamá descarta daños visibles en sus pistas tras el terremoto de 7.5 grados",
+   "Autoridades de Costa Rica decomisan 52 kilos de cocaína ocultos en un contenedor rumbo a Bélgica",
+   "Muere el activista y escritor cubano Leo Fernández Cruz tras ser atropellado en La Habana",
+   "Onda tropical provocará lluvias en Honduras advierten sobre inundaciones y deslizamientos",
+   "Las remesas hacia República Dominicana alcanzan US$9,489.8 millones entre enero y septiembre de 2026",
+   "Honduras decomisa más de 3,800 licencias durante el Feriado Morazánico",
+   "Operativo militar dejó dos delincuentes muertos en Nicaragua en medio del vacío de cifras oficiales sobre violencia",
+   "Damnificados por el terremoto en Panamá bloquean una carretera mientras el Gobierno asegura que distribuye ayuda"
+  ]
+ },
+ "br_france24_am": {
+  "ok": true,
+  "total": 30,
+  "48h": 6,
+  "ej": [
+   "¿Castigo latino a Trump en las 'midterms'?",
+   "¿Por qué el diario Expreso dejó de circular en papel en Ecuador después de 53 años?",
+   "México se prepara para el impacto del huracán Simón, de categoría 4, este domingo",
+   "Brasil: Lula denuncia restricciones de Meta en redes sociales antes del balotaje",
+   "¿Crisis de basura en Latinoamérica?: qué pasa con los rellenos sanitarios y el reciclaje en la región",
+   "Panamá declara el estado de emergencia ante los daños por el terremoto de magnitud 7,7"
+  ]
+ },
+ "br_elpais_am": {
+  "ok": true,
+  "total": 106,
+  "48h": 88,
+  "ej": [
+   "Abdul El-Sayed, la apuesta más arriesgada de los demócratas para las elecciones: “Habrá que exigir responsabilidades a Trump por todo el mal que ha hecho”",
+   "Trump anuncia una tregua energética de carácter “inmediato” entre Rusia y Ucrania",
+   "La oleada de ataques hutíes contra aeropuertos de Arabia Saudí impulsa otra escalada que puede arrastrar a Trump",
+   "‘Los siete de Cornell’: expertos advierten del “vacío legal” que pesa sobre el caso de la violación grupal",
+   "Lula saca a la calle una marea roja para emprender la remontada y ganar las elecciones",
+   "Milei vende la ciudadanía argentina a 350.000 dólares por persona y oferta descuentos para familias",
+   "El gran enfado salta a las urnas",
+   "Maricarmen, mi vecina, símbolo a su pesar",
+   "Gabriel Rufián será candidato por Esquerra Republicana el 29-N",
+   "Cómo movilizar a un votante bombardeado y enfadado",
+   "Un conflicto nuclear y el uso malicioso de la inteligencia artificial se cuelan entre las amenazas para la salud mundial: “Sería un apocalipsis”",
+   "El huracán ‘Simón’ se degrada a categoría 3 frente a las costas de Jalisco",
+   "El Departamento de Justicia  de EE UU investiga la cobertura de Trump de las cadenas de televisión",
+   "“El mejor amigo del pueblo judío en el mundo”: el giro exprés de Colombia hacia Israel",
+   "Las familias israelíes buscan descendencia en el esperma extraído de los cadáveres de sus hijos",
+   "La rabia contra las instituciones tras una década de macronismo incendia Francia",
+   "El Papa anuncia que tiene un nódulo en un pulmón y va a ser operado",
+   "Entre el racismo y la glorificación: así estudia la medicina boliviana al indígena",
+   "Mark Galeotti, experto en crimen organizado: “Hemos creado una sociedad cíborg a gran escala en la que todos nuestros datos son vulnerables”",
+   "A tortas por el dinero de los ricos: un negocio de 10.000 millones en comisiones que ningún banco se quiere perder",
+   "Más allá de Instagram: el yoga llega a hospitales y cárceles",
+   "Kevin Bacon: “Sigo pensando al 100% en mejorar, trascender y hacer algo impactante”",
+   "De aquel Brad Pitt a Jacob Elordi: ¿puede volver la perilla?",
+   "Médiums, horóscopo, tarot…, ¿cuánto tiene que ver el auge del misticismo pop con el individualismo neoliberal?",
+   "Un día de chicas para lobas y ‘minishakis’"
+  ]
+ },
+ "br_bbc": {
+  "ok": true,
+  "total": 33,
+  "48h": 17,
+  "ej": [
+   "\"Cada día muere gente\": las familias en Gaza que siguen bajo los ataques israelíes pese al alto el fuego, mientras el acuerdo de paz se estanca",
+   "Trump anuncia un alto el fuego energético inmediato entre Rusia y Ucrania",
+   "Qué era la bola negra, el sistema que los clubes privados usaban para vetar a candidatos y que da nombre a la exitosa película española inspirada en García Lorca",
+   "Las monumentales construcciones escondidas en la Amazonía recién descubiertas por científicos",
+   "El papa León XIV anuncia que será operado de un nódulo en un pulmón",
+   "Cómo la antigua diosa griega Afrodita se convirtió en un símbolo controvertido del amor y el sexo",
+   "Dos ataques contra el aeropuerto internacional de Riad el fin de semana dejan al menos 14 muertos y más de 300 heridos",
+   "La costa del Pacífico de México se enfrenta a los efectos del poderoso huracán Simon",
+   "Jonas I, el autoproclamado rey de Suiza que ha creado un polémico \"imperio\" al apropiarse de terrenos sin dueño",
+   "Hiroo Kanamori, el científico japonés que creó la escala que reemplazó a la de Richter (y por qué es mejor para medir terremotos de gran magnitud)",
+   "Christa Pike sale del hospital y regresa a prisión 10 días después de sobrevivir a su fallida ejecución",
+   "Panamá declara el estado de emergencia tras un fuerte terremoto de magnitud 7,7 que deja cientos de edificaciones destruidas o dañadas",
+   "Quién es James Chambers, el millonario \"comunista\" detenido en España a petición de EE.UU.",
+   "En imágenes: los graves destrozos que dejó el potente terremoto que sacudió Panamá este viernes",
+   "Trump dice que \"es hora de que Ucrania tenga un nuevo presidente\", tras las críticas de Zelensky al acuerdo sobre el diésel entre EE.UU. y Rusia",
+   "Documental BBC: cómo sobreviven los niños en una Gaza devastada",
+   "Muere un hombre tras ser atacado por un tigre en un parque zoológico de Inglaterra"
+  ]
+ },
+ "br_ambito_mundo": {
+  "ok": true,
+  "total": 20,
+  "48h": 20,
+  "ej": [
+   "Brasil entra en la recta final hacia el balotaje: las claves de la elección entre Lula da Silva y Flávio Bolsonaro",
+   "Un nuevo ataque en Riad con misiles provocó destrozos y escala la tensión en Medio Oriente",
+   "Panamá declaró el estado de emergencia total tras el terremoto de 7,7 grados que tuvo más de 100 réplicas",
+   "Donald Trump sin límites: ahora quiere rebautizar un océano y propuso ponerle su nombre",
+   "Cómo será la operación del papa León XIV por un nódulo pulmonar y cuánto tiempo tardará en recuperarse",
+   "Donald Trump aseguró que Rusia y Ucrania acordaron un \"alto el fuego energético\"",
+   "Reportan 12 muertos tras un ataque contra el aeropuerto de Riad, en Arabia Saudita",
+   "Otra devastadora inundación en Nepal: el río arrasó 40 casas y dejó al menos cinco desaparecidos",
+   "Los detalles de la operación de nódulo de León XIV: cuándo es la cirugía y cuánto durará la recuperación",
+   "Gemelli, el hospital de los Papas: del atentado a Juan Pablo II y el antecedente de Francisco a la operación de León XIV",
+   "La salud del papa León XIV: qué dijeron Giorgia Meloni, jefes de Estado y la prensa internacional",
+   "Así fue el anuncio del papa León XIV de la operación de nódulo en el pulmón",
+   "La salud del papa León XIV: será operado de un nódulo pulmonar y qué pasará con su visita a la Argentina, Uruguay y Perú",
+   "Preocupación por la salud del papa León XIV: será operado de un nódulo en el pulmón, en la previa al viaje a la Argentina",
+   "Horror en EEUU: un hombre mató a ocho personas, siete de ellas de su familia, y se suicidó",
+   "Shell usará drones en sus plataformas petroleras para reducir daños de huracanes",
+   "La campaña de Lula da Silva denunció una supuesta interferencia de Meta a favor de Flávio Bolsonaro",
+   "Ucrania atacó una petrolera en Rusia y Donald Trump reclamó la salida de Volodimir Zelenski",
+   "Christa Pike fue dada de alta luego de sobrevivir a dos inyecciones letales",
+   "Donald Trump reclamó el Nobel de la Paz y volvió a atribuirse el \"fin de ocho guerras\""
+  ]
+ },
+ "br_infobae_eco": {
+  "ok": true,
+  "total": 100,
+  "48h": 34,
+  "ej": [
+   "Una plataforma de predicciones incluyó a Milei y a Reidel entre los economistas que podrían llevarse el premio Nobel 2026",
+   "Sobreajuste, anemia de inversión, lagunas financieras: Cavallo consideró “excelente” un informe con duras críticas al plan económico",
+   "Por tercer año consecutivo: Milei reedita los “superávits gemelos” de los primeros años del kirchnerismo",
+   "Por qué el riesgo país sigue atado a una alta volatilidad pese a la baja reciente",
+   "Cuáles son las ciudades más caras del país para viajar en colectivo y en qué lugar del ranking figura el AMBA",
+   "Denuncian un bajo control de la pesca en el Mar Argentino, mientras Malvinas y China participan de un acuerdo sobre una especie clave",
+   "Por qué los comercios enfrentan su Día de la Madre más desafiante en años",
+   "Una provincia vive el mes más grande de su historia minera: se estrenan cuatro plantas de litio por USD 2.000 millones",
+   "Qué modelos icónicos podrían llegar a Argentina en 2027 debido a los nuevos valores para importar autos eléctricos",
+   "Cómo será la revolución del “comercio agéntico”: la IA ya dejó de sugerir productos y empezó a decidir las compras",
+   "Milei llevó al Gabinete el debate sobre el tipo de cambio: ¿puede crecer Argentina con un dólar bajo?",
+   "Clima de Negocios: el “efecto Peter Thiel” y cómo Argentina se volvió atractiva para una polémica élite de magnates libertarios",
+   "Ingresos Brutos: la industria pone la mira en las provincias y busca impulsar un nuevo pacto fiscal en el año de elecciones",
+   "Lorena Giorgio, de Equilibra: “La economía no ayuda a ganar las elecciones de 2027”",
+   "Mora bajo la lupa",
+   "El atraso cambiario no es un mito: es un ancla con cambio de contexto exportador",
+   "La estrategia silenciosa que separa a las empresas que sobreviven de las que quedan atrapadas en la crisis",
+   "Como un cohete: la suba del valor de la firma espacial de Jeff Bezos lo disparó al segundo lugar entre los más ricos del mundo",
+   "El oro de la polémica: reservas, “error de cálculo”, acusaciones y otras claves del fuerte cruce entre el BCRA y la AGN",
+   "Inflación, mora y tasas reales de interés, las claves que definirán el futuro del crédito",
+   "En Silicon Valley, Miguel Galuccio destacó el potencial aporte de la Argentina a “la resiliencia global de la infraestructura digital”",
+   "El gobierno emparejará el reparto del cupo de autos híbridos y eléctricos importados libres de arancel",
+   "¿Los datos oficiales no reflejan la realidad económica?: cómo lee el Gobierno las cifras del Indec y la mirada de los economistas",
+   "“Nada que ver”: el economista que Milei invitó a una reunión de Gabinete explicó que no presentó un plan económico alternativo",
+   "De salarios por debajo de una canasta básica a empleos que pagan millones: los trabajos mejor y peor pagos en cada provincia"
+  ]
+ },
+ "br_cnn_es": {
+  "ok": false,
+  "err": "<HTTPError 404: 'OK'>"
+ },
+ "br_dw_lat": {
+  "ok": false,
+  "err": "ParseError('syntax error: line 1, column 0')"
+ },
+ "us_elpais_us": {
+  "ok": true,
+  "total": 104,
+  "48h": 82,
+  "ej": [
+   "Abdul El-Sayed, la apuesta más arriesgada de los demócratas para las elecciones: “Habrá que exigir responsabilidades a Trump por todo el mal que ha hecho”",
+   "Trump anuncia una tregua energética de carácter “inmediato” entre Rusia y Ucrania",
+   "La oleada de ataques hutíes contra aeropuertos de Arabia Saudí impulsa otra escalada que puede arrastrar a Trump",
+   "Mark Galeotti, experto en crimen organizado: “Hemos creado una sociedad cíborg a gran escala en la que todos nuestros datos son vulnerables”",
+   "‘Los siete de Cornell’: expertos advierten del “vacío legal” que pesa sobre el caso de la violación grupal",
+   "Un conflicto nuclear y el uso malicioso de la inteligencia artificial se cuelan entre las amenazas para la salud mundial: “Sería un apocalipsis”",
+   "El Departamento de Justicia  de EE UU investiga la cobertura de Trump de las cadenas de televisión",
+   "El huracán ‘Simón’ se degrada a categoría 3 frente a las costas de Jalisco",
+   "Lula saca a la calle una marea roja para emprender la remontada y ganar las elecciones",
+   "“El mejor amigo del pueblo judío en el mundo”: el giro exprés de Colombia hacia Israel",
+   "La rabia contra las instituciones tras una década de macronismo incendia Francia",
+   "El Papa anuncia que tiene un nódulo en un pulmón y va a ser operado",
+   "Las familias israelíes buscan descendencia en el esperma extraído de los cadáveres de sus hijos",
+   "A tortas por el dinero de los ricos: un negocio de 10.000 millones en comisiones que ningún banco se quiere perder",
+   "Entre el racismo y la glorificación: así estudia la medicina boliviana al indígena",
+   "Más allá de Instagram: el yoga llega a hospitales y cárceles",
+   "Kevin Bacon: “Sigo pensando al 100% en mejorar, trascender y hacer algo impactante”",
+   "De aquel Brad Pitt a Jacob Elordi: ¿puede volver la perilla?",
+   "Médiums, horóscopo, tarot…, ¿cuánto tiene que ver el auge del misticismo pop con el individualismo neoliberal?",
+   "Un día de chicas para lobas y ‘minishakis’",
+   "Burnham devuelve a una mayoría de británicos el sueño del regreso a la UE",
+   "“No ayudes al enemigo”: Kiev alerta a Europa del peligro de la guerra híbrida rusa",
+   "Una ejecución en 18 segundos: una conversación telefónica fue la sentencia de muerte de Natalia",
+   "August Hanning, el espía alemán que se vendía al mejor postor",
+   "“Que nos dejen, que se vayan”: líderes indígenas claman contra proyectos de conservación de la naturaleza que les expulsan de sus tierras"
+  ]
+ },
+ "us_france24": {
+  "ok": true,
+  "total": 30,
+  "48h": 0,
+  "ej": []
+ },
+ "us_infobae_eeuu": {
+  "ok": true,
+  "total": 100,
+  "48h": 49,
+  "ej": [
+   "El mercado secreto de Palm Beach: mansiones de hasta USD 300 millones se venden fuera de los registros públicos",
+   "Cuánto cuesta cumplir el ‘sueño americano’ en Estados Unidos: vivienda, hijos, universidad y retiro superan los USD 5,3 millones",
+   "Los dulces de Halloween subieron 8,1 % en Estados Unidos: cuánto gastarán las familias y cómo buscan ahorrar",
+   "Cómo cuatro personas lograron salir de la calle y reconstruir sus vidas en Los Ángeles",
+   "El éxodo de la generación Z: California perdió 58.109 jóvenes y casi 20.000 se mudaron a Texas",
+   "Las solicitudes de subsidio por desempleo disminuyeron ligeramente por cuarta semana consecutiva",
+   "Cinco familiares murieron en un aparente homicidio seguido de suicidio en el sur de Georgia",
+   "La última ejecución pública de Estados Unidos dejó 20.000 testigos y una ciudad avergonzada: así fue el ahorcamiento de 1936 que cambió la historia",
+   "Donald Trump anunció un alto el fuego energético entre Rusia y Ucrania: “No lo rompan”",
+   "Más de 390.000 viviendas sin electricidad en Florida y Alabama debido al huracán 'Isaías'",
+   "El Departamento de Justicia investiga a cinco cadenas de televisión por posible violación de leyes antimonopolio",
+   "Un sheriff y un exsheriff fueron acusados de obstrucción de la Justicia por interferir en el juicio de la mujer que mató a su esposo con fentanilo",
+   "Alerta en Hollywood: la participación de Estados Unidos en la producción global de cine se redujo a la mitad en 25 años",
+   "El huracán 'Isaías' pierde intensidad tras dejar cuatro muertos y fuertes inundaciones en el sureste de EEUU",
+   "Columbus Day 2026: qué estará cerrado el lunes 12 de octubre y qué servicios seguirán funcionando",
+   "El asesino que aterrorizó San Francisco mató por última vez hace 57 años y nunca fue identificado",
+   "Murciélago muerto da positivo para rabia y suma el segundo caso en un mismo condado en un mes",
+   "EN VIVO: El huracán Isaías se debilitó tras tocar tierra pero todavía hay riesgo de inundaciones, deslizamientos y tornados",
+   "Resultados Lotería Powerball: números ganadores del sábado 10 de octubre de 2026",
+   "“No me importa ir a la cárcel”: revelan el video del niño de 6 años que disparó a su maestra en Virginia en 2023",
+   "La administración Trump propone una tarifa de USD 70.000 para estudiantes internacionales que busquen trabajar en Estados Unidos",
+   "Ron DeSantis suspendió por primera vez en su mandato una ejecución en Florida: el condenado padece demencia e insuficiencia cardíaca",
+   "Un agente de policía murió y otro recibió 12 disparos en un tiroteo en Filadelfia",
+   "Retiran más de 4,4 millones de cepillos para parrilla por riesgo de lesiones internas: qué deben hacer los consumidores",
+   "Fue al médico por el corazón y le encontraron un cáncer de páncreas a tiempo para operarlo"
+  ]
+ }
+}
