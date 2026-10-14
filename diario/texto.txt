@@ -1,14 +1,14 @@
-Dólar a las 12:01 · 14/10/2026
+Dólar hoy · 14/10/2026
 
-Oficial: $1.535,57 (0,0%)
-MEP: $1.540,15 (+0,0%)
-CCL: $1.611,86 (−0,0%)
-Blue: $1.550,00 (0,0%)
+Oficial: $1.535,60 (+0,0%)
+MEP: $1.538,28 (−0,1%)
+CCL: $1.616,01 (+0,2%)
+Blue: $1.555,00 (+0,3%)
 
-Brecha CCL: 5,0%
-Riesgo país: 594 pb (−3)
-Reservas: US$ 49.323 M (08/10)
-Compras del BCRA: +45 M (07/10); en 2026: +14.809 M
+Brecha CCL: 5,2%
+Riesgo país: 595 pb (−2)
+Reservas: US$ 49.709 M (09/10)
+Compras del BCRA: +43 M (08/10); en 2026: +14.852 M
 
 Todo el tablero: pulsomacro.com.ar
 #dolar #economia #Argentina #riesgopais
