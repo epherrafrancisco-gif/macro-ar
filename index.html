@@ -22,9 +22,16 @@
 .mbar,.msheet{display:none}
 @media (max-width:640px){
   .mbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(14,19,25,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
-  .mb1{display:flex;align-items:center;gap:10px;height:50px}
-  .mlogo{font-weight:700;font-size:17px;color:var(--ink);text-decoration:none;flex:none}.mlogo span{font-family:var(--mono);color:var(--accent)}
-  .mwhere{flex:1;min-width:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mwhere b{color:var(--ink);font-weight:600}
+  .mb1{display:flex;align-items:center;gap:10px;min-height:58px;padding-block:6px}
+  .mhome{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--ink);text-decoration:none;font-size:10.5px;font-weight:600;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px 9px}
+  .mhome svg{width:19px;height:19px}
+  body.mporta .mhome{display:none}
+  .mwhere{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15}
+  .mwhere small{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .mwhere b{font-size:17px;color:var(--ink);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+  .mwhere b svg{width:18px;height:18px;flex:none;color:var(--accent)}
+  .mwhere .mbrand{font-size:20px;font-weight:700;color:var(--ink)}.mwhere .mbrand span{font-family:var(--mono);color:var(--accent)}
+  .midx::before{content:"En esta sección:";flex:none;font-size:11.5px;color:var(--muted);align-self:center;padding-right:2px}
   .mbtn{flex:none;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:7px 12px;font:600 13px var(--sans)}
   .mbtn svg{width:15px;height:15px}
   .midx{display:flex;gap:6px;overflow-x:auto;padding:0 0 9px;scrollbar-width:none}.midx::-webkit-scrollbar{display:none}.midx:empty{display:none}
@@ -47,7 +54,7 @@
   body.insec .quotes.compact .q .name .info{display:none}
   body.insec .quotes.compact .q{order:5}body.insec .quotes.compact .q:nth-child(1){order:1}body.insec .quotes.compact .q:nth-child(5){order:2}body.insec .quotes.compact .q:nth-child(3){order:3}
   body.insec .quotes.compact .q .row{gap:0}
-  [data-mid]{scroll-margin-top:104px}
+  [data-mid]{scroll-margin-top:124px}
 }
 </style>
 </head>
@@ -506,7 +513,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 <div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
 <div class="tape tape3" id="tape3" role="marquee" aria-label="Bolsas abiertas y cerradas ahora"><div class="tape-in" id="tape3In"></div></div>
 <div class="mbar" id="mbar">
-  <div class="mb1"><a href="#" class="mlogo" id="mLogo" aria-label="Ir a la portada">Pulso<span>Macro</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button></div>
+  <div class="mb1"><a href="#" class="mhome" id="mLogo" aria-label="Volver al inicio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg><span>Inicio</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button></div>
   <nav class="midx" id="mIdx" aria-label="Ir a"></nav>
 </div>
 <div class="msheet" id="mSheet" hidden><div class="ms-in" id="msIn"></div></div>
@@ -2753,10 +2760,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let mIdxT;
   function mActualizar(){
     const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab, dentro = tab!=='portada';
-    document.body.classList.toggle('insec', dentro);
-    $('quotes').classList.toggle('compact', dentro && tab!=='dolares');
+    document.body.classList.toggle('insec', true); document.body.classList.toggle('mporta', !dentro);
+    $('quotes').classList.toggle('compact', tab!=='dolares');
     const grupo = ARG_T.includes(tab) ? 'Argentina' : PAISES_T.includes(tab) ? 'Países' : (tab==='global' ? 'El mundo' : '');
-    $('mWhere').innerHTML = !dentro ? 'Portada' : (grupo ? `${grupo} › ` : '') + `<b>${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
+    $('mWhere').innerHTML = !dentro ? '<span class="mbrand">Pulso<span>Macro</span></span>' : `<small>${grupo || (tab==='sobre' ? 'Pulso Macro' : 'El mundo')}</small><b>${ICO[key] ? ico(key) : ''}${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
     clearTimeout(mIdxT); mIdxT = setTimeout(mIndice, 350);
   }
   function mIndice(){
