@@ -2913,8 +2913,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gInit(){
     if(G.loading) return G.loading;
     G.loading = (async ()=>{
-      await gLoadScript('https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js');
-      await gLoadScript('https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js');
+      await gLoadScript('vendor/d3-7.8.5.min.js');
+      await gLoadScript('vendor/topojson-3.0.2.min.js');
       const topo = await (await fetch('world.json')).json();
       G.feats = topojson.feature(topo, topo.objects.countries).features.filter(f=>f.id);
       G.borders = topojson.mesh(topo, topo.objects.countries, (a,b)=>a!==b);

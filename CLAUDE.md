@@ -166,7 +166,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
-  el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 de cdnjs, solo al abrir la pestaña. Mapa `world.json`.
+  el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
 - Reloj de mercados 24 h (`renderReloj`, `gEstado`, `gProx`, lista `GEX` sin feriados).
 - `gMundoExtra`: ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`, fechas de anuncio
   cargadas a mano hasta dic-2027; Banxico solo 2026: agregar 2027 cuando lo publique), bonos a 10 años vs EE.UU.
@@ -243,8 +243,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 ## Entorno de Claude
 - La terminal no tiene internet salvo GitHub: las fuentes se miran con WebFetch y la prueba real es correr el workflow
   (un push a los scripts dispara `global.yml`). `env -u GH_TOKEN gh api repos/...` sirve para leer (repo público).
-- Para probar la página: servidor local en el repo y Playwright con Chromium de `/opt/pw-browsers`; d3/topojson y
-  fuentes no cargan desde la red: servirlos locales con `page.route`.
+- Para probar la página: servidor local en el repo y Playwright con Chromium de `/opt/pw-browsers`; las fuentes de Google
+  no cargan desde la red (d3/topojson ya están en `vendor/`).
 
 ## Decisiones del dueño (no volver a proponer)
 - Descartados: calendario de vencimientos de deuda, "BSTEP", balanza cambiaria, liquidación del agro, gráfico histórico
