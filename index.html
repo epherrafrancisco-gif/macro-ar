@@ -17,7 +17,39 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <!-- Contador de visitas privado (GoatCounter; sin cookies). Las pestañas y los eventos se cuentan a mano desde el script. -->
 <script data-goatcounter="https://macroar.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="//gc.zgo.at/count.js"></script>
-<style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}
+/* ---- celular: barra fija, hoja de secciones, dólares compactos e índice ---- */
+.mbar,.msheet{display:none}
+@media (max-width:640px){
+  .mbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(14,19,25,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+  .mb1{display:flex;align-items:center;gap:10px;height:50px}
+  .mlogo{font-weight:700;font-size:17px;color:var(--ink);text-decoration:none;flex:none}.mlogo span{font-family:var(--mono);color:var(--accent)}
+  .mwhere{flex:1;min-width:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mwhere b{color:var(--ink);font-weight:600}
+  .mbtn{flex:none;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:7px 12px;font:600 13px var(--sans)}
+  .mbtn svg{width:15px;height:15px}
+  .midx{display:flex;gap:6px;overflow-x:auto;padding:0 0 9px;scrollbar-width:none}.midx::-webkit-scrollbar{display:none}.midx:empty{display:none}
+  .midx a{flex:none;font-size:12.5px;color:var(--ink2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:var(--surface)}
+  .midx a.on{border-color:var(--accent);color:var(--ink)}
+  .msheet{display:block;position:fixed;inset:0;z-index:60;background:rgba(5,8,12,.7)}.msheet[hidden]{display:none}
+  .ms-in{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;background:var(--bg);border-top:1px solid var(--line);border-radius:18px 18px 0 0;padding:14px max(16px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+  .ms-h{display:flex;justify-content:space-between;align-items:center}.ms-h b{font-size:17px}.ms-h button{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;width:34px;height:34px;font-size:16px}
+  .ms-in h4{margin:4px 0 0;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .ms-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .ms-g a{display:flex;align-items:center;gap:8px;padding:11px 12px;border-radius:11px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;min-width:0}
+  .ms-g a svg{width:18px;height:18px;flex:none;color:var(--accent)}
+  .ms-g a.on{border-color:var(--accent);background:rgba(106,168,216,.14)}
+  body.insec header,body.insec #tape2,body.insec #tape3,body.insec #live,body.insec #crumb,body.insec #tabsNav,body.insec #paisPanel,body.insec .flhome{display:none!important}
+  body.insec .quotes.compact{display:flex;overflow-x:auto;gap:8px;scrollbar-width:none;margin-inline:-2px;padding:2px}
+  body.insec .quotes.compact::-webkit-scrollbar{display:none}
+  body.insec .quotes.compact .q{flex:0 0 auto;padding:7px 11px;gap:1px}
+  body.insec .quotes.compact .q .cv,body.insec .quotes.compact .q .when,body.insec .quotes.compact .q .row .chip+.chip{display:none}
+  body.insec .quotes.compact .q .v{font-size:17px}
+  body.insec .quotes.compact .q .name .info{display:none}
+  body.insec .quotes.compact .q{order:5}body.insec .quotes.compact .q:nth-child(1){order:1}body.insec .quotes.compact .q:nth-child(5){order:2}body.insec .quotes.compact .q:nth-child(3){order:3}
+  body.insec .quotes.compact .q .row{gap:0}
+  [data-mid]{scroll-margin-top:104px}
+}
+</style>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -473,6 +505,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 <div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
 <div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
 <div class="tape tape3" id="tape3" role="marquee" aria-label="Bolsas abiertas y cerradas ahora"><div class="tape-in" id="tape3In"></div></div>
+<div class="mbar" id="mbar">
+  <div class="mb1"><a href="#" class="mlogo" id="mLogo" aria-label="Ir a la portada">Pulso<span>Macro</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button></div>
+  <nav class="midx" id="mIdx" aria-label="Ir a"></nav>
+</div>
+<div class="msheet" id="mSheet" hidden><div class="ms-in" id="msIn"></div></div>
 <div class="wrap">
   <header>
     <div class="brand">
@@ -2685,9 +2722,56 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
     $('segRange').hidden = ['actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].includes(tab);
-    try{ if(selA) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
+    try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
+    mActualizar();
   }
+
+  // ---- celular: barra fija con dónde estás, hoja de secciones e índice de la sección ----
+  const mobil = () => matchMedia('(max-width:640px)').matches;
+  function mSheetArmar(){
+    const it = (k, href) => `<a href="#${href||k}" data-k="${k}">${ico(k)}${SECC[k][0]}</a>`;
+    $('msIn').innerHTML = `<div class="ms-h"><b>Secciones</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>
+      <div class="ms-g"><a href="#" data-k="portada"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/></svg>Inicio</a>${it('sobre')}</div>
+      <h4>Argentina</h4><div class="ms-g">${ARG_T.map(k=>it(k)).join('')}</div>
+      <h4>El mundo</h4><div class="ms-g">${it('global')}${it('eeuu')}</div>
+      <h4>Países</h4><div class="ms-g">${PAISES_T.map(k=>it(k)).join('')}</div>`;
+    $('msX').addEventListener('click', ()=>mSheet(false));
+    $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
+      e.preventDefault(); mSheet(false); const k = a.dataset.k;
+      if(k==='portada') irPortada(); else { history.pushState(null,'','#'+k); setTab(k); }
+      scrollTo({top:0}); gcUna('menu-celular');
+    }));
+  }
+  function mSheet(on){ $('mSheet').hidden = !on; $('mBtn').setAttribute('aria-expanded', String(on)); document.documentElement.style.overflow = on ? 'hidden' : '';
+    if(on){ const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab; $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.classList.toggle('on', a.dataset.k===key)); } }
+  $('mBtn').addEventListener('click', ()=>mSheet(true));
+  $('mSheet').addEventListener('click', e=>{ if(e.target.id==='mSheet') mSheet(false); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('mSheet').hidden) mSheet(false); });
+  $('mLogo').addEventListener('click', e=>{ e.preventDefault(); irPortada(); });
+  mSheetArmar();
+  let mIdxT;
+  function mActualizar(){
+    const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab, dentro = tab!=='portada';
+    document.body.classList.toggle('insec', dentro);
+    $('quotes').classList.toggle('compact', dentro && tab!=='dolares');
+    const grupo = ARG_T.includes(tab) ? 'Argentina' : PAISES_T.includes(tab) ? 'Países' : (tab==='global' ? 'El mundo' : '');
+    $('mWhere').innerHTML = !dentro ? 'Portada' : (grupo ? `${grupo} › ` : '') + `<b>${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
+    clearTimeout(mIdxT); mIdxT = setTimeout(mIndice, 350);
+  }
+  function mIndice(){
+    const idx = $('mIdx'); if(!mobil() || tab==='portada'){ idx.innerHTML=''; return; }
+    const view = document.getElementById(TABS[tab][1]); if(!view){ idx.innerHTML=''; return; }
+    const hs = [...view.querySelectorAll('.card > .head > h2, .card > h2')].filter(h=>h.offsetParent!==null && h.textContent.trim());
+    let n = 0;
+    idx.innerHTML = hs.slice(0,14).map(h=>{ const card = h.closest('.card'); card.dataset.mid = 'm'+(++n);
+      const t = h.childNodes[0] && h.childNodes[0].nodeType===3 ? h.childNodes[0].textContent : h.textContent;
+      return `<a href="#" data-to="m${n}">${esc(t.trim().replace(/\s+/g,' ').slice(0,30))}</a>`; }).join('');
+    idx.querySelectorAll('a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const c = document.querySelector(`[data-mid="${a.dataset.to}"]`); if(c) c.scrollIntoView({behavior:'smooth', block:'start'}); }));
+  }
+  addEventListener('scroll', ()=>{ if(!mobil()) return; const as = [...$('mIdx').querySelectorAll('a')]; if(!as.length) return;
+    let cur = null; for(const a of as){ const c = document.querySelector(`[data-mid="${a.dataset.to}"]`); if(c && c.getBoundingClientRect().top < 140) cur = a; }
+    as.forEach(a=>a.classList.toggle('on', a===cur)); if(cur && !cur._v){ as.forEach(x=>x._v=false); cur._v=true; cur.scrollIntoView({block:'nearest', inline:'center'}); } }, {passive:true});
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
   window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
   const irPortada = ()=>{ history.pushState(null,'',location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
@@ -4056,7 +4140,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k);
     if(k==='M' && sel==='explorar') xpStart();
     if(k==='M' && sel==='economias') renderComparador(); }
-  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k);
+  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mIndice==='function') mIndice(); }, 400);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
