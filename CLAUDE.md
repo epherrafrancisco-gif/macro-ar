@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`PAISES_T`, `data-g="pais"`; un país nuevo se agrega ahí y en `PAISES_T`), recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
-  `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
+  `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#ganaderia`, `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
   `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia` y `#peru`; `#sobre`.
 - Celular (≤640px, también en la portada: `body.insec` siempre y `body.mporta` en la portada): barra fija `#mbar` con
@@ -62,6 +62,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   corridos 5 meses atrás por el rezago del INDEC), desocupación EPH trimestral, canasta básica total y alimentaria × 3,09
   (familia tipo). En Macro, "Inflación por rubro" (`renderRubros`, `RUB`: 12 divisiones + núcleo/regulados/estacionales).
   La API de datos.gob.ar devuelve meses vacíos al azar: el script pide cada serie sola, reintenta y junta con lo guardado.
+- Ganadería (`#ganaderia`, `vGa`, `renderGanaderia`, `loadGan`; datos `ganaderia.json` de scripts/ganaderia.py, workflow
+  `ganaderia.yml` L a V 13:40, 16:40 y 19:40 ART): Mercado Agroganadero de Cañuelas (ex Liniers; `haciinfo000002` con
+  txtFechaIni/Fin, latin-1; opera casi siempre martes, miércoles y viernes; días sin remate en `sin_operaciones`; provisorio
+  hasta la tarde, `def`), ~400 días; pizarra de la CAC Rosario (UTF-8, solo el día: la historia se arma guardando, desde
+  15/10/2026). Carne al consumidor (`c_*` GBA, `rp_*` picada por región), faena trimestral `faena_t` (la mensual 41.3_FCV
+  viene vacía en la API) e IPI carne vacuna `ipi_carne` vienen de actividad.json. Novillo/maíz = novillo $/kg ÷ maíz $/kg.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
   data912 desde el navegador cada 10 min), AL30/GD30 con TIR y paridad.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).

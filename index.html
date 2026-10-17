@@ -478,6 +478,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .dh h2{margin:0;font-size:24px;font-weight:700}.dh p{margin:2px 0 0;color:var(--ink2);font-size:14px}
 .cmpsel{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:4px 0 12px}.cmpsel select{width:100%;min-width:0;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}.cmpsel select:focus{outline:2px solid var(--accent);border-color:var(--accent)}.cmpsel button{background:var(--sunk);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:16px;cursor:pointer}
 .cmpt{width:100%;table-layout:fixed}.cmpt td,.cmpt th{text-align:right;vertical-align:top;white-space:normal}.cmpt td:first-child{font-family:var(--sans);font-size:13.5px;width:34%}@media (max-width:520px){.cmpt td,.cmpt th{padding:7px 5px}.cmpt td b{font-size:15px}}.cmpt td:first-child,.cmpt th:first-child{text-align:left}.cmpt td b{font-size:17px;display:block}.cmpt td small{color:var(--muted);font-size:11.5px;display:block;font-family:var(--sans)}.cmpt td.w b{color:var(--pos)}
+.gaday{display:flex;align-items:center;gap:8px}.gaday select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 9px}
+.gatab{min-width:620px}.gatab td:first-child{text-align:left}.gatab tr.gt td{font-weight:700;color:var(--ink);border-top:1px solid var(--line)}.gatab tr.gt td:first-child{color:var(--accent)}.gatab tr:not(.gt) td:first-child{padding-left:20px}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tile{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;background:var(--sunk);border:1px solid var(--line);border-radius:11px;padding:13px 14px;text-decoration:none;color:var(--ink);min-height:70px}
 .tile:hover,.tile:focus-visible{border-color:#74acdf;background:#162231}.gl .tile:hover,.gl .tile:focus-visible{border-color:#3fd0c0;background:#0f2422}
@@ -543,6 +545,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#dinero" role="tab" id="tabN" data-g="arg" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" data-g="arg" aria-selected="false">Fiscal</a>
       <a href="#actividad" role="tab" id="tabA" data-g="arg" aria-selected="false">Actividad</a>
+      <a href="#ganaderia" role="tab" id="tabGa" data-g="arg" aria-selected="false">Ganadería</a>
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
@@ -716,6 +719,52 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Canasta básica de una familia tipo</h2><div class="legend" id="lgCan"></div></div><div class="chart" id="chCan"></div><p class="note" id="nCan"></p></div>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="actividad-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Actividad, salarios y canasta</button></div>
+  </section>
+
+  <!-- GANADERÍA -->
+  <section class="view" id="vGa" hidden>
+    <div class="kpis" id="kpisGa"></div>
+    <div class="card">
+      <div class="head"><h2>Precios de hoy en Cañuelas (ex Liniers)</h2><div class="gaday"><label for="gaFecha" class="note">Día</label><select id="gaFecha"></select></div></div>
+      <p class="sub" id="gaHoyS"></p>
+      <div class="tablewrap"><table class="gatab"><thead><tr><th>Categoría</th><th>Promedio</th><th>Cabezas</th><th>Mínimo</th><th>Máximo</th><th>Mediana</th><th>Kg por cabeza</th></tr></thead><tbody id="gaHoy"></tbody></table></div>
+      <p class="note">Pesos por kilo vivo, en el Mercado Agroganadero de Cañuelas (ex Mercado de Liniers), la referencia de precios de la hacienda del país. En negrita, el promedio ponderado de cada categoría y el total de cabezas. EyB: especiales y buenos. MEJ: machos enteros jóvenes. Los precios del día salen provisorios y quedan definitivos a la tarde. Fuente: Mercado Agroganadero S.A.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Precio de la hacienda por categoría</h2><div class="legend" id="lgGaEv"></div></div>
+      <div class="seg calcsel" id="gaMon" role="tablist" aria-label="Moneda">
+        <button type="button" data-gm="ars" aria-selected="true">Pesos</button>
+        <button type="button" data-gm="real" aria-selected="false">Pesos de hoy</button>
+        <button type="button" data-gm="usd" aria-selected="false">Dólares</button>
+      </div>
+      <div class="chart" id="chGaEv"></div>
+      <p class="note" id="gaEvN"></p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Cabezas vendidas por semana</h2><span class="note">Mercado Agroganadero</span></div><div class="chart" id="chGaCab"></div><p class="note" id="gaCabN"></p></div>
+      <div class="card"><div class="head"><h2>Qué se vende</h2><span class="note" id="gaMixS"></span></div><div class="chart" id="chGaMix"></div><p class="note">Porcentaje de las cabezas vendidas en las últimas cuatro semanas, por categoría. Más vacas en la oferta suele indicar que se está liquidando el rodeo (se faenan las madres).</p></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Del campo al mostrador</h2><div class="legend" id="lgGaCm"></div></div>
+      <div class="stats" id="gaCmSt"></div>
+      <div class="chart" id="chGaCm"></div>
+      <p class="note">Cuántos kilos de novillo en pie hacen falta para pagar un kilo de cada corte en la carnicería (precio del corte en GBA, INDEC ÷ precio promedio del mes del novillo en Cañuelas). Si sube, la carne en el mostrador se encarece más que la hacienda: se agranda el margen de la industria y la carnicería, o bajó el precio del campo.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Carne en la carnicería</h2><div class="legend" id="lgGaCar"></div></div>
+      <div class="chart" id="chGaCar"></div>
+      <div class="tablewrap"><table style="min-width:520px"><thead><tr><th>Corte</th><th>Precio por kilo</th><th>En el mes</th><th>En 12 meses</th><th>Contra la inflación</th></tr></thead><tbody id="tGaCar"></tbody></table></div>
+      <p class="note" id="gaCarN"></p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Carne picada por región</h2><span class="note" id="gaRegS"></span></div><div class="chart" id="chGaReg"></div><p class="note">Precio promedio del kilo de carne picada común en cada región. Fuente: INDEC, precios medios al consumidor.</p></div>
+      <div class="card"><div class="head"><h2>Faena de vacunos</h2><span class="note">Miles de cabezas por trimestre</span></div><div class="stats" id="gaFaeSt"></div><div class="chart" id="chGaFae"></div><p class="note" id="gaFaeN"></p></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Relación novillo / maíz</h2><span class="note" id="gaNmS"></span></div><div class="stats" id="gaNmSt"></div><div class="chart" id="chGaNm"></div><p class="note">Cuántos kilos de maíz compra un kilo de novillo en pie (novillo en Cañuelas ÷ maíz pizarra en Rosario). Es la cuenta clave del engorde a corral: cuanto más alta, más conviene engordar con grano. Por encima de 12 se considera buena para el feedlot; por debajo de 8, mala.</p></div>
+      <div class="card"><div class="head"><h2>Granos en Rosario</h2><span class="note" id="gaPzS"></span></div><div class="tablewrap"><table class="minit"><thead><tr><th>Grano</th><th>$ por tonelada</th><th>US$ por tonelada</th><th>Chicago</th></tr></thead><tbody id="tGaPz"></tbody></table></div><p class="note">Precio pizarra de la Cámara Arbitral de Cereales de la Bolsa de Comercio de Rosario: lo que se paga por la mercadería disponible en Rosario. (E): estimado, ese día no hubo operaciones suficientes. Chicago: futuro más cercano, sin retenciones ni flete. La diferencia es lo que queda en el camino.</p></div>
+    </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="ganaderia-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Hacienda por día</button><button type="button" data-csv="ganaderia-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Carne, faena y novillo por mes</button></div>
   </section>
 
   <!-- MERCADO -->
@@ -2226,7 +2275,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadAct(){
     if(actLoading) return; actLoading = true;
     try{ const r = await fetch('actividad.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
-    actLoading = false; if(tab==='actividad' || tab==='macro') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
+    actLoading = false; if(tab==='actividad' || tab==='macro' || tab==='ganaderia') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
   }
   const RUB = [['alimentos','Alimentos'],['bebidas','Alcohol y tabaco'],['prendas','Ropa y calzado'],['vivienda','Vivienda y servicios'],['equipamiento','Equipamiento hogar'],
     ['salud','Salud'],['transporte','Transporte'],['comunicacion','Comunicación'],['recreacion','Recreación'],['educacion','Educación'],['restaurantes','Restaurantes'],['varios','Otros']];
@@ -2300,6 +2349,108 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       {aria:'Canasta básica de una familia tipo', labW:64, l:60, yfmt:v=>'$ '+nf(v/1e6,1)+' M', vfmt:v=>'$ '+nf(v,0), xfmt:fmes, tfmt:fmes});
     if(cl){ const a12 = cb.find(p=>p[0]===mAdd(cl[0],-12));
       $('nCan').textContent = `Pesos por mes que necesita un hogar de dos adultos y dos chicos (6 y 8 años) para no ser pobre o indigente, en GBA. ${fmes(cl[0])}: $ ${nf(cl[1]*FT,0)}${a12?`, ${sg((cl[1]/a12[1]-1)*100,1)}% en un año`:''}. Fuente: INDEC.`; }
+  }
+
+  // ---- GANADERÍA (ganaderia.json de scripts/ganaderia.py + carne y faena de actividad.json) ----
+  let gan = null, ganLoading = false, gaMoneda = 'ars', gaDia = null;
+  const GA_G = [['NOVILLITOS','Novillito','--s3'],['NOVILLOS','Novillo','--s1'],['VAQUILLONAS','Vaquillona','--s5'],['VACAS','Vaca','--s2'],['TOROS','Toro','--s4']];
+  const GA_CORTES = [['c_asado','Asado','--s2'],['c_nalga','Nalga','--s1'],['c_cuadril','Cuadril','--s5'],['c_paleta','Paleta','--s4'],['c_picada','Carne picada','--s3'],['c_pollo','Pollo entero','--ink2']];
+  async function loadGan(){
+    if(ganLoading) return; ganLoading = true;
+    try{ const r = await fetch('ganaderia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gan = await r.json(); }catch(e){}
+    ganLoading = false; if(tab==='ganaderia') renderGanaderia();
+  }
+  document.querySelectorAll('[data-gm]').forEach(b=>b.addEventListener('click', ()=>{ gaMoneda = b.dataset.gm; renderGanaderia(); }));
+  $('gaFecha').addEventListener('change', ()=>{ gaDia = $('gaFecha').value; renderGanaderia(); });
+  // dólar mayorista del día (o promedio del mes si no hay dato diario)
+  function gaDolar(){ const m = new Map(series('mayorista')), hm = new Map(hist.filter(x=>x.may).map(x=>[x.mes, x.may]));
+    return f => m.get(f) ?? (()=>{ for(let k=0;k<6;k++){ const d = new Date(T(f)-k*864e5).toISOString().slice(0,10); if(m.has(d)) return m.get(d); } return hm.get(f.slice(0,7)); })(); }
+  // promedio mensual (ponderado por kilos) de cada categoría
+  function gaMensual(){ const out = {}, acc = {};
+    for(const [f,h] of Object.entries(gan?.hacienda||{})){ const m = f.slice(0,7); for(const [g,v] of Object.entries(h.grupos||{})){ if(!v.kg) continue; const a = ((acc[m] ||= {})[g] ||= {imp:0, kg:0}); a.imp += v.imp; a.kg += v.kg; } }
+    for(const [m,gs] of Object.entries(acc)){ out[m] = {}; for(const [g,a] of Object.entries(gs)) out[m][g] = a.imp/a.kg; }
+    return out; }
+  function renderGanaderia(){
+    if(!gan){ loadGan(); $('kpisGa').innerHTML = '<div class="empty">Cargando datos de hacienda…</div>'; return; }
+    if(!act) loadAct(); if(!glob) loadGlobal();
+    const H = gan.hacienda || {}, fechas = Object.keys(H).sort(), L = a => a?.length ? a[a.length-1] : null;
+    if(!fechas.length){ $('kpisGa').innerHTML = '<div class="empty">Todavía no hay datos del mercado: se cargan en la próxima actualización.</div>'; return; }
+    const ult = L(fechas), hU = H[ult], dol = gaDolar(), cer = cerInfo();
+    const ser = g => fechas.filter(f=>H[f].grupos?.[g]?.prom).map(f=>[f, H[f].grupos[g].prom]);
+    const hace = (pts, n) => pts.length > n ? pts[pts.length-1-n] : null;
+    const t = [], pz = gan.pizarra || {}, pzF = Object.keys(pz).sort(), pzU = pzF.length ? pz[L(pzF)] : null;
+    for(const [g,n] of [['NOVILLITOS','Novillito'],['NOVILLOS','Novillo'],['VACAS','Vaca']]){ const s = ser(g), l = L(s); if(!l) continue; const w = hace(s,5), y = s.find(p=>p[0] >= String(+l[0].slice(0,4)-1)+l[0].slice(4));
+      t.push(tileK(n, '$ '+nf(l[1],0), 'por kg vivo', (w?chip(l[1]/w[1]-1,{d:1})+'<span class="chip eq">en la semana</span>':''), `${fd(l[0])}${y && y[0] <= String(+l[0].slice(0,4)-1)+l[0].slice(4,10).replace(/(\d\d)$/,(x)=>x) ? ` · ${pc(l[1]/y[1]-1,0)} en un año` : ''}`)); }
+    const nv = L(ser('NOVILLITOS')), d0 = nv ? dol(nv[0]) : null;
+    if(nv && d0) t.push(tileK('Novillito en dólares', 'US$ '+nf(nv[1]/d0,2), 'por kg vivo', '', `al dólar mayorista de ${fds(nv[0])}`));
+    t.push(tileK('Cabezas vendidas', nf(hU.total.cab,0), '', '', `${fd(ult)} · promedio general $ ${nf(hU.total.prom,0)}/kg`));
+    const as = L(act?.c_asado||[]); if(as){ const a12 = (act.c_asado||[]).find(p=>p[0]===mAdd(as[0],-12)); t.push(tileK('Asado en la carnicería', '$ '+nf(as[1],0), 'por kg', a12?chip(as[1]/a12[1]-1,{d:0,bad:true})+'<span class="chip eq">en 12 meses</span>':'', 'GBA · '+fmes(as[0])+' · INDEC')); }
+    const nov = ser('NOVILLOS').filter(p=>p[0]<=L(pzF)).pop(); if(nov && pzU?.maiz){ t.push(tileK('Relación novillo / maíz', nf(nov[1]/(pzU.maiz.ars/1000),1), 'kg de maíz', '', `por kg de novillo · ${fds(L(pzF))}`)); }
+    $('kpisGa').innerHTML = t.join('');
+    // tabla del día
+    if(!gaDia || !H[gaDia]) gaDia = ult;
+    $('gaFecha').innerHTML = fechas.slice(-30).reverse().map(f=>`<option value="${f}"${f===gaDia?' selected':''}>${fd(f)}${H[f].def?'':' (provisorio)'}</option>`).join('');
+    const hd = H[gaDia], dd = dol(gaDia);
+    $('gaHoyS').textContent = `${new Date(T(gaDia)).toLocaleDateString('es-AR',{weekday:'long', day:'numeric', month:'long', timeZone:'UTC'})} · precios ${hd.def?'definitivos':'provisorios'} · ${nf(hd.total.cab,0)} cabezas · promedio general $ ${nf(hd.total.prom,0)} por kg${dd?` (US$ ${nf(hd.total.prom/dd,2)})`:''}`;
+    const orden = ['NOVILLOS','NOVILLITOS','VAQUILLONAS','VACAS','TOROS','MEJ'], nomG = {NOVILLOS:'Novillos',NOVILLITOS:'Novillitos',VAQUILLONAS:'Vaquillonas',VACAS:'Vacas',TOROS:'Toros',MEJ:'MEJ'};
+    const m0 = v => v==null ? '—' : nf(v,0);
+    $('gaHoy').innerHTML = orden.filter(g=>hd.grupos[g]).map(g=>{ const fs = hd.filas.filter(f=>f.g===g), gg = hd.grupos[g];
+      return `<tr class="gt"><td>${nomG[g]}</td><td>${m0(gg.prom)}</td><td>${nf(gg.cab,0)}</td><td></td><td></td><td></td><td>${gg.kgc}</td></tr>`
+        + fs.map(f=>`<tr><td>${esc(f.cat.replace(new RegExp('^'+g+'\\s*','i'),'') || nomG[g])}</td><td>${m0(f.prom)}</td><td>${nf(f.cab,0)}</td><td>${m0(f.min)}</td><td>${m0(f.max)}</td><td>${m0(f.med)}</td><td>${f.kgc}</td></tr>`).join(''); }).join('');
+    // evolución
+    document.querySelectorAll('[data-gm]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.gm===gaMoneda)));
+    const conv = (f,v) => gaMoneda==='usd' ? (dol(f) ? v/dol(f) : null) : gaMoneda==='real' ? (cer.map[f.slice(0,7)] && cer.last ? v*cer.last/cer.map[f.slice(0,7)] : null) : v;
+    const ss = GA_G.map(([g,n,c])=>({n, c, pts: inRange(ser(g)).map(p=>[p[0], conv(p[0],p[1])]).filter(p=>p[1]!=null)}));
+    legend($('lgGaEv'), GA_G.map(([,n,c])=>({n, c})));
+    lineChart($('chGaEv'), ss, {aria:'Precio de la hacienda por categoría', labW:64, l:gaMoneda==='usd'?46:58, yfmt:v=>gaMoneda==='usd'?nf(v,1):nf(v,0), vfmt:v=>gaMoneda==='usd'?'US$ '+nf(v,2):'$ '+nf(v,0)});
+    $('gaEvN').textContent = gaMoneda==='usd' ? 'Promedio de cada categoría por kilo vivo, pasado a dólares con el mayorista de cada día.' : gaMoneda==='real' ? 'Promedio de cada categoría por kilo vivo, en pesos de hoy (ajustado por CER): si la línea baja, la hacienda se abarata contra la inflación.' : 'Promedio de cada categoría, en pesos por kilo vivo, de cada día de operación. El período se cambia con los botones de arriba (1M, 3M, 6M, 1A, Todo).';
+    // cabezas por semana (lunes a viernes)
+    const sem = {}; for(const f of fechas){ const d = new Date(T(f)); const lu = new Date(d - ((d.getUTCDay()+6)%7)*864e5).toISOString().slice(0,10); sem[lu] = (sem[lu]||0) + H[f].total.cab; }
+    const sk = Object.keys(sem).sort().slice(-26);
+    barChart($('chGaCab'), [{n:'Cabezas', c:'--s1', pts: sk.map(k=>[k, sem[k]])}], {aria:'Cabezas vendidas por semana', l:52, kfmt:k=>fds(k), yfmt:v=>nf(v/1000,0)+' mil', vfmt:v=>nf(v,0)+' cab.'});
+    $('gaCabN').textContent = sk.length ? `Semana del ${fds(L(sk))}: ${nf(sem[L(sk)],0)} cabezas. Cada barra arranca el lunes.` : '';
+    const ult20 = fechas.slice(-20), cabG = {}; let tot = 0; for(const f of ult20) for(const [g,v] of Object.entries(H[f].grupos)){ cabG[g] = (cabG[g]||0) + v.cab; tot += v.cab; }
+    $('gaMixS').textContent = `del ${fds(ult20[0])} al ${fds(L(ult20))}`;
+    hBars($('chGaMix'), orden.filter(g=>cabG[g]).map(g=>({n:nomG[g], v: cabG[g]/tot*100, c: (GA_G.find(x=>x[0]===g)||[,,'--muted'])[2]})).sort((a,b)=>b.v-a.v), {aria:'Cabezas por categoría', vfmt:v=>nf(v,1)+'%'});
+    // del campo al mostrador
+    const nm = gaMensual(), cortes = GA_CORTES.slice(0,5);
+    const rat = cortes.map(([k,n,c])=>({n, c, pts:(act?.[k]||[]).filter(p=>nm[p[0]]?.NOVILLOS).map(p=>[p[0], p[1]/nm[p[0]].NOVILLOS])}));
+    legend($('lgGaCm'), rat.filter(r=>r.pts.length).map(r=>({n:r.n, c:r.c})));
+    lineChart($('chGaCm'), rat, {aria:'Kilos de novillo por kilo de carne', labW:58, yfmt:v=>nf(v,1), vfmt:v=>nf(v,2)+' kg', xfmt:fmes, tfmt:fmes});
+    const ra = rat[0] && L(rat[0].pts);
+    $('gaCmSt').innerHTML = ra ? stc(`Un kilo de asado en ${MESL[+ra[0].slice(5)-1]}`, nf(ra[1],2)+' kg', 'de novillo en pie', '', true) + stc('Novillo, promedio del mes', '$ '+nf(nm[ra[0]].NOVILLOS,0), 'por kg vivo · Cañuelas') + stc('Asado', '$ '+nf((act.c_asado.find(p=>p[0]===ra[0])||[0,0])[1],0), 'por kg · GBA · INDEC') : '<div class="empty">Se arma cuando coinciden los meses de la hacienda y de los precios del INDEC.</div>';
+    // carnicería
+    const c3 = String(new Date().getFullYear()-3);
+    legend($('lgGaCar'), GA_CORTES.map(([,n,c])=>({n, c})));
+    lineChart($('chGaCar'), GA_CORTES.map(([k,n,c])=>({n, c, pts:(act?.[k]||[]).filter(p=>p[0]>=c3)})), {aria:'Precio de la carne en la carnicería', labW:64, l:56, yfmt:v=>nf(v/1000,0)+' mil', vfmt:v=>'$ '+nf(v,0), xfmt:fmes, tfmt:fmes});
+    const gm = new Map(act?.general||[]);
+    $('tGaCar').innerHTML = GA_CORTES.map(([k,n])=>{ const s = act?.[k]||[], l = L(s); if(!l) return ''; const mp = new Map(s), m1 = mp.get(mAdd(l[0],-1)), m12 = mp.get(mAdd(l[0],-12)), i0 = gm.get(mAdd(l[0],-12)), i1 = gm.get(l[0]);
+      const y = m12 ? l[1]/m12-1 : null, inf = i0&&i1 ? i1/i0-1 : null, r = y!=null&&inf!=null ? (1+y)/(1+inf)-1 : null;
+      return `<tr><td style="text-align:left">${n}</td><td>$ ${nf(l[1],0)}</td><td>${m1?pc(l[1]/m1-1,1):'—'}</td><td>${y!=null?pc(y,1):'—'}</td><td class="${r==null?'':r>0?'dn':'up'}">${r==null?'—':(r>0?'▲ ':'▼ ')+pc(r,1)}</td></tr>`; }).join('');
+    const ca = L(act?.c_asado||[]); $('gaCarN').textContent = ca ? `Precio promedio del kilo en el Gran Buenos Aires, ${MESL[+ca[0].slice(5)-1]} de ${ca[0].slice(0,4)} (el INDEC lo publica con un mes y medio de atraso). "Contra la inflación": cuánto subió por encima (rojo) o por debajo (verde) del IPC en 12 meses. Fuente: INDEC.` : '';
+    // regiones
+    const RG = [['rp_gba','GBA'],['rp_pampeana','Pampeana'],['rp_noa','NOA'],['rp_nea','NEA'],['rp_cuyo','Cuyo'],['rp_patagonia','Patagonia']];
+    const rgL = RG.map(([k,n])=>({n, l:L(act?.[k]||[])})).filter(x=>x.l), rgM = rgL.length ? rgL.map(x=>x.l[0]).sort().pop() : null;
+    $('gaRegS').textContent = rgM ? fmes(rgM) : '';
+    hBars($('chGaReg'), rgL.filter(x=>x.l[0]===rgM).map(x=>({n:x.n, v:x.l[1], c:'--s3'})).sort((a,b)=>b.v-a.v), {aria:'Carne picada por región', vfmt:v=>'$ '+nf(v,0)});
+    // faena (trimestral) y producción de carne vacuna (IPI, mensual)
+    const fa = (act?.faena_t||[]).slice(-12), fl = L(fa), ip = act?.ipi_carne||[], il = L(ip);
+    barChart($('chGaFae'), [{n:'Faena', c:'--s2', pts:fa}], {aria:'Faena de vacunos por trimestre', l:46, kfmt:qTxt, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mil cab.'});
+    const fy = fl && (act.faena_t||[]).find(p=>p[0]===mAdd(fl[0],-12)), iy = il && ip.find(p=>p[0]===mAdd(il[0],-12));
+    $('gaFaeSt').innerHTML = (fl ? stc('Último trimestre', nf(fl[1],0)+' mil', qTxt(fl[0])+(fy?' · '+pc(fl[1]/fy[1]-1,1)+' vs. un año':''), fy?(fl[1]>=fy[1]?'up':'dn'):'') : '') + (il ? stc('Producción de carne vacuna', iy?pc(il[1]/iy[1]-1,1):'—', `${fmes(il[0])} contra un año antes`, iy?(il[1]>=iy[1]?'up':'dn'):'') : '');
+    $('gaFaeN').textContent = 'Cabezas de vacunos faenadas en frigoríficos por trimestre. La producción de carne vacuna es el índice mensual de producción industrial (IPI) del INDEC, que sale antes. Fuente: INDEC.';
+    // novillo / maíz
+    const nmS = pzF.filter(f=>pz[f].maiz).map(f=>{ const nvv = (()=>{ let v=null; for(const x of fechas){ if(x<=f && H[x].grupos.NOVILLOS) v = H[x].grupos.NOVILLOS.prom; } return v; })(); return nvv ? [f, nvv/(pz[f].maiz.ars/1000)] : null; }).filter(Boolean);
+    $('gaNmS').textContent = pzF.length ? 'desde '+fd(pzF[0]) : '';
+    const nmL = L(nmS);
+    $('gaNmSt').innerHTML = nmL ? stc('Hoy', nf(nmL[1],1)+' kg', `de maíz por kg de novillo · ${fds(nmL[0])}`, nmL[1]>=12?'up':nmL[1]<8?'dn':'', true) : '';
+    if(nmS.length>2) lineChart($('chGaNm'), [{n:'Novillo / maíz', c:'--s4', pts:nmS, area:true}], {aria:'Relación novillo maíz', endLabel:true, labW:40, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1)+' kg'});
+    else $('chGaNm').innerHTML = '<div class="empty">El gráfico se va armando día a día: la Bolsa de Rosario publica solo el precio del día y Pulso Macro lo guarda desde '+(pzF.length?fd(pzF[0]):'hoy')+'.</div>';
+    // granos
+    const CH = {soja:'soja', maiz:'maiz', trigo:'trigo'}, chi = k => (glob?.commodities||[]).find(c=>c.k===CH[k]);
+    $('gaPzS').textContent = pzF.length ? fd(L(pzF)) : '';
+    $('tGaPz').innerHTML = pzU ? [['soja','Soja'],['maiz','Maíz'],['trigo','Trigo'],['girasol','Girasol'],['sorgo','Sorgo']].filter(([k])=>pzU[k]).map(([k,n])=>{ const x = pzU[k], c = chi(k);
+      return `<tr><td style="text-align:left">${n}</td><td>${x.est?'(E) ':''}$ ${nf(x.ars,0)}</td><td>${x.est?'(E) ':''}US$ ${nf(x.usd,1)}</td><td>${c?'US$ '+nf(c.v,1)+` <small>(${pc(x.usd/c.v-1,0)})</small>`:'—'}</td></tr>`; }).join('') : '<tr><td colspan="4">Sin datos todavía.</td></tr>';
   }
 
   // ---- MERCADO ----
@@ -2403,6 +2554,15 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- glosario: ícono (i) al lado de cada término técnico ----
   const GLOS = {
+    kgvivo:['Precio por kilo vivo','Lo que se paga por cada kilo del animal en pie, antes de faenarlo. De un animal vivo sale más o menos un 55% a 60% de carne con hueso (rinde), por eso el kilo en la carnicería vale bastante más.'],
+    novillito:['Novillito','Macho castrado joven, de 300 a 430 kilos. Es la categoría que más se vende y la base del consumo interno.'],
+    novillo:['Novillo','Macho castrado adulto y pesado, de más de 430 kilos. Es la categoría típica de exportación.'],
+    vaca:['Vaca','Hembra adulta que se vende para faena, casi siempre después de terminar su vida como madre. Su precio es el más bajo por kilo. Conserva: vacas flacas, para industria.'],
+    novmaiz:['Relación novillo / maíz','Kilos de maíz que se pueden comprar con un kilo de novillo. Mide si conviene engordar animales a corral con grano.'],
+    faena:['Faena','Cantidad de animales que se sacrifican en frigoríficos para producir carne. Si se faenan muchas hembras, el rodeo se achica y más adelante hay menos terneros.'],
+    campomostrador:['Del campo al mostrador','Compara el precio de la hacienda en pie con el de la carne en la carnicería. La diferencia paga la faena, el transporte, la industria, los impuestos y el comercio.'],
+    pizarra:['Precio pizarra','Precio de referencia que fija cada día la Cámara Arbitral de Cereales de Rosario con las operaciones del mercado disponible. Es lo que cobra el productor, ya con las retenciones descontadas.'],
+    cabezas:['Cabezas','Cantidad de animales. En el mercado se cuentan cabezas vendidas por día y por categoría.'],
     emae:['EMAE','Estimador Mensual de Actividad Económica del INDEC: un adelanto mes a mes del PBI. "Sin estacionalidad" quiere decir que se le saca el efecto de cada época del año (cosecha, vacaciones) para poder comparar un mes con el anterior.'],
     salarios:['Salarios reales','Índice de salarios del INDEC dividido por la inflación. Si la línea sube, los sueldos le ganan a los precios (más poder de compra); si baja, pierden. Registrados = en blanco; no registrados = en negro, cuentapropistas aparte.'],
     desoc:['Desocupación','Porcentaje de las personas que buscan trabajo y no lo consiguen, sobre el total de las que trabajan o buscan. Sale de la Encuesta Permanente de Hogares (EPH) del INDEC, en 31 ciudades, cada trimestre.'],
@@ -2451,6 +2611,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   };
   // [expresión, clave, dónde]: se aplica sobre el texto del título o etiqueta
   const GLOS_REGLAS = [
+    [/^Precios de hoy en Cañuelas|^Precio de la hacienda/,'kgvivo','g'],[/^Novillito/,'novillito','g'],[/^Novillo \(|^Novillo$|^Novillo en/,'novillo','g'],[/^Vaca/,'vaca','g'],[/^Relación novillo/,'novmaiz','g'],[/^Faena/,'faena','g'],[/^Del campo al mostrador/,'campomostrador','g'],[/^Granos en Rosario/,'pizarra','g'],[/^Cabezas vendidas/,'cabezas','g'],
     [/^Actividad económica|^Actividad \(EMAE|^Actividad contra/,'emae','g'],[/^Salarios contra|^Salario real/,'salarios','g'],[/^Desocupación/,'desoc','g'],[/^Canasta (básica|alimentaria)/,'canasta','g'],[/^Inflación por rubro/,'rubros','g'],[/^Núcleo/,'nucleo','g'],
     [/^Oficial$/,'oficial','q'],[/^Mayorista$/,'mayorista','q'],[/^MEP$/,'mep','q'],[/^CCL$/,'ccl','q'],[/^Blue$/,'blue','q'],[/^Cripto$/,'cripto','q'],[/^Tarjeta$/,'tarjeta','q'],
     [/^Canje/,'canje','g'],[/^Brecha/,'brecha','g'],[/^Dólar a precios de hoy/,'usdreal','g'],
@@ -2632,6 +2793,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       return [['mes','emae_desestacionalizado','emae_original','salarios_total_indice','salarios_registrados_privados','salarios_publicos','salarios_no_registrados','desocupacion_pct_trimestre','canasta_basica_total_adulto','canasta_alimentaria_adulto','ipc_nacional_indice'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m))])]; },
     'ipc-rubros': ()=>{ const K=['general',...RUB.map(r=>r[0]),'nucleo','regulados','estacionales'], ms=[...new Set((act?.general||[]).map(p=>p[0]))].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
       return [['mes',...K.map(k=>'ipc_'+k)], ms.map(m=>[m, ...K.map(k=>mp[k].get(m))])]; },
+    'ganaderia-diario': ()=>{ const G=['NOVILLOS','NOVILLITOS','VAQUILLONAS','VACAS','TOROS','MEJ'], ds=Object.keys(gan?.hacienda||{}).sort();
+      return [['fecha',...G.flatMap(g=>[g.toLowerCase()+'_precio_promedio_kg_vivo', g.toLowerCase()+'_cabezas']),'total_precio_promedio','total_cabezas','definitivo'], ds.map(f=>{ const h=gan.hacienda[f]; return [f, ...G.flatMap(g=>[h.grupos[g]?.prom, h.grupos[g]?.cab]), h.total.prom, h.total.cab, h.def?1:0]; })]; },
+    'ganaderia-mensual': ()=>{ const K=['c_asado','c_nalga','c_cuadril','c_paleta','c_picada','c_pollo','ipi_carne'], nm=gaMensual(), ms=[...new Set([...K.flatMap(k=>(act?.[k]||[]).map(p=>p[0])), ...Object.keys(nm)])].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
+      return [['mes','asado_kg','nalga_kg','cuadril_kg','paleta_kg','carne_picada_kg','pollo_entero_kg','ipi_carne_vacuna','novillo_promedio_mes_kg_vivo','novillito_promedio_mes_kg_vivo'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m)), nm[m]?.NOVILLOS, nm[m]?.NOVILLITOS])]; },
     'mercado-diario': ()=>[['fecha','merval_puntos','ccl','merval_usd_ccl','riesgo_pais_pb'],
       days.filter(d=>d.merval!=null).map(d=>{ const c=get(d,'ccl'); return [d.fecha, d.merval, c, c?Math.round(d.merval/c*100)/100:null, d.riesgo]; })]
   };
@@ -2647,8 +2812,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()]};
-  const ARG_T = ['dolares','macro','dinero','fiscal','actividad','mercado','noticias','calculadoras'];
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()]};
+  const ARG_T = ['dolares','macro','dinero','fiscal','actividad','ganaderia','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
@@ -2656,6 +2821,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     dinero:'<path d="M3 9l9-5 9 5M5 9v9M10 9v9M14 9v9M19 9v9M3 20h18"/>',
     fiscal:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
     actividad:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18M11 13v2h2v-2"/>',
+    ganaderia:'<path d="M5 9c-1.5 0-2.5-1-2.5-2.5M19 9c1.5 0 2.5-1 2.5-2.5"/><path d="M6 8.5h12v4.5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z"/><path d="M9 17v3M15 17v3M10 12.5h.01M14 12.5h.01"/>',
     mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
     noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
@@ -2677,6 +2843,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     dinero:['Tasas y pesos','Plazo fijo, tasas y cuánta plata circula'],
     fiscal:['Cuentas del Estado','Si el Estado gasta más o menos de lo que recauda, y el comercio exterior'],
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
+    ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
     mercado:['Bolsa y bonos','S&P Merval, acciones y bonos argentinos'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación, sueldo en dólares y viajes'],
@@ -2728,7 +2895,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].includes(tab);
+    $('segRange').hidden = ['ganaderia','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
