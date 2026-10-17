@@ -6,6 +6,7 @@ Fuente oficial y gratuita, sin clave: la API de series de tiempo de datos.gob.ar
   - Tasa de desocupación (EPH, trimestral).
   - Canasta básica total y alimentaria (por adulto equivalente).
   - IPC nacional por rubro (12 divisiones) y por categoría (núcleo, regulados, estacionales), con el nivel general.
+  - Carne al consumidor (precios medios del INDEC en GBA y carne picada por región) y faena de vacunos por mes.
 
 Se renueva como máximo cada 6 horas (son datos mensuales). Uso: python scripts/actividad.py
 Nunca inventa datos: si una tanda falla, queda la que había. Las series atrasadas se sacan en vez de mostrarse.
@@ -28,6 +29,11 @@ TANDAS = {
                   "149.1_SOR_PRIADO_OCTU_0_28": "sal_noreg"}, "2016-10-01", 6),
     "desocupacion": ({"45.2_ECTDT_0_T_33": "desoc"}, "2016-01-01", 9),
     "canasta": ({"150.1_CSTA_BATAL_0_D_20": "cbt", "150.1_CSTA_BARIA_0_D_26": "cba"}, "2016-04-01", 5),
+    "carnes": ({"105.1_I2A_2016_M_14": "c_asado", "105.1_I2N_2016_M_14": "c_nalga", "105.1_I2C_2016_M_16": "c_cuadril",
+                "105.1_I2P_2016_M_15": "c_paleta", "105.1_I2CPC_2016_M_27": "c_picada", "105.1_I2PE_2016_M_21": "c_pollo",
+                "348.1_GBA_CARNE_KG__25": "rp_gba", "348.1_PAMPEANA_C_KG__30": "rp_pampeana", "348.1_NOA_CARNE_KG__25": "rp_noa",
+                "348.1_NEA_CARNE_KG__25": "rp_nea", "348.1_CUYO_CARNE_KG__26": "rp_cuyo", "348.1_PATAGONIA_KG__31": "rp_patagonia",
+                "41.3_FCV_0_A_18": "faena"}, "2019-01-01", 4),
     "rubros": ({"145.3_INGNACNAL_DICI_M_15": "general", "146.3_IALIMENNAL_DICI_M_45": "alimentos", "146.3_IBEBIDANAL_DICI_M_39": "bebidas",
                 "146.3_IPRENDANAL_DICI_M_35": "prendas", "146.3_IVIVIENNAL_DICI_M_52": "vivienda", "146.3_IEQUIPANAL_DICI_M_46": "equipamiento",
                 "146.3_ISALUDNAL_DICI_M_18": "salud", "146.3_ITRANSPNAL_DICI_M_23": "transporte", "146.3_ICOMUNINAL_DICI_M_27": "comunicacion",
