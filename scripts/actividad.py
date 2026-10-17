@@ -21,6 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "actividad.json"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
+TRIM = {"desoc", "faena_t"}   # series trimestrales
 API = "https://apis.datos.gob.ar/series/api/series/?ids={ids}&start_date={desde}&limit=1000&format=json"
 # tanda: (series {id: clave}, desde, meses de atraso tolerados)
 TANDAS = {
@@ -33,7 +34,9 @@ TANDAS = {
                 "105.1_I2P_2016_M_15": "c_paleta", "105.1_I2CPC_2016_M_27": "c_picada", "105.1_I2PE_2016_M_21": "c_pollo",
                 "348.1_GBA_CARNE_KG__25": "rp_gba", "348.1_PAMPEANA_C_KG__30": "rp_pampeana", "348.1_NOA_CARNE_KG__25": "rp_noa",
                 "348.1_NEA_CARNE_KG__25": "rp_nea", "348.1_CUYO_CARNE_KG__26": "rp_cuyo", "348.1_PATAGONIA_KG__31": "rp_patagonia",
-                "41.3_FCV_0_A_18": "faena"}, "2019-01-01", 4),
+                }, "2019-01-01", 4),
+    # la faena mensual (41.3_FCV) viene vacía en la API: se usa la trimestral y el IPI de carne vacuna (mensual)
+    "faena": ({"41.2_FCV_0_T_18": "faena_t", "453.2_CARNE_VACUUNA_0_0_12_53": "ipi_carne"}, "2021-01-01", 9),
     "rubros": ({"145.3_INGNACNAL_DICI_M_15": "general", "146.3_IALIMENNAL_DICI_M_45": "alimentos", "146.3_IBEBIDANAL_DICI_M_39": "bebidas",
                 "146.3_IPRENDANAL_DICI_M_35": "prendas", "146.3_IVIVIENNAL_DICI_M_52": "vivienda", "146.3_IEQUIPANAL_DICI_M_46": "equipamiento",
                 "146.3_ISALUDNAL_DICI_M_18": "salud", "146.3_ITRANSPNAL_DICI_M_23": "transporte", "146.3_ICOMUNINAL_DICI_M_27": "comunicacion",
@@ -83,7 +86,7 @@ def tanda(series, desde, prev):
     se juntan los resultados y se completa con lo que ya estaba guardado (los datos publicados no cambian)."""
     out = {}
     for sid, clave in series.items():
-        paso = 3 if clave == "desoc" else 1
+        paso = 3 if clave in TRIM else 1
         junt = {p[0]: p[1] for p in prev.get(clave, []) if p[0] >= desde[:7]}
         nuevos = {}
         for intento in range(5):
@@ -112,7 +115,7 @@ def main():
             prev = {}
     try:
         al = datetime.fromisoformat(prev.get("actualizado", "2000-01-01T00:00+00:00"))
-        completo = all(huecos(v, 3 if k == "desoc" else 1) == 0 for k, v in prev.items() if isinstance(v, list) and v and isinstance(v[0], list))
+        completo = all(huecos(v, 3 if k in TRIM else 1) == 0 for k, v in prev.items() if isinstance(v, list) and v and isinstance(v[0], list))
         if (datetime.now(timezone.utc) - al) < timedelta(hours=6) and not prev.get("errores") and completo:
             print("actividad.json reciente: no se renueva")
             return
@@ -131,7 +134,7 @@ def main():
                     data.pop(k, None)
                 else:
                     data[k] = pts
-                    h = huecos(pts, 3 if k == "desoc" else 1)
+                    h = huecos(pts, 3 if k in TRIM else 1)
                     if h:
                         errores.append(f"{k}: faltan {h} meses (la API los devolvió vacíos; se completa en la próxima vuelta)")
         except Exception as e:  # noqa: BLE001
