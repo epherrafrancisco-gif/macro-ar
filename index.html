@@ -2380,12 +2380,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const hace = (pts, n) => pts.length > n ? pts[pts.length-1-n] : null;
     const t = [], pz = gan.pizarra || {}, pzF = Object.keys(pz).sort(), pzU = pzF.length ? pz[L(pzF)] : null;
     for(const [g,n] of [['NOVILLITOS','Novillito'],['NOVILLOS','Novillo'],['VACAS','Vaca']]){ const s = ser(g), l = L(s); if(!l) continue; const w = hace(s,5), y = s.find(p=>p[0] >= String(+l[0].slice(0,4)-1)+l[0].slice(4));
-      t.push(tileK(n, '$ '+nf(l[1],0), 'por kg vivo', (w?chip(l[1]/w[1]-1,{d:1})+'<span class="chip eq">en la semana</span>':''), `${fd(l[0])}${y && y[0] <= String(+l[0].slice(0,4)-1)+l[0].slice(4,10).replace(/(\d\d)$/,(x)=>x) ? ` · ${pc(l[1]/y[1]-1,0)} en un año` : ''}`)); }
+      t.push(tileK(n, '$ '+nf(l[1],0), '/kg', (w?chip(l[1]/w[1]-1,{d:1})+'<span class="chip eq">en la semana</span>':''), `kilo vivo · ${fd(l[0])}${y && y[0] <= String(+l[0].slice(0,4)-1)+l[0].slice(4,10).replace(/(\d\d)$/,(x)=>x) ? ` · ${pc(l[1]/y[1]-1,0)} en un año` : ''}`)); }
     const nv = L(ser('NOVILLITOS')), d0 = nv ? dol(nv[0]) : null;
-    if(nv && d0) t.push(tileK('Novillito en dólares', 'US$ '+nf(nv[1]/d0,2), 'por kg vivo', '', `al dólar mayorista de ${fds(nv[0])}`));
+    if(nv && d0) t.push(tileK('Novillito en dólares', 'US$ '+nf(nv[1]/d0,2), '/kg', '', `kilo vivo, al dólar mayorista de ${fds(nv[0])}`));
     t.push(tileK('Cabezas vendidas', nf(hU.total.cab,0), '', '', `${fd(ult)} · promedio general $ ${nf(hU.total.prom,0)}/kg`));
-    const as = L(act?.c_asado||[]); if(as){ const a12 = (act.c_asado||[]).find(p=>p[0]===mAdd(as[0],-12)); t.push(tileK('Asado en la carnicería', '$ '+nf(as[1],0), 'por kg', a12?chip(as[1]/a12[1]-1,{d:0,bad:true})+'<span class="chip eq">en 12 meses</span>':'', 'GBA · '+fmes(as[0])+' · INDEC')); }
-    const nov = ser('NOVILLOS').filter(p=>p[0]<=L(pzF)).pop(); if(nov && pzU?.maiz){ t.push(tileK('Relación novillo / maíz', nf(nov[1]/(pzU.maiz.ars/1000),1), 'kg de maíz', '', `por kg de novillo · ${fds(L(pzF))}`)); }
+    const as = L(act?.c_asado||[]); if(as){ const a12 = (act.c_asado||[]).find(p=>p[0]===mAdd(as[0],-12)); t.push(tileK('Asado en la carnicería', '$ '+nf(as[1],0), '/kg', a12?chip(as[1]/a12[1]-1,{d:0,bad:true})+'<span class="chip eq">en 12 meses</span>':'', 'GBA · '+fmes(as[0])+' · INDEC')); }
+    const nov = ser('NOVILLOS').filter(p=>p[0]<=L(pzF)).pop(); if(nov && pzU?.maiz){ t.push(tileK('Relación novillo / maíz', nf(nov[1]/(pzU.maiz.ars/1000),1), 'kg', '', `de maíz por kg de novillo · ${fds(L(pzF))}`)); }
     $('kpisGa').innerHTML = t.join('');
     // tabla del día
     if(!gaDia || !H[gaDia]) gaDia = ult;
