@@ -39,7 +39,8 @@ def get(url, tries=3, timeout=60):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read().decode("latin-1", "replace")
+                cs = r.headers.get_content_charset() or "latin-1"   # Cañuelas: latin-1; Rosario: UTF-8
+                return r.read().decode(cs, "replace")
         except Exception as e:  # noqa: BLE001
             last = e
             time.sleep(3 * (i + 1))
@@ -101,7 +102,7 @@ def hacienda_dia(d):
     kg = sum(f["kg"] for f in filas)
     total = {"prom": round(sum(f["imp"] for f in filas) / kg, 3) if kg else None, "cab": sum(f["cab"] for f in filas),
              "imp": round(sum(f["imp"] for f in filas), 2), "kg": kg}
-    return {"def": definitivo, "grupos": grupos, "total": total, "filas": filas, "_cola": cuerpo[-700:]}
+    return {"def": definitivo, "grupos": grupos, "total": total, "filas": filas}
 
 
 def pizarra():
@@ -167,6 +168,8 @@ def main():
         time.sleep(0.6)
     corte = (hoy - timedelta(days=DIAS_HISTORIA + 10)).isoformat()
     hac = {k: v for k, v in sorted(hac.items()) if k >= corte}
+    for v in hac.values():
+        v.pop("_cola", None)
     piz = prev.get("pizarra", {})
     try:
         f, p = pizarra()
