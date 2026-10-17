@@ -1,0 +1,242 @@
+{
+ "41.3_FCV_0_A_18_2019-01-01": {
+  "n": 0,
+  "head": [],
+  "tail": [],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Indicadores de producción de la Industria manufacturera",
+    "description": "Indicadores desagregados de producción de productos de la industria manufacturera",
+    "issued": "2017-09-28",
+    "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas"
+   },
+   "distribution": {
+    "title": "Producción de la Industria manufacturera. Valores anuales",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/41/distribution/41.3/download/indicadores-produccion-industria-manufacturera-valores-anuales.csv"
+   },
+   "field": {
+    "description": "Faena Carne Vacuna en Miles Cabezas",
+    "id": "41.3_FCV_0_A_18",
+    "units": "Miles de cabezas",
+    "representation_mode": "value",
+    "representation_mode_units": "Miles de cabezas"
+   }
+  }
+ },
+ "41.3_FCV_0_A_18_2024-01-01": {
+  "n": 0,
+  "head": [],
+  "tail": [],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Indicadores de producción de la Industria manufacturera",
+    "description": "Indicadores desagregados de producción de productos de la industria manufacturera",
+    "issued": "2017-09-28",
+    "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas"
+   },
+   "distribution": {
+    "title": "Producción de la Industria manufacturera. Valores anuales",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/41/distribution/41.3/download/indicadores-produccion-industria-manufacturera-valores-anuales.csv"
+   },
+   "field": {
+    "description": "Faena Carne Vacuna en Miles Cabezas",
+    "id": "41.3_FCV_0_A_18",
+    "units": "Miles de cabezas",
+    "representation_mode": "value",
+    "representation_mode_units": "Miles de cabezas"
+   }
+  }
+ },
+ "41.2_FCV_0_T_18_2019-01-01": {
+  "n": 30,
+  "head": [
+   [
+    "2019-01-01",
+    3134.5615
+   ],
+   [
+    "2019-04-01",
+    3299.804
+   ],
+   [
+    "2019-07-01",
+    3657.04375
+   ]
+  ],
+  "tail": [
+   [
+    "2025-10-01",
+    3390.30475
+   ],
+   [
+    "2026-01-01",
+    2981.41275
+   ],
+   [
+    "2026-04-01",
+    3041.33925
+   ]
+  ],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Indicadores de producción de la Industria manufacturera",
+    "description": "Indicadores desagregados de producción de productos de la industria manufacturera",
+    "issued": "2017-09-28",
+    "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas"
+   },
+   "distribution": {
+    "title": "Producción de la Industria manufacturera. Valores trimestrales",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/41/distribution/41.2/download/indicadores-produccion-industria-manufacturera-valores-trimestrales.csv"
+   },
+   "field": {
+    "description": "Faena Carne Vacuna en Miles Cabezas",
+    "id": "41.2_FCV_0_T_18",
+    "units": "Miles de cabezas",
+    "representation_mode": "value",
+    "representation_mode_units": "Miles de cabezas"
+   }
+  }
+ },
+ "41.2_FCV_0_T_18_2024-01-01": {
+  "n": 10,
+  "head": [
+   [
+    "2024-01-01",
+    3280.7160000000003
+   ],
+   [
+    "2024-04-01",
+    3284.12525
+   ],
+   [
+    "2024-07-01",
+    3685.14925
+   ]
+  ],
+  "tail": [
+   [
+    "2025-10-01",
+    3390.30475
+   ],
+   [
+    "2026-01-01",
+    2981.41275
+   ],
+   [
+    "2026-04-01",
+    3041.33925
+   ]
+  ],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Indicadores de producción de la Industria manufacturera",
+    "description": "Indicadores desagregados de producción de productos de la industria manufacturera",
+    "issued": "2017-09-28",
+    "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas"
+   },
+   "distribution": {
+    "title": "Producción de la Industria manufacturera. Valores trimestrales",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/41/distribution/41.2/download/indicadores-produccion-industria-manufacturera-valores-trimestrales.csv"
+   },
+   "field": {
+    "description": "Faena Carne Vacuna en Miles Cabezas",
+    "id": "41.2_FCV_0_T_18",
+    "units": "Miles de cabezas",
+    "representation_mode": "value",
+    "representation_mode_units": "Miles de cabezas"
+   }
+  }
+ },
+ "453.2_CARNE_VACUUNA_0_0_12_53_2019-01-01": {
+  "n": 0,
+  "head": [],
+  "tail": [],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Índice de Producción Industrial Manufacturero (IPI)",
+    "description": "Índice de Producción Industrial Manufacturero (IPI)",
+    "issued": "2019-04-15",
+    "source": "Instituto Nacional de Estadística y Censos (INDEC)"
+   },
+   "distribution": {
+    "title": "Índice de Producción Industrial Manufacturero (IPI). Divisiones y subclases",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/453/distribution/453.2/download/ipi-manufacturero-sectores.csv"
+   },
+   "field": {
+    "description": "IPI Divisiones y Subclases Carne vacuna",
+    "id": "453.2_CARNE_VACUUNA_0_0_12_53",
+    "units": "Índice 2004 = 100",
+    "representation_mode": "value",
+    "representation_mode_units": "Índice 2004 = 100"
+   }
+  }
+ },
+ "453.2_CARNE_VACUUNA_0_0_12_53_2024-01-01": {
+  "n": 32,
+  "head": [
+   [
+    "2024-01-01",
+    107.4989810813951
+   ],
+   [
+    "2024-02-01",
+    97.35708139980932
+   ],
+   [
+    "2024-03-01",
+    97.43494940049756
+   ]
+  ],
+  "tail": [
+   [
+    "2026-06-01",
+    104.66608418901338
+   ],
+   [
+    "2026-07-01",
+    107.59853646760337
+   ],
+   [
+    "2026-08-01",
+    100.80599955155388
+   ]
+  ],
+  "meta": {
+   "catalog": {
+    "title": "Datos Programación Macroeconómica"
+   },
+   "dataset": {
+    "title": "Índice de Producción Industrial Manufacturero (IPI)",
+    "description": "Índice de Producción Industrial Manufacturero (IPI)",
+    "issued": "2019-04-15",
+    "source": "Instituto Nacional de Estadística y Censos (INDEC)"
+   },
+   "distribution": {
+    "title": "Índice de Producción Industrial Manufacturero (IPI). Divisiones y subclases",
+    "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/453/distribution/453.2/download/ipi-manufacturero-sectores.csv"
+   },
+   "field": {
+    "description": "IPI Divisiones y Subclases Carne vacuna",
+    "id": "453.2_CARNE_VACUUNA_0_0_12_53",
+    "units": "Índice 2004 = 100",
+    "representation_mode": "value",
+    "representation_mode_units": "Índice 2004 = 100"
+   }
+  }
+ }
+}
