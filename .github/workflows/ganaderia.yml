@@ -1,0 +1,46 @@
+name: Ganaderia
+
+# Hacienda del Mercado Agroganadero de Cañuelas y precios pizarra de Rosario → ganaderia.json.
+# Días hábiles a las 13:40, 16:40 y 19:40 (hora argentina): los precios del día salen provisorios y después definitivos.
+on:
+  schedule:
+    - cron: "40 16,19,22 * * 1-5"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/ganaderia.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ganaderia
+  cancel-in-progress: false
+
+jobs:
+  ganaderia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer hacienda y pizarra
+        run: python scripts/ganaderia.py
+
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet ganaderia.json 2>/dev/null && git ls-files --error-unmatch ganaderia.json >/dev/null 2>&1; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ganaderia.json
+          git commit -m "Ganadería $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
