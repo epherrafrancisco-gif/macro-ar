@@ -19,7 +19,7 @@
 <script data-goatcounter="https://macroar.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="//gc.zgo.at/count.js"></script>
 <style>html{-webkit-text-size-adjust:100%}body{margin:0}[hidden]{display:none!important}img{max-width:100%}
 /* ---- celular: barra fija, hoja de secciones, dólares compactos e índice ---- */
-.mbar,.msheet{display:none}
+.mbar,.msheet,.mnav,.mhero,.mporta-m,.mres,.mtip,.mmas{display:none}
 @media (max-width:640px){
   .mbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(14,19,25,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
   .mb1{display:flex;align-items:center;gap:10px;min-height:58px;padding-block:6px}
@@ -55,6 +55,63 @@
   body.insec .quotes.compact .q{order:5}body.insec .quotes.compact .q:nth-child(1){order:1}body.insec .quotes.compact .q:nth-child(5){order:2}body.insec .quotes.compact .q:nth-child(3){order:3}
   body.insec .quotes.compact .q .row{gap:0}
   [data-mid]{scroll-margin-top:124px}
+
+  /* ---- celular v2: barra de abajo, portada que explica, secciones plegables ---- */
+  .mnav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:40;grid-template-columns:repeat(4,1fr);background:rgba(18,24,32,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:6px max(4px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px))}
+  .mnav button{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--muted);font:600 11.5px var(--sans);padding:5px 0;cursor:pointer}
+  .mnav button svg{width:23px;height:23px}
+  .mnav button[aria-current="true"]{color:var(--accent)}
+  body.insec{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+  body.insec #tape,body.insec .midx,body.insec #mBtn{display:none!important}
+  .mhome{flex-direction:row;border:0;background:none;padding:6px 4px 6px 0;color:var(--accent)}
+  .mhome svg{width:22px;height:22px}.mhome span{display:none}
+  .mhero{display:block}
+  body:not(.mporta) .mhero{display:none}
+  .mhero h1{font-size:24px;line-height:1.15;margin:4px 0 6px;letter-spacing:-.01em}
+  .mhero p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.4}
+  .mh4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px;font-weight:700}
+  .mhero .mh4{margin:18px 0 -6px}
+  .mporta-m{display:block}
+  body.mporta .hello,body.mporta .door .dh,body.mporta .door.ar .sub2,body.mporta #pHoy{display:none!important}
+  body.mporta .split{display:block;margin-top:-8px}
+  body.mporta .door{background:none;border:0;padding:0;gap:12px}
+  body.mporta[data-door="ar"] .door.gl,body.mporta[data-door="gl"] .door.ar{display:none}
+  body.mporta .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  body.mporta .tile{grid-template-columns:auto 1fr;min-height:0;padding:11px;gap:9px;background:var(--surface)}
+  body.mporta .tile svg{grid-row:auto;width:19px;height:19px}
+  body.mporta .tile b{font-size:14px;line-height:1.2}
+  body.mporta .tile span,body.mporta .tile i{display:none}
+  body.mporta .tile.big{grid-column:auto}
+  .mbig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mbig a{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 12px;display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);min-width:0}
+  .mbig small{font-size:12.5px;color:var(--ink2);font-weight:600}.mbig b{font:700 21px var(--mono);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mbig em{font-style:normal;font-size:12px;color:var(--muted)}.mbig .up{color:var(--pos)}.mbig .dn{color:var(--neg)}
+  .mtg{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:10px}
+  .mtg button{background:none;border:0;color:var(--ink2);font:600 14.5px var(--sans);padding:9px;border-radius:9px;cursor:pointer}
+  .mtg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+  .mres{display:block;background:linear-gradient(180deg,rgba(57,135,229,.12),rgba(57,135,229,.04));border:1px solid rgba(106,168,216,.35);border-radius:14px;padding:12px 13px;font-size:14.5px;line-height:1.45}
+  .mres:empty{display:none}
+  .mres > b:first-child{display:block;color:var(--accent);font-size:11.5px;letter-spacing:.12em;margin-bottom:3px}
+  body.conres #here{display:none!important}
+  #here h2{display:none}
+  .kpis:not(.mall) > :nth-child(n+5){display:none}
+  .mmas{display:block;width:100%;background:var(--surface);border:1px dashed var(--line);color:var(--accent);font:600 14px var(--sans);border-radius:12px;padding:10px;cursor:pointer;margin-top:-4px}
+  .macc .card.mk > .head{cursor:pointer;position:relative;padding-right:28px}
+  .macc .card.mk > .head::after{content:"";position:absolute;right:6px;top:50%;width:8px;height:8px;border-right:2px solid var(--ink2);border-bottom:2px solid var(--ink2);transform:translateY(-75%) rotate(45deg);transition:transform .15s}
+  .macc .card.mk:not(.mc) > .head::after{transform:translateY(-25%) rotate(-135deg)}
+  .macc .card.mc > :not(.head){display:none!important}
+  .macc .card.mc > .head > :not(h2):not(.note){display:none!important}
+  .macc .card.mc > .head{margin:0}
+  .macc .card.mc{padding-block:13px}
+  .macc .card{scroll-margin-top:76px}
+  .mtip{display:block;position:fixed;left:14px;right:14px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:45;background:#1d2a3a;border:1px solid var(--accent);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.4;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .mtip b{display:block;margin-bottom:2px}.mtip button{display:block;margin-top:8px;background:none;border:0;padding:0;color:var(--accent);font:700 14px var(--sans);cursor:pointer}
+  .ms-l{display:flex;flex-direction:column;gap:6px}
+  .ms-l a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;min-width:0}
+  .ms-l a svg{width:19px;height:19px;flex:none;color:var(--accent)}
+  .ms-l a span{display:flex;flex-direction:column;min-width:0;font-weight:600;font-size:14.5px}.ms-l a em{font-style:normal;font-weight:400;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ms-l a.on{border-color:var(--accent);background:rgba(106,168,216,.12)}
+  .ms-in{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 }
 </style>
 </head>
@@ -515,10 +572,17 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 <div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
 <div class="tape tape3" id="tape3" role="marquee" aria-label="Bolsas abiertas y cerradas ahora"><div class="tape-in" id="tape3In"></div></div>
 <div class="mbar" id="mbar">
-  <div class="mb1"><a href="#" class="mhome" id="mLogo" aria-label="Volver al inicio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg><span>Inicio</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button></div>
+  <div class="mb1"><a href="#" class="mhome" id="mLogo" aria-label="Volver al inicio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg><span>Inicio</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button></div>
   <nav class="midx" id="mIdx" aria-label="Ir a"></nav>
 </div>
 <div class="msheet" id="mSheet" hidden><div class="ms-in" id="msIn"></div></div>
+<nav class="mnav" id="mNav" aria-label="Navegación">
+  <button type="button" data-mn="portada"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg>Inicio</button>
+  <button type="button" data-mn="arg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M3 14h18"/></svg>Argentina</button>
+  <button type="button" data-mn="glo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>El mundo</button>
+  <button type="button" data-mn="calculadoras"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01"/></svg>Calculadoras</button>
+</nav>
+<div class="mtip" id="mTip" hidden><b>¿Primera vez en Pulso Macro?</b>Abajo tenés todo: Argentina, el mundo y las calculadoras. Entrá a una sección y tocá cada título para abrir su gráfico.<button type="button" id="mTipOk">Entendido</button></div>
 <div class="wrap">
   <header>
     <div class="brand">
@@ -532,6 +596,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </header>
 
+  <div class="mhero" id="mHero"><h1>La economía, clara y al día</h1><p>Dólar, inflación, tasas y mercados de Argentina y del mundo. Se actualiza solo, todos los días.</p><p class="mh4">Dólares hoy</p></div>
   <section class="dolhoy" id="dolHoy" aria-label="Dólar hoy">
     <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
     <div class="quotes" id="quotes"></div>
@@ -574,10 +639,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </div>
   <div class="here" id="here" hidden></div>
+  <div class="mres" id="mRes"></div>
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
     <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p></div>
+    <div class="mporta-m"><p class="mh4" style="margin-top:0">Los datos del día</p><div class="mbig" id="mHoy"></div>
+      <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true">Argentina</button><button type="button" data-d="gl" aria-pressed="false">El mundo</button></div></div>
     <div class="split">
       <section class="door ar">
         <div class="dh"><div class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg></div><div><h2>Argentina</h2><p>La economía de acá: dólar, inflación, tasas, bolsa y más</p></div></div>
@@ -2362,7 +2430,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadGan(){
     if(ganLoading) return; ganLoading = true;
     try{ const r = await fetch('ganaderia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gan = await r.json(); }catch(e){}
-    ganLoading = false; if(tab==='ganaderia') renderGanaderia();
+    ganLoading = false; if(tab==='ganaderia'){ renderGanaderia(); mResumen(); }
   }
   document.querySelectorAll('[data-gm]').forEach(b=>b.addEventListener('click', ()=>{ gaMoneda = b.dataset.gm; renderGanaderia(); }));
   $('gaFecha').addEventListener('change', ()=>{ gaDia = $('gaFecha').value; renderGanaderia(); });
@@ -2907,7 +2975,20 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- celular: barra fija con dónde estás, hoja de secciones e índice de la sección ----
   const mobil = () => matchMedia('(max-width:640px)').matches;
-  function mSheetArmar(){
+  function mSheetArmar(grp){
+    const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab;
+    const fila = k => `<a href="#${k}" data-k="${k}" class="${k===key?'on':''}">${ico(k)}<span>${SECC[k][0]}<em>${k===key ? 'Estás acá' : SECC[k][1]}</em></span></a>`;
+    const sob = `<a href="#sobre" data-k="sobre" class="${key==='sobre'?'on':''}">${ico('sobre')}<span>Sobre Pulso Macro<em>Quién lo hace y de dónde salen los datos</em></span></a>`;
+    $('msIn').innerHTML = `<div class="ms-h"><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>`
+      + (grp==='arg' ? `<div class="ms-l">${ARG_T.filter(k=>k!=='calculadoras').map(fila).join('')}</div>`
+        : `<div class="ms-l">${fila('global')}${fila('eeuu')}</div><h4>Países</h4><div class="ms-l">${PAISES_T.map(fila).join('')}</div>`)
+      + `<h4>Pulso Macro</h4><div class="ms-l">${sob}</div>`;
+    $('msX').addEventListener('click', ()=>mSheet(false));
+    $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
+      e.preventDefault(); mSheet(false); const k = a.dataset.k; history.pushState(null,'','#'+k); setTab(k); scrollTo({top:0}); gcUna('menu-celular-'+grp);
+    }));
+  }
+  function mSheetViejo(){
     const it = (k, href) => `<a href="#${href||k}" data-k="${k}">${ico(k)}${SECC[k][0]}</a>`;
     $('msIn').innerHTML = `<div class="ms-h"><b>Secciones</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>
       <div class="ms-g"><a href="#" data-k="portada"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/></svg>Inicio</a>${it('sobre')}</div>
@@ -2921,13 +3002,79 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       scrollTo({top:0}); gcUna('menu-celular');
     }));
   }
-  function mSheet(on){ $('mSheet').hidden = !on; $('mBtn').setAttribute('aria-expanded', String(on)); document.documentElement.style.overflow = on ? 'hidden' : '';
-    if(on){ const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab; $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.classList.toggle('on', a.dataset.k===key)); } }
+  let mGrp = null;
+  function mSheet(on, grp){ $('mSheet').hidden = !on; $('mBtn').setAttribute('aria-expanded', String(on)); document.documentElement.style.overflow = on ? 'hidden' : '';
+    mGrp = on ? grp : null; if(on) mSheetArmar(grp || 'arg'); mNavMarcar(); }
+  function mNavMarcar(){ const g = mGrp || (tab==='portada' ? 'portada' : tab==='calculadoras' ? 'calculadoras' : ARG_T.includes(tab) ? 'arg' : (tab==='global' || PAISES_T.includes(tab)) ? 'glo' : '');
+    document.querySelectorAll('#mNav button').forEach(b=>b.setAttribute('aria-current', String(b.dataset.mn===g))); }
+  document.querySelectorAll('#mNav button').forEach(b=>b.addEventListener('click', ()=>{ const m = b.dataset.mn;
+    if(m==='portada'){ mSheet(false); irPortada(); }
+    else if(m==='calculadoras'){ mSheet(false); history.pushState(null,'','#calculadoras'); setTab('calculadoras'); scrollTo({top:0}); }
+    else if(!$('mSheet').hidden && mGrp===m) mSheet(false);
+    else mSheet(true, m);
+    gcUna('nav-celular-'+m); }));
+  // portada: Argentina / El mundo
+  document.body.dataset.door = 'ar';
+  document.querySelectorAll('#mTg button').forEach(b=>b.addEventListener('click', ()=>{ document.body.dataset.door = b.dataset.d;
+    document.querySelectorAll('#mTg button').forEach(x=>x.setAttribute('aria-pressed', String(x===b))); if(b.dataset.d==='gl') dgStart('pCv','pHud'); }));
+  // cartel de la primera visita
+  try{ if(!localStorage.getItem('mtip')) $('mTip').hidden = false; }catch(e){}
+  $('mTipOk').addEventListener('click', ()=>{ $('mTip').hidden = true; try{ localStorage.setItem('mtip','1'); }catch(e){} });
+  // secciones plegables: cada tarjeta muestra su título y se abre al tocarla
+  const MAC_NO = ['portada','sobre','calculadoras','noticias'], mAb = new Set(), mVis = new Set();
+  const mTit = c => { const h = c.querySelector(':scope > .head > h2'); const t = h.childNodes[0] && h.childNodes[0].nodeType===3 ? h.childNodes[0].textContent : h.textContent; return tab+':'+t.trim().slice(0,60); };
+  function mAcordeon(){
+    const view = $(TABS[tab][1]); if(!view) return;
+    document.querySelectorAll('.view.macc').forEach(v=>{ if(v!==view || !mobil() || MAC_NO.includes(tab)) v.classList.remove('macc'); });
+    if(!mobil() || MAC_NO.includes(tab)) return;
+    view.classList.add('macc');
+    const conSub = !!view.querySelector('.gsub');
+    const cards = [...view.querySelectorAll('.card')].filter(c=>c.querySelector(':scope > .head > h2') && !c.querySelector('canvas') && !(conSub && !c.closest('.gsub')));
+    cards.forEach(c=>c.classList.add('mk'));
+    const vis = cards.filter(c=>c.offsetParent!==null);
+    { const pri = (tab==='macro' && vis.find(c=>/^Inflación mensual/.test(mTit(c).split(':')[1]))) || vis.find(c=>c.querySelector('.chart')) || vis[0]; if(pri){ const k = mTit(pri); if(!mVis.has(k)){ mVis.add(k); mAb.add(k); } } }
+    for(const c of cards){ c.classList.toggle('mc', !mAb.has(mTit(c)));
+      if(c._mac) continue; c._mac = 1;
+      c.querySelector(':scope > .head').addEventListener('click', e=>{
+        if(!view.classList.contains('macc') || e.target.closest('button,select,a,input,label,.tools')) return;
+        const k = mTit(c), abre = !mAb.has(k); if(abre) mAb.add(k); else mAb.delete(k);
+        c.classList.toggle('mc', !abre);
+        if(abre){ render(); setTimeout(()=>{ if(c.getBoundingClientRect().top < 70) c.scrollIntoView({block:'start', behavior:'smooth'}); }, 50); }
+        gcUna('abrir-tarjeta'); }); }
+    // indicadores: los 4 primeros y un botón para ver el resto
+    view.querySelectorAll('.kpis').forEach(k=>{ const n = k.children.length, b = k.nextElementSibling && k.nextElementSibling.classList.contains('mmas') ? k.nextElementSibling : null;
+      if(n <= 4){ if(b) b.remove(); return; }
+      if(!b){ const x = document.createElement('button'); x.type='button'; x.className='mmas'; k.after(x);
+        x.addEventListener('click', ()=>{ k.classList.toggle('mall'); x.textContent = k.classList.contains('mall') ? 'Ver menos indicadores' : `Ver los ${k.children.length} indicadores`; }); }
+      const bb = k.nextElementSibling; if(!k.classList.contains('mall')) bb.textContent = `Ver los ${n} indicadores`; });
+  }
+  // "En resumen": una frase en criollo con los datos de la sección (solo en el celular)
+  function mResumen(){
+    const el = $('mRes'); let h = '';
+    try{ h = mResTxt() || ''; }catch(e){ h = ''; }
+    el.innerHTML = h ? '<b>En resumen</b>'+h : ''; document.body.classList.toggle('conres', !!h);
+  }
+  function mResTxt(){
+    const Lp = a => a.length ? a[a.length-1] : null, Pp = a => a.length>1 ? a[a.length-2] : null, mesN = m => MESL[+m.slice(5,7)-1];
+    const mas = (a,b) => a>b+0.05 ? 'más que' : a<b-0.05 ? 'menos que' : 'lo mismo que';
+    if(tab==='dolares'){ const b = series('blue'), o = series('oficial'), m = series('mep'); const lb = Lp(b), pb = Pp(b), lo = Lp(o); if(!lb || !lo) return '';
+      return `El dólar blue cerró el ${fds(lb[0])} a <strong>$ ${nf(lb[1],0)}</strong>${pb ? ` (${pc(lb[1]/pb[1]-1,1)} en el día)` : ''} y el oficial a $ ${nf(lo[1],0)}. La brecha entre los dos es de ${nf((lb[1]/lo[1]-1)*100,1)}%.${Lp(m) ? ` El MEP, el que se compra con bonos, está en $ ${nf(Lp(m)[1],0)}.` : ''} Arriba, los precios en vivo.`; }
+    if(tab==='macro'){ const im = months.filter(x=>x.infl!=null), a = Lp(im), b = Pp(im), rs = Lp(series('reservas')), rp = Lp(series('riesgo')); if(!a) return '';
+      return `La inflación de ${mesN(a.mes)} fue <strong>${nf(a.infl,1)}%</strong>${b ? `, ${mas(a.infl,b.infl)} en ${mesN(b.mes)} (${nf(b.infl,1)}%)` : ''}.${a.inflYoY!=null ? ` En los últimos 12 meses los precios subieron ${nf(a.inflYoY,1)}%.` : ''}${rs ? ` Las reservas del BCRA están en US$ ${nf(rs[1],0)} millones` : ''}${rp ? `${rs?' y el':' El'} riesgo país, en ${nf(rp[1],0)} puntos (${fds(rp[0])}).` : (rs?'.':'')}`; }
+    if(tab==='dinero'){ const pf = Lp(series('pf')), a = Lp(months.filter(x=>x.infl!=null)); if(!pf || !a) return '';
+      const real = ((1+pf[1]/1200)/(1+a.infl/100)-1)*100;
+      return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
+    if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
+      return `El S&amp;P Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
+    if(tab==='ganaderia' && gan){ const H = gan.hacienda||{}, fs = Object.keys(H).sort().filter(f=>H[f].grupos?.NOVILLITOS), l = Lp(fs); if(!l) return '';
+      const nv = H[l].grupos.NOVILLITOS.prom, w = fs.length>5 ? H[fs[fs.length-6]].grupos.NOVILLITOS.prom : null, as = Lp(act?.c_asado||[]);
+      return `El novillito se pagó <strong>$ ${nf(nv,0)} el kilo vivo</strong> en Cañuelas el ${fds(l)}${w ? ` (${pc(nv/w-1,1)} en la semana)` : ''}.${as ? ` En la carnicería, el asado costaba $ ${nf(as[1],0)} el kilo en ${mesN(as[0])}.` : ''}`; }
+    return '';
+  }
   $('mBtn').addEventListener('click', ()=>mSheet(true));
   $('mSheet').addEventListener('click', e=>{ if(e.target.id==='mSheet') mSheet(false); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('mSheet').hidden) mSheet(false); });
   $('mLogo').addEventListener('click', e=>{ e.preventDefault(); irPortada(); });
-  mSheetArmar();
   let mIdxT;
   function mActualizar(){
     const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab, dentro = tab!=='portada';
@@ -2935,10 +3082,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('quotes').classList.toggle('compact', tab!=='dolares');
     const grupo = ARG_T.includes(tab) ? 'Argentina' : PAISES_T.includes(tab) ? 'Países' : (tab==='global' ? 'El mundo' : '');
     $('mWhere').innerHTML = !dentro ? '<span class="mbrand">Pulso<span>Macro</span></span>' : `<small>${grupo || (tab==='sobre' ? 'Pulso Macro' : 'El mundo')}</small><b>${ICO[key] ? ico(key) : ''}${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
-    clearTimeout(mIdxT); mIdxT = setTimeout(mIndice, 350);
+    clearTimeout(mIdxT); mIdxT = setTimeout(()=>{ mAcordeon(); }, 300);
+    mResumen(); mNavMarcar();
+    if(!dentro && !$('mTip').hidden){} else if(dentro) $('mTip').hidden = true;
   }
   function mIndice(){
-    const idx = $('mIdx'); if(!mobil() || tab==='portada'){ idx.innerHTML=''; return; }
+    const idx = $('mIdx'); if(true){ idx.innerHTML=''; return; }
     const view = document.getElementById(TABS[tab][1]); if(!view){ idx.innerHTML=''; return; }
     const hs = [...view.querySelectorAll('.card > .head > h2, .card > h2')].filter(h=>h.offsetParent!==null && h.textContent.trim());
     let n = 0;
@@ -2967,6 +3116,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     else if(loaded.d) $('stamp').textContent = 'Sin datos todavía';
     renderQuotes();
     TABS[tab][2]();
+    if(typeof mResumen==='function') mResumen();
     if(loaded.d) renderTape();
   }
   let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
@@ -3287,6 +3437,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(rs.length>1) h.push(cel('Reservas', `US$ ${nf(L(rs)/1000,1)} mil M`, dd(L(rs)-P(rs), `${sg(L(rs)-P(rs),0)} M en el día`)));
     if(mv.length>1) h.push(cel('S&amp;P Merval', nf(L(mv),0), dd(L(mv)/P(mv)-1, `${pc(L(mv)/P(mv)-1,2)} en el día`)));
     $('pHoy').innerHTML = h.join('') || '<p class="empty">Cargando datos…</p>';
+    { const mb = [], pf = series('pf'), a = im[im.length-1];
+      const big = (href, l, v, d, cls='') => `<a href="#${href}"><small>${l}</small><b class="${cls}">${v}</b><em>${d}</em></a>`;
+      if(a) mb.push(big('macro', 'Inflación de '+MESL[+a.mes.slice(5,7)-1], nf(a.infl,1)+'%', a.inflYoY!=null ? nf(a.inflYoY,1)+'% en un año' : ''));
+      if(rp.length>1) mb.push(big('macro', 'Riesgo país', nf(L(rp),0), `<i class="${L(rp)>P(rp)?'dn':'up'}" style="font-style:normal">${sg(L(rp)-P(rp),0)}</i> en el día`));
+      if(pf.length && a){ const real = ((1+L(pf)/1200)/(1+a.infl/100)-1)*100; mb.push(big('dinero', 'Plazo fijo vs. inflación', real>=0 ? 'Le gana' : 'Pierde', `${sg(real,2)}% por mes`, real>=0 ? 'up' : 'dn')); }
+      if(mv.length>1) mb.push(big('mercado', 'S&amp;P Merval', nf(L(mv),0), `<i class="${L(mv)>=P(mv)?'up':'dn'}" style="font-style:normal">${pc(L(mv)/P(mv)-1,2)}</i> en el día`));
+      $('mHoy').innerHTML = mb.join(''); }
     const it = glob ? dgItems('bolsa') : [];
     if(it.length){ const su = it.filter(x=>x[2]>0).length, best = it.reduce((a,x)=>x[2]>a[2]?x:a), worst = it.reduce((a,x)=>x[2]<a[2]?x:a), f = it.map(x=>x[4]).sort().pop();
       const h2 = `<div><b class="${su>=it.length/2?'up':'dn'}">${su} de ${it.length}</b> bolsas del mundo subieron${f ? ` en su último día (${fds(f)})` : ''}.</div>
@@ -4318,7 +4475,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k);
     if(k==='M' && sel==='explorar') xpStart();
     if(k==='M' && sel==='economias') renderComparador(); }
-  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mIndice==='function') mIndice(); }, 400);
+  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----

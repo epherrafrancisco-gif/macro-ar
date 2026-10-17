@@ -38,12 +38,20 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#ganaderia`, `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
   `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia` y `#peru`; `#sobre`.
-- Celular (≤640px, también en la portada: `body.insec` siempre y `body.mporta` en la portada): barra fija `#mbar` con
-  botón ⌂ Inicio (`#mLogo`, no en la portada), dónde estás grande (`#mWhere`: grupo arriba y nombre de la sección), botón
-  "Secciones" que abre la hoja `#mSheet` (`mSheetArmar`) e índice deslizable de la sección `#mIdx` (`mIndice`, arma los
-  chips con los h2 de las tarjetas visibles). Se ocultan header, cintas 2 y 3, migas y pestañas. Los dólares van en fila
-  compacta (`.quotes.compact`, menos en `#dolares`) con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()`
-  corre al final de `setTab`. En la compu no cambia nada.
+- Celular (≤640px, `body.insec` siempre y `body.mporta` en la portada; en la compu no cambia nada). Pedido del dueño:
+  que el que entra por primera vez entienda qué es, dónde está y cómo moverse.
+  - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
+    hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
+    para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, las tres cintas, migas, pestañas y `#mBtn`.
+  - Portada: `#mHero` (qué es Pulso Macro), los dólares, "Los datos del día" (`#mHoy`: inflación, riesgo país, plazo fijo
+    vs. inflación, Merval) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
+    compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
+  - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
+    hay, queda `#here`), 4 indicadores y botón "Ver los N indicadores" (`.mmas`), y tarjetas plegables (`mAcordeon`,
+    clases `.macc`/`.mk`/`.mc`): se abre la primera con gráfico (en Macro, "Inflación mensual"); al abrir se llama a
+    `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
+    de los apartados en Mundo, EE.UU. y países. Los dólares van en fila compacta (`.quotes.compact`, menos en `#dolares`)
+    con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
