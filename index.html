@@ -3488,7 +3488,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ['MEX','Banxico (México)',['2026-11-05','2026-12-17']],
     ['CAN','Banco de Canadá',['2026-10-28','2026-12-09','2027-01-27','2027-03-03','2027-04-28','2027-06-02','2027-07-21','2027-09-08','2027-10-27','2027-12-08']],
     ['COL','Banco de la República (Colombia)',['2026-10-30','2026-12-18']],
-    ['TUR','Banco Central de Turquía',['2026-10-21','2026-12-10']],
+    ['TUR','Banco Central de Turquía',['2026-10-22','2026-12-10','2027-01-21','2027-03-18','2027-04-22','2027-06-10']],
     ['CHL','Banco Central de Chile',['2026-10-27','2026-12-15','2027-01-26','2027-03-30','2027-04-27','2027-06-15','2027-07-27','2027-08-31','2027-10-26','2027-12-14']]];
   const GPA = {ARG:'Argentina',BRA:'Brasil',CHL:'Chile',URY:'Uruguay',PRY:'Paraguay',BOL:'Bolivia',PER:'Perú',COL:'Colombia',MEX:'México',VEN:'Venezuela',ECU:'Ecuador',
     USA:'EE.UU.',CAN:'Canadá',GBR:'Reino Unido',DEU:'Alemania',FRA:'Francia',ITA:'Italia',ESP:'España',CHE:'Suiza',JPN:'Japón',CHN:'China',IND:'India',KOR:'Corea del Sur',
@@ -4386,6 +4386,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ...['2026-11-10','2026-12-10','2027-01-13','2027-02-11','2027-03-10','2027-04-13','2027-05-12','2027-06-10','2027-07-14','2027-08-11','2027-09-14','2027-10-14','2027-11-10','2027-12-10'].map(f=>[f,'Inflación (IPC)','BLS','08:30']),
     ...['2026-11-06','2026-12-04','2027-01-08','2027-02-05','2027-03-05','2027-04-02','2027-05-07','2027-06-04','2027-07-02','2027-08-06','2027-09-03','2027-10-08','2027-11-05','2027-12-03'].map(f=>[f,'Empleo y desempleo','BLS','08:30']),
     ['2026-10-29','PBI del 3.er trimestre (adelanto) e inflación PCE','BEA','08:30'],['2026-11-25','PBI del 3.er trimestre (2.ª estimación) e inflación PCE','BEA','08:30'],['2026-12-23','PBI del 3.er trimestre (final) e inflación PCE','BEA','08:30'],
+    ...[['2027-01-28','4.º','2026','adelanto'],['2027-02-25','4.º','2026','2.ª estimación'],['2027-03-31','4.º','2026','final'],
+        ['2027-04-29','1.er','2027','adelanto'],['2027-05-27','1.er','2027','2.ª estimación'],['2027-06-25','1.er','2027','final'],
+        ['2027-07-29','2.º','2027','adelanto'],['2027-08-25','2.º','2027','2.ª estimación'],['2027-09-30','2.º','2027','final'],
+        ['2027-10-28','3.er','2027','adelanto'],['2027-11-24','3.er','2027','2.ª estimación'],['2027-12-22','3.er','2027','final']]
+      .map(([f,t,a,e])=>[f,`PBI del ${t} trimestre ${a} (${e}) e inflación PCE`,'BEA','08:30']),
     ...BCAL[0][2].map(f=>[f,'Decisión de tasa de la Fed','Reserva Federal','14:00'])];
   const HN = {AAPL:'Apple',MSFT:'Microsoft',NVDA:'Nvidia',AVGO:'Broadcom',ORCL:'Oracle',CRM:'Salesforce',AMD:'AMD',ADBE:'Adobe',CSCO:'Cisco',ACN:'Accenture',IBM:'IBM',QCOM:'Qualcomm',INTU:'Intuit',TXN:'Texas Instruments',NOW:'ServiceNow',
     GOOGL:'Alphabet (Google)',META:'Meta',NFLX:'Netflix',DIS:'Disney',VZ:'Verizon',AMZN:'Amazon',TSLA:'Tesla',COST:'Costco',HD:'Home Depot',WMT:'Walmart',PG:'Procter & Gamble',KO:'Coca-Cola',PEP:'PepsiCo',MCD:"McDonald's",PM:'Philip Morris',

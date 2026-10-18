@@ -159,7 +159,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 
 ### Colombia y Turquía (`#colombia` `vCo` `renderColombia` `SUBS.O`; `#turquia` `vTr` `renderTurquia` `SUBS.T`)
 - Mismo formato que Japón, datos `colombia.json`/`turquia.json` (scripts/colombia.py y turquia.py: BIS D.CO/D.TR, XRU COP/TRY,
-  CPI 771/628; OCDE COL/TUR). `BCAL` COL y TUR solo con fechas de 2026: cargar 2027 cuando las publiquen.
+  CPI 771/628; OCDE COL/TUR). `BCAL` COL solo con fechas de 2026 (cargar 2027 cuando el BanRep las publique); TUR hasta jun-2027 (el TCMB publica
+  el año en curso y el primer semestre del siguiente: cargar jul-dic 2027 cuando salgan).
 - Colombia: mil pesos colombianos en pesos, MSCI COLCAP (`global.json → colombia.colcap`, historia `colcap`), ADR
   `acciones.col` (EC, CIB, AVAL, TGLS); sin bono a 10 años (CNBC no lo tiene), por eso el apartado se llama "Tasas".
   Noticias de El Tiempo, Portafolio, La República, Semana y Valora Analitik.
@@ -183,7 +184,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
 - Reloj de mercados 24 h (`renderReloj`, `gEstado`, `gProx`, lista `GEX` sin feriados).
 - `gMundoExtra`: ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`, fechas de anuncio
-  cargadas a mano hasta dic-2027; Banxico solo 2026: agregar 2027 cuando lo publique), bonos a 10 años vs EE.UU.
+  cargadas a mano hasta dic-2027; Banxico y Colombia solo 2026, Turquía hasta jun-2027: completar cuando publiquen), bonos a 10 años vs EE.UU.
   (Argentina = riesgo país), cripto top 10, noticias del mundo.
 - `gExtras`: bolsas, bancos centrales (BIS), commodities (9, con variación en el año y clic al gráfico), Argentinas en
   Wall Street, Líderes del mundo, gráficos 1M-2A (`GCH`), "¿Qué rindió más en el año?", monedas, termómetro (VIX, 10-2).
@@ -205,7 +206,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda, cuenta regresiva a la Fed, 6 indicadores,
   Fed vs inflación, curva del Tesoro, empleos por mes, sectores, 7 magníficas, decisiones de la Fed.
 - Semáforo de recesión (regla de Sahm, curva 10-2, VIX, pedidos de desempleo vs un año), inflación por rubro,
-  próximos datos (`CAL_US`, fechas BLS/BEA a mano hasta 2027; PBI/PCE solo hasta dic-2026: cargar 2027 cuando salgan),
+  próximos datos (`CAL_US`, fechas BLS/BEA a mano hasta dic-2027),
   mapa de 50 empresas por sector, mercado laboral, hipotecaria 30 años, próximos balances y PBI.
 
 ## Datos y robots (GitHub Actions)
