@@ -43,7 +43,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
     hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
     para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, las tres cintas, migas, pestañas y `#mBtn`.
-  - Portada: `#mHero` (qué es Pulso Macro), los dólares, "Los datos del día" (`#mHoy`: inflación, riesgo país, plazo fijo
+  - Portada: `#mHero` (qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares, "Los datos del día" (`#mHoy`: inflación, riesgo país, plazo fijo
     vs. inflación, Merval) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
     compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
