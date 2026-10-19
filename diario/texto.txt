@@ -1,12 +1,12 @@
-Dólar hoy · 16/10/2026
+Dólar a las 10:59 · 19/10/2026
 
-Oficial: $1.534,16 (+0,1%)
-MEP: $1.536,17 (+0,3%)
-CCL: $1.615,62 (+0,1%)
-Blue: $1.545,00 (−0,3%)
+Oficial: $1.534,80 (0,0%)
+MEP: $1.535,75 (−0,1%)
+CCL: $1.620,03 (+0,4%)
+Blue: $1.555,00 (+0,6%)
 
-Brecha CCL: 5,3%
-Riesgo país: 629 pb (+7)
+Brecha CCL: 5,6%
+Riesgo país: 660 pb (+12)
 Reservas: US$ 49.723 M (14/10)
 Compras del BCRA: +291 M (13/10); en 2026: +15.212 M
 
