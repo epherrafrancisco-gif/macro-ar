@@ -231,6 +231,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
   Medios que dan 403 desde Actions: El Economista México por sección, Forbes México, elEconomista.es.
+- Páginas por indicador (para Google; el tablero es un solo archivo con `#` y Google solo ve la portada):
+  `scripts/paginas.py` + workflow `paginas.yml` (corre al terminar Actualizar datos, Global y Ganaderia, y a las 00:05).
+  Arma ~20 carpetas `/<slug>/index.html` (dato escrito como texto, gráfico SVG, últimos datos, qué es, botón al tablero,
+  links entre páginas), `/indicadores/` (índice, enlazado desde el pie del tablero), `sitemap.xml` y `robots.txt`.
+  Solo lee los JSON; solo escribe si cambió algo. Una página nueva = un bloque `pag_diaria`/`pag_mensual` en el script.
+  No cambiar los slugs (son las URL que indexa Google). Alta en Google Search Console: pendiente del dueño.
 - Chequeo diario del sitio publicado (`chequeo-sitio.yml` + `scripts/chequeo.mjs`, L a V 19:43 ART): si hay problemas
   graves abre un issue (avisa por mail al dueño) y lo cierra solo cuando se arregla. Revisa también la portada.
 - Secretos del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.; si falta, la tarjeta de PBI no aparece) y

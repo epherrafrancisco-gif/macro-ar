@@ -1,0 +1,52 @@
+name: Páginas por indicador
+
+# Regenera las páginas estáticas por indicador (/riesgo-pais/, /dolar-blue-hoy/, ...), /indicadores/, sitemap.xml y
+# robots.txt con scripts/paginas.py, cada vez que termina un robot de datos. No pide nada a internet: lee los JSON.
+on:
+  workflow_run:
+    workflows: ["Actualizar datos", "Global", "Ganaderia"]
+    types: [completed]
+  schedule:
+    - cron: "5 3 * * *"   # 00:05 ART, por si algo se perdió
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/paginas.py
+      - .github/workflows/paginas.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paginas
+  cancel-in-progress: false
+
+jobs:
+  paginas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generar páginas
+        run: python scripts/paginas.py
+      - name: Guardar cambios
+        run: |
+          git add -A -- '*/index.html' sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Páginas $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            sleep 10
+          done
+          exit 1
