@@ -198,6 +198,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `XP_SCN` cada `XP_DUR` (22 s): bolsas, monedas, tasas, inflación (se acerca a Argentina) y bonos; vuela al destacado y
   muestra un recuadro con su serie de global_hist (`XP_BK`, `XP_MK`, `XP_BO`). Paneles: relojes `XP_CLK`, VIX, Argentina
   (`live`, `series`), flujo de datos (`xpRain`) y consola (`xpLog`).
+- Estética (pedido del dueño, "que parezca una terminal de banco, no un jueguito"): piel de terminal tipo Bloomberg,
+  bloque CSS "Monitor: piel de terminal" (negro plano, ámbar `--am` #ff9e1b, encabezados como barras ámbar, sin bordes
+  redondeados). En el canvas NO hay halo, anillo con grados, barrido de radar dibujado (el ángulo sigue moviendo las
+  etiquetas), miras ni resplandores; títulos sin efecto de máquina de escribir. No volver a agregar adornos de "película".
 - "Modo monitor" (`xpModo`): clase `body.mon` (deja visibles las cintas y fija el monitor debajo con `--monTop`),
   pantalla completa, Wake Lock para que no se apague; Esc o clic para salir. Rendimiento: DPR máx. 1,25, 30 cuadros por
   segundo, países agrupados por color y solo la cara visible; los globos de arriba se pausan si no están en pantalla.
