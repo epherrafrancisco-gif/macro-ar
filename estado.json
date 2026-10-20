@@ -1,6 +1,12 @@
 {
  "actualizado": "2026-10-20",
  "ok": [
+  "Ámbito blue: 190 días",
+  "Ámbito oficial: 217 días",
+  "Ámbito mep: 232 días",
+  "Ámbito ccl: 232 días",
+  "Ámbito riesgo: 232 días",
+  "Ámbito merval: 218 días",
   "BCRA compras: 210 días desde 2025-12-01",
   "BCRA bopreal: 212 días desde 2025-12-01",
   "BCRA reservas: 3 días",
@@ -23,21 +29,14 @@
   "DolarApi: cripto ['2026-10-20'], tarjeta ['2026-10-20']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
-  "Historia ofi: 23 días en 1 tramos",
+  "Historia ofi: 35 días en 1 tramos",
   "Historia blue: 33 días en 1 tramos",
   "Historia mep: 36 días en 1 tramos",
   "Historia ccl: 36 días en 1 tramos",
   "Historia may: 34 días en 1 tramos",
-  "Historia cer: 50 días en 1 tramos"
+  "Historia cer: 50 días en 1 tramos",
+  "CPI EE.UU. (BLS): 116 meses",
+  "CPI EE.UU., fuentes con error: FRED: The read operation timed out"
  ],
- "errores": [
-  "Ámbito blue: The read operation timed out",
-  "Ámbito oficial: HTTP Error 502: Bad Gateway",
-  "Ámbito mep: HTTP Error 502: Bad Gateway",
-  "Ámbito ccl: HTTP Error 502: Bad Gateway",
-  "Ámbito riesgo: HTTP Error 520: <none>",
-  "Ámbito merval: HTTP Error 502: Bad Gateway",
-  "Historia ofi, meses con error: días sin dato: 2026-10-01, 2026-10-02, 2026-10-05, 2026-10-06, 2026-10-07, 2026-10-08, 2026-10-09, 2026-10-12, 2026-10-13, 2026-10-14, 2026-10-15, 2026-10-16, 2026-10-20",
-  "CPI EE.UU., fuentes con error: FRED: The read operation timed out; BLS: HTTP Error 503: Service Unavailable"
- ]
+ "errores": []
 }
