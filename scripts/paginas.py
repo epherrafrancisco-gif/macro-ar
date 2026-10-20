@@ -374,7 +374,7 @@ if nov:
     gr = hac[k]["grupos"]
     fil = "".join(f"<tr><td>{esc(g.capitalize() if g != 'MEJ' else 'Mestizos (MEJ)')}</td><td>$ {nf(x['prom'], 2)}</td><td>{nf(x['cab'], 0)}</td></tr>" for g, x in gr.items() if x.get("prom"))
     extra = f'<div class="card"><h2>Todas las categorías, {fecha_corta(k)}</h2><table><tr><th>Categoría</th><th>$/kg vivo</th><th>Cabezas</th></tr>{fil}</table></div>'
-    pag_diaria("precio-novillo-hoy", "Novillo", "Precio del novillo hoy en Cañuelas (ex Liniers)", nov, lambda z: nf(z, 2), "$/kg", "#c98500",
+    pag_diaria("precio-novillo-hoy", "Novillo", "Precio del novillo hoy en Cañuelas (ex Liniers)", nov, lambda z: nf(z, 2), "por kg", "#c98500",
                P(("¿De dónde sale?", "Es el precio promedio por kilo vivo de los novillos vendidos en el Mercado Agroganadero de Cañuelas, que reemplazó al histórico Mercado de Liniers. Es la referencia de precios de la hacienda en Argentina."),
                  ("¿Cuándo hay remate?", "El mercado opera casi siempre martes, miércoles y viernes. Los precios del día son provisorios hasta la tarde.")),
                "ganaderia", "Mercado Agroganadero de Cañuelas", extra=extra, pref="$ ", etq="Precio del novillo")
