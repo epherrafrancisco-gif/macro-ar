@@ -3025,7 +3025,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(t==='eeuu'){ G.vista = 'usa'; t = 'global'; } else if(t==='global') G.vista = 'mundo';
     tab = TABS[t] ? t : 'portada';
     const key = tab==='global' ? (G.vista==='usa' ? 'eeuu' : 'global') : tab;
-    if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key); }
+    if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key);
+      // pedido del dueño: al entrar a una sección, siempre el primer apartado y todas las tarjetas cerradas (celular)
+      try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); }catch(e){} }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
     const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
@@ -3109,7 +3111,6 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const cards = [...view.querySelectorAll('.card')].filter(c=>c.querySelector(':scope > .head > h2') && !c.querySelector('canvas') && !(conSub && !c.closest('.gsub')));
     cards.forEach(c=>c.classList.add('mk'));
     const vis = cards.filter(c=>c.offsetParent!==null);
-    { const pri = (tab==='macro' && vis.find(c=>/^Inflación mensual/.test(mTit(c).split(':')[1]))) || vis.find(c=>c.querySelector('.chart')) || vis[0]; if(pri){ const k = mTit(pri); if(!mVis.has(k)){ mVis.add(k); mAb.add(k); } } }
     for(const c of cards){ c.classList.toggle('mc', !mAb.has(mTit(c)));
       if(c._mac) continue; c._mac = 1;
       c.querySelector(':scope > .head').addEventListener('click', e=>{
@@ -4655,7 +4656,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
   const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia']};
-  for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
+  const SUBS_DEF = Object.fromEntries(Object.entries(SUBS).map(([k,v])=>[k, v[2]]));  // primer apartado de cada sección (no se recuerda el último)
   // ---- datos que se suman a todos los países (paises_extra.json: Banco Mundial, OCDE, BIS y Big Mac) ----
   const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL'};
   const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', ARG:'Argentina'};
@@ -4763,7 +4764,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(k==='M' && sel==='explorar') xpStart();
     if(k==='M' && sel==='economias') renderComparador();
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0); }
-  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
+  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----

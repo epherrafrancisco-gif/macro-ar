@@ -50,8 +50,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
     hay, queda `#here`), 4 indicadores y botón "Ver los N indicadores" (`.mmas`), y tarjetas plegables (`mAcordeon`,
-    clases `.macc`/`.mk`/`.mc`): se abre la primera con gráfico (en Macro, "Inflación mensual"); al abrir se llama a
-    `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
+    clases `.macc`/`.mk`/`.mc`): pedido del dueño, al entrar a una sección o cambiar de apartado TODAS cerradas (`mAb` se
+    vacía), para que se vean juntas y el usuario elija; al abrir se llama a `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
     de los apartados en Mundo, EE.UU. y países. Los dólares van en fila compacta (`.quotes.compact`, menos en `#dolares`)
     con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
@@ -86,8 +86,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño.
 
 ### Apartados dentro de Mundo y Estados Unidos
-- Barra `.subtabs` (`#gSubM`, `#gSubU`) y bloques `.gsub[data-sub]`; `SUBS`, `aplicarSub`, `setSub` (se recuerda en
-  localStorage `sub-M` / `sub-U`). Pedido del dueño: los menos apartados posibles, lo coherente junto.
+- Barra `.subtabs` (`#gSubM`, `#gSubU`) y bloques `.gsub[data-sub]`; `SUBS`, `aplicarSub`, `setSub`. Pedido del dueño: NO se
+  recuerda el último apartado; al entrar a una sección siempre arranca en el primero (`SUBS_DEF`, se resetea en `setTab`). Pedido del dueño: los menos apartados posibles, lo coherente junto.
 - Mundo: arriba SIEMPRE los dos globos (no sacarlos de ahí). Apartados: Bolsas y acciones (reloj, bolsas, termómetro,
   Argentinas en WS, Líderes, gráficos, ¿qué rindió más?, cripto) · Economías y tasas (comparador de países `renderComparador`, `CMP_P`:
   12 países con el último dato de cada sección; ficha del país, ¿dónde está
