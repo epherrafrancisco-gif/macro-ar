@@ -195,6 +195,19 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - También en: comparador (`CMP_*` POL), "¿Dónde está Argentina?", bancos centrales, reloj de mercados (GPW, Varsovia),
   monedas, calculadora de viaje (PLN), Monitor y la página `/zloty-en-pesos/`.
 
+### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 12 + Argentina; `pxRender(k)` se
+  llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
+- Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
+  tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
+  no en EE.UU., que tiene la del BLS; en 10/2026 la OCDE solo estaba al día para Reino Unido y Colombia: el resto quedó en
+  2021-2025 y se descarta por atrasado, ver `diag.rubros_ult`), industria y comercio (OCDE `DF_KEI`: PRVM y TOVM, GY), termómetro (OCDE `DF_CLI`
+  4.1: CCICP, BCICP y LI ajustados por amplitud, 100 = promedio; la versión de `DF_KEI` viene en saldos con escalas
+  distintas y NO sirve), precio de las viviendas (BIS `WS_SPP` R/N .771, trimestral) y cuenta corriente (Banco Mundial).
+- Tasas: crédito al sector privado % PBI (BIS `WS_TC` P.A.M.770.A; Perú no tiene). Mercados (en EE.UU., Wall Street):
+  tipo de cambio real (BIS `WS_EER` M.R.B, 2020 = 100) contra Argentina e índice Big Mac (GitHub TheEconomist/big-mac-data).
+- La OCDE no se puede leer con WebFetch (devuelve binario): se prueba desde Actions mirando el campo `diag` del JSON.
+
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en

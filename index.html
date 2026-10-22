@@ -4656,12 +4656,113 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // ---- apartados dentro de Mundo y Estados Unidos ----
   const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia']};
   for(const k in SUBS){ try{ const v = localStorage.getItem('sub-'+k); if(v) SUBS[k][2] = v; }catch(e){} }
+  // ---- datos que se suman a todos los países (paises_extra.json: Banco Mundial, OCDE, BIS y Big Mac) ----
+  const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL'};
+  const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', ARG:'Argentina'};
+  const PX_SUB = {U:{economia:'economia', tasas:'tasas', wall:'mercados'}};
+  let pxD = null, pxLoading = false;
+  async function loadPx(){
+    if(pxLoading) return; pxLoading = true;
+    try{ const r = await fetch('paises_extra.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) pxD = await r.json(); }catch(e){}
+    pxLoading = false; for(const k in PX_ISO){ const v = $(SUBS[k][1]); if(v && v.offsetParent!==null) pxRender(k); }
+  }
+  const pxY = a => (a||[]).map(p=>[p[0]+'-07-01', p[1]]);
+  const pxQ = a => (a||[]).map(p=>[eTri(p[0])+'-01', p[1]]);
+  const pxM = a => (a||[]).map(p=>[eMes(p[0]), p[1]]);
+  const pxPer = t => /Q\d/.test(t) ? `${t.slice(-1)}º trimestre ${t.slice(0,4)}` : t.length===7 ? mesTxt(t) : t;
+  const pxCard = (id, titulo, nota, sub, extra='') => `<div class="card"><div class="head"><h2>${titulo}</h2><span class="note" id="${id}N"></span></div>${sub ? `<p class="sub" id="${id}S">${sub}</p>` : ''}${extra}<div class="chart" id="${id}"></div><div class="legend" id="${id}L"></div><p class="note">${nota}</p></div>`;
+  function pxRender(k){
+    const iso = PX_ISO[k]; if(!iso) return;
+    const sub = (PX_SUB[k] || {})[SUBS[k][2]] ?? SUBS[k][2], vid = SUBS[k][1];
+    const gs = document.querySelector(`#${vid} .gsub[data-sub="${SUBS[k][2]}"]`); if(!gs) return;
+    let box = gs.querySelector(':scope > .pxw'); if(!box){ box = document.createElement('div'); box.className = 'pxw'; gs.appendChild(box); }
+    if(!pxD){ loadPx(); return; }
+    const D = pxD, N = PX_N[iso], A = 'Argentina', id = s => `px${k}${s}`, L = a => a?.length ? a[a.length-1] : null, html = [];
+    const wb = D.wb || {}, ppa = wb.ppa || {}, cre = wb.crec || {}, cc = wb.cc || {};
+    if(sub==='economia'){
+      if(iso!=='POL' && ppa[iso]?.length && ppa.ARG?.length){
+        html.push(pxCard(id('lp'), `${N==='La zona euro'?'La zona euro':N} y Argentina desde 1990`, 'Dólares internacionales de 2021: misma capacidad de compra en todos los países y años. Fuente: Banco Mundial.', 'Ingreso por habitante a paridad de poder de compra: lo que produce cada país por persona, corregido por lo que cuestan las cosas en cada lugar.', `<div class="stats" id="${id('lp')}St"></div>`));
+        if(cre[iso]?.length) html.push(pxCard(id('cr'), 'Crecimiento de cada año, contra Argentina', 'Variación del PBI de cada año, a precios constantes. Fuente: Banco Mundial.', ' '));
+      }
+      const R = (D.rubros||{})[iso];
+      if(iso!=='USA' && R && (R.alim || R.nucleo)) html.push(pxCard(id('ru'), 'Inflación por rubro', 'Variación en 12 meses. Núcleo: sin alimentos ni energía, la inflación "de fondo" que más mira el banco central. Fuente: OCDE.', ''));
+      const I = (D.ind||{})[iso];
+      if(I && (I.prod || I.minor)) html.push(pxCard(id('in'), 'Industria y comercio', 'Variación contra el mismo mes del año anterior. Producción industrial: fábricas, minas, electricidad y gas. Ventas minoristas: lo que se vende en negocios, en cantidades. Fuente: OCDE.', ''));
+      const C = (D.conf||{})[iso];
+      if(C && (C.cons || C.emp || C.cli)) html.push(pxCard(id('cf'), 'Termómetro: confianza y lo que viene', '100 = el promedio de largo plazo. Arriba de 100, más optimismo que lo normal. El indicador adelantado de la OCDE anticipa los giros de la economía unos meses antes: si sube, la economía tiende a acelerar; si baja, a frenar. Fuente: OCDE.', ''));
+      const V = (D.viv_real||{})[iso];
+      if(V?.length) html.push(pxCard(id('vv'), 'Precio de las viviendas', 'Barras: variación en 12 meses descontando la inflación (lo que subió o bajó de verdad). Fuente: BIS (Banco de Pagos Internacionales), con datos oficiales de cada país.', ' '));
+      if(cc[iso]?.length) html.push(pxCard(id('cc'), 'Cuenta corriente: ¿gana o pierde dólares con el mundo?', 'Saldo de la cuenta corriente (comercio, servicios, rentas y remesas) como % del PBI. Positivo: entran más dólares de los que salen. Datos anuales. Fuente: Banco Mundial.', ''));
+    }
+    if(sub==='tasas'){
+      const T = (D.credito||{})[iso];
+      if(T?.length) html.push(pxCard(id('cd'), 'Crédito a familias y empresas', 'Todo lo que deben las familias y las empresas (préstamos y bonos), como % del PBI. Argentina tiene uno de los niveles más bajos del mundo. Fuente: BIS.', ' '));
+    }
+    if(sub==='mercados'){
+      const E = (D.tcr||{})[iso];
+      if(E?.length) html.push(pxCard(id('tc'), '¿Moneda cara o barata?', 'Tipo de cambio real (2020 = 100): el valor de la moneda contra la de sus socios comerciales, descontando la inflación de cada uno. Si sube, el país se encareció en dólares; si baja, se abarató. Fuente: BIS.', ' '));
+      const B = D.bigmac;
+      if(B?.paises?.[iso]) html.push(pxCard(id('bm'), 'Índice Big Mac', `Precio de una Big Mac en cada país, pasado a dólares al tipo de cambio de ese momento. Es una forma simple de ver qué tan cara está cada moneda. Relevamiento de ${B.fecha.split('-').reverse().join('/')}, publicado por The Economist.`, ' ', `<div class="stats" id="${id('bm')}St"></div>`));
+    }
+    const sig = sub + '|' + html.length + '|' + (D.actualizado||'');
+    if(box.dataset.sig !== sig){ box.innerHTML = html.length ? `<div class="grid2 pxg">${html.join('')}</div>` : ''; box.dataset.sig = sig; }
+    if(!html.length) return;
+    const xf = x=>x.slice(5,7)+'/'+x.slice(2,4), sb = (l,v,d)=>`<div class="st"><span class="lbl">${l}</span><span class="v">${v}</span><span class="d">${d}</span></div>`;
+    const veces = r => r>=1 ? `${nf(r, r<10?1:0)} veces` : `${nf(r*100,0)}%`;
+    const el = s => document.getElementById(id(s));
+    if(sub==='economia'){
+      if(el('lp')){ const P = ppa[iso], Ar = new Map(ppa.ARG), p0 = P.find(p=>Ar.has(p[0])), pl = [...P].reverse().find(p=>Ar.has(p[0]));
+        const ss = [{n:N==='La zona euro'?'Zona euro':N, c:'--s5', pts:pxY(P)},{n:A, c:'--s1', pts:pxY(ppa.ARG)}];
+        legend($(id('lp')+'L'), ss); lineChart(el('lp'), ss, {h:240, xfmt:x=>x.slice(0,4), yfmt:v=>nf(v/1000,0)+' mil', vfmt:v=>'US$ '+nf(v,0), aria:`Ingreso por habitante de ${N} y Argentina`});
+        if(p0 && pl) $(id('lp')+'St').innerHTML = sb(`En ${p0[0]}`, veces(p0[1]/Ar.get(p0[0])), 'el ingreso por habitante de Argentina') + sb(`En ${pl[0]}`, veces(pl[1]/Ar.get(pl[0])), 'el ingreso por habitante de Argentina')
+          + sb('Creció desde ' + p0[0], sg((pl[1]/p0[1]-1)*100,0)+'%', `contra ${sg((Ar.get(pl[0])/Ar.get(p0[0])-1)*100,0)}% de Argentina`);
+      }
+      if(el('cr')){ const ss = [{n:N==='La zona euro'?'Zona euro':N, c:'--s5', pts:cre[iso]},{n:A, c:'--s1', pts:cre.ARG||[]}].filter(x=>x.pts.length);
+        legend($(id('cr')+'L'), ss); barChart(el('cr'), ss, {kfmt:x=>x, aria:`Crecimiento anual de ${N} y Argentina`, yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%'});
+        const d0 = cre[iso][0][0], np = cre[iso].filter(p=>p[1]<0), na = (cre.ARG||[]).filter(p=>p[0]>=d0 && p[1]<0);
+        $(id('cr')+'S').textContent = `Desde ${d0}: ${N==='La zona euro'?'la zona euro':N} tuvo ${np.length} año${np.length===1?'':'s'} con caída del PBI y Argentina ${na.length}.`; }
+      if(el('ru')){ const R = D.rubros[iso], cut = a => pxM(a).slice(-36), ss = [{n:'Alimentos', c:'--s2', pts:cut(R.alim)},{n:'Energía', c:'--s4', pts:cut(R.energia)},{n:'Núcleo', c:'--s1', pts:cut(R.nucleo)}].filter(x=>x.pts.length);
+        legend($(id('ru')+'L'), ss); lineChart(el('ru'), ss, {xfmt:xf, yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%', zero:true, aria:`Inflación por rubro de ${N}`});
+        const u = L(R.nucleo || R.alim); $(id('ru')+'N').textContent = u ? pxPer(u[0]) : ''; }
+      if(el('in')){ const I = D.ind[iso], cut = a => pxM(a).slice(-48), ss = [{n:'Producción industrial', c:'--s3', pts:cut(I.prod)},{n:'Ventas minoristas', c:'--s5', pts:cut(I.minor)}].filter(x=>x.pts.length);
+        legend($(id('in')+'L'), ss); lineChart(el('in'), ss, {xfmt:xf, yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%', zero:true, aria:`Industria y comercio de ${N}`});
+        const u = L(I.prod || I.minor); $(id('in')+'N').textContent = u ? pxPer(u[0]) : ''; }
+      if(el('cf')){ const C = D.conf[iso], cut = a => pxM(a).slice(-60), ss = [{n:'Consumidores', c:'--s2', pts:cut(C.cons)},{n:'Empresas', c:'--s3', pts:cut(C.emp)},{n:'Indicador adelantado', c:'--accent', pts:cut(C.cli)}].filter(x=>x.pts.length);
+        legend($(id('cf')+'L'), ss); lineChart(el('cf'), ss, {xfmt:xf, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:`Confianza e indicador adelantado de ${N}`});
+        const u = L(C.cli || C.cons || C.emp); $(id('cf')+'N').textContent = u ? pxPer(u[0]) : ''; }
+      if(el('vv')){ const V = D.viv_real[iso].slice(-24), Nm = L((D.viv_nom||{})[iso]), u = L(V);
+        barChart(el('vv'), [{n:'Precio real', c:'--s4', pts:V.map(p=>[eTri(p[0]), p[1]])}], {aria:`Precio real de las viviendas en ${N}`, yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%', kfmt:x=>x.slice(5,7)+'/'+x.slice(2,4)});
+        $(id('vv')+'N').textContent = u ? pxPer(u[0]) : '';
+        $(id('vv')+'S').textContent = u ? `En el ${pxPer(u[0])}, las viviendas ${u[1]>=0?'subieron':'bajaron'} ${nf(Math.abs(u[1]),1)}% en 12 meses descontando la inflación${Nm && Nm[0]===u[0] ? ` (${sg(Nm[1],1)}% en ${iso==='EUR'?'euros':'moneda local'}, sin descontarla)` : ''}.` : ''; }
+      if(el('cc')){ const yr = new Date().getFullYear()-16, ss = [{n:N==='La zona euro'?'Zona euro':N, c:'--s5', pts:cc[iso].filter(p=>+p[0]>=yr)},{n:A, c:'--s1', pts:(cc.ARG||[]).filter(p=>+p[0]>=yr)}].filter(x=>x.pts.length);
+        legend($(id('cc')+'L'), ss); barChart(el('cc'), ss, {kfmt:x=>x, aria:`Cuenta corriente de ${N} y Argentina`, yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'% del PBI'});
+        const u = L(cc[iso]); $(id('cc')+'N').textContent = u ? `${u[0]}: ${sg(u[1],1)}% del PBI` : ''; }
+    }
+    if(sub==='tasas' && el('cd')){ const T = D.credito[iso], ss = [{n:N==='La zona euro'?'Zona euro':N, c:'--s5', pts:pxQ(T)},{n:A, c:'--s1', pts:pxQ((D.credito||{}).ARG)}].filter(x=>x.pts.length), u = L(T), ua = L((D.credito||{}).ARG);
+      legend($(id('cd')+'L'), ss); lineChart(el('cd'), ss, {xfmt:x=>x.slice(0,4), yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'% del PBI', aria:`Crédito al sector privado en ${N} y Argentina`});
+      $(id('cd')+'N').textContent = u ? pxPer(u[0]) : '';
+      $(id('cd')+'S').textContent = u ? `${N==='La zona euro'?'En la zona euro':'En '+N}, las familias y empresas deben el equivalente a ${nf(u[1],0)}% del PBI${ua ? `; en Argentina, ${nf(ua[1],0)}%` : ''}.` : ''; }
+    if(sub==='mercados'){
+      if(el('tc')){ const d0 = String(new Date().getFullYear()-10), ss = [{n:N==='La zona euro'?'Zona euro':N, c:'--s5', pts:pxM(D.tcr[iso]).filter(p=>p[0]>=d0)},{n:A, c:'--s1', pts:pxM((D.tcr||{}).ARG).filter(p=>p[0]>=d0)}].filter(x=>x.pts.length), u = L(D.tcr[iso]);
+        legend($(id('tc')+'L'), ss); lineChart(el('tc'), ss, {xfmt:x=>x.slice(0,4), yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:`Tipo de cambio real de ${N} y Argentina`});
+        $(id('tc')+'N').textContent = u ? pxPer(u[0]) : '';
+        const h = D.tcr[iso], y1 = h.find(p=>p[0]===String(+u[0].slice(0,4)-1)+u[0].slice(4));
+        $(id('tc')+'S').textContent = u && y1 ? `En un año, la moneda ${u[1]>y1[1]?'se encareció':'se abarató'} ${nf(Math.abs((u[1]/y1[1]-1)*100),1)}% en términos reales.` : ''; }
+      if(el('bm')){ const B = D.bigmac, x = B.paises[iso], ar = B.paises.ARG, us = B.paises.USA, may = cardSeries('mayorista').pts, mv = may.length ? may[may.length-1][1] : null;
+        $(id('bm')+'St').innerHTML = sb(`En ${N==='La zona euro'?'la zona euro':N}`, `US$ ${nf(x.usd,2)}`, `${nf(x.local, x.local<100?2:0)} ${x.moneda}${mv ? ` · $ ${nf(x.usd*mv,0)} al oficial` : ''}`)
+          + (ar ? sb('En Argentina', `US$ ${nf(ar.usd,2)}`, `$ ${nf(ar.local,0)}`) : '') + (us && iso!=='USA' ? sb('En EE.UU.', `US$ ${nf(us.usd,2)}`, 'la referencia') : '');
+        const rows = Object.entries(B.paises).map(([k2,v])=>({n:PX_N[k2]==='La zona euro'?'Zona euro':PX_N[k2], v:v.usd, c: k2===iso ? '--s5' : k2==='ARG' ? '--s1' : '--grid', hl: k2===iso || k2==='ARG'})).sort((a,b)=>b.v-a.v);
+        hBars(el('bm'), rows, {vfmt:v=>'US$ '+nf(v,2), aria:'Precio de la Big Mac en dólares'});
+        $(id('bm')+'S').textContent = x.vs_usa!=null && iso!=='USA' ? `Según el índice, la moneda de ${N==='La zona euro'?'la zona euro':N} está ${x.vs_usa>0?'sobrevaluada':'subvaluada'} ${nf(Math.abs(x.vs_usa*100),0)}% contra el dólar${ar?.vs_usa!=null ? `; la de Argentina, ${ar.vs_usa>0?'sobrevaluada':'subvaluada'} ${nf(Math.abs(ar.vs_usa*100),0)}%` : ''}.` : ''; }
+    }
+  }
   function aplicarSub(k){ const [tid, vid, sel] = SUBS[k];
     document.querySelectorAll(`#${vid} .gsub`).forEach(d=>d.hidden = d.dataset.sub!==sel);
     document.querySelectorAll(`#${tid} button`).forEach(b=>b.setAttribute('aria-selected', String(b.dataset.s===sel)));
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k);
     if(k==='M' && sel==='explorar') xpStart();
-    if(k==='M' && sel==='economias') renderComparador(); }
+    if(k==='M' && sel==='economias') renderComparador();
+    if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ localStorage.setItem('sub-'+k, v); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
