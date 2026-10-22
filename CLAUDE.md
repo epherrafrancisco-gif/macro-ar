@@ -31,7 +31,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 13 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 14 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -209,6 +209,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`commodities` brent, historia `brent`), fondo KSA (`arabia.ksa`, historia `ksa`); el Tadawul (`.TASI`, historia `tasi`)
   se usa si CNBC lo trae. Noticias: Saudi Gazette, Argaam y Al Jazeera (inglés; Arab News da 403 desde Actions). CNBC no trae historia de IN10Y.
 
+### Suiza (`#suiza` `vSz` `renderSuiza` `SUBS.Z`, datos `suiza.json` de scripts/suiza.py, misma base `pais_bis.py`)
+- BIS CH (tasa del BNS, CHF, IPC), OCDE/Banco Mundial CHE. `BCAL` CHE (anuncio 9:30 de Zúrich; fechas oficiales hasta
+  dic-2027). CNBC: `CHF=`, `EURCHF=`, `EWL` (`global.json → suiza`), SMI (`bolsas.SIX`, historia `smi`), bono `bonos.CHE`
+  (historia `ch10`), ADR `acciones.che`. Noticias: The Local (Suiza) en inglés; el RSS de Swissinfo da 410. Bolsa SIX en `GEX`.
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -218,7 +223,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 14 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 15 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
