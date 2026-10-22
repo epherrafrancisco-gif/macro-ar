@@ -148,7 +148,6 @@ FEEDS_EN = [
     ("Mint", "https://www.livemint.com/rss/markets", {"india": "econ"}),
     ("Business Standard", "https://www.business-standard.com/rss/economy-102.rss", {"india": "econ"}),
     ("The Hindu BusinessLine", "https://www.thehindubusinessline.com/economy/feeder/default.rss", {"india": "econ"}),
-    ("Arab News", "https://www.arabnews.com/cat/3/rss.xml", {"arabia": "pais"}),
     ("Saudi Gazette", "https://saudigazette.com.sa/rssFeed/74", {"arabia": "econ"}),
     ("Argaam", "https://www.argaam.com/en/rss/ho-main-news?sectionid=1524", {"arabia": "econ"}),
     ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml", {"arabia": "pais", "india": "pais", "turquia": "pais"}),

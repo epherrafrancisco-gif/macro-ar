@@ -31,7 +31,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 11 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 13 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -177,8 +177,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `BCAL` (el BCRP no publica un calendario fácil de verificar). CNBC dejó de actualizar el S&P/BVL: se usa el ETF EPU
   (`global.json → peru.epu`, historia `epu`). ADR `acciones.per` (BAP, SCCO, BVN, IFS). Noticias de Gestión, El Comercio,
   La República (Perú), Andina y RPP.
-- Probados y descartados por falta de datos gratis al día: India (BIS no tiene su tasa, no hay desempleo ni noticias en
-  español) y Uruguay (BIS no tiene tasa ni inflación; el BCU y el INE no responden desde Actions).
+- Probado y descartado por falta de datos gratis al día: Uruguay (BIS no tiene tasa ni inflación; el BCU y el INE no
+  responden desde Actions). India sí se pudo (10/2026: el BIS ya tiene su tasa; desempleo anual del Banco Mundial).
 
 
 ### Polonia (`#polonia`, sección `vPl`, `renderPolonia`, `SUBS.L`, datos `polonia.json` de scripts/polonia.py en `global.yml`)
@@ -195,8 +195,29 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - También en: comparador (`CMP_*` POL), "¿Dónde está Argentina?", bancos centrales, reloj de mercados (GPW, Varsovia),
   monedas, calculadora de viaje (PLN), Monitor y la página `/zloty-en-pesos/`.
 
+### India y Arabia Saudita (`#india` `vIn` `renderIndia` `SUBS.I`; `#arabia` `vSa` `renderArabia` `SUBS.A`)
+- Robots `scripts/india.py` y `scripts/arabia.py` sobre la base común `scripts/pais_bis.py` (`armar`: BIS tasa/moneda/IPC,
+  OCDE desempleo/PBI si los hay y, de respaldo, Banco Mundial anual `desemp_anual`/`crec_anual`; descarta lo atrasado).
+  En la página, piezas comunes `pb*` (`pbFx`, `pbInfl`, `pbPbi`, `pbDes`, `pbTasa`, `pbDat`, `pbBolsa`) y `PB_D`/`loadPB`.
+  Un país nuevo con solo BIS/OCDE/Banco Mundial se arma igual: un .py de 5 líneas con `armar(...)` y estas piezas.
+- India: rupia (`INR=`, historia `fx_inr`), cien rupias en pesos, RBI (`BCAL` IND, anuncio 10:00 IST; PENDIENTE: cargar
+  las reuniones de 2027-28 cuando el RBI las publique), Nifty 50 (`bolsas.NSE`, historia `nifty`), bono `bonos.IND` (`in10`),
+  ADR `acciones.ind`, fondo `india.inda`. Noticias: en español casi no hay; medios indios en inglés (Economic Times, Mint,
+  Business Standard, Hindu BusinessLine).
+- Arabia Saudita: riyal fijo 3,75 desde 1986; el SAMA mueve la tasa con la Fed (su cuenta regresiva usa `BCAL` USA). Brent
+  (`commodities` brent, historia `brent`), fondo KSA (`arabia.ksa`, historia `ksa`); el Tadawul (`.TASI`, historia `tasi`)
+  se usa si CNBC lo trae. Noticias: Saudi Gazette, Argaam y Al Jazeera (inglés; Arab News da 403 desde Actions). CNBC no trae historia de IN10Y.
+
+### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
+- Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
+  (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
+  su bolsa (`GEX`; se sumaron Borsa İstanbul, BCS Santiago, BVC Bogotá y BVL Lima), habitantes estimados ahora y "mientras
+  mirás esta página" (PBI en dólares por segundo, contra Argentina). Población y PBI: Banco Mundial (`wb.pop`, `wb.popc`,
+  `wb.pbiusd` en paises_extra.json). Un solo `setInterval` de 1 s que se corta si la franja no está a la vista.
+  En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
+
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 12 + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 14 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
