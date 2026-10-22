@@ -643,12 +643,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#ganaderia" role="tab" id="tabGa" data-g="arg" aria-selected="false">Ganadería</a>
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
-      <a href="#eeuu" role="tab" id="tabU" data-g="glo" aria-selected="false">Estados Unidos</a>
       <button type="button" class="pbtn" id="tabPaises" data-g="glo" aria-expanded="false" aria-controls="paisPanel">Países</button>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
     </nav>
     <nav class="paispanel" id="paisPanel" aria-label="Países" hidden>
+      <a href="#eeuu" role="tab" id="tabU" data-g="pais" aria-selected="false">Estados Unidos</a>
+      <a href="#polonia" role="tab" id="tabPl" data-g="pais" aria-selected="false">Polonia</a>
       <a href="#brasil" role="tab" id="tabB" data-g="pais" aria-selected="false">Brasil</a>
       <a href="#europa" role="tab" id="tabE" data-g="pais" aria-selected="false">Europa</a>
       <a href="#mexico" role="tab" id="tabX" data-g="pais" aria-selected="false">México</a>
@@ -659,7 +660,6 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#colombia" role="tab" id="tabCo" data-g="pais" aria-selected="false">Colombia</a>
       <a href="#turquia" role="tab" id="tabTr" data-g="pais" aria-selected="false">Turquía</a>
       <a href="#peru" role="tab" id="tabPe" data-g="pais" aria-selected="false">Perú</a>
-      <a href="#polonia" role="tab" id="tabPl" data-g="pais" aria-selected="false">Polonia</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -3012,8 +3012,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia'].map(k=>tile(k)).join('');
-  const PAISES_T = ['brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia'];
+  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'].map(k=>tile(k)).join('');
+  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru'];
+  const PAISES_M = ['eeuu', ...PAISES_T];  // menú Países: EE.UU. y Polonia primero (pedido del dueño); EE.UU. es una vista de la pestaña global
   function paisPanel(on){ $('paisPanel').hidden = !on; $('tabPaises').setAttribute('aria-expanded', String(on)); }
   $('tabPaises').addEventListener('click', ()=>{ paisPanel($('paisPanel').hidden); gcUna('menu-paises'); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('paisPanel').hidden){ paisPanel(false); $('tabPaises').focus(); } });
@@ -3030,8 +3031,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
     let selA = null;
     document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const on = a.getAttribute('href').slice(1)===key; a.hidden = a.dataset.g!=='pais' && a.dataset.g!==grp; a.setAttribute('aria-selected', String(on)); if(on) selA = a; });
-    { const esPais = PAISES_T.includes(tab), b = $('tabPaises'); b.hidden = grp!=='glo'; b.classList.toggle('on', esPais);
-      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h12l-2.5 4 2.5 4H5"/></svg>' + (esPais ? 'Países · '+SECC[tab][0] : 'Países') + '<span class="car" aria-hidden="true">▾</span>';
+    { const esPais = PAISES_T.includes(tab) || key==='eeuu', b = $('tabPaises'); b.hidden = grp!=='glo'; b.classList.toggle('on', esPais);
+      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h12l-2.5 4 2.5 4H5"/></svg>' + (esPais ? 'Países · '+SECC[key][0] : 'Países') + '<span class="car" aria-hidden="true">▾</span>';
       paisPanel(false); if(esPais && selA) selA = b; }
     $('bar').hidden = !grp;
     $('dolHoy').hidden = grp==='glo' || tab==='sobre';  // los dólares: en la portada y en todo Argentina
@@ -3057,7 +3058,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const sob = `<a href="#sobre" data-k="sobre" class="${key==='sobre'?'on':''}">${ico('sobre')}<span>Sobre Pulso Macro<em>Quién lo hace y de dónde salen los datos</em></span></a>`;
     $('msIn').innerHTML = `<div class="ms-h"><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>`
       + (grp==='arg' ? `<div class="ms-l">${ARG_T.filter(k=>k!=='calculadoras').map(fila).join('')}</div>`
-        : `<div class="ms-l">${fila('global')}${fila('eeuu')}</div><h4>Países</h4><div class="ms-l">${PAISES_T.map(fila).join('')}</div>`)
+        : `<div class="ms-l">${fila('global')}</div><h4>Países</h4><div class="ms-l">${PAISES_M.map(fila).join('')}</div>`)
       + `<h4>Pulso Macro</h4><div class="ms-l">${sob}</div>`;
     $('msX').addEventListener('click', ()=>mSheet(false));
     $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
@@ -3069,8 +3070,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('msIn').innerHTML = `<div class="ms-h"><b>Secciones</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>
       <div class="ms-g"><a href="#" data-k="portada"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/></svg>Inicio</a>${it('sobre')}</div>
       <h4>Argentina</h4><div class="ms-g">${ARG_T.map(k=>it(k)).join('')}</div>
-      <h4>El mundo</h4><div class="ms-g">${it('global')}${it('eeuu')}</div>
-      <h4>Países</h4><div class="ms-g">${PAISES_T.map(k=>it(k)).join('')}</div>`;
+      <h4>El mundo</h4><div class="ms-g">${it('global')}</div>
+      <h4>Países</h4><div class="ms-g">${PAISES_M.map(k=>it(k)).join('')}</div>`;
     $('msX').addEventListener('click', ()=>mSheet(false));
     $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
       e.preventDefault(); mSheet(false); const k = a.dataset.k;
@@ -3156,7 +3157,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab, dentro = tab!=='portada';
     document.body.classList.toggle('insec', true); document.body.classList.toggle('mporta', !dentro);
     $('quotes').classList.toggle('compact', tab!=='dolares');
-    const grupo = ARG_T.includes(tab) ? 'Argentina' : PAISES_T.includes(tab) ? 'Países' : (tab==='global' ? 'El mundo' : '');
+    const grupo = ARG_T.includes(tab) ? 'Argentina' : (PAISES_T.includes(tab) || key==='eeuu') ? 'Países' : (tab==='global' ? 'El mundo' : '');
     $('mWhere').innerHTML = !dentro ? '<span class="mbrand">Pulso<span>Macro</span></span>' : `<small>${grupo || (tab==='sobre' ? 'Pulso Macro' : 'El mundo')}</small><b>${ICO[key] ? ico(key) : ''}${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
     clearTimeout(mIdxT); mIdxT = setTimeout(()=>{ mAcordeon(); }, 300);
     mResumen(); mNavMarcar();
