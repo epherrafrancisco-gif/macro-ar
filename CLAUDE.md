@@ -212,7 +212,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 ### Suiza (`#suiza` `vSz` `renderSuiza` `SUBS.Z`, datos `suiza.json` de scripts/suiza.py, misma base `pais_bis.py`)
 - BIS CH (tasa del BNS, CHF, IPC), OCDE/Banco Mundial CHE. `BCAL` CHE (anuncio 9:30 de Zúrich; fechas oficiales hasta
   dic-2027). CNBC: `CHF=`, `EURCHF=`, `EWL` (`global.json → suiza`), SMI (`bolsas.SIX`, historia `smi`), bono `bonos.CHE`
-  (historia `ch10`), ADR `acciones.che`. Noticias: The Local (Suiza) en inglés; el RSS de Swissinfo da 410. Bolsa SIX en `GEX`.
+  (historia `ch10`), ADR `acciones.che`. Noticias en inglés: The Local, Le News y finews.ch; el RSS de Swissinfo da 410. Bolsa SIX en `GEX`.
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
