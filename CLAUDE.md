@@ -106,7 +106,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   reunión, se cortan fechas futuras; 1 PTAX; 433/13522 IPCA; 24363 IBC-Br sin desestacionalizar, el 24364 falla; 24369
   desempleo; 13621 reservas) y Focus (`olinda.bcb.gov.br/.../ExpectativasMercadoAnuais`). El BCB a veces da 502: se reintenta.
 
-### Europa (`#europa`, sección `vE`, `renderEuropa`, datos `europa.json` de scripts/europa.py en `global.yml`)
+### Zona euro (`#europa`, sección `vE`; en el menú se llama "Zona euro" para no confundirse con Polonia y Reino Unido, `renderEuropa`, datos `europa.json` de scripts/europa.py en `global.yml`)
 - Arriba siempre: euro en dólares (BCE), un euro en pesos (mayorista × euro del BCE del mismo día), tasa del BCE con
   cuenta regresiva (`BCAL` DEU), inflación, desempleo y Euro Stoxx 50. Apartados (`#gSubE`, `SUBS.E`): Economía
   (inflación general y núcleo, por país, PBI trimestral, desempleo) · Tasas y bonos (BCE vs inflación, decisiones, bonos
