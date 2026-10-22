@@ -160,7 +160,7 @@ def oecd_rubros(data):
     h = date.today()
     dims = ["METHODOLOGY", "MEASURE", "UNIT_MEASURE", "EXPENDITURE", "ADJUSTMENT", "TRANSFORMATION"]
     rows = None
-    for clave in (f"{paises}.M.N.CPI.PA.CP01+NRG+_TXCP01_NRG.N.GY", f"{paises}.M..CPI..CP01+NRG+_TXCP01_NRG.."):
+    for clave in (f"{paises}.M..CPI.PA...GY", f"{paises}.M..CPI....GY"):
         try:
             rows = oecd_rows("OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0", clave, f"{h.year - 5}-01")
             if rows:
@@ -170,13 +170,15 @@ def oecd_rubros(data):
     if not rows:
         return
     S = series_por(rows, dims)
-    diag["rubros"] = sorted({"|".join(c) for (_, c) in S})[:40]
+    diag["rubros"] = sorted({"|".join(c) for (_, c) in S})[:80]
+    diag["rubros_paises"] = sorted({p for (p, _) in S})
+    ENERGIA = ("NRG", "CP045_0722", "_NRG", "CP0451_0452_0722", "NRG_X")
     out = {}
     for pais_o, pag in POR[1].items():
         res = {}
-        for nombre, exp in (("alim", "CP01"), ("energia", "NRG"), ("nucleo", "_TXCP01_NRG")):
-            c = {combo: pts for (p, combo), pts in S.items() if p == pais_o and combo[3] == exp}
-            best = elegir(c, [lambda x: x[0] == "N", lambda x: x[5] == "GY", lambda x: x[2] == "PA"])
+        for nombre, exps in (("alim", ("CP01",)), ("energia", ENERGIA), ("nucleo", ("_TXCP01_NRG", "_TXNRG_01_02", "TOT_X_NRG_FOOD"))):
+            c = {combo: pts for (p, combo), pts in S.items() if p == pais_o and combo[3] in exps}
+            best = elegir(c, [lambda x: x[0] == "N", lambda x: x[5] == "GY", lambda x: x[2] == "PA", lambda x: x[3] == exps[0]])
             if best:
                 combo, pts = best
                 if combo[5] != "GY":
@@ -228,6 +230,26 @@ def oecd_kei(data):
             ind[pag] = r1
         if r2:
             conf[pag] = r2
+    try:  # confianza normalizada (100 = promedio de largo plazo) e indicador adelantado
+        rows2 = oecd_rows("OECD.SDD.STES,DSD_STES@DF_CLI,4.1", f"{paises}.M.LI+CCICP+BCICP.......", f"{h.year - 6}-01")
+        dims2 = ["MEASURE", "UNIT_MEASURE", "ACTIVITY", "ADJUSTMENT", "TRANSFORMATION", "TIME_HORIZ", "METHODOLOGY"]
+        S2 = series_por(rows2, dims2)
+        diag["cli"] = sorted({"|".join(c) for (_, c) in S2})[:40]
+        for pais_o, pag in POR[1].items():
+            r = {}
+            for nombre, medida in (("cons", "CCICP"), ("emp", "BCICP"), ("cli", "LI")):
+                c = {combo: pts for (p, combo), pts in S2.items() if p == pais_o and combo[0] == medida}
+                best = elegir(c, [lambda x: x[3] == "AA", lambda x: x[1] == "IX", lambda x: x[4] in ("_Z", "")])
+                if best and best[1] and fresco(best[1][-1][0], 5) and best[0][3] == "AA":
+                    r[nombre] = best[1][-60:]
+            if r:
+                conf[pag] = r
+            else:
+                conf.pop(pag, None)
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"OCDE CLI: {e}")
+        conf = {p: {k: v for k, v in x.items() if k == "cli"} for p, x in conf.items()}
+        conf = {p: x for p, x in conf.items() if x}
     if ind:
         data["ind"] = ind
     if conf:
