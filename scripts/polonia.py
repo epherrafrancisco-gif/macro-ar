@@ -4,6 +4,8 @@ Fuentes oficiales y gratuitas, sin clave:
   - BIS (stats.bis.org): tasa del Banco Nacional de Polonia (diaria) e inflación (IPC de GUS: variación en 12 meses e
     índice para la del mes).
   - NBP (api.nbp.pl): cotización oficial del zloty contra el dólar y el euro (tabla A, diaria).
+  - BCE (data-api.ecb.europa.eu): rendimiento del bono del gobierno polaco a 10 años (mensual, serie de convergencia de
+    la Unión Europea; CNBC no tiene los bonos polacos).
   - OCDE (sdmx.oecd.org): desempleo mensual y PBI trimestral (contra el trimestre anterior y contra un año atrás).
   - Banco Mundial (api.worldbank.org): PBI por habitante a paridad de poder de compra y crecimiento anual desde 1990,
     de Polonia, Argentina y la Unión Europea (para la comparación de largo plazo).
@@ -93,6 +95,11 @@ def nbp(moneda, dias=740):
     return pts
 
 
+def ecb(key, desde):
+    pts = filas(get(f"https://data-api.ecb.europa.eu/service/data/{key}?format=csvdata&startPeriod={desde}", "text/csv"))
+    return [p for p in pts if "-Q" not in p[0]]
+
+
 def banco_mundial(indicador, desde=1990):
     """Serie anual del Banco Mundial para Polonia, Argentina y la Unión Europea: {iso: [[año, valor], ...]}."""
     j = json.loads(get(f"https://api.worldbank.org/v2/country/POL;ARG;EUU/indicator/{indicador}?format=json&per_page=500&date={desde}:{date.today().year}", "application/json"))
@@ -121,6 +128,7 @@ def main():
         "tasa": (lambda: solo_cambios(bis("WS_CBPOL", "D.PL", f"{hoy.year - 8}-01-01")), 1),
         "usdpln": (lambda: nbp("usd"), 1),
         "eurpln": (lambda: nbp("eur"), 1),
+        "bono10": (lambda: ecb("IRS/M.PL.L.L40.CI.0000.PLN.N.Z", f"{hoy.year - 6}-01"), 3),
         "infl": (lambda: bis("WS_LONG_CPI", "M.PL.771", f"{hoy.year - 6}-01"), 4),
         "ipc_ind": (lambda: bis("WS_LONG_CPI", "M.PL.628", f"{hoy.year - 4}-01"), 4),
         "desemp": (lambda: oecd("OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M,1.0", "POL..._Z.Y._T.Y_GE15..M", f"{hoy.year - 6}-01"), 4),

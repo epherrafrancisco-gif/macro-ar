@@ -31,13 +31,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo, Estados Unidos y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con los 10 países
+  solo Mundo, Estados Unidos y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con los 11 países
   (`PAISES_T`, `data-g="pais"`; un país nuevo se agrega ahí y en `PAISES_T`), recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
   `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#ganaderia`, `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
-  `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia` y `#peru`; `#sobre`.
+  `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia`, `#peru` y `#polonia`; `#sobre`.
 - Celular (≤640px, `body.insec` siempre y `body.mporta` en la portada; en la compu no cambia nada). Pedido del dueño:
   que el que entra por primera vez entienda qué es, dónde está y cómo moverse.
   - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
@@ -178,6 +178,21 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Probados y descartados por falta de datos gratis al día: India (BIS no tiene su tasa, no hay desempleo ni noticias en
   español) y Uruguay (BIS no tiene tasa ni inflación; el BCU y el INE no responden desde Actions).
 
+
+### Polonia (`#polonia`, sección `vPl`, `renderPolonia`, `SUBS.L`, datos `polonia.json` de scripts/polonia.py en `global.yml`)
+- Pedido del dueño (segunda nacionalidad): sección completa. Fuentes sin clave: BIS (WS_CBPOL D.PL, WS_LONG_CPI M.PL.771/.628),
+  NBP `api.nbp.pl/api/exchangerates/rates/a/{usd|eur}/{desde}/{hasta}` (zloty oficial, máximo 367 días por pedido: se pide en
+  tramos), OCDE (POL), BCE `IRS/M.PL.L.L40.CI.0000.PLN.N.Z` (bono a 10 años mensual: CNBC NO tiene PL10Y/PL2Y) y Banco Mundial
+  (`wb`: PBI por habitante PPA `NY.GDP.PCAP.PP.KD` y crecimiento anual de POL, ARG y EUU desde 1990; se renueva cada 7 días).
+- CNBC: `PLN=`, `EURPLN=`, `EPOL` (`global.json → polonia`); la cotización de `.WIG20` viene vacía pero la historia sí
+  (`global_hist → wig20`): el indicador de arriba sale de los dos últimos cierres. `BOLSAS.GPW` queda por si CNBC lo agrega.
+- Arriba: zloty por dólar, un zloty en pesos, tasa del NBP con cuenta regresiva (`BCAL` POL: decisión el 2.º día de cada
+  reunión; PENDIENTE: cargar 2027 cuando el NBP publique el calendario), inflación, desempleo y WIG20.
+- Economía abre con "Polonia y Argentina desde 1990" (PBI por habitante PPA con la UE y el año desde el que Polonia quedó
+  siempre adelante) y "Crecimiento de cada año". Mercados: zloty/dólar, zloty/euro, zloty en pesos, WIG20 y EPOL.
+- También en: comparador (`CMP_*` POL), "¿Dónde está Argentina?", bancos centrales, reloj de mercados (GPW, Varsovia),
+  monedas, calculadora de viaje (PLN), Monitor y la página `/zloty-en-pesos/`.
+
 ### Global › Mundo
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
@@ -234,6 +249,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   medio: "econ" (medio del país: solo economía y sin titulares de otro país, `OTROS`) o "pais" (medio de afuera: tiene que
   nombrar al país, `PAIS`, y ser de economía, `ECON`); `RUIDO` saca deportes, policiales y espectáculos. Brasil tiene
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
+  Pedido del dueño: si un país tiene menos de `MIN_ES` (15) titulares en español, se completa con medios en inglés
+  (`FEEDS_EN`, filtros `ECON_EN`/`PAIS_EN`/`OTROS_EN`/`RUIDO_EN`), después de los de español y marcados `"l":"en"` (en la
+  página, etiqueta EN). Google Noticias no se usa (su robots.txt lo prohíbe). TVP World y Polskie Radio dan 404.
   Medios que dan 403 desde Actions: El Economista México por sección, Forbes México, elEconomista.es.
 - Páginas por indicador (para Google; el tablero es un solo archivo con `#` y Google solo ve la portada):
   `scripts/paginas.py` + workflow `paginas.yml` (corre al terminar Actualizar datos, Global y Ganaderia, y a las 00:05).

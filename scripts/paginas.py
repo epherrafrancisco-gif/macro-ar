@@ -414,6 +414,13 @@ eur = cruzar(may, [(d, v) for d, v in E.get("eurusd", [])], lambda a, b: a * b)
 pag_diaria("euro-en-pesos", "Euro en pesos", "Cuánto vale un euro en pesos hoy", eur, lambda z: nf(z, 2), "", "#3987e5",
            P(("¿Cómo se calcula?", "Multiplicamos el dólar mayorista argentino por la cotización del euro en dólares del Banco Central Europeo del mismo día. Es el valor del euro al tipo de cambio oficial."),),
            "europa", "BCRA y Banco Central Europeo", pref="$ ", grupo="El mundo", sube_bien=False)
+PL = cargar("polonia.json")
+pln = cruzar(may, [(d, v) for d, v in PL.get("usdpln", [])], lambda a, b: a / b)
+if pln:
+    pag_diaria("zloty-en-pesos", "Zloty en pesos", "Cuánto vale un zloty polaco en pesos hoy", pln, lambda z: nf(z, 2), "", "#d55181",
+               P(("¿Cómo se calcula?", "Dividimos el dólar mayorista argentino por la cotización oficial del dólar en zlotys del Banco Nacional de Polonia del mismo día. El resultado es cuántos pesos vale un zloty al tipo de cambio oficial."),
+                 ("Polonia y el euro", "Polonia está en la Unión Europea pero no usa el euro: mantiene el zloty y su propio banco central. En el tablero está su tasa de interés, la inflación y la comparación con Argentina desde 1990.")),
+               "polonia", "BCRA y Banco Nacional de Polonia", pref="$ ", grupo="El mundo", sube_bien=False)
 sel = [(d, v) for d, v in B.get("selic", [])]
 if sel:
     pag_diaria("tasa-selic", "Tasa Selic", "Tasa Selic hoy (Brasil)", sel, lambda z: nf(z, 2), "%", "#d95926",

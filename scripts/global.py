@@ -310,7 +310,7 @@ ACCIONES = {
 # Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
 BONOS = {"USA": "US10Y", "DEU": "DE10Y-DE", "GBR": "GB10Y-GB", "JPN": "JP10Y-JP", "FRA": "FR10Y-FR", "ITA": "IT10Y-IT",
          "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR",
-         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR", "POL": "PL10Y-PL"}
+         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
 # Commodities (clave, nombre, símbolo CNBC, conversión a la unidad mostrada, unidad)
 COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 0.3936825, "US$/t"),
         ("trigo", "Trigo", "@W.1", 0.3674371, "US$/t"), ("wti", "Petróleo WTI", "@CL.1", 1, "US$/barril"),
@@ -332,7 +332,7 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "fx_gbp": "GBP=", "ftmc": ".FTMC", "gb10": "GB10Y-GB", "gb2": "GB2Y-GB",
         "fx_cad": "CAD=", "tsx": ".GSPTSE", "ca10": "CA10Y", "ca2": "CA2Y",
         "colcap": ".COLCAP", "xu100": ".XU100", "fx_try": "TRY=", "tr10": "TR10Y-TR", "tr2": "TR2Y-TR",
-        "epu": "EPU", "fx_pln": "PLN=", "wig20": ".WIG20", "pl10": "PL10Y-PL", "pl2": "PL2Y-PL", "epol": "EPOL"}
+        "epu": "EPU", "fx_pln": "PLN=", "wig20": ".WIG20", "epol": "EPOL"}
 # Bolsas europeas para la sección Europa
 # Bolsa chilena: CNBC no tiene el IPSA; se usa el fondo iShares MSCI Chile (ECH, en dólares)
 CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
@@ -346,10 +346,9 @@ CANADA = {"cad": ("CAD=", "Dólares canadienses por dólar"), "ca2": ("CA2Y", "B
 COLOMBIA = {"colcap": (".COLCAP", "MSCI COLCAP")}
 # Turquía: BIST 100, lira, bono a 2 años (el de 10 está en BONOS), ETF y Turkcell
 TURQUIA = {"xu100": (".XU100", "BIST 100"), "try": ("TRY=", "Liras por dólar"), "tr2": ("TR2Y-TR", "Bono a 2 años"), "tur": ("TUR", "iShares MSCI Turkey"), "tkc": ("TKC", "Turkcell")}
-# Polonia: zloty contra el dólar y el euro, bonos a 2 y 5 años (el de 10 está en BONOS; el WIG20 en BOLSAS) y el fondo de
-# acciones polacas que cotiza en Nueva York
-POLONIA = {"pln": ("PLN=", "Zlotys por dólar"), "eurpln": ("EURPLN=", "Zlotys por euro"), "pl2": ("PL2Y-PL", "Bono a 2 años"),
-           "pl5": ("PL5Y-PL", "Bono a 5 años"), "epol": ("EPOL", "iShares MSCI Poland")}
+# Polonia: zloty contra el dólar y el euro y el fondo de acciones polacas que cotiza en Nueva York. CNBC no tiene los bonos
+# polacos (el de 10 años sale del BCE en polonia.py) y su cotización del WIG20 viene vacía: el índice sale de la historia.
+POLONIA = {"pln": ("PLN=", "Zlotys por dólar"), "eurpln": ("EURPLN=", "Zlotys por euro"), "epol": ("EPOL", "iShares MSCI Poland")}
 # Perú: CNBC no actualiza el S&P/BVL; se usa el fondo iShares MSCI Peru (EPU, en dólares)
 PERU = {"epu": ("EPU", "iShares MSCI Peru")}
 EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
