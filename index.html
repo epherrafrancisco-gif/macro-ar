@@ -3122,7 +3122,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const key = tab==='global' ? (G.vista==='usa' ? 'eeuu' : 'global') : tab;
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key);
       // pedido del dueño: al entrar a una sección, siempre el primer apartado y todas las tarjetas cerradas (celular)
-      try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); }catch(e){} }
+      try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); }catch(e){}
+      // pedido del dueño (celular): al entrar a una sección, arriba de todo, aunque la última vez haya quedado abajo
+      try{ if(mobil()){ history.scrollRestoration = 'manual'; scrollTo(0,0); let toco = false; const f = ()=>{ toco = true; };
+        addEventListener('touchstart', f, {once:true, passive:true}); addEventListener('wheel', f, {once:true, passive:true});
+        for(const ms of [60, 350, 700]) setTimeout(()=>{ if(!toco && scrollY > 0) scrollTo(0,0); }, ms); } }catch(e){} }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
     const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
