@@ -172,11 +172,16 @@ def oecd_rubros(data):
     S = series_por(rows, dims)
     diag["rubros"] = sorted({"|".join(c) for (_, c) in S})[:80]
     diag["rubros_paises"] = sorted({p for (p, _) in S})
+    ult = defaultdict(dict)
+    for (p, c), pts in S.items():
+        if c[3] in ("CP01", "_TXCP01_NRG", "CP045_0722", "_T"):
+            ult[p][f"{c[0]}|{c[3]}|{c[2]}|{c[5]}"] = pts[-1][0]
+    diag["rubros_ult"] = ult
     ENERGIA = ("NRG", "CP045_0722", "_NRG", "CP0451_0452_0722", "NRG_X")
     out = {}
     for pais_o, pag in POR[1].items():
         res = {}
-        for nombre, exps in (("alim", ("CP01",)), ("energia", ENERGIA), ("nucleo", ("_TXCP01_NRG", "_TXNRG_01_02", "TOT_X_NRG_FOOD"))):
+        for nombre, exps in (("alim", ("CP01",)), ("energia", ("CP045_0722",) + ENERGIA), ("nucleo", ("_TXCP01_NRG", "_TXNRG_01_02", "TOT_X_NRG_FOOD"))):
             c = {combo: pts for (p, combo), pts in S.items() if p == pais_o and combo[3] in exps}
             best = elegir(c, [lambda x: x[0] == "N", lambda x: x[5] == "GY", lambda x: x[2] == "PA", lambda x: x[3] == exps[0]])
             if best:
