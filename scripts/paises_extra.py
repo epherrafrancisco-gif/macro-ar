@@ -36,7 +36,7 @@ P = {  # página: (BIS, OCDE, Banco Mundial, Big Mac)
     "MEX": ("MX", "MEX", "MEX", "MEX"), "CHL": ("CL", "CHL", "CHL", "CHL"), "JPN": ("JP", "JPN", "JPN", "JPN"),
     "GBR": ("GB", "GBR", "GBR", "GBR"), "CAN": ("CA", "CAN", "CAN", "CAN"), "COL": ("CO", "COL", "COL", "COL"),
     "TUR": ("TR", "TUR", "TUR", "TUR"), "PER": ("PE", None, "PER", "PER"), "POL": ("PL", "POL", "POL", "POL"),
-    "ARG": ("AR", "ARG", "ARG", "ARG"),
+    "IND": ("IN", "IND", "IND", "IND"), "SAU": ("SA", "SAU", "SAU", "SAU"), "ARG": ("AR", "ARG", "ARG", "ARG"),
 }
 POR = {i: {P[k][i]: k for k in P if P[k][i]} for i in range(4)}
 
@@ -267,11 +267,12 @@ def oecd_kei(data):
 def banco_mundial(data):
     prev = data.get("wb") or {}
     al = prev.get("al", "2000-01-01")
-    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa"):
+    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "SAU" in prev.get("ppa", {}):
         return
     paises = ";".join(P[k][2] for k in P)
     res = {"al": hoy_iso()}
-    for k, ind in (("ppa", "NY.GDP.PCAP.PP.KD"), ("crec", "NY.GDP.MKTP.KD.ZG"), ("cc", "BN.CAB.XOKA.GD.ZS")):
+    for k, ind in (("ppa", "NY.GDP.PCAP.PP.KD"), ("crec", "NY.GDP.MKTP.KD.ZG"), ("cc", "BN.CAB.XOKA.GD.ZS"),
+                   ("pop", "SP.POP.TOTL"), ("popc", "SP.POP.GROW"), ("pbiusd", "NY.GDP.MKTP.CD")):
         try:
             j = json.loads(get(f"https://api.worldbank.org/v2/country/{paises}/indicator/{ind}?format=json&per_page=2000&date=1990:{date.today().year}", "application/json"))
             out = defaultdict(list)
