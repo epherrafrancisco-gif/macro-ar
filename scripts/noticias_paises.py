@@ -155,6 +155,8 @@ FEEDS_EN = [
     ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml", {"arabia": "pais", "india": "pais", "turquia": "pais"}),
     ("The Local", "https://feeds.thelocal.com/rss/ch", {"suiza": "econ"}),
     ("The Local", "https://feeds.thelocal.com/rss/ch/switzerland-explained", {"suiza": "econ"}),
+    ("Le News", "https://lenews.ch/feed/", {"suiza": "econ"}),
+    ("finews.ch", "https://www.finews.com/news/english-news?format=feed&type=rss", {"suiza": "econ"}),
     ("Daily Sabah", "https://www.dailysabah.com/rss/business", {"turquia": "econ"}),
     ("Hürriyet Daily News", "https://www.hurriyetdailynews.com/rss/economy", {"turquia": "econ"}),
     ("Anadolu Agency", "https://www.aa.com.tr/en/rss/default?cat=economy", {"turquia": "econ"}),
