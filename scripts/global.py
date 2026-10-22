@@ -288,7 +288,8 @@ BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": ("
           "BMV": (".MXX", "IPC México"), "TSX": (".GSPTSE", "S&P/TSX"), "LSE": (".FTSE", "FTSE 100"),
           "Xetra": (".GDAXI", "DAX"), "Euronext": (".FCHI", "CAC 40"), "JSE": ((".JALSH", ".JTOPI", ".J203"), "JSE"),
           "Tadawul": ((".TASI", "TASI", ".TASI.SE", ".TASIX"), "Tadawul"), "NSE": (".NSEI", "Nifty 50"), "SSE": (".SSEC", "Shanghái"),
-          "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200")}
+          "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200"),
+          "GPW": ((".WIG20", "WIG20", ".WIG20.WA"), "WIG20")}
 # Acciones por grupo (todas cotizan en Wall Street, en US$)
 ACCIONES = {
     "arg": ["YPF", "GGAL", "BMA", "BBAR", "SUPV", "PAM", "CEPU", "TGS", "EDN", "TEO", "VIST", "LOMA", "CRESY", "IRS",
@@ -309,7 +310,7 @@ ACCIONES = {
 # Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
 BONOS = {"USA": "US10Y", "DEU": "DE10Y-DE", "GBR": "GB10Y-GB", "JPN": "JP10Y-JP", "FRA": "FR10Y-FR", "ITA": "IT10Y-IT",
          "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR",
-         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
+         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR", "POL": "PL10Y-PL"}
 # Commodities (clave, nombre, símbolo CNBC, conversión a la unidad mostrada, unidad)
 COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 0.3936825, "US$/t"),
         ("trigo", "Trigo", "@W.1", 0.3674371, "US$/t"), ("wti", "Petróleo WTI", "@CL.1", 1, "US$/barril"),
@@ -317,7 +318,7 @@ COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 
         ("oro", "Oro", "@GC.1", 1, "US$/onza"), ("plata", "Plata", "@SI.1", 1, "US$/onza"), ("cobre", "Cobre", "@HG.1", 2204.623, "US$/t")]
 COM_CONV = {k: c for k, _, _, c, _ in COMS}
 TERMO = {"vix": ".VIX", "us2y": "US2Y", "us10y": "US10Y", "us30y": "US30Y"}
-MONEDAS = {"ARS": "ARS=", "BRL": "BRL=", "CLP": "CLP=", "MXN": "MXN=", "COP": "COP=", "PEN": "PEN=", "UYU": "UYU=", "CNY": "CNY=", "EUR": "EUR="}
+MONEDAS = {"ARS": "ARS=", "BRL": "BRL=", "CLP": "CLP=", "MXN": "MXN=", "COP": "COP=", "PEN": "PEN=", "UYU": "UYU=", "CNY": "CNY=", "EUR": "EUR=", "PLN": "PLN="}
 # Series con historia diaria (gráficos y "¿qué rindió más en el año?")
 HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": ".BVSP", "dax": ".GDAXI",
         "ftse": ".FTSE", "nikkei": ".N225", "shanghai": ".SSEC", "oro": "@GC.1", "brent": "@LCO.1", "soja": "@S.1",
@@ -331,7 +332,7 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "fx_gbp": "GBP=", "ftmc": ".FTMC", "gb10": "GB10Y-GB", "gb2": "GB2Y-GB",
         "fx_cad": "CAD=", "tsx": ".GSPTSE", "ca10": "CA10Y", "ca2": "CA2Y",
         "colcap": ".COLCAP", "xu100": ".XU100", "fx_try": "TRY=", "tr10": "TR10Y-TR", "tr2": "TR2Y-TR",
-        "epu": "EPU"}
+        "epu": "EPU", "fx_pln": "PLN=", "wig20": ".WIG20", "pl10": "PL10Y-PL", "pl2": "PL2Y-PL", "epol": "EPOL"}
 # Bolsas europeas para la sección Europa
 # Bolsa chilena: CNBC no tiene el IPSA; se usa el fondo iShares MSCI Chile (ECH, en dólares)
 CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
@@ -345,6 +346,10 @@ CANADA = {"cad": ("CAD=", "Dólares canadienses por dólar"), "ca2": ("CA2Y", "B
 COLOMBIA = {"colcap": (".COLCAP", "MSCI COLCAP")}
 # Turquía: BIST 100, lira, bono a 2 años (el de 10 está en BONOS), ETF y Turkcell
 TURQUIA = {"xu100": (".XU100", "BIST 100"), "try": ("TRY=", "Liras por dólar"), "tr2": ("TR2Y-TR", "Bono a 2 años"), "tur": ("TUR", "iShares MSCI Turkey"), "tkc": ("TKC", "Turkcell")}
+# Polonia: zloty contra el dólar y el euro, bonos a 2 y 5 años (el de 10 está en BONOS; el WIG20 en BOLSAS) y el fondo de
+# acciones polacas que cotiza en Nueva York
+POLONIA = {"pln": ("PLN=", "Zlotys por dólar"), "eurpln": ("EURPLN=", "Zlotys por euro"), "pl2": ("PL2Y-PL", "Bono a 2 años"),
+           "pl5": ("PL5Y-PL", "Bono a 5 años"), "epol": ("EPOL", "iShares MSCI Poland")}
 # Perú: CNBC no actualiza el S&P/BVL; se usa el fondo iShares MSCI Peru (EPU, en dólares)
 PERU = {"epu": ("EPU", "iShares MSCI Peru")}
 EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
@@ -353,7 +358,7 @@ EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx 
 def extras():
     alt = lambda s: s if isinstance(s, tuple) else (s,)
     syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
-            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()] + [v[0] for v in CANADA.values()] + [v[0] for v in COLOMBIA.values()] + [v[0] for v in TURQUIA.values()] + [v[0] for v in PERU.values()])
+            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()] + [v[0] for v in CANADA.values()] + [v[0] for v in COLOMBIA.values()] + [v[0] for v in TURQUIA.values()] + [v[0] for v in PERU.values()] + [v[0] for v in POLONIA.values()])
     q = cnbc_raw(syms)
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
@@ -375,7 +380,8 @@ def extras():
     colombia = {k: {"idx": n, **q[s]} for k, (s, n) in COLOMBIA.items() if s in q}
     turquia = {k: {"idx": n, **q[s]} for k, (s, n) in TURQUIA.items() if s in q}
     peru = {k: {"idx": n, **q[s]} for k, (s, n) in PERU.items() if s in q}
-    return {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa, "chile": chile, "japon": japon, "reino": reino, "canada": canada, "colombia": colombia, "turquia": turquia, "peru": peru}
+    polonia = {k: {"idx": n, **q[s]} for k, (s, n) in POLONIA.items() if s in q}
+    return {"polonia": polonia, "bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa, "chile": chile, "japon": japon, "reino": reino, "canada": canada, "colombia": colombia, "turquia": turquia, "peru": peru}
 
 
 def cripto():
@@ -582,7 +588,7 @@ def main():
     except Exception as e:  # noqa: BLE001
         errores.append(f"extras: {e}")
         ex = {}
-    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa", "chile", "japon", "reino", "canada", "colombia", "turquia", "peru"):  # si una sección vino vacía, queda la anterior
+    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa", "chile", "japon", "reino", "canada", "colombia", "turquia", "peru", "polonia"):  # si una sección vino vacía, queda la anterior
         if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
             ex[k] = prev.get(k) or {}
     HISTF = ROOT / "global_hist.json"
