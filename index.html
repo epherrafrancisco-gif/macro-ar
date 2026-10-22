@@ -771,6 +771,15 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
 
     <div class="card">
+      <div class="head"><h2>Lo que vende Argentina al mundo</h2><span class="note" id="expoN"></span></div>
+      <p class="sub">La soja y lo que sale de ella (harina y aceite) es lo que más exporta Argentina; le siguen el maíz y el trigo, y el petróleo de Vaca Muerta crece año a año. Sus precios se fijan afuera (Chicago, Londres), no acá: cuando suben, entran más dólares por la misma cosecha, el BCRA puede comprar más y las reservas suben; cuando bajan, pasa al revés.</p>
+      <div class="stats" id="expoSt"></div>
+      <div class="chart" id="chExpo"></div><div class="legend" id="lgExpo"></div>
+      <p class="sub" id="expoTxt"></p>
+      <p class="note">Gráfico: cuánto subió o bajó cada precio desde el 1 de enero (100 = el último cierre del año pasado). Soja, maíz y trigo: futuros de Chicago, en dólares por tonelada. Petróleo: Brent, la referencia del crudo argentino, en dólares por barril. Con demora (CNBC). Más commodities en El mundo.</p>
+    </div>
+
+    <div class="card">
       <div class="head"><h2>Inflación por rubro</h2><span class="note" id="rubS"></span></div>
       <div class="seg calcsel" id="rubMode" role="tablist" aria-label="Período">
         <button type="button" data-rub="mes" aria-selected="true">Último mes</button>
@@ -2352,6 +2361,25 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- MACRO ----
   function monthly(k){ return months.filter(m=>m[k]!=null).map(m=>[m.mes, m[k]]); }
+  // ---- Macro: precios de lo que exporta Argentina (global.json y global_hist.json, los mismos de El mundo) ----
+  const EXPO = [['soja','Soja','--s3'],['maiz','Maíz','--s4'],['trigo','Trigo','--s2'],['brent','Petróleo Brent','--s1']];
+  function renderExpo(){
+    if(!$('expoSt')) return;
+    if(!glob){ loadGlobal(); $('expoSt').innerHTML = '<div class="empty">Cargando…</div>'; return; }
+    if(!gHist) loadHist();
+    const cs = glob.commodities || [], hoyY = String(new Date().getFullYear()), ys = {};
+    $('expoSt').innerHTML = EXPO.map(([k,n])=>{ const c = cs.find(x=>x.k===k); if(!c) return '';
+      const d = c.prev ? (c.v/c.prev-1)*100 : null, h = gHist?.series?.[k], y = h ? gYtd(h) : null; ys[k] = y;
+      return `<div class="st"><span class="lbl">${n}</span><span class="v">US$ ${nf(c.v, c.v<1000?1:0)}<small> ${esc(c.u.replace('US$/',' por '))}</small></span><span class="d">${d==null?'':`<b class="${d>0?'up':d<0?'dn':''}">${sg(d,2)}%</b> hoy`}${y==null?'':` · <b class="${y>0?'up':y<0?'dn':''}">${sg(y,1)}%</b> en el año`}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    const ser = [];
+    for(const [k,n,c] of EXPO){ const h = gHist?.series?.[k]; if(!h?.length) continue; const b = [...h].reverse().find(p=>p[0] < hoyY+'-01-01'); if(!b) continue;
+      ser.push({n, c, pts: h.filter(p=>p[0] >= hoyY+'-01-01').map(p=>[p[0], p[1]/b[1]*100])}); }
+    if(ser.length){ legend($('lgExpo'), ser); lineChart($('chExpo'), ser, {h:200, yfmt:v=>nf(v,0), vfmt:v=>sg(v-100,1)+'%', aria:'Precios de lo que exporta Argentina, base 100 a fin del año pasado'}); }
+    else $('chExpo').innerHTML = '<div class="empty">'+(gHist ? 'Sin historia todavía.' : 'Cargando…')+'</div>';
+    const gr = EXPO.filter(([k])=>k!=='brent' && ys[k]!=null), prom = gr.length ? gr.reduce((a,[k])=>a+ys[k],0)/gr.length : null;
+    $('expoTxt').textContent = prom==null ? '' : `En criollo: en lo que va del año, los granos ${Math.abs(prom)<2 ? 'están casi igual que en enero' : prom>0 ? `valen en promedio ${nf(prom,1)}% más que en enero: a igual cosecha, más dólares` : `valen en promedio ${nf(-prom,1)}% menos que en enero: a igual cosecha, menos dólares`}${ys.brent!=null ? `; el petróleo ${Math.abs(ys.brent)<2 ? 'está casi igual' : ys.brent>0 ? `subió ${nf(ys.brent,1)}%, bueno para lo que exporta Vaca Muerta (y más caro para el que carga nafta)` : `bajó ${nf(-ys.brent,1)}%`}` : ''}.`;
+    const t = cs.find(x=>x.k==='soja')?.t; $('expoN').textContent = t ? 'Cierre: '+fd(String(t).slice(0,10)) : '';
+  }
   function renderMacro(){
     const riesgo=series('riesgo'), res=series('reservas'), base=series('base'), dep=series('depusd'),
           badlar=series('badlar'), tamar=series('tamar'), pf=series('pf');
@@ -2423,6 +2451,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       extra:k=>{ const a=pfMc.find(p=>p[0]===k), b=infMap[k]; if(!a||b==null) return '<div class="r" style="color:var(--muted)"><span>Inflación</span><span>sin dato aún</span></div>'; const r=((1+a[1]/100)/(1+b/100)-1)*100; return `<div class="r"><span>Tasa real</span><span style="color:var(${r>=0?'--pos':'--neg'})">${sg(r,2)}%</span></div>`; }});
     lineChart($('chBase'), [{n:'Base monetaria', c:'--s5', pts:inRange(base).map(p=>[p[0],p[1]/1e6]), area:true}], {aria:'Base monetaria', endLabel:true, labW:48, yfmt:v=>nf(v,1), vfmt:v=>'$ '+nf(v,2)+' billones', lfmt:v=>nf(v,2), unitName:'Base'});
     lineChart($('chDep'), [{n:'Depósitos USD', c:'--s4', pts:inRange(dep), area:true}], {aria:'Depósitos privados en dólares', endLabel:true, labW:52, l:54, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+' M', lfmt:v=>nf(v,0), unitName:'Depósitos'});
+    renderExpo();
   }
 
   // ---- helpers PBI / CER ----
@@ -3333,7 +3362,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia();
+    renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -3634,7 +3663,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia();
+    gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));

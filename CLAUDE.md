@@ -61,7 +61,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 
 ### Argentina
 - Dólares: cotizaciones, brechas, canje CCL/MEP con banda, "Dólar a precios de hoy" (`renderUsdReal`), últimos días.
-- Macro: inflación, REM, reservas, compras del BCRA en el MULC, riesgo país, "Próximas publicaciones" (`renderCal`,
+- Macro: inflación, REM, reservas, compras del BCRA en el MULC, "Lo que vende Argentina al mundo" (`renderExpo`, `EXPO`:
+  soja, maíz, trigo y Brent de global.json/global_hist.json, base 100 a fin del año pasado; Commodities sigue en El mundo), riesgo país, "Próximas publicaciones" (`renderCal`,
   datos en `calendario.json`; PENDIENTE cada diciembre/junio: cargar el calendario del INDEC del semestre siguiente
   y actualizar `vigente_hasta`).
 - Dinero: base, M2, M2 transaccional en términos reales y % del PBI, tasas, pasivos (LELIQ → pases → LEFI → LECAP;
