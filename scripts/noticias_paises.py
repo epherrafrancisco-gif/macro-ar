@@ -132,6 +132,9 @@ FEEDS = [
 INT_EN = {"polonia": "pais", "turquia": "pais", "reino": "pais", "canada": "pais", "brasil": "pais", "japon": "pais", "chile": "pais", "peru": "pais", "colombia": "pais", "mexico": "pais"}
 FEEDS_EN = [
     ("Notes from Poland", "https://notesfrompoland.com/feed/", {"polonia": "econ"}),
+    ("The Guardian", "https://www.theguardian.com/world/poland/rss", {"polonia": "econ"}),
+    ("Politico Europe", "https://www.politico.eu/tag/poland/feed/", {"polonia": "econ"}),
+    ("Euronews", "https://www.euronews.com/tag/poland/feed", {"polonia": "econ"}),
     ("Emerging Europe", "https://emerging-europe.com/feed/", {"polonia": "pais", "turquia": "pais"}),
     ("Politico Europe", "https://www.politico.eu/feed/", {"polonia": "pais", "reino": "pais", "turquia": "pais"}),
     ("Euractiv", "https://www.euractiv.com/feed/", {"polonia": "pais", "turquia": "pais"}),
