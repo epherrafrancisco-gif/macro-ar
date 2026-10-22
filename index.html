@@ -1493,7 +1493,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Polonia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="plWs"></div><p class="note">El fondo de acciones polacas que cotiza en Nueva York (bancos, energía, comercio y videojuegos, entre otros). Con demora (CNBC).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Polonia</h2><span class="note" id="npLN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Polonia. En español se publica poco: se completan con medios en inglés (marcados EN).</p><ul class="nwm" id="npL"></ul><p class="note" id="npLF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Polonia</h2><span class="note" id="npLN"></span></div><p class="sub">Titulares de economía sobre Polonia: en español, de las últimas 48 horas. Como en español se publica poco, se suman medios en inglés de la última semana (marcados EN).</p><ul class="nwm" id="npL"></ul><p class="note" id="npLF"></p></div>
     </div>
     <p class="note" id="plFuente"></p>
   </section>
@@ -4646,11 +4646,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   function renderNP(k){
     if(!npData || Date.now()-npAt > 15*60e3){ if(!npData) $('np'+k).innerHTML = '<li>Cargando titulares…</li>'; loadNP(k); if(!npData) return; }
-    const corte = new Date(Date.now()-48*36e5).toISOString(), N = (npData[NP_PAIS[k]] || []).filter(x=>new Date(x.h).toISOString() >= corte);
+    const corte = new Date(Date.now()-48*36e5).toISOString(), corteEn = new Date(Date.now()-7*864e5).toISOString(), N = (npData[NP_PAIS[k]] || []).filter(x=>new Date(x.h).toISOString() >= (x.l==='en' ? corteEn : corte));
     $('np'+k).innerHTML = N.slice(0,30).map(x=>`<li><a href="${esc(x.u)}" target="_blank" rel="noopener" data-medio="${esc(x.f)}">${x.l==='en'?'<span class="en" title="En inglés">EN</span> ':''}${esc(x.t)}</a><small>${esc(x.f)} · ${new Date(x.h).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})} h</small></li>`).join('') || '<li>No hay titulares de las últimas 48 horas.</li>';
     $('np'+k).querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>gc('noticia-'+NP_PAIS[k]+'-'+a.dataset.medio, true)));
     $('np'+k+'N').textContent = N.length ? `${N.length} titulares` : '';
-    $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés, marcados EN.' : ''}` : '';
+    $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés de la última semana, marcados EN.' : ''}` : '';
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
   const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia']};

@@ -7,7 +7,8 @@ Cada medio se baja una sola vez y sus titulares se reparten por país:
   - medios generales o de otros países: entran solo si el titular nombra al país y es de economía.
 Solo titular, link, medio y hora (como en las noticias de Argentina). Nunca se guardan noticias de más de 48 horas.
 Primero van los titulares en español. Si un país tiene menos de MIN_ES, se completa con medios en inglés (marcados
-con "l": "en"), con las mismas reglas pero filtros en inglés.
+con "l": "en"), con las mismas reglas pero filtros en inglés. En inglés se aceptan titulares de hasta 7 días (DIAS_EN):
+de algunos países (Polonia, por ejemplo) se publican pocos por día.
 
 Uso: python scripts/noticias_paises.py
 """
@@ -53,6 +54,7 @@ PAIS = {
     "polonia": r"polonia|polac[oa]s?\b|varsovia|cracovia|\bzlotys?\b|złoty|tusk|nawrocki|glapi[nń]ski|banco nacional de polonia",
 }
 MIN_ES = 15  # con menos titulares en español que esto, se suman los de medios en inglés
+DIAS_EN = 7  # antigüedad máxima de los titulares en inglés
 ECON_EN = (r"econom|\bmarkets?\b|stocks?\b|\bshares\b|inflation|interest rates?|\brates?\b|central bank|\bfed\b|\becb\b|currenc|"
            r"dollar|\beuros?\b|zloty|\blira\b|\byen\b|sterling|\bpounds?\b|\breal\b|\boil\b|crude|tariff|\btrade\b|export|import|"
            r"\bdebt\b|\bgdp\b|recession|\bjobs?\b|unemploy|employ|wages?\b|prices?\b|invest|\bbanks?\b|banking|budget|deficit|"
@@ -130,7 +132,6 @@ FEEDS = [
 INT_EN = {"polonia": "pais", "turquia": "pais", "reino": "pais", "canada": "pais", "brasil": "pais", "japon": "pais", "chile": "pais", "peru": "pais", "colombia": "pais", "mexico": "pais"}
 FEEDS_EN = [
     ("Notes from Poland", "https://notesfrompoland.com/feed/", {"polonia": "econ"}),
-    ("Warsaw Business Journal", "https://wbj.pl/feed/", {"polonia": "econ"}),
     ("Emerging Europe", "https://emerging-europe.com/feed/", {"polonia": "pais", "turquia": "pais"}),
     ("Politico Europe", "https://www.politico.eu/feed/", {"polonia": "pais", "reino": "pais", "turquia": "pais"}),
     ("Euractiv", "https://www.euractiv.com/feed/", {"polonia": "pais", "turquia": "pais"}),
@@ -148,7 +149,7 @@ FEEDS_EN = [
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/en/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
     ("MercoPress", "https://en.mercopress.com/rss/", INT_EN),
     ("The Rio Times", "https://www.riotimesonline.com/feed/", {"brasil": "pais", "chile": "pais", "peru": "pais", "colombia": "pais", "mexico": "pais"}),
-    ("The Brazilian Report", "https://brazilian.report/feed/", {"brasil": "econ"}),
+
     ("Euronews", "https://www.euronews.com/rss?level=vertical&name=business", INT_EN),
     ("DW", "https://rss.dw.com/rdf/rss-en-bus", INT_EN),
     ("CNBC", "https://www.cnbc.com/id/100727362/device/rss/rss.html", INT_EN),
@@ -223,12 +224,13 @@ def main():
     por_pais = {p: [] for p in PAIS}
     por_pais_en = {p: [] for p in PAIS}
     fuentes, errores = {}, []
+    corte_en = ahora - timedelta(days=DIAS_EN)
     for medio, url, reglas, en in [(*f, False) for f in FEEDS] + [(*f, True) for f in FEEDS_EN]:
         clave_f = f"{medio} · {url.split('/')[2]}"
         try:
             n = 0
             for t, link, d, cat_econ in entradas(url):
-                if not t or BASURA.match(t) or (RUIDO_EN if en else RUIDO).search(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
+                if not t or BASURA.match(t) or (RUIDO_EN if en else RUIDO).search(t) or len(t) < 25 or not link.startswith("http") or not d or d < (corte_en if en else corte) or d > ahora + timedelta(hours=1):
                     continue
                 es_econ = cat_econ or bool(re.search(ECON_EN if en else ECON, t, re.I))
                 for pais, regla in reglas.items():

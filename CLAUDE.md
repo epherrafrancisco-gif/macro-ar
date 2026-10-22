@@ -251,7 +251,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   pocos titulares: en español casi no hay medios brasileños (Agência Brasil en español publica poco de economía).
   Pedido del dueño: si un país tiene menos de `MIN_ES` (15) titulares en español, se completa con medios en inglés
   (`FEEDS_EN`, filtros `ECON_EN`/`PAIS_EN`/`OTROS_EN`/`RUIDO_EN`), después de los de español y marcados `"l":"en"` (en la
-  página, etiqueta EN). Google Noticias no se usa (su robots.txt lo prohíbe). TVP World y Polskie Radio dan 404.
+  página, etiqueta EN). Google Noticias no se usa (su robots.txt lo prohíbe). TVP World, Polskie Radio, WBJ y The Brazilian Report dan 404. En inglés se aceptan titulares de hasta 7 días (`DIAS_EN`; en la página también).
   Medios que dan 403 desde Actions: El Economista México por sección, Forbes México, elEconomista.es.
 - Páginas por indicador (para Google; el tablero es un solo archivo con `#` y Google solo ve la portada):
   `scripts/paginas.py` + workflow `paginas.yml` (corre al terminar Actualizar datos, Global y Ganaderia, y a las 00:05).
