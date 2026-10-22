@@ -1,11 +1,13 @@
 """Arma noticias_paises.json: titulares de economía de las últimas 48 horas para las secciones Estados Unidos, Brasil,
-Europa, México, Chile, Japón, Reino Unido, Canadá, Colombia, Turquía y Perú de Pulso Macro.
+Europa, México, Chile, Japón, Reino Unido, Canadá, Colombia, Turquía, Perú y Polonia de Pulso Macro.
 
 Cada medio se baja una sola vez y sus titulares se reparten por país:
   - medios propios del país (por ejemplo El Economista de México o Cinco Días): entran todos o, si el medio es
     general, solo los de economía;
   - medios generales o de otros países: entran solo si el titular nombra al país y es de economía.
 Solo titular, link, medio y hora (como en las noticias de Argentina). Nunca se guardan noticias de más de 48 horas.
+Primero van los titulares en español. Si un país tiene menos de MIN_ES, se completa con medios en inglés (marcados
+con "l": "en"), con las mismas reglas pero filtros en inglés.
 
 Uso: python scripts/noticias_paises.py
 """
@@ -48,7 +50,34 @@ PAIS = {
     "colombia": r"colombi|bogot[aá]|medell[ií]n|\bcali\b|barranquilla|petro\b|banco de la rep[uú]blica|ecopetrol|\bdane\b|colcap",
     "turquia": r"turqu[ií]a|turc[oa]s?\b|ankara|estambul|erdo[gğ]an|lira turca|\bbist\b",
     "peru": r"per[uú]\b|peruan|lima\b|bcrp|velarde|\bsoles?\b|sunat|arequipa|\bbvl\b",
+    "polonia": r"polonia|polac[oa]s?\b|varsovia|cracovia|\bzlotys?\b|złoty|tusk|nawrocki|glapi[nń]ski|banco nacional de polonia",
 }
+MIN_ES = 15  # con menos titulares en español que esto, se suman los de medios en inglés
+ECON_EN = (r"econom|\bmarkets?\b|stocks?\b|\bshares\b|inflation|interest rates?|\brates?\b|central bank|\bfed\b|\becb\b|currenc|"
+           r"dollar|\beuros?\b|zloty|\blira\b|\byen\b|sterling|\bpounds?\b|\breal\b|\boil\b|crude|tariff|\btrade\b|export|import|"
+           r"\bdebt\b|\bgdp\b|recession|\bjobs?\b|unemploy|employ|wages?\b|prices?\b|invest|\bbanks?\b|banking|budget|deficit|"
+           r"surplus|\btax|\bbonds?\b|yields?\b|financ|bitcoin|crypto|\bgold\b|mortgage|earnings|profit|revenue|billion|"
+           r"million|compan|business|industr|growth|\bimf\b|manufactur|consumer|retail|housing|energy|subsid|fiscal|monetary")
+OTROS_EN = (r"argentin|milei|china|chinese|india\b|indian\b|russia|ukrain|\biran|israel|gaza|saudi|turk(ey|ish)|t[uü]rkiye|korea|"
+            r"canad|britain|british|\buk\b|germany|german\b|france|french|ital(y|ian)|spain|spanish|europe|\beu\b|"
+            r"united states|u\.s\.|american|washington|trump|wall street|brazil|mexic|japan|poland|polish|colombia|chile|peru")
+PAIS_EN = {
+    "eeuu": r"united states|u\.s\.|\bus (economy|stocks|treasur|tariff|inflation|jobs)|american|wall street|\bfed\b|federal reserve|"
+            r"powell|trump|washington|nasdaq|dow jones|s&p 500",
+    "brasil": r"brazil|lula\b|petrobras|s[aã]o paulo|bovespa|selic|haddad|\bbrazilian real",
+    "europa": r"europe|eurozone|euro zone|\becb\b|lagarde|\beu\b|germany|german\b|france|french|ital(y|ian)|spain|spanish|\bdax\b",
+    "mexico": r"mexic|banxico|sheinbaum|pemex|usmca",
+    "chile": r"chile|codelco",
+    "japon": r"japan|tokyo|nikkei|topix|bank of japan|\bboj\b|\byen\b|toyota|sony|takaichi|osaka",
+    "reino": r"britain|british|\buk\b|u\.k\.|england|london|bank of england|\bboe\b|sterling|starmer|reeves|ftse|scotland|brexit",
+    "canada": r"canad|ottawa|toronto|montreal|quebec|alberta|vancouver|bank of canada|carney|\btsx\b",
+    "colombia": r"colombia|bogot[aá]|ecopetrol|petro\b",
+    "turquia": r"turk(ey|ish)|t[uü]rkiye|ankara|istanbul|erdo[gğ]an|\blira\b|[şs]im[şs]ek|karahan|\bbist\b",
+    "peru": r"\bperu|lima\b",
+    "polonia": r"poland|polish|warsaw|zloty|złoty|tusk|nawrocki|krak[oó]w|gda[nń]sk|\bnbp\b|glapi[nń]ski|\bwig(20)?\b",
+}
+RUIDO_EN = re.compile(r"football|soccer|\bnba\b|\bnfl\b|murder|shooting|\bkilled\b|\bdies\b|\bdead\b|actor|actress|\bfilm\b|movie|"
+                      r"weather|earthquake|hurricane|horoscope|celebrit|abortion|espionage|\bspy\b|court acquits", re.I)
 # (medio, url, {país: "todo" | "econ" | "pais"})
 #   todo = entra todo · econ = solo titulares de economía (medio del país; se saltean los que hablan de otro país)
 #   pais = solo si nombra al país y es de economía (medio de otro lado)
@@ -58,19 +87,19 @@ FEEDS = [
     ("La Jornada", "https://www.jornada.com.mx/rss/economia.xml", {"mexico": "econ"}),
     ("Expansión México", "https://expansion.mx/rss", {"mexico": "econ"}),
     ("El Universal", "https://www.eluniversal.com.mx/arc/outboundfeeds/rss/category/cartera/?outputType=xml", {"mexico": "econ"}),
-    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
-    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/estados-unidos/", {"eeuu": "econ", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
+    ("Cinco Días", "https://feeds.elpais.com/mrss-s/pages/ep/site/cincodias.elpais.com/portada", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("Expansión", "https://e00-expansion.uecdn.es/rss/mercados.xml", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("Euronews", "https://es.euronews.com/rss?level=vertical&name=business", {"europa": "econ", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("El País", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("El País América", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("El País EE.UU.", "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/us/portada", {"eeuu": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("DW", "https://rss.dw.com/xml/rss-sp-eco", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("France 24", "https://www.france24.com/es/econom%C3%ADa/rss", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("France 24", "https://www.france24.com/es/am%C3%A9rica-latina/rss", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("BBC Mundo", "https://feeds.bbci.co.uk/mundo/rss.xml", {"europa": "pais", "eeuu": "pais", "brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
+    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/estados-unidos/", {"eeuu": "econ", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
     ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
-    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
+    ("Infobae", "https://www.infobae.com/arc/outboundfeeds/rss/category/america/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/economia.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("NHK World", "https://www3.nhk.or.jp/nhkworld/data/es/news/all.json", {"japon": "econ"}),
     ("Europa Press", "https://www.europapress.es/rss/rss.aspx?ch=00069", {"reino": "pais", "europa": "pais", "eeuu": "pais"}),
@@ -90,10 +119,34 @@ FEEDS = [
     ("Ex-Ante", "https://www.ex-ante.cl/feed/", {"chile": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
     ("Agência Brasil", "https://agenciabrasil.ebc.com.br/es/rss/economia/feed.xml", {"brasil": "econ"}),
-    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais"}),
+    ("MercoPress", "https://es.mercopress.com/rss/", {"brasil": "pais", "mexico": "pais", "chile": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "colombia": "pais", "turquia": "pais", "peru": "pais", "polonia": "pais"}),
     ("La Nación", "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+    ("EFE", "https://efe.com/economia/feed/", {"europa": "pais", "brasil": "pais", "japon": "pais", "reino": "pais", "canada": "pais", "turquia": "pais", "polonia": "pais"}),
     ("iProfesional", "https://www.iprofesional.com/rss/economia", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
     ("Ámbito", "https://www.ambito.com/rss/pages/mundo.xml", {"eeuu": "pais", "brasil": "pais", "mexico": "pais", "europa": "pais"}),
+]
+# Medios en inglés: solo completan a los países con pocos titulares en español (MIN_ES)
+INT_EN = {"polonia": "pais", "turquia": "pais", "reino": "pais", "canada": "pais", "brasil": "pais", "japon": "pais", "chile": "pais", "peru": "pais", "colombia": "pais", "mexico": "pais"}
+FEEDS_EN = [
+    ("Notes from Poland", "https://notesfrompoland.com/feed/", {"polonia": "econ"}),
+    ("TVP World", "https://tvpworld.com/rss", {"polonia": "econ"}),
+    ("Polskie Radio", "https://www.polskieradio.pl/395/7784/Rss", {"polonia": "econ"}),
+    ("Daily Sabah", "https://www.dailysabah.com/rss/business", {"turquia": "econ"}),
+    ("Hürriyet Daily News", "https://www.hurriyetdailynews.com/rss/economy", {"turquia": "econ"}),
+    ("Anadolu Agency", "https://www.aa.com.tr/en/rss/default?cat=economy", {"turquia": "econ"}),
+    ("BBC", "https://feeds.bbci.co.uk/news/business/rss.xml", {**INT_EN, "reino": "econ"}),
+    ("The Guardian", "https://www.theguardian.com/uk/business/rss", {**INT_EN, "reino": "econ"}),
+    ("CBC", "https://www.cbc.ca/webfeed/rss/rss-business", {"canada": "econ"}),
+    ("Global News", "https://globalnews.ca/money/feed/", {"canada": "econ"}),
+    ("Financial Post", "https://financialpost.com/feed", {"canada": "econ"}),
+    ("NHK World", "https://www3.nhk.or.jp/nhkworld/data/en/news/all.json", {"japon": "econ"}),
+    ("The Japan Times", "https://www.japantimes.co.jp/business/feed/", {"japon": "econ"}),
+    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/en/rss/economia/feed.xml", {"brasil": "econ"}),
+    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/en/rss/ultimasnoticias/feed.xml", {"brasil": "econ"}),
+    ("MercoPress", "https://en.mercopress.com/rss/", INT_EN),
+    ("Euronews", "https://www.euronews.com/rss?level=vertical&name=business", INT_EN),
+    ("DW", "https://rss.dw.com/rdf/rss-en-bus", INT_EN),
+    ("CNBC", "https://www.cnbc.com/id/100727362/device/rss/rss.html", INT_EN),
 ]
 # temas que no son de economía aunque nombren plata (deportes, policiales, espectáculos, clima)
 RUIDO = re.compile(r"golea|\bgol(es)?\b|f[uú]tbol|\bliga\b|partido de|campeonato|\bnba\b|\bnfl\b|secuestr|asesin|homicid|"
@@ -163,20 +216,24 @@ def main():
         except Exception:  # noqa: BLE001
             prev = {}
     por_pais = {p: [] for p in PAIS}
+    por_pais_en = {p: [] for p in PAIS}
     fuentes, errores = {}, []
-    for medio, url, reglas in FEEDS:
+    for medio, url, reglas, en in [(*f, False) for f in FEEDS] + [(*f, True) for f in FEEDS_EN]:
         clave_f = f"{medio} · {url.split('/')[2]}"
         try:
             n = 0
             for t, link, d, cat_econ in entradas(url):
-                if not t or BASURA.match(t) or RUIDO.search(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
+                if not t or BASURA.match(t) or (RUIDO_EN if en else RUIDO).search(t) or len(t) < 25 or not link.startswith("http") or not d or d < corte or d > ahora + timedelta(hours=1):
                     continue
-                es_econ = cat_econ or bool(re.search(ECON, t, re.I))
+                es_econ = cat_econ or bool(re.search(ECON_EN if en else ECON, t, re.I))
                 for pais, regla in reglas.items():
-                    nombra = bool(re.search(PAIS[pais], t, re.I))
-                    otro = not nombra and bool(re.search(OTROS, t, re.I))
+                    nombra = bool(re.search((PAIS_EN if en else PAIS)[pais], t, re.I))
+                    otro = not nombra and bool(re.search(OTROS_EN if en else OTROS, t, re.I))
                     if (regla == "todo" and not otro) or (regla == "econ" and es_econ and not otro) or (regla == "pais" and nombra and es_econ):
-                        por_pais[pais].append({"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes")})
+                        x = {"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes")}
+                        if en:
+                            x["l"] = "en"
+                        (por_pais_en if en else por_pais)[pais].append(x)
                         n += 1
             fuentes[clave_f] = f"ok ({n})"
         except Exception as e:  # noqa: BLE001
@@ -191,6 +248,12 @@ def main():
             if k not in vistos:
                 vistos.add(k)
                 unicos.append(x)
+        if len(unicos) < MIN_ES:  # pocos en español: se completa con titulares en inglés, después de los de español
+            for x in sorted(por_pais_en[pais], key=lambda x: x["h"], reverse=True):
+                k = re.sub(r"\W+", "", x["t"].lower())[:60]
+                if k not in vistos and len(unicos) < 30:
+                    vistos.add(k)
+                    unicos.append(x)
         if not unicos:  # si todo falló, quedan las anteriores que sigan dentro de las 48 horas
             unicos = [x for x in (prev.get(pais) or []) if x.get("h", "") >= corte.isoformat(timespec="minutes")]
         data[pais] = unicos[:40]
