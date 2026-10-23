@@ -182,7 +182,7 @@ def conflictos(prev):
         cols = [limpio(c["t"]).lower() for c in enc] if enc else []
         def col(rx, d):
             return next((i for i, c in enumerate(cols) if re.search(rx, c)), d)
-        ci = {"ini": col(r"start", 0), "con": col(r"conflict", 1), "cont": col(r"continent", 2), "loc": col(r"location", 3),
+        ci = {"ini": col(r"start", 0), "con": col(r"^conflict", 1), "cont": col(r"continent", 2), "loc": col(r"location", 3),
               "acum": col(r"cumulative", 4)}
         anios = [(i, re.search(r"(20\d\d)", c).group(1)) for i, c in enumerate(cols) if re.search(r"20\d\d", c) and "cumulative" not in c]
         diag.setdefault("wiki_cols", {})[nivel] = cols
