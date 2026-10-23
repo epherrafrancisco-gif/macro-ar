@@ -28,6 +28,8 @@ on:
       - scripts/arabia.py
       - scripts/suiza.py
       - scripts/australia.py
+      - scripts/corea.py
+      - scripts/sudafrica.py
       - scripts/pais_bis.py
       - scripts/actividad.py
       - .github/workflows/global.yml
@@ -121,6 +123,14 @@ jobs:
         run: python scripts/australia.py
         continue-on-error: true
 
+      - name: Traer datos de Corea del Sur
+        run: python scripts/corea.py
+        continue-on-error: true
+
+      - name: Traer datos de Sudáfrica
+        run: python scripts/sudafrica.py
+        continue-on-error: true
+
       - name: Traer datos que se suman a todos los países
         run: python scripts/paises_extra.py
         continue-on-error: true
@@ -131,13 +141,13 @@ jobs:
 
       - name: Guardar cambios
         run: |
-          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json actividad.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json actividad.json >/dev/null 2>&1; then
+          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json actividad.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json actividad.json >/dev/null 2>&1; then
             echo "Sin cambios"
             exit 0
           fi
           git config user.name "macro-ar-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json actividad.json 2>/dev/null || true
+          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json actividad.json 2>/dev/null || true
           git commit -m "Global $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
           git pull --rebase origin main
           git push
