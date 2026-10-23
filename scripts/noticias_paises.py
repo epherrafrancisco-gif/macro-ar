@@ -195,16 +195,18 @@ FEEDS_EN = [
     ("The Korea Times", "https://feed.koreatimes.co.kr/k/business.xml", {"corea": "econ"}),
     ("Moneyweb", "https://www.moneyweb.co.za/feed/", {"sudafrica": "econ"}),
     ("RNZ", "https://www.rnz.co.nz/rss/business.xml", {"zelanda": "econ"}),
-    ("Iceland Review", "https://www.icelandreview.com/feed/", {"islandia": "econ"}),
     ("Iceland Monitor", "https://icelandmonitor.mbl.is/rss/", {"islandia": "econ"}),
     ("Hungary Today", "https://hungarytoday.hu/feed/", {"hungria": "econ"}),
-    ("Budapest Business Journal", "https://bbj.hu/rss", {"hungria": "econ"}),
     ("Hong Kong Free Press", "https://hongkongfp.com/feed/", {"hongkong": "econ"}),
-    ("The Standard (HK)", "https://www.thestandard.com.hk/newsfeed/latest/news.xml", {"hongkong": "econ"}),
-    ("Radio Prague International", "https://english.radio.cz/rss", {"chequia": "econ"}),
-    ("Expats.cz", "https://www.expats.cz/rss", {"chequia": "econ"}),
     ("The Local", "https://feeds.thelocal.com/rss/dk", {"dinamarca": "econ"}),
     ("The Copenhagen Post", "https://cphpost.dk/feed/", {"dinamarca": "econ"}),
+    ("RÚV English", "https://www.ruv.is/rss/english", {"islandia": "econ"}),
+    ("Daily News Hungary", "https://dailynewshungary.com/feed/", {"hungria": "econ"}),
+    ("RTHK", "https://rthk.hk/rthk/news/rss/e_expressnews_efinance.xml", {"hongkong": "econ"}),
+    ("Prague Morning", "https://www.praguemorning.cz/feed/", {"chequia": "econ"}),
+    ("Brno Daily", "https://brnodaily.com/feed/", {"chequia": "econ"}),
+    ("Romania Journal", "https://www.romaniajournal.ro/feed/", {"rumania": "econ"}),
+    ("Universul.net", "https://universul.net/feed/", {"rumania": "econ"}),
     ("Romania Insider", "https://www.romania-insider.com/rss", {"rumania": "econ"}),
     ("Business Review", "https://business-review.eu/feed", {"rumania": "econ"}),
     ("The Local", "https://feeds.thelocal.com/rss/no", {"noruega": "econ"}),
@@ -293,7 +295,7 @@ def entradas(url):
             cat = str((x.get("categories") or {}).get("name") or "").upper()
             yield limpiar(x.get("title")), "https://www3.nhk.or.jp" + str(x.get("page_url") or ""), d, cat == "BUSINESS"
         return
-    for it in ET.fromstring(raw).iter():
+    for it in ET.fromstring(raw.lstrip()).iter():  # Business Review trae espacios antes del <?xml
         if it.tag.split("}")[-1] not in ("item", "entry"):
             continue
         h = {c.tag.split("}")[-1]: c for c in it}
