@@ -52,7 +52,7 @@
   .ms-g a svg{width:18px;height:18px;flex:none;color:var(--accent)}
   .ms-g a img.flag{width:24px;height:18px}
   .ms-g a.on{border-color:var(--accent);background:rgba(106,168,216,.14)}
-  body.insec header,body.insec #tape2,body.insec #tape3,body.insec #live,body.insec #crumb,body.insec #tabsNav,body.insec #paisPanel,body.insec .flhome{display:none!important}
+  body.insec header,body.insec #tape3,body.insec #live,body.insec #crumb,body.insec #tabsNav,body.insec #paisPanel,body.insec .flhome{display:none!important}
   body.insec .quotes.compact{display:flex;overflow-x:auto;gap:8px;scrollbar-width:none;margin-inline:-2px;padding:2px}
   body.insec .quotes.compact::-webkit-scrollbar{display:none}
   body.insec .quotes.compact .q{flex:0 0 auto;padding:7px 11px;gap:1px}
@@ -69,7 +69,9 @@
   .mnav button svg{width:23px;height:23px}
   .mnav button[aria-current="true"]{color:var(--accent)}
   body.insec{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
-  body.insec #tape,body.insec .midx,body.insec #mBtn{display:none!important}
+  body.insec .midx,body.insec #mBtn{display:none!important}
+  body.insec.mglo #tape,body.insec:not(.mglo) #tape2{display:none!important}
+  body.insec .tape{font-size:12px}body.insec .tape .tk{padding-inline:14px}body.insec .tape .tk .n{font-size:10.5px}body.insec .tape-in{padding-block:6px}
   body.insec #bar:has(#segRange[hidden]){display:none!important}
   .mhome{flex-direction:row;border:0;background:none;padding:6px 4px 6px 0;color:var(--accent)}
   .mhome svg{width:22px;height:22px}.mhome span{display:none}
@@ -77,7 +79,9 @@
   body:not(.mporta) .mhero{display:none}
   .mhero h1{font-size:24px;line-height:1.15;margin:4px 0 6px;letter-spacing:-.01em}
   .mhero p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.4}
-  .mhero .mby{margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.01em}
+  .mhero .mby{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.01em}
+  .mhero h1.mlogo{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:6px 0 2px}.mhero h1.mlogo span{font-family:var(--mono);font-weight:500;color:var(--accent);margin-left:2px}
+  body.mporta #mbar{display:none}
   .mh4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px;font-weight:700}
   .mhero .mh4{margin:18px 0 -6px}
   .mporta-m{display:block}
@@ -418,33 +422,55 @@ body.mon .mnTop button{display:none}
 .xplog .c{display:inline-block;width:7px;height:12px;background:#8fd3c4;vertical-align:-2px;animation:xpBlink 1s steps(1) infinite}
 .xplog .tg{color:var(--accent)}
 
-/* Monitor: piel de terminal (negro plano, ámbar, sin brillos ni radar) */
-.xpw{--am:#ff9e1b;--tx:#d9d9d9;--dim:#7a7a7a;--ln2:#262626;background:#000;border:1px solid #262626;border-radius:4px}
+/* Monitor: piel de terminal (tinta azul petróleo, ámbar y acentos por tema; sin brillos ni radar) */
+.xpw{--am:#ffa028;--cy:#3cc4cf;--rj:#ff5a4f;--ce:#74acdf;--vd:#3fd17f;--tx:#e2e8ee;--dim:#7f8b97;--ln2:#1b2530;--pn:#070c12;--hd:#0c131b;
+  height:min(88vh,940px);min-height:700px;background:#04070b;border:1px solid var(--ln2);border-radius:4px}
 .xpw::after{display:none}
-.xpw .mnTop{background:#000;border-bottom:1px solid var(--am);color:var(--dim);height:30px}
+.xpw .mnTop{height:30px;background:#04070b;border-bottom:1px solid var(--am);color:var(--dim);gap:14px;padding:0 10px}
 .xpw .mnLogo{color:#000;background:var(--am);padding:2px 8px;font-weight:600}.xpw .mnLogo b{color:#000}
-.xpw .mnScn{color:var(--am)}
-.xpw .mnDots i{border-radius:0;background:#262626}.xpw .mnDots i.on::after{background:var(--am)}.xpw .mnDots i.done{background:#5a4320}
+.xpw .mnScn{color:var(--am)}.xpw .mnUtc{color:var(--tx);letter-spacing:.06em}.xpw .mnUtc i{font-style:normal;color:var(--dim)}
+.xpw .mnDots i{border-radius:0;background:#1b2530}.xpw .mnDots i.on::after{background:var(--am)}.xpw .mnDots i.done{background:#5a4320}
 .xpw .mnTop button{background:var(--am);color:#000;border-radius:0}
-.xpw .mnTitle{left:272px;transform:none;top:42px;font:600 15px var(--mono);letter-spacing:.06em;color:var(--am);text-shadow:none}
+.mnKpi{position:absolute;left:0;right:0;top:30px;height:44px;z-index:3;display:flex;flex-wrap:wrap;overflow:hidden;background:var(--pn);border-bottom:1px solid var(--ln2)}
+.mnKpi div{flex:1 0 auto;height:44px;display:flex;flex-direction:column;justify-content:center;padding:0 10px;border-right:1px solid var(--ln2);min-width:0}
+.mnKpi small{font-size:9.5px;letter-spacing:.08em;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mnKpi b{font:500 13.5px var(--mono);color:var(--tx);white-space:nowrap}.mnKpi b span{font-size:10.5px;margin-left:5px}
+.mnKpi div.g small{color:var(--rj)}.mnKpi div.a small{color:var(--ce)}
+.xpw .mnTitle{left:274px;transform:none;top:84px;font:600 15px var(--mono);letter-spacing:.06em;color:var(--am);text-shadow:none}
 .xpw .mnTitle small{text-align:left;color:var(--dim);font-size:11px;letter-spacing:.02em}
-.xpw .mnL,.xpw .mnR{top:42px}
-.xpw .mnBox{background:#000;border:1px solid var(--ln2);border-radius:0;padding:0 0 4px}
-.xpw .mnH{background:#141414;color:var(--am);border-bottom:1px solid var(--ln2);padding:4px 8px;margin:0 0 4px;font-size:10px;letter-spacing:.08em}
+.xpw .mnL{left:10px;top:82px;bottom:150px;width:252px;gap:8px}
+.xpw .mnR{right:10px;top:82px;bottom:150px;width:268px;gap:8px}
+.xpw .mnBox{--ac:var(--am);background:var(--pn);border:1px solid var(--ln2);border-radius:0;padding:0 0 4px}
+.xpw .mnBox.mnCy{--ac:var(--cy)}.xpw .mnBox.mnAr{--ac:var(--ce)}.xpw .mnBox.mnGeo{--ac:var(--rj)}
+.xpw .mnH{background:var(--hd);color:var(--ac);border-bottom:1px solid var(--ln2);border-left:3px solid var(--ac);padding:4px 8px;margin:0 0 4px;font-size:10px;letter-spacing:.08em}
 .xpw .mnBox>div:not(.mnH){padding:0 8px}
-.xpw #mnClk div{border-bottom:1px solid #1a1a1a;color:var(--dim)}.xpw #mnClk b{color:var(--tx);font-size:15px}
-.xpw #mnClk .st.on{color:#3fd17f}
-.xpw #mnVix .g{height:3px;border-radius:0;background:#262626}.xpw #mnVix .g i{top:-3px;width:2px;height:9px;border-radius:0;background:var(--am);box-shadow:none}
-.xpw #mnVix .row b,.xpw .mnAr .row b{color:var(--tx)}
-.xpw .mnR>.mnH{border:1px solid var(--ln2);border-bottom:0}
-.xpw .mnRain{background:#000;border:1px solid var(--ln2);border-radius:0;-webkit-mask-image:none;mask-image:none}
-.xpw .mnRainIn div{color:var(--tx);border-bottom:1px solid #111}
-.xpw .mnRainIn .k{color:#000;background:var(--am);padding:2px 8px;margin-top:6px;border-radius:0}
-.xpw .mnCall{background:#000;border:1px solid var(--am);border-radius:0;box-shadow:none;animation:none}
-.xpw .mnCall .n{font-family:var(--mono);font-size:13px;color:var(--am)}
-.xpw .xplog{background:#000;border:1px solid var(--ln2);border-radius:0;color:var(--tx);height:96px}
+.xpw #mnClk{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+.xpw #mnClk div{display:block;padding:2px 0;border-bottom:1px solid #111a23;color:var(--dim);font-size:9.5px;letter-spacing:.04em}.xpw #mnClk div i{font-style:normal;margin-right:4px}.xpw #mnClk div i.on{color:var(--vd)}.xpw #mnClk div i.off{color:#4d5966}
+.xpw #mnClk b{display:block;font:500 13px var(--mono);color:var(--tx)}.xpw #mnClk .st{font-size:9px}
+.xpw #mnClk .st.on{color:var(--vd)}.xpw #mnClk .st.off{color:#4d5966}
+.xpw #mnVix .g{height:3px;border-radius:0;background:linear-gradient(90deg,#1f6f4a,#7a6420 45%,#7a2a25);margin:5px 0 3px}.xpw #mnVix .g i{top:-3px;width:2px;height:9px;border-radius:0;background:var(--tx);box-shadow:none}
+.xpw #mnVix .row,.xpw .mnAr .row,.xpw .mnGeo .row{display:flex;justify-content:space-between;align-items:baseline;padding:1px 0;font-size:10.5px;color:var(--dim)}
+.xpw #mnVix .row b,.xpw .mnAr .row b,.xpw .mnGeo .row b{font:500 12.5px var(--mono);color:var(--tx)}
+.xpw .mnGeo .gn{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:2px 0 6px}
+.xpw .mnGeo .gn span{border:1px solid var(--ln2);padding:3px 0 2px;text-align:center;font-size:8.5px;letter-spacing:.05em;color:var(--dim)}
+.xpw .mnGeo .gn b{display:block;font:600 16px var(--mono)}
+.xpw .mnGeo svg{width:100%;height:30px;display:block;margin:2px 0 4px}
+.xpw .mnGeo .cf{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:6px;align-items:baseline;padding:2px 0;border-top:1px solid #111a23;font-size:10.5px;color:var(--tx);animation:xpIn .5s ease}
+.xpw .mnGeo .cf i{width:7px;height:7px;display:inline-block}.xpw .mnGeo .cf span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.xpw .mnGeo .cf em{font:normal 10px var(--mono);color:var(--dim)}
+.xpw .mnFl{flex:1;min-height:0;display:flex;flex-direction:column}
+.xpw .mnFl .mnRain{position:relative;flex:1;padding:0;margin:0 0 -4px;background:transparent;border:0;border-radius:0;-webkit-mask-image:none;mask-image:none}
+.xpw .mnRainIn div{color:var(--tx);border-bottom:1px solid #0e161e;padding:2px 8px;font-size:10.5px}
+.xpw .mnRainIn .k{color:var(--cy);background:var(--hd);border-left:3px solid var(--cy);padding:2px 8px;margin-top:6px;border-radius:0}
+.mnB{position:absolute;left:10px;right:10px;bottom:8px;height:134px;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) 430px 300px;gap:8px}
+.xpw .mnB .xplog{position:static;height:auto;left:auto;right:auto;bottom:auto;background:var(--pn);border:1px solid var(--ln2);border-radius:0;color:var(--tx);font-size:11.5px;line-height:1.55;padding:5px 10px}
 .xpw .xplog .tg{color:var(--am)}.xpw .xplog .c{background:var(--am)}
-.xpw .up{color:#3fd17f!important}.xpw .dn{color:#ff5a4f!important}
+.xpw #mnHm{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:0 6px}
+.xpw #mnHm{grid-template-columns:repeat(5,1fr)}.xpw #mnHm span{display:flex;justify-content:space-between;gap:4px;font-size:9px;line-height:15px;padding:0 4px;color:#fff;overflow:hidden;white-space:nowrap}.xpw #mnHm span b{font:500 9.5px var(--mono)}
+.xpw #mnBc div{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:baseline;padding:2px 0;border-bottom:1px solid #111a23;font-size:10.5px;color:var(--dim)}
+.xpw #mnBc b{font:500 11.5px var(--mono);color:var(--tx)}.xpw #mnBc em{font:normal 10.5px var(--mono);color:var(--cy);min-width:42px;text-align:right}.xpw #mnBc .hoy em{color:var(--am)}
+.xpw .mnCall{background:#04070b;border:1px solid var(--am);border-radius:0;box-shadow:none;animation:none}
+.xpw .mnCall .n{font-family:var(--mono);font-size:13px;color:var(--am)}
+.xpw .up{color:var(--vd)!important}.xpw .dn{color:var(--rj)!important}
 @keyframes xpBlink{50%{opacity:0}}
 .globe{position:relative;width:100%;aspect-ratio:1/1;max-height:600px}
 .globe canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
@@ -685,7 +711,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="brand">
       <h1 id="brandH" title="Volver a la portada" role="link" tabindex="0">Pulso<span>Macro</span></h1>
       <span class="by">Diseñado y operado por Francisco Epherra</span>
-      <p>La economía argentina y el mundo en un solo tablero: dólares, inflación, reservas, tasas, dinero, cuentas fiscales, mercados, noticias y calculadoras</p>
+      <p>Argentina y 39 países en un solo tablero: dólares, inflación, tasas, bolsas, bonos, commodities y geopolítica, actualizado solo todos los días</p>
     </div>
     <div class="hright">
       <div class="modo" id="modo" role="group" aria-label="Sección"><a href="#" id="modoH" class="mh" aria-current="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg>Inicio</a><button type="button" data-m="arg" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-m="glo" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
@@ -693,7 +719,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </header>
 
-  <div class="mhero" id="mHero"><h1>La economía, clara y al día</h1><p>Dólar, inflación, tasas y mercados de Argentina y del mundo. Se actualiza solo, todos los días.</p><p class="mby">Diseñado y operado por Francisco Epherra</p><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Agregar a tu pantalla de inicio</span></button><p class="mh4">Dólares hoy</p></div>
+  <div class="mhero" id="mHero"><h1 class="mlogo">Pulso<span>Macro</span></h1><p class="mby">Diseñado y operado por Francisco Epherra</p><p>Argentina y 39 países en un solo tablero: dólares, tasas, bolsas, commodities y geopolítica, al día.</p><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Agregar a tu pantalla de inicio</span></button><p class="mh4">Dólares hoy</p></div>
   <section class="dolhoy" id="dolHoy" aria-label="Dólar hoy">
     <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
     <div class="quotes" id="quotes"></div>
@@ -1155,18 +1181,26 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="xpmob">El monitor está pensado para computadora: abrilo desde una pantalla grande.</p>
       <div class="xpw" id="xpW">
         <canvas id="xpCv" aria-label="Monitor del mundo: globo terráqueo animado con datos"></canvas>
-        <div class="mnTop"><span class="mnLogo">PULSO<b>MACRO</b> · MONITOR GLOBAL</span><span class="mnScn" id="mnScn"></span><span class="mnDots" id="mnDots"></span><button type="button" id="xpFs">⛶ Modo monitor</button></div>
+        <div class="mnTop"><span class="mnLogo">PULSO<b>MACRO</b> · MONITOR GLOBAL</span><span class="mnScn" id="mnScn"></span><span class="mnUtc" id="mnUtc"></span><span class="mnDots" id="mnDots"></span><button type="button" id="xpFs">⛶ Modo monitor</button></div>
+        <div class="mnKpi" id="mnKpi"></div>
         <div class="mnTitle" id="mnTitle"></div>
         <div class="mnL">
           <div class="mnBox"><div class="mnH">RELOJES · BOLSAS</div><div id="mnClk"></div></div>
-          <div class="mnBox"><div class="mnH">TERMÓMETRO DEL MERCADO</div><div id="mnVix"></div></div>
+          <div class="mnBox mnCy"><div class="mnH">TERMÓMETRO DEL MERCADO</div><div id="mnVix"></div></div>
           <div class="mnBox mnAr"><div class="mnH">ARGENTINA</div><div id="mnAr"></div></div>
         </div>
-        <div class="mnR"><div class="mnH">FLUJO DE DATOS</div><div class="mnRain"><div class="mnRainIn" id="mnRain"></div></div></div>
+        <div class="mnR">
+          <div class="mnBox mnGeo"><div class="mnH">GEOPOLÍTICA · CONFLICTOS ARMADOS</div><div id="mnGeo"></div></div>
+          <div class="mnBox mnFl"><div class="mnH">FLUJO DE DATOS</div><div class="mnRain"><div class="mnRainIn" id="mnRain"></div></div></div>
+        </div>
         <div class="mnCall" id="mnCall" hidden></div>
-        <div class="xplog" id="xpLog" aria-live="polite"></div>
+        <div class="mnB">
+          <div class="xplog" id="xpLog" aria-live="polite"></div>
+          <div class="mnBox mnHm"><div class="mnH">BOLSAS · HOY</div><div id="mnHm"></div></div>
+          <div class="mnBox mnCy"><div class="mnH">PRÓXIMAS DECISIONES DE TASAS</div><div id="mnBc"></div></div>
+        </div>
       </div>
-      <p class="note">Va cambiando solo de tema cada unos 20 segundos (bolsas, monedas, tasas, inflación y bonos), vuela hacia el país más destacado de cada uno y escribe abajo los titulares de cada país. La sombra es la noche real; las luces amarillas, las bolsas abiertas; los arcos, el carry trade desde Japón. Datos: CNBC (mercados, con demora), BIS (tasas), FMI o Banco Mundial (inflación anual; Argentina con el dato del INDEC), BCRA, Ámbito y DolarApi.</p>
+      <p class="note">Va cambiando solo de tema cada unos 20 segundos (bolsas, monedas, tasas, inflación, bonos y conflictos armados), vuela hacia el país más destacado de cada uno y escribe abajo los titulares de cada país. La sombra es la noche real; los puntos verdes, las bolsas abiertas; los arcos, el carry trade desde Japón; los cuadros rojos y naranjas, las guerras en curso. Datos: CNBC (mercados, con demora), BIS (tasas), FMI o Banco Mundial (inflación anual; Argentina con el dato del INDEC), Wikipedia (conflictos), Caldara e Iacoviello (riesgo geopolítico), BCRA, Ámbito y DolarApi.</p>
     </div>
     </div>
     <p class="note" id="gFuente"></p>
@@ -2745,7 +2779,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p>Así nació Pulso Macro: una plataforma única, rápida y visual, que no solo muestra los datos sino que permite analizarlos en tiempo real.</p>
       <h3>Para quién es</h3>
       <p>Para un público amplio: analistas, economistas e inversores que necesitan métricas de mercado y de bonos, y también estudiantes, pymes y cualquier persona que quiera tomar sus decisiones de todos los días mejor informada.</p>
-      <p>Por eso hay datos, gráficos, calculadoras, un glosario y noticias, de Argentina y del mundo: Estados Unidos y otras diez secciones de países y regiones, de Brasil y México a Europa y Japón, porque lo que pasa afuera también mueve al dólar, a los bonos y a la economía de acá. Cada persona llega con intereses distintos cuando quiere entender la economía, y quiero que Pulso Macro sea una buena herramienta para todos.</p>
+      <p>Por eso hay datos, gráficos, calculadoras, un glosario y noticias, de Argentina y del mundo: 39 países, de Estados Unidos y Brasil a China y Polonia, y un mapa de las guerras en curso, porque lo que pasa afuera también mueve al dólar, a los bonos y a la economía de acá. Cada persona llega con intereses distintos cuando quiere entender la economía, y quiero que Pulso Macro sea una buena herramienta para todos.</p>
       <h3>Lo que me mueve</h3>
       <p>El mercado me atrapó temprano. A los 16 empecé a formarme, con cursos y mucho estudio sobre cómo funcionan las acciones, los bonos y la economía, para después dar el paso. A los 17 empecé a invertir mi propio capital.</p>
       <p>Lo que más disfruto es entender el porqué de los números: cómo un dato de inflación, una decisión del Banco Central o un salto del riesgo país terminan moviendo el dólar, un bono o una acción. Pulso Macro es, en parte, la herramienta que me hubiera gustado tener cuando empecé.</p>
@@ -2754,10 +2788,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="card">
       <div class="head"><h2>Cómo funciona</h2></div>
       <ul class="how">
-        <li><b>Todo se actualiza solo.</b> Los datos de Argentina se buscan automáticamente tres veces por día hábil (10:15, 11:30 y 18:47); la de las 18:47 trae el cierre del día. Los mercados del mundo, Estados Unidos y los demás países se actualizan cada hora en días hábiles, y cada seis horas los fines de semana. La hacienda y los granos, tres veces por día hábil. Los datos mensuales (inflación, actividad, salarios) entran apenas se publican. Las cotizaciones del dólar se refrescan en vivo cada minuto y las acciones y bonos argentinos, cada 10 minutos, con demora. Las noticias se actualizan cada hora.</li>
-        <li><b>Nada se inventa.</b> Si una fuente no responde, el dato queda como estaba y cada número muestra su propia fecha. Algunas series del BCRA salen con uno o dos días de atraso.</li>
+        <li><b>Todo se actualiza solo.</b> Los datos de Argentina se buscan automáticamente tres veces por día hábil (10:15, 11:30 y 18:47); la de las 18:47 trae el cierre del día. Los mercados del mundo, los 39 países y la geopolítica se actualizan cada hora en días hábiles, y cada seis horas los fines de semana. La hacienda y los granos, tres veces por día hábil. Los datos mensuales (inflación, actividad, salarios) entran apenas se publican. Las cotizaciones del dólar se refrescan en vivo cada minuto y las acciones y bonos argentinos, cada 10 minutos, con demora. Las noticias se actualizan cada hora.</li>
+        <li><b>Nada se inventa.</b> Si una fuente no responde, el dato queda como estaba y cada número muestra su propia fecha. Si un dato queda viejo, se saca en vez de mostrarlo como actual.</li>
         <li><b>Dólar a precios de hoy:</b> cada cotización del pasado se ajusta por la inflación argentina (CER) y por la de Estados Unidos (CPI), para comparar épocas distintas. Arranca en 2017 porque antes el IPC oficial no era confiable.</li>
-        <li><b>Cada país, con la misma vara:</b> en las secciones de otros países, la moneda se pasa a pesos con el dólar mayorista del mismo día, y la inflación, la tasa y el desempleo salen de la fuente oficial de cada país o de organismos internacionales (BIS, OCDE). Así se pueden comparar con Argentina.</li>
+        <li><b>Cada país, con la misma vara:</b> en las secciones de otros países, la moneda se pasa a pesos con el dólar mayorista del mismo día, y la inflación, la tasa y el desempleo salen de la fuente oficial de cada país o de organismos internacionales (BIS, OCDE, Banco Mundial). Así se pueden comparar con Argentina, también desde 1990.</li>
         <li><b>¿Qué le ganó a la inflación?:</b> rendimiento desde el último cierre del año anterior. La inflación es la del INDEC y, para los meses que todavía no publicó, la que espera el mercado según el REM del BCRA (se aclara como estimada).</li>
         <li><b>Cálculos propios:</b> la TIR y la paridad de los bonos, los agregados monetarios en pesos de hoy y en % del PBI, las brechas, el canje, los salarios reales y la relación novillo/maíz los calcula Pulso Macro con datos públicos. Cada gráfico se puede descargar en imagen o en CSV.</li>
       </ul>
@@ -2774,8 +2808,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div><b>Mercado Agroganadero y Bolsa de Rosario</b>Precios de la hacienda en Cañuelas (ex Liniers) y precios pizarra de los granos.</div>
         <div><b>Mercados del mundo</b>CNBC: bolsas, acciones, monedas, bonos y commodities. CoinGecko: criptomonedas.</div>
         <div><b>Estados Unidos</b>BLS (inflación y empleo), Departamento del Tesoro (deuda y bonos), BEA (PBI), Departamento de Trabajo, Freddie Mac (hipotecas) y Nasdaq (balances).</div>
-        <div><b>Bancos centrales y organismos</b>BIS, OCDE y Banco Mundial; Banco Central do Brasil, Banco Central Europeo y Eurostat y Banco Central de Reserva del Perú.</div>
-        <div><b>Medios</b>Titulares de Ámbito, Infobae, La Nación, iProfesional y Perfil, y de medios de cada país para sus secciones. Cada nota se lee en el sitio del medio.</div>
+        <div><b>Bancos centrales y organismos</b>BIS, OCDE, FMI y Banco Mundial; bancos centrales de Brasil, la zona euro (y Eurostat), Perú y Polonia. Índice Big Mac de The Economist.</div>
+        <div><b>Geopolítica</b>Wikipedia (conflictos armados en curso), índice de riesgo geopolítico de Caldara e Iacoviello y gasto militar del SIPRI vía Banco Mundial.</div>
+        <div><b>Medios</b>Titulares de Ámbito, Infobae, La Nación, iProfesional y Perfil, y de medios de cada país, en español o inglés. Cada nota se lee en el sitio del medio.</div>
       </div>
     </div>
 
@@ -4415,6 +4450,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     document.body.classList.toggle('insec', true); document.body.classList.toggle('mporta', !dentro);
     $('quotes').classList.toggle('compact', tab!=='dolares');
     const grupo = ARG_T.includes(tab) ? 'Argentina' : (PAISES_T.includes(tab) || key==='eeuu') ? 'Países' : (tab==='global' ? 'El mundo' : '');
+    document.body.classList.toggle('mglo', grupo==='Países' || grupo==='El mundo');
     $('mWhere').innerHTML = !dentro ? '<span class="mbrand">Pulso<span>Macro</span></span>' : `<small>${grupo || (tab==='sobre' ? 'Pulso Macro' : 'El mundo')}</small><b>${ICO[key] ? ico(key) : ''}${esc((SECC[key]||['Sobre Pulso Macro'])[0])}</b>`;
     clearTimeout(mIdxT); mIdxT = setTimeout(()=>{ mAcordeon(); }, 300);
     mResumen(); mNavMarcar();
@@ -7673,12 +7709,24 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ['mon','MONEDAS CONTRA EL DÓLAR','Verde: se fortaleció hoy · rojo: se debilitó', xpMon, 'div', 1.5, v=>sg(v,2)+'%', 'no', 'abs', iso=>XP_MK[iso]],
     ['tasa','TASAS DE LOS BANCOS CENTRALES','Altura y color: tasa de interés de referencia de cada país', iso=>glob?.paises?.[iso]?.tasa ?? null, 'seq', 40, v=>nf(v,2)+'%', 'tasa', 'max', null],
     ['infl','INFLACIÓN','Color: inflación anual · columnas: los países más seguidos', iso=>GPA[iso] ? xpInfl(iso) : null, 'seq', 60, v=>nf(v,1)+'%', 'infl', 'ARG', null],
-    ['bono','BONOS A 10 AÑOS','Cuánto paga cada gobierno por endeudarse a 10 años', iso=>dgBono(iso), 'seq', 30, v=>nf(v,2)+'%', 'no', 'max', iso=>XP_BO[iso]]];
+    ['bono','BONOS A 10 AÑOS','Cuánto paga cada gobierno por endeudarse a 10 años', iso=>dgBono(iso), 'seq', 30, v=>nf(v,2)+'%', 'no', 'max', iso=>XP_BO[iso]],
+    ['geo','CONFLICTOS ARMADOS','Color: el conflicto más grave · columnas: muertes del último año', iso=>xpGeo()?.v[iso] ?? null, 'geo', 40000, v=>v>=1000 ? nf(v/1000,1)+' mil' : nf(v,0), 'geo', 'max', null]];
+  // conflictos de geopolitica.json: nivel de cada país (escenario principal o alcanzado) y muertes del último año completo
+  function xpGeo(){ if(!geoD || !G.feats) return null; if(XP.geo && XP.geoSrc===geoD) return XP.geo;
+    const L = geoD.conflictos?.lista || [], an = [...new Set(L.flatMap(c=>Object.keys(c.muertes||{})))].sort(), aU = an[an.length-2] || an[0];
+    const peor = {}, debil = {}, v = {}, top = {}, mk = [];
+    L.forEach(c=>{ const r = GEO_NIV.findIndex(x=>x[0]===c.nivel), nom = (c.es||c.n||'').toLowerCase(), m = geoN(c.muertes?.[aU]);
+      (c.iso||[]).forEach((i,j)=>{ const ppal = j===0 || nom.includes(geoPais(i).toLowerCase());
+        if(ppal){ if(peor[i]==null || r<peor[i]) peor[i] = r; } else if(debil[i]==null || r<debil[i]) debil[i] = r;
+        if(j===0 && m){ v[i] = (v[i]||0) + m; if(!top[i] || m>top[i][1]) top[i] = [c, m]; } });
+      const ll = c.iso?.[0] && r<2 ? G.cen(c.iso[0]) : null; if(ll) mk.push([ll, r]); });
+    XP.geoSrc = geoD; return XP.geo = {L, aU, peor, debil, v, top, mk}; }
+  const xpGeoC = iso => { const g = xpGeo(); if(!g) return null; if(g.peor[iso]!=null) return GEO_NIV[g.peor[iso]][3]; if(g.debil[iso]!=null) return GEO_NIV[g.debil[iso]][3]+'59'; return null; };
   const XP_DUR = 22000;
   const xpFillC = (l, v) => { if(v==null || l==='no') return null; const C = GL[l]; let k = C.cut.findIndex(c=>v<c); if(k<0) k = C.cut.length; return C.pal[k]; };
   function xpItems(S){
     if(!glob || !G.feats) return [];
-    const isos = new Set([...Object.keys(glob.paises||{}), ...Object.keys(XP_EX), ...Object.keys(DG_CUR), 'JPN','GBR','ESP','ITA','CHL']), out = [];
+    const isos = S[0]==='geo' ? new Set(Object.keys(xpGeo()?.v || {})) : new Set([...Object.keys(glob.paises||{}), ...Object.keys(XP_EX), ...Object.keys(DG_CUR), 'JPN','GBR','ESP','ITA','CHL']), out = [];
     for(const iso of isos){ if(!G.byId[iso]) continue; const v = S[3](iso); if(v==null || !isFinite(v)) continue; const ll = G.cen(iso); if(ll) out.push({iso, v, ll}); }
     return out;
   }
@@ -7697,20 +7745,59 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function xpSpark(pts, col){ if(!pts || pts.length<3) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*240, Y = x=>37-(x-mn)/(mx-mn||1)*33;
     return `<svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path class="ln" d="${v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join('')}" style="stroke:${col}" vector-effect="non-scaling-stroke"/></svg>`; }
   // paneles laterales (1 vez por segundo)
-  const XP_CLK = [['BUENOS AIRES','BYMA'],['NUEVA YORK','NYSE'],['SAN PABLO','B3'],['LONDRES','LSE'],['FRÁNCFORT','Xetra'],['TOKIO','TSE'],['HONG KONG','HKEX']];
+  const XP_CLK = [['BUENOS AIRES','BYMA'],['NUEVA YORK','NYSE'],['SAN PABLO','B3'],['LONDRES','LSE'],['FRÁNCFORT','Xetra'],['VARSOVIA','GPW'],['RIAD','Tadawul'],['BOMBAY','NSE'],['SHANGHÁI','SSE'],['TOKIO','TSE']];
+  const xpD = (ch, pb, bad) => ch==null || !isFinite(ch) ? '' : `<span class="${Math.abs(ch) < (pb ? .5 : .005) ? '' : (ch>0)!==!!bad ? 'up' : 'dn'}">${pb ? sg(ch,0)+' pb' : sg(ch,2)+'%'}</span>`;
+  const xpSet = (id, h) => { const el = $(id); if(el && el._h!==h){ el._h = h; el.innerHTML = h; } };
   function xpPanels(){
-    $('mnClk').innerHTML = XP_CLK.map(([n,k])=>{ const e = GEX.find(x=>x[0].split(' ')[0]===k); if(!e) return ''; const s = gEx(e), h = new Date().toLocaleTimeString('es-AR',{timeZone:e[2], hour12:false});
-      return `<div><span>${n}<br><span class="st ${s.open?'on':'off'}">${s.open?'● ABIERTA':'○ CERRADA'}</span></span><b>${h}</b></div>`; }).join('');
-    const vx = glob?.termo?.vix, t10 = glob?.termo?.us10y;
-    if(vx){ const p = Math.max(0, Math.min(100, (vx.v-10)/30*100)), est = vx.v<15 ? 'CALMA' : vx.v<25 ? 'NORMAL' : vx.v<35 ? 'NERVIOSO' : 'PÁNICO';
-      $('mnVix').innerHTML = `<div class="row"><span>VIX · índice del miedo</span><b>${nf(vx.v,2)}</b></div><div class="g"><i style="left:calc(${p.toFixed(0)}% - 1px)"></i></div><div class="row"><span>${est}</span><span>${sg(gpc(vx),1)}% hoy</span></div>${t10 ? `<div class="row" style="margin-top:6px"><span>Tasa 10 años EE.UU.</span><b>${nf(t10.v,2)}%</b></div>` : ''}`; }
-    const L = a => a.length ? a[a.length-1] : null, P = a => a.length>1 ? a[a.length-2] : null, row = (n, v, d, bad) => `<div class="row"><span>${n}</span><span><b>${v}</b> ${d==null ? '' : `<span class="${(d>0)!==!!bad ? 'up' : d===0 ? '' : 'dn'}">${sg(d, Math.abs(d)<10?2:0)}${typeof bad==='string' ? bad : '%'}</span>`}</span></div>`;
-    const lastDay = days[days.length-1] || {}, bl = live.blue?.v ?? get(lastDay,'blue'), cl = live.ccl?.v ?? get(lastDay,'ccl'), rp = series('riesgo'), mv = series('merval'), im = months.filter(m=>m.infl!=null);
-    $('mnAr').innerHTML = (bl ? row('Dólar blue', '$ '+nf(bl,0), null) : '') + (cl ? row('Dólar CCL', '$ '+nf(cl,2), null) : '')
-      + (rp.length>1 ? `<div class="row"><span>Riesgo país</span><span><b>${nf(L(rp)[1],0)}</b> <span class="${L(rp)[1]<=P(rp)[1]?'up':'dn'}">${sg(L(rp)[1]-P(rp)[1],0)} pb</span></span></div>` : '')
-      + (mv.length>1 ? row('Merval', nf(L(mv)[1],0), (L(mv)[1]/P(mv)[1]-1)*100) : '')
-      + (im.length ? `<div class="row"><span>Inflación ${mesTxt(im[im.length-1].mes)}</span><b>${nf(im[im.length-1].infl,1)}%</b></div>` : '');
+    const ahora = new Date(), hh = (z, s) => ahora.toLocaleTimeString('es-AR', {timeZone:z, hour12:false, hour:'2-digit', minute:'2-digit', second: s ? '2-digit' : undefined});
+    xpSet('mnUtc', `UTC ${hh('UTC', 1)} <i>· BUE ${hh('America/Argentina/Buenos_Aires')}</i>`);
+    $('mnClk').innerHTML = XP_CLK.map(([n,k])=>{ const e = GEX.find(x=>x[0].split(' ')[0]===k); if(!e) return ''; const st = gEx(e);
+      return `<div title="${st.open?'Bolsa abierta':'Bolsa cerrada'}"><i class="${st.open?'on':'off'}">${st.open?'●':'○'}</i>${n}<b>${hh(e[2], 1)}</b></div>`; }).join('');
+    // franja de indicadores
+    const mk = k => (glob?.mercados||[]).find(m=>m.k===k), kp = (l, v, d, c='') => `<div class="${c}"><small>${l}</small><b>${v}${d}</b></div>`, ch = m => m?.prev ? (m.v/m.prev-1)*100 : null;
+    const K = [['spx','S&P 500',v=>nf(v,0)],['ndx','NASDAQ',v=>nf(v,0)],['dji','DOW JONES',v=>nf(v,0)],['dxy','DÓLAR (DXY)',v=>nf(v,2)],['eurusd','EURO',v=>nf(v,4)],['oro','ORO',v=>nf(v,0)],['brent','BRENT',v=>nf(v,2)],['cobre','COBRE',v=>nf(v,0)],['soja','SOJA',v=>nf(v,0)],['btc','BITCOIN',v=>nf(v,0)]];
+    let kh = K.map(([k,l,f])=>{ const m = mk(k); return m ? kp(l, f(m.v), xpD(ch(m))) : ''; }).join('');
+    const t10 = mk('t10'); if(t10) kh += kp('TASA 10A EE.UU.', nf(t10.v,2)+'%', xpD(t10.prev!=null ? (t10.v-t10.prev)*100 : null, true, true));
+    const vx = glob?.termo?.vix; if(vx) kh += kp('VIX', nf(vx.v,2), xpD(gpc(vx), false, true));
+    const gd = geoD?.gpr?.diario || [], gu = gd.length ? gd[gd.length-1] : null, g7 = gd.length>7 ? gd[gd.length-8] : null;
+    if(gu && gu[2]!=null) kh += kp('RIESGO GEOPOL.', nf(gu[2],0), xpD(g7?.[2] ? (gu[2]/g7[2]-1)*100 : null, false, true), 'g');
+    const rp = series('riesgo'), mv = series('merval'), L = a => a.length ? a[a.length-1] : null, P = a => a.length>1 ? a[a.length-2] : null;
+    if(rp.length>1) kh += kp('RIESGO PAÍS', nf(L(rp)[1],0), xpD(L(rp)[1]-P(rp)[1], true, true), 'a');
+    if(mv.length>1) kh += kp('MERVAL', nf(L(mv)[1],0), xpD((L(mv)[1]/P(mv)[1]-1)*100), 'a');
+    xpSet('mnKpi', kh);
+    // termómetro
+    const t = glob?.termo || {}, row = (n, v, d='') => `<div class="row"><span>${n}</span><span><b>${v}</b> ${d}</span></div>`;
+    if(vx){ const p = Math.max(0, Math.min(100, (vx.v-10)/30*100)), est = vx.v<15 ? 'CALMA' : vx.v<25 ? 'NORMAL' : vx.v<35 ? 'NERVIOSO' : 'PÁNICO', dx = mk('dxy'), oro = mk('oro');
+      xpSet('mnVix', row('VIX · índice del miedo', nf(vx.v,2)) + `<div class="g"><i style="left:calc(${p.toFixed(0)}% - 1px)"></i></div><div class="row"><span>${est}</span><span>${xpD(gpc(vx), false, true)}</span></div>`
+        + (t.us2y ? row('Tasa 2 años EE.UU.', nf(t.us2y.v,2)+'%') : '') + (t.us10y ? row('Tasa 10 años EE.UU.', nf(t.us10y.v,2)+'%') : '')
+        + (t.us2y && t.us10y ? row('Curva 10 - 2 años', sg((t.us10y.v-t.us2y.v)*100,0)+' pb', t.us10y.v<t.us2y.v ? '<span class="dn">invertida</span>' : '') : '')
+        + (dx ? row('Dólar global (DXY)', nf(dx.v,2), xpD(ch(dx))) : '') + (oro ? row('Oro (US$/onza)', nf(oro.v,0), xpD(ch(oro))) : '')); }
+    // Argentina
+    const ld = days[days.length-1] || {}, bl = live.blue?.v ?? get(ld,'blue'), me = live.mep?.v ?? get(ld,'mep'), cl = live.ccl?.v ?? get(ld,'ccl'), of = live.oficial?.v ?? get(ld,'oficial'), rs = series('reservas'), im = months.filter(m=>m.infl!=null);
+    xpSet('mnAr', (of ? row('Dólar oficial', '$ '+nf(of,2)) : '') + (bl ? row('Dólar blue', '$ '+nf(bl,0)) : '') + (me ? row('Dólar MEP', '$ '+nf(me,2)) : '') + (cl ? row('Dólar CCL', '$ '+nf(cl,2)) : '')
+      + (cl && of ? row('Brecha CCL', nf((cl/of-1)*100,1)+'%') : '')
+      + (rp.length>1 ? row('Riesgo país', nf(L(rp)[1],0), xpD(L(rp)[1]-P(rp)[1], true, true)) : '') + (mv.length>1 ? row('Merval', nf(L(mv)[1],0), xpD((L(mv)[1]/P(mv)[1]-1)*100)) : '')
+      + (rs.length ? row('Reservas (US$ M)', nf(L(rs)[1],0)) : '') + (im.length ? row('Inflación '+mesTxt(im[im.length-1].mes), nf(im[im.length-1].infl,1)+'%') : ''));
+    // geopolítica: conflictos por nivel, riesgo geopolítico y las guerras que más muertes dejaron (rota cada 6 s)
+    const g = xpGeo();
+    if(g){ const cnt = GEO_NIV.map(([k])=>g.L.filter(c=>c.nivel===k).length), LB = ['GUERRAS','G. MENORES','CONFLICTOS','CHOQUES'];
+      const lst = g.L.filter(c=>c.nivel==='mayor' || c.nivel==='menor').map(c=>[c, geoN(c.muertes?.[g.aU])||0]).sort((a,b)=>b[1]-a[1]);
+      const pg = Math.max(1, Math.ceil(lst.length/5)), off = (Math.floor(Date.now()/6000) % pg) * 5, ver = lst.length>5 ? [...lst, ...lst].slice(off, off+5) : lst;
+      const sp = gd.slice(-180).map(d=>[d[0], d[2]]).filter(d=>d[1]!=null);
+      xpSet('mnGeo', `<div class="gn">${GEO_NIV.map(([k,,,c],i)=>`<span><b style="color:${c}">${cnt[i]}</b>${LB[i]}</span>`).join('')}</div>`
+        + (gu && gu[2]!=null ? row('Riesgo geopolítico · 7 días', nf(gu[2],0), xpD(g7?.[2] ? (gu[2]/g7[2]-1)*100 : null, false, true)) : '') + (sp.length>3 ? xpSpark(sp, '#ff5a4f') : '')
+        + ver.map(([c,m])=>`<div class="cf"><i style="background:${GEO_NIV.find(x=>x[0]===c.nivel)[3]}"></i><span>${esc(c.es||c.n)}</span><em>${m ? (m>=1000 ? nf(m/1000,1)+' mil' : nf(m,0)) : '—'}</em></div>`).join('')
+        + `<div class="row"><span>guerras por muertes en ${g.aU} · ${off/5+1}/${pg}</span><span></span></div>`); }
+    // próximas decisiones de tasas
+    const hoy = ahora.toLocaleDateString('sv', {timeZone:'America/Argentina/Buenos_Aires'}), nx = [];
+    for(const [iso, n, fs] of BCAL){ const f = fs.find(x=>x>=hoy); if(f) nx.push([f, iso, n]); }
+    xpSet('mnBc', nx.sort((a,b)=>a[0]<b[0]?-1:1).slice(0,6).map(([f,iso,n])=>{ const d = Math.round((Date.parse(f)-Date.parse(hoy))/864e5), tz = glob?.paises?.[iso]?.tasa, nom = iso==='USA' ? 'EE.UU. · Fed' : iso==='DEU' ? 'Zona euro · BCE' : xpN(iso);
+      return `<div class="${d===0?'hoy':''}"><span>${esc(nom)} · ${f.slice(8)}/${f.slice(5,7)}</span><b>${tz!=null ? nf(tz,2)+'%' : ''}</b><em>${d===0 ? 'HOY' : d===1 ? 'MAÑANA' : 'en '+d+' d'}</em></div>`; }).join(''));
   }
+  // mapa de calor de las bolsas (1 vez por minuto)
+  function xpHeat(){ if(!glob) return; const B = Object.entries(glob.bolsas||{}).map(([c,b])=>{ const e = GEX.find(x=>x[0].split(' ')[0]===(c==='PSE_CZ'?'BCPP':c)); return [e ? e[1] : b.idx, gpc(b)]; }).filter(x=>x[1]!=null).slice(0,30);
+    xpSet('mnHm', B.map(([n,p])=>{ const a = Math.min(1, Math.abs(p)/2), bg = Math.abs(p)<.005 ? '#1b2530' : p>0 ? `rgba(46,160,96,${(.22+.7*a).toFixed(2)})` : `rgba(214,64,56,${(.22+.7*a).toFixed(2)})`;
+      return `<span style="background:${bg}" title="${esc(n)}">${esc(n.toUpperCase().slice(0,9))}<b>${sg(p,1)}%</b></span>`; }).join('')); }
   function xpRain(){ if(!glob) return; const it = [], k = t=>it.push(`<div class="k">${t}</div>`), r = (n, v, d) => it.push(`<div><span>${esc(n)}</span><span>${v} <span class="${d==null?'':d>0?'up':d<0?'dn':''}">${d==null?'':sg(d,2)+'%'}</span></span></div>`);
     k('BOLSAS'); for(const [x,b] of Object.entries(glob.bolsas||{})) r(b.idx, nf(b.v, b.v<1000?2:0), gpc(b));
     k('MONEDAS · POR DÓLAR'); for(const [c,m] of Object.entries(glob.monedas||{})) r(c, nf(m.v, m.v<10?3:1), gpc(m));
@@ -7721,7 +7808,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function xpSize(){ const cv = $('xpCv'), r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio||1, 1.25); if(r.width<2) return false;
     if(r.width!==XP.W || r.height!==XP.H){ XP.W = r.width; XP.H = r.height; cv.width = XP.W*d; cv.height = XP.H*d; XP.ctx = cv.getContext('2d'); XP.ctx.setTransform(d,0,0,d,0,0);
       XP.proj = d3.geoOrthographic().clipAngle(90); XP.path = d3.geoPath(XP.proj, XP.ctx); }
-    const x0 = 270, x1 = XP.W-262, y0 = 100, y1 = XP.H-122; XP.cx = (x0+x1)/2; XP.cy = (y0+y1)/2;
+    const x0 = 272, x1 = XP.W-288, y0 = 124, y1 = XP.H-158; XP.cx = (x0+x1)/2; XP.cy = (y0+y1)/2;
     XP.R = Math.max(120, Math.min(x1-x0, y1-y0)/2/1.2); XP.proj.translate([XP.cx, XP.cy]).scale(XP.R*XP.zoom); return true; }
   const xpUp = (p, h) => [XP.cx+(p[0]-XP.cx)*(1+h), XP.cy+(p[1]-XP.cy)*(1+h)];
   function xpSun(){ const d = new Date(), n = (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - Date.UTC(d.getUTCFullYear(),0,0))/864e5,
@@ -7736,7 +7823,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(it.length){ XP.pick = S[8]==='ARG' ? it.find(x=>x.iso==='ARG') : S[8]==='abs' ? it.reduce((a,x)=>Math.abs(x.v)>Math.abs(a.v)?x:a) : it.reduce((a,x)=>x.v>a.v?x:a);
       const su = it.filter(x=>x.v>0).length; xpLogAdd(S[1].split(' ')[0], S[4]==='div' ? `${S[1].toLowerCase()}: ${su} de ${it.length} en verde · máximo ${xpN(XP.pick.iso)} ${S[6](XP.pick.v)}` : `${S[1].toLowerCase()}: ${it.length} países · destacado ${xpN(XP.pick.iso)} ${S[6](XP.pick.v)}`); }
   }
-  function xpCallout(){ const S = XP_SCN[XP.scn], x = XP.pick; if(!x) return; const sk = S[9]?.(x.iso), pts = sk ? (gHist?.series?.[sk] || []).slice(-260) : null;
+  function xpCallout(){ const S = XP_SCN[XP.scn], x = XP.pick; if(!x) return;
+    if(S[0]==='geo'){ const g = xpGeo(), t = g?.top[x.iso], pts = (geoD?.gpr?.diario||[]).slice(-365).map(d=>[d[0], d[2]]).filter(d=>d[1]!=null), el = $('mnCall');
+      el.innerHTML = `<div class="s">EL CONFLICTO MÁS GRAVE</div><div class="n">${esc(xpN(x.iso))}</div><div class="v" style="color:#ff5a4f">${nf(x.v,0)} muertes</div><div class="s">en ${g?.aU||''}${t ? ' · '+esc(t[0].es||t[0].n) : ''}</div>${pts.length>3 ? xpSpark(pts, '#ff5a4f') + '<div class="s">riesgo geopolítico mundial (promedio de 7 días), último año</div>' : ''}`;
+      el.style.left = (XP.cx + XP.R*.42) + 'px'; el.style.top = (XP.cy - 150) + 'px'; el.hidden = false; return; }
+    const sk = S[9]?.(x.iso), pts = sk ? (gHist?.series?.[sk] || []).slice(-260) : null;
     const col = S[4]==='div' ? (x.v>=0 ? 'var(--pos)' : 'var(--neg)') : 'var(--s4)', el = $('mnCall');
     el.innerHTML = `<div class="s">${S[0]==='infl' ? 'ARGENTINA EN EL MUNDO' : S[8]==='abs' ? 'EL MOVIMIENTO MÁS FUERTE' : 'EL MÁS ALTO'}</div><div class="n">${esc(xpN(x.iso))}</div><div class="v" style="color:${col}">${S[6](x.v)}</div><div class="s">${esc(S[2])}</div>${pts && pts.length>3 ? xpSpark(pts, col) + '<div class="s">último año</div>' : ''}`;
     el.style.left = (XP.cx + XP.R*.42) + 'px'; el.style.top = (XP.cy - 150) + 'px'; el.hidden = false; }
@@ -7770,25 +7861,28 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     // atmósfera y océano
     const ga = ctx.createRadialGradient(cx, cy, r*.95, cx, cy, r*1.2); ga.addColorStop(0,'rgba(106,168,216,.22)'); ga.addColorStop(1,'rgba(106,168,216,0)');
-    const g = ctx.createRadialGradient(cx-r*.35, cy-r*.4, r*.1, cx, cy, r); g.addColorStop(0,'#0b0b0b'); g.addColorStop(1,'#050505');
+    const g = ctx.createRadialGradient(cx-r*.35, cy-r*.4, r*.1, cx, cy, r); g.addColorStop(0,'#0b1620'); g.addColorStop(1,'#04080d');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.lineWidth = .5; ctx.stroke();
+    XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = 'rgba(60,196,207,.07)'; ctx.lineWidth = .5; ctx.stroke();
     // países (agrupados por color, solo la cara visible)
     if(!XP.fb) XP.fb = G.feats.map(f=>{ const c = d3.geoCentroid(f), b = d3.geoBounds(f); return [f, c, Math.max(d3.geoDistance(c, b[0]), d3.geoDistance(c, b[1]), d3.geoDistance(c, [b[0][0], b[1][1]]), d3.geoDistance(c, [b[1][0], b[0][1]]))]; });
-    if(!XP.fc || XP.fcK!==XP.scn || now-(XP.fcAt||0) > 5000){ XP.fcK = XP.scn; XP.fcAt = now; XP.fc = new Map(G.feats.map(f=>[f.id, xpFillC(S[7], S[7]==='no' ? null : gval(f.id, S[7])) || '#1c1c1c'])); }
+    if(!XP.fc || XP.fcK!==XP.scn || now-(XP.fcAt||0) > 5000){ XP.fcK = XP.scn; XP.fcAt = now; XP.fc = new Map(G.feats.map(f=>[f.id, (S[7]==='geo' ? xpGeoC(f.id) : xpFillC(S[7], S[7]==='no' ? null : gval(f.id, S[7]))) || '#18232e'])); }
     const grp = new Map(); for(const [f,cc,rad] of XP.fb){ if(d3.geoDistance(cc, c0) - rad > Math.PI/2) continue; const col = XP.fc.get(f.id); if(!grp.has(col)) grp.set(col, []); grp.get(col).push(f); }
     for(const [col, fs] of grp){ ctx.beginPath(); for(const f of fs) path(f); ctx.fillStyle = col; ctx.fill(); }
-    ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(0,0,0,.95)'; ctx.lineWidth = .7; ctx.stroke();
+    ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(4,8,13,.95)'; ctx.lineWidth = .7; ctx.stroke();
     if(G.byId.ARG){ ctx.beginPath(); path(G.byId.ARG); ctx.strokeStyle = 'rgba(230,237,243,.85)'; ctx.lineWidth = 1.3; ctx.stroke(); }
     if(XP.pick && G.byId[XP.pick.iso] && st>4500 && st<15500){ ctx.beginPath(); path(G.byId[XP.pick.iso]); ctx.strokeStyle = '#ff9e1b'; ctx.lineWidth = 1.6; ctx.stroke(); }
     // noche
     if(!XP.nt || now-XP.ntAt > 30000){ XP.ntAt = now; const sn = xpSun(), an = [sn[0]+180, -sn[1]]; XP.nt = [[d3.geoCircle().center(an).radius(90)(), .3],[d3.geoCircle().center(an).radius(82)(), .16]]; }
     for(const [geo, a] of XP.nt){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
-    ctx.beginPath(); ctx.arc(cx, cy, r+.5, 0, 7); ctx.strokeStyle = '#333'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, r+.5, 0, 7); ctx.strokeStyle = '#26333f'; ctx.lineWidth = 1; ctx.stroke();
     const vis = ll => d3.geoDistance(ll, c0) < Math.PI/2 - .03;
     // luces de las bolsas abiertas
     for(const e of GEX){ const o = gEx(e).open, ll = [e[3],e[4]]; if(!vis(ll)) continue; const p = proj(ll);
       ctx.beginPath(); ctx.arc(p[0],p[1], o?2.6:1.8, 0, 7); ctx.fillStyle = o ? '#3fd17f' : 'rgba(150,150,150,.5)'; ctx.fill(); }
+    // guerras en curso: cuadro fijo en el escenario principal (titila lento)
+    { const g = xpGeo(); if(g) for(const [ll, r] of g.mk){ if(!vis(ll)) continue; const p = proj(ll), a = .55 + .45*Math.sin(now/700 + ll[0]);
+      ctx.strokeStyle = r===0 ? `rgba(255,90,79,${a})` : `rgba(232,131,58,${a*.9})`; ctx.lineWidth = 1.2; const z = r===0 ? 5 : 3.5; ctx.strokeRect(p[0]-z, p[1]-z, z*2, z*2); } }
     // arcos del carry trade
     if(glob?.paises?.JPN?.tasa!=null){ const tj = glob.paises.JPN.tasa, a = G.cen('JPN');
       for(const [i,p] of Object.entries(glob.paises).filter(([i,p])=>p.tasa!=null && p.tasa-tj>=3 && G.byId[i] && i!=='JPN').sort((x,y)=>(y[1].tasa-tj)-(x[1].tasa-tj)).slice(0,8)){
@@ -7799,7 +7893,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // columnas de la escena
     const items = xpItems(S), front = items.filter(x=>vis(x.ll)).sort((a,b)=>d3.geoDistance(b.ll,c0)-d3.geoDistance(a.ll,c0)), grow = Math.min(1, st/1800);
     for(const x of front){ const tgt = (Math.pow(Math.min(1, Math.abs(x.v)/S[5]), .6) * .3 + .012) * grow; let cur = XP.anim[x.iso] ?? 0; cur += (tgt-cur)*Math.min(1, dt/200); XP.anim[x.iso] = cur;
-      const p = proj(x.ll), top = xpUp(p, cur), col = S[4]==='div' ? (x.v>=0 ? '76,195,138' : '240,122,112') : '232,177,74', hl = XP.pick?.iso===x.iso;
+      const p = proj(x.ll), top = xpUp(p, cur), col = S[4]==='div' ? (x.v>=0 ? '76,195,138' : '240,122,112') : S[4]==='geo' ? '255,90,79' : '232,177,74', hl = XP.pick?.iso===x.iso;
       ctx.strokeStyle = `rgba(${col},.85)`; ctx.lineWidth = hl ? 3 : 1.6; ctx.lineCap = 'butt'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
       ctx.beginPath(); ctx.arc(top[0],top[1], hl?3.6:2.4, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill(); x.top = top; x.col = col; }
     // barrido de radar: detecta países a su paso y les muestra el dato un rato
@@ -7819,7 +7913,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       ctx.strokeStyle = `rgba(255,158,27,${1-q})`; ctx.lineWidth = 1; ctx.strokeRect(p[0]-6, p[1]-6, 12, 12);
       ctx.beginPath(); ctx.arc(p[0],p[1], 1.8, 0, 7); ctx.fillStyle = `rgba(255,158,27,${1-q})`; ctx.fill(); }
     xpLogRender(now);
-    if(now-(XP.pnAt||0) > 1000){ XP.pnAt = now; xpPanels(); if(now-(XP.rnAt||0) > 60000){ XP.rnAt = now; xpRain(); } }
+    if(now-(XP.pnAt||0) > 1000){ XP.pnAt = now; xpPanels(); if(now-(XP.rnAt||0) > 60000){ XP.rnAt = now; xpRain(); xpHeat(); } }
     requestAnimationFrame(xpDraw);
   }
   // modo monitor: pantalla completa, solo cintas + monitor, pantalla siempre prendida
@@ -7832,7 +7926,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   async function xpStart(){
     if(!xpDesk()) return;
-    if(!gHist) loadHist(); if(!npData) loadNP(); if(!nw) cargarNoticias();
+    if(!gHist) loadHist(); if(!npData) loadNP(); if(!nw) cargarNoticias(); if(!geoD) loadGeo();
     try{ await gInit(); }catch(e){ return; }
     if(!XP.init){ XP.init = true;
       $('xpFs').onclick = ()=>xpModo(true);
@@ -7841,7 +7935,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('mon')) xpModo(false); });
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden){ loadNP(); cargarNoticias(); XP.rnAt = 0; } }, 15*60000);
     }
-    xpPanels(); xpRain();
+    xpPanels(); xpRain(); xpHeat();
     if(!XP.run){ XP.run = true; XP.last = 0; requestAnimationFrame(xpDraw); }
   }
   document.addEventListener('visibilitychange', async ()=>{ if(!document.hidden && tab==='global' && SUBS.M[2]==='explorar'){ xpStart(); if(document.body.classList.contains('mon') && !XP.wl){ try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){} } } });

@@ -54,8 +54,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   que el que entra por primera vez entienda qué es, dónde está y cómo moverse.
   - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
     hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
-    para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, las tres cintas, migas, pestañas y `#mBtn`.
-  - Portada: `#mHero` (qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares, "Los datos del día" (`#mHoy`: inflación, riesgo país, plazo fijo
+    para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, `#tape3`, migas, pestañas y `#mBtn`. Arriba queda una cinta (pedido del dueño): `#tape` (dólares) en portada y Argentina, `#tape2` (mercados) en El mundo y países (`body.mglo`, en `mActualizar`). En la portada no va `#mbar`.
+  - Portada: `#mHero` (logo Pulso Macro, la firma y una bajada corta; nada de eslogan, pedido del dueño) (antes: qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares, "Los datos del día" (`#mHoy`: inflación, riesgo país, plazo fijo
     vs. inflación, Merval) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
     compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
@@ -375,10 +375,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Globo gigante en canvas (d3 orthographic) con anillos de radar, barrido que muestra el dato de cada país al pasar, noche
   real (`xpSun`), luces de `GEX`, arcos del carry trade y destellos de titulares (`xpNews`). Escenas automáticas
   `XP_SCN` cada `XP_DUR` (22 s): bolsas, monedas, tasas, inflación (se acerca a Argentina) y bonos; vuela al destacado y
-  muestra un recuadro con su serie de global_hist (`XP_BK`, `XP_MK`, `XP_BO`). Paneles: relojes `XP_CLK`, VIX, Argentina
-  (`live`, `series`), flujo de datos (`xpRain`) y consola (`xpLog`).
+  muestra un recuadro con su serie de global_hist (`XP_BK`, `XP_MK`, `XP_BO`). Sexta escena "Conflictos armados" (`xpGeo`,
+  `xpGeoC`: color por nivel de `GEO_NIV`, columnas = muertes del último año completo, recuadro con el riesgo geopolítico) y
+  cuadros fijos en las guerras mayores/menores en todas las escenas. Pedido del dueño: cargado tipo terminal. Paneles: franja
+  `#mnKpi` (mercados, VIX, riesgo geopolítico, riesgo país, Merval), reloj UTC `#mnUtc`, relojes `XP_CLK` (10), termómetro,
+  Argentina, geopolítica `#mnGeo` (conflictos por nivel, GPR 7 días, guerras que rotan cada 6 s), flujo de datos (`xpRain`),
+  abajo consola (`xpLog`), mapa de calor de bolsas (`xpHeat`) y próximas decisiones de tasas (`#mnBc`, de `BCAL`). `xpSet` solo
+  reescribe si cambió.
 - Estética (pedido del dueño, "que parezca una terminal de banco, no un jueguito"): piel de terminal tipo Bloomberg,
-  bloque CSS "Monitor: piel de terminal" (negro plano, ámbar `--am` #ff9e1b, encabezados como barras ámbar, sin bordes
+  bloque CSS "Monitor: piel de terminal" (fondo azul petróleo muy oscuro, ámbar `--am` y acento por panel `--ac`: cian
+  mercados/tasas, rojo geopolítica, celeste Argentina; el dueño no quiere todo negro igual ni el azul "aniñado" de antes; antes: negro plano, ámbar `--am` #ff9e1b, encabezados como barras ámbar, sin bordes
   redondeados). En el canvas NO hay halo, anillo con grados, barrido de radar dibujado (el ángulo sigue moviendo las
   etiquetas), miras ni resplandores; títulos sin efecto de máquina de escribir. No volver a agregar adornos de "película".
 - "Modo monitor" (`xpModo`): clase `body.mon` (deja visibles las cintas y fija el monitor debajo con `--monTop`),
