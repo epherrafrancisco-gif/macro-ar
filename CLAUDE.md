@@ -51,7 +51,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
     hay, queda `#here`), 4 indicadores y botón "Ver los N indicadores" (`.mmas`), y tarjetas plegables (`mAcordeon`,
     clases `.macc`/`.mk`/`.mc`): pedido del dueño, al entrar a una sección o cambiar de apartado TODAS cerradas (`mAb` se
-    vacía) y la página arriba de todo (`scrollTo(0,0)` en `setTab`, `history.scrollRestoration="manual"` en celular), para que se vean juntas y el usuario elija; al abrir se llama a `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
+    vacía) y la página arriba de todo (`scrollTo(0,0)` en `setTab`, `history.scrollRestoration="manual"` en celular); al cambiar de apartado, la barra de apartados queda pegada abajo de `#mbar` (`mSubArriba`), para que se vean juntas y el usuario elija; al abrir se llama a `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
     de los apartados en Mundo, EE.UU. y países. Los dólares van en fila compacta (`.quotes.compact`, menos en `#dolares`)
     con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,

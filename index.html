@@ -6099,7 +6099,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(k==='M' && sel==='economias') renderComparador();
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0);
     if(VIVO[k]) vvMount(k); }
-  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
+  // celular: al cambiar de apartado estando abajo, volver a la barra de apartados (si no, el apartado nuevo se ve desde el fondo)
+  function mSubArriba(k){ try{ if(!mobil()) return; const b = $(SUBS[k][0]); if(!b) return; const mb = $('mbar'), h = mb && mb.offsetParent!==null ? mb.getBoundingClientRect().height : 0, t = b.getBoundingClientRect().top;
+    if(Math.abs(t - h - 8) > 12) scrollTo(0, Math.max(0, scrollY + t - h - 8)); }catch(e){} }
+  function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); mSubArriba(k); setTimeout(()=>mSubArriba(k), 320); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else if(k==='W') renderAustralia(); else if(k==='Q') renderCorea(); else if(k==='S') renderSudafrica(); else if(k==='N') renderZelanda(); else if(k==='Y') renderIndonesia(); else if(k==='G') renderNoruega(); else if(k==='V') renderSuecia(); else if(k==='H') renderTailandia(); else if(k==='F') renderMalasia(); else if(k==='D') renderFilipinas(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
