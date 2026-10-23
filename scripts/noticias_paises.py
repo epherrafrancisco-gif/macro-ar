@@ -212,7 +212,6 @@ FEEDS_EN = [
     ("Romania Insider", "https://www.romania-insider.com/rss", {"rumania": "econ"}),
     ("Business Review", "https://business-review.eu/feed", {"rumania": "econ"}),
     ("Globes", "https://en.globes.co.il/WebService/Rss/RssFeeder.asmx/FeederNode?iID=942", {"israel": "econ"}),
-    ("The Times of Israel", "https://www.timesofisrael.com/feed/", {"israel": "econ"}),
     ("Serbian Monitor", "https://www.serbianmonitor.com/en/feed/", {"serbia": "econ"}),
     ("N1 English", "https://n1info.rs/english/feed/", {"serbia": "econ"}),
     ("Balkan Insight", "https://balkaninsight.com/feed/", {"serbia": "pais"}),

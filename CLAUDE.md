@@ -291,7 +291,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   nov-2027 (anuncio 16:00 de Jerusalén). TASE opera de lunes a viernes desde 2026.
 - Serbia: dinar (`RSD=`, `fx_rsd`), cien dinares en pesos. CNBC no trae el BELEX15 ni bonos de Serbia (ni IL10Y con historia):
   la tarjeta y el casillero de la bolsa no aparecen. `BCAL` SRB solo 12/11 y 10/12/2026 (Trading Economics; anuncio ~11:00
-  de Belgrado, aproximada; PENDIENTE 2027). Noticias en inglés: Globes y The Times of Israel; Serbian Monitor, N1 English y
+  de Belgrado, aproximada; PENDIENTE 2027). Noticias en inglés: Globes (The Times of Israel da 403); Serbian Monitor, N1 English y
   Balkan Insight.
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
