@@ -220,33 +220,6 @@ def conflictos(prev):
             out.append(item)
     if len(out) < 15:
         raise ValueError(f"muy pocos conflictos ({len(out)}): cambió la página")
-    # muertes por país (la tabla "Deaths by country" de la misma página): para pintar el mapa donde de verdad hay violencia
-    porpais = {}
-    tab = next((t for t in p.tablas if re.search(r"deaths by country", t["titulo"], re.I)), None)
-    if tab:
-        filas = grilla(tab["filas"])
-        enc = next((f for f in filas if f and all(c["th"] for c in f)), None)
-        cols = [limpio(c["t"]).lower() for c in enc] if enc else []
-        diag["wiki_pais_cols"] = cols
-        anios = [(i, re.search(r"(20\d\d)", c).group(1)) for i, c in enumerate(cols) if re.search(r"20\d\d", c)]
-        for f in filas:
-            if not f or all(c["th"] for c in f):
-                continue
-            k = None
-            for c in f[:2]:
-                for t, txt in c["links"]:
-                    k = iso.get(t.lower()) or iso.get((txt or "").lower())
-                    if k:
-                        break
-                if not k:
-                    k = iso.get(limpio(c["t"]).lower())
-                if k:
-                    break
-            if k:
-                porpais[k] = {a: num(f[i]["t"]) for i, a in anios if i < len(f) and num(f[i]["t"]) is not None}
-        diag["wiki_pais_n"] = len(porpais)
-    else:
-        errores.append("Wikipedia: no encontré la tabla de muertes por país")
     # nombres en español (artículo de Wikipedia en español, si existe)
     titulos = [x["w"] for x in out if x["w"]]
     es = {}
@@ -275,7 +248,7 @@ def conflictos(prev):
             x["es"] = es[x["w"]]
         else:
             diag.setdefault("sin_traducir", []).append(x["n"])
-    return {"lista": out, "porpais": porpais, "revid": rev, "al": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M+00:00")}
+    return {"lista": out, "revid": rev, "al": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M+00:00")}
 
 
 def clave(t):

@@ -631,6 +631,21 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .iosinst .iix{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer}
 .here{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}.here h2{margin:0 0 2px;font-size:18px}.here p{margin:0;color:var(--ink2);font-size:14px}
 @media (max-width:860px){.gmini{grid-template-columns:minmax(0,1fr)}}
+/* Mundo › Geopolítica */
+.geomap{position:relative;margin-top:6px}.geomap svg{width:100%;height:auto;display:block}
+.geomap path.c{stroke:var(--bg);stroke-width:.5;cursor:pointer;transition:opacity .15s}.geomap path.c:hover{opacity:.8}.geomap path.c.sel{stroke:var(--ink);stroke-width:1.4}
+.geomap circle.pl{pointer-events:none;animation:geopl 2.4s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes geopl{0%{opacity:.85;transform:scale(.4)}100%{opacity:0;transform:scale(2.6)}}
+@media (prefers-reduced-motion:reduce){.geomap circle.pl{animation:none;opacity:.5}}
+.geoley{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink2);margin:8px 0 4px}.geoley span{display:inline-flex;align-items:center;gap:6px}.geoley i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.geosel{font-size:13.5px}.geosel:empty{display:none}.geosel h3{margin:6px 0 6px;font-size:15px}
+.geolist details{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--sunk)}.geolist summary{cursor:pointer;padding:10px 14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.geolist summary i{width:11px;height:11px;border-radius:3px;display:inline-block}.geolist summary small{color:var(--muted);font-weight:400}
+.gcf{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;padding:9px 14px;border-top:1px solid var(--line)}
+.gcf a{color:var(--ink);font-weight:600;text-decoration:none}.gcf a:hover{color:var(--accent)}.gcf .lu{font-size:12.5px;color:var(--muted);grid-column:1}.gcf .su{font-size:11.5px;color:var(--muted);grid-column:1}
+.gcf .m{grid-column:2;grid-row:1/4;text-align:right;font:500 13px var(--mono);white-space:nowrap}.gcf .m small{display:block;color:var(--muted);font:11px var(--sans)}
+.geopicos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.geopicos span{font-size:12px;background:var(--sunk);border:1px solid var(--line);border-radius:999px;padding:3px 10px}.geopicos b{font-family:var(--mono)}
+@media (max-width:520px){.gcf{grid-template-columns:minmax(0,1fr)}.gcf .m{grid-column:1;grid-row:auto;text-align:left}}
 /* Portada en la compu: Argentina un tercio, El mundo dos tercios (países en 3 columnas) y "Argentina en vivo" abajo */
 @media (min-width:901px){.split{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}.door.ar .tiles{grid-template-columns:minmax(0,1fr)}
   .door.gl .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.door.ar .hoy{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1014,7 +1029,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <p class="note" id="dHint"></p>
       </div>
     </div>
-    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Monitor ✦</button></div>
+    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="geo" aria-selected="false">Geopolítica</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Monitor ✦</button></div>
     <div class="gsub" data-sub="mercados">
     <div class="card">
       <div class="head"><h2>Reloj de mercados</h2><span class="note" id="rljNota"></span></div>
@@ -1086,6 +1101,41 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Commodities</h2></div><p class="sub">Granos, energía y metales: precio internacional, cómo vienen hoy y en el año. Tocá uno para ver su gráfico abajo.</p><div class="glist" id="gCom"></div></div>
       <div class="card"><div class="head"><h2>Monedas de la región contra el dólar</h2></div><p class="sub">Cuántas unidades hay que dar por un dólar, cómo se movieron hoy y en el año.</p><div class="glist" id="gMon"></div></div>
     </div>
+    </div>
+    <div class="gsub" data-sub="geo" hidden>
+      <div class="card">
+        <div class="head"><h2>Guerras y conflictos armados en curso</h2><span class="note" id="geoN"></span></div>
+        <p class="sub">Todos los conflictos con muertes por violencia directa en el último año, según cuántos murieron. En el mapa, color fuerte es donde ocurre cada conflicto y color claro, los países alcanzados (vecinos donde también hay combates o ataques, o que participan). Tocá un país para ver qué pasa ahí.</p>
+        <div class="stats" id="geoK"></div>
+        <div class="geomap" id="geoMap"><div class="empty">Cargando mapa…</div></div>
+        <div class="geoley" id="geoLey"></div>
+        <div class="geosel" id="geoSel"></div>
+        <p class="note">Fuente: Wikipedia, <a href="https://en.wikipedia.org/wiki/List_of_ongoing_armed_conflicts" target="_blank" rel="noopener">lista de conflictos armados en curso</a> (CC BY-SA 4.0), que junta datos de UCDP, ACLED y otros. Las cifras de muertes son estimaciones y en algunos casos se discuten.</p>
+      </div>
+      <div class="card">
+        <div class="head"><h2>Todos los conflictos, uno por uno</h2><span class="note">Del más grave al más chico</span></div>
+        <div class="geolist" id="geoList"></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Índice de riesgo geopolítico</h2><span class="note" id="gprN"></span></div><div class="stats" id="gprK"></div><div class="chart" id="chGpr"></div>
+          <p class="note">Lo arman dos economistas de la Reserva Federal (Caldara e Iacoviello) contando cuántas noticias de guerras, amenazas y atentados publican los grandes diarios. 100 = el promedio de 1985 a 2019. Se actualiza los lunes.</p></div>
+        <div class="card"><div class="head"><h2>Más de cien años de tensión</h2><span class="note" id="gprHN"></span></div><div class="chart" id="chGprH"></div><div class="geopicos" id="gprPicos"></div>
+          <p class="note">Mismo índice, por mes, desde 1900 (con diarios de la época). Los picos más altos del siglo y medio.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Riesgo geopolítico por país</h2><span class="note" id="gprPN"></span></div><p class="sub">Qué parte de las noticias de tensión mundial menciona a cada país, el último mes. Más alto = más presente en las noticias de guerra, amenazas o sanciones.</p><div class="chart" id="chGprP"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Adónde va la plata cuando hay tensión</h2><div class="legend" id="lgRef"></div></div><div class="chart" id="chRef"></div><div class="stats" id="refK"></div>
+          <p class="note">Base 100 hace un año. Oro, dólar (índice DXY) y franco suizo son los "refugios" clásicos: suben cuando el mundo se asusta. El VIX es el "índice del miedo" de Wall Street.</p></div>
+        <div class="card"><div class="head"><h2>Lo que más sacude una guerra</h2><div class="legend" id="lgGuerraC"></div></div><div class="chart" id="chGuerraC"></div>
+          <p class="note">Base 100 hace un año. Petróleo, gas y trigo: Rusia, Ucrania y Medio Oriente pesan mucho en los tres. Al trigo argentino le importa.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Empresas de defensa</h2><span class="note">En dólares (o euros y libras)</span></div><div class="stats" id="defK"></div><div class="chart" id="chDef"></div>
+          <p class="note">Las que fabrican aviones, misiles y blindados. El gráfico es el fondo iShares de aeroespacial y defensa de EE.UU. (ITA), base 100 hace un año contra el S&amp;P 500. Con demora (CNBC).</p></div>
+        <div class="card"><div class="head"><h2>Gasto militar</h2><span class="note" id="milN"></span></div>
+          <div class="seg" id="milSeg" role="group" aria-label="Medida"><button type="button" data-m="usd" aria-selected="true">En dólares</button><button type="button" data-m="pbi" aria-selected="false">% del PBI</button></div>
+          <div class="chart" id="chMil"></div><p class="note">Los 15 países que más gastan y Argentina. Fuente: Banco Mundial, con datos del SIPRI.</p></div>
+      </div>
     </div>
     <div class="gsub" data-sub="noticias">
     <div class="card">
@@ -7091,6 +7141,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(sel==='noticias' && NP_PAIS[k]) renderNP(k);
     if(k==='M' && sel==='explorar') xpStart();
     if(k==='M' && sel==='economias') renderComparador();
+    if(k==='M' && sel==='geo') renderGeo();
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0);
     if(VIVO[k]) vvMount(k); }
   // celular: al cambiar de apartado estando abajo, volver a la barra de apartados (si no, el apartado nuevo se ve desde el fondo)
@@ -7099,6 +7150,98 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); mSubArriba(k); setTimeout(()=>mSubArriba(k), 320); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
     if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else if(k==='W') renderAustralia(); else if(k==='Q') renderCorea(); else if(k==='S') renderSudafrica(); else if(k==='N') renderZelanda(); else if(k==='Y') renderIndonesia(); else if(k==='G') renderNoruega(); else if(k==='V') renderSuecia(); else if(k==='H') renderTailandia(); else if(k==='F') renderMalasia(); else if(k==='D') renderFilipinas(); else if(k==='IS') renderIslandia(); else if(k==='HU') renderHungria(); else if(k==='HK') renderHongkong(); else if(k==='CZ') renderChequia(); else if(k==='DK') renderDinamarca(); else if(k==='RO') renderRumania(); else if(k==='IL') renderIsrael(); else if(k==='RS') renderSerbia(); else if(k==='CN') renderChina(); else if(k==='RU') renderRusia(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
+
+  // ---- Mundo › Geopolítica (geopolitica.json: Wikipedia, índice de riesgo geopolítico, Banco Mundial) ----
+  const GEO_NIV = [['mayor','Guerras mayores','10.000 muertes o más en el año','#d9483b','guerra mayor'],['menor','Guerras menores','entre 1.000 y 9.999','#e8833a','guerra menor'],['conflicto','Conflictos','entre 100 y 999','#c9a227','conflicto'],['choque','Enfrentamientos','menos de 100','#7b8794','enfrentamientos']];
+  let geoD = null, geoLoading = false, geoSelIso = null, milM = 'usd';
+  const geoNom = (()=>{ let dn = null; try{ dn = new Intl.DisplayNames(['es'],{type:'region'}); }catch(e){} return (a2, def) => { try{ return (a2 && dn && dn.of(a2)) || def; }catch(e){ return def; } }; })();
+  async function loadGeo(){ if(geoLoading) return; geoLoading = true;
+    try{ const r = await fetch('geopolitica.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) geoD = await r.json(); }catch(e){}
+    geoLoading = false; if(tab==='global' && SUBS.M[2]==='geo') renderGeo(); }
+  const GEO_A2X = {HKG:'HK',BHR:'BH',SGP:'SG',MLT:'MT',MDV:'MV',COM:'KM',MUS:'MU',CPV:'CV',STP:'ST',SYC:'SC',XKX:'XK',PSE:'PS',TWN:'TW',LCA:'LC',BRB:'BB',MAC:'MO',AND:'AD',LIE:'LI',MCO:'MC',SMR:'SM',TON:'TO',WSM:'WS',KIR:'KI',FSM:'FM',MHL:'MH',PLW:'PW',GRD:'GD',VCT:'VC',KNA:'KN',ATG:'AG',DMA:'DM',BHS:'BS',ESH:'EH'};
+  const geoA2 = iso => (G.byId?.[iso]?.properties?.a2) || GEO_A2X[iso] || null;
+  const geoPais = iso => geoNom(geoA2(iso), iso);
+  const geoMuertes = c => { const ks = Object.keys(c.muertes||{}).sort(); return ks.map(k=>[k, c.muertes[k]]); };
+  const geoN = t => { const m = String(t||'').match(/\d[\d,\.]*/); return m ? +m[0].replace(/[,\.]/g,'') : null; };
+  async function renderGeo(){
+    if(!geoD){ loadGeo(); $('geoMap').innerHTML = '<div class="empty">Cargando…</div>'; return; }
+    const L = geoD.conflictos?.lista || [];
+    // 1. números y mapa
+    const cnt = Object.fromEntries(GEO_NIV.map(([k])=>[k, L.filter(c=>c.nivel===k).length]));
+    const anios = [...new Set(L.flatMap(c=>Object.keys(c.muertes||{})))].sort(), aU = anios[anios.length-2] || anios[0];
+    const tot = aU ? L.reduce((a,c)=>a+(geoN(c.muertes?.[aU])||0),0) : null;
+    const st = (l,v,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${v}</span><span class="d">${d}</span></div>`;
+    $('geoK').innerHTML = GEO_NIV.map(([k,n,d])=>st(n, cnt[k], d)).join('') + (tot ? st('Muertes en '+aU, 'más de '+nf(Math.round(tot/1000),0)+' mil', 'suma de las cifras más bajas de cada conflicto') : '');
+    const al = geoD.conflictos?.al; $('geoN').textContent = al ? 'Lista revisada el '+fds(al.slice(0,10)) : '';
+    $('geoLey').innerHTML = GEO_NIV.map(([k,n,,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('') + '<span><i style="background:#d9483b;opacity:.38"></i>Color claro: país alcanzado (vecino o involucrado)</span><span><i style="background:var(--sunk);border:1px solid var(--line)"></i>Sin conflicto en la lista</span>';
+    // cada país: el nivel más grave entre los conflictos donde es escenario principal (color fuerte) o solo alcanzado (color claro)
+    const peor = {}, debil = {}, por = {};
+    L.forEach(c=>{ const r = GEO_NIV.findIndex(x=>x[0]===c.nivel), nom = (c.es||c.n||'').toLowerCase();
+      (c.iso||[]).forEach((i,j)=>{ (por[i] = por[i]||[]).push(c); const ppal = j===0 || nom.includes(geoPais(i).toLowerCase());
+        if(ppal){ if(peor[i]==null || r<peor[i]) peor[i] = r; } else if(debil[i]==null || r<debil[i]) debil[i] = r; }); });
+    try{ await gInit(); }catch(e){ $('geoMap').innerHTML = '<div class="empty">No se pudo cargar el mapa.</div>'; }
+    if(G.feats){
+      const W = Math.max(320, $('geoMap').clientWidth||900), H = Math.round(W*0.5), pr = d3.geoNaturalEarth1().fitExtent([[4,4],[W-4,H-4]], {type:'FeatureCollection', features:G.feats.filter(f=>f.id!=='ATA')}), pa = d3.geoPath(pr);
+      const pulso = L.filter(c=>c.nivel==='mayor').flatMap(c=>c.iso.slice(0,2)).filter((v,i,a)=>a.indexOf(v)===i).map(i=>G.cen(i)).filter(Boolean).map(p=>pr(p)).filter(Boolean);
+      $('geoMap').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Mapa de conflictos armados en curso">${G.feats.filter(f=>f.id!=='ATA').map(f=>`<path class="c${f.id===geoSelIso?' sel':''}" data-i="${f.id}" d="${pa(f)}" style="fill:${peor[f.id]!=null ? GEO_NIV[peor[f.id]][3] : debil[f.id]!=null ? GEO_NIV[debil[f.id]][3] : 'var(--sunk)'}${peor[f.id]==null && debil[f.id]!=null ? ';fill-opacity:.38' : ''}"><title>${esc(geoNom(f.properties?.a2, f.id))}${por[f.id] ? ': '+por[f.id].length+' conflicto'+(por[f.id].length>1?'s':'') : ''}</title></path>`).join('')}${pulso.map(p=>`<circle class="pl" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="7" fill="none" stroke="#ff6b5b" stroke-width="1.6"/>`).join('')}</svg>`;
+      $('geoMap').querySelectorAll('path.c').forEach(el=>el.addEventListener('click', ()=>{ geoSelIso = el.dataset.i; renderGeoSel(por); $('geoMap').querySelectorAll('path.sel').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }));
+    }
+    renderGeoSel(por);
+    // 2. la lista completa
+    const fila = c => { const ms = geoMuertes(c), url = c.wes ? 'https://es.wikipedia.org/wiki/'+encodeURIComponent(c.wes.replace(/ /g,'_')) : c.w ? 'https://en.wikipedia.org/wiki/'+encodeURIComponent(c.w.replace(/ /g,'_')) : null, nom = c.es || c.n;
+      const lugar = (c.iso||[]).length ? c.iso.map(geoPais).join(', ') : c.lugar;
+      return `<div class="gcf">${url ? `<a href="${url}" target="_blank" rel="noopener">${esc(nom)}</a>` : `<b>${esc(nom)}</b>`}
+        <span class="m">${ms.length ? esc(ms[ms.length-2]?.[1] || ms[ms.length-1][1] || '—') : '—'}<small>muertes en ${ms.length>1 ? ms[ms.length-2][0] : ms[0]?.[0] || ''}</small>${ms.length>1 && ms[ms.length-1][1] ? `${esc(ms[ms.length-1][1])}<small>en ${ms[ms.length-1][0]}, hasta ahora</small>` : ''}</span>
+        <span class="lu">${c.ini ? 'Desde '+c.ini+' · ' : ''}${esc(lugar||'')}</span></div>`; };
+    $('geoList').innerHTML = L.length ? GEO_NIV.map(([k,n,d,col],i)=>{ const xs = L.filter(c=>c.nivel===k); if(!xs.length) return '';
+      return `<details${i<2?' open':''}><summary><i style="background:${col}"></i>${n} <small>(${xs.length}) · ${d} muertes por año</small></summary>${xs.map(fila).join('')}</details>`; }).join('') : '<div class="empty">Sin datos todavía.</div>';
+    // 3. índice de riesgo geopolítico
+    const gp = geoD.gpr || {}, dd = gp.diario || [];
+    if(dd.length){ const u = dd[dd.length-1], d90 = dd.slice(-90), prom = d90.reduce((a,x)=>a+x[1],0)/d90.length, ma = dd.map(x=>[x[0], x[2]]).filter(x=>x[1]!=null);
+      $('gprK').innerHTML = st('Último dato', nf(u[1],0), fds(u[0]), u[1]>150?'dn':'') + st('Promedio de 7 días', u[2]!=null ? nf(u[2],0) : '—', 'para sacar el ruido diario') + st('Promedio de 3 meses', nf(prom,0), u[2]!=null ? (u[2]>prom ? 'la tensión viene subiendo' : 'la tensión viene bajando') : '');
+      $('gprN').textContent = 'Datos al '+fds(u[0]);
+      lineChart($('chGpr'), [{n:'Diario', c:'--line', pts:dd.map(x=>[x[0],x[1]]).slice(-730)}, {n:'Promedio 7 días', c:'--s5', pts:ma.slice(-730)}], {h:220, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0), aria:'Índice de riesgo geopolítico diario'}); }
+    else $('chGpr').innerHTML = '<div class="empty">Sin datos todavía.</div>';
+    const hh = (gp.historico||[]).length ? gp.historico : (gp.mensual||[]).map(x=>[x[0],x[1]]);
+    if(hh.length){ lineChart($('chGprH'), [{n:'Riesgo geopolítico', c:'--s5', pts:hh.map(x=>[x[0]+'-01', x[1]])}], {h:220, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0), aria:'Índice de riesgo geopolítico histórico'});
+      $('gprHN').textContent = 'Desde '+hh[0][0].slice(0,4);
+      const pk = []; [...hh].sort((a,b)=>b[1]-a[1]).forEach(x=>{ const y = +x[0].slice(0,4); if(pk.length<8 && pk.every(p=>Math.abs(+p[0].slice(0,4)-y)>2)) pk.push(x); });
+      $('gprPicos').innerHTML = pk.sort().map(x=>`<span>${MESL[+x[0].slice(5,7)-1]} ${x[0].slice(0,4)} · <b>${nf(x[1],0)}</b></span>`).join(''); }
+    // 4. por país
+    const gpp = gp.paises || {}, ult = Object.entries(gpp).map(([k,v])=>[k, v[v.length-1]]).filter(x=>x[1]);
+    if(ult.length){ const mesU = ult.map(x=>x[1][0]).sort().pop(), rows = ult.filter(x=>x[1][0]===mesU).sort((a,b)=>b[1][1]-a[1][1]).map(([k,v])=>({n:geoPais(k), v:v[1], c:k==='ARG'?'--s1':'--s5', hl:k==='ARG'}));
+      $('gprPN').textContent = mesTxt(mesU); hBars($('chGprP'), rows, {rh:24, vfmt:v=>nf(v,2)+'%', aria:'Riesgo geopolítico por país'}); }
+    else $('chGprP').innerHTML = '<div class="empty">Sin datos todavía.</div>';
+    // 5. refugios y 6. lo que sacude una guerra (global_hist.json)
+    if(!gHist) loadHist();
+    const hs = k => gHist?.series?.[k] || [], b100 = (a, inv) => { const d0 = new Date(Date.now()-365*864e5).toISOString().slice(0,10), x = a.filter(p=>p[0]>=d0); if(x.length<2) return []; const v0 = x[0][1]; return x.map(p=>[p[0], inv ? v0/p[1]*100 : p[1]/v0*100]); };
+    const ref = [{n:'Oro', c:'--s4', pts:b100(hs('oro'))},{n:'Dólar (DXY)', c:'--s1', pts:b100(hs('dxy'))},{n:'Franco suizo', c:'--s3', pts:b100(hs('fx_chf'), true)}].filter(x=>x.pts.length);
+    legend($('lgRef'), ref); lineChart($('chRef'), ref, {h:220, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:'Refugios, base 100'});
+    const vx = hs('vix'); if(vx.length>1){ const u = vx[vx.length-1][1], p = vx[vx.length-2][1]; $('refK').innerHTML = st('VIX (índice del miedo)', nf(u,1), `${sg(u-p,1)} en el día · ${u<15 ? 'calma' : u<20 ? 'normal' : u<30 ? 'nervios' : 'miedo'}`, u>=20?'dn':''); }
+    const gc_ = [{n:'Brent', c:'--s2', pts:b100(hs('brent'))},{n:'Gas natural', c:'--s5', pts:b100(hs('gas'))},{n:'Trigo', c:'--s4', pts:b100(hs('trigo'))}].filter(x=>x.pts.length);
+    legend($('lgGuerraC'), gc_); lineChart($('chGuerraC'), gc_, {h:220, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:'Petróleo, gas y trigo, base 100'});
+    // 7. defensa
+    const df = glob?.defensa || {};
+    $('defK').innerHTML = Object.entries(df).map(([k,x])=>{ const p = gpc(x), v = k==='ba_' ? '£ '+nf(x.v/100,2) : k==='rhm' ? '€ '+nf(x.v,0) : 'US$ '+nf(x.v,2); return st(esc(x.idx), v, p==null ? '' : sg(p,2)+'% en el día', p>0?'up':p<0?'dn':''); }).join('') || '<div class="empty">Cargando…</div>';
+    const ita = b100(hs('ita')), spx = b100(hs('spx'));
+    lineChart($('chDef'), [{n:'Defensa (ITA)', c:'--s2', pts:ita},{n:'S&P 500', c:'--s1', pts:spx}].filter(x=>x.pts.length), {h:200, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:'Defensa contra el S&P 500'});
+    // 8. gasto militar
+    renderMil();
+  }
+  function renderGeoSel(por){
+    const el = $('geoSel'); if(!geoSelIso){ el.innerHTML = ''; return; }
+    const xs = por[geoSelIso] || [];
+    el.innerHTML = `<h3>${esc(geoPais(geoSelIso))}</h3>` + (xs.length ? xs.map(c=>{ const ms = geoMuertes(c), r = GEO_NIV.find(x=>x[0]===c.nivel); return `<div style="margin-bottom:5px"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${r[3]};margin-right:6px"></i><b>${esc(c.es||c.n)}</b> · ${r[4]}${ms.length ? ` · ${esc(ms[ms.length-2]?.[1]||ms[0][1])} muertes en ${(ms[ms.length-2]||ms[0])[0]}` : ''}</div>`; }).join('') : '<p class="empty" style="margin:0">No aparece en la lista de conflictos armados en curso.</p>');
+  }
+  function renderMil(){
+    const P = geoD?.militar?.paises || {}, E = Object.entries(P).filter(([k,x])=>x[milM]!=null && k!=='WLD' && geoA2(k));
+    if(!E.length){ $('chMil').innerHTML = '<div class="empty">Sin datos todavía.</div>'; return; }
+    E.sort((a,b)=>b[1][milM]-a[1][milM]); const top = E.slice(0,15), ar = E.find(x=>x[0]==='ARG'), pos = E.findIndex(x=>x[0]==='ARG')+1;
+    const rows = top.concat(ar && !top.includes(ar) ? [ar] : []).map(([k,x])=>({n:(k==='ARG' && pos>15 ? pos+'. ' : '')+geoPais(k), v:milM==='usd' ? x.usd/1e9 : x.pbi, c:k==='ARG'?'--s1':'--s2', hl:k==='ARG'}));
+    hBars($('chMil'), rows, {rh:24, vfmt:v=>milM==='usd' ? 'US$ '+nf(v,v<10?1:0)+' mil M' : nf(v,1)+'%', aria:'Gasto militar'});
+    const an = [...new Set(E.map(x=>x[1].a))].sort().pop(); $('milN').textContent = an ? 'Año '+an : '';
+  }
+  document.querySelectorAll('#milSeg button').forEach(b=>b.addEventListener('click', ()=>{ milM = b.dataset.m; document.querySelectorAll('#milSeg button').forEach(x=>x.setAttribute('aria-selected', String(x===b))); renderMil(); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
   const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú'],['POL','Polonia'],['IND','India'],['SAU','Arabia Saudita'],['CHE','Suiza'],['AUS','Australia'],['KOR','Corea del Sur'],['ZAF','Sudáfrica'],['NZL','Nueva Zelanda'],['IDN','Indonesia'],['NOR','Noruega'],['SWE','Suecia'],['THA','Tailandia'],['MYS','Malasia'],['PHL','Filipinas'],['ISL','Islandia'],['HUN','Hungría'],['HKG','Hong Kong'],['CZE','Chequia'],['DNK','Dinamarca'],['ROU','Rumania'],['ISR','Israel'],['SRB','Serbia'],['CHN','China'],['RUS','Rusia']];
   const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru', POL:'polonia', IND:'india', SAU:'arabia', CHE:'suiza', AUS:'australia', KOR:'corea', ZAF:'sudafrica', NZL:'zelanda', IDN:'indonesia', NOR:'noruega', SWE:'suecia', THA:'tailandia', MYS:'malasia', PHL:'filipinas', ISL:'islandia', HUN:'hungria', HKG:'hongkong', CZE:'chequia', DNK:'dinamarca', ROU:'rumania', ISR:'israel', SRB:'serbia', CHN:'china', RUS:'rusia'};

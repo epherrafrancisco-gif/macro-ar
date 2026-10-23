@@ -341,6 +341,20 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - `gExtras`: bolsas, bancos centrales (BIS), commodities (9, con variación en el año y clic al gráfico), Argentinas en
   Wall Street, Líderes del mundo, gráficos 1M-2A (`GCH`), "¿Qué rindió más en el año?", monedas, termómetro (VIX, 10-2).
 
+### Global › Mundo › Geopolítica (`data-sub="geo"`, `renderGeo`, datos `geopolitica.json` de scripts/geopolitica.py en `global.yml`)
+- Pedido del dueño ("que se puedan ver todas las guerras del mundo"), con foco económico. Robot (necesita `pip install xlrd`):
+  - Conflictos: Wikipedia "List of ongoing armed conflicts" por la API `action=parse` (CC BY-SA 4.0; parser propio `Tablas` +
+    `grilla` para rowspan): 4 niveles (mayor 10.000+, menor 1.000-9.999, conflicto 100-999, choque <100), países (ISO3 con la
+    lista del Banco Mundial + alias), muertes por año. Nombres en español a mano (`TRAD`; los nuevos van a `diag.sin_traducir`)
+    y enlace a Wikipedia en español si existe (`wes`). La tabla "Deaths by country" de esa página es un ranking viejo: NO usar.
+  - Índice de riesgo geopolítico (Caldara e Iacoviello): `gpr_files/data_gpr_daily_recent.xls` (diario, los lunes) y
+    `data_gpr_export.xls` (mensual, `GPRH` desde 1900 y `GPRC_xxx` de 44 países, Argentina incluida).
+  - Gasto militar del Banco Mundial (SIPRI), % del PBI y dólares, cada 7 días. Defensa en `global.json → defensa` (ITA, LMT,
+    NOC, RTX, GD, LHX, Rheinmetall en euros, BAE en peniques) e historia `ita`.
+- Página: mapa (d3 Natural Earth sobre `world.json`; color fuerte = escenario principal del conflicto, que es el primer país
+  de la lista o uno nombrado en el título; claro = alcanzado), lista por nivel, índice diario e histórico con picos, por país,
+  refugios (oro, DXY, franco), petróleo/gas/trigo, empresas de defensa y gasto militar.
+
 ### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦", objeto `XP`, `xpStart`/`xpDraw`)
 - Pedido del dueño: NO interactivo, para dejar prendido de ambiente (el Explorador interactivo se descartó: "no se entiende").
   Nunca escribir "escaneando" ni textos que finjan procesos. Solo computadora: `xpDesk()` = `(min-width:1024px) and
