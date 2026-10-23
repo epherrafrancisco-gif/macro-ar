@@ -254,8 +254,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   y se perdió la corrida entera: ahora `pais_bis` NO reintenta ante 404/429, deja de pedirle a la OCDE en esa corrida
   (`OECD_CORTADA`) y queda el dato anterior. Tailandia, Malasia y Filipinas no están en la OCDE (`armar(..., None, ...)`).
   Cada paso de país tiene `timeout-minutes: 3` y el trabajo entero 25.
-- Noticias en inglés: The Local (Noruega y Suecia), Bangkok Post, The Nation, The Star, Free Malaysia Today, Malay Mail,
-  Inquirer, BusinessWorld y Philstar.
+- Noticias en inglés: News in English y The Local (Noruega), Radio Sweden (Atom de api.sr.se) y The Local (Suecia),
+  Bangkok Post y Khaosod English, Free Malaysia Today y Malay Mail, Inquirer, BusinessWorld y Philstar. The Nation y The Star
+  dan 404. Noruega y Suecia tienen pocos titulares de economía en inglés.
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
