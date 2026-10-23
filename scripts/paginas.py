@@ -164,7 +164,7 @@ def pagina(slug, titulo_seo, desc, cuerpo, crumb, extra_head=""):
 <title>{esc(titulo_seo)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}"><link rel="icon" href="{ICON}">
 <meta property="og:title" content="{esc(titulo_seo)}"><meta property="og:description" content="{esc(desc)}">
-<meta property="og:type" content="article"><meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}/preview.png?v=4">
+<meta property="og:type" content="article"><meta property="og:url" content="{url}"><meta property="og:image" content="{SITE}/preview.png?v=5">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>{CSS}</style>{extra_head}
