@@ -198,7 +198,11 @@ def conflictos(prev):
                         vistos[id(cc)]["iso"].append(k)
                 continue
             links = [x for x in cc["links"] if x[1]]
-            nombre = limpio(links[0][1] if links else cc["t"].split("\n")[0])
+            cab = cc["t"]
+            for li in cc["li"]:  # el nombre es lo que va antes de la lista de sub-conflictos
+                if li.strip():
+                    cab = cab.replace(li, "\n", 1)
+            nombre = limpio(cab.strip().split("\n")[0]) or limpio(links[0][1] if links else "")
             if not nombre:
                 continue
             subs = [limpio(x) for x in cc["li"] if limpio(x)][:8]
@@ -235,9 +239,47 @@ def conflictos(prev):
             errores.append(f"Wikipedia en español: {e}")
         time.sleep(0.5)
     for x in out:
-        if x["w"] in es:
+        if x["w"] in es and not es[x["w"]].startswith("Anexo:"):
+            x["wes"] = es[x["w"]]
+        k = clave(x["n"])
+        if k in TRAD:
+            x["es"] = TRAD[k]
+        elif x["w"] in es and not es[x["w"]].startswith("Anexo:"):
             x["es"] = es[x["w"]]
+        else:
+            diag.setdefault("sin_traducir", []).append(x["n"])
     return {"lista": out, "revid": rev, "al": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M+00:00")}
+
+
+def clave(t):
+    t = re.sub(r"\([^)]*\)", "", t or "").replace("–", "-").replace("—", "-").lower()
+    return re.sub(r"\s+", " ", t).strip()
+
+
+# Nombres en español (a mano; si aparece un conflicto nuevo, queda el título de Wikipedia en español o el inglés y va a diag.sin_traducir)
+TRAD = {clave(k): v for k, v in {
+    "Arab-Israeli/Iran-Israel proxy wars": "Conflicto árabe-israelí y guerras de Israel con Irán y sus aliados",
+    "Myanmar civil war": "Guerra civil de Myanmar", "Sudanese civil wars": "Guerras civiles de Sudán", "Congolese conflicts": "Conflictos del Congo",
+    "Somali Civil War": "Guerra civil de Somalia", "Islamist insurgencies in the Maghreb/Sahel": "Insurgencias islamistas en el Magreb y el Sahel",
+    "Mexican drug war": "Guerra contra el narcotráfico en México", "Russo-Ukrainian war": "Guerra entre Rusia y Ucrania",
+    "Insurgencies in Iran": "Insurgencias en Irán", "Insurgencies in Pakistan": "Insurgencias en Pakistán", "Ethiopian civil wars": "Guerras civiles de Etiopía",
+    "Colombian conflict": "Conflicto armado de Colombia", "Afghanistan conflicts": "Conflictos de Afganistán", "Ecuadorian conflict": "Conflicto interno de Ecuador",
+    "Civil conflicts in Nigeria": "Conflictos internos de Nigeria", "Venezuelan conflict": "Conflicto de Venezuela", "Yemeni civil war": "Guerra civil de Yemen",
+    "Aftermath/Spillover of the Syrian civil war": "Secuelas de la guerra civil siria", "Cameroonian conflicts": "Conflictos de Camerún",
+    "Central African Republic Civil War": "Guerra civil de la República Centroafricana", "Haitian conflict": "Conflicto de Haití (pandillas)",
+    "Kurdish nationalist conflicts": "Conflictos del nacionalismo kurdo", "Insurgencies in Turkey": "Insurgencias en Turquía",
+    "Jamaican political conflict": "Conflicto político en Jamaica", "Kashmir conflict": "Conflicto de Cachemira", "Insurgencies in India": "Insurgencias en la India",
+    "Papua conflict": "Conflicto de Papúa", "Civil conflict in the Philippines": "Conflicto interno de Filipinas", "Insurgencies in Bangladesh": "Insurgencias en Bangladés",
+    "Cabinda War": "Guerra de Cabinda (Angola)", "Ethnic violence in Papua New Guinea": "Violencia étnica en Papúa Nueva Guinea",
+    "Brazilian drug war": "Guerra contra el narcotráfico en Brasil", "Iraqi conflict": "Conflicto de Irak", "Libyan crisis": "Crisis de Libia",
+    "Insurgency in Cabo Delgado": "Insurgencia en Cabo Delgado (Mozambique)", "Honduran gang crackdown": "Ofensiva contra las pandillas en Honduras",
+    "Cross border attacks in Sabah/Drug trafficking in Malaysia": "Ataques en Sabah y narcotráfico en Malasia", "Western Sahara conflict": "Conflicto del Sahara Occidental",
+    "Insurgency in Laos": "Insurgencia en Laos", "Peruvian conflict": "Conflicto interno de Perú", "Casamance conflict": "Conflicto de Casamanza (Senegal)",
+    "Nagorno-Karabakh conflict": "Conflicto de Nagorno Karabaj", "North Caucasus conflict": "Conflicto del Cáucaso Norte",
+    "South Thailand insurgency": "Insurgencia en el sur de Tailandia", "Insurgency in Paraguay": "Insurgencia en Paraguay",
+    "Islamic insurgency in Egypt": "Insurgencia islamista en Egipto", "Salvadoran gang crackdown": "Guerra contra las pandillas en El Salvador",
+    "Sri Lankan drug war": "Guerra contra el narcotráfico en Sri Lanka",
+}.items()}
 
 
 # ---------------- Índice de riesgo geopolítico (Caldara e Iacoviello) ----------------
