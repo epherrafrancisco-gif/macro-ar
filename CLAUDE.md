@@ -395,4 +395,4 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   dólar contra la banda cambiaria, curva de tasas en pesos, capas del globo con datos viejos (exportaciones por destino,
   deuda/PBI), sección China, rediseño "sala de situación", segundo monitor "Terminal Argentina" (tablero o globo de
   Argentina: el Monitor del mundo queda como único), pestaña "Vuelos" (horarios y aviones en vivo),
-  versión del sitio en inglés.
+  versión del sitio en inglés, estética ciberpunk / "modo neón".
