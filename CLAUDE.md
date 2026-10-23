@@ -229,7 +229,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Sudáfrica: rand (`ZAR=`, `fx_zar`), JSE Top 40 (`.JTOPI`: la cotización viene vacía pero la historia `jse` sí; el
   indicador sale de los dos últimos cierres), bono `za10`, `EZA`, ADR `acciones.zaf`. Desempleo: solo anual del Banco
   Mundial (la OCDE no lo tiene). `BCAL` ZAF con fechas oficiales del SARB hasta nov-2027 (anuncio ~15:00, aproximada).
-- Noticias en inglés: Yonhap, Korea Herald, Korea Times; Moneyweb, BusinessTech, Daily Maverick, IOL.
+- Noticias en inglés: Korea Herald (`kh_Business`), Korea Times; Moneyweb, Daily Maverick (`/dmrss/`), IOL. Yonhap da 404,
+  BusinessTech 403 y JoongAng Daily bloquea. En inglés hay pocas: algunos días quedan menos de 10.
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
