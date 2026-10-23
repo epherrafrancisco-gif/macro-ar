@@ -40,7 +40,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 35 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 39 países
   (`data-g="pais"`; orden pedido por el dueño, igual en el panel, la hoja del celular y la portada: EE.UU., Polonia, Japón, China,
   Turquía, Zona euro, Suiza, Reino Unido, Brasil, Hong Kong, Arabia Saudita, Israel, Corea del Sur y después el resto).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
@@ -309,6 +309,19 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   2027). CNBC no trae el MOEX ni bonos rusos: esas tarjetas no aparecen. Noticias: South China Morning Post y CGTN; The
   Moscow Times (además de los medios en español).
 
+### España, Macedonia del Norte, Singapur y Marruecos (`#espana` `vEs` `SUBS.ES`; `#macedonia` `vMk` `SUBS.MK`; `#singapur` `vSg` `SUBS.SG`; `#marruecos` `vMa` `SUBS.MA`)
+- Robots `scripts/{espana,macedonia,singapur,marruecos}.py` (base `pais_bis.py`; solo España está en la OCDE). Eran los únicos
+  que quedaban con tasa e inflación del BIS al día (el BIS también tiene Kuwait).
+- España: tasa del BCE (BIS `XM`, `extra` en el robot); en la página va en dólares por euro (como se cotiza allá: BIS
+  invertido + `fx_eur` de CNBC) y "un euro en pesos" = mayorista × dólares por euro; cuenta regresiva con `BCAL` DEU. IBEX 35
+  (`bolsas.BME`, historia `ibex`), bono `es10`, EWP, SAN, BBVA y TEF. Noticias en español ("pais" en los medios de España).
+- Singapur: la MAS no fija tasa (maneja el S$ en una banda): no hay tasa en el BIS, el casillero dice "Sin tasa" y las
+  tarjetas de tasa se ocultan; el apartado se llama "Bonos y crédito". `BCAL` SGP 29/01/2027 (aproximada). STI (`bolsas.SGX`,
+  historia `sti`), bono `sg10`, EWS, SE y GRAB. Noticias: CNA, The Straits Times y The Business Times.
+- Marruecos: el BIS trae tasa y dirham con atraso (se aceptan 3 meses; el dirham de hoy sale de CNBC `fx_mad`). MASI (la
+  cotización viene vacía, sale de la historia `masi`). `BCAL` MAR 15/12/2026 (aproximada). Macedonia: denar atado al euro, MBI10
+  (historia `mbi10`), `BCAL` MKD 3/11 y 22/12/2026 (aproximadas). PENDIENTE 2027 de MAR, MKD y SGP.
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -318,7 +331,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 35 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 39 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
