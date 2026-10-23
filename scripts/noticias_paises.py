@@ -205,8 +205,6 @@ FEEDS_EN = [
     ("RTHK", "https://rthk.hk/rthk/news/rss/e_expressnews_efinance.xml", {"hongkong": "econ"}),
     ("Prague Morning", "https://www.praguemorning.cz/feed/", {"chequia": "econ"}),
     ("Brno Daily", "https://brnodaily.com/feed/", {"chequia": "econ"}),
-    ("Romania Journal", "https://www.romaniajournal.ro/feed/", {"rumania": "econ"}),
-    ("Universul.net", "https://universul.net/feed/", {"rumania": "econ"}),
     ("Romania Insider", "https://www.romania-insider.com/rss", {"rumania": "econ"}),
     ("Business Review", "https://business-review.eu/feed", {"rumania": "econ"}),
     ("The Local", "https://feeds.thelocal.com/rss/no", {"noruega": "econ"}),

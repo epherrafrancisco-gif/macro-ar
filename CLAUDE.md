@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 25 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 31 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -271,6 +271,19 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Bangkok Post y Khaosod English, Free Malaysia Today y Malay Mail, Inquirer, BusinessWorld y Philstar. The Nation y The Star
   dan 404. Noruega y Suecia tienen pocos titulares de economía en inglés.
 
+### Islandia, Hungría, Hong Kong, Chequia, Dinamarca y Rumania (`#islandia` `vIs` `SUBS.IS`; `#hungria` `vHu` `SUBS.HU`; `#hongkong` `vHk` `SUBS.HK`; `#chequia` `vCz` `SUBS.CZ`; `#dinamarca` `vDk` `SUBS.DK`; `#rumania` `vRo` `SUBS.RO`)
+- Robots `scripts/{islandia,hungria,hongkong,chequia,dinamarca,rumania}.py` (base `pais_bis.py`; Hong Kong y Rumania sin OCDE).
+  Mismo armado que Noruega (`render{Pais}`); claves de `SUBS` de dos letras. Bolsas: `ICEX` (`.OMXI15`, historia `omxi`),
+  `BUX` (`bux`), `PSE_CZ` (`.PX`, `pxi`), `CPH` (`.OMXC20`, `omxc`; la historia de .OMXC25 viene vacía), `BVB` (`.BETI`: la
+  cotización viene vacía y sale de la historia `bet`), Hang Seng (`HKEX`, `hsi`). Fondos EWH y EDEN (+ NVO). Bonos: CNBC trae
+  HU10Y, HK10Y (sin historia) y la historia de DK10Y; Islandia, Chequia y Rumania no (la tarjeta se oculta).
+- `BCAL`: ISL (8:30 Reikiavik), HUN (14:00 Budapest), CZE (oficial, 14:30 Praga), ROU (~15:00 Bucarest), solo lo publicado de
+  2026-27 (PENDIENTE: completar 2027). Hong Kong sigue a la Fed (caja de conversión 7,75-7,85) y Dinamarca al BCE (mismo día):
+  su cuenta regresiva usa `BCAL` USA y DEU. Bolsas ICEX, BUX, BCPP, CPH y BVB en `GEX`.
+- Noticias en inglés: Iceland Monitor y RÚV; Hungary Today y Daily News Hungary; HKFP y RTHK; Prague Morning y Brno Daily;
+  The Local y Copenhagen Post; Romania Insider y Brno Daily (a veces 429) y Business Review; Chequia y Rumania quedan con pocos titulares. Dan error desde
+  Actions: Iceland Review y BBJ (403), Radio Prague y Expats.cz (404), The Standard HK y Universul (XML roto), Romania Journal (403).
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -280,7 +293,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 25 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 31 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
