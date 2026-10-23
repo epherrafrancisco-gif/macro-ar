@@ -36,7 +36,7 @@ P = {  # página: (BIS, OCDE, Banco Mundial, Big Mac)
     "MEX": ("MX", "MEX", "MEX", "MEX"), "CHL": ("CL", "CHL", "CHL", "CHL"), "JPN": ("JP", "JPN", "JPN", "JPN"),
     "GBR": ("GB", "GBR", "GBR", "GBR"), "CAN": ("CA", "CAN", "CAN", "CAN"), "COL": ("CO", "COL", "COL", "COL"),
     "TUR": ("TR", "TUR", "TUR", "TUR"), "PER": ("PE", None, "PER", "PER"), "POL": ("PL", "POL", "POL", "POL"),
-    "IND": ("IN", "IND", "IND", "IND"), "SAU": ("SA", "SAU", "SAU", "SAU"), "CHE": ("CH", "CHE", "CHE", "CHE"), "AUS": ("AU", "AUS", "AUS", "AUS"), "KOR": ("KR", "KOR", "KOR", "KOR"), "ZAF": ("ZA", "ZAF", "ZAF", "ZAF"), "ARG": ("AR", "ARG", "ARG", "ARG"),
+    "IND": ("IN", "IND", "IND", "IND"), "SAU": ("SA", "SAU", "SAU", "SAU"), "CHE": ("CH", "CHE", "CHE", "CHE"), "AUS": ("AU", "AUS", "AUS", "AUS"), "KOR": ("KR", "KOR", "KOR", "KOR"), "ZAF": ("ZA", "ZAF", "ZAF", "ZAF"), "NZL": ("NZ", "NZL", "NZL", "NZL"), "IDN": ("ID", "IDN", "IDN", "IDN"), "ARG": ("AR", "ARG", "ARG", "ARG"),
 }
 POR = {i: {P[k][i]: k for k in P if P[k][i]} for i in range(4)}
 
@@ -267,7 +267,7 @@ def oecd_kei(data):
 def banco_mundial(data):
     prev = data.get("wb") or {}
     al = prev.get("al", "2000-01-01")
-    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "ZAF" in prev.get("ppa", {}):
+    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "IDN" in prev.get("ppa", {}):
         return
     paises = ";".join(P[k][2] for k in P)
     res = {"al": hoy_iso()}
