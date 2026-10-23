@@ -36,7 +36,7 @@ P = {  # página: (BIS, OCDE, Banco Mundial, Big Mac)
     "MEX": ("MX", "MEX", "MEX", "MEX"), "CHL": ("CL", "CHL", "CHL", "CHL"), "JPN": ("JP", "JPN", "JPN", "JPN"),
     "GBR": ("GB", "GBR", "GBR", "GBR"), "CAN": ("CA", "CAN", "CAN", "CAN"), "COL": ("CO", "COL", "COL", "COL"),
     "TUR": ("TR", "TUR", "TUR", "TUR"), "PER": ("PE", None, "PER", "PER"), "POL": ("PL", "POL", "POL", "POL"),
-    "IND": ("IN", "IND", "IND", "IND"), "SAU": ("SA", "SAU", "SAU", "SAU"), "CHE": ("CH", "CHE", "CHE", "CHE"), "AUS": ("AU", "AUS", "AUS", "AUS"), "KOR": ("KR", "KOR", "KOR", "KOR"), "ZAF": ("ZA", "ZAF", "ZAF", "ZAF"), "NZL": ("NZ", "NZL", "NZL", "NZL"), "IDN": ("ID", "IDN", "IDN", "IDN"), "NOR": ("NO", "NOR", "NOR", "NOR"), "SWE": ("SE", "SWE", "SWE", "SWE"), "THA": ("TH", "THA", "THA", "THA"), "MYS": ("MY", "MYS", "MYS", "MYS"), "PHL": ("PH", "PHL", "PHL", "PHL"), "ISL": ("IS", "ISL", "ISL", "ISL"), "HUN": ("HU", "HUN", "HUN", "HUN"), "HKG": ("HK", "HKG", "HKG", "HKG"), "CZE": ("CZ", "CZE", "CZE", "CZE"), "DNK": ("DK", "DNK", "DNK", "DNK"), "ROU": ("RO", "ROU", "ROU", "ROU"), "ARG": ("AR", "ARG", "ARG", "ARG"),
+    "IND": ("IN", "IND", "IND", "IND"), "SAU": ("SA", "SAU", "SAU", "SAU"), "CHE": ("CH", "CHE", "CHE", "CHE"), "AUS": ("AU", "AUS", "AUS", "AUS"), "KOR": ("KR", "KOR", "KOR", "KOR"), "ZAF": ("ZA", "ZAF", "ZAF", "ZAF"), "NZL": ("NZ", "NZL", "NZL", "NZL"), "IDN": ("ID", "IDN", "IDN", "IDN"), "NOR": ("NO", "NOR", "NOR", "NOR"), "SWE": ("SE", "SWE", "SWE", "SWE"), "THA": ("TH", "THA", "THA", "THA"), "MYS": ("MY", "MYS", "MYS", "MYS"), "PHL": ("PH", "PHL", "PHL", "PHL"), "ISL": ("IS", "ISL", "ISL", "ISL"), "HUN": ("HU", "HUN", "HUN", "HUN"), "HKG": ("HK", "HKG", "HKG", "HKG"), "CZE": ("CZ", "CZE", "CZE", "CZE"), "DNK": ("DK", "DNK", "DNK", "DNK"), "ROU": ("RO", "ROU", "ROU", "ROU"), "ISR": ("IL", "ISR", "ISR", "ISR"), "SRB": ("RS", "SRB", "SRB", "SRB"), "ARG": ("AR", "ARG", "ARG", "ARG"),
 }
 POR = {i: {P[k][i]: k for k in P if P[k][i]} for i in range(4)}
 
@@ -267,7 +267,7 @@ def oecd_kei(data):
 def banco_mundial(data):
     prev = data.get("wb") or {}
     al = prev.get("al", "2000-01-01")
-    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "ROU" in prev.get("ppa", {}):
+    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "SRB" in prev.get("ppa", {}):
         return
     paises = ";".join(P[k][2] for k in P)
     res = {"al": hoy_iso()}
