@@ -675,6 +675,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 /* Portada en la compu: Argentina un tercio, El mundo dos tercios (países en 3 columnas) y "Argentina en vivo" abajo */
 @media (min-width:901px){.split{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}.door.ar .tiles{grid-template-columns:minmax(0,1fr)}
   .door.gl .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.door.ar .hoy{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:901px){.door.ar{display:flex;flex-direction:column}.door.ar>*{flex:none}.door.ar>#pVivo{flex:1 1 auto;display:flex;flex-direction:column}
+  #pVivo>.vv:last-child{flex:1 1 auto;display:flex;flex-direction:column}#pVivo>.vv:last-child .pvs{flex:1 1 auto;grid-auto-rows:1fr}
+  #pVivo .pvs>div{grid-template-rows:auto auto auto 1fr}#pVivo .pvs svg{height:100%;min-height:46px;grid-row:1/5}}
 @media (max-width:900px){#pVivo{display:none}}
 .pvivo{display:grid;gap:10px}.pvivo .vv .v{font-size:22px}
 .pvivo .pvl{display:grid;gap:4px;margin-top:4px;font-size:12px;color:var(--muted)}.pvivo .pvl div{display:flex;justify-content:space-between;gap:8px}.pvivo .pvl b{color:var(--ink2);font-weight:500}
