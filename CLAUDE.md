@@ -250,8 +250,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - `BCAL`: NOR (oficial hasta dic-2027, 10:00 Oslo), SWE (hasta mar-2027, 9:30 Estocolmo), THA (2026, ~14:00 Bangkok),
   MYS (5/11/2026, 15:00 Kuala Lumpur). PENDIENTE: completar 2027 de SWE, THA y MYS cuando se publiquen. Filipinas no tiene:
   `VIVO.D.nocal` muestra el aviso. Bolsas OSE, OMX, SET, KLSE y PSE en `GEX`.
-- La OCDE corta con 429 si se le pide mucho seguido: `pais_bis.get` espera 25 s por intento ante un 429; si igual falla,
-  queda el dato anterior y se completa en la corrida siguiente.
+- La OCDE corta con 429 si se le pide mucho seguido. En 10/2026 esperar y reintentar hizo pasar `global.yml` de los 20 min
+  y se perdió la corrida entera: ahora `pais_bis` NO reintenta ante 404/429, deja de pedirle a la OCDE en esa corrida
+  (`OECD_CORTADA`) y queda el dato anterior. Tailandia, Malasia y Filipinas no están en la OCDE (`armar(..., None, ...)`).
+  Cada paso de país tiene `timeout-minutes: 3` y el trabajo entero 25.
 - Noticias en inglés: The Local (Noruega y Suecia), Bangkok Post, The Nation, The Star, Free Malaysia Today, Malay Mail,
   Inquirer, BusinessWorld y Philstar.
 

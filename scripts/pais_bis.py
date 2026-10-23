@@ -24,8 +24,10 @@ def get(url, accept="*/*", tries=3, timeout=90):
                 return r.read().decode("utf-8", "replace")
         except Exception as e:  # noqa: BLE001
             last = e
-            # la OCDE corta con 429 si se le pide mucho seguido: se espera más antes de reintentar
-            time.sleep((25 if "429" in str(e) else 3) * (i + 1))
+            # 404 (serie que no existe) o 429 (la OCDE corta por pedir mucho): no tiene sentido insistir
+            if "404" in str(e) or "429" in str(e):
+                break
+            time.sleep(3 * (i + 1))
     raise last
 
 
@@ -60,8 +62,19 @@ def bis(flujo, clave, desde):
     return filas(get(f"https://stats.bis.org/api/v1/data/{flujo}/{clave}/all?startPeriod={desde}&format=csv", "text/csv"))
 
 
+OECD_CORTADA = False  # si la OCDE da 429, no se le pide más en esta corrida (si no, el workflow se pasa de tiempo)
+
+
 def oecd(flujo, clave, desde):
-    return filas(get(f"{OECD}{flujo}/{clave}?startPeriod={desde}&format=csvfile", "text/csv"))
+    global OECD_CORTADA
+    if OECD_CORTADA:
+        raise ValueError("la OCDE cortó por exceso de pedidos (429); queda el dato anterior")
+    try:
+        return filas(get(f"{OECD}{flujo}/{clave}?startPeriod={desde}&format=csvfile", "text/csv"))
+    except Exception as e:  # noqa: BLE001
+        if "429" in str(e):
+            OECD_CORTADA = True
+        raise
 
 
 def banco_mundial(pais, indicador, desde=2000):
@@ -95,6 +108,7 @@ def armar(out_path, bis2, moneda, oecd3, wb3, extra=None):
             prev = {}
     data = dict(prev)
     hoy = date.today()
+    oecd_ok = bool(oecd3)  # países que no están en la OCDE: se pasa None y no se le pide nada
     tareas = {
         "tasa": (lambda: solo_cambios(bis("WS_CBPOL", f"D.{bis2}", f"{hoy.year - 8}-01-01")), 1),
         "usd": (lambda: bis("WS_XRU", f"D.{bis2}.{moneda}.A", (hoy - timedelta(days=760)).isoformat()), 1),
@@ -107,6 +121,9 @@ def armar(out_path, bis2, moneda, oecd3, wb3, extra=None):
         "desemp_anual": (lambda: banco_mundial(wb3, "SL.UEM.TOTL.ZS"), 30),
         "crec_anual": (lambda: banco_mundial(wb3, "NY.GDP.MKTP.KD.ZG"), 30),
     }
+    if not oecd_ok:
+        for k in ("desemp", "pbi_tri", "pbi_anual"):
+            tareas.pop(k, None)
     tareas.update(extra or {})
     for k, (fn, meses) in tareas.items():
         try:

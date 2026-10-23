@@ -51,7 +51,7 @@ concurrency:
 jobs:
   global:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -116,54 +116,67 @@ jobs:
 
       - name: Traer datos de India
         run: python scripts/india.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Arabia Saudita
         run: python scripts/arabia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Suiza
         run: python scripts/suiza.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Australia
         run: python scripts/australia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Corea del Sur
         run: python scripts/corea.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Sudáfrica
         run: python scripts/sudafrica.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Nueva Zelanda
         run: python scripts/zelanda.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Indonesia
         run: python scripts/indonesia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Noruega
         run: python scripts/noruega.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Suecia
         run: python scripts/suecia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Tailandia
         run: python scripts/tailandia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Malasia
         run: python scripts/malasia.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos de Filipinas
         run: python scripts/filipinas.py
+        timeout-minutes: 3
         continue-on-error: true
 
       - name: Traer datos que se suman a todos los países
