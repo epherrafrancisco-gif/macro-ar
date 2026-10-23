@@ -25,7 +25,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Arriba: tres cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo; `#tape3` reloj de mercados)
   y los 7 dólares (`#dolHoy`/`#quotes`, `renderQuotes()`): siempre en la portada y en todo Argentina (requisito no
   negociable); NO en Mundo, Estados Unidos ni Sobre Pulso Macro (pedido del dueño).
-  Dólar en vivo: DolarApi desde el navegador cada 60 s.
+  Dólar en vivo: DolarApi desde el navegador cada 60 s (+0-10 s al azar; si falla, espera 1, 2, 4, 8 min, tope 10:
+  `liveFallas`; mientras tanto muestra el último cierre).
+- Caché (para aguantar mucho tráfico): los JSON se piden con `?t='+VER()` (`VER` = minuto actual), NO con `Date.now()`:
+  así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
+  `Date.now()` en las direcciones de los fetch.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,

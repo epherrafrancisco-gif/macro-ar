@@ -2859,6 +2859,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const MESL = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const fmes = s => { const [y,m]=s.split('-'); return `${MES[+m-1]} ${y.slice(2)}`; };
   const T = s => Date.parse(s+'T12:00:00Z');
+  // Versión de los JSON: cambia una vez por minuto. Todos los que entran en el mismo minuto piden la misma
+  // dirección, así el CDN la sirve de su copia en vez de pedírsela a GitHub (con Date.now() cada visita era distinta).
+  const VER = () => Math.floor(Date.now()/60000);
   const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
   let days = [], months = [], quarters = [], hist = [], loaded = {d:false,m:false};
@@ -3190,7 +3193,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const NWT = [['','Todas'],['dolar','Dólar'],['bcra','BCRA y tasas'],['inflacion','Inflación'],['mercados','Mercados'],['fiscal','Fiscal'],['actividad','Actividad']];
   try{ nwVisto = localStorage.getItem('macro-nw-visto'); }catch(e){}
   async function cargarNoticias(){
-    try{ const r = await fetch('noticias.json?t='+Date.now(), {cache:'no-store'}); if(r.ok){ nw = await r.json(); nwAt = Date.now(); } }catch(e){}
+    try{ const r = await fetch('noticias.json?t='+VER(), {cache:'no-store'}); if(r.ok){ nw = await r.json(); nwAt = Date.now(); } }catch(e){}
     if(tab==='noticias') pintarNoticias();
   }
   function renderNoticias(){
@@ -3640,7 +3643,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let act = null, actLoading = false, rubMode = 'mes';
   async function loadAct(){
     if(actLoading) return; actLoading = true;
-    try{ const r = await fetch('actividad.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
+    try{ const r = await fetch('actividad.json?t='+VER(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
     actLoading = false; if(tab==='actividad' || tab==='macro' || tab==='ganaderia') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
   }
   const RUB = [['alimentos','Alimentos'],['bebidas','Alcohol y tabaco'],['prendas','Ropa y calzado'],['vivienda','Vivienda y servicios'],['equipamiento','Equipamiento hogar'],
@@ -3723,7 +3726,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const GA_CORTES = [['c_asado','Asado','--s2'],['c_nalga','Nalga','--s1'],['c_cuadril','Cuadril','--s5'],['c_paleta','Paleta','--s4'],['c_picada','Carne picada','--s3'],['c_pollo','Pollo entero','--ink2']];
   async function loadGan(){
     if(ganLoading) return; ganLoading = true;
-    try{ const r = await fetch('ganaderia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gan = await r.json(); }catch(e){}
+    try{ const r = await fetch('ganaderia.json?t='+VER(), {cache:'no-store'}); if(r.ok) gan = await r.json(); }catch(e){}
     ganLoading = false; if(tab==='ganaderia'){ renderGanaderia(); mResumen(); }
   }
   document.querySelectorAll('[data-gm]').forEach(b=>b.addEventListener('click', ()=>{ gaMoneda = b.dataset.gm; renderGanaderia(); }));
@@ -4528,7 +4531,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // ---- pestaña Global y cinta de mercados del mundo (global.json) ----
   let glob = null;
   async function loadGlobal(){
-    try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
+    try{ const r = await fetch('global.json?t='+VER(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
     renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia(); if(tab==='noruega') renderNoruega(); if(tab==='suecia') renderSuecia(); if(tab==='tailandia') renderTailandia(); if(tab==='malasia') renderMalasia(); if(tab==='filipinas') renderFilipinas(); if(tab==='islandia') renderIslandia(); if(tab==='hungria') renderHungria(); if(tab==='hongkong') renderHongkong(); if(tab==='chequia') renderChequia(); if(tab==='dinamarca') renderDinamarca(); if(tab==='rumania') renderRumania(); if(tab==='israel') renderIsrael(); if(tab==='serbia') renderSerbia(); if(tab==='china') renderChina(); if(tab==='rusia') renderRusia(); if(tab==='espana') renderEspana(); if(tab==='macedonia') renderMacedonia(); if(tab==='singapur') renderSingapur(); if(tab==='marruecos') renderMarruecos();
   }
   function renderTape2(){
@@ -4830,7 +4833,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
-    try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
+    try{ const r = await fetch('global_hist.json?t='+VER(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
     gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia(); if(tab==='noruega') renderNoruega(); if(tab==='suecia') renderSuecia(); if(tab==='tailandia') renderTailandia(); if(tab==='malasia') renderMalasia(); if(tab==='filipinas') renderFilipinas(); if(tab==='islandia') renderIslandia(); if(tab==='hungria') renderHungria(); if(tab==='hongkong') renderHongkong(); if(tab==='chequia') renderChequia(); if(tab==='dinamarca') renderDinamarca(); if(tab==='rumania') renderRumania(); if(tab==='israel') renderIsrael(); if(tab==='serbia') renderSerbia(); if(tab==='china') renderChina(); if(tab==='rusia') renderRusia(); if(tab==='espana') renderEspana(); if(tab==='macedonia') renderMacedonia(); if(tab==='singapur') renderSingapur(); if(tab==='marruecos') renderMarruecos();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
@@ -5006,7 +5009,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let bra = null, braLoading = false, bAccSel = null;
   async function loadBra(){
     if(braLoading) return; braLoading = true;
-    try{ const r = await fetch('brasil.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) bra = await r.json(); }catch(e){}
+    try{ const r = await fetch('brasil.json?t='+VER(), {cache:'no-store'}); if(r.ok) bra = await r.json(); }catch(e){}
     braLoading = false; if(tab==='brasil') renderBrasil();
   }
   function renderBrasil(){
@@ -5073,7 +5076,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const EPA = {EA:['Zona euro','--accent'], DE:['Alemania','--s4'], FR:['Francia','--s1'], IT:['Italia','--s3'], ES:['España','--s2']};
   async function loadEur(){
     if(eurLoading) return; eurLoading = true;
-    try{ const r = await fetch('europa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) eur = await r.json(); }catch(e){}
+    try{ const r = await fetch('europa.json?t='+VER(), {cache:'no-store'}); if(r.ok) eur = await r.json(); }catch(e){}
     eurLoading = false; if(tab==='europa') renderEuropa();
   }
   const eMes = p => p.length===7 ? p+'-01' : p;   // '2026-08' → fecha
@@ -5142,7 +5145,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let mex = null, mexLoading = false, xAccSel = null;
   async function loadMex(){
     if(mexLoading) return; mexLoading = true;
-    try{ const r = await fetch('mexico.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) mex = await r.json(); }catch(e){}
+    try{ const r = await fetch('mexico.json?t='+VER(), {cache:'no-store'}); if(r.ok) mex = await r.json(); }catch(e){}
     mexLoading = false; if(tab==='mexico') renderMexico();
   }
   function renderMexico(){
@@ -5226,7 +5229,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let chl = null, chlLoading = false, clAccSel = null;
   async function loadChl(){
     if(chlLoading) return; chlLoading = true;
-    try{ const r = await fetch('chile.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) chl = await r.json(); }catch(e){}
+    try{ const r = await fetch('chile.json?t='+VER(), {cache:'no-store'}); if(r.ok) chl = await r.json(); }catch(e){}
     chlLoading = false; if(tab==='chile') renderChile();
   }
   function renderChile(){
@@ -5305,7 +5308,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let jpn = null, jpnLoading = false, jpAccSel = null;
   async function loadJpn(){
     if(jpnLoading) return; jpnLoading = true;
-    try{ const r = await fetch('japon.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) jpn = await r.json(); }catch(e){}
+    try{ const r = await fetch('japon.json?t='+VER(), {cache:'no-store'}); if(r.ok) jpn = await r.json(); }catch(e){}
     jpnLoading = false; if(tab==='japon') renderJapon();
   }
   function renderJapon(){
@@ -5381,7 +5384,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let gbr = null, gbrLoading = false, ukAccSel = null;
   async function loadGbr(){
     if(gbrLoading) return; gbrLoading = true;
-    try{ const r = await fetch('reinounido.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gbr = await r.json(); }catch(e){}
+    try{ const r = await fetch('reinounido.json?t='+VER(), {cache:'no-store'}); if(r.ok) gbr = await r.json(); }catch(e){}
     gbrLoading = false; if(tab==='reinounido') renderReino();
   }
   function renderReino(){
@@ -5457,7 +5460,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let can = null, canLoading = false, caAccSel = null;
   async function loadCan(){
     if(canLoading) return; canLoading = true;
-    try{ const r = await fetch('canada.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) can = await r.json(); }catch(e){}
+    try{ const r = await fetch('canada.json?t='+VER(), {cache:'no-store'}); if(r.ok) can = await r.json(); }catch(e){}
     canLoading = false; if(tab==='canada') renderCanada();
   }
   function renderCanada(){
@@ -5536,7 +5539,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let colD = null, colDLoading = false, coAccSel = null;
   async function loadColombia(){
     if(colDLoading) return; colDLoading = true;
-    try{ const r = await fetch('colombia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) colD = await r.json(); }catch(e){}
+    try{ const r = await fetch('colombia.json?t='+VER(), {cache:'no-store'}); if(r.ok) colD = await r.json(); }catch(e){}
     colDLoading = false; if(tab==='colombia') renderColombia();
   }
   function renderColombia(){
@@ -5601,7 +5604,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let turD = null, turDLoading = false, trAccSel = null;
   async function loadTurquia(){
     if(turDLoading) return; turDLoading = true;
-    try{ const r = await fetch('turquia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) turD = await r.json(); }catch(e){}
+    try{ const r = await fetch('turquia.json?t='+VER(), {cache:'no-store'}); if(r.ok) turD = await r.json(); }catch(e){}
     turDLoading = false; if(tab==='turquia') renderTurquia();
   }
   function renderTurquia(){
@@ -5681,7 +5684,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let polD = null, polDLoading = false;
   async function loadPolonia(){
     if(polDLoading) return; polDLoading = true;
-    try{ const r = await fetch('polonia.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) polD = await r.json(); }catch(e){}
+    try{ const r = await fetch('polonia.json?t='+VER(), {cache:'no-store'}); if(r.ok) polD = await r.json(); }catch(e){}
     polDLoading = false; if(tab==='polonia') renderPolonia();
   }
   function renderPolonia(){
@@ -5785,7 +5788,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let perD = null, perDLoading = false, peAccSel = null;
   async function loadPeru(){
     if(perDLoading) return; perDLoading = true;
-    try{ const r = await fetch('peru.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) perD = await r.json(); }catch(e){}
+    try{ const r = await fetch('peru.json?t='+VER(), {cache:'no-store'}); if(r.ok) perD = await r.json(); }catch(e){}
     perDLoading = false; if(tab==='peru') renderPeru();
   }
   function renderPeru(){
@@ -5844,7 +5847,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   async function loadUsa(){
     if(usaLoading) return; usaLoading = true;
-    try{ const r = await fetch('usa.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
+    try{ const r = await fetch('usa.json?t='+VER(), {cache:'no-store'}); if(r.ok) usa = await r.json(); }catch(e){}
     usaLoading = false; if(tab==='global' && G.vista==='usa') renderUsa();
   }
   const yoy = (pts, i=pts.length-1) => { const p = pts[i], q = p && pts.find(x=>x[0]===`${+p[0].slice(0,4)-1}${p[0].slice(4)}`); return p && q ? (p[1]/q[1]-1)*100 : null; };
@@ -5960,7 +5963,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const PB_D = {}, PB_L = {};
   async function loadPB(f, tb, fn){
     if(PB_L[f]) return; PB_L[f] = true;
-    try{ const r = await fetch(f+'.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) PB_D[f] = await r.json(); }catch(e){}
+    try{ const r = await fetch(f+'.json?t='+VER(), {cache:'no-store'}); if(r.ok) PB_D[f] = await r.json(); }catch(e){}
     PB_L[f] = false; if(tab===tb) fn();
   }
   // piezas comunes de las dos secciones
@@ -7406,7 +7409,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let npData = null, npLoading = false, npAt = 0;
   async function loadNP(k){
     if(npLoading) return; npLoading = true;
-    try{ const r = await fetch('noticias_paises.json?t='+Date.now(), {cache:'no-store'}); if(r.ok){ npData = await r.json(); npAt = Date.now(); } }catch(e){}
+    try{ const r = await fetch('noticias_paises.json?t='+VER(), {cache:'no-store'}); if(r.ok){ npData = await r.json(); npAt = Date.now(); } }catch(e){}
     npLoading = false; if(k && SUBS[k][2]==='noticias') renderNP(k);
   }
   function renderNP(k){
@@ -7427,7 +7430,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let pxD = null, pxLoading = false;
   async function loadPx(){
     if(pxLoading) return; pxLoading = true;
-    try{ const r = await fetch('paises_extra.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) pxD = await r.json(); }catch(e){}
+    try{ const r = await fetch('paises_extra.json?t='+VER(), {cache:'no-store'}); if(r.ok) pxD = await r.json(); }catch(e){}
     pxLoading = false; for(const k in PX_ISO){ const v = $(SUBS[k][1]); if(v && v.offsetParent!==null) pxRender(k); }
   }
   const pxY = a => (a||[]).map(p=>[p[0]+'-07-01', p[1]]);
@@ -7541,7 +7544,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let geoD = null, geoLoading = false, geoSelIso = null, milM = 'usd';
   const geoNom = (()=>{ let dn = null; try{ dn = new Intl.DisplayNames(['es'],{type:'region'}); }catch(e){} return (a2, def) => { try{ return (a2 && dn && dn.of(a2)) || def; }catch(e){ return def; } }; })();
   async function loadGeo(){ if(geoLoading) return; geoLoading = true;
-    try{ const r = await fetch('geopolitica.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) geoD = await r.json(); }catch(e){}
+    try{ const r = await fetch('geopolitica.json?t='+VER(), {cache:'no-store'}); if(r.ok) geoD = await r.json(); }catch(e){}
     geoLoading = false; if(tab==='global' && SUBS.M[2]==='geo') renderGeo(); }
   const GEO_A2X = {HKG:'HK',BHR:'BH',SGP:'SG',MLT:'MT',MDV:'MV',COM:'KM',MUS:'MU',CPV:'CV',STP:'ST',SYC:'SC',XKX:'XK',PSE:'PS',TWN:'TW',LCA:'LC',BRB:'BB',MAC:'MO',AND:'AD',LIE:'LI',MCO:'MC',SMR:'SM',TON:'TO',WSM:'WS',KIR:'KI',FSM:'FM',MHL:'MH',PLW:'PW',GRD:'GD',VCT:'VC',KNA:'KN',ATG:'AG',DMA:'DM',BHS:'BS',ESH:'EH'};
   const geoA2 = iso => (G.byId?.[iso]?.properties?.a2) || GEO_A2X[iso] || null;
@@ -7637,7 +7640,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   try{ const v = JSON.parse(localStorage.getItem('cmp-sel')||'null'); if(Array.isArray(v) && v.length===2 && v.every(x=>CMP_P.some(p=>p[0]===x))) cmpSel = v; }catch(e){}
   async function cmpLoad(iso){
     const f = iso==='ARG' ? null : CMP_F[iso]; if(!f || CMP[iso] || cmpCarg[iso]) return; cmpCarg[iso] = true;
-    try{ const r = await fetch(f+'.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) CMP[iso] = await r.json(); }catch(e){}
+    try{ const r = await fetch(f+'.json?t='+VER(), {cache:'no-store'}); if(r.ok) CMP[iso] = await r.json(); }catch(e){}
     cmpCarg[iso] = false; renderComparador();
   }
   const cL = a => a?.length ? a[a.length-1] : null;
@@ -7998,7 +8001,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(v==='usa'){ G.run = false; renderUsa(); } else renderGlobal(); }
   document.querySelectorAll('#gVista button').forEach(b=>b.addEventListener('click', ()=>{ setVista(b.dataset.v); gc('global-vista-'+b.dataset.v, true); }));
   // ---- polling en vivo: cada 60 s, solo con la pestaña visible ----
-  let lt, busy = false;
+  // Si DolarApi falla, se espera cada vez más (1, 2, 4, 8 min, tope 10) para no insistirle; un poco de azar
+  // en el intervalo evita que miles de pestañas abiertas a la vez le pregunten todas en el mismo segundo.
+  let lt, busy = false, liveFallas = 0;
   async function poll(){
     clearTimeout(lt);
     if(document.hidden){ return; }
@@ -8016,9 +8021,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       if(loaded.d){ renderQuotes(); if(tab==='dolares') renderDolares(); } else flash = {};
       if(loaded.d && tab==='calculadoras') renderCalc();
       if(loaded.d) renderTape();
-    }catch(e){ const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d){ renderQuotes(); if(tab==='dolares') renderDolares(); } }
+      liveFallas = 0;
+    }catch(e){ liveFallas++; const had = Object.keys(live).length; liveOk = false; live = {}; if(had && loaded.d){ renderQuotes(); if(tab==='dolares') renderDolares(); } }
     busy = false; tick();
-    lt = setTimeout(poll, LIVE_MS);
+    lt = setTimeout(poll, Math.min(LIVE_MS * 2**liveFallas, 10*60000) + Math.random()*10000);
   }
   function tick(){
     const el = $('live'), tx = $('liveTxt');
@@ -8036,14 +8042,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   (async ()=>{
     try{
-      const r = await fetch('data.json?t='+Date.now(), {cache:'no-store'});
+      const r = await fetch('data.json?t='+VER(), {cache:'no-store'});
       const j = await r.json();
       days = (j.diario||[]).filter(d=>d&&d.fecha).sort((a,b)=>a.fecha<b.fecha?-1:1);
       months = (j.mensual||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
       quarters = (j.trimestral||[]).filter(d=>d&&d.trim&&d.pib).sort((a,b)=>a.trim<b.trim?-1:1);
       hist = (j.historico||[]).filter(d=>d&&d.mes).sort((a,b)=>a.mes<b.mes?-1:1);
     }catch(e){ $('stamp').textContent='No se pudieron cargar los datos. Recargá la página.'; }
-    try{ const c = await (await fetch('calendario.json?t='+Date.now(), {cache:'no-store'})).json(); if(Array.isArray(c.eventos)) cal = c; }catch(e){}
+    try{ const c = await (await fetch('calendario.json?t='+VER(), {cache:'no-store'})).json(); if(Array.isArray(c.eventos)) cal = c; }catch(e){}
     loaded={d:true,m:true}; render();
   })();
 })();
