@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 33 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 35 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -294,6 +294,15 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   de Belgrado, aproximada; PENDIENTE 2027). Noticias en inglés: Globes (The Times of Israel da 403); Serbian Monitor, N1 English y
   Balkan Insight.
 
+### China y Rusia (`#china` `vCn` `renderChina` `SUBS.CN`; `#rusia` `vRu` `renderRusia` `SUBS.RU`)
+- Pedido del dueño (China estaba descartada y la pidió en 10/2026). Robots `scripts/china.py` y `scripts/rusia.py` (base
+  `pais_bis.py`, sin OCDE). China ya estaba en varias tablas del Mundo (BC, DG_*, XP_*, monedas): el generador no la duplicó.
+  China: la "tasa" del BIS es la LPR a 1 año (`BCAL` CHN: día 20 de cada mes o el hábil siguiente, 9:00 de Pekín, aproximada,
+  cargada hasta dic-2027), Shanghái Compuesto (`bolsas.SSE`, historia `shanghai`), bono `cn10`, FXI, BABA, PDD y BIDU.
+- Rusia: rublo (`RUB=`, `fx_rub`), tasa del Banco Central de Rusia (`BCAL` RUS oficial 2026, 13:30 de Moscú; PENDIENTE
+  2027). CNBC no trae el MOEX ni bonos rusos: esas tarjetas no aparecen. Noticias: South China Morning Post y CGTN; The
+  Moscow Times (además de los medios en español).
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -303,7 +312,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 33 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 35 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
@@ -416,6 +425,6 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Descartados: calendario de vencimientos de deuda, "BSTEP", balanza cambiaria, liquidación del agro, gráfico histórico
   por acción, deuda del Tesoro en pesos, newsletter, inflación semanal de alimentos propia, "el día en 30 segundos",
   dólar contra la banda cambiaria, curva de tasas en pesos, capas del globo con datos viejos (exportaciones por destino,
-  deuda/PBI), sección China, rediseño "sala de situación", segundo monitor "Terminal Argentina" (tablero o globo de
+  deuda/PBI), rediseño "sala de situación", segundo monitor "Terminal Argentina" (tablero o globo de
   Argentina: el Monitor del mundo queda como único), pestaña "Vuelos" (horarios y aviones en vivo),
   versión del sitio en inglés, estética ciberpunk / "modo neón".
