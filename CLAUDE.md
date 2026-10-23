@@ -317,7 +317,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`bolsas.BME`, historia `ibex`), bono `es10`, EWP, SAN, BBVA y TEF. Noticias en español ("pais" en los medios de España).
 - Singapur: la MAS no fija tasa (maneja el S$ en una banda): no hay tasa en el BIS, el casillero dice "Sin tasa" y las
   tarjetas de tasa se ocultan; el apartado se llama "Bonos y crédito". `BCAL` SGP 29/01/2027 (aproximada). STI (`bolsas.SGX`,
-  historia `sti`), bono `sg10`, EWS, SE y GRAB. Noticias: CNA, The Straits Times y The Business Times.
+  historia `sti`), bono `sg10`, EWS, SE y GRAB. Noticias: CNA, The Straits Times y The Business Times. España: Cinco Días y Expansión como medios propios ("econ"). Morocco World News da 403 y MIA (Macedonia) no responde; Macedonia usa Meta.mk y Balkan Insight.
 - Marruecos: el BIS trae tasa y dirham con atraso (se aceptan 3 meses; el dirham de hoy sale de CNBC `fx_mad`). MASI (la
   cotización viene vacía, sale de la historia `masi`). `BCAL` MAR 15/12/2026 (aproximada). Macedonia: denar atado al euro, MBI10
   (historia `mbi10`), `BCAL` MKD 3/11 y 22/12/2026 (aproximadas). PENDIENTE 2027 de MAR, MKD y SGP.
