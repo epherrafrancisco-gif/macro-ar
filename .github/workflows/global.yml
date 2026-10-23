@@ -47,6 +47,10 @@ on:
       - scripts/serbia.py
       - scripts/china.py
       - scripts/rusia.py
+      - scripts/espana.py
+      - scripts/macedonia.py
+      - scripts/singapur.py
+      - scripts/marruecos.py
       - scripts/geopolitica.py
       - scripts/pais_bis.py
       - scripts/actividad.py
@@ -240,6 +244,26 @@ jobs:
         timeout-minutes: 3
         continue-on-error: true
 
+      - name: Traer datos de España
+        run: python scripts/espana.py
+        timeout-minutes: 3
+        continue-on-error: true
+
+      - name: Traer datos de Macedonia del Norte
+        run: python scripts/macedonia.py
+        timeout-minutes: 3
+        continue-on-error: true
+
+      - name: Traer datos de Singapur
+        run: python scripts/singapur.py
+        timeout-minutes: 3
+        continue-on-error: true
+
+      - name: Traer datos de Marruecos
+        run: python scripts/marruecos.py
+        timeout-minutes: 3
+        continue-on-error: true
+
       - name: Traer datos de geopolítica (conflictos, riesgo geopolítico, gasto militar)
         run: pip install -q xlrd==2.0.1 && python scripts/geopolitica.py
         timeout-minutes: 4
@@ -255,13 +279,13 @@ jobs:
 
       - name: Guardar cambios
         run: |
-          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json geopolitica.json actividad.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json geopolitica.json actividad.json >/dev/null 2>&1; then
+          if git diff --quiet global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json espana.json macedonia.json singapur.json marruecos.json geopolitica.json actividad.json 2>/dev/null && git ls-files --error-unmatch global.json global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json espana.json macedonia.json singapur.json marruecos.json geopolitica.json actividad.json >/dev/null 2>&1; then
             echo "Sin cambios"
             exit 0
           fi
           git config user.name "macro-ar-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json geopolitica.json actividad.json 2>/dev/null || true
+          git add global.json; git add global_hist.json usa.json brasil.json europa.json mexico.json chile.json japon.json reinounido.json canada.json colombia.json turquia.json peru.json polonia.json paises_extra.json india.json arabia.json suiza.json australia.json corea.json sudafrica.json zelanda.json indonesia.json noruega.json suecia.json tailandia.json malasia.json filipinas.json islandia.json hungria.json hongkong.json chequia.json dinamarca.json rumania.json israel.json serbia.json china.json rusia.json espana.json macedonia.json singapur.json marruecos.json geopolitica.json actividad.json 2>/dev/null || true
           git commit -m "Global $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
           git pull --rebase origin main
           git push
