@@ -631,6 +631,20 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .iosinst .iix{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer}
 .here{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}.here h2{margin:0 0 2px;font-size:18px}.here p{margin:0;color:var(--ink2);font-size:14px}
 @media (max-width:860px){.gmini{grid-template-columns:minmax(0,1fr)}}
+/* Portada en la compu: Argentina un tercio, El mundo dos tercios (países en 3 columnas) y "Argentina en vivo" abajo */
+@media (min-width:901px){.split{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}.door.ar .tiles{grid-template-columns:minmax(0,1fr)}
+  .door.gl .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.door.ar .hoy{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){#pVivo{display:none}}
+.pvivo{display:grid;gap:10px}.pvivo .vv .v{font-size:22px}
+.pvivo .pvl{display:grid;gap:4px;margin-top:4px;font-size:12px;color:var(--muted)}.pvivo .pvl div{display:flex;justify-content:space-between;gap:8px}.pvivo .pvl b{color:var(--ink2);font-weight:500}
+.pvs{display:grid;gap:9px}.pvs>div{display:grid;grid-template-columns:minmax(0,1fr) 46%;gap:2px 10px;align-items:center}
+.pvs small{font-size:12px;color:var(--muted);grid-column:1}.pvs b{font:500 15px var(--mono);grid-column:1}.pvs i{font:normal 11px var(--mono);grid-column:1}.pvs i.up{color:var(--pos)}.pvs i.dn{color:var(--neg)}
+.pvs svg{grid-column:2;grid-row:1/4;width:100%;height:46px;display:block;overflow:visible}
+.pvs path.ln{fill:none;stroke-width:1.8;vector-effect:non-scaling-stroke}.pvs g.cl{clip-path:inset(0 100% 0 0)}.pvs path.ar{opacity:.14}
+.pvivo.on .pvs g.cl{animation:pvdraw 1.8s ease-out forwards}
+.pvs circle{opacity:0}.pvivo.on .pvs circle{animation:pvdot 2s 1.8s infinite}
+@keyframes pvdraw{to{clip-path:inset(0 0 0 0)}}@keyframes pvdot{0%{opacity:1;r:2.5}60%{opacity:.25;r:6}100%{opacity:1;r:2.5}}
+@media (prefers-reduced-motion:reduce){.pvs g.cl{clip-path:none;animation:none!important}.pvs circle{animation:none!important;opacity:1}}
 @media (max-width:520px){.tiles{grid-template-columns:minmax(0,1fr)}.hoy{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tabs.pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.tabs.pills a{justify-content:center;padding:9px 8px;font-size:13.5px;white-space:normal;text-align:center}
   .hello h2{font-size:22px}.door{padding:16px}.modo a{font-size:12.5px}}
@@ -750,6 +764,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div class="tiles" id="tilesA"></div>
         <p class="sub2">Hoy en números</p>
         <div class="hoy" id="pHoy"></div>
+        <div class="pvivo" id="pVivo" aria-label="Argentina en vivo"></div>
       </section>
       <section class="door gl">
         <div class="dh"><div class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg></div><div><h2>El mundo</h2><p>Bolsas, monedas y economías de otros países</p></div></div>
@@ -4561,6 +4576,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       if($('pTerm2').dataset.h !== h2){ $('pTerm2').dataset.h = h2; $('pTerm2').innerHTML = h2; } }
     else if(!$('pTerm2').dataset.h) $('pTerm2').innerHTML = '<div>Cargando mercados del mundo…</div>';
     dgStart('pCv','pHud');
+    pvStart();
   }
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
@@ -6895,6 +6911,60 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(!pxD) out.push(`<div class="vv"><span class="lbl">Población y producción</span><span class="d">Cargando…</span></div>`);
     const h = `<div class="vvh"><i></i>En vivo</div><div class="vvg n${out.length}">${out.join('')}</div>`;
     if(el.dataset.h !== h){ el.dataset.h = h; el.innerHTML = h; }
+  }
+
+  // ---- Portada (compu): "Argentina en vivo" al final de la columna de Argentina ----
+  const PV = {t0:0, timer:null, h:'', obs:null};
+  const pvT = e => Date.parse(`${e.f}T${e.h||'16:00'}:00-03:00`);
+  function pvStart(){
+    const el = $('pVivo'); if(!el || innerWidth <= 900) return;
+    if(!PV.t0) PV.t0 = Date.now();
+    if(!pxD) loadPx();
+    // parte fija (se arma solo si cambian los datos): mini gráficos del último mes
+    const desde = new Date(Date.now()-31*864e5).toISOString().slice(0,10);
+    const mini = (n, k, col, fv, fd, malo) => { const a = series(k).filter(x=>x[0]>=desde); if(a.length<3) return '';
+      const v = a.map(x=>x[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*200, Y = x=>40-(x-mn)/(mx-mn||1)*36;
+      const d = v.map((x,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(x).toFixed(1)).join(''), ch = v[v.length-1]-v[0], up = ch>0;
+      return `<div><small>${n}</small><b>${fv(v[v.length-1])}</b><i class="${ch===0?'':(up!==!!malo)?'up':'dn'}">${fd(v[v.length-1],v[0])} en un mes</i>
+        <svg viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><g class="cl"><path class="ar" d="${d}L200,44L0,44Z" style="fill:var(${col})"/><path class="ln" d="${d}" style="stroke:var(${col})"/></g><circle cx="200" cy="${Y(v[v.length-1]).toFixed(1)}" r="2.5" style="fill:var(${col})"/></svg></div>`; };
+    const sp = [mini('Dólar MEP','mep','--s2',x=>'$ '+nf(x,0),(a,b)=>pc(a/b-1,1),true), mini('Riesgo país','riesgo','--s5',x=>nf(x,0)+' pb',(a,b)=>sg(a-b,0)+' pb',true),
+      mini('S&amp;P Merval','merval','--s3',x=>nf(x,0),(a,b)=>pc(a/b-1,1)), mini('Reservas','reservas','--s4',x=>'US$ '+nf(x/1000,1)+' mil M',(a,b)=>sg(a-b,0)+' M')].join('');
+    const h = `<div class="vvh"><i></i>Argentina en vivo</div>
+      <div class="vv" id="pvCal"></div>
+      <div class="vv"><span class="lbl">Hora en Buenos Aires</span><span class="v" id="pvHora">—</span><span class="d" id="pvByma"></span></div>
+      <div class="vv"><span class="lbl">Habitantes, ahora</span><span class="v" id="pvHab">—</span><span class="d" id="pvHabD">Cargando…</span></div>
+      <div class="vv"><span class="lbl">Mientras mirás esta página</span><span class="v" id="pvPbi">—</span><span class="d" id="pvPbiD"></span></div>
+      ${sp ? `<div class="vv"><span class="lbl">El último mes</span><div class="pvs">${sp}</div></div>` : ''}`;
+    if(PV.h !== h){ PV.h = h; el.innerHTML = h; el.classList.remove('on'); PV.calH = '';
+      if('IntersectionObserver' in window){ PV.obs?.disconnect(); PV.obs = new IntersectionObserver(es=>{ if(es.some(x=>x.isIntersecting)){ el.classList.add('on'); PV.obs.disconnect(); } }, {threshold:.25}); PV.obs.observe(el); }
+      else el.classList.add('on'); }
+    pvTick(); if(!PV.timer) PV.timer = setInterval(pvTick, 1000);
+  }
+  function pvTick(){
+    const el = $('pVivo');
+    if(!el || el.offsetParent===null){ clearInterval(PV.timer); PV.timer = null; return; }
+    if(document.hidden) return;
+    const now = Date.now(), seg = (now-PV.t0)/1000, TZ = 'America/Argentina/Buenos_Aires', AN = 365.2425*864e5;
+    // 1. próximo dato oficial (calendario.json)
+    const ev = (cal?.eventos||[]).map(e=>[e, pvT(e)]).filter(x=>x[1] > now).sort((a,b)=>a[1]-b[1]);
+    let ch;
+    if(ev.length){ const [e,t] = ev[0], s = Math.floor((t-now)/1000), cel = [[Math.floor(s/86400),'días'],[Math.floor(s%86400/3600),'h'],[Math.floor(s%3600/60),'min'],[s%60,'seg']];
+      const dt = new Date(t-3*36e5), fecha = `${DSEM[dt.getUTCDay()]} ${String(dt.getUTCDate()).padStart(2,'0')}/${String(dt.getUTCMonth()+1).padStart(2,'0')}`;
+      const sig = ev.slice(1,4).map(([x,tx])=>`<div><span>${esc(x.n)}${x.p ? ' · '+esc(x.p) : ''}</span><b>${new Date(tx).toLocaleDateString('es-AR',{timeZone:TZ, day:'2-digit', month:'2-digit'})}</b></div>`).join('');
+      ch = `<span class="lbl">Próximo dato oficial · ${esc(e.org)}</span><div class="ucd vcd">${cel.map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`).join('')}</div>
+        <span class="d"><b style="color:var(--ink2);font-weight:600">${esc(e.n)}${e.p ? ' de '+esc(e.p.toLowerCase()) : ''}</b> · ${fecha}${e.h ? ', '+e.h+' h' : ''}${e.est||!e.h ? ' (hora estimada)' : ''}</span>${sig ? `<div class="pvl">${sig}</div>` : ''}`; }
+    else ch = `<span class="lbl">Próximo dato oficial</span><span class="v vsm">—</span><span class="d">Todavía no está cargado el calendario que viene.</span>`;
+    const pc_ = $('pvCal'); if(pc_ && PV.calH !== ch){ PV.calH = ch; pc_.innerHTML = ch; }
+    // 2. hora y BYMA
+    $('pvHora').textContent = new Date(now).toLocaleTimeString('es-AR',{timeZone:TZ, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+    const e = GEX.find(x=>x[0]==='BYMA'), es = e ? gEstado(e) : null;
+    const bt = es ? `<i class="${es.open?'on':'off'}" style="font-style:normal">${es.open?'● BYMA abierta':'○ BYMA cerrada'}</i>${es.txt ? ', '+esc(es.txt) : ''}` : '';
+    if($('pvByma').dataset.h !== bt){ $('pvByma').dataset.h = bt; $('pvByma').innerHTML = bt; }
+    // 3. habitantes y PBI (Banco Mundial, paises_extra.json)
+    const wb = pxD?.wb || {}, po = pbL(wb.pop?.ARG), gr = pbL(wb.popc?.ARG), pu = pbL(wb.pbiusd?.ARG);
+    if(po && gr){ const r = Math.log(1+gr[1]/100), n = po[1]*Math.exp(r*(now-Date.UTC(+po[0],6,1))/AN), cada = Math.abs(AN/1000/(n*r));
+      $('pvHab').textContent = nf(Math.round(n),0); $('pvHabD').textContent = `suma una persona cada ${cada<60 ? nf(cada,1)+' s' : nf(cada/60,1)+' min'} (estimado con el Banco Mundial, ${po[0]})`; }
+    if(pu){ const v = pu[1]/(AN/1000)*seg; $('pvPbi').textContent = 'US$ '+(v>=1e6 ? nf(v/1e6,2)+' millones' : nf(v,0)); $('pvPbiD').textContent = `produjo la economía argentina (PBI ${pu[0]}, Banco Mundial)`; }
   }
   // ---- noticias por país (noticias_paises.json) ----
   const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino', K:'canada', O:'colombia', T:'turquia', P:'peru', L:'polonia', I:'india', A:'arabia', Z:'suiza', W:'australia', Q:'corea', S:'sudafrica', N:'zelanda', Y:'indonesia', G:'noruega', V:'suecia', H:'tailandia', F:'malasia', D:'filipinas', IS:'islandia', HU:'hungria', HK:'hongkong', CZ:'chequia', DK:'dinamarca', RO:'rumania', IL:'israel', RS:'serbia', CN:'china', RU:'rusia'};

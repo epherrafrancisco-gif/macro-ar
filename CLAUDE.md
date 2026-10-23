@@ -32,6 +32,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   botón "Países · X" y título de `#here`; además `#here` lleva la bandera grande a la derecha, esfumada hacia
   la izquierda (`.here.conb` + `.hflag`, máscara con degradé; pedido del dueño: "un poquito más nacionalista"). No usar emojis de banderas (en Windows no se ven). País nuevo: sumarlo a `FLAG` y
   copiar su SVG, "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
+- Portada en la compu (≥901px): Argentina un tercio y El mundo dos tercios (`.split` 1fr/2fr; países en 3 columnas, todas
+  las fichas a la vista: pedido del dueño, "que se aprecie la cantidad"). Al final de Argentina, "Argentina en vivo"
+  (`#pVivo`, `pvStart`/`pvTick`, `PV`): cuenta regresiva al próximo dato oficial (`calendario.json`; sin hora = 16:00
+  estimada) y los 3 siguientes, hora de Buenos Aires con BYMA, habitantes y PBI mientras mirás (Banco Mundial, `wb` ARG) y
+  mini gráficos del último mes (MEP, riesgo, Merval, reservas) que se dibujan al aparecer. No va en celular ni ≤900px.
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
