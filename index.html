@@ -676,6 +676,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#india" role="tab" id="tabIn" data-g="pais" aria-selected="false">India</a>
       <a href="#arabia" role="tab" id="tabSa" data-g="pais" aria-selected="false">Arabia Saudita</a>
       <a href="#suiza" role="tab" id="tabSz" data-g="pais" aria-selected="false">Suiza</a>
+      <a href="#australia" role="tab" id="tabAu" data-g="pais" aria-selected="false">Australia</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -1629,9 +1630,46 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Empresas suizas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="szAccSt"></div><div class="heat" id="szAccH"></div><div class="stats det" id="szAccDet" hidden></div><div class="stats" id="szWs"></div><p class="note">Novartis, Roche, Nestlé, UBS, ABB, Alcon, Logitech y Garmin, más el fondo iShares MSCI Switzerland. Color según la variación del día. Con demora (CNBC).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Suiza</h2><span class="note" id="npZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suiza. En español se publica poco, así que se suman medios en inglés (Swissinfo y otros), marcados EN.</p><ul class="nwm" id="npZ"></ul><p class="note" id="npZF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Suiza</h2><span class="note" id="npZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suiza. En español se publica poco, así que se suman medios en inglés (The Local, Le News y finews.ch), marcados EN.</p><ul class="nwm" id="npZ"></ul><p class="note" id="npZF"></p></div>
     </div>
     <p class="note" id="szFuente"></p>
+  </section>
+
+  <!-- AUSTRALIA -->
+  <section class="view" id="vAu" hidden>
+    <div class="ukpis" id="auKpis"></div>
+    <div class="subtabs" id="gSubW" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el dólar australiano</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>La economía de los recursos</h2></div><p class="sub">Australia vive en buena parte de lo que saca de la tierra: mineral de hierro, carbón, gas y oro, que compra sobre todo China. Por eso su moneda sube y baja con los precios de las materias primas y con cómo le va a China. Estuvo casi 30 años seguidos sin recesión (de 1991 a 2020), tiene un sistema de jubilación privada obligatoria (la "super") que es de los fondos más grandes del mundo y las viviendas están entre las más caras del planeta. Es parecida a Argentina en una cosa: exporta recursos naturales; muy distinta en todo lo demás.</p><div class="stats" id="auDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Australia</h2><span class="note" id="auInfN"></span></div><div class="chart" id="chAuInf"></div><p class="note">Precios al consumidor (IPC de la Oficina de Estadística de Australia), variación en 12 meses, últimos 5 años. La meta del Banco de la Reserva de Australia es entre 2% y 3%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada trimestre</h2><span class="note" id="auMesN"></span></div><div class="chart" id="chAuMes"></div><p class="note">Cuánto subieron los precios en cada trimestre contra el anterior, últimos 4 años. El dato que publica el BIS para Australia es trimestral.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="auPbiN"></span></div><div class="chart" id="chAuPbi"></div><p class="note" id="auPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="auDesN"></span></div><div class="chart" id="chAuDes"></div><p class="note" id="auDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Australia contra Argentina</h2><div class="legend" id="lgAuAr"></div></div><div class="chart" id="chAuAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Banco de la Reserva de Australia contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chAuTasa"></div><p class="note">Azul: tasa oficial (cash rate) del Banco de la Reserva de Australia (RBA). Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Banco de la Reserva de Australia</h2><span class="note" id="auBcN"></span></div><div class="tw"><table class="gcmp" id="auBc"></table></div><p class="note">El RBA decide ocho veces por año en reuniones de dos días y anuncia el segundo día a las 14:30 de Sídney.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno australiano a 10 años</h2><span class="note" id="auBonN"></span></div><p class="sub">Lo que paga Australia por endeudarse a 10 años en dólares australianos, contra el bono a 10 años de EE.UU. en dólares.</p><div class="stats" id="auBonSt"></div><div class="chart" id="chAuBon"></div><div class="legend" id="lgAuBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>El dólar australiano</h2><span class="note">En dólares estadounidenses</span></div><div class="chart" id="chAuUsd"></div><p class="note">Cuántos dólares estadounidenses vale un dólar australiano, como se cotiza en Australia. Si sube, la moneda australiana se fortalece. Suele moverse con el precio del hierro, del cobre y con el ánimo de los mercados. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Un dólar australiano en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chAuArs"></div><p class="note">Cuántos pesos argentinos vale un dólar australiano: dólar mayorista argentino por lo que vale el dólar australiano en dólares, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bolsa de Sídney: S&amp;P/ASX 200</h2><span class="note" id="auIdxN"></span></div><div class="chart" id="chAuIdx"></div><p class="note">Las 200 empresas más grandes de la bolsa australiana (ASX), con mucho peso de bancos y mineras. En dólares australianos. Con demora (CNBC).</p></div>
+      <div class="card"><div class="head"><h2>Empresas australianas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="auAccSt"></div><div class="heat" id="auAccH"></div><div class="stats det" id="auAccDet" hidden></div><div class="stats" id="auWs"></div><p class="note">BHP y Rio Tinto (minería), Woodside (gas), James Hardie (materiales) y Atlassian (software, nacida en Sídney), más el fondo iShares MSCI Australia. Color según la variación del día. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Australia</h2><span class="note" id="npWN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Australia. En español se publica poco, así que se suman medios australianos en inglés (ABC, The Guardian Australia, The Conversation, SBS), marcados EN.</p><ul class="nwm" id="npW"></ul><p class="note" id="npWF"></p></div>
+    </div>
+    <p class="note" id="auFuente"></p>
   </section>
 
   <section class="view" id="vW" hidden>
@@ -2312,6 +2350,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     {k:'TRY', one:'Una lira', d:'Turquía', n:'liras', s:'₺', q:()=>glob?.turquia?.try, h:'fx_try'},
     {k:'PLN', one:'Un zloty', d:'Polonia', n:'zlotys', s:'zł', q:()=>glob?.polonia?.pln || glob?.monedas?.PLN, h:'fx_pln'},
     {k:'INR', one:'Cien rupias', d:'India', n:'rupias', s:'₹', q:()=>glob?.india?.inr || glob?.monedas?.INR, h:'fx_inr'},
+    {k:'AUD', one:'Un dólar australiano', d:'Australia', n:'dólares australianos', s:'A$', inv:true, q:()=>glob?.australia?.aud || glob?.monedas?.AUD, h:'fx_aud'},
     {k:'CHF', one:'Un franco suizo', d:'Suiza', n:'francos suizos', s:'CHF', q:()=>glob?.suiza?.chf || glob?.monedas?.CHF, h:'fx_chf'},
     {k:'SAR', one:'Un riyal', d:'Arabia Saudita', n:'riyales', s:'SAR', q:()=>glob?.arabia?.sar || glob?.monedas?.SAR}];
   const VIA_K = [['tarjeta','Tarjeta'],['mep','MEP'],['blue','Blue'],['cripto','Cripto']];
@@ -3117,7 +3156,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','actividad','ganaderia','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
@@ -3144,6 +3183,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     peru:'<path d="M4 19l5-9 3 5 2-3 6 7z"/><circle cx="16" cy="7" r="2"/>',
     india:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v6M12 14v6M4 12h6M14 12h6M6.3 6.3l4.3 4.3M13.4 13.4l4.3 4.3M17.7 6.3l-4.3 4.3M10.6 13.4l-4.3 4.3"/>',
     suiza:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>',
+    australia:'<path d="M4 9l4-3 4 1 3-2 5 4-1 6-4 3-4-1-3 2-3-3z"/><circle cx="17" cy="20" r="1"/>',
     arabia:'<path d="M4 20h16"/><path d="M7 20V9l2-3 2 3v11M13 20v-7h5v7"/><path d="M9 3v3"/>',
     polonia:'<path d="M4 18h16l-1.2-9-3.8 3.2L12 6l-3 6.2L5.2 9z"/><path d="M5 20.5h14"/>'};
   const SECC = {
@@ -3169,6 +3209,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     turquia:['Turquía','La lira, tasas altísimas, la inflación y la comparación con Argentina'],
     peru:['Perú','El sol, el BCRP, la inflación y la bolsa'],
     india:['India','La rupia, el Banco de la Reserva, la inflación y el Nifty'],
+    australia:['Australia','El dólar australiano, el RBA, los minerales y la bolsa de Sídney'],
     suiza:['Suiza','El franco, el Banco Nacional Suizo, la inflación casi nula y la bolsa de Zúrich'],
     arabia:['Arabia Saudita','El petróleo, el riyal atado al dólar y la bolsa de Riad'],
     polonia:['Polonia','El zloty, el Banco Nacional, la inflación y 35 años contra Argentina'],
@@ -3177,8 +3218,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza'].map(k=>tile(k)).join('');
-  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza'];
+  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia'].map(k=>tile(k)).join('');
+  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia'];
   const PAISES_M = ['eeuu', ...PAISES_T];  // menú Países: EE.UU. y Polonia primero (pedido del dueño); EE.UU. es una vista de la pestaña global
   function paisPanel(on){ $('paisPanel').hidden = !on; $('tabPaises').setAttribute('aria-expanded', String(on)); }
   $('tabPaises').addEventListener('click', ()=>{ paisPanel($('paisPanel').hidden); gcUna('menu-paises'); });
@@ -3215,7 +3256,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['ganaderia','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza'].includes(tab);
+    $('segRange').hidden = ['ganaderia','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
@@ -3403,7 +3444,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza();
+    renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -3546,7 +3587,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gListas(){
     $('gBolsas').innerHTML = GEX.map(e=>{ const s = gEstado(e), b = glob?.bolsas?.[e[0].split(' ')[0]], p = gpc(b);
       return `<div><span>${e[0]} <span class="gst ${s.open?'on':'off'}">${s.open?'ABIERTA':'CERRADA'}</span><small>${e[1]} · ${s.hora} h · ${s.txt}</small></span><span>${b ? `${esc(b.idx)}<small>${nf(b.v, b.v<1000?2:0)}</small>` : '<small>—</small>'}</span><span class="${p==null?'geq':p>0?'gup':p<0?'gdn':'geq'}">${p==null?'':(p>0?'▲ ':p<0?'▼ ':'')+sg(p,2)+'%'}${b ? `<small>${s.open?'en vivo':'último cierre'}</small>` : ''}</span></div>`; }).join('');
-    const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía'],['POL','Banco Nacional de Polonia'],['SAU','Banco Central de Arabia Saudita'],['CHE','Banco Nacional Suizo']];
+    const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía'],['POL','Banco Nacional de Polonia'],['SAU','Banco Central de Arabia Saudita'],['CHE','Banco Nacional Suizo'],['AUS','Banco de la Reserva de Australia']];
     const ps = glob?.paises || {};
     $('gBcs').innerHTML = BC.filter(([i])=>ps[i]?.tasa!=null).map(([i,n])=>{ const p = ps[i], d = p.tasa_prev==null ? 0 : p.tasa-p.tasa_prev;
       return `<div><span>${n}<small>${p.tasa_cambio ? 'Último cambio: '+fd(p.tasa_cambio) : 'Sin cambios en los últimos dos años'}</small></span><span>${nf(p.tasa,2)}%</span><span class="${d<0?'gup':d>0?'gdn':'geq'}">${d<0?'▼ bajó '+nf(-d,2):d>0?'▲ subió '+nf(d,2):'='}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
@@ -3704,7 +3745,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza();
+    gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -3736,13 +3777,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ['COL','Banco de la República (Colombia)',['2026-10-30','2026-12-18']],
     ['TUR','Banco Central de Turquía',['2026-10-22','2026-12-10','2027-01-21','2027-03-18','2027-04-22','2027-06-10']],
     ['POL','Banco Nacional de Polonia',['2026-01-14','2026-02-04','2026-03-04','2026-04-09','2026-05-06','2026-06-10','2026-07-08','2026-09-02','2026-10-07','2026-11-04','2026-12-02']],
+    ['AUS','Banco de la Reserva de Australia',['2026-11-03','2026-12-08','2027-02-09','2027-03-23','2027-05-04','2027-06-22','2027-08-10','2027-09-28','2027-11-02','2027-12-14']],
     ['CHE','Banco Nacional Suizo',['2026-12-10','2027-03-18','2027-06-24','2027-09-23','2027-12-16']],
     ['IND','Banco de la Reserva de India',['2026-12-04','2027-02-05']],
     ['CHL','Banco Central de Chile',['2026-10-27','2026-12-15','2027-01-26','2027-03-30','2027-04-27','2027-06-15','2027-07-27','2027-08-31','2027-10-26','2027-12-14']]];
   const GPA = {ARG:'Argentina',BRA:'Brasil',CHL:'Chile',URY:'Uruguay',PRY:'Paraguay',BOL:'Bolivia',PER:'Perú',COL:'Colombia',MEX:'México',VEN:'Venezuela',ECU:'Ecuador',
     USA:'EE.UU.',CAN:'Canadá',GBR:'Reino Unido',DEU:'Alemania',FRA:'Francia',ITA:'Italia',ESP:'España',CHE:'Suiza',JPN:'Japón',CHN:'China',IND:'India',KOR:'Corea del Sur',
     AUS:'Australia',ZAF:'Sudáfrica',TUR:'Turquía',POL:'Polonia',IDN:'Indonesia',SAU:'Arabia Saudita',RUS:'Rusia',EGY:'Egipto',NGA:'Nigeria'};
-  const DPA_P = ['ARG','BRA','CHL','URY','PRY','PER','COL','MEX','USA','CAN','GBR','DEU','ESP','JPN','CHN','IND','SAU','TUR','POL','CHE'];
+  const DPA_P = ['ARG','BRA','CHL','URY','PRY','PER','COL','MEX','USA','CAN','GBR','DEU','ESP','JPN','CHN','IND','SAU','TUR','POL','CHE','AUS'];
   let dpaSel = 'infl', gNwSel = '';
   const hoyAR = () => new Date().toLocaleDateString('en-CA', {timeZone:'America/Argentina/Buenos_Aires'});
   function gMundoExtra(){
@@ -3773,7 +3815,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       desemp:['Desempleo', 'Más alto arriba', ()=>DPA_P.map(i=>[i, val(i,'desemp')]), v=>nf(v,1)+'%'],
       tasa:['Tasa del banco central', 'Más alta arriba', ()=>DPA_P.map(i=>[i, val(i,'tasa')]), v=>nf(v,2)+'%'],
       bolsa:['Bolsa en dólares en el año', 'La que más rindió arriba', ()=>[['ARG',mervUsd],['USA',gHist?gYtd(gSerie('spx')):null],['BRA',ytdUsd('bvsp','fx_brl')],['DEU',ytdUsd('dax','fx_eur',true)],['CHN',ytdUsd('shanghai','fx_cny')]], v=>sg(v,1)+'%'],
-      moneda:['Moneda contra el dólar en el año', 'La que más se fortaleció arriba', ()=>[['ARG',monY('fx_ars')],['BRA',monY('fx_brl')],['CHL',monY('fx_clp')],['MEX',monY('fx_mxn')],['COL',monY('fx_cop')],['PER',monY('fx_pen')],['URY',monY('fx_uyu')],['CHN',monY('fx_cny')],['DEU',monY('fx_eur',true)],['POL',monY('fx_pln')],['IND',monY('fx_inr')],['CHE',monY('fx_chf')]], v=>sg(v,1)+'%']};
+      moneda:['Moneda contra el dólar en el año', 'La que más se fortaleció arriba', ()=>[['ARG',monY('fx_ars')],['BRA',monY('fx_brl')],['CHL',monY('fx_clp')],['MEX',monY('fx_mxn')],['COL',monY('fx_cop')],['PER',monY('fx_pen')],['URY',monY('fx_uyu')],['CHN',monY('fx_cny')],['DEU',monY('fx_eur',true)],['POL',monY('fx_pln')],['IND',monY('fx_inr')],['CHE',monY('fx_chf')],['AUS',monY('fx_aud',true)]], v=>sg(v,1)+'%']};
     $('dpaSel').innerHTML = Object.entries(DPA).map(([k,[n]])=>`<button type="button" data-k="${k}" aria-pressed="${k===dpaSel}">${n}</button>`).join('');
     $('dpaSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ dpaSel = b.dataset.k; gc('donde-argentina-'+dpaSel, true); gMundoExtra(); }));
     if((dpaSel==='bolsa' || dpaSel==='moneda') && !gHist) loadHist();
@@ -5008,6 +5050,60 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('saFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del SAMA, riyal e inflación), OCDE y Banco Mundial (PBI, desempleo, población); petróleo y fondo: CNBC, con demora. ${pbAct(C)}`;
   }
 
+  // ---- Australia (australia.json; el BIS da dólares australianos por dólar y CNBC lo contrario: se usa US$ por dólar australiano) ----
+  let auAccSel = null;
+  function renderAustralia(){
+    aplicarSub('W');
+    const C = PB_D.australia; if(!C){ loadPB('australia','australia',renderAustralia); $('auKpis').innerHTML = '<div class="empty">Cargando datos de Australia…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const u = v => v>1 ? 1/v : v, m = new Map((C.usd||[]).map(p=>[p[0], u(p[1])]));
+    for(const p of (gHist?.series?.fx_aud || [])) m.set(p[0], u(p[1]));
+    const mq = glob?.australia?.aud || glob?.monedas?.AUD, mf = mq?.t ? String(mq.t).slice(0,10) : null; if(mq && mf) m.set(mf, u(mq.v));
+    const fx = [...m].sort((a,b)=>a[0]<b[0]?-1:1), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const may = new Map(days.filter(d=>get(d,'mayorista')).map(d=>[d.fecha, get(d,'mayorista')])), ars = fx.filter(p=>may.has(p[0])).map(p=>[p[0], may.get(p[0])*p[1]]), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual), ax = glob?.bolsas?.ASX;
+    const bc = BCAL.find(b=>b[0]==='AUS'), prox = bc ? bc[2].find(f=>f>=hoyAR()) : null, dpx = prox ? Math.round((T(prox)-T(hoyAR()))/864e5) : null;
+    $('auKpis').innerHTML = pbSt('Un dólar australiano', fl ? 'US$ '+nf(fl[1],4) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]<fp[1] ? 'dn' : 'up')
+      + pbSt('Un dólar australiano en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del RBA', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'cash rate')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? `en 12 meses, ${Math.ceil(+inf[0].slice(5,7)/3)}.º trim. ${inf[0].slice(0,4)}` : '', inf && inf[1]>3 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + pbSt('S&P/ASX 200', ax ? nf(ax.v,0) : '—', ax ? sg(gpc(ax),2)+'% en el día' : 'Bolsa de Sídney', ax && gpc(ax)>0 ? 'up' : ax && gpc(ax)<0 ? 'dn' : '');
+    const sub = SUBS.W[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('auDatSt').innerHTML = pbDat('AUS');
+      // el IPC de Australia que da el BIS es trimestral (repite el valor los tres meses): se toma el último mes de cada trimestre
+      const ti = (C.ipc_ind||[]).filter(p=>/-(03|06|09|12)$/.test(p[0])), tq = ti.map((p,i)=>i ? [p[0], (p[1]/ti[i-1][1]-1)*100] : null).filter(Boolean).slice(-16);
+      const trq = f => `${Math.ceil(+f.slice(5,7)/3)}.º trim. ${f.slice(0,4)}`;
+      pbInfl(C, 'Au', 'Australia', []);
+      if(tq.length){ barChart($('chAuMes'), [{n:'Inflación del trimestre', c:'--s1', pts:tq}], {aria:'Inflación trimestral de Australia', kfmt:k=>`T${Math.ceil(+k.slice(5,7)/3)} ${k.slice(2,4)}`, yfmt:v=>nf(v,1)+'%', vfmt:v=>sg(v,2)+'%'}); $('auMesN').textContent = trq(pbL(tq)[0])+': '+sg(pbL(tq)[1],2)+'%'; }
+      if(inf) $('auInfN').textContent = `${trq(inf[0])}: ${nf(inf[1],1)}%`;
+      pbPbi(C, 'Au', 'Australia', 'la Oficina de Estadística de Australia'); pbDes(C, 'Au', 'Australia', 'la Oficina de Estadística de Australia');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgAuAr'), [{n:'Australia', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chAuAr'), [{n:'Australia', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Australia y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'Au', 'el RBA', prox);
+      const GB = glob?.bonos || {}, b10 = GB.AUS, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('auBonSt').innerHTML = bst('Australia 10 años', b10, 'en dólares australianos') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Australia contra EE.UU.</span></div>` : '');
+      $('auBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.au10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Australia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgAuBon'), bs);
+      if(s1.length) lineChart($('chAuBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Australia y EE.UU.'});
+      else $('chAuBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chAuUsd'), [{n:'US$ por dólar australiano', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'US$ '+nf(v,4), aria:'Dólar australiano en dólares'});
+      if(ars.length) lineChart($('chAuArs'), [{n:'Un dólar australiano en pesos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Un dólar australiano en pesos'});
+      pbBolsa('chAuIdx', 'auIdxN', gHist?.series?.asx || [], 'S&P/ASX 200', 'pts');
+      gHeat('auAccH', 'auAccSt', glob?.acciones?.aus, auAccSel, s=>{ auAccSel = auAccSel===s ? null : s; renderAustralia(); });
+      gDetalle('auAccDet', auAccSel && (glob?.acciones?.aus||[]).find(x=>x.s===auAccSel));
+      const x = glob?.australia?.ewa; $('auWs').innerHTML = x ? (()=>{ const p = gpc(x); return `<div class="st"><span class="lbl">EWA · iShares MSCI Australia</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; })() : '';
+    }
+    $('auFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de la Reserva de Australia, moneda e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
   // ---- "En vivo" en cada país: cuenta regresiva al banco central, reloj, población y lo que produce mientras mirás ----
   // bc: [ISO de BCAL, hora del anuncio, zona horaria, nombre, aproximada]; ex: bolsa de GEX
   const VIVO = {
@@ -5025,6 +5121,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     L:{iso:'POL', ciudad:'Varsovia', tz:'Europe/Warsaw', ex:'GPW', nom:'Polonia', bc:['POL','15:00','Europe/Warsaw','Banco Nacional de Polonia',1]},
     I:{iso:'IND', ciudad:'Nueva Delhi', tz:'Asia/Kolkata', ex:'NSE', nom:'India', bc:['IND','10:00','Asia/Kolkata','Banco de la Reserva de India']},
     Z:{iso:'CHE', ciudad:'Zúrich', tz:'Europe/Zurich', ex:'SIX', nom:'Suiza', bc:['CHE','09:30','Europe/Zurich','Banco Nacional Suizo']},
+    W:{iso:'AUS', ciudad:'Sídney', tz:'Australia/Sydney', ex:'ASX', nom:'Australia', bc:['AUS','14:30','Australia/Sydney','Banco de la Reserva de Australia']},
     A:{iso:'SAU', ciudad:'Riad', tz:'Asia/Riyadh', ex:'Tadawul', nom:'Arabia Saudita', bc:['USA','14:00','America/New_York','SAMA',0,'anuncia minutos después de la Fed']}};
   const VV = {k:null, t0:0, timer:null};
   // diferencia de una zona horaria con UTC, en milisegundos
@@ -5070,7 +5167,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(el.dataset.h !== h){ el.dataset.h = h; el.innerHTML = h; }
   }
   // ---- noticias por país (noticias_paises.json) ----
-  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino', K:'canada', O:'colombia', T:'turquia', P:'peru', L:'polonia', I:'india', A:'arabia', Z:'suiza'};
+  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino', K:'canada', O:'colombia', T:'turquia', P:'peru', L:'polonia', I:'india', A:'arabia', Z:'suiza', W:'australia'};
   let npData = null, npLoading = false, npAt = 0;
   async function loadNP(k){
     if(npLoading) return; npLoading = true;
@@ -5086,11 +5183,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés de la última semana, marcados EN.' : ''}` : '';
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
-  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia'], I:['gSubI','vIn','economia'], A:['gSubA','vSa','economia'], Z:['gSubZ','vSz','economia']};
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia'], I:['gSubI','vIn','economia'], A:['gSubA','vSa','economia'], Z:['gSubZ','vSz','economia'], W:['gSubW','vAu','economia']};
   const SUBS_DEF = Object.fromEntries(Object.entries(SUBS).map(([k,v])=>[k, v[2]]));  // primer apartado de cada sección (no se recuerda el último)
   // ---- datos que se suman a todos los países (paises_extra.json: Banco Mundial, OCDE, BIS y Big Mac) ----
-  const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL', I:'IND', A:'SAU', Z:'CHE'};
-  const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', IND:'India', SAU:'Arabia Saudita', CHE:'Suiza', ARG:'Argentina'};
+  const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL', I:'IND', A:'SAU', Z:'CHE', W:'AUS'};
+  const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', IND:'India', SAU:'Arabia Saudita', CHE:'Suiza', AUS:'Australia', ARG:'Argentina'};
   const PX_SUB = {U:{economia:'economia', tasas:'tasas', wall:'mercados'}};
   let pxD = null, pxLoading = false;
   async function loadPx(){
@@ -5197,13 +5294,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0);
     if(VIVO[k]) vvMount(k); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
-    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else if(k==='W') renderAustralia(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
-  const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú'],['POL','Polonia'],['IND','India'],['SAU','Arabia Saudita'],['CHE','Suiza']];
-  const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru', POL:'polonia', IND:'india', SAU:'arabia', CHE:'suiza'};
-  const CMP_FX = {ARG:['fx_ars'], BRA:['fx_brl'], EUR:['fx_eur',1], MEX:['fx_mxn'], CHL:['fx_clp'], JPN:['fx_jpy'], GBR:['fx_gbp',1], CAN:['fx_cad'], COL:['fx_cop'], TUR:['fx_try'], PER:['fx_pen'], POL:['fx_pln'], IND:['fx_inr'], CHE:['fx_chf']};
-  const CMP_BX = {USA:['spx','S&P 500'], BRA:['bvsp','Bovespa'], EUR:['sx5e','Euro Stoxx 50'], MEX:['mxx','IPC México'], CHL:['ech','ETF de Chile',1], JPN:['nikkei','Nikkei'], GBR:['ftse','FTSE 100'], CAN:['tsx','S&P/TSX'], COL:['colcap','COLCAP'], TUR:['xu100','BIST 100'], PER:['epu','ETF de Perú',1], POL:['wig20','WIG20'], IND:['nifty','Nifty 50'], SAU:['tasi','Tadawul'], CHE:['smi','SMI']};
+  const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú'],['POL','Polonia'],['IND','India'],['SAU','Arabia Saudita'],['CHE','Suiza'],['AUS','Australia']];
+  const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru', POL:'polonia', IND:'india', SAU:'arabia', CHE:'suiza', AUS:'australia'};
+  const CMP_FX = {ARG:['fx_ars'], BRA:['fx_brl'], EUR:['fx_eur',1], MEX:['fx_mxn'], CHL:['fx_clp'], JPN:['fx_jpy'], GBR:['fx_gbp',1], CAN:['fx_cad'], COL:['fx_cop'], TUR:['fx_try'], PER:['fx_pen'], POL:['fx_pln'], IND:['fx_inr'], CHE:['fx_chf'], AUS:['fx_aud',1]};
+  const CMP_BX = {USA:['spx','S&P 500'], BRA:['bvsp','Bovespa'], EUR:['sx5e','Euro Stoxx 50'], MEX:['mxx','IPC México'], CHL:['ech','ETF de Chile',1], JPN:['nikkei','Nikkei'], GBR:['ftse','FTSE 100'], CAN:['tsx','S&P/TSX'], COL:['colcap','COLCAP'], TUR:['xu100','BIST 100'], PER:['epu','ETF de Perú',1], POL:['wig20','WIG20'], IND:['nifty','Nifty 50'], SAU:['tasi','Tadawul'], CHE:['smi','SMI'], AUS:['asx','S&P/ASX 200']};
   const CMP = {}, cmpCarg = {};
   let cmpSel = ['ARG','BRA'];
   try{ const v = JSON.parse(localStorage.getItem('cmp-sel')||'null'); if(Array.isArray(v) && v.length===2 && v.every(x=>CMP_P.some(p=>p[0]===x))) cmpSel = v; }catch(e){}
@@ -5231,7 +5328,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         pick(i, g?.tasa!=null ? [g.tasa_al, g.tasa] : null, u, D.pbi?.length ? [cL(D.pbi)[1], `PBI ${cL(D.pbi)[0].slice(-1)}º trim, anualizado`] : null); }
       else if(iso==='BRA'){ const ib = cYoY(D.ibc); pick(cL(D.ipca_12)?.[0] ? [cL(D.ipca_12)[0].slice(0,7), cL(D.ipca_12)[1]] : null, cL(D.selic), cL(D.desemp) ? [cL(D.desemp)[0].slice(0,7), cL(D.desemp)[1]] : null, ib ? [ib[1], 'actividad (IBC-Br), '+mesTxt(ib[0].slice(0,7))] : null); }
       else if(iso==='EUR'){ const pa = cL(D.pbi_anual?.EA); pick(cL(D.infl?.EA), cL(D.bce), cL(D.desemp?.EA), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
-      else if(iso==='IND' || iso==='SAU' || iso==='CHE'){ const pa = cL(D.pbi_anual), ca = cL(D.crec_anual), da = cL(D.desemp_anual);
+      else if(iso==='IND' || iso==='SAU' || iso==='CHE' || iso==='AUS'){ const pa = cL(D.pbi_anual), ca = cL(D.crec_anual), da = cL(D.desemp_anual);
         pick(cL(D.infl), cL(D.tasa), cL(D.desemp) || (da ? [da[0], da[1]] : null), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : ca ? [ca[1], 'PBI del año '+ca[0]] : null); }
       else if(iso==='PER'){ const pb = cL(D.pbi); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pb ? [pb[1], 'PBI mensual interanual, '+mesTxt(pb[0])] : null); if(o.desemp) o.desemp[1] += ' (Lima)'; }
       else { const pa = cL(D.pbi_anual); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
@@ -5275,7 +5372,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const xpMon = iso => { const c = xpCur(iso); if(!c) return null; if(c==='JPY'){ const m = glob?.japon?.jpy; return m?.prev ? -(m.v/m.prev-1)*100 : null; }
     if(c==='GBP'){ const m = glob?.reino?.gbp; return m?.prev ? (m.v/m.prev-1)*100 : null; } return dgMon(c); };
   const xpInfl = iso => gval(iso,'infl');
-  const XP_BK = {USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech', POL:'wig20', IND:'nifty', SAU:'tasi', CHE:'smi'};
+  const XP_BK = {USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech', POL:'wig20', IND:'nifty', SAU:'tasi', CHE:'smi', AUS:'asx'};
   const XP_MK = {ARG:'fx_ars', BRA:'fx_brl', CHL:'fx_clp', MEX:'fx_mxn', COL:'fx_cop', PER:'fx_pen', URY:'fx_uyu', CHN:'fx_cny', DEU:'fx_eur', JPN:'fx_jpy', GBR:'fx_gbp', POL:'fx_pln', IND:'fx_inr', CHE:'fx_chf'};
   const XP_BO = {USA:'t10', DEU:'de10', ITA:'it10', FRA:'fr10', ESP:'es10', MEX:'mx10', CHL:'cl10', JPN:'jp10', GBR:'gb10'};
   // escenas: [clave, título, bajada, valor(iso), tipo, máximo de altura, formato, color de países, a quién se acerca, serie para el mini gráfico]
