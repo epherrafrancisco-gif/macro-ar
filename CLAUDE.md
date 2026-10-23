@@ -29,7 +29,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
-  botón "Países · X" y título de `#here`. No usar emojis de banderas (en Windows no se ven). País nuevo: sumarlo a `FLAG` y
+  botón "Países · X" y título de `#here`; además `#here` lleva la bandera grande a la derecha, esfumada hacia
+  la izquierda (`.here.conb` + `.hflag`, máscara con degradé; pedido del dueño: "un poquito más nacionalista"). No usar emojis de banderas (en Windows no se ven). País nuevo: sumarlo a `FLAG` y
   copiar su SVG, "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
