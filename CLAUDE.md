@@ -31,7 +31,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 20 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 25 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -241,6 +241,20 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Yakarta, aproximada). Desempleo de los dos: anual del Banco Mundial. NZX y IDX en `GEX`.
 - Noticias en inglés: RNZ y NZ Herald; Antara (`business-investment.xml` y `news.xml`). Jakarta Post 404, Jakarta Globe 403.
 
+### Noruega, Suecia, Tailandia, Malasia y Filipinas (`#noruega` `vNo` `SUBS.G`; `#suecia` `vSe` `SUBS.V`; `#tailandia` `vTh` `SUBS.H`; `#malasia` `vMy` `SUBS.F`; `#filipinas` `vPh` `SUBS.D`)
+- Robots `scripts/{noruega,suecia,tailandia,malasia,filipinas}.py` (base `pais_bis.py`); en la página, mismo armado que
+  Corea (`render{Pais}`), con la lista de fondos y ADR en `#{pre}Ws` en vez del mapa de calor. Bolsas: `bolsas.OSE`
+  (`.OSEBX`, historia `osebx`), `OMX` (`.OMXS30`, `omxs30`), `SET` (`.SETI`, `seti`), `KLSE` (`.KLSE`, `klci`), `PSE` (`.PSI`,
+  `psei`); fondos NORW, EWD, THD, EWM, EPHE; ADR EQNR, ERIC, SPOT, PHI. Bonos: CNBC trae SE10Y-SE y TH10Y; los de Noruega,
+  Malasia y Filipinas no (la tarjeta se oculta sola si no hay bono ni historia).
+- `BCAL`: NOR (oficial hasta dic-2027, 10:00 Oslo), SWE (hasta mar-2027, 9:30 Estocolmo), THA (2026, ~14:00 Bangkok),
+  MYS (5/11/2026, 15:00 Kuala Lumpur). PENDIENTE: completar 2027 de SWE, THA y MYS cuando se publiquen. Filipinas no tiene:
+  `VIVO.D.nocal` muestra el aviso. Bolsas OSE, OMX, SET, KLSE y PSE en `GEX`.
+- La OCDE corta con 429 si se le pide mucho seguido: `pais_bis.get` espera 25 s por intento ante un 429; si igual falla,
+  queda el dato anterior y se completa en la corrida siguiente.
+- Noticias en inglés: The Local (Noruega y Suecia), Bangkok Post, The Nation, The Star, Free Malaysia Today, Malay Mail,
+  Inquirer, BusinessWorld y Philstar.
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -250,7 +264,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 20 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 25 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;

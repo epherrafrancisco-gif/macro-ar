@@ -24,7 +24,8 @@ def get(url, accept="*/*", tries=3, timeout=90):
                 return r.read().decode("utf-8", "replace")
         except Exception as e:  # noqa: BLE001
             last = e
-            time.sleep(3 * (i + 1))
+            # la OCDE corta con 429 si se le pide mucho seguido: se espera más antes de reintentar
+            time.sleep((25 if "429" in str(e) else 3) * (i + 1))
     raise last
 
 

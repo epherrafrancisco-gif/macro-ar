@@ -681,6 +681,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#sudafrica" role="tab" id="tabZa" data-g="pais" aria-selected="false">Sudáfrica</a>
       <a href="#zelanda" role="tab" id="tabNz" data-g="pais" aria-selected="false">Nueva Zelanda</a>
       <a href="#indonesia" role="tab" id="tabId" data-g="pais" aria-selected="false">Indonesia</a>
+      <a href="#noruega" role="tab" id="tabNo" data-g="pais" aria-selected="false">Noruega</a>
+      <a href="#suecia" role="tab" id="tabSe" data-g="pais" aria-selected="false">Suecia</a>
+      <a href="#tailandia" role="tab" id="tabTh" data-g="pais" aria-selected="false">Tailandia</a>
+      <a href="#malasia" role="tab" id="tabMy" data-g="pais" aria-selected="false">Malasia</a>
+      <a href="#filipinas" role="tab" id="tabPh" data-g="pais" aria-selected="false">Filipinas</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
       <button type="button" data-r="30">1M</button>
@@ -1824,6 +1829,191 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <p class="note" id="ioFuente"></p>
   </section>
 
+  <!-- NORUEGA -->
+  <section class="view" id="vNo" hidden>
+    <div class="ukpis" id="noKpis"></div>
+    <div class="subtabs" id="gSubG" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y la corona</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>El país que ahorró el petróleo</h2></div><p class="sub">Noruega encontró petróleo en el Mar del Norte a fines de los 60 y, en vez de gastarlo, lo puso en un fondo que invierte en todo el mundo: hoy es el fondo soberano más grande del planeta, con más de un billón y medio de dólares (cientos de miles por cada noruego). El gobierno solo puede gastar por año una parte chica de lo que rinde. Es el caso opuesto a gastarse la bonanza de los recursos: por eso se lo estudia tanto. Su moneda, la corona, se mueve con el precio del petróleo y del gas.</p><div class="stats" id="noDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Noruega</h2><span class="note" id="noInfN"></span></div><div class="chart" id="chNoInf"></div><p class="note">Precios al consumidor (IPC de Statistics Norway), variación en 12 meses, últimos 5 años. La meta del Banco de Noruega (Norges Bank) es 2%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="noMesN"></span></div><div class="chart" id="chNoMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="noPbiN"></span></div><div class="chart" id="chNoPbi"></div><p class="note" id="noPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="noDesN"></span></div><div class="chart" id="chNoDes"></div><p class="note" id="noDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Noruega contra Argentina</h2><div class="legend" id="lgNoAr"></div></div><div class="chart" id="chNoAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Banco de Noruega contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chNoTasa"></div><p class="note">Azul: tasa de referencia del Banco de Noruega. Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Banco de Noruega</h2><span class="note" id="noBcN"></span></div><div class="tw"><table class="gcmp" id="noBc"></table></div><p class="note">El Banco de Noruega decide ocho veces por año y anuncia a las 10:00 de Oslo.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno a 10 años</h2><span class="note" id="noBonN"></span></div><p class="sub">Lo que paga Noruega por endeudarse a 10 años en coronas, contra el bono a 10 años de EE.UU. en dólares. El Estado casi no necesita deuda: la emite sobre todo para que exista un mercado de bonos en coronas.</p><div class="stats" id="noBonSt"></div><div class="chart" id="chNoBon"></div><div class="legend" id="lgNoBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Coronas noruegas contra el dólar</h2><span class="note">Coronas noruegas por dólar</span></div><div class="chart" id="chNoUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Una corona noruega en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chNoArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas noruegas por dólar, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>La bolsa de Oslo</h2><span class="note" id="noIdxN"></span></div><div class="chart" id="chNoIdx"></div><p class="note" id="noIdxT"></p></div>
+      <div class="card"><div class="head"><h2>Noruega en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="noWs"></div><p class="note">El fondo de acciones noruegas y Equinor, la petrolera estatal, que cotiza en Nueva York. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Noruega</h2><span class="note" id="npGN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Noruega. En español casi no hay, así que se suman medios en inglés (The Local Noruega, entre otros), marcados EN.</p><ul class="nwm" id="npG"></ul><p class="note" id="npGF"></p></div>
+    </div>
+    <p class="note" id="noFuente"></p>
+  </section>
+
+  <!-- SUECIA -->
+  <section class="view" id="vSe" hidden>
+    <div class="ukpis" id="seKpis"></div>
+    <div class="subtabs" id="gSubV" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y la corona</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>El banco central más antiguo del mundo</h2></div><p class="sub">El Riksbank existe desde 1668. Suecia tuvo una crisis bancaria grave a principios de los 90 (con tasas de hasta 500% por unos días para defender la corona), la salió estatizando bancos y ordenando las cuentas, y desde entonces es un ejemplo de estabilidad. Exporta mucho: Volvo, Ericsson, IKEA, H&M, Spotify. Entre 2015 y 2019 tuvo la tasa de interés negativa.</p><div class="stats" id="seDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Suecia</h2><span class="note" id="seInfN"></span></div><div class="chart" id="chSeInf"></div><p class="note">Precios al consumidor (IPC de Statistics Sweden), variación en 12 meses, últimos 5 años. La meta del Riksbank es 2%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="seMesN"></span></div><div class="chart" id="chSeMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="sePbiN"></span></div><div class="chart" id="chSePbi"></div><p class="note" id="sePbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="seDesN"></span></div><div class="chart" id="chSeDes"></div><p class="note" id="seDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Suecia contra Argentina</h2><div class="legend" id="lgSeAr"></div></div><div class="chart" id="chSeAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Riksbank contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chSeTasa"></div><p class="note">Azul: tasa de referencia del Riksbank (banco central de Suecia). Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Riksbank</h2><span class="note" id="seBcN"></span></div><div class="tw"><table class="gcmp" id="seBc"></table></div><p class="note">El Riksbank decide unas ocho veces por año y anuncia a las 9:30 de Estocolmo.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno a 10 años</h2><span class="note" id="seBonN"></span></div><p class="sub">Lo que paga Suecia por endeudarse a 10 años en coronas, contra el bono a 10 años de EE.UU. en dólares. Suecia tiene una de las deudas públicas más bajas de Europa.</p><div class="stats" id="seBonSt"></div><div class="chart" id="chSeBon"></div><div class="legend" id="lgSeBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Coronas suecas contra el dólar</h2><span class="note">Coronas suecas por dólar</span></div><div class="chart" id="chSeUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Una corona sueca en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chSeArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas suecas por dólar, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>La bolsa de Estocolmo</h2><span class="note" id="seIdxN"></span></div><div class="chart" id="chSeIdx"></div><p class="note" id="seIdxT"></p></div>
+      <div class="card"><div class="head"><h2>Suecia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="seWs"></div><p class="note">El fondo de acciones suecas, Ericsson (telecomunicaciones) y Spotify (nacida en Estocolmo), que cotizan en Nueva York. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Suecia</h2><span class="note" id="npVN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suecia. En español casi no hay, así que se suman medios en inglés (The Local Suecia, entre otros), marcados EN.</p><ul class="nwm" id="npV"></ul><p class="note" id="npVF"></p></div>
+    </div>
+    <p class="note" id="seFuente"></p>
+  </section>
+
+  <!-- TAILANDIA -->
+  <section class="view" id="vTh" hidden>
+    <div class="ukpis" id="thKpis"></div>
+    <div class="subtabs" id="gSubH" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el baht</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>Donde empezó la crisis asiática</h2></div><p class="sub">En julio de 1997 Tailandia no pudo sostener más el baht atado al dólar y lo dejó flotar: se devaluó a la mitad, quebraron bancos y empresas endeudadas en dólares, y la crisis se contagió a toda Asia. Parecido a lo que vivió Argentina en 2001-2002. Hoy vive del turismo, de la fabricación de autos (le dicen "el Detroit de Asia") y de la electrónica, y su problema es el contrario: inflación casi nula y una economía que crece poco.</p><div class="stats" id="thDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Tailandia</h2><span class="note" id="thInfN"></span></div><div class="chart" id="chThInf"></div><p class="note">Precios al consumidor (IPC de el Ministerio de Comercio), variación en 12 meses, últimos 5 años. La meta del Banco de Tailandia es entre 1% y 3%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="thMesN"></span></div><div class="chart" id="chThMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="thPbiN"></span></div><div class="chart" id="chThPbi"></div><p class="note" id="thPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="thDesN"></span></div><div class="chart" id="chThDes"></div><p class="note" id="thDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Tailandia contra Argentina</h2><div class="legend" id="lgThAr"></div></div><div class="chart" id="chThAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Banco de Tailandia contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chThTasa"></div><p class="note">Azul: tasa de referencia del Banco de Tailandia. Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Banco de Tailandia</h2><span class="note" id="thBcN"></span></div><div class="tw"><table class="gcmp" id="thBc"></table></div><p class="note">El Banco de Tailandia decide seis veces por año y anuncia a la tarde de Bangkok.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno a 10 años</h2><span class="note" id="thBonN"></span></div><p class="sub">Lo que paga Tailandia por endeudarse a 10 años en bahts, contra el bono a 10 años de EE.UU. en dólares.</p><div class="stats" id="thBonSt"></div><div class="chart" id="chThBon"></div><div class="legend" id="lgThBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Bahts contra el dólar</h2><span class="note">Bahts por dólar</span></div><div class="chart" id="chThUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Un baht en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chThArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los bahts por dólar, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>La bolsa de Bangkok</h2><span class="note" id="thIdxN"></span></div><div class="chart" id="chThIdx"></div><p class="note" id="thIdxT"></p></div>
+      <div class="card"><div class="head"><h2>Tailandia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="thWs"></div><p class="note">El fondo de acciones tailandesas que cotiza en Nueva York (energía, bancos, comercio y turismo). Las grandes tailandesas no cotizan en Wall Street. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Tailandia</h2><span class="note" id="npHN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Tailandia. En español casi no hay, así que se suman medios en inglés (Bangkok Post y The Nation), marcados EN.</p><ul class="nwm" id="npH"></ul><p class="note" id="npHF"></p></div>
+    </div>
+    <p class="note" id="thFuente"></p>
+  </section>
+
+  <!-- MALASIA -->
+  <section class="view" id="vMy" hidden>
+    <div class="ukpis" id="myKpis"></div>
+    <div class="subtabs" id="gSubF" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el ringgit</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>La que no siguió el manual</h2></div><p class="sub">En la crisis asiática de 1998 Malasia hizo lo contrario de lo que pedía el FMI: puso controles de capital (cepo) y fijó el ringgit a 3,80 por dólar hasta 2005. Fue muy discutido, pero salió de la crisis. Hoy es un centro mundial de armado y prueba de chips, exporta petróleo y gas (Petronas) y aceite de palma, y tiene inflación baja.</p><div class="stats" id="myDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Malasia</h2><span class="note" id="myInfN"></span></div><div class="chart" id="chMyInf"></div><p class="note">Precios al consumidor (IPC de el Departamento de Estadística), variación en 12 meses, últimos 5 años. El banco central de Malasia no tiene una meta numérica de inflación: busca precios estables sin frenar el crecimiento.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="myMesN"></span></div><div class="chart" id="chMyMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="myPbiN"></span></div><div class="chart" id="chMyPbi"></div><p class="note" id="myPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="myDesN"></span></div><div class="chart" id="chMyDes"></div><p class="note" id="myDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Malasia contra Argentina</h2><div class="legend" id="lgMyAr"></div></div><div class="chart" id="chMyAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del Banco Negara Malaysia contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chMyTasa"></div><p class="note">Azul: tasa de referencia del Banco Negara Malaysia (banco central). Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del Banco Negara Malaysia</h2><span class="note" id="myBcN"></span></div><div class="tw"><table class="gcmp" id="myBc"></table></div><p class="note">El Banco Negara Malaysia decide seis veces por año y anuncia a las 15:00 de Kuala Lumpur.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno a 10 años</h2><span class="note" id="myBonN"></span></div><p class="sub">Lo que paga Malasia por endeudarse a 10 años en ringgits, contra el bono a 10 años de EE.UU. en dólares.</p><div class="stats" id="myBonSt"></div><div class="chart" id="chMyBon"></div><div class="legend" id="lgMyBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Ringgits contra el dólar</h2><span class="note">Ringgits por dólar</span></div><div class="chart" id="chMyUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Un ringgit en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chMyArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los ringgits por dólar, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>La bolsa de Kuala Lumpur</h2><span class="note" id="myIdxN"></span></div><div class="chart" id="chMyIdx"></div><p class="note" id="myIdxT"></p></div>
+      <div class="card"><div class="head"><h2>Malasia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="myWs"></div><p class="note">El fondo de acciones malasias que cotiza en Nueva York (bancos, energía y servicios). Las grandes malasias no cotizan en Wall Street. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Malasia</h2><span class="note" id="npFN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Malasia. En español casi no hay, así que se suman medios en inglés (The Star, Free Malaysia Today y Malay Mail), marcados EN.</p><ul class="nwm" id="npF"></ul><p class="note" id="npFF"></p></div>
+    </div>
+    <p class="note" id="myFuente"></p>
+  </section>
+
+  <!-- FILIPINAS -->
+  <section class="view" id="vPh" hidden>
+    <div class="ukpis" id="phKpis"></div>
+    <div class="subtabs" id="gSubD" role="tablist" aria-label="Apartado"><button type="button" data-s="economia" aria-selected="false">Economía</button><button type="button" data-s="tasas" aria-selected="false">Tasas y bonos</button><button type="button" data-s="mercados" aria-selected="false">Mercados y el peso filipino</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button></div>
+    <div class="gsub" data-sub="economia">
+      <div class="card"><div class="head"><h2>La economía de las remesas</h2></div><p class="sub">Filipinas tiene más de 110 millones de habitantes y unos 10 millones trabajando afuera (enfermeros, marinos, empleadas domésticas): la plata que mandan a sus familias, las remesas, equivale a cerca de un 8% del PBI y sostiene el consumo y el peso. La otra pata son los centros de atención telefónica y servicios para empresas del mundo. Es de las economías que más crecen en Asia. Como Argentina, su moneda se llama peso.</p><div class="stats" id="phDatSt"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Inflación de Filipinas</h2><span class="note" id="phInfN"></span></div><div class="chart" id="chPhInf"></div><p class="note">Precios al consumidor (IPC de la Autoridad de Estadística), variación en 12 meses, últimos 5 años. La meta del Banco Central de Filipinas es entre 2% y 4%.</p></div>
+        <div class="card"><div class="head"><h2>Inflación de cada mes</h2><span class="note" id="phMesN"></span></div><div class="chart" id="chPhMes"></div><p class="note">Cuánto subieron los precios en cada mes, últimos 3 años.</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Crecimiento de la economía (PBI)</h2><span class="note" id="phPbiN"></span></div><div class="chart" id="chPhPbi"></div><p class="note" id="phPbiT"></p></div>
+        <div class="card"><div class="head"><h2>Desempleo</h2><span class="note" id="phDesN"></span></div><div class="chart" id="chPhDes"></div><p class="note" id="phDesT"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Inflación: Filipinas contra Argentina</h2><div class="legend" id="lgPhAr"></div></div><div class="chart" id="chPhAr"></div><p class="note">Inflación de los últimos 12 meses. Argentina: dato del INDEC, desde que está en Pulso Macro.</p></div>
+    </div>
+    <div class="gsub" data-sub="tasas">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Tasa del BSP contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chPhTasa"></div><p class="note">Azul: tasa de referencia del Banco Central de Filipinas (BSP). Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
+        <div class="card"><div class="head"><h2>Decisiones del BSP</h2><span class="note" id="phBcN"></span></div><div class="tw"><table class="gcmp" id="phBc"></table></div><p class="note">El Banco Central de Filipinas decide unas seis veces por año y anuncia a la tarde de Manila.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Bono del gobierno a 10 años</h2><span class="note" id="phBonN"></span></div><p class="sub">Lo que paga Filipinas por endeudarse a 10 años en pesos filipinos, contra el bono a 10 años de EE.UU. en dólares.</p><div class="stats" id="phBonSt"></div><div class="chart" id="chPhBon"></div><div class="legend" id="lgPhBon"></div><p class="note">Últimos dos años, datos diarios (CNBC, con demora).</p></div>
+    </div>
+    <div class="gsub" data-sub="mercados">
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Pesos filipinos contra el dólar</h2><span class="note">Pesos filipinos por dólar</span></div><div class="chart" id="chPhUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Un peso filipino en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chPhArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los pesos filipinos por dólar, del mismo día.</p></div>
+      </div>
+      <div class="card"><div class="head"><h2>La bolsa de Manila</h2><span class="note" id="phIdxN"></span></div><div class="chart" id="chPhIdx"></div><p class="note" id="phIdxT"></p></div>
+      <div class="card"><div class="head"><h2>Filipinas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="phWs"></div><p class="note">El fondo de acciones filipinas y PLDT, la principal telefónica, que cotiza en Nueva York. Con demora (CNBC).</p></div>
+    </div>
+    <div class="gsub" data-sub="noticias">
+      <div class="card"><div class="head"><h2>Noticias de economía: Filipinas</h2><span class="note" id="npDN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Filipinas. En español casi no hay, así que se suman medios en inglés (Inquirer, BusinessWorld y Philstar), marcados EN.</p><ul class="nwm" id="npD"></ul><p class="note" id="npDF"></p></div>
+    </div>
+    <p class="note" id="phFuente"></p>
+  </section>
+
   <section class="view" id="vW" hidden>
     <div class="card">
       <div class="nwtop">
@@ -2503,6 +2693,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     {k:'PLN', one:'Un zloty', d:'Polonia', n:'zlotys', s:'zł', q:()=>glob?.polonia?.pln || glob?.monedas?.PLN, h:'fx_pln'},
     {k:'INR', one:'Cien rupias', d:'India', n:'rupias', s:'₹', q:()=>glob?.india?.inr || glob?.monedas?.INR, h:'fx_inr'},
     {k:'AUD', one:'Un dólar australiano', d:'Australia', n:'dólares australianos', s:'A$', inv:true, q:()=>glob?.australia?.aud || glob?.monedas?.AUD, h:'fx_aud'},
+    {k:'NOK', one:'Una corona noruega', d:'Noruega', n:'coronas noruegas', s:'kr', q:()=>glob?.noruega?.nok || glob?.monedas?.NOK, h:'fx_nok'},
+    {k:'SEK', one:'Una corona sueca', d:'Suecia', n:'coronas suecas', s:'kr', q:()=>glob?.suecia?.sek || glob?.monedas?.SEK, h:'fx_sek'},
+    {k:'THB', one:'Un baht', d:'Tailandia', n:'bahts', s:'฿', q:()=>glob?.tailandia?.thb || glob?.monedas?.THB, h:'fx_thb'},
+    {k:'MYR', one:'Un ringgit', d:'Malasia', n:'ringgits', s:'RM', q:()=>glob?.malasia?.myr || glob?.monedas?.MYR, h:'fx_myr'},
+    {k:'PHP', one:'Un peso filipino', d:'Filipinas', n:'pesos filipinos', s:'₱', q:()=>glob?.filipinas?.php || glob?.monedas?.PHP, h:'fx_php'},
     {k:'NZD', one:'Un dólar neozelandés', d:'Nueva Zelanda', n:'dólares neozelandeses', s:'NZ$', inv:true, q:()=>glob?.zelanda?.nzd || glob?.monedas?.NZD, h:'fx_nzd'},
     {k:'IDR', one:'Mil rupias indonesias', d:'Indonesia', n:'rupias indonesias', s:'Rp', q:()=>glob?.indonesia?.idr || glob?.monedas?.IDR, h:'fx_idr'},
     {k:'KRW', one:'Mil wones', d:'Corea del Sur', n:'wones', s:'₩', q:()=>glob?.corea?.krw || glob?.monedas?.KRW, h:'fx_krw'},
@@ -3312,7 +3507,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()]};
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()]};
   const ARG_T = ['dolares','macro','dinero','fiscal','actividad','ganaderia','mercado','noticias','calculadoras'];
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
@@ -3339,6 +3534,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     peru:'<path d="M4 19l5-9 3 5 2-3 6 7z"/><circle cx="16" cy="7" r="2"/>',
     india:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v6M12 14v6M4 12h6M14 12h6M6.3 6.3l4.3 4.3M13.4 13.4l4.3 4.3M17.7 6.3l-4.3 4.3M10.6 13.4l-4.3 4.3"/>',
     suiza:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>',
+    noruega:'<path d="M4 18l5-10 3 5 3-7 5 12z"/>',
+    suecia:'<path d="M4 12h16M10 4v16"/>',
+    tailandia:'<path d="M12 3l3 6h-6zM8 10h8l2 10H6z"/>',
+    malasia:'<path d="M7 20V8l5-4 5 4v12M10 20v-5h4v5"/>',
+    filipinas:'<path d="M5 6l3 4-3 4M12 8v8M17 7l2 5-2 5"/>',
     zelanda:'<path d="M14 4l3 4-2 3 2 3-4 3M9 13l-4 7"/>',
     indonesia:'<path d="M3 10h5M10 12h6M18 14h3M6 16h4"/>',
     corea:'<circle cx="12" cy="12" r="8"/><path d="M4 12a4 4 0 0 0 8 0a4 4 0 0 1 8 0"/>',
@@ -3369,6 +3569,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     turquia:['Turquía','La lira, tasas altísimas, la inflación y la comparación con Argentina'],
     peru:['Perú','El sol, el BCRP, la inflación y la bolsa'],
     india:['India','La rupia, el Banco de la Reserva, la inflación y el Nifty'],
+    noruega:['Noruega','La corona, el fondo petrolero más grande del mundo y la bolsa de Oslo'],
+    suecia:['Suecia','La corona, el Riksbank, Volvo, Ericsson y la bolsa de Estocolmo'],
+    tailandia:['Tailandia','El baht, el Banco de Tailandia, la crisis del 97 y la bolsa de Bangkok'],
+    malasia:['Malasia','El ringgit, el Banco Negara, los chips y la bolsa de Kuala Lumpur'],
+    filipinas:['Filipinas','El peso filipino, el BSP, las remesas y la bolsa de Manila'],
     zelanda:['Nueva Zelanda','El dólar neozelandés, el RBNZ, los lácteos y la bolsa de Wellington'],
     indonesia:['Indonesia','La rupia, el Banco de Indonesia, el níquel y la bolsa de Yakarta'],
     corea:['Corea del Sur','El won, el Banco de Corea, los chips y la bolsa de Seúl'],
@@ -3382,8 +3587,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia'].map(k=>tile(k)).join('');
-  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia'];
+  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas'].map(k=>tile(k)).join('');
+  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas'];
   const PAISES_M = ['eeuu', ...PAISES_T];  // menú Países: EE.UU. y Polonia primero (pedido del dueño); EE.UU. es una vista de la pestaña global
   function paisPanel(on){ $('paisPanel').hidden = !on; $('tabPaises').setAttribute('aria-expanded', String(on)); }
   $('tabPaises').addEventListener('click', ()=>{ paisPanel($('paisPanel').hidden); gcUna('menu-paises'); });
@@ -3420,7 +3625,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['ganaderia','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia'].includes(tab);
+    $('segRange').hidden = ['ganaderia','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
@@ -3608,7 +3813,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let glob = null;
   async function loadGlobal(){
     try{ const r = await fetch('global.json?t='+Date.now(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
-    renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia();
+    renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia(); if(tab==='noruega') renderNoruega(); if(tab==='suecia') renderSuecia(); if(tab==='tailandia') renderTailandia(); if(tab==='malasia') renderMalasia(); if(tab==='filipinas') renderFilipinas();
   }
   function renderTape2(){
     const ms = (glob && glob.mercados) || [], tape = $('tape2'), inn = $('tape2In');
@@ -3637,7 +3842,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const gcol = v => { const C = GL[G.layer]; if(v==null) return null; let k = C.cut.findIndex(c=>v<c); if(k<0) k = C.cut.length; return C.pal[k]; };
   let regionNames = null; try{ regionNames = new Intl.DisplayNames(['es'], {type:'region'}); }catch(e){}
   const gname = iso => { const f = G.byId?.[iso], a2 = f?.properties?.a2; try{ if(a2 && regionNames) return regionNames.of(a2); }catch(e){} return iso; };
-  const GEX = [['NYSE / Nasdaq','Nueva York','America/New_York',-74,40.7,[['09:30','16:00']],[1,2,3,4,5]],['BYMA','Buenos Aires','America/Argentina/Buenos_Aires',-58.4,-34.6,[['11:00','17:00']],[1,2,3,4,5]],['B3','San Pablo','America/Sao_Paulo',-46.6,-23.5,[['10:00','17:00']],[1,2,3,4,5]],['BMV','Ciudad de México','America/Mexico_City',-99.1,19.4,[['08:30','15:00']],[1,2,3,4,5]],['TSX','Toronto','America/Toronto',-79.4,43.7,[['09:30','16:00']],[1,2,3,4,5]],['LSE','Londres','Europe/London',-.1,51.5,[['08:00','16:30']],[1,2,3,4,5]],['Xetra','Fráncfort','Europe/Berlin',8.7,50.1,[['09:00','17:30']],[1,2,3,4,5]],['Euronext','París','Europe/Paris',2.35,48.86,[['09:00','17:30']],[1,2,3,4,5]],['JSE','Johannesburgo','Africa/Johannesburg',28,-26.2,[['09:00','17:00']],[1,2,3,4,5]],['Tadawul','Riad','Asia/Riyadh',46.7,24.7,[['10:00','15:00']],[0,1,2,3,4]],['NSE','Bombay','Asia/Kolkata',72.9,19.1,[['09:15','15:30']],[1,2,3,4,5]],['SSE','Shanghái','Asia/Shanghai',121.5,31.2,[['09:30','11:30'],['13:00','15:00']],[1,2,3,4,5]],['HKEX','Hong Kong','Asia/Hong_Kong',114.2,22.3,[['09:30','12:00'],['13:00','16:00']],[1,2,3,4,5]],['GPW','Varsovia','Europe/Warsaw',21,52.2,[['09:00','17:00']],[1,2,3,4,5]],['SIX','Zúrich','Europe/Zurich',8.5,47.4,[['09:00','17:30']],[1,2,3,4,5]],['Borsa İstanbul','Estambul','Europe/Istanbul',29,41,[['10:00','18:00']],[1,2,3,4,5]],['BCS','Santiago','America/Santiago',-70.6,-33.4,[['09:30','16:00']],[1,2,3,4,5]],['BVC','Bogotá','America/Bogota',-74.1,4.7,[['09:30','16:00']],[1,2,3,4,5]],['BVL','Lima','America/Lima',-77,-12,[['09:00','16:00']],[1,2,3,4,5]],['TSE','Tokio','Asia/Tokyo',139.7,35.7,[['09:00','11:30'],['12:30','15:30']],[1,2,3,4,5]],['NZX','Wellington','Pacific/Auckland',174.8,-41.3,[['10:00','16:45']],[1,2,3,4,5]],['IDX','Yakarta','Asia/Jakarta',106.8,-6.2,[['09:00','12:00'],['13:30','15:50']],[1,2,3,4,5]],['KRX','Seúl','Asia/Seoul',127,37.6,[['09:00','15:30']],[1,2,3,4,5]],['ASX','Sídney','Australia/Sydney',151.2,-33.9,[['10:00','16:00']],[1,2,3,4,5]]];
+  const GEX = [['NYSE / Nasdaq','Nueva York','America/New_York',-74,40.7,[['09:30','16:00']],[1,2,3,4,5]],['BYMA','Buenos Aires','America/Argentina/Buenos_Aires',-58.4,-34.6,[['11:00','17:00']],[1,2,3,4,5]],['B3','San Pablo','America/Sao_Paulo',-46.6,-23.5,[['10:00','17:00']],[1,2,3,4,5]],['BMV','Ciudad de México','America/Mexico_City',-99.1,19.4,[['08:30','15:00']],[1,2,3,4,5]],['TSX','Toronto','America/Toronto',-79.4,43.7,[['09:30','16:00']],[1,2,3,4,5]],['LSE','Londres','Europe/London',-.1,51.5,[['08:00','16:30']],[1,2,3,4,5]],['Xetra','Fráncfort','Europe/Berlin',8.7,50.1,[['09:00','17:30']],[1,2,3,4,5]],['Euronext','París','Europe/Paris',2.35,48.86,[['09:00','17:30']],[1,2,3,4,5]],['JSE','Johannesburgo','Africa/Johannesburg',28,-26.2,[['09:00','17:00']],[1,2,3,4,5]],['Tadawul','Riad','Asia/Riyadh',46.7,24.7,[['10:00','15:00']],[0,1,2,3,4]],['NSE','Bombay','Asia/Kolkata',72.9,19.1,[['09:15','15:30']],[1,2,3,4,5]],['SSE','Shanghái','Asia/Shanghai',121.5,31.2,[['09:30','11:30'],['13:00','15:00']],[1,2,3,4,5]],['HKEX','Hong Kong','Asia/Hong_Kong',114.2,22.3,[['09:30','12:00'],['13:00','16:00']],[1,2,3,4,5]],['GPW','Varsovia','Europe/Warsaw',21,52.2,[['09:00','17:00']],[1,2,3,4,5]],['SIX','Zúrich','Europe/Zurich',8.5,47.4,[['09:00','17:30']],[1,2,3,4,5]],['Borsa İstanbul','Estambul','Europe/Istanbul',29,41,[['10:00','18:00']],[1,2,3,4,5]],['BCS','Santiago','America/Santiago',-70.6,-33.4,[['09:30','16:00']],[1,2,3,4,5]],['BVC','Bogotá','America/Bogota',-74.1,4.7,[['09:30','16:00']],[1,2,3,4,5]],['BVL','Lima','America/Lima',-77,-12,[['09:00','16:00']],[1,2,3,4,5]],['TSE','Tokio','Asia/Tokyo',139.7,35.7,[['09:00','11:30'],['12:30','15:30']],[1,2,3,4,5]],['OSE','Oslo','Europe/Oslo',10.75,59.9,[['09:00', '16:20']],[1,2,3,4,5]],['OMX','Estocolmo','Europe/Stockholm',18.07,59.33,[['09:00', '17:30']],[1,2,3,4,5]],['SET','Bangkok','Asia/Bangkok',100.5,13.75,[['10:00', '12:30'], ['14:30', '16:30']],[1,2,3,4,5]],['KLSE','Kuala Lumpur','Asia/Kuala_Lumpur',101.7,3.15,[['09:00', '12:30'], ['14:30', '17:00']],[1,2,3,4,5]],['PSE','Manila','Asia/Manila',121.0,14.6,[['09:30', '12:00'], ['13:00', '15:00']],[1,2,3,4,5]],['NZX','Wellington','Pacific/Auckland',174.8,-41.3,[['10:00','16:45']],[1,2,3,4,5]],['IDX','Yakarta','Asia/Jakarta',106.8,-6.2,[['09:00','12:00'],['13:30','15:50']],[1,2,3,4,5]],['KRX','Seúl','Asia/Seoul',127,37.6,[['09:00','15:30']],[1,2,3,4,5]],['ASX','Sídney','Australia/Sydney',151.2,-33.9,[['10:00','16:00']],[1,2,3,4,5]]];
   const gLocal = z => { const p = new Intl.DateTimeFormat('en-US',{timeZone:z,weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()), g = t=>p.find(x=>x.type===t).value;
     return {wd:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g('weekday')), m:(+g('hour')%24)*60 + +g('minute'), hhmm:`${String(+g('hour')%24).padStart(2,'0')}:${g('minute')}`}; };
   const gMin = s => { const [a,b] = s.split(':'); return +a*60 + +b; };
@@ -3751,7 +3956,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gListas(){
     $('gBolsas').innerHTML = GEX.map(e=>{ const s = gEstado(e), b = glob?.bolsas?.[e[0].split(' ')[0]], p = gpc(b);
       return `<div><span>${e[0]} <span class="gst ${s.open?'on':'off'}">${s.open?'ABIERTA':'CERRADA'}</span><small>${e[1]} · ${s.hora} h · ${s.txt}</small></span><span>${b ? `${esc(b.idx)}<small>${nf(b.v, b.v<1000?2:0)}</small>` : '<small>—</small>'}</span><span class="${p==null?'geq':p>0?'gup':p<0?'gdn':'geq'}">${p==null?'':(p>0?'▲ ':p<0?'▼ ':'')+sg(p,2)+'%'}${b ? `<small>${s.open?'en vivo':'último cierre'}</small>` : ''}</span></div>`; }).join('');
-    const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía'],['POL','Banco Nacional de Polonia'],['SAU','Banco Central de Arabia Saudita'],['CHE','Banco Nacional Suizo'],['AUS','Banco de la Reserva de Australia'],['KOR','Banco de Corea'],['ZAF','Banco de la Reserva de Sudáfrica'],['NZL','Banco de la Reserva de Nueva Zelanda'],['IDN','Banco de Indonesia']];
+    const BC = [['USA','Fed (EE.UU.)'],['DEU','BCE (zona euro)'],['GBR','Banco de Inglaterra'],['JPN','Banco de Japón'],['CHN','Banco Popular de China'],['BRA','Banco Central de Brasil'],['ARG','BCRA (Argentina)'],['MEX','Banxico (México)'],['CHL','Banco Central de Chile'],['COL','Banco de la República (Colombia)'],['PER','BCR del Perú'],['CAN','Banco de Canadá'],['IND','Banco de la Reserva de India'],['TUR','Banco Central de Turquía'],['POL','Banco Nacional de Polonia'],['SAU','Banco Central de Arabia Saudita'],['CHE','Banco Nacional Suizo'],['AUS','Banco de la Reserva de Australia'],['KOR','Banco de Corea'],['ZAF','Banco de la Reserva de Sudáfrica'],['NZL','Banco de la Reserva de Nueva Zelanda'],['IDN','Banco de Indonesia'],['NOR','Banco de Noruega'],['SWE','Riksbank'],['THA','Banco de Tailandia'],['MYS','Banco Negara Malaysia'],['PHL','Banco Central de Filipinas']];
     const ps = glob?.paises || {};
     $('gBcs').innerHTML = BC.filter(([i])=>ps[i]?.tasa!=null).map(([i,n])=>{ const p = ps[i], d = p.tasa_prev==null ? 0 : p.tasa-p.tasa_prev;
       return `<div><span>${n}<small>${p.tasa_cambio ? 'Último cambio: '+fd(p.tasa_cambio) : 'Sin cambios en los últimos dos años'}</small></span><span>${nf(p.tasa,2)}%</span><span class="${d<0?'gup':d>0?'gdn':'geq'}">${d<0?'▼ bajó '+nf(-d,2):d>0?'▲ subió '+nf(d,2):'='}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
@@ -3792,14 +3997,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const gpc = x => x && x.prev ? (x.v/x.prev-1)*100 : null;
 
   // ---- globos de puntos (portada y "Mundo hoy"): cada punto es tierra; verde sube, rojo baja ----
-  const DG_EX = {USA:'NYSE',ARG:'BYMA',BRA:'B3',MEX:'BMV',CAN:'TSX',GBR:'LSE',DEU:'Xetra',FRA:'Euronext',ZAF:'JSE',SAU:'Tadawul',IND:'NSE',CHE:'SIX',CHN:'SSE',JPN:'TSE',AUS:'ASX',POL:'GPW',KOR:'KRX',NZL:'NZX',IDN:'IDX'};
-  const DG_CUR = {ARG:'ARS',BRA:'BRL',CHL:'CLP',MEX:'MXN',COL:'COP',PER:'PEN',URY:'UYU',CHN:'CNY',POL:'PLN',IND:'INR',CHE:'CHF',KOR:'KRW',ZAF:'ZAR',IDN:'IDR'};
+  const DG_EX = {USA:'NYSE',ARG:'BYMA',BRA:'B3',MEX:'BMV',CAN:'TSX',GBR:'LSE',DEU:'Xetra',FRA:'Euronext',ZAF:'JSE',SAU:'Tadawul',IND:'NSE',CHE:'SIX',CHN:'SSE',JPN:'TSE',AUS:'ASX',POL:'GPW',KOR:'KRX',NZL:'NZX',IDN:'IDX',NOR:'OSE',SWE:'OMX',THA:'SET',MYS:'KLSE',PHL:'PSE'};
+  const DG_CUR = {ARG:'ARS',BRA:'BRL',CHL:'CLP',MEX:'MXN',COL:'COP',PER:'PEN',URY:'UYU',CHN:'CNY',POL:'PLN',IND:'INR',CHE:'CHF',KOR:'KRW',ZAF:'ZAR',IDN:'IDR',NOR:'NOK',SWE:'SEK',THA:'THB',MYS:'MYR',PHL:'PHP'};
   ['AUT','BEL','HRV','CYP','EST','FIN','FRA','DEU','GRC','IRL','ITA','LVA','LTU','LUX','MLT','NLD','PRT','SVK','SVN','ESP'].forEach(i=>DG_CUR[i]='EUR');
-  const DG_CURPOS = {ARS:'ARG',BRL:'BRA',CLP:'CHL',MXN:'MEX',COP:'COL',PEN:'PER',UYU:'URY',CNY:'CHN',EUR:'DEU',PLN:'POL',INR:'IND',CHF:'CHE',KRW:'KOR',ZAR:'ZAF',IDR:'IDN'};
+  const DG_CURPOS = {ARS:'ARG',BRL:'BRA',CLP:'CHL',MXN:'MEX',COP:'COL',PEN:'PER',UYU:'URY',CNY:'CHN',EUR:'DEU',PLN:'POL',INR:'IND',CHF:'CHE',KRW:'KOR',ZAR:'ZAF',IDR:'IDN',NOK:'NOR',SEK:'SWE',THB:'THA',MYR:'MYS',PHP:'PHL'};
   const DG_LEFT = ['TSX','LSE','CLP','PEN'], DG_DY = {TSX:-8, LSE:-8, Xetra:-12};
   // monedas: cuánto se apreció contra el dólar (EUR viene como dólares por euro; el resto, unidades por dólar)
   const dgMon = c => { const m = glob?.monedas?.[c]; if(!m || !m.prev) return null; const r = (m.v/m.prev-1)*100; return c==='EUR' ? r : -r; };
-  const DG_FX = {ARS:'fx_ars',BRL:'fx_brl',CLP:'fx_clp',MXN:'fx_mxn',COP:'fx_cop',PEN:'fx_pen',UYU:'fx_uyu',CNY:'fx_cny',EUR:'fx_eur',PLN:'fx_pln',INR:'fx_inr',CHF:'fx_chf',KRW:'fx_krw',ZAR:'fx_zar',IDR:'fx_idr'};
+  const DG_FX = {ARS:'fx_ars',BRL:'fx_brl',CLP:'fx_clp',MXN:'fx_mxn',COP:'fx_cop',PEN:'fx_pen',UYU:'fx_uyu',CNY:'fx_cny',EUR:'fx_eur',PLN:'fx_pln',INR:'fx_inr',CHF:'fx_chf',KRW:'fx_krw',ZAR:'fx_zar',IDR:'fx_idr',NOK:'fx_nok',SEK:'fx_sek',THB:'fx_thb',MYR:'fx_myr',PHP:'fx_php'};
   const dgMonA = c => { if(!gHist || !DG_FX[c]) return null; const y = gYtd(gSerie(DG_FX[c])); return y==null ? null : c==='EUR' ? y : (100/(100+y)-1)*100; };
   const dgBono = iso => { const x = glob?.bonos?.[iso]; return x && x.t && (Date.now()-Date.parse(x.t)) < 10*864e5 ? x.v : null; };
   const dgVal = (iso, l) => l==='bolsa' ? gpc(glob?.bolsas?.[DG_EX[iso]]) : l==='bono' ? dgBono(iso) : (DG_CUR[iso] ? (l==='monA' ? dgMonA(DG_CUR[iso]) : dgMon(DG_CUR[iso])) : null);
@@ -3909,7 +4114,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHist(){
     if(gHist || gHistLoading) return; gHistLoading = true;
     try{ const r = await fetch('global_hist.json?t='+Date.now(), {cache:'no-store'}); if(r.ok) gHist = await r.json(); }catch(e){}
-    gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia();
+    gHistLoading = false; if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador(); if(tab==='global') gExtras(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia(); if(tab==='noruega') renderNoruega(); if(tab==='suecia') renderSuecia(); if(tab==='tailandia') renderTailandia(); if(tab==='malasia') renderMalasia(); if(tab==='filipinas') renderFilipinas();
   }
   function gHeat(elId, stId, lista, selVar, setSel){
     const L = (lista||[]).filter(x=>x.v>0).map(x=>({...x, p:gpc(x)})).sort((a,b)=>(b.p??-99)-(a.p??-99));
@@ -3942,6 +4147,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ['TUR','Banco Central de Turquía',['2026-10-22','2026-12-10','2027-01-21','2027-03-18','2027-04-22','2027-06-10']],
     ['POL','Banco Nacional de Polonia',['2026-01-14','2026-02-04','2026-03-04','2026-04-09','2026-05-06','2026-06-10','2026-07-08','2026-09-02','2026-10-07','2026-11-04','2026-12-02']],
     ['KOR','Banco de Corea',['2026-11-26']],
+    ['NOR','Banco de Noruega',['2026-11-05','2026-12-17','2027-01-21','2027-03-18','2027-05-05','2027-06-17','2027-08-19','2027-09-23','2027-11-04','2027-12-16']],
+    ['SWE','Riksbank',['2026-11-04','2026-12-16','2027-02-03','2027-03-24']],
+    ['THA','Banco de Tailandia',['2026-10-28','2026-12-23']],
+    ['MYS','Banco Negara Malaysia',['2026-11-05']],
     ['NZL','Banco de la Reserva de Nueva Zelanda',['2026-10-28','2026-12-09']],
     ['IDN','Banco de Indonesia',['2026-11-18','2026-12-16']],
     ['ZAF','Banco de la Reserva de Sudáfrica',['2026-11-19','2027-01-28','2027-03-18','2027-05-27','2027-07-22','2027-09-29','2027-11-25']],
@@ -3952,7 +4161,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const GPA = {ARG:'Argentina',BRA:'Brasil',CHL:'Chile',URY:'Uruguay',PRY:'Paraguay',BOL:'Bolivia',PER:'Perú',COL:'Colombia',MEX:'México',VEN:'Venezuela',ECU:'Ecuador',
     USA:'EE.UU.',CAN:'Canadá',GBR:'Reino Unido',DEU:'Alemania',FRA:'Francia',ITA:'Italia',ESP:'España',CHE:'Suiza',JPN:'Japón',CHN:'China',IND:'India',KOR:'Corea del Sur',
     AUS:'Australia',ZAF:'Sudáfrica',TUR:'Turquía',POL:'Polonia',IDN:'Indonesia',SAU:'Arabia Saudita',RUS:'Rusia',EGY:'Egipto',NGA:'Nigeria'};
-  const DPA_P = ['ARG','BRA','CHL','URY','PRY','PER','COL','MEX','USA','CAN','GBR','DEU','ESP','JPN','CHN','IND','SAU','TUR','POL','CHE','AUS','KOR','ZAF','NZL','IDN'];
+  const DPA_P = ['ARG','BRA','CHL','URY','PRY','PER','COL','MEX','USA','CAN','GBR','DEU','ESP','JPN','CHN','IND','SAU','TUR','POL','CHE','AUS','KOR','ZAF','NZL','IDN','NOR','SWE','THA','MYS','PHL'];
   let dpaSel = 'infl', gNwSel = '';
   const hoyAR = () => new Date().toLocaleDateString('en-CA', {timeZone:'America/Argentina/Buenos_Aires'});
   function gMundoExtra(){
@@ -3983,7 +4192,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       desemp:['Desempleo', 'Más alto arriba', ()=>DPA_P.map(i=>[i, val(i,'desemp')]), v=>nf(v,1)+'%'],
       tasa:['Tasa del banco central', 'Más alta arriba', ()=>DPA_P.map(i=>[i, val(i,'tasa')]), v=>nf(v,2)+'%'],
       bolsa:['Bolsa en dólares en el año', 'La que más rindió arriba', ()=>[['ARG',mervUsd],['USA',gHist?gYtd(gSerie('spx')):null],['BRA',ytdUsd('bvsp','fx_brl')],['DEU',ytdUsd('dax','fx_eur',true)],['CHN',ytdUsd('shanghai','fx_cny')]], v=>sg(v,1)+'%'],
-      moneda:['Moneda contra el dólar en el año', 'La que más se fortaleció arriba', ()=>[['ARG',monY('fx_ars')],['BRA',monY('fx_brl')],['CHL',monY('fx_clp')],['MEX',monY('fx_mxn')],['COL',monY('fx_cop')],['PER',monY('fx_pen')],['URY',monY('fx_uyu')],['CHN',monY('fx_cny')],['DEU',monY('fx_eur',true)],['POL',monY('fx_pln')],['IND',monY('fx_inr')],['CHE',monY('fx_chf')],['AUS',monY('fx_aud',true)],['KOR',monY('fx_krw')],['ZAF',monY('fx_zar')],['NZL',monY('fx_nzd',true)],['IDN',monY('fx_idr')]], v=>sg(v,1)+'%']};
+      moneda:['Moneda contra el dólar en el año', 'La que más se fortaleció arriba', ()=>[['ARG',monY('fx_ars')],['BRA',monY('fx_brl')],['CHL',monY('fx_clp')],['MEX',monY('fx_mxn')],['COL',monY('fx_cop')],['PER',monY('fx_pen')],['URY',monY('fx_uyu')],['CHN',monY('fx_cny')],['DEU',monY('fx_eur',true)],['POL',monY('fx_pln')],['IND',monY('fx_inr')],['CHE',monY('fx_chf')],['AUS',monY('fx_aud',true)],['KOR',monY('fx_krw')],['ZAF',monY('fx_zar')],['NZL',monY('fx_nzd',true)],['IDN',monY('fx_idr')],['NOR',monY('fx_nok')],['SWE',monY('fx_sek')],['THA',monY('fx_thb')],['MYS',monY('fx_myr')],['PHL',monY('fx_php')]], v=>sg(v,1)+'%']};
     $('dpaSel').innerHTML = Object.entries(DPA).map(([k,[n]])=>`<button type="button" data-k="${k}" aria-pressed="${k===dpaSel}">${n}</button>`).join('');
     $('dpaSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ dpaSel = b.dataset.k; gc('donde-argentina-'+dpaSel, true); gMundoExtra(); }));
     if((dpaSel==='bolsa' || dpaSel==='moneda') && !gHist) loadHist();
@@ -4043,7 +4252,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     gMundoExtra();
     // monedas
-    const M = [['ARS','Peso argentino (oficial)','fx_ars'],['BRL','Real brasileño','fx_brl'],['CLP','Peso chileno','fx_clp'],['MXN','Peso mexicano','fx_mxn'],['COP','Peso colombiano','fx_cop'],['PEN','Sol peruano',null],['UYU','Peso uruguayo',null],['CNY','Yuan chino',null],['PLN','Zloty polaco','fx_pln'],['INR','Rupia india','fx_inr'],['SAR','Riyal saudí',null],['CHF','Franco suizo','fx_chf'],['KRW','Won coreano','fx_krw'],['ZAR','Rand sudafricano','fx_zar'],['IDR','Rupia indonesia','fx_idr'],['EUR','Euro',null]];
+    const M = [['ARS','Peso argentino (oficial)','fx_ars'],['BRL','Real brasileño','fx_brl'],['CLP','Peso chileno','fx_clp'],['MXN','Peso mexicano','fx_mxn'],['COP','Peso colombiano','fx_cop'],['PEN','Sol peruano',null],['UYU','Peso uruguayo',null],['CNY','Yuan chino',null],['PLN','Zloty polaco','fx_pln'],['INR','Rupia india','fx_inr'],['SAR','Riyal saudí',null],['CHF','Franco suizo','fx_chf'],['KRW','Won coreano','fx_krw'],['ZAR','Rand sudafricano','fx_zar'],['IDR','Rupia indonesia','fx_idr'],['NOK','Corona noruega','fx_nok'],['SEK','Corona sueca','fx_sek'],['THB','Baht tailandés','fx_thb'],['MYR','Ringgit malasio','fx_myr'],['PHP','Peso filipino','fx_php'],['EUR','Euro',null]];
     $('gMon').innerHTML = M.filter(([k])=>g.monedas?.[k]).map(([k,n,h])=>{ const m = g.monedas[k], inv = k==='EUR', v = inv ? 1/m.v : m.v, pv = inv ? 1/m.prev : m.prev, d = (v/pv-1)*100, y = h && gHist ? gYtd(gSerie(h)) : null;
       return `<div><span>${n}<small>${k} por US$</small></span><span>${nf(v, v<10?3:v<100?2:1)}<small class="${d>0.005?'gdn':d<-0.005?'gup':'geq'}">${d>0.005?'▲':d<-0.005?'▼':'='} ${nf(Math.abs(d),2)}% hoy</small></span><span class="${y==null?'geq':y>0?'gdn':'gup'}">${y==null?'—':(y>0?'se devaluó ':'se apreció ')+nf(Math.abs(y),1)+'%'}</span></div>`; }).join('') || '<p class="note">Sin datos todavía.</p>';
     // termómetro
@@ -5119,9 +5328,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('inBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.in10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'India 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgInBon'), bs);
+      legend($('lgInBon'), bs); $('chInBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chInBon'), bs, {h:200, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de India y EE.UU.'});
-      else $('chInBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chInBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chInUsd'), [{n:'Rupias por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'₹ '+nf(v,2), aria:'Rupias por dólar'});
@@ -5164,9 +5373,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('szBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.ch10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Suiza 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgSzBon'), bs);
+      legend($('lgSzBon'), bs); $('chSzBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chSzBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Suiza y EE.UU.'});
-      else $('chSzBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chSzBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chSzUsd'), [{n:'Francos por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>nf(v,4), aria:'Francos por dólar'});
@@ -5258,9 +5467,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('auBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.au10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Australia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgAuBon'), bs);
+      legend($('lgAuBon'), bs); $('chAuBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chAuBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Australia y EE.UU.'});
-      else $('chAuBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chAuBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chAuUsd'), [{n:'US$ por dólar australiano', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'US$ '+nf(v,4), aria:'Dólar australiano en dólares'});
@@ -5305,9 +5514,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('krBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.kr10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Corea del Sur 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgKrBon'), bs);
+      legend($('lgKrBon'), bs); $('chKrBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chKrBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Corea del Sur y EE.UU.'});
-      else $('chKrBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chKrBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chKrUsd'), [{n:'Wones por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'₩ '+nf(v,0), aria:'Wones por dólar'});
@@ -5352,9 +5561,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('zaBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.za10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Sudáfrica 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgZaBon'), bs);
+      legend($('lgZaBon'), bs); $('chZaBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chZaBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Sudáfrica y EE.UU.'});
-      else $('chZaBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chZaBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chZaUsd'), [{n:'Rands por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'R '+nf(v,2), aria:'Rands por dólar'});
@@ -5407,9 +5616,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('nzBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.nz10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Nueva Zelanda 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgNzBon'), bs);
+      legend($('lgNzBon'), bs); $('chNzBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chNzBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Nueva Zelanda y EE.UU.'});
-      else $('chNzBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chNzBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chNzUsd'), [{n:'US$ por dólar neozelandés', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,2), vfmt:v=>'US$ '+nf(v,4), aria:'Dólar neozelandés en dólares'});
@@ -5451,9 +5660,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('ioBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
       const s1 = gHist?.series?.id10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
       const bs = [{n:'Indonesia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
-      legend($('lgIoBon'), bs);
+      legend($('lgIoBon'), bs); $('chIoBon').closest('.card').hidden = !b10 && !s1.length;
       if(s1.length) lineChart($('chIoBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Indonesia y EE.UU.'});
-      else $('chIoBon').innerHTML = '<div class="empty">'+(gHist ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'Cargando…')+'</div>';
+      else $('chIoBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
     }
     if(sub==='mercados'){
       if(fx.length) lineChart($('chIoUsd'), [{n:'Rupias por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'Rp '+nf(v,4), aria:'Rupias por dólar'});
@@ -5464,6 +5673,232 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       $('ioWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
     }
     $('ioFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de Indonesia, rupia e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
+  // ---- Noruega, Suecia, Tailandia, Malasia y Filipinas (BIS, OCDE y Banco Mundial; mismo armado que Corea) ----
+  function renderNoruega(){
+    aplicarSub('G');
+    const C = PB_D.noruega; if(!C){ loadPB('noruega','noruega',renderNoruega); $('noKpis').innerHTML = '<div class="empty">Cargando datos de Noruega…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const hoy = hoyAR(), fx = pbFx(C, 'fx_nok', glob?.noruega?.nok || glob?.monedas?.NOK), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const ars = pbArs(fx, 1), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual);
+    const bh = gHist?.series?.osebx || [], bx = glob?.bolsas?.OSE || (bh.length>1 ? {v:bh[bh.length-1][1], prev:bh[bh.length-2][1]} : null), etf = glob?.noruega?.norw;
+    const bc = BCAL.find(b=>b[0]==='NOR'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('noKpis').innerHTML = pbSt('Coronas noruegas por dólar', fl ? 'kr '+nf(fl[1],2) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'dn' : 'up')
+      + pbSt('Una corona noruega en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del Banco de Noruega', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>2.5 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + (bx ? pbSt('OSEBX', nf(bx.v,0), bx.prev ? sg((bx.v/bx.prev-1)*100,2)+'% en el día' : '', bx.prev && bx.v>bx.prev ? 'up' : bx.prev && bx.v<bx.prev ? 'dn' : '')
+            : pbSt('Global X MSCI Norway', etf ? 'US$ '+nf(etf.v,2) : '—', etf ? sg(gpc(etf),2)+'% en el día' : 'en dólares', etf && gpc(etf)>0 ? 'up' : etf && gpc(etf)<0 ? 'dn' : ''));
+    const sub = SUBS.G[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('noDatSt').innerHTML = pbDat('NOR');
+      pbInfl(C, 'No', 'Noruega', pbMm(C)); pbPbi(C, 'No', 'Noruega', 'Statistics Norway'); pbDes(C, 'No', 'Noruega', 'Statistics Norway');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgNoAr'), [{n:'Noruega', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chNoAr'), [{n:'Noruega', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Noruega y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'No', 'el Banco de Noruega', prox);
+      const GB = glob?.bonos || {}, b10 = GB.NOR, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('noBonSt').innerHTML = bst('Noruega 10 años', b10, 'en coronas noruegas') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Noruega contra EE.UU.</span></div>` : '');
+      $('noBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.no10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Noruega 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgNoBon'), bs); $('chNoBon').closest('.card').hidden = !b10 && !s1.length;
+      if(s1.length) lineChart($('chNoBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Noruega y EE.UU.'});
+      else $('chNoBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chNoUsd'), [{n:'Coronas noruegas por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'kr '+nf(v,2), aria:'Coronas noruegas por dólar'});
+      if(ars.length) lineChart($('chNoArs'), [{n:'Una corona noruega en pesos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Una corona noruega en pesos'});
+      if(bh.length){ pbBolsa('chNoIdx', 'noIdxN', bh, 'OSEBX', 'pts'); $('noIdxT').textContent = 'OSEBX: las principales acciones de la bolsa de Oslo, con mucho peso de Equinor (petróleo), bancos y salmoneras. En coronas. Con demora (CNBC).'; }
+      else { pbBolsa('chNoIdx', 'noIdxN', gHist?.series?.norw || [], 'Global X MSCI Norway', 'US$'); $('noIdxT').textContent = 'Fondo Global X MSCI Norway (NORW), que cotiza en Wall Street. Se usa porque la fuente gratuita no trae el índice de la bolsa de Oslo. Con demora (CNBC).'; }
+      const lst = [['NORW · Global X MSCI Norway', glob?.noruega?.norw], ['EQNR · Equinor', glob?.noruega?.eqnr]].filter(x=>x[1]);
+      $('noWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    }
+    $('noFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de Noruega, nok e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
+  function renderSuecia(){
+    aplicarSub('V');
+    const C = PB_D.suecia; if(!C){ loadPB('suecia','suecia',renderSuecia); $('seKpis').innerHTML = '<div class="empty">Cargando datos de Suecia…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const hoy = hoyAR(), fx = pbFx(C, 'fx_sek', glob?.suecia?.sek || glob?.monedas?.SEK), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const ars = pbArs(fx, 1), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual);
+    const bh = gHist?.series?.omxs30 || [], bx = glob?.bolsas?.OMX || (bh.length>1 ? {v:bh[bh.length-1][1], prev:bh[bh.length-2][1]} : null), etf = glob?.suecia?.ewd;
+    const bc = BCAL.find(b=>b[0]==='SWE'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('seKpis').innerHTML = pbSt('Coronas suecas por dólar', fl ? 'kr '+nf(fl[1],2) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'dn' : 'up')
+      + pbSt('Una corona sueca en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del Riksbank', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>2 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + (bx ? pbSt('OMX Stockholm 30', nf(bx.v,0), bx.prev ? sg((bx.v/bx.prev-1)*100,2)+'% en el día' : '', bx.prev && bx.v>bx.prev ? 'up' : bx.prev && bx.v<bx.prev ? 'dn' : '')
+            : pbSt('iShares MSCI Sweden', etf ? 'US$ '+nf(etf.v,2) : '—', etf ? sg(gpc(etf),2)+'% en el día' : 'en dólares', etf && gpc(etf)>0 ? 'up' : etf && gpc(etf)<0 ? 'dn' : ''));
+    const sub = SUBS.V[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('seDatSt').innerHTML = pbDat('SWE');
+      pbInfl(C, 'Se', 'Suecia', pbMm(C)); pbPbi(C, 'Se', 'Suecia', 'Statistics Sweden'); pbDes(C, 'Se', 'Suecia', 'Statistics Sweden');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgSeAr'), [{n:'Suecia', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chSeAr'), [{n:'Suecia', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Suecia y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'Se', 'el Riksbank', prox);
+      const GB = glob?.bonos || {}, b10 = GB.SWE, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('seBonSt').innerHTML = bst('Suecia 10 años', b10, 'en coronas suecas') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Suecia contra EE.UU.</span></div>` : '');
+      $('seBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.se10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Suecia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgSeBon'), bs); $('chSeBon').closest('.card').hidden = !b10 && !s1.length;
+      if(s1.length) lineChart($('chSeBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Suecia y EE.UU.'});
+      else $('chSeBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chSeUsd'), [{n:'Coronas suecas por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'kr '+nf(v,2), aria:'Coronas suecas por dólar'});
+      if(ars.length) lineChart($('chSeArs'), [{n:'Una corona sueca en pesos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Una corona sueca en pesos'});
+      if(bh.length){ pbBolsa('chSeIdx', 'seIdxN', bh, 'OMX Stockholm 30', 'pts'); $('seIdxT').textContent = 'OMX Stockholm 30: las 30 acciones más negociadas de la bolsa de Estocolmo. En coronas. Con demora (CNBC).'; }
+      else { pbBolsa('chSeIdx', 'seIdxN', gHist?.series?.ewd || [], 'iShares MSCI Sweden', 'US$'); $('seIdxT').textContent = 'Fondo iShares MSCI Sweden (EWD), que cotiza en Wall Street. Se usa porque la fuente gratuita no trae el índice de la bolsa de Estocolmo. Con demora (CNBC).'; }
+      const lst = [['EWD · iShares MSCI Sweden', glob?.suecia?.ewd], ['ERIC · Ericsson', glob?.suecia?.eric], ['SPOT · Spotify', glob?.suecia?.spot]].filter(x=>x[1]);
+      $('seWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    }
+    $('seFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Riksbank (banco central de Suecia), sek e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
+  function renderTailandia(){
+    aplicarSub('H');
+    const C = PB_D.tailandia; if(!C){ loadPB('tailandia','tailandia',renderTailandia); $('thKpis').innerHTML = '<div class="empty">Cargando datos de Tailandia…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const hoy = hoyAR(), fx = pbFx(C, 'fx_thb', glob?.tailandia?.thb || glob?.monedas?.THB), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const ars = pbArs(fx, 1), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual);
+    const bh = gHist?.series?.seti || [], bx = glob?.bolsas?.SET || (bh.length>1 ? {v:bh[bh.length-1][1], prev:bh[bh.length-2][1]} : null), etf = glob?.tailandia?.thd;
+    const bc = BCAL.find(b=>b[0]==='THA'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('thKpis').innerHTML = pbSt('Bahts por dólar', fl ? '฿ '+nf(fl[1],2) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'dn' : 'up')
+      + pbSt('Un baht en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del Banco de Tailandia', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>3 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + (bx ? pbSt('SET', nf(bx.v,0), bx.prev ? sg((bx.v/bx.prev-1)*100,2)+'% en el día' : '', bx.prev && bx.v>bx.prev ? 'up' : bx.prev && bx.v<bx.prev ? 'dn' : '')
+            : pbSt('iShares MSCI Thailand', etf ? 'US$ '+nf(etf.v,2) : '—', etf ? sg(gpc(etf),2)+'% en el día' : 'en dólares', etf && gpc(etf)>0 ? 'up' : etf && gpc(etf)<0 ? 'dn' : ''));
+    const sub = SUBS.H[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('thDatSt').innerHTML = pbDat('THA');
+      pbInfl(C, 'Th', 'Tailandia', pbMm(C)); pbPbi(C, 'Th', 'Tailandia', 'el Ministerio de Comercio'); pbDes(C, 'Th', 'Tailandia', 'el Ministerio de Comercio');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgThAr'), [{n:'Tailandia', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chThAr'), [{n:'Tailandia', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Tailandia y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'Th', 'el Banco de Tailandia', prox);
+      const GB = glob?.bonos || {}, b10 = GB.THA, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('thBonSt').innerHTML = bst('Tailandia 10 años', b10, 'en bahts') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Tailandia contra EE.UU.</span></div>` : '');
+      $('thBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.th10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Tailandia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgThBon'), bs); $('chThBon').closest('.card').hidden = !b10 && !s1.length;
+      if(s1.length) lineChart($('chThBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Tailandia y EE.UU.'});
+      else $('chThBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chThUsd'), [{n:'Bahts por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'฿ '+nf(v,2), aria:'Bahts por dólar'});
+      if(ars.length) lineChart($('chThArs'), [{n:'Un baht en pesos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Un baht en pesos'});
+      if(bh.length){ pbBolsa('chThIdx', 'thIdxN', bh, 'SET', 'pts'); $('thIdxT').textContent = 'SET: todas las acciones de la bolsa de Bangkok, en bahts. Con demora (CNBC).'; }
+      else { pbBolsa('chThIdx', 'thIdxN', gHist?.series?.thd || [], 'iShares MSCI Thailand', 'US$'); $('thIdxT').textContent = 'Fondo iShares MSCI Thailand (THD), que cotiza en Wall Street. Se usa porque la fuente gratuita no trae el índice de la bolsa de Bangkok. Con demora (CNBC).'; }
+      const lst = [['THD · iShares MSCI Thailand', glob?.tailandia?.thd]].filter(x=>x[1]);
+      $('thWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    }
+    $('thFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco de Tailandia, thb e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
+  function renderMalasia(){
+    aplicarSub('F');
+    const C = PB_D.malasia; if(!C){ loadPB('malasia','malasia',renderMalasia); $('myKpis').innerHTML = '<div class="empty">Cargando datos de Malasia…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const hoy = hoyAR(), fx = pbFx(C, 'fx_myr', glob?.malasia?.myr || glob?.monedas?.MYR), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const ars = pbArs(fx, 1), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual);
+    const bh = gHist?.series?.klci || [], bx = glob?.bolsas?.KLSE || (bh.length>1 ? {v:bh[bh.length-1][1], prev:bh[bh.length-2][1]} : null), etf = glob?.malasia?.ewm;
+    const bc = BCAL.find(b=>b[0]==='MYS'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('myKpis').innerHTML = pbSt('Ringgits por dólar', fl ? 'RM '+nf(fl[1],3) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'dn' : 'up')
+      + pbSt('Un ringgit en pesos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del Banco Negara Malaysia', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>3 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + (bx ? pbSt('FTSE Bursa Malaysia KLCI', nf(bx.v,0), bx.prev ? sg((bx.v/bx.prev-1)*100,2)+'% en el día' : '', bx.prev && bx.v>bx.prev ? 'up' : bx.prev && bx.v<bx.prev ? 'dn' : '')
+            : pbSt('iShares MSCI Malaysia', etf ? 'US$ '+nf(etf.v,2) : '—', etf ? sg(gpc(etf),2)+'% en el día' : 'en dólares', etf && gpc(etf)>0 ? 'up' : etf && gpc(etf)<0 ? 'dn' : ''));
+    const sub = SUBS.F[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('myDatSt').innerHTML = pbDat('MYS');
+      pbInfl(C, 'My', 'Malasia', pbMm(C)); pbPbi(C, 'My', 'Malasia', 'el Departamento de Estadística'); pbDes(C, 'My', 'Malasia', 'el Departamento de Estadística');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgMyAr'), [{n:'Malasia', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chMyAr'), [{n:'Malasia', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Malasia y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'My', 'el Banco Negara Malaysia', prox);
+      const GB = glob?.bonos || {}, b10 = GB.MYS, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('myBonSt').innerHTML = bst('Malasia 10 años', b10, 'en ringgits') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Malasia contra EE.UU.</span></div>` : '');
+      $('myBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.my10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Malasia 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgMyBon'), bs); $('chMyBon').closest('.card').hidden = !b10 && !s1.length;
+      if(s1.length) lineChart($('chMyBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Malasia y EE.UU.'});
+      else $('chMyBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chMyUsd'), [{n:'Ringgits por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'RM '+nf(v,3), aria:'Ringgits por dólar'});
+      if(ars.length) lineChart($('chMyArs'), [{n:'Un ringgit en pesos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Un ringgit en pesos'});
+      if(bh.length){ pbBolsa('chMyIdx', 'myIdxN', bh, 'FTSE Bursa Malaysia KLCI', 'pts'); $('myIdxT').textContent = 'FTSE Bursa Malaysia KLCI: las 30 empresas más grandes de la bolsa de Kuala Lumpur, en ringgits. Con demora (CNBC).'; }
+      else { pbBolsa('chMyIdx', 'myIdxN', gHist?.series?.ewm || [], 'iShares MSCI Malaysia', 'US$'); $('myIdxT').textContent = 'Fondo iShares MSCI Malaysia (EWM), que cotiza en Wall Street. Se usa porque la fuente gratuita no trae el índice de la bolsa de Kuala Lumpur. Con demora (CNBC).'; }
+      const lst = [['EWM · iShares MSCI Malaysia', glob?.malasia?.ewm]].filter(x=>x[1]);
+      $('myWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    }
+    $('myFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco Negara Malaysia (banco central), myr e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
+  }
+  function renderFilipinas(){
+    aplicarSub('D');
+    const C = PB_D.filipinas; if(!C){ loadPB('filipinas','filipinas',renderFilipinas); $('phKpis').innerHTML = '<div class="empty">Cargando datos de Filipinas…</div>'; return; }
+    if(!glob) loadGlobal(); if(!gHist) loadHist(); if(!pxD) loadPx();
+    const hoy = hoyAR(), fx = pbFx(C, 'fx_php', glob?.filipinas?.php || glob?.monedas?.PHP), fl = pbL(fx), fp = fx.length>1 ? fx[fx.length-2] : null;
+    const ars = pbArs(fx, 1), ra = pbL(ars), rap = ars.length>21 ? ars[ars.length-22] : null;
+    const tasa = pbL(C.tasa), inf = pbL(C.infl), des = pbL(C.desemp), da = pbL(C.desemp_anual);
+    const bh = gHist?.series?.psei || [], bx = glob?.bolsas?.PSE || (bh.length>1 ? {v:bh[bh.length-1][1], prev:bh[bh.length-2][1]} : null), etf = glob?.filipinas?.ephe;
+    const bc = BCAL.find(b=>b[0]==='PHL'), prox = bc ? bc[2].find(f=>f>=hoy) : null, dpx = prox ? Math.round((T(prox)-T(hoy))/864e5) : null;
+    $('phKpis').innerHTML = pbSt('Pesos filipinos por dólar', fl ? '₱ '+nf(fl[1],2) : '—', fl ? `${fp ? sg((fl[1]/fp[1]-1)*100,2)+'% · ' : ''}${fds(fl[0])}` : '', fp && fl[1]>fp[1] ? 'dn' : 'up')
+      + pbSt('Un peso filipino en pesos argentinos', ra ? '$ '+nf(ra[1],2) : '—', ra ? `${rap ? sg((ra[1]/rap[1]-1)*100,1)+'% en un mes · ' : ''}${fds(ra[0])}` : 'oficial')
+      + pbSt('Tasa del BSP', tasa ? nf(tasa[1],2)+'%' : '—', prox ? `reunión ${dpx===0?'HOY':dpx===1?'mañana':'en '+dpx+' días'}` : 'tasa de referencia')
+      + pbSt('Inflación', inf ? nf(inf[1],1)+'%' : '—', inf ? 'en 12 meses, '+mesTxt(inf[0]) : '', inf && inf[1]>4 ? 'dn' : '')
+      + pbSt('Desempleo', des ? nf(des[1],1)+'%' : da ? nf(da[1],1)+'%' : '—', des ? mesTxt(des[0]) : da ? 'promedio de '+da[0] : '')
+      + (bx ? pbSt('PSEi', nf(bx.v,0), bx.prev ? sg((bx.v/bx.prev-1)*100,2)+'% en el día' : '', bx.prev && bx.v>bx.prev ? 'up' : bx.prev && bx.v<bx.prev ? 'dn' : '')
+            : pbSt('iShares MSCI Philippines', etf ? 'US$ '+nf(etf.v,2) : '—', etf ? sg(gpc(etf),2)+'% en el día' : 'en dólares', etf && gpc(etf)>0 ? 'up' : etf && gpc(etf)<0 ? 'dn' : ''));
+    const sub = SUBS.D[2], anio = new Date().getFullYear();
+    if(sub==='economia'){
+      $('phDatSt').innerHTML = pbDat('PHL');
+      pbInfl(C, 'Ph', 'Filipinas', pbMm(C)); pbPbi(C, 'Ph', 'Filipinas', 'la Autoridad de Estadística'); pbDes(C, 'Ph', 'Filipinas', 'la Autoridad de Estadística');
+      const ia = months.filter(m=>m.inflYoY!=null).map(m=>[m.mes+'-01', m.inflYoY]).filter(p=>p[0] >= String(anio-5)), it = pbCut(C.infl,5).map(p=>[eMes(p[0]),p[1]]);
+      if(it.length){ legend($('lgPhAr'), [{n:'Filipinas', c:'--s2'},{n:'Argentina', c:'--s4'}]); lineChart($('chPhAr'), [{n:'Filipinas', c:'--s2', pts:it},{n:'Argentina', c:'--s4', pts:ia}], {xfmt:pbXf, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', aria:'Inflación de Filipinas y Argentina'}); }
+    }
+    if(sub==='tasas'){
+      pbTasa(C, 'Ph', 'el BSP', prox);
+      const GB = glob?.bonos || {}, b10 = GB.PHL, us = GB.USA;
+      const bst = (l,x,d)=>x ? `<div class="st"><span class="lbl">${l}</span><span class="v">${nf(x.v,2)}%</span><span class="d">${d}</span></div>` : '';
+      $('phBonSt').innerHTML = bst('Filipinas 10 años', b10, 'en pesos filipinos') + bst('EE.UU. 10 años', us, 'en dólares') + (b10 && us ? `<div class="st"><span class="lbl">Diferencia</span><span class="v">${sg(b10.v-us.v,2)} pp</span><span class="d">Filipinas contra EE.UU.</span></div>` : '');
+      $('phBonN').textContent = b10?.t ? 'Dato: '+String(b10.t).slice(0,10).split('-').reverse().join('/') : '';
+      const s1 = gHist?.series?.ph10 || [], s2 = gHist?.series?.t10 || [], d0 = s1[0]?.[0] || '';
+      const bs = [{n:'Filipinas 10 años', c:'--s3', pts:s1},{n:'EE.UU. 10 años', c:'--s1', pts:s2.filter(p=>p[0]>=d0)}].filter(x=>x.pts.length);
+      legend($('lgPhBon'), bs); $('chPhBon').closest('.card').hidden = !b10 && !s1.length;
+      if(s1.length) lineChart($('chPhBon'), bs, {h:200, yfmt:v=>nf(v,1)+'%', vfmt:v=>nf(v,2)+'%', zero:true, aria:'Bonos de Filipinas y EE.UU.'});
+      else $('chPhBon').innerHTML = '<div class="empty">'+(gHist ? (b10 ? 'La fuente gratuita no trae la historia de este bono: arriba, el último dato.' : 'La fuente gratuita no trae este bono por ahora.') : 'Cargando…')+'</div>';
+    }
+    if(sub==='mercados'){
+      if(fx.length) lineChart($('chPhUsd'), [{n:'Pesos filipinos por dólar', c:'--s3', pts:fx.slice(-500)}], {h:200, yfmt:v=>nf(v,1), vfmt:v=>'₱ '+nf(v,2), aria:'Pesos filipinos por dólar'});
+      if(ars.length) lineChart($('chPhArs'), [{n:'Un peso filipino en pesos argentinos', c:'--s4', pts:ars.slice(-500)}], {h:200, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,2), aria:'Un peso filipino en pesos argentinos'});
+      if(bh.length){ pbBolsa('chPhIdx', 'phIdxN', bh, 'PSEi', 'pts'); $('phIdxT').textContent = 'PSEi: las 30 empresas más grandes de la bolsa de Filipinas, en pesos filipinos. Con demora (CNBC).'; }
+      else { pbBolsa('chPhIdx', 'phIdxN', gHist?.series?.ephe || [], 'iShares MSCI Philippines', 'US$'); $('phIdxT').textContent = 'Fondo iShares MSCI Philippines (EPHE), que cotiza en Wall Street. Se usa porque la fuente gratuita no trae el índice de la bolsa de Manila. Con demora (CNBC).'; }
+      const lst = [['EPHE · iShares MSCI Philippines', glob?.filipinas?.ephe], ['PHI · PLDT', glob?.filipinas?.phi]].filter(x=>x[1]);
+      $('phWs').innerHTML = lst.map(([n,x])=>{ const p = gpc(x); return `<div class="st"><span class="lbl">${n}</span><span class="v ${p>0?'up':p<0?'dn':''}">US$ ${nf(x.v,2)}</span><span class="d">${p==null?'':sg(p,2)+'% en el día'}</span></div>`; }).join('') || '<div class="empty">Sin datos todavía.</div>';
+    }
+    $('phFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco Central de Filipinas (BSP), php e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
   }
   // ---- "En vivo" en cada país: cuenta regresiva al banco central, reloj, población y lo que produce mientras mirás ----
   // bc: [ISO de BCAL, hora del anuncio, zona horaria, nombre, aproximada]; ex: bolsa de GEX
@@ -5482,6 +5917,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     L:{iso:'POL', ciudad:'Varsovia', tz:'Europe/Warsaw', ex:'GPW', nom:'Polonia', bc:['POL','15:00','Europe/Warsaw','Banco Nacional de Polonia',1]},
     I:{iso:'IND', ciudad:'Nueva Delhi', tz:'Asia/Kolkata', ex:'NSE', nom:'India', bc:['IND','10:00','Asia/Kolkata','Banco de la Reserva de India']},
     Z:{iso:'CHE', ciudad:'Zúrich', tz:'Europe/Zurich', ex:'SIX', nom:'Suiza', bc:['CHE','09:30','Europe/Zurich','Banco Nacional Suizo']},
+    G:{iso:'NOR', ciudad:'Oslo', tz:'Europe/Oslo', ex:'OSE', nom:'Noruega', bc:['NOR','10:00','Europe/Oslo','Banco de Noruega']},
+    V:{iso:'SWE', ciudad:'Estocolmo', tz:'Europe/Stockholm', ex:'OMX', nom:'Suecia', bc:['SWE','09:30','Europe/Stockholm','Riksbank']},
+    H:{iso:'THA', ciudad:'Bangkok', tz:'Asia/Bangkok', ex:'SET', nom:'Tailandia', bc:['THA','14:00','Asia/Bangkok','Banco de Tailandia',1]},
+    F:{iso:'MYS', ciudad:'Kuala Lumpur', tz:'Asia/Kuala_Lumpur', ex:'KLSE', nom:'Malasia', bc:['MYS','15:00','Asia/Kuala_Lumpur','Banco Negara Malaysia']},
+    D:{iso:'PHL', ciudad:'Manila', tz:'Asia/Manila', ex:'PSE', nom:'Filipinas', nocal:'El Banco Central de Filipinas decide unas seis veces por año. Todavía no publicó la fecha de la próxima reunión.'},
     N:{iso:'NZL', ciudad:'Wellington', tz:'Pacific/Auckland', ex:'NZX', nom:'Nueva Zelanda', bc:['NZL','14:00','Pacific/Auckland','Banco de la Reserva de Nueva Zelanda']},
     Y:{iso:'IDN', ciudad:'Yakarta', tz:'Asia/Jakarta', ex:'IDX', nom:'Indonesia', bc:['IDN','14:30','Asia/Jakarta','Banco de Indonesia',1]},
     Q:{iso:'KOR', ciudad:'Seúl', tz:'Asia/Seoul', ex:'KRX', nom:'Corea del Sur', bc:['KOR','10:00','Asia/Seoul','Banco de Corea',1]},
@@ -5514,6 +5954,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       if(nx){ const s = Math.floor((nx[1]-now)/1000), cel = [[Math.floor(s/86400),'días'],[Math.floor(s%86400/3600),'h'],[Math.floor(s%3600/60),'min'],[s%60,'seg']];
         out.push(`<div class="vv"><span class="lbl">Próxima decisión · ${esc(c.bc[3])}</span><div class="ucd vcd">${cel.map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><span>${l}</span></div>`).join('')}</div><span class="d">${hoyF ? 'Hoy ya anunció. ' : ''}${c.bc[5] ? esc(c.bc[5])+': ' : ''}${vvHora(nx[1],'America/Argentina/Buenos_Aires')} h de Argentina${c.bc[4] ? ' (hora aproximada)' : ''}</span></div>`); }
       else out.push(`<div class="vv"><span class="lbl">Próxima decisión · ${esc(c.bc[3])}</span><span class="v">—</span><span class="d">Todavía no publicó el calendario de reuniones que viene.</span></div>`); }
+    else if(c.nocal) out.push(`<div class="vv"><span class="lbl">Próxima decisión del banco central</span><span class="v vsm">Sin fecha</span><span class="d">${esc(c.nocal)}</span></div>`);
     else if(k==='P') out.push(`<div class="vv"><span class="lbl">Próxima decisión · BCRP</span><span class="v vsm">Una vez por mes</span><span class="d">El Banco Central de Reserva del Perú decide todos los meses, en general el segundo jueves, pero no publica un calendario fijo.</span></div>`);
     // 2. reloj del país y su bolsa
     const loc = new Date(now).toLocaleTimeString('es-AR',{timeZone:c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
@@ -5532,7 +5973,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(el.dataset.h !== h){ el.dataset.h = h; el.innerHTML = h; }
   }
   // ---- noticias por país (noticias_paises.json) ----
-  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino', K:'canada', O:'colombia', T:'turquia', P:'peru', L:'polonia', I:'india', A:'arabia', Z:'suiza', W:'australia', Q:'corea', S:'sudafrica', N:'zelanda', Y:'indonesia'};
+  const NP_PAIS = {U:'eeuu', B:'brasil', E:'europa', X:'mexico', C:'chile', J:'japon', R:'reino', K:'canada', O:'colombia', T:'turquia', P:'peru', L:'polonia', I:'india', A:'arabia', Z:'suiza', W:'australia', Q:'corea', S:'sudafrica', N:'zelanda', Y:'indonesia', G:'noruega', V:'suecia', H:'tailandia', F:'malasia', D:'filipinas'};
   let npData = null, npLoading = false, npAt = 0;
   async function loadNP(k){
     if(npLoading) return; npLoading = true;
@@ -5548,11 +5989,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés de la última semana, marcados EN.' : ''}` : '';
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
-  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia'], I:['gSubI','vIn','economia'], A:['gSubA','vSa','economia'], Z:['gSubZ','vSz','economia'], W:['gSubW','vAu','economia'], Q:['gSubQ','vKr','economia'], S:['gSubS','vZa','economia'], N:['gSubN','vNz','economia'], Y:['gSubY','vId','economia']};
+  const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia'], I:['gSubI','vIn','economia'], A:['gSubA','vSa','economia'], Z:['gSubZ','vSz','economia'], W:['gSubW','vAu','economia'], Q:['gSubQ','vKr','economia'], S:['gSubS','vZa','economia'], N:['gSubN','vNz','economia'], Y:['gSubY','vId','economia'], G:['gSubG','vNo','economia'], V:['gSubV','vSe','economia'], H:['gSubH','vTh','economia'], F:['gSubF','vMy','economia'], D:['gSubD','vPh','economia']};
   const SUBS_DEF = Object.fromEntries(Object.entries(SUBS).map(([k,v])=>[k, v[2]]));  // primer apartado de cada sección (no se recuerda el último)
   // ---- datos que se suman a todos los países (paises_extra.json: Banco Mundial, OCDE, BIS y Big Mac) ----
-  const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL', I:'IND', A:'SAU', Z:'CHE', W:'AUS', Q:'KOR', S:'ZAF', N:'NZL', Y:'IDN'};
-  const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', IND:'India', SAU:'Arabia Saudita', CHE:'Suiza', AUS:'Australia', KOR:'Corea del Sur', ZAF:'Sudáfrica', NZL:'Nueva Zelanda', IDN:'Indonesia', ARG:'Argentina'};
+  const PX_ISO = {U:'USA', B:'BRA', E:'EUR', X:'MEX', C:'CHL', J:'JPN', R:'GBR', K:'CAN', O:'COL', T:'TUR', P:'PER', L:'POL', I:'IND', A:'SAU', Z:'CHE', W:'AUS', Q:'KOR', S:'ZAF', N:'NZL', Y:'IDN', G:'NOR', V:'SWE', H:'THA', F:'MYS', D:'PHL'};
+  const PX_N = {USA:'EE.UU.', BRA:'Brasil', EUR:'La zona euro', MEX:'México', CHL:'Chile', JPN:'Japón', GBR:'Reino Unido', CAN:'Canadá', COL:'Colombia', TUR:'Turquía', PER:'Perú', POL:'Polonia', IND:'India', SAU:'Arabia Saudita', CHE:'Suiza', AUS:'Australia', KOR:'Corea del Sur', ZAF:'Sudáfrica', NZL:'Nueva Zelanda', IDN:'Indonesia', NOR:'Noruega', SWE:'Suecia', THA:'Tailandia', MYS:'Malasia', PHL:'Filipinas', ARG:'Argentina'};
   const PX_SUB = {U:{economia:'economia', tasas:'tasas', wall:'mercados'}};
   let pxD = null, pxLoading = false;
   async function loadPx(){
@@ -5659,13 +6100,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0);
     if(VIVO[k]) vvMount(k); }
   function setSub(k, v, scroll){ SUBS[k][2] = v; try{ mAb.clear(); }catch(e){} aplicarSub(k); setTimeout(()=>{ if(typeof mAcordeon==='function') mAcordeon(); }, 300);
-    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else if(k==='W') renderAustralia(); else if(k==='Q') renderCorea(); else if(k==='S') renderSudafrica(); else if(k==='N') renderZelanda(); else if(k==='Y') renderIndonesia(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(k==='M') renderGlobal(); else if(k==='B') renderBrasil(); else if(k==='E') renderEuropa(); else if(k==='X') renderMexico(); else if(k==='C') renderChile(); else if(k==='J') renderJapon(); else if(k==='R') renderReino(); else if(k==='K') renderCanada(); else if(k==='O') renderColombia(); else if(k==='T') renderTurquia(); else if(k==='P') renderPeru(); else if(k==='L') renderPolonia(); else if(k==='I') renderIndia(); else if(k==='A') renderArabia(); else if(k==='Z') renderSuiza(); else if(k==='W') renderAustralia(); else if(k==='Q') renderCorea(); else if(k==='S') renderSudafrica(); else if(k==='N') renderZelanda(); else if(k==='Y') renderIndonesia(); else if(k==='G') renderNoruega(); else if(k==='V') renderSuecia(); else if(k==='H') renderTailandia(); else if(k==='F') renderMalasia(); else if(k==='D') renderFilipinas(); else renderUsa(); if(scroll) $(SUBS[k][0]).scrollIntoView({behavior:'smooth', block:'start'}); }
   for(const k in SUBS) document.querySelectorAll(`#${SUBS[k][0]} button`).forEach(b=>b.addEventListener('click', ()=>{ setSub(k, b.dataset.s); gc('apartado-'+b.dataset.s, true); }));
   // ---- Mundo › Economías y tasas: comparador de países (con los datos que ya trae cada sección) ----
-  const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú'],['POL','Polonia'],['IND','India'],['SAU','Arabia Saudita'],['CHE','Suiza'],['AUS','Australia'],['KOR','Corea del Sur'],['ZAF','Sudáfrica'],['NZL','Nueva Zelanda'],['IDN','Indonesia']];
-  const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru', POL:'polonia', IND:'india', SAU:'arabia', CHE:'suiza', AUS:'australia', KOR:'corea', ZAF:'sudafrica', NZL:'zelanda', IDN:'indonesia'};
-  const CMP_FX = {ARG:['fx_ars'], BRA:['fx_brl'], EUR:['fx_eur',1], MEX:['fx_mxn'], CHL:['fx_clp'], JPN:['fx_jpy'], GBR:['fx_gbp',1], CAN:['fx_cad'], COL:['fx_cop'], TUR:['fx_try'], PER:['fx_pen'], POL:['fx_pln'], IND:['fx_inr'], CHE:['fx_chf'], AUS:['fx_aud',1], KOR:['fx_krw'], ZAF:['fx_zar'], NZL:['fx_nzd',1], IDN:['fx_idr']};
-  const CMP_BX = {USA:['spx','S&P 500'], BRA:['bvsp','Bovespa'], EUR:['sx5e','Euro Stoxx 50'], MEX:['mxx','IPC México'], CHL:['ech','ETF de Chile',1], JPN:['nikkei','Nikkei'], GBR:['ftse','FTSE 100'], CAN:['tsx','S&P/TSX'], COL:['colcap','COLCAP'], TUR:['xu100','BIST 100'], PER:['epu','ETF de Perú',1], POL:['wig20','WIG20'], IND:['nifty','Nifty 50'], SAU:['tasi','Tadawul'], CHE:['smi','SMI'], AUS:['asx','S&P/ASX 200'], KOR:['kospi','KOSPI'], ZAF:['jse','JSE Top 40'], NZL:['nzx','NZX 50'], IDN:['jkse','Jakarta Composite']};
+  const CMP_P = [['ARG','Argentina'],['USA','Estados Unidos'],['BRA','Brasil'],['EUR','Zona euro'],['MEX','México'],['CHL','Chile'],['JPN','Japón'],['GBR','Reino Unido'],['CAN','Canadá'],['COL','Colombia'],['TUR','Turquía'],['PER','Perú'],['POL','Polonia'],['IND','India'],['SAU','Arabia Saudita'],['CHE','Suiza'],['AUS','Australia'],['KOR','Corea del Sur'],['ZAF','Sudáfrica'],['NZL','Nueva Zelanda'],['IDN','Indonesia'],['NOR','Noruega'],['SWE','Suecia'],['THA','Tailandia'],['MYS','Malasia'],['PHL','Filipinas']];
+  const CMP_F = {USA:'usa', BRA:'brasil', EUR:'europa', MEX:'mexico', CHL:'chile', JPN:'japon', GBR:'reinounido', CAN:'canada', COL:'colombia', TUR:'turquia', PER:'peru', POL:'polonia', IND:'india', SAU:'arabia', CHE:'suiza', AUS:'australia', KOR:'corea', ZAF:'sudafrica', NZL:'zelanda', IDN:'indonesia', NOR:'noruega', SWE:'suecia', THA:'tailandia', MYS:'malasia', PHL:'filipinas'};
+  const CMP_FX = {ARG:['fx_ars'], BRA:['fx_brl'], EUR:['fx_eur',1], MEX:['fx_mxn'], CHL:['fx_clp'], JPN:['fx_jpy'], GBR:['fx_gbp',1], CAN:['fx_cad'], COL:['fx_cop'], TUR:['fx_try'], PER:['fx_pen'], POL:['fx_pln'], IND:['fx_inr'], CHE:['fx_chf'], AUS:['fx_aud',1], KOR:['fx_krw'], ZAF:['fx_zar'], NZL:['fx_nzd',1], IDN:['fx_idr'], NOR:['fx_nok'], SWE:['fx_sek'], THA:['fx_thb'], MYS:['fx_myr'], PHL:['fx_php']};
+  const CMP_BX = {USA:['spx','S&P 500'], BRA:['bvsp','Bovespa'], EUR:['sx5e','Euro Stoxx 50'], MEX:['mxx','IPC México'], CHL:['ech','ETF de Chile',1], JPN:['nikkei','Nikkei'], GBR:['ftse','FTSE 100'], CAN:['tsx','S&P/TSX'], COL:['colcap','COLCAP'], TUR:['xu100','BIST 100'], PER:['epu','ETF de Perú',1], POL:['wig20','WIG20'], IND:['nifty','Nifty 50'], SAU:['tasi','Tadawul'], CHE:['smi','SMI'], AUS:['asx','S&P/ASX 200'], KOR:['kospi','KOSPI'], ZAF:['jse','JSE Top 40'], NZL:['nzx','NZX 50'], IDN:['jkse','Jakarta Composite'], NOR:['osebx','OSEBX'], SWE:['omxs30','OMX Stockholm 30'], THA:['seti','SET'], MYS:['klci','FTSE Bursa Malaysia KLCI'], PHL:['psei','PSEi']};
   const CMP = {}, cmpCarg = {};
   let cmpSel = ['ARG','BRA'];
   try{ const v = JSON.parse(localStorage.getItem('cmp-sel')||'null'); if(Array.isArray(v) && v.length===2 && v.every(x=>CMP_P.some(p=>p[0]===x))) cmpSel = v; }catch(e){}
@@ -5693,7 +6134,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         pick(i, g?.tasa!=null ? [g.tasa_al, g.tasa] : null, u, D.pbi?.length ? [cL(D.pbi)[1], `PBI ${cL(D.pbi)[0].slice(-1)}º trim, anualizado`] : null); }
       else if(iso==='BRA'){ const ib = cYoY(D.ibc); pick(cL(D.ipca_12)?.[0] ? [cL(D.ipca_12)[0].slice(0,7), cL(D.ipca_12)[1]] : null, cL(D.selic), cL(D.desemp) ? [cL(D.desemp)[0].slice(0,7), cL(D.desemp)[1]] : null, ib ? [ib[1], 'actividad (IBC-Br), '+mesTxt(ib[0].slice(0,7))] : null); }
       else if(iso==='EUR'){ const pa = cL(D.pbi_anual?.EA); pick(cL(D.infl?.EA), cL(D.bce), cL(D.desemp?.EA), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
-      else if(iso==='IND' || iso==='SAU' || iso==='CHE' || iso==='AUS' || iso==='KOR' || iso==='ZAF' || iso==='NZL' || iso==='IDN'){ const pa = cL(D.pbi_anual), ca = cL(D.crec_anual), da = cL(D.desemp_anual);
+      else if(iso==='IND' || iso==='SAU' || iso==='CHE' || iso==='AUS' || iso==='KOR' || iso==='ZAF' || iso==='NZL' || iso==='IDN' || iso==='NOR' || iso==='SWE' || iso==='THA' || iso==='MYS' || iso==='PHL'){ const pa = cL(D.pbi_anual), ca = cL(D.crec_anual), da = cL(D.desemp_anual);
         pick(cL(D.infl), cL(D.tasa), cL(D.desemp) || (da ? [da[0], da[1]] : null), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : ca ? [ca[1], 'PBI del año '+ca[0]] : null); }
       else if(iso==='PER'){ const pb = cL(D.pbi); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pb ? [pb[1], 'PBI mensual interanual, '+mesTxt(pb[0])] : null); if(o.desemp) o.desemp[1] += ' (Lima)'; }
       else { const pa = cL(D.pbi_anual); pick(cL(D.infl), cL(D.tasa), cL(D.desemp), pa ? [pa[1], 'PBI interanual, '+cPer(pa[0])] : null); }
@@ -5737,8 +6178,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const xpMon = iso => { const c = xpCur(iso); if(!c) return null; if(c==='JPY'){ const m = glob?.japon?.jpy; return m?.prev ? -(m.v/m.prev-1)*100 : null; }
     if(c==='GBP'){ const m = glob?.reino?.gbp; return m?.prev ? (m.v/m.prev-1)*100 : null; } return dgMon(c); };
   const xpInfl = iso => gval(iso,'infl');
-  const XP_BK = {USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech', POL:'wig20', IND:'nifty', SAU:'tasi', CHE:'smi', AUS:'asx', KOR:'kospi', NZL:'nzx', IDN:'jkse'};
-  const XP_MK = {ARG:'fx_ars', BRA:'fx_brl', CHL:'fx_clp', MEX:'fx_mxn', COL:'fx_cop', PER:'fx_pen', URY:'fx_uyu', CHN:'fx_cny', DEU:'fx_eur', JPN:'fx_jpy', GBR:'fx_gbp', POL:'fx_pln', IND:'fx_inr', CHE:'fx_chf', KOR:'fx_krw', ZAF:'fx_zar', IDN:'fx_idr'};
+  const XP_BK = {USA:'spx', ARG:'merv', BRA:'bvsp', DEU:'dax', GBR:'ftse', JPN:'nikkei', CHN:'shanghai', FRA:'cac', ESP:'ibex', ITA:'ftmib', MEX:'mxx', CHL:'ech', POL:'wig20', IND:'nifty', SAU:'tasi', CHE:'smi', AUS:'asx', KOR:'kospi', NZL:'nzx', IDN:'jkse', NOR:'osebx', SWE:'omxs30', THA:'seti', MYS:'klci', PHL:'psei'};
+  const XP_MK = {ARG:'fx_ars', BRA:'fx_brl', CHL:'fx_clp', MEX:'fx_mxn', COL:'fx_cop', PER:'fx_pen', URY:'fx_uyu', CHN:'fx_cny', DEU:'fx_eur', JPN:'fx_jpy', GBR:'fx_gbp', POL:'fx_pln', IND:'fx_inr', CHE:'fx_chf', KOR:'fx_krw', ZAF:'fx_zar', IDN:'fx_idr', NOR:'fx_nok', SWE:'fx_sek', THA:'fx_thb', MYS:'fx_myr', PHL:'fx_php'};
   const XP_BO = {USA:'t10', DEU:'de10', ITA:'it10', FRA:'fr10', ESP:'es10', MEX:'mx10', CHL:'cl10', JPN:'jp10', GBR:'gb10'};
   // escenas: [clave, título, bajada, valor(iso), tipo, máximo de altura, formato, color de países, a quién se acerca, serie para el mini gráfico]
   const XP_SCN = [
