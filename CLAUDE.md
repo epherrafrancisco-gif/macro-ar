@@ -27,7 +27,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   negociable); NO en Mundo, Estados Unidos ni Sobre Pulso Macro (pedido del dueño).
   Dólar en vivo: DolarApi desde el navegador cada 60 s.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
-  sección (`SECC` + `ICO`: nombre claro, ícono y una línea), "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
+  sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
+  la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
+  botón "Países · X" y título de `#here`. No usar emojis de banderas (en Windows no se ven). País nuevo: sumarlo a `FLAG` y
+  copiar su SVG, "Hoy en números" (`#pHoy`) y globo de puntos con resumen.
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
