@@ -35,7 +35,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 31 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 33 países
   (`data-g="pais"`; pedido del dueño: EE.UU. primero y Polonia segundo, también en la hoja del celular y en la portada).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
@@ -284,6 +284,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   The Local y Copenhagen Post; Romania Insider y Brno Daily (a veces 429) y Business Review; Chequia y Rumania quedan con pocos titulares. Dan error desde
   Actions: Iceland Review y BBJ (403), Radio Prague y Expats.cz (404), The Standard HK y Universul (XML roto), Romania Journal (403).
 
+### Israel y Serbia (`#israel` `vIl` `renderIsrael` `SUBS.IL`; `#serbia` `vRs` `renderSerbia` `SUBS.RS`)
+- Robots `scripts/israel.py` y `scripts/serbia.py` (base `pais_bis.py`; Serbia sin OCDE). Mismo armado que Noruega.
+  Israel: séquel (`ILS=`, `fx_ils`), TA-35 (`bolsas.TASE` `.TA35`, historia `ta35`), `EIS`, TEVA y CHKP (`global.json → israel`).
+  El IPC de Israel en el BIS llega con ~4 meses de atraso. `BCAL` ISR con el calendario oficial del Banco de Israel hasta
+  nov-2027 (anuncio 16:00 de Jerusalén). TASE opera de lunes a viernes desde 2026.
+- Serbia: dinar (`RSD=`, `fx_rsd`), cien dinares en pesos. CNBC no trae el BELEX15 ni bonos de Serbia (ni IL10Y con historia):
+  la tarjeta y el casillero de la bolsa no aparecen. `BCAL` SRB solo 12/11 y 10/12/2026 (Trading Economics; anuncio ~11:00
+  de Belgrado, aproximada; PENDIENTE 2027). Noticias en inglés: Globes y The Times of Israel; Serbian Monitor, N1 English y
+  Balkan Insight.
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -293,7 +303,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 31 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 33 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
