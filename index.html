@@ -702,21 +702,24 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <nav class="paispanel" id="paisPanel" aria-label="Países" hidden>
       <a href="#eeuu" role="tab" id="tabU" data-g="pais" aria-selected="false">Estados Unidos</a>
       <a href="#polonia" role="tab" id="tabPl" data-g="pais" aria-selected="false">Polonia</a>
-      <a href="#brasil" role="tab" id="tabB" data-g="pais" aria-selected="false">Brasil</a>
+      <a href="#japon" role="tab" id="tabJp" data-g="pais" aria-selected="false">Japón</a>
+      <a href="#china" role="tab" id="tabCn" data-g="pais" aria-selected="false">China</a>
+      <a href="#turquia" role="tab" id="tabTr" data-g="pais" aria-selected="false">Turquía</a>
       <a href="#europa" role="tab" id="tabE" data-g="pais" aria-selected="false">Zona euro</a>
+      <a href="#suiza" role="tab" id="tabSz" data-g="pais" aria-selected="false">Suiza</a>
+      <a href="#reinounido" role="tab" id="tabUk" data-g="pais" aria-selected="false">Reino Unido</a>
+      <a href="#brasil" role="tab" id="tabB" data-g="pais" aria-selected="false">Brasil</a>
+      <a href="#hongkong" role="tab" id="tabHk" data-g="pais" aria-selected="false">Hong Kong</a>
+      <a href="#arabia" role="tab" id="tabSa" data-g="pais" aria-selected="false">Arabia Saudita</a>
+      <a href="#israel" role="tab" id="tabIl" data-g="pais" aria-selected="false">Israel</a>
+      <a href="#corea" role="tab" id="tabKr" data-g="pais" aria-selected="false">Corea del Sur</a>
       <a href="#mexico" role="tab" id="tabX" data-g="pais" aria-selected="false">México</a>
       <a href="#chile" role="tab" id="tabCl" data-g="pais" aria-selected="false">Chile</a>
-      <a href="#japon" role="tab" id="tabJp" data-g="pais" aria-selected="false">Japón</a>
-      <a href="#reinounido" role="tab" id="tabUk" data-g="pais" aria-selected="false">Reino Unido</a>
       <a href="#canada" role="tab" id="tabCa" data-g="pais" aria-selected="false">Canadá</a>
       <a href="#colombia" role="tab" id="tabCo" data-g="pais" aria-selected="false">Colombia</a>
-      <a href="#turquia" role="tab" id="tabTr" data-g="pais" aria-selected="false">Turquía</a>
       <a href="#peru" role="tab" id="tabPe" data-g="pais" aria-selected="false">Perú</a>
       <a href="#india" role="tab" id="tabIn" data-g="pais" aria-selected="false">India</a>
-      <a href="#arabia" role="tab" id="tabSa" data-g="pais" aria-selected="false">Arabia Saudita</a>
-      <a href="#suiza" role="tab" id="tabSz" data-g="pais" aria-selected="false">Suiza</a>
       <a href="#australia" role="tab" id="tabAu" data-g="pais" aria-selected="false">Australia</a>
-      <a href="#corea" role="tab" id="tabKr" data-g="pais" aria-selected="false">Corea del Sur</a>
       <a href="#sudafrica" role="tab" id="tabZa" data-g="pais" aria-selected="false">Sudáfrica</a>
       <a href="#zelanda" role="tab" id="tabNz" data-g="pais" aria-selected="false">Nueva Zelanda</a>
       <a href="#indonesia" role="tab" id="tabId" data-g="pais" aria-selected="false">Indonesia</a>
@@ -727,13 +730,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <a href="#filipinas" role="tab" id="tabPh" data-g="pais" aria-selected="false">Filipinas</a>
       <a href="#islandia" role="tab" id="tabIs" data-g="pais" aria-selected="false">Islandia</a>
       <a href="#hungria" role="tab" id="tabHu" data-g="pais" aria-selected="false">Hungría</a>
-      <a href="#hongkong" role="tab" id="tabHk" data-g="pais" aria-selected="false">Hong Kong</a>
       <a href="#chequia" role="tab" id="tabCz" data-g="pais" aria-selected="false">Chequia</a>
       <a href="#dinamarca" role="tab" id="tabDk" data-g="pais" aria-selected="false">Dinamarca</a>
       <a href="#rumania" role="tab" id="tabRo" data-g="pais" aria-selected="false">Rumania</a>
-      <a href="#israel" role="tab" id="tabIl" data-g="pais" aria-selected="false">Israel</a>
       <a href="#serbia" role="tab" id="tabRs" data-g="pais" aria-selected="false">Serbia</a>
-      <a href="#china" role="tab" id="tabCn" data-g="pais" aria-selected="false">China</a>
       <a href="#rusia" role="tab" id="tabRu" data-g="pais" aria-selected="false">Rusia</a>
     </nav>
     <div class="seg" id="segRange" role="tablist" aria-label="Rango de los gráficos">
@@ -4040,8 +4040,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>{ const k = a.getAttribute('href').slice(1); if(SECC[k]) a.innerHTML = ico(k) + SECC[k][0]; });
   const tile = (k, big) => `<a class="tile${big?' big':''}" href="#${k}">${ico(k)}<b>${SECC[k][0]}</b><span>${SECC[k][1]}</span><i aria-hidden="true">›</i></a>`;
   $('tilesA').innerHTML = ARG_T.map((k,i)=>tile(k, i===ARG_T.length-1 && ARG_T.length%2===1)).join('');
-  $('tilesG').innerHTML = ['global','eeuu','polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia'].map(k=>tile(k)).join('');
-  const PAISES_T = ['polonia','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia'];
+  $('tilesG').innerHTML = ['global','eeuu','polonia','japon','china','turquia','europa','suiza','reinounido','brasil','hongkong','arabia','israel','corea','mexico','chile','canada','colombia','peru','india','australia','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','chequia','dinamarca','rumania','serbia','rusia'].map(k=>tile(k)).join('');
+  const PAISES_T = ['polonia','japon','china','turquia','europa','suiza','reinounido','brasil','hongkong','arabia','israel','corea','mexico','chile','canada','colombia','peru','india','australia','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','chequia','dinamarca','rumania','serbia','rusia'];
   const PAISES_M = ['eeuu', ...PAISES_T];  // menú Países: EE.UU. y Polonia primero (pedido del dueño); EE.UU. es una vista de la pestaña global
   function paisPanel(on){ $('paisPanel').hidden = !on; $('tabPaises').setAttribute('aria-expanded', String(on)); }
   $('tabPaises').addEventListener('click', ()=>{ paisPanel($('paisPanel').hidden); gcUna('menu-paises'); });
