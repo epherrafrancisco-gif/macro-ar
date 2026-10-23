@@ -14,6 +14,10 @@
 <meta property="og:image:alt" content="Pulso Macro: tablero con gráficos de dólares, riesgo país, dinero, resultado fiscal y Merval">
 <meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Pulso Macro"><meta name="theme-color" content="#0e1319">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pulso Macro"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <!-- Contador de visitas privado (GoatCounter; sin cookies). Las pestañas y los eventos se cuentan a mano desde el script. -->
 <script data-goatcounter="https://macroar.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="//gc.zgo.at/count.js"></script>
@@ -617,6 +621,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .hflag{position:absolute;top:0;right:0;bottom:0;width:48%;background-size:cover;background-position:center;opacity:.6;
   -webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.35) 30%,#000 75%);mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.35) 30%,#000 75%)}
 @media (max-width:640px){.here.conb{min-height:0;padding:12px 16px}.here.conb p{max-width:70%}.hflag{width:45%;opacity:.45}}
+/* Instalar como app (manifest.webmanifest + sw.js) */
+.inst{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:9px 16px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:600 14px var(--sans,inherit);cursor:pointer}
+.inst:hover{background:var(--accent);color:var(--bg)}.inst svg{width:17px;height:17px}
+.mhero .inst{margin:12px 0 4px;width:100%;justify-content:center;padding:10px 16px}
+.iosinst{position:fixed;inset:0;z-index:80;background:rgba(5,8,12,.75);display:grid;place-items:end center;padding:16px}.iosinst[hidden]{display:none}
+.iosinst .ii{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:420px;width:100%;position:relative}
+.iosinst h3{margin:0 0 10px;font-size:18px;padding-right:30px}.iosinst ol{margin:0;padding-left:20px;display:grid;gap:8px;line-height:1.45}.iosinst ol svg{width:18px;height:18px;vertical-align:-3px;color:var(--accent)}
+.iosinst .iix{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer}
 .here{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px}.here h2{margin:0 0 2px;font-size:18px}.here p{margin:0;color:var(--ink2);font-size:14px}
 @media (max-width:860px){.gmini{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:520px){.tiles{grid-template-columns:minmax(0,1fr)}.hoy{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -652,7 +664,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </header>
 
-  <div class="mhero" id="mHero"><h1>La economía, clara y al día</h1><p>Dólar, inflación, tasas y mercados de Argentina y del mundo. Se actualiza solo, todos los días.</p><p class="mby">Diseñado y operado por Francisco Epherra</p><p class="mh4">Dólares hoy</p></div>
+  <div class="mhero" id="mHero"><h1>La economía, clara y al día</h1><p>Dólar, inflación, tasas y mercados de Argentina y del mundo. Se actualiza solo, todos los días.</p><p class="mby">Diseñado y operado por Francisco Epherra</p><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Agregar a tu pantalla de inicio</span></button><p class="mh4">Dólares hoy</p></div>
   <section class="dolhoy" id="dolHoy" aria-label="Dólar hoy">
     <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
     <div class="quotes" id="quotes"></div>
@@ -709,11 +721,17 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
   </div>
   <div class="here" id="here" hidden></div>
+  <div class="iosinst" id="iosInst" hidden role="dialog" aria-modal="true" aria-label="Agregar Pulso Macro a la pantalla de inicio"><div class="ii">
+    <button type="button" class="iix" id="iosX" aria-label="Cerrar">✕</button>
+    <h3>Agregá Pulso Macro a tu pantalla de inicio</h3>
+    <ol><li>Tocá el botón <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg> (abajo en el iPhone, arriba en el iPad).</li>
+    <li>Bajá y elegí <b>Agregar a inicio</b>.</li><li>Tocá <b>Agregar</b>. Listo: queda el ícono como una app.</li></ol>
+    <p class="note">Apple no deja que una página lo haga sola: son estos tres toques.</p></div></div>
   <div class="mres" id="mRes"></div>
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
-    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p></div>
+    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button></div>
     <div class="mporta-m"><p class="mh4" style="margin-top:0">Los datos del día</p><div class="mbig" id="mHoy"></div>
       <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true">Argentina</button><button type="button" data-d="gl" aria-pressed="false">El mundo</button></div></div>
     <div class="split">
@@ -5929,6 +5947,20 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     }
     $('phFuente').textContent = `Fuentes: Banco de Pagos Internacionales (BIS: tasa del Banco Central de Filipinas (BSP), php e inflación), OCDE y Banco Mundial (PBI, desempleo, población); bolsa, bonos y acciones: CNBC, con demora. ${pbAct(C)}`;
   }
+  // ---- Instalar como app: Chrome/Edge (Android y compu) muestran su cartel; en iPhone/iPad, instrucciones ----
+  { const yaApp = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1);
+    let aviso = null; const bs = () => document.querySelectorAll('[data-inst]');
+    const mostrar = on => bs().forEach(b=>b.hidden = !on || yaApp);
+    if(ios && !yaApp) mostrar(true);
+    addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); aviso = e; mostrar(true); });
+    addEventListener('appinstalled', ()=>{ aviso = null; mostrar(false); gcUna('app-instalada'); });
+    bs().forEach(b=>b.addEventListener('click', async ()=>{
+      if(aviso){ gcUna('instalar-click'); aviso.prompt(); try{ const r = await aviso.userChoice; if(r.outcome==='accepted') mostrar(false); }catch(e){} aviso = null; }
+      else if(ios){ gcUna('instalar-ios'); $('iosInst').hidden = false; } }));
+    const cerrar = ()=>{ $('iosInst').hidden = true; };
+    $('iosX').addEventListener('click', cerrar); $('iosInst').addEventListener('click', e=>{ if(e.target===$('iosInst')) cerrar(); });
+    if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')) navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
   // ---- "En vivo" en cada país: cuenta regresiva al banco central, reloj, población y lo que produce mientras mirás ----
   // bc: [ISO de BCAL, hora del anuncio, zona horaria, nombre, aproximada]; ex: bolsa de GEX
   const VIVO = {

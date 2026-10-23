@@ -61,6 +61,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     las navegaciones propias usan `navPush`), para que se vean juntas y el usuario elija; al abrir se llama a `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
     de los apartados en Mundo, EE.UU. y países. Los dólares van en fila compacta (`.quotes.compact`, menos en `#dolares`)
     con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
+- Instalar como app (pedido del dueño): `manifest.webmanifest`, íconos en `icons/` (192, 512, maskable, apple-touch 180;
+  mismo dibujo que el favicon) y `sw.js`, que NO guarda nada (todo va a la red; solo muestra un aviso si no hay conexión).
+  Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge aparece con
+  `beforeinstallprompt` y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
+  hacerlo solo); en Firefox y si ya está instalada no aparece. Eventos GoatCounter `instalar-click`, `instalar-ios`,
+  `app-instalada`. La app abre `/?app=1`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
