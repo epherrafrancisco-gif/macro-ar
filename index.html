@@ -3612,6 +3612,18 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   let tab = 'portada';
   let tabContado = null;
   // Sin hash = portada; los links directos (#dolares, #global, #eeuu…) van directo a su pestaña.
+  // navegación en el celular: profundidad dentro del sitio (para que la flecha de arriba vuelva a donde estabas)
+  // y altura guardada en cada entrada del historial (para volver a la misma altura)
+  // Cada entrada del historial lleva un id creciente: así se distingue "volver" (popstate a una entrada con id) de entrar a
+  // un link #algo (que en Chrome también dispara popstate, pero con state vacío).
+  const NAV = {prof:0, volver:false, y:null, cur:0};
+  const navId = () => Date.now()*10 + Math.floor(Math.random()*10);
+  try{ if(!(history.state && history.state.id)) history.replaceState({...(history.state||{}), id:navId()}, ''); NAV.cur = history.state.id; }catch(e){}
+  const navPush = url => { const id = navId(); history.pushState({id}, '', url); NAV.cur = id; NAV.prof++; };
+  addEventListener('popstate', e=>{ const st = e.state;
+    if(st && st.id){ NAV.volver = true; NAV.y = st.y != null ? st.y : null; NAV.prof = st.id < NAV.cur ? Math.max(0, NAV.prof-1) : NAV.prof+1; NAV.cur = st.id; }
+    else { const id = navId(); try{ history.replaceState({id}, ''); }catch(err){} NAV.cur = id; NAV.prof++; NAV.volver = false; } });
+  { let tt = null; addEventListener('scroll', ()=>{ if(tt) return; tt = setTimeout(()=>{ tt = null; try{ history.replaceState({...(history.state||{}), y:Math.round(scrollY)}, ''); }catch(e){} }, 250); }, {passive:true}); }
   function setTab(t){
     if(t==='eeuu'){ G.vista = 'usa'; t = 'global'; } else if(t==='global') G.vista = 'mundo';
     tab = TABS[t] ? t : 'portada';
@@ -3620,9 +3632,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       // pedido del dueño: al entrar a una sección, siempre el primer apartado y todas las tarjetas cerradas (celular)
       try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); }catch(e){}
       // pedido del dueño (celular): al entrar a una sección, arriba de todo, aunque la última vez haya quedado abajo
-      try{ if(mobil()){ history.scrollRestoration = 'manual'; scrollTo(0,0); let toco = false; const f = ()=>{ toco = true; };
+      // pero si se vuelve para atrás, a la altura donde estaba (NAV.y, guardada en history.state al scrollear)
+      try{ if(mobil()){ history.scrollRestoration = 'manual'; const y = NAV.volver ? (NAV.y || 0) : 0; NAV.volver = false; NAV.y = null; scrollTo(0,y); let toco = false; const f = ()=>{ toco = true; };
         addEventListener('touchstart', f, {once:true, passive:true}); addEventListener('wheel', f, {once:true, passive:true});
-        for(const ms of [60, 350, 700]) setTimeout(()=>{ if(!toco && scrollY > 0) scrollTo(0,0); }, ms); } }catch(e){} }
+        for(const ms of [60, 350, 700, 1300]) setTimeout(()=>{ if(!toco && Math.abs(scrollY - y) > 4) scrollTo(0,y); }, ms); } }catch(e){} }
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
     const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
@@ -3659,7 +3672,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       + `<h4>Pulso Macro</h4><div class="ms-l">${sob}</div>`;
     $('msX').addEventListener('click', ()=>mSheet(false));
     $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
-      e.preventDefault(); mSheet(false); const k = a.dataset.k; history.pushState(null,'','#'+k); setTab(k); scrollTo({top:0}); gcUna('menu-celular-'+grp);
+      e.preventDefault(); mSheet(false); const k = a.dataset.k; navPush('#'+k); setTab(k); scrollTo({top:0}); gcUna('menu-celular-'+grp);
     }));
   }
   function mSheetViejo(){
@@ -3672,7 +3685,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('msX').addEventListener('click', ()=>mSheet(false));
     $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
       e.preventDefault(); mSheet(false); const k = a.dataset.k;
-      if(k==='portada') irPortada(); else { history.pushState(null,'','#'+k); setTab(k); }
+      if(k==='portada') irPortada(); else { navPush('#'+k); setTab(k); }
       scrollTo({top:0}); gcUna('menu-celular');
     }));
   }
@@ -3683,7 +3696,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     document.querySelectorAll('#mNav button').forEach(b=>b.setAttribute('aria-current', String(b.dataset.mn===g))); }
   document.querySelectorAll('#mNav button').forEach(b=>b.addEventListener('click', ()=>{ const m = b.dataset.mn;
     if(m==='portada'){ mSheet(false); irPortada(); }
-    else if(m==='calculadoras'){ mSheet(false); history.pushState(null,'','#calculadoras'); setTab('calculadoras'); scrollTo({top:0}); }
+    else if(m==='calculadoras'){ mSheet(false); navPush('#calculadoras'); setTab('calculadoras'); scrollTo({top:0}); }
     else if(!$('mSheet').hidden && mGrp===m) mSheet(false);
     else mSheet(true, m);
     gcUna('nav-celular-'+m); }));
@@ -3747,7 +3760,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   $('mBtn').addEventListener('click', ()=>mSheet(true));
   $('mSheet').addEventListener('click', e=>{ if(e.target.id==='mSheet') mSheet(false); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('mSheet').hidden) mSheet(false); });
-  $('mLogo').addEventListener('click', e=>{ e.preventDefault(); irPortada(); });
+  $('mLogo').addEventListener('click', e=>{ e.preventDefault(); if(NAV.prof > 0) history.back(); else irPortada(); });
   let mIdxT;
   function mActualizar(){
     const key = tab==='global' ? (G.vista==='usa'?'eeuu':'global') : tab, dentro = tab!=='portada';
@@ -3773,8 +3786,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let cur = null; for(const a of as){ const c = document.querySelector(`[data-mid="${a.dataset.to}"]`); if(c && c.getBoundingClientRect().top < 140) cur = a; }
     as.forEach(a=>a.classList.toggle('on', a===cur)); if(cur && !cur._v){ as.forEach(x=>x._v=false); cur._v=true; cur.scrollIntoView({block:'nearest', inline:'center'}); } }, {passive:true});
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
-  window.addEventListener('hashchange', ()=>setTab(location.hash.slice(1)));
-  const irPortada = ()=>{ history.pushState(null,'',location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
+  window.addEventListener('hashchange', ()=>{ setTab(location.hash.slice(1)); NAV.volver = false; });
+  const irPortada = ()=>{ navPush(location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
   $('brandH').addEventListener('click', irPortada);
   for(const id of ['modoH','flHome']) $(id).addEventListener('click', e=>{ e.preventDefault(); irPortada(); gc('volver-inicio-'+id, true); });
   $('brandH').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); irPortada(); } });
