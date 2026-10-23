@@ -161,7 +161,6 @@ FEEDS_EN = [
     ("ABC News", "https://www.abc.net.au/news/feed/51892/rss.xml", {"australia": "econ"}),
     ("The Guardian", "https://www.theguardian.com/australia-news/rss", {"australia": "econ"}),
     ("The Conversation", "https://theconversation.com/au/business/articles.atom", {"australia": "econ"}),
-    ("SBS News", "https://www.sbs.com.au/news/topic/business/feed", {"australia": "econ"}),
     ("finews.ch", "https://www.finews.com/news/english-news?format=feed&type=rss", {"suiza": "econ"}),
     ("Daily Sabah", "https://www.dailysabah.com/rss/business", {"turquia": "econ"}),
     ("Hürriyet Daily News", "https://www.hurriyetdailynews.com/rss/economy", {"turquia": "econ"}),

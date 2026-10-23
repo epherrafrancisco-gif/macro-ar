@@ -219,8 +219,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   la página se usa siempre US$ por dólar australiano (como se cotiza allá; `CMP_FX` y `monY` con inversión). El IPC del BIS
   es trimestral (repite el valor 3 meses): "Inflación de cada trimestre". `BCAL` AUS (anuncio 14:30 de Sídney; fechas
   oficiales del RBA hasta dic-2027). CNBC: `EWA` (`global.json → australia`), S&P/ASX 200 (`bolsas.ASX`, historia `asx`),
-  bono `bonos.AUS` (`au10`), ADR `acciones.aus` (BHP, RIO, WDS, JHX, TEAM). Noticias: ABC, Guardian Australia, The
-  Conversation y SBS (inglés).
+  bono `bonos.AUS` (`au10`), ADR `acciones.aus` (BHP, RIO, WDS, JHX, TEAM). Noticias: ABC, Guardian Australia y The
+  Conversation (inglés; SBS da 404).
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
