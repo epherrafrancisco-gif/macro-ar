@@ -113,12 +113,15 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   hasta la tarde, `def`), ~400 días; pizarra de la CAC Rosario (UTF-8, solo el día: la historia se arma guardando, desde
   15/10/2026). Carne al consumidor (`c_*` GBA, `rp_*` picada por región), faena trimestral `faena_t` (la mensual 41.3_FCV
   viene vacía en la API) e IPI carne vacuna `ipi_carne` vienen de actividad.json. Novillo/maíz = novillo $/kg ÷ maíz $/kg.
-- Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
-  data912 cada 10 min vía `vivo.json` del Worker, con respaldo directo), AL30/GD30 con TIR y paridad.
+- Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor "Acciones líderes hoy" (pedido del
+  dueño, realismo: las 21 con más monto operado del día = `v` (cantidad) × `c` (precio); `v` es CANTIDAD de acciones, no
+  pesos; sin especies D/C/.D si existe la de pesos; `LIDERES` fijo solo si todavía no operó nada; data912 cada 10 min vía
+  `vivo.json` del Worker, con respaldo directo), AL30/GD30 con TIR y paridad.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
-- Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
+- Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
-- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño.
+- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Contacto: arriba (junto a la foto) primero el mail
+  y después LinkedIn; en "Aclaraciones" y el resto de los avisos, solo el mail y siempre en tercera persona (nunca "escribime").
 
 ### Apartados dentro de Mundo y Estados Unidos
 - Barra `.subtabs` (`#gSubM`, `#gSubU`) y bloques `.gsub[data-sub]`; `SUBS`, `aplicarSub`, `setSub`. Pedido del dueño: NO se
