@@ -34,5 +34,11 @@
       "purpose": "any"
     }
   ],
-  "id": "/?app=1"
+  "id": "/?app=1",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://pulsomacro.com.ar/manifest.webmanifest"
+    }
+  ]
 }
