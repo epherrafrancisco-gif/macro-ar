@@ -357,7 +357,9 @@ footer a{color:var(--ink2)}
 .stats .st .d{font-size:11.5px;color:var(--muted)}
 .stats .hero .v{font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em;line-height:1.1}
 .stats .up{color:var(--pos)} .stats .dn{color:var(--neg)}
-.heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
+#stkOrd{margin:0 0 10px}
+.bq{font:inherit;font-size:14px;width:100%;max-width:340px;margin:0 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--sunk);color:var(--ink)}
+.heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:6px}
 .heat button{font:inherit;text-align:left;border:1px solid var(--line);border-radius:8px;padding:8px 9px;cursor:pointer;color:var(--ink);display:grid;gap:1px;min-width:0}
 .heat button[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:1px}
 .heat .tk{font-weight:600;font-size:13px}
@@ -1021,18 +1023,25 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>S&amp;P Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
     </div>
     <div class="card">
-      <div class="head"><h2>Acciones líderes hoy</h2><span class="note" id="stkStamp"></span></div>
+      <div class="head"><h2>Todas las acciones argentinas hoy</h2><span class="note" id="stkStamp"></span></div>
+      <div class="seg" id="stkOrd" role="tablist" aria-label="Ordenar"><button type="button" data-o="var" aria-selected="true">Por variación</button><button type="button" data-o="monto" aria-selected="false">Más operadas</button><button type="button" data-o="az" aria-selected="false">A-Z</button></div>
       <div class="stats" id="stkStats"></div>
       <div class="heat" id="heat"></div>
       <div class="stats det" id="stkDet" hidden></div>
-      <p class="note">Las 21 acciones con más plata operada en el día (cantidad × precio, en pesos): cambian según el mercado. Color según la variación del día: verde sube, rojo baja; más intenso, más se movió. Tocá una acción para ver el detalle. Precios con demora (data912).</p>
+      <p class="note">Todas las acciones que cotizan en BYMA (especie en pesos). Color según la variación del día: verde sube, rojo baja; más intenso, más se movió. Tocá una acción para ver el detalle. Precios con demora (data912).</p>
     </div>
 
     <div class="card">
-      <div class="head"><h2>Bonos soberanos</h2><span class="note" id="bondStamp"></span></div>
-      <div class="tablewrap"><table style="min-width:560px"><thead><tr><th>Bono</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
-      <p class="note">Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Pulso Macro con el cronograma de pagos del bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
+      <div class="head"><h2>Bonos soberanos en dólares</h2><span class="note" id="bondStamp"></span></div>
+      <div class="tablewrap"><table style="min-width:640px"><thead><tr><th>Bono</th><th>Ley</th><th>Vence</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
+      <p class="note">Bonares (ley argentina) y Globales (ley de Nueva York). Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Pulso Macro con el cronograma de pagos de cada bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
     </div>
+    <div class="card">
+      <div class="head"><h2>Todos los bonos y letras</h2><span class="note" id="bondAllN"></span></div>
+      <input type="search" id="bondQ" class="bq" placeholder="Buscar especie (ej.: T15E7, TZX26, BPOA7)" aria-label="Buscar bono o letra">
+      <div class="tablewrap" style="max-height:520px;overflow:auto"><table style="min-width:460px"><thead><tr><th>Especie</th><th>Precio $</th><th>Var. día</th><th>Monto operado</th><th>Operaciones</th></tr></thead><tbody id="tBonosAll"></tbody></table></div>
+      <p class="note">Todo lo que cotiza en BYMA en la especie en pesos, menos los soberanos de arriba: letras y bonos del Tesoro (tasa fija, CER, dólar linked, duales), BOPREAL, provincias y otros. Ordenado por monto operado en el día. Precio en pesos por cada 100 nominales. Fuente: data912, con demora.</p>
+</div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
   </section>
 
@@ -3833,17 +3842,27 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
 
   // ---- MERCADO ----
-  // Cronograma AL30/GD30: pagos el 9/1 y el 9/7; amortiza 4% el 9/7/2024 y 8% cada semestre
-  // del 9/1/2025 al 9/7/2030. Cupón anual sobre el residual: 0,125% hasta 9/7/2021,
-  // 0,50% hasta 9/7/2023, 0,75% hasta 9/7/2027 y 1,75% hasta el final. Base 30/360.
-  const B30 = (()=>{ const f=[]; let res=100;
-    for(let y=2021;y<=2030;y++) for(const m of [1,7]){ const d=`${y}-${m===1?'01':'07'}-09`; if(d<'2021-01-09') continue;
-      const prev = m===1?`${y-1}-07-09`:`${y}-01-09`, r = prev<'2021-07-09'?0.125:prev<'2023-07-09'?0.5:prev<'2027-07-09'?0.75:1.75;
-      const am = d==='2024-07-09'?4:d>='2025-01-09'?8:0, cup=res*r/100/2; f.push({d, cup, am, res, r}); res-=am; }
-    return f; })();
-  function bondCalc(px, settle){
-    const fut = B30.filter(p=>p.d>settle); if(!fut.length || !(px>0)) return null;
-    const nx=fut[0], i=B30.indexOf(nx), last = i>0?B30[i-1].d:'2020-09-04';
+  // Cronogramas de los soberanos en dólares (canje 2020). Pagos el 9/1 y el 9/7, base 30/360. Validados contra los
+  // precios y TIR publicados por PPI (2/2/2026): diferencias de 0,1 punto o menos. Bonares = Globales; AE38 = GD38.
+  const BQ = (n, desde, hasta, pct) => { const out = {}; let [y,m] = desde.split('-').map(Number); for(;;){ const f = `${y}-${String(m).padStart(2,'0')}-09`; out[f] = pct ?? 100/n; if(f.slice(0,7)===hasta) break; if(m===1) m=7; else { m=1; y++; } } return out; };
+  const BDEF = {
+    '29': {am:BQ(10,'2025-01','2029-07'), cup:[['9999',1]]},
+    '30': {am:{'2024-07-09':4, ...BQ(12,'2025-01','2030-07',8)}, cup:[['2021-07-09',0.125],['2023-07-09',0.5],['2027-07-09',0.75],['9999',1.75]]},
+    '35': {am:BQ(10,'2031-01','2035-07'), cup:[['2021-07-09',0.125],['2022-07-09',1.125],['2023-07-09',1.5],['2024-07-09',3.625],['2027-07-09',4.125],['2028-07-09',4.75],['9999',5]]},
+    '38': {am:BQ(22,'2027-07','2038-01'), cup:[['2021-07-09',0.125],['2022-07-09',2],['2023-07-09',3.875],['2024-07-09',4.25],['9999',5]]},
+    '41': {am:BQ(28,'2028-01','2041-07'), cup:[['2021-07-09',0.125],['2022-07-09',2.5],['2029-07-09',3.5],['9999',4.875]]},
+    '46': {am:BQ(44,'2025-01','2046-07'), cup:[['2021-07-09',0.125],['2022-07-09',1.125],['2023-07-09',1.5],['2024-07-09',3.625],['2027-07-09',4.125],['2028-07-09',4.75],['9999',5]]}
+  };
+  const SOB = [['AL29','29','Arg'],['AL30','30','Arg'],['AL35','35','Arg'],['AE38','38','Arg'],['AL41','41','Arg'],
+               ['GD29','29','NY'],['GD30','30','NY'],['GD35','35','NY'],['GD38','38','NY'],['GD41','41','NY'],['GD46','46','NY']];
+  const BFLUJO = {};
+  for(const [k,d] of Object.entries(BDEF)){ const f=[]; let res=100, prev='2020-09-04'; const fin = Object.keys(d.am).sort().pop();
+    for(let y=2021; ; y++){ let corte=false; for(const m of ['01','07']){ const dd=`${y}-${m}-09`; if(dd>fin){ corte=true; break; }
+      const r = d.cup.find(([lim])=>prev<lim)[1], am = d.am[dd]||0; f.push({d:dd, cup:res*r/100/2, am, res, r, prev}); res-=am; prev=dd; } if(corte) break; }
+    BFLUJO[k] = f; }
+  function bondCalc(px, settle, k='30'){
+    const F = BFLUJO[k], fut = F.filter(p=>p.d>settle); if(!fut.length || !(px>0)) return null;
+    const nx=fut[0], last = nx.prev;
     const d360=(a,b)=>{ const [y1,m1,d1]=a.split('-').map(Number), [y2,m2,d2]=b.split('-').map(Number); return (y2-y1)*360+(m2-m1)*30+(Math.min(d2,30)-Math.min(d1,30)); };
     const acc = nx.res*nx.r/100*d360(last,settle)/360, res=nx.res;
     const cf = fut.map(p=>({t:(T(p.d)-T(settle))/864e5/365, v:p.cup+p.am}));
@@ -3851,43 +3870,70 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let lo=-0.5, hi=2; for(let k=0;k<80;k++){ const mid=(lo+hi)/2; if(pv(mid)>px) lo=mid; else hi=mid; }
     return {tir:(lo+hi)/2*100, paridad:px/(res+acc)*100, res};
   }
-  const MKT = 'https://data912.com/live/', MKT_MS = 10*60000;
+  const MKT = 'https://data912.com/live/', MKT_MS = 5*60000;  // el Worker trae data912 cada 5 min
   let mkt = {bonds:null, stocks:null, at:0, err:false}, mktBusy=false, mktT;
   async function pollMkt(){
     clearTimeout(mktT); if(document.hidden || mktBusy) return; mktBusy=true;
     try{
-      const w = await vivo();
-      const [b, s] = w && Array.isArray(w.stocks) && Date.now() - w.tMkt < 20*60000 ? [w.bonds, w.stocks]
+      const w = await vivo(), deW = w && Array.isArray(w.stocks) && Date.now() - w.tMkt < 20*60000;
+      const [b, s] = deW ? [w.bonds, w.stocks]
         : await Promise.all(['arg_bonds','arg_stocks'].map(k=>fetch(MKT+k,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
       const ix = a => Object.fromEntries((a||[]).filter(x=>x&&x.symbol).map(x=>[x.symbol,x]));
-      mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), err:false};
+      mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), dato: deW ? w.tMkt : Date.now(), err:false};
     }catch(e){ mkt.err = true; console.warn("mercado", e); }
     mktBusy=false; if(tab==='mercado' && loaded.d) renderMercado();
     mktT = setTimeout(pollMkt, MKT_MS);
   }
-  const LIDERES = ['ALUA','BBAR','BMA','BYMA','CEPU','COME','CRES','EDN','GGAL','IRSA','LOMA','METR','PAMP','SUPV','TECO2','TGNO4','TGSU2','TRAN','TXAR','VALO','YPFD'];
   let stkSel = null;
   function heatBg(p){ if(p==null||!isFinite(p)) return 'var(--surface)'; const k=Math.round(Math.min(Math.abs(p)/4,1)*55+8); return Math.abs(p)<0.05?'var(--neu-bg)':`color-mix(in srgb, var(${p>0?'--pos':'--neg'}) ${k}%, var(--surface))`; }
+  // Especie en pesos: se saltean las D (MEP), C (cable) y .D si existe la misma especie sin la letra.
+  // Algunas especies en dólares no siguen la regla del nombre (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D): también se
+  // descartan si su precio × MEP (D) o × CCL (C) da, ±6%, el precio de otra especie con la misma primera letra y el mismo
+  // último número. Probado con todo data912 (10/2026): quedan solo especies en pesos (BA37D, SA24D… sí son en pesos).
+  const ultDig = t => (t.match(/\d(?=\D*$)/)||[''])[0];
+  const tcRef = k => { const L = live[k]; if(L && L.v>0) return L.v; const p = series(k); return p.length ? p[p.length-1][1] : null; };
+  const enDolares = (x, O) => { const s = x.symbol; if(/\./.test(s)) return true; if(!/[DC]$/.test(s) || !(x.c>0)) return false;
+    if(O[s.slice(0,-1)]) return true; const d = ultDig(s.slice(0,-1)), tc = tcRef(s.endsWith('C') ? 'ccl' : 'mep');
+    const ok = r => tc ? Math.abs(r/tc-1) < 0.06 : r>1200 && r<2500;
+    return Object.values(O).some(o=>o!==x && o.c>0 && o.symbol[0]===s[0] && (!d || ultDig(o.symbol)===d) && ok(o.c/x.c)); };
+  const espPesos = O => Object.values(O||{}).filter(x=>x && x.symbol && !enDolares(x, O));
+  let stkOrd = 'var', bondQ = '';
+  document.querySelectorAll('#stkOrd button').forEach(b=>b.addEventListener('click', ()=>{ stkOrd = b.dataset.o; renderStocks(); }));
+  $('bondQ').addEventListener('input', e=>{ bondQ = e.target.value; renderBondsAll(); });
   function renderStocks(){
     const S = mkt.stocks;
     if(!S){ $('heat').innerHTML = `<div class="empty">${mkt.err?'Precios de mercado no disponibles en este momento.':'Cargando precios…'}</div>`; $('stkStats').innerHTML=''; $('stkDet').hidden=true; $('stkStamp').textContent=''; return; }
-    // Las líderes del día: las 21 acciones con más monto operado hoy (cantidad × precio), en pesos.
-    // Se descartan las especies en dólares/cable (YPFDD, BMA.D, REITC…). Si todavía no operó nada, la lista de siempre.
-    const opera = Object.values(S).filter(x=>x && x.c>0 && x.v>0 && !/\./.test(x.symbol) && !(/[DC]$/.test(x.symbol) && S[x.symbol.slice(0,-1)]));
-    const L = (opera.length >= 10 ? opera.sort((a,b)=>b.v*b.c - a.v*a.c).slice(0,21) : LIDERES.map(k=>S[k]).filter(x=>x && x.c>0))
-      .sort((a,b)=>b.pct_change-a.pct_change);
-    const up=L.filter(x=>x.pct_change>0).length, dn=L.filter(x=>x.pct_change<0).length, avg=L.length?L.reduce((a,x)=>a+x.pct_change,0)/L.length:0;
+    // Pedido del dueño: TODAS las acciones (especie en pesos), para ir viendo cómo vienen cada pocos minutos.
+    const L = espPesos(S).filter(x=>x.c>0);
+    const monto = x => (x.v||0)*x.c;
+    L.sort(stkOrd==='monto' ? (a,b)=>monto(b)-monto(a) : stkOrd==='az' ? (a,b)=>a.symbol.localeCompare(b.symbol) : (a,b)=>b.pct_change-a.pct_change);
+    const conVar = L.filter(x=>x.v>0), up=conVar.filter(x=>x.pct_change>0).length, dn=conVar.filter(x=>x.pct_change<0).length;
+    const avg = conVar.length ? conVar.reduce((a,x)=>a+x.pct_change,0)/conVar.length : 0;
+    const pv = [...conVar].sort((a,b)=>b.pct_change-a.pct_change), tot = conVar.reduce((a,x)=>a+monto(x),0);
     const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
-    $('stkStats').innerHTML = L.length ? st('Suben / bajan', `${up} / ${dn}`, `de ${L.length} acciones`) + st('Variación promedio', sg(avg,2)+'%', 'simple, sin ponderar', avg>0?'up':avg<0?'dn':'')
-      + st('Mejor', L[0].symbol+' '+sg(L[0].pct_change,2)+'%', '', 'up') + st('Peor', L[L.length-1].symbol+' '+sg(L[L.length-1].pct_change,2)+'%', '', 'dn') : '';
-    $('heat').innerHTML = L.map(x=>`<button type="button" data-s="${esc(x.symbol)}" aria-pressed="${x.symbol===stkSel}" style="background:${heatBg(x.pct_change)}"><span class="tk">${esc(x.symbol)}</span><span class="pc">${sg(x.pct_change,2)}%</span><span class="px">$ ${nf(x.c, x.c<100?2:0)}</span></button>`).join('') || '<div class="empty">Sin datos de acciones.</div>';
+    $('stkStats').innerHTML = pv.length ? st('Suben / bajan', `${up} / ${dn}`, `de ${conVar.length} que operaron hoy`) + st('Variación promedio', sg(avg,2)+'%', 'simple, sin ponderar', avg>0?'up':avg<0?'dn':'')
+      + st('Mejor', pv[0].symbol+' '+sg(pv[0].pct_change,2)+'%', '', 'up') + st('Peor', pv[pv.length-1].symbol+' '+sg(pv[pv.length-1].pct_change,2)+'%', '', 'dn')
+      + st('Monto operado', '$ '+nf(tot/1e9,1)+' mil M', 'todas las acciones') : '';
+    document.querySelectorAll('#stkOrd button').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.o===stkOrd)));
+    $('heat').innerHTML = L.map(x=>`<button type="button" data-s="${esc(x.symbol)}" aria-pressed="${x.symbol===stkSel}" style="background:${heatBg(x.v>0?x.pct_change:null)}"><span class="tk">${esc(x.symbol)}</span><span class="pc">${x.v>0?sg(x.pct_change,2)+'%':'sin operar'}</span><span class="px">$ ${nf(x.c, x.c<100?2:0)}</span></button>`).join('') || '<div class="empty">Sin datos.</div>';
     $('heat').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ stkSel = stkSel===b.dataset.s?null:b.dataset.s; renderStocks(); }));
     const x = stkSel && S[stkSel];
     $('stkDet').hidden = !x;
     if(x) $('stkDet').innerHTML = st(x.symbol, '$ '+nf(x.c,2), sg(x.pct_change,2)+'% en el día', x.pct_change>0?'up':x.pct_change<0?'dn':'')
       + st('Compra / venta', `${x.px_bid?nf(x.px_bid,2):'—'} / ${x.px_ask?nf(x.px_ask,2):'—'}`, 'mejores puntas')
       + st('Monto operado', x.v?'$ '+nf(x.v*x.c/1e6,1)+' M':'—', (x.v?nf(x.v,0)+' acciones':'')+(x.q_op?' · '+nf(x.q_op,0)+' operaciones':''));
-    $('stkStamp').textContent = `Consultado ${horaAR(mkt.at)}${mkt.err?' · última consulta falló':''}`;
+    $('stkStamp').textContent = `${L.length} acciones · datos de las ${horaAR(mkt.dato||mkt.at)}${mkt.err?' · última consulta falló':''}`;
+  }
+  function renderBondsAll(){
+    const B = mkt.bonds, el = $('tBonosAll'); if(!el) return;
+    if(!B){ el.innerHTML = `<tr><td colspan="5" style="color:var(--muted)">${mkt.err?'Precios de mercado no disponibles en este momento.':'Cargando precios…'}</td></tr>`; $('bondAllN').textContent=''; return; }
+    const sob = new Set(SOB.map(r=>r[0])), q = bondQ.trim().toUpperCase();
+    const L = espPesos(B).filter(x=>x.c>0 && !sob.has(x.symbol)), monto = x => (x.v||0)*x.c/100;
+    L.sort((a,b)=>monto(b)-monto(a) || a.symbol.localeCompare(b.symbol));
+    const V = q ? L.filter(x=>x.symbol.includes(q)) : L;
+    $('bondAllN').textContent = `${L.length} especies`;
+    el.innerHTML = V.map(x=>`<tr><td>${esc(x.symbol)}</td><td>${nf(x.c, x.c<10?3:2)}</td><td class="${x.v>0&&x.pct_change>0?'up':x.v>0&&x.pct_change<0?'dn':''}">${x.v>0?sg(x.pct_change,2)+'%':'sin operar'}</td><td>${x.v>0?'$ '+nf(monto(x)/1e6, monto(x)<1e7?2:0)+' M':'—'}</td><td>${x.q_op?nf(x.q_op,0):'—'}</td></tr>`).join('')
+      || `<tr><td colspan="5" style="color:var(--muted)">Ninguna especie coincide con "${esc(q)}".</td></tr>`;
   }
   function renderMercado(){
     renderRanking();
@@ -3898,17 +3944,20 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(merU.length){ const {last,prev}=lastTwo(merU), a=ago(merU,30); t.push(tileK('Merval en dólares', 'US$ '+nf(last[1],0), '', (prev?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Al CCL · '+fd(last[0]))); }
     if(rp.length){ const {last,prev}=lastTwo(rp); t.push(tileK('Riesgo país', nf(last[1],0), 'pb', prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' pb',bad:true}):'', fd(last[0]))); }
     const hoy = fechaAR(Date.now()), settle = fechaAR(Date.now()+864e5);
-    const rows = ['AL30','GD30'].map(k=>{ const D=mkt.bonds&&mkt.bonds[k+'D'], P=mkt.bonds&&mkt.bonds[k]; const px=D&&D.c, b=bondCalc(px, settle); return {k,D,P,px,b}; });
-    rows.forEach(r=>{ if(r.b) t.push(tileK('TIR '+r.k, nf(r.b.tir,2)+'%', 'anual US$', r.D?chip(r.D.pct_change/100,{d:2}):'', `US$ ${nf(r.px,2)} · paridad ${nf(r.b.paridad,1)}%`)); });
+    const VTO = {'29':'9/7/2029','30':'9/7/2030','35':'9/7/2035','38':'9/1/2038','41':'9/7/2041','46':'9/7/2046'};
+    const rows = SOB.map(([k,f,ley])=>{ const D=mkt.bonds&&mkt.bonds[k+'D'], P=mkt.bonds&&mkt.bonds[k]; const px=D&&D.c, b=bondCalc(px, settle, f); return {k,f,ley,D,P,px,b}; });
+    rows.filter(r=>r.k==='AL30'||r.k==='GD30').forEach(r=>{ if(r.b) t.push(tileK('TIR '+r.k, nf(r.b.tir,2)+'%', 'anual US$', r.D?chip(r.D.pct_change/100,{d:2}):'', `US$ ${nf(r.px,2)} · paridad ${nf(r.b.paridad,1)}%`)); });
     $('kpisK').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
     lineChart($('chMer'), [{n:'Merval', c:'--s1', pts:inRange(mer), area:true}], {aria:'S&P Merval en pesos', endLabel:true, labW:70, l:66, yfmt:v=>nf(v/1e6,v%1e6?2:0)+' M', vfmt:v=>nf(v,0)+' pts', lfmt:v=>nf(v/1e6,2)+' M', unitName:'Merval'});
     lineChart($('chMerU'), [{n:'Merval US$', c:'--s3', pts:inRange(merU), area:true}], {aria:'S&P Merval en dólares CCL', endLabel:true, labW:52, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0), lfmt:v=>nf(v,0), unitName:'Merval US$'});
     const c = v => v!=null&&isFinite(v)?v:null;
-    $('tBonos').innerHTML = mkt.err && !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Precios de mercado no disponibles en este momento.</td></tr>`
-      : !mkt.at ? `<tr><td colspan="7" style="color:var(--muted)">Cargando precios…</td></tr>`
-      : rows.map(r=>`<tr><td>${r.k}</td><td>${c(r.px)!=null?nf(r.px,2):'—'}</td><td class="${r.D&&r.D.pct_change>0?'up':r.D&&r.D.pct_change<0?'dn':''}">${r.D?sg(r.D.pct_change,2)+'%':'—'}</td><td>${r.P&&r.P.c?nf(r.P.c,0):'—'}</td><td>${r.b?nf(r.b.tir,2)+'%':'—'}</td><td>${r.b?nf(r.b.paridad,1)+'%':'—'}</td><td>${r.b?nf(r.b.res,0):'—'}</td></tr>`).join('');
+    const sinDatos = msg => `<tr><td colspan="9" style="color:var(--muted)">${msg}</td></tr>`;
+    $('tBonos').innerHTML = mkt.err && !mkt.at ? sinDatos('Precios de mercado no disponibles en este momento.')
+      : !mkt.at ? sinDatos('Cargando precios…')
+      : rows.map(r=>`<tr><td>${r.k}</td><td>${r.ley}</td><td>${VTO[r.f]}</td><td>${c(r.px)!=null?nf(r.px,2):'—'}</td><td class="${r.D&&r.D.pct_change>0?'up':r.D&&r.D.pct_change<0?'dn':''}">${r.D?sg(r.D.pct_change,2)+'%':'—'}</td><td>${r.P&&r.P.c?nf(r.P.c,0):'—'}</td><td>${r.b?nf(r.b.tir,2)+'%':'—'}</td><td>${r.b?nf(r.b.paridad,1)+'%':'—'}</td><td>${r.b?nf(r.b.res,1):'—'}</td></tr>`).join('');
+    renderBondsAll();
     renderStocks();
-    $('bondStamp').textContent = mkt.at ? `Consultado ${horaAR(mkt.at)} · se refresca cada 10 min${mkt.err?' · última consulta falló':''}` : '';
+    $('bondStamp').textContent = mkt.at ? `Datos de las ${horaAR(mkt.dato||mkt.at)} · se refresca cada 5 min${mkt.err?' · última consulta falló':''}` : '';
   }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
 
