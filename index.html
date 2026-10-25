@@ -2885,6 +2885,15 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   // ---- en vivo (DolarApi desde el navegador) ----
   const LIVE_URL = 'https://dolarapi.com/v1/dolares', LIVE_MS = 60000;
+  // Datos en vivo de nuestro Worker (worker/vivo.js): una copia por minuto, servida desde la caché de Cloudflare.
+  // Si no responde o está atrasado, se cae a DolarApi / data912 directo, como antes.
+  const VIVO_URL = 'https://datos.pulsomacro.com.ar/vivo.json';
+  let vivoV = -1, vivoP = null;
+  function vivo(){
+    const v = VER(); if(vivoP && vivoV === v) return vivoP;
+    vivoV = v; vivoP = fetch(VIVO_URL+'?t='+v, {cache:'no-store'}).then(r=>r.ok ? r.json() : null).catch(()=>null);
+    return vivoP;
+  }
   const LIVE_MAP = {oficial:'oficial', blue:'blue', bolsa:'mep', contadoconliqui:'ccl', mayorista:'mayorista', cripto:'cripto', tarjeta:'tarjeta'};
   let live = {}, liveAt = 0, liveOk = null, flash = {};
   const fechaAR = t => new Date(t).toLocaleDateString('en-CA', {timeZone:'America/Argentina/Buenos_Aires'});
@@ -3846,7 +3855,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function pollMkt(){
     clearTimeout(mktT); if(document.hidden || mktBusy) return; mktBusy=true;
     try{
-      const [b, s] = await Promise.all(['arg_bonds','arg_stocks'].map(k=>fetch(MKT+k,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
+      const w = await vivo();
+      const [b, s] = w && Array.isArray(w.stocks) && Date.now() - w.tMkt < 20*60000 ? [w.bonds, w.stocks]
+        : await Promise.all(['arg_bonds','arg_stocks'].map(k=>fetch(MKT+k,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
       const ix = a => Object.fromEntries((a||[]).filter(x=>x&&x.symbol).map(x=>[x.symbol,x]));
       mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), err:false};
     }catch(e){ mkt.err = true; console.warn("mercado", e); }
@@ -8009,9 +8020,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(document.hidden){ return; }
     if(busy) return; busy = true;
     try{
-      const r = await fetch(LIVE_URL, {cache:'no-store'});
-      if(!r.ok) throw new Error(r.status);
-      const j = await r.json(), nuevo = {};
+      const w = await vivo();
+      let j = w && Array.isArray(w.dolares) && Date.now() - w.tDol < 5*60000 ? w.dolares : null;
+      if(!j){ const r = await fetch(LIVE_URL, {cache:'no-store'}); if(!r.ok) throw new Error(r.status); j = await r.json(); }
+      const nuevo = {};
       for(const d of j){ const k = LIVE_MAP[d.casa]; if(!k || !(d.venta>0)) continue;
         nuevo[k] = {c: d.compra>0 ? +d.compra : null, v: +d.venta, t: Date.parse(d.fechaActualizacion) || Date.now()}; }
       if(!Object.keys(nuevo).length) throw new Error('vacío');
