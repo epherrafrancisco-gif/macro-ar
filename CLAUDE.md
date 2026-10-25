@@ -94,6 +94,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `beforeinstallprompt` y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
   hacerlo solo); en Firefox y si ya está instalada no aparece. Eventos GoatCounter `instalar-click`, `instalar-ios`,
   `app-instalada`. La app abre `/?app=1`.
+- Manual de uso (pedido del dueño, "que no sea molesto"): botón `[data-man]` "¿Cómo se usa?" en `.hello` (compu), `#mHero`
+  (celular) y arriba de Aclaraciones en Sobre; abre `#manual` (8 bloques cortos). Nunca se abre solo. Evento GoatCounter `manual`.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
