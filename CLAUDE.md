@@ -25,7 +25,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   DolarApi/data912 como antes. El editor del panel de Cloudflare no deja editar por script: el código se pega a mano en
   "Edit code" (si se cambia worker/vivo.js, hay que volver a pegarlo).
   El repo sigue llamándose `macro-ar`: no renombrar (rompe la redirección). Nunca usar "Macro AR" en nada visible.
-- Logo: `Pulso<span>Macro</span>` ("Macro" en mono y color de acento). Archivos descargados: `pulso-macro_<...>`.
+- Logo: la "P del pulso" (P blanca atravesada por un electrocardiograma celeste #6aa8d8 sobre #0e1319; elegida por el dueño
+  el 25/10/2026) + `Pulso<span>Macro</span>` ("Macro" en mono y color de acento); la marca va como `svg.lg` en `#brandH` y `.mlogo`.
+  Archivos: `icons/pulso-p.svg` (favicon de todas las páginas, también `ICON` en paginas.py y /diario/), `pulso-p-48/192/512.png`,
+  `pulso-p-maskable-512.png`, `pulso-p-apple-180.png`. Si se cambia el logo, usar nombres de archivo NUEVOS (así nadie queda con
+  el viejo en caché); los PNG viejos de `icons/` quedan sin uso. Archivos descargados: `pulso-macro_<...>`.
 - Siempre tema oscuro (`:root` con colores fijos y `color-scheme:dark`), también en /diario/.
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
@@ -84,7 +88,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     las navegaciones propias usan `navPush`), para que se vean juntas y el usuario elija; al abrir se llama a `render()`. No se pliegan: portada, Sobre, Calculadoras, Noticias, tarjetas con canvas (globos) ni lo que está arriba
     de los apartados en Mundo, EE.UU. y países. Los dólares van en fila compacta (`.quotes.compact`, menos en `#dolares`)
     con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
-- Instalar como app (pedido del dueño): `manifest.webmanifest`, íconos en `icons/` (192, 512, maskable, apple-touch 180;
+- Instalar como app (pedido del dueño): `manifest.webmanifest`, íconos en `icons/` (`pulso-p-*`: 192, 512, maskable, apple-touch 180;
   mismo dibujo que el favicon) y `sw.js`, que NO guarda nada (todo va a la red; solo muestra un aviso si no hay conexión).
   Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge aparece con
   `beforeinstallprompt` y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite

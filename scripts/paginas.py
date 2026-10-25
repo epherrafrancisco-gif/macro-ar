@@ -150,9 +150,7 @@ td{font-family:"JetBrains Mono",monospace;font-size:14px}td:first-child{font-fam
 .grid a span{display:block;font-size:13px;color:var(--mu)}.grid a b{font-family:"JetBrains Mono",monospace;font-weight:500}
 footer{border-top:1px solid var(--ln);margin-top:30px;padding-top:14px;font-size:13px;color:var(--mu)}"""
 
-ICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' "
-        "fill='%231d4f7a'/%3E%3Cpath d='M6 22l6-7 5 4 9-10' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' "
-        "stroke-linejoin='round'/%3E%3C/svg%3E")
+ICON = "/icons/pulso-p.svg"
 
 PAGINAS = []   # (slug, nombre corto, valor corto, grupo)
 
