@@ -12,7 +12,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 
 ## Nombre, estética y URLs
 - Sitio: **Pulso Macro** en **https://pulsomacro.com.ar/** (GitHub Pages, rama `main`, carpeta raíz, archivo `CNAME`;
-  DNS en Cloudflare con nube gris; el link viejo epherrafrancisco-gif.github.io/macro-ar redirige solo).
+  DNS en Cloudflare con nube naranja (proxy); el link viejo epherrafrancisco-gif.github.io/macro-ar redirige solo).
+- Cloudflare (plan gratis): SSL Full (strict); Cache Rule "Cachear todo 1 min" (todo elegible, Edge TTL = cache-control
+  de origen; GitHub manda 10 min); Browser Cache TTL = "Respect Existing Headers"; Smart Tiered Cache activo; rate limit
+  1000 pedidos / 10 s por IP (bloqueo 10 s); Web Analytics automático. Para forzar un cambio ya: Caching → Configuration
+  → Purge Everything (después de que termine el deploy de Pages, no antes).
+- Datos en vivo (worker/vivo.js, Worker `pulso-vivo`, cron cada minuto, binding R2 `DATOS` = bucket `pulso-datos`):
+  trae DolarApi cada minuto y data912 cada 5 min y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
+  `https://datos.pulsomacro.com.ar/vivo.json` (dominio propio del bucket, CORS solo pulsomacro.com.ar). Cache Rule
+  "Datos en vivo: ignorar query" en ese host: ignora la query para que nadie fuerce lecturas de R2 con URLs inventadas.
+  La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 20 min (mercado); si no, va directo a
+  DolarApi/data912 como antes. El editor del panel de Cloudflare no deja editar por script: el código se pega a mano en
+  "Edit code" (si se cambia worker/vivo.js, hay que volver a pegarlo).
   El repo sigue llamándose `macro-ar`: no renombrar (rompe la redirección). Nunca usar "Macro AR" en nada visible.
 - Logo: `Pulso<span>Macro</span>` ("Macro" en mono y color de acento). Archivos descargados: `pulso-macro_<...>`.
 - Siempre tema oscuro (`:root` con colores fijos y `color-scheme:dark`), también en /diario/.
@@ -25,8 +36,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Arriba: tres cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo; `#tape3` reloj de mercados)
   y los 7 dólares (`#dolHoy`/`#quotes`, `renderQuotes()`): siempre en la portada y en todo Argentina (requisito no
   negociable); NO en Mundo, Estados Unidos ni Sobre Pulso Macro (pedido del dueño).
-  Dólar en vivo: DolarApi desde el navegador cada 60 s (+0-10 s al azar; si falla, espera 1, 2, 4, 8 min, tope 10:
-  `liveFallas`; mientras tanto muestra el último cierre).
+  Dólar en vivo: cada 60 s (+0-10 s al azar) desde `vivo.json` del Worker, con respaldo a DolarApi directo (si todo
+  falla, espera 1, 2, 4, 8 min, tope 10: `liveFallas`; mientras tanto muestra el último cierre).
 - Caché (para aguantar mucho tráfico): los JSON se piden con `?t='+VER()` (`VER` = minuto actual), NO con `Date.now()`:
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
@@ -103,7 +114,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   15/10/2026). Carne al consumidor (`c_*` GBA, `rp_*` picada por región), faena trimestral `faena_t` (la mensual 41.3_FCV
   viene vacía en la API) e IPI carne vacuna `ipi_carne` vienen de actividad.json. Novillo/maíz = novillo $/kg ÷ maíz $/kg.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL, mapa de calor de 21 líderes (`LIDERES`,
-  data912 desde el navegador cada 10 min), AL30/GD30 con TIR y paridad.
+  data912 cada 10 min vía `vivo.json` del Worker, con respaldo directo), AL30/GD30 con TIR y paridad.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
 - Calculadoras: plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
@@ -449,7 +460,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   197 M2 transaccional, 30 CER, 155 LELIQ, 152 pases, 196 LEFI.
 - datos.gob.ar: `452.3_RESULTADO_RIO_0_M_18_54`, `452.3_RESULTADO_ERO_0_M_20_25`, `74.3_IET_0_M_16`,
   `74.3_IIT_0_M_25`, `74.3_ISC_0_M_19`, `166.2_PPIB_0_0_3`.
-- DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (desde el navegador).
+- DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (las pide el Worker `pulso-vivo`; el navegador solo si el Worker falla).
 - Mundo: CNBC (`quote.cnbc.com/...restQuote` y `ts-api.cnbc.com/harmony/app/charts/1Y.json`; a veces devuelve historia
   vacía: se reintenta), Banco Mundial (el FMI da 403), BIS WS_CBPOL, Frankfurter, CoinGecko, RSS (El País, DW,
   Expansión, France 24, Euronews, BBC Mundo filtrado). Yahoo da 429 y Stooq no responde.
