@@ -150,7 +150,7 @@ td{font-family:"JetBrains Mono",monospace;font-size:14px}td:first-child{font-fam
 .grid a span{display:block;font-size:13px;color:var(--mu)}.grid a b{font-family:"JetBrains Mono",monospace;font-weight:500}
 footer{border-top:1px solid var(--ln);margin-top:30px;padding-top:14px;font-size:13px;color:var(--mu)}"""
 
-ICON = "/icons/pulso-p.svg"
+ICON = "/icons/anillo.svg"
 
 PAGINAS = []   # (slug, nombre corto, valor corto, grupo)
 
@@ -158,7 +158,7 @@ PAGINAS = []   # (slug, nombre corto, valor corto, grupo)
 def pagina(slug, titulo_seo, desc, cuerpo, crumb, extra_head=""):
     url = f"{SITE}/{slug}/" if slug else f"{SITE}/indicadores/"
     return f"""<!doctype html>
-<html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="es-AR"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(titulo_seo)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}"><link rel="icon" href="{ICON}">
 <meta property="og:title" content="{esc(titulo_seo)}"><meta property="og:description" content="{esc(desc)}">
