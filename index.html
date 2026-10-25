@@ -654,7 +654,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .inst{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:9px 16px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:600 14px var(--sans,inherit);cursor:pointer}
 .inst:hover{background:var(--accent);color:var(--bg)}.inst svg{width:17px;height:17px}
 .mhero .inst{margin:12px 0 4px;width:100%;justify-content:center;padding:10px 16px}
-.manbtn{display:inline-flex;align-items:center;gap:6px;margin:10px 0 0 10px;padding:9px 4px;border:0;background:none;color:var(--ink2);font:600 14px var(--sans,inherit);cursor:pointer}
+.hacts{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px}.hacts .inst{margin-top:10px}
+.manbtn{display:inline-flex;align-items:center;gap:6px;margin:10px 0 0 0;padding:9px 4px;border:0;background:none;color:var(--ink2);font:600 14px var(--sans,inherit);cursor:pointer}
 .manbtn:hover{color:var(--accent)}.manbtn svg{width:17px;height:17px}.vS .manbtn,#vS .manbtn{margin:0;padding:0;color:var(--accent)}
 .mhero .manbtn{display:flex;margin:4px auto 6px;padding:6px}
 .manual{place-items:center}.manual .ii{max-width:560px;max-height:calc(100vh - 32px);overflow:auto}
@@ -817,7 +818,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
-    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button></div>
+    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button></div></div>
     <div class="mporta-m"><p class="mh4" style="margin-top:0">Los datos del día</p><div class="mbig" id="mHoy"></div>
       <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true">Argentina</button><button type="button" data-d="gl" aria-pressed="false">El mundo</button></div></div>
     <div class="split">
@@ -6724,7 +6725,22 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1);
     let aviso = null; const bs = () => document.querySelectorAll('[data-inst]');
     const mostrar = on => bs().forEach(b=>b.hidden = !on || yaApp);
-    if(ios && !yaApp) mostrar(true);
+    // Botón siempre visible donde se puede instalar (aunque el navegador no mande su aviso, p. ej. después de desinstalar):
+    // si no hay aviso, se abren los pasos para ese navegador. Firefox de compu no instala apps: ahí no aparece.
+    const UA = navigator.userAgent, andr = /Android/i.test(UA), ffPc = /Firefox/.test(UA) && !andr && !ios;
+    const safMac = /Macintosh/.test(UA) && /Safari/.test(UA) && !/Chrome|Chromium|Edg|Firefox/.test(UA) && !ios;
+    if(!yaApp && !ffPc) mostrar(true);
+    const pasos = () => {
+      const ic = $('iosInst'), h = ic.querySelector('h3'), ol = ic.querySelector('ol'), no = ic.querySelector('.note');
+      const edge = /Edg\//.test(UA), sams = /SamsungBrowser/.test(UA);
+      h.textContent = andr || ios ? 'Agregá Pulso Macro a tu pantalla de inicio' : 'Instalá Pulso Macro en tu compu';
+      if(andr) ol.innerHTML = sams ? '<li>Tocá el menú <b>≡</b> (abajo a la derecha).</li><li>Elegí <b>Agregar página a</b> → <b>Pantalla de inicio</b>.</li><li>Tocá <b>Agregar</b>.</li>'
+        : '<li>Tocá el menú <b>⋮</b> (arriba a la derecha).</li><li>Elegí <b>Instalar app</b> o <b>Agregar a la pantalla principal</b>.</li><li>Tocá <b>Instalar</b>.</li>';
+      else if(safMac) ol.innerHTML = '<li>En la barra de arriba de la Mac, abrí el menú <b>Archivo</b>.</li><li>Elegí <b>Agregar al Dock</b>.</li><li>Tocá <b>Agregar</b>: queda en el Dock como una app.</li>';
+      else if(edge) ol.innerHTML = '<li>Arriba a la derecha, abrí el menú <b>···</b> de Edge.</li><li>Andá a <b>Aplicaciones</b> → <b>Instalar este sitio como una aplicación</b>.</li><li>Tocá <b>Instalar</b>. Queda con su ícono en el escritorio y en el menú Inicio.</li>';
+      else ol.innerHTML = '<li>Arriba a la derecha, abrí el menú <b>⋮</b> de Chrome.</li><li>Andá a <b>Transmitir, guardar y compartir</b> → <b>Instalar página como app</b> (o tocá el ícono de instalar al final de la barra de la dirección).</li><li>Tocá <b>Instalar</b>. Queda con su ícono como cualquier programa.</li>';
+      no.textContent = 'El navegador no deja que una página se instale sola: son estos tres toques.';
+      ic.hidden = false; };
     addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); aviso = e; mostrar(true); });
     addEventListener('appinstalled', ()=>{ aviso = null; mostrar(false); gcUna('app-instalada'); });
     bs().forEach(b=>b.addEventListener('click', async ()=>{
@@ -6732,7 +6748,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       else if(ios){ gcUna('instalar-ios');
         // Chrome, Edge o Firefox en iPhone: el botón Compartir está arriba, en la barra de la dirección
         if(/CriOS|EdgiOS|FxiOS/.test(navigator.userAgent)) $('iosPaso1').innerHTML = 'Tocá el botón <b>Compartir</b> (el cuadrado con la flecha para arriba), arriba a la derecha, en la barra de la dirección.';
-        $('iosInst').hidden = false; } }));
+        $('iosInst').hidden = false; }
+      else { gcUna('instalar-pasos'); pasos(); } }));
     const cerrar = ()=>{ $('iosInst').hidden = true; };
     $('iosX').addEventListener('click', cerrar); $('iosInst').addEventListener('click', e=>{ if(e.target===$('iosInst')) cerrar(); });
     if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')) navigator.serviceWorker.register('/sw.js').catch(()=>{}); }

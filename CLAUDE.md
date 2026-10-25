@@ -94,7 +94,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   mismo dibujo que el favicon) y `sw.js`, que NO guarda nada (todo va a la red; solo muestra un aviso si no hay conexión).
   Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge aparece con
   `beforeinstallprompt` y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
-  hacerlo solo); en Firefox y si ya está instalada no aparece. Eventos GoatCounter `instalar-click`, `instalar-ios`,
+  hacerlo solo); si el navegador no manda su aviso (pasa después de desinstalar), el botón igual aparece y abre los pasos para ese
+  navegador (`pasos()`: Edge, Chrome, Android, Samsung, Safari de Mac; evento `instalar-pasos`); en Firefox de compu y si ya está instalada no aparece. Eventos GoatCounter `instalar-click`, `instalar-ios`,
   `app-instalada`. La app abre `/?app=1`.
 - Manual de uso (pedido del dueño, "que no sea molesto"): botón `[data-man]` "¿Cómo se usa?" en `.hello` (compu), `#mHero`
   (celular) y arriba de Aclaraciones en Sobre; abre `#manual` (8 bloques cortos). Nunca se abre solo. Evento GoatCounter `manual`.
