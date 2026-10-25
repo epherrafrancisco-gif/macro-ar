@@ -18,10 +18,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   1000 pedidos / 10 s por IP (bloqueo 10 s); Web Analytics automático. Para forzar un cambio ya: Caching → Configuration
   → Purge Everything (después de que termine el deploy de Pages, no antes).
 - Datos en vivo (worker/vivo.js, Worker `pulso-vivo`, cron cada minuto, binding R2 `DATOS` = bucket `pulso-datos`):
-  trae DolarApi cada minuto y data912 cada 5 min y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
+  trae DolarApi y data912 cada minuto y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
   `https://datos.pulsomacro.com.ar/vivo.json` (dominio propio del bucket, CORS solo pulsomacro.com.ar). Cache Rule
   "Datos en vivo: ignorar query" en ese host: ignora la query para que nadie fuerce lecturas de R2 con URLs inventadas.
-  La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 20 min (mercado); si no, va directo a
+  La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 10 min (mercado); si no, va directo a
   DolarApi/data912 como antes. El editor del panel de Cloudflare no deja editar por script: el código se pega a mano en
   "Edit code" (si se cambia worker/vivo.js, hay que volver a pegarlo).
   El repo sigue llamándose `macro-ar`: no renombrar (rompe la redirección). Nunca usar "Macro AR" en nada visible.
@@ -41,6 +41,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Caché (para aguantar mucho tráfico): los JSON se piden con `?t='+VER()` (`VER` = minuto actual), NO con `Date.now()`:
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
+- Orden de Argentina en la portada, la hoja y la grilla del celular (`ARG_T`, pedido del dueño): Dólares, Noticias, Bolsa y bonos,
+  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Calculadoras.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
@@ -119,7 +121,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   validados contra PPI 2/2/2026, ±0,1 pp) y "Todos los bonos y letras" (`renderBondsAll`, buscador `#bondQ`, monto =
   `v` × `c` / 100). Solo especie en pesos: `espPesos`/`enDolares` descarta D, C y .D aunque el nombre no siga la regla
   (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D) comparando precio × MEP/CCL; BA37D y SA24D sí son en pesos. data912 cada
-  5 min vía `vivo.json` del Worker (`MKT_MS`), con respaldo directo.
+  minuto vía `vivo.json` del Worker (`MKT_MS`), con respaldo directo cada 5 min.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).

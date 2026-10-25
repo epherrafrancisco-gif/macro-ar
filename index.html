@@ -3870,19 +3870,19 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let lo=-0.5, hi=2; for(let k=0;k<80;k++){ const mid=(lo+hi)/2; if(pv(mid)>px) lo=mid; else hi=mid; }
     return {tir:(lo+hi)/2*100, paridad:px/(res+acc)*100, res};
   }
-  const MKT = 'https://data912.com/live/', MKT_MS = 5*60000;  // el Worker trae data912 cada 5 min
+  const MKT = 'https://data912.com/live/', MKT_MS = 60000;  // el Worker trae data912 cada minuto; si falla, directo cada 5 min
   let mkt = {bonds:null, stocks:null, at:0, err:false}, mktBusy=false, mktT;
   async function pollMkt(){
     clearTimeout(mktT); if(document.hidden || mktBusy) return; mktBusy=true;
     try{
-      const w = await vivo(), deW = w && Array.isArray(w.stocks) && Date.now() - w.tMkt < 20*60000;
+      const w = await vivo(), deW = w && Array.isArray(w.stocks) && Date.now() - w.tMkt < 10*60000;
       const [b, s] = deW ? [w.bonds, w.stocks]
         : await Promise.all(['arg_bonds','arg_stocks'].map(k=>fetch(MKT+k,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
       const ix = a => Object.fromEntries((a||[]).filter(x=>x&&x.symbol).map(x=>[x.symbol,x]));
-      mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), dato: deW ? w.tMkt : Date.now(), err:false};
+      mkt = {bonds:ix(b), stocks:ix(s), at:Date.now(), dato: deW ? w.tMkt : Date.now(), err:false, directo:!deW};
     }catch(e){ mkt.err = true; console.warn("mercado", e); }
     mktBusy=false; if(tab==='mercado' && loaded.d) renderMercado();
-    mktT = setTimeout(pollMkt, MKT_MS);
+    mktT = setTimeout(pollMkt, (mkt.err || mkt.directo ? 5*MKT_MS : MKT_MS) + Math.random()*10000);
   }
   let stkSel = null;
   function heatBg(p){ if(p==null||!isFinite(p)) return 'var(--surface)'; const k=Math.round(Math.min(Math.abs(p)/4,1)*55+8); return Math.abs(p)<0.05?'var(--neu-bg)':`color-mix(in srgb, var(${p>0?'--pos':'--neg'}) ${k}%, var(--surface))`; }
@@ -4251,7 +4251,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- shell ----
   const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
-  const ARG_T = ['dolares','macro','dinero','fiscal','actividad','ganaderia','mercado','noticias','calculadoras'];
+  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','ganaderia','calculadoras'];  // orden pedido por el dueño
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',

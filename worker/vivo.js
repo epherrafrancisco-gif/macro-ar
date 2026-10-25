@@ -1,5 +1,4 @@
-// Worker "pulso-vivo": una vez por minuto trae el dólar (DolarApi) y, cada 5 minutos, acciones y bonos
-// (data912), y guarda todo en R2 como vivo.json. La página lo lee desde datos.pulsomacro.com.ar con la
+// Worker "pulso-vivo": una vez por minuto trae el dólar (DolarApi) y acciones y bonos (data912), y guarda todo en R2 como vivo.json. La página lo lee desde datos.pulsomacro.com.ar con la
 // marca del minuto (?t=VER()), así Cloudflare lo sirve de su caché y las fuentes reciben 1 pedido por minuto
 // en total, no uno por cada visitante. Si una fuente falla, se conserva el último dato bueno.
 // Bindings: R2 bucket "DATOS". Cron: "* * * * *".
@@ -23,7 +22,7 @@ async function actualizar(env, ahora){
     const d = await traer(DOLAR);
     if(Array.isArray(d) && d.length){ out.dolares = d; out.tDol = ahora; }
   }catch(e){ out.err.push('dolar'); }
-  if(new Date(ahora).getUTCMinutes() % 5 === 0 || !out.stocks){
+  {
     try{
       const [s, b] = await Promise.all([traer(MKT + 'arg_stocks'), traer(MKT + 'arg_bonds')]);
       if(Array.isArray(s) && s.length){ out.stocks = s; out.bonds = Array.isArray(b) ? b : out.bonds; out.tMkt = ahora; }
