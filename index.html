@@ -3897,6 +3897,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const ok = r => tc ? Math.abs(r/tc-1) < 0.06 : r>1200 && r<2500;
     return Object.values(O).some(o=>o!==x && o.c>0 && o.symbol[0]===s[0] && (!d || ultDig(o.symbol)===d) && ok(o.c/x.c)); };
   const espPesos = O => Object.values(O||{}).filter(x=>x && x.symbol && !enDolares(x, O));
+  // BYMA opera de lunes a viernes de 11 a 17 (hora argentina). Fuera de eso, data912 repite los precios del último cierre.
+  const bymaAbierto = () => { const p = Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+    const m = (+p.hour%24)*60 + +p.minute; return !['Sat','Sun'].includes(p.weekday) && m>=660 && m<1020; };
+  const mktCuando = () => bymaAbierto() ? `datos de las ${horaAR(mkt.dato||mkt.at)} · con demora` : 'mercado cerrado: precios del último cierre';
   let stkOrd = 'var', bondQ = '';
   document.querySelectorAll('#stkOrd button').forEach(b=>b.addEventListener('click', ()=>{ stkOrd = b.dataset.o; renderStocks(); }));
   $('bondQ').addEventListener('input', e=>{ bondQ = e.target.value; renderBondsAll(); });
@@ -3922,7 +3926,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(x) $('stkDet').innerHTML = st(x.symbol, '$ '+nf(x.c,2), sg(x.pct_change,2)+'% en el día', x.pct_change>0?'up':x.pct_change<0?'dn':'')
       + st('Compra / venta', `${x.px_bid?nf(x.px_bid,2):'—'} / ${x.px_ask?nf(x.px_ask,2):'—'}`, 'mejores puntas')
       + st('Monto operado', x.v?'$ '+nf(x.v*x.c/1e6,1)+' M':'—', (x.v?nf(x.v,0)+' acciones':'')+(x.q_op?' · '+nf(x.q_op,0)+' operaciones':''));
-    $('stkStamp').textContent = `${L.length} acciones · datos de las ${horaAR(mkt.dato||mkt.at)}${mkt.err?' · última consulta falló':''}`;
+    $('stkStamp').textContent = `${L.length} acciones · ${mktCuando()}${mkt.err?' · última consulta falló':''}`;
   }
   function renderBondsAll(){
     const B = mkt.bonds, el = $('tBonosAll'); if(!el) return;
@@ -3957,7 +3961,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       : rows.map(r=>`<tr><td>${r.k}</td><td>${r.ley}</td><td>${VTO[r.f]}</td><td>${c(r.px)!=null?nf(r.px,2):'—'}</td><td class="${r.D&&r.D.pct_change>0?'up':r.D&&r.D.pct_change<0?'dn':''}">${r.D?sg(r.D.pct_change,2)+'%':'—'}</td><td>${r.P&&r.P.c?nf(r.P.c,0):'—'}</td><td>${r.b?nf(r.b.tir,2)+'%':'—'}</td><td>${r.b?nf(r.b.paridad,1)+'%':'—'}</td><td>${r.b?nf(r.b.res,1):'—'}</td></tr>`).join('');
     renderBondsAll();
     renderStocks();
-    $('bondStamp').textContent = mkt.at ? `Datos de las ${horaAR(mkt.dato||mkt.at)} · se refresca cada 5 min${mkt.err?' · última consulta falló':''}` : '';
+    $('bondStamp').textContent = mkt.at ? `${mktCuando()} · se refresca cada 5 min${mkt.err?' · última consulta falló':''}` : '';
   }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='mercado' && Date.now()-mkt.at >= MKT_MS) pollMkt(); });
 
