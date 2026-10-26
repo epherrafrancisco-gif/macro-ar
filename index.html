@@ -5079,12 +5079,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // bonos
     const B = g.bonos || {}, us = B.USA, fresco = x => x && x.t && (Date.now() - Date.parse(x.t)) < 10*864e5;
     if(us && fresco(us)){
-      const rp = series('riesgo'), rows = Object.entries(B).filter(([iso,x])=>iso!=='USA' && fresco(x)).map(([iso,x])=>({n: `${GPA[iso]||iso} (${nf(x.v,2)}%)`, v:(x.v-us.v)*100, y:x.v}));
+      const rp = series('riesgo'), viejo = x => (Date.now() - Date.parse(x.t)) > 4*864e5, ddmm = x => String(x.t).slice(5,10).split('-').reverse().join('/'), rows = Object.entries(B).filter(([iso,x])=>iso!=='USA' && fresco(x)).map(([iso,x])=>({n: `${GPA[iso]||iso} (${nf(x.v,2)}%${viejo(x) ? ' · '+ddmm(x) : ''})`, v:(x.v-us.v)*100, y:x.v}));
       if(rp.length) rows.push({n:'Argentina (riesgo país)', v:rp[rp.length-1][1], y:null, hl:true});
       rows.sort((a,b)=>b.v-a.v).forEach(r=>{ r.c = r.hl ? '--s4' : r.v>=0 ? '--s2' : '--s1'; });
       hBars($('chBonos'), rows, {aria:'Diferencia contra el bono de EE.UU.', vfmt:v=>`${sg(v,0)} pb`, rh:28});
       $('gBonN').textContent = `EE.UU. paga ${nf(us.v,2)}%`;
-      $('gBonNota').textContent = 'Entre paréntesis, la tasa que paga cada bono. Barras: diferencia contra el bono de EE.UU., en puntos básicos (100 pb = 1 punto porcentual). Los demás países son bonos en su propia moneda; Argentina es el riesgo país, que mide sus bonos en dólares contra los de EE.UU. Con demora (CNBC).';
+      $('gBonNota').textContent = 'Entre paréntesis, la tasa que paga cada bono. Barras: diferencia contra el bono de EE.UU., en puntos básicos (100 pb = 1 punto porcentual). Los demás países son bonos en su propia moneda; Argentina es el riesgo país, que mide sus bonos en dólares contra los de EE.UU. Si el dato no es de los últimos días, va su fecha. Fuentes: ' + [...new Set(Object.entries(B).filter(([iso,x])=>fresco(x) && x.f).map(([,x])=>x.f))].join(', ') + (Object.entries(B).some(([iso,x])=>fresco(x) && !x.f) ? '; el resto, CNBC (con demora).' : '.');
     } else $('chBonos').innerHTML = '<div class="empty">Cargando…</div>';
     // ¿dónde está Argentina?
     const ai = gArgInfl(), P = g.paises || {}, val = (iso,k) => iso==='ARG' && k==='infl' && ai ? ai.v : P[iso]?.[k];
