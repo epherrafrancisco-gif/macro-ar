@@ -6792,8 +6792,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const marca = v => { try{ v ? localStorage.setItem('pm-app','1') : localStorage.removeItem('pm-app'); }catch(e){} };
     let instalada = false; try{ instalada = localStorage.getItem('pm-app')==='1'; }catch(e){}
     if(yaApp){ marca(1); instalada = true; }
-    if(!yaApp && !ffPc && !instalada) mostrar(true);
-    if(navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(l=>{ if(l && l.length){ marca(1); if(!aviso) mostrar(false); } else if(Array.isArray(l) && instalada && !yaApp){ marca(0); if(!ffPc) mostrar(true); } }).catch(()=>{});
+    // Chrome y Edge (no en iPhone): solo mandan beforeinstallprompt si la app NO está instalada. Ahí el botón aparece
+    // únicamente con ese aviso; así nunca se ofrece instalar a quien ya la tiene (pedido del dueño, 26/10/2026).
+    const chromium = /Chrome|Chromium|Edg\//.test(UA) && !/SamsungBrowser|OPR\//.test(UA) && !ios;
+    if(!yaApp && !ffPc && !instalada && !chromium) mostrar(true);
+    if(navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(l=>{ if(l && l.length){ marca(1); if(!aviso) mostrar(false); } }).catch(()=>{});  // una lista vacía no prueba nada: no se borra la marca
     addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); aviso = e; marca(0); mostrar(true); });
     addEventListener('appinstalled', ()=>{ aviso = null; marca(1); mostrar(false); gcUna('app-instalada'); });
     const pasos = () => {

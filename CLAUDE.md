@@ -91,8 +91,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     con Oficial, Blue y MEP primeros (pedido del dueño). `mActualizar()` corre al final de `setTab`.
 - Instalar como app (pedido del dueño): `manifest.webmanifest`, íconos en `icons/` (`anillo-*`: 192, 512, maskable, apple-touch 180;
   mismo dibujo que el favicon) y `sw.js`, que NO guarda nada (todo va a la red; solo muestra un aviso si no hay conexión).
-  Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge aparece con
-  `beforeinstallprompt` y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
+  Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge (`chromium`) aparece SOLO con
+  `beforeinstallprompt` (que no llega si ya está instalada; pedido del dueño: no ofrecerla a quien ya la tiene) y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
   hacerlo solo); si el navegador no manda su aviso (pasa después de desinstalar), el botón igual aparece y abre los pasos para ese
   navegador (`pasos()`: Edge, Chrome, Android, Samsung, Safari de Mac; evento `instalar-pasos`); en Firefox de compu no aparece. Si ya está instalada tampoco: marca `pm-app` en localStorage (al instalar o abrir como
   app) + `getInstalledRelatedApps` (`related_applications` en el manifest); `beforeinstallprompt` borra la marca. Eventos GoatCounter `instalar-click`, `instalar-ios`,
