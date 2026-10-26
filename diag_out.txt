@@ -1,119 +1,16 @@
-=== reservas internacionales
-   182.1_VARIACION_LES_0_M_43 | R/P1M | 2026-08-01 | Variación contable de Reservas Internacionales | Banco Central de la República Argentina (BCRA) | None
-   300.1_AP_ACT_RESTER_0_M_21 | R/P1M | 2025-10-01 | Apertura activo. Reservas internacionales. | Banco Central de la República Argentina (BCRA) | None
-   300.2_AP_ACT_RESTER_0_A_21 | R/P1Y | 2024-01-01 | Apertura activo. Reservas internacionales. | Banco Central de la República Argentina (BCRA) | None
-   86.1_RIB_1991_A_22 | R/P1Y | 2001-01-01 | Reservas internacionales | Instituto Nacional de Estadística y Censos (INDEC) | None
-   300.1_AP_ACT_RESTER_0_M_59 | R/P1M | 2025-10-01 | Apertura activo. Apertura de reservas internacionales. Instrumentos Derivados sobre Reserv | Banco Central de la República Argentina (BCRA) | None
-   174.1_RRVAS_IDOS_0_0_36 | R/P1M | 2026-04-01 | Reservas Internacionales BCRA Saldos | Banco Central de la República Argentina (BCRA) | None
-   182.1_VARIACION_NES_0_M_48 | R/P1M | 2026-08-01 | Variación de Reservas Internacionales por transacciones | Banco Central de la República Argentina (BCRA) | None
-   300.2_AP_ACT_RESTER_0_A_59 | R/P1Y | 2024-01-01 | Apertura activo. Apertura de reservas internacionales. Instrumentos Derivados sobre Reserv | Banco Central de la República Argentina (BCRA) | None
-=== tipo de cambio mayorista comunicacion A 3500
-   175.1_DR_REFE500_0_0_25 | R/P1D | 2026-08-31 | Dólar Referencia Comunicación "A" 3500 (Mayorista) | Banco Central de la República Argentina (BCRA) | None
-   92.2_TIPO_CAMBIION_0_0_21_24 | R/P1D | 2026-08-31 | Tipo de cambio de valuación (peso por dólar) | Banco Central de la República Argentina (BCRA) | None
-   175.1_DR_FINAPRA_0_0_23 | R/P1D | 1983-01-02 | Dólar Financiero. Compra | Banco Central de la República Argentina (BCRA) | None
-   175.1_DR_ESTANSE_0_0_20 | R/P1D | 2026-08-31 | Dólar Estadounidense | Banco Central de la República Argentina (BCRA) | None
-   92.1_TCV_0_0_21 | R/P1M | 2026-08-01 | Tipo de cambio de valuación (peso por dólar) | Banco Central de la República Argentina (BCRA) | None
-   168.1_T_CAMBIMAE_D_0_0_15 | R/P1D | 2026-08-31 | Tipo de Cambio MAE | Banco Central de la República Argentina (BCRA), Mercado Abierto Electrónico (MAE), Rofex | None
-   175.1_DR_LIBRPRA_0_0_18 | R/P1D | 1992-01-01 | Dólar Libre. Compra | Banco Central de la República Argentina (BCRA) | None
-   bcra_sml_006 | R/P1D | 2021-08-02 | Tipo de cambio PTAX diario. | Banco Central de la República Argentina (BCRA) | None
-=== base monetaria
-   300.1_AP_PAS_BASRIA_0_M_21 | R/P1M | 2025-10-01 | Apertura pasivo. Base monetaria | Banco Central de la República Argentina (BCRA) | None
-   300.2_AP_PAS_BASRIA_0_A_21 | R/P1Y | 2024-01-01 | Apertura pasivo. Base monetaria | Banco Central de la República Argentina (BCRA) | None
-   331.1_SALDO_BASERIA__15 | R/P1M | 2026-05-01 | Saldo de la Base Monetaria | Banco Central de la República Argentina (BCRA) | None
-   331.2_SALDO_BASERIA__15 | R/P1D | 2026-06-12 | Saldo de la Base Monetaria | Banco Central de la República Argentina (BCRA) | None
-   300.2_AP_PAS_BASRIA_0_A_43 | R/P1Y | 2024-01-01 | Apertura pasivo. Apertura de base monetaria. Circulación monetaria. | Banco Central de la República Argentina (BCRA) | None
-   300.1_AP_PAS_BASRIA_0_M_43 | R/P1M | 2025-10-01 | Apertura pasivo. Apertura de base monetaria. Circulación monetaria. | Banco Central de la República Argentina (BCRA) | None
-   300.1_AP_PAS_BASIRC_0_M_56 | R/P1M | 2025-10-01 | Apertura pasivo. Apertura de base monetaria. Apertura de circulación monetaria. Cheques Ca | Banco Central de la República Argentina (BCRA) | None
-   bcra_369 | R/P1M | 2021-05-01 | Agregados monetarios, saldos afin de mes, en miles de pesos - Base monetaria (M0) - Circul | Banco Central de la República Argentina (BCRA) | None
-=== badlar
-   89.2_TS_INTELAR_0_D_20 | R/P1D | 2026-06-18 | Tasas de interés publicadas por el BCRA. Badlar. | Banco Central de la República Argentina (BCRA) | None
-   89.1_TIB_0_0_20 | R/P1M | 2026-08-01 | Tasas de interés publicadas por el BCRA. Badlar.  En porcentaje | Banco Central de la República Argentina (BCRA) | None
-=== tamar
-=== plazo fijo 30 dias tasa
-   93.1_P35D_0_0_13 | R/P1M | 2012-09-01 | Plazo fijo entre 30-59 días en millones de pesos | Banco Central de la República Argentina (BCRA) | None
-   174.1_T_INTERUS_0_0_43 | R/P1M | 2026-04-01 | Tasa de interés Por depósitos a plazo fijo de 30 a 59 días De moneda extranjera | Banco Central de la República Argentina (BCRA) | None
-   174.1_T_INTERD_0_0_41 | R/P1M | 2026-04-01 | Tasa de interés Por depósitos a plazo fijo de 30 a 59 días De moneda nacional | Banco Central de la República Argentina (BCRA) | None
-   93.1_P35DCI_0_0_19 | R/P1M | 2025-06-01 | Plazo fijo entre 30-59 días en millones de pesos. Categoría I | Banco Central de la República Argentina (BCRA) | None
-   89.1_TIPF35D_0_0_35 | R/P1M | 2026-08-01 | Tasas de interés publicadas por el BCRA. Plazo fijo entre 30 a 59 días.  En porcentaje | Banco Central de la República Argentina (BCRA) | None
-   93.1_P35DCIV_0_0_23 | R/P1M | 2025-06-01 | Plazo fijo entre 30-59 días en millones de pesos. Categoría II-VI | Banco Central de la República Argentina (BCRA) | None
-   bcra_libor_001 | R/P1D | 2021-07-30 | Tasa LIBOR. Valor diario a 30 días. | Banco Central de la República Argentina (BCRA) | None
-   93.1_PFH29_0_0_11 | R/P1M | 2012-09-01 | Plazo fijo hasta 29 días en millones de pesos | Banco Central de la República Argentina (BCRA) | None
-=== depositos en dolares sector privado
-   90.1_DTDPRI_0_0_33 | R/P1M | 2026-08-01 | Depósitos del sector privado y del sector público. Sector privado en dólares | Banco Central de la República Argentina (BCRA) | None
-   90.1_DET_DESAGRICO_0_0_37 | R/P1M | 2026-08-01 | Detalle desagregado depósitos del sector privado y del sector publico en dolares en mill d | Banco Central de la República Argentina (BCRA) | None
-   90.1_DET_DESAGRIV_V_0_0_37 | R/P1M | 2026-08-01 | Detalle desagregado depósitos del sector privado y del sector público en dólares (en mill. | Banco Central de la República Argentina (BCRA) | None
-   90.1_DTDPUB_0_0_33 | R/P1M | 2026-08-01 | Depósitos del sector privado y del sector público. Sector público en dólares | Banco Central de la República Argentina (BCRA) | None
-   90.1_DET_DESAGRIV_0_0_37 | R/P1M | 2026-08-01 | Detalle desagregado depósitos del sector privado y del sector público en dólares (en mill. | Banco Central de la República Argentina (BCRA) | None
-   90.1_DTDT_0_0_31 | R/P1M | 2026-08-01 | Depósitos del sector privado y del sector público. Total en dólares | Banco Central de la República Argentina (BCRA) | None
-   90.1_DET_DESAGRIV_0_0_35 | R/P1M | 2026-08-01 | Detalle desagregado depósitos del sector privado y del sector público en dólares (en mill. | Banco Central de la República Argentina (BCRA) | None
-   90.1_DET_DESAGRIV_0_0_38 | R/P1M | 2026-08-01 | Detalle desagregado depósitos del sector privado y del sector público en dólares (en mill. | Banco Central de la República Argentina (BCRA) | None
-=== M2
-   174.1_AGADOS_M2_0_0_28 | R/P1M | 2026-04-01 | Agregados Monetarios en $ M2 | Banco Central de la República Argentina (BCRA) | None
-   174.1_AGADOS_M2_0_0_16 | R/P1M | 2026-04-01 | Agregados USD M2 | Banco Central de la República Argentina (BCRA) | None
-   41.1_CPR_0_M_30 | R/P1Y | 2014-01-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.3_PY_0_A_11 | R/P1M | 2026-07-01 | Placas de yeso en Miles de M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.3_CPR_0_A_30 | R/P1M | 2015-07-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.2_PY_0_T_11 | R/P3M | 2026-04-01 | Placas de yeso en Miles de M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   90.1_AMTM2_0_0_31 | R/P1M | 2026-08-01 | Agregados monetarios totales. M2. En millones de pesos | Banco Central de la República Argentina (BCRA) | None
-   41.2_CPR_0_T_30 | R/P3M | 2015-04-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-=== M2 transaccional
-   174.1_AGADOS_M2_0_0_28 | R/P1M | 2026-04-01 | Agregados Monetarios en $ M2 | Banco Central de la República Argentina (BCRA) | None
-   174.1_AGADOS_M2_0_0_16 | R/P1M | 2026-04-01 | Agregados USD M2 | Banco Central de la República Argentina (BCRA) | None
-   41.1_CPR_0_M_30 | R/P1Y | 2014-01-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.3_PY_0_A_11 | R/P1M | 2026-07-01 | Placas de yeso en Miles de M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.3_CPR_0_A_30 | R/P1M | 2015-07-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   41.2_PY_0_T_11 | R/P3M | 2026-04-01 | Placas de yeso en Miles de M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-   90.1_AMTM2_0_0_31 | R/P1M | 2026-08-01 | Agregados monetarios totales. M2. En millones de pesos | Banco Central de la República Argentina (BCRA) | None
-   41.2_CPR_0_T_30 | R/P3M | 2015-04-01 | Cerámicos pisos y revestimientos en Miles M2 | Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas | None
-=== CER coeficiente
-   150.1_IRSA_COGEL_0_D_25 | R/P1M | 2026-08-01 | Índice de Coeficiente de Engel desde 2016 | Instituto Nacional de Estadística y Censos (INDEC) | None
-   94.2_CD_D_0_0_10 | R/P1D | 2026-08-31 | CER diario | Banco Central de la República Argentina (BCRA) | None
-   94.2_UVID_D_0_0_10 | R/P1D | 2026-08-31 | UVI diario | Banco Central de la República Argentina (BCRA) | None
-   94.2_UVAD_D_0_0_10 | R/P1D | 2026-08-31 | UVA diario | Banco Central de la República Argentina (BCRA) | None
-   59.4_IRSA_COGEL_0_0_25 | R/P1M | 2006-12-01 | Índice de Coeficiente de Engel desde 2000 hasta 2000 | Instituto Nacional de Estadística y Censos (INDEC) | None
-   65.1_CGI_0_0_21 | R/P3M | 2026-01-01 | Coeficiente de Gini del Ingreso per cápita familiar | Instituto Nacional de Estadística y Censos (INDEC) | None
-   65.1_CGI_0_0_20 | R/P3M | 2015-04-01 | Coeficiente de Gini del Ingreso de la ocupación principal | Instituto Nacional de Estadística y Censos (INDEC) | None
-   59.3_IRSA_COGEL_0_0_25 | R/P6M | 2000-04-01 | Índice de Coeficiente de Engel desde 1992 hasta 2000 | Instituto Nacional de Estadística y Censos (INDEC) | None
-=== LELIQ
-   331.1_PASES_REDELIQ_M_MONE_0_24_24 | R/P1M | 2026-05-01 | Pases y Redescuentos: Leliq | Banco Central de la República Argentina (BCRA) | None
-   331.2_PASES_REDELIQ_D_MONE_0_24_19 | R/P1D | 2026-06-12 | Pases y Redescuentos: Leliq | Banco Central de la República Argentina (BCRA) | None
-=== pases pasivos BCRA
-   bcra_266 | R/P1D | 2021-07-28 | Principales pasivos del BCRA, saldos diarios, en miles de pesos - Posición neta de pases - | Banco Central de la República Argentina (BCRA) | None
-   89.1_IR_BCRADIA_0_M_36 | R/P1M | 2024-07-01 | Instrumentos del BCRA. Pases en pesos. Pasivos 1 día | Banco Central de la República Argentina (BCRA) | None
-   89.1_IR_BCRAIAS_0_M_37 | R/P1M | 2018-09-01 | Instrumentos del BCRA. Pases en pesos. Pasivos 7 días | Banco Central de la República Argentina (BCRA) | None
-   bcra_267 | R/P1D | 2021-07-28 | Principales pasivos del BCRA, saldos diarios, en miles de pesos - Posición neta de pases - | Banco Central de la República Argentina (BCRA) | None
-   bcra_11 | R/P1M | 2021-06-01 | Principales pasivos del BCRA, promedio mensual de saldos diarios en miles de pesos - Posic | Banco Central de la República Argentina (BCRA) | None
-   bcra_12 | R/P1M | 2021-06-01 | Principales pasivos del BCRA, promedio mensual de saldos diarios en miles de pesos - Posic | Banco Central de la República Argentina (BCRA) | None
-   bcra_265 | R/P1D | 2021-07-28 | Principales pasivos del BCRA, saldos diarios, en miles de pesos - Posición neta de pases - | Banco Central de la República Argentina (BCRA) | None
-   86.1_OB_1991_A_10 | R/P1Y | 2001-01-01 | Otros pasivos BCRA | Instituto Nacional de Estadística y Censos (INDEC) | None
-=== LEFI
-   331.1_OPERACIONEEFI_M_MONE_0_20_18 | R/P1M | 2026-05-01 | Operaciones con LEFI | Banco Central de la República Argentina (BCRA) | None
-   331.2_OPERACIONEEFI_D_MONE_0_20_54 | R/P1D | 2026-06-12 | Operaciones con LEFI | Banco Central de la República Argentina (BCRA) | None
-=== compra de divisas BCRA
-   331.1_COMPRAS_NEROS__40 | R/P1M | 2026-05-01 | Compras netas de divisas: Al Sector Privado | Banco Central de la República Argentina (BCRA) | None
-   331.2_COMPRAS_NETAL__45 | R/P1D | 2026-06-12 | Compras netas de divisas: Total | Banco Central de la República Argentina (BCRA) | None
-   331.1_COMPRAS_NENAL__39 | R/P1M | 2026-05-01 | Compras netas de divisas: Al Tesoro Nacional | Banco Central de la República Argentina (BCRA) | None
-   300.1_AP_ACT_RESSAS_0_M_29 | R/P1M | 2025-10-01 | Apertura activo. Apertura de reservas internacionales, divisas. | Banco Central de la República Argentina (BCRA) | None
-   bcra_247 | R/P1D | 2021-07-28 | Reservas internacionales del BCRA, saldos diarios, en miles de dólares estadounidenses - O | Banco Central de la República Argentina (BCRA) | None
-   300.2_AP_ACT_RESSAS_0_A_54 | R/P1Y | 2024-01-01 | Apertura activo. Apertura de reservas internacionales. Colocaciones realizables en divisas | Banco Central de la República Argentina (BCRA) | None
-   331.1_COMPRAS_NETAL__45 | R/P1M | 2026-05-01 | Compras netas de divisas: Total | Banco Central de la República Argentina (BCRA) | None
-   bcra_1 | R/P1M | 2021-06-01 | Reservas internacionales del BCRA - oro, divisas, colocaciones a plazo y otros - Saldos a  | Banco Central de la República Argentina (BCRA) | None
-=== BOPREAL
-=== relevamiento de expectativas de mercado REM inflacion
-   430.1_MEDIANA_IP017_M_0_0_44_63 | R/P1M | 2017-11-01 | REM: mediana PIB a precios constantes var ia 2017 | Banco Central de la República Argentina (BCRA) | None
-   430.1_REM_IPC_NA022_M_0_0_30_36 | R/P1M | 2022-11-01 | REM: Mediana IPC Nacional núcleo var ia 2022 | Banco Central de la República Argentina (BCRA) | None
-   430.1_MEDIANA_IPT_6_M_0_0_31_46 | R/P1M | 2025-08-01 | REM: Mediana Tipo de Cambio Nominal var mensual t 6 | Banco Central de la República Argentina (BCRA) | None
-   430.1_MEDIANA_IP017_M_0_0_27_12 | R/P1M | 2017-11-01 | REM: Mediana Tipo de Cambio Nominal var ia 2017 | Banco Central de la República Argentina (BCRA) | None
-   430.1_REM_DESOCU026_M_0_0_24_94 | R/P1M | 2025-07-01 | REM: mediana de desocupación abierta en cuarto trimestre 2026 | Banco Central de la República Argentina (BCRA) | None
-   430.1_REM_RESULT025_M_0_0_39_69 | R/P1M | 2025-08-01 | REM:Mediana Resultado Primario Sector Público No Financiero var ia 2025 | Banco Central de la República Argentina (BCRA) | None
-   430.1_REM_TCN_VA022_M_0_0_19_68 | R/P1M | 2022-11-01 | REM: Mediana Tipo de Cambio Nominal var ia 2022 | Banco Central de la República Argentina (BCRA) | None
-   430.1_REM_IPC_NA027_M_0_0_30_41 | R/P1M | 2025-12-01 | REM: Mediana IPC Nacional núcleo var ia 2027 | Banco Central de la República Argentina (BCRA) | None
-=== indice de precios al consumidor nacional
-   99.3_IR_2008_0_9 | R/P1M | 2013-12-01 | Índice de precios al consumidor IPC resto. Mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   99.1_IR_2008_0_9 | R/P1Y | 2013-01-01 | Índice de precios al consumidor IPC resto. Anual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   99.2_IR_2008_0_9 | R/P3M | 2013-10-01 | Índice de precios al consumidor IPC resto. Trimestral | Instituto Nacional de Estadística y Censos (INDEC) | None
-   105.1_I2L_2016_M_18 | R/P1M | 2026-08-01 | IPC-GBA. Precios. Lavandina. Mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   105.1_I2N_2016_M_14 | R/P1M | 2026-08-01 | IPC-GBA. Precios. Nalga. Mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   96.3_INGV_2008_M_20 | R/P1M | 2013-12-01 | IPC Nivel General. Variación % mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   105.1_I2A_2016_M_15 | R/P1M | 2026-08-01 | IPC-GBA. Precios. Azúcar. Mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
-   105.1_I2N_2016_M_16 | R/P1M | 2026-08-01 | IPC-GBA. Precios. Naranja. Mensual | Instituto Nacional de Estadística y Censos (INDEC) | None
+AL30 {'c': 86030.0, 'px_bid': 86030.0, 'px_ask': 86050.0, 'v': 38141406.0, 'pct_change': -0.02}
+AL30D {'c': 55.0, 'px_bid': 55.0, 'px_ask': 55.01, 'v': 31663738.0, 'pct_change': -0.14}
+AL30C {'c': 51.45, 'px_bid': 51.43, 'px_ask': 51.44, 'v': 29336223.0, 'pct_change': -1.05}
+GD30 {'c': 88340.0, 'px_bid': 88340.0, 'px_ask': 88400.0, 'v': 1848241.0, 'pct_change': 0.04}
+GD30D {'c': 56.45, 'px_bid': 56.42, 'px_ask': 56.46, 'v': 491482.0, 'pct_change': -0.03}
+GD30C {'c': 52.84, 'px_bid': 52.8, 'px_ask': 52.86, 'v': 256137.0, 'pct_change': -2.13}
+GD29D {'c': 55.77, 'px_bid': 55.01, 'px_ask': 55.37, 'v': 3535.0, 'pct_change': -0.39}
+GD35D {'c': 73.21, 'px_bid': 73.17, 'px_ask': 73.2, 'v': 631270.0, 'pct_change': -0.9}
+GD38D {'c': 77.5, 'px_bid': 77.47, 'px_ask': 77.57, 'v': 80446.0, 'pct_change': -1.77}
+GD41D {'c': 68.07, 'px_bid': 68.04, 'px_ask': 68.1, 'v': 236674.0, 'pct_change': -1.2}
+GD46D {'c': 62.6, 'px_bid': 62.59, 'px_ask': 62.78, 'v': 8000.0, 'pct_change': 0.83}
+campos: ['symbol', 'q_bid', 'px_bid', 'px_ask', 'q_ask', 'v', 'q_op', 'c', 'pct_change']
+PROPIOS: {"mep": 1564.18, "mep_bono": "AL30", "ccl": 1672.11, "ccl_bono": "AL30", "riesgo": 531, "detalle": {"GD29": {"tir": 6.57, "dur": 1.4, "ust": 4.54, "spread": 203}, "GD30": {"tir": 8.55, "dur": 1.84, "ust": 4.65, "spread": 390}, "GD35": {"tir": 11.39, "dur": 5.26, "ust": 4.83, "spread": 656}, "GD38": {"tir": 11.28, "dur": 4.41, "ust": 4.8, "spread": 648}, "GD41": {"tir": 11.38, "dur": 5.62, "ust": 4.84, "spread": 654}, "GD46": {"tir": 11.2, "dur": 5.93, "ust": 4.85, "spread": 634}}}
+AMBITO 2026-10-21 mep 1547.78 ccl 1636.52 riesgo 674.0
+AMBITO 2026-10-22 mep 1549.42 ccl 1632.41 riesgo 704.0
+AMBITO 2026-10-23 mep 1562.27 ccl 1648.62 riesgo 707.0
