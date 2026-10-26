@@ -18,7 +18,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent.parent / "geopolitica.json"
-UA = "PulsoMacro/1.0 (https://pulsomacro.com.ar; tablero de economia)"
+UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
 errores, diag = [], {}
 
 

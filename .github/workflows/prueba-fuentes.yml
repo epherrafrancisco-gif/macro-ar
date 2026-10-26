@@ -2,41 +2,35 @@ name: Prueba de fuentes (temporal)
 on:
   push:
     branches: [prueba-fuentes]
-    paths-ignore: [global.json, global_hist.json, usa.json, resumen.txt]
+    paths-ignore: [global.json, global_hist.json, usa.json, resumen.txt, resumen2.txt, index.html]
 permissions:
   contents: write
 jobs:
   prueba:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: global.py
-        run: pip install -q xlrd==2.0.1 openpyxl==3.1.5 && python scripts/global.py
-      - name: usa.py
-        run: python scripts/usa.py
-        continue-on-error: true
-      - name: Resumen
+      - run: pip install -q xlrd==2.0.1 openpyxl==3.1.5
+      - name: Correr cada robot con el user-agent nuevo
         run: |
-          python - <<'PY' > resumen.txt
+          : > resumen2.txt
+          for s in update noticias noticias_paises ganaderia actividad geopolitica global usa brasil europa mexico chile japon reinounido canada colombia turquia peru polonia paises_extra india noruega; do
+            echo "== $s" >> resumen2.txt
+            timeout 600 python scripts/$s.py > out_$s.txt 2>&1; echo "salida $?" >> resumen2.txt
+            grep -i "error\|warn\|traceback\|403\|forbidden" out_$s.txt | head -25 >> resumen2.txt || true
+          done
+          python - <<'PY' >> resumen2.txt
           import json
-          g = json.load(open("global.json")); h = json.load(open("global_hist.json"))
-          print("claves", list(g))
-          print("bolsas", {k: (v.get("tv"), v.get("vm"), v.get("m")) for k, v in g["bolsas"].items()})
-          print("bonos", {k: (v.get("v"), v.get("t")) for k, v in g["bonos"].items()})
-          print("commodities", [(c["k"], c["v"], c["t"]) for c in g["commodities"]])
-          print("termo", g["termo"])
-          print("mercados", [(m["k"], m["v"]) for m in g["mercados"]])
-          print("series", len(h["series"]), sorted(h["series"]))
-          print("mensual", h.get("mensual"))
-          print("errores", g["errores"])
-          u = json.load(open("usa.json")); print("usa", list(u), u.get("errores"))
+          e = json.load(open("estado.json")); print("estado.json", json.dumps(e, ensure_ascii=False)[:3000])
+          n = json.load(open("noticias.json")); print("noticias fuentes", n.get("fuentes"))
+          g = json.load(open("ganaderia.json")); print("ganaderia", {k: g.get(k) for k in ("actualizado","errores","diag") if k in g})
           PY
       - name: Guardar en la rama de prueba
         run: |
           git config user.name "github-actions"; git config user.email "github-actions@users.noreply.github.com"
-          git add -f global.json global_hist.json usa.json resumen.txt
-          git commit -m "Resultado de la prueba [skip ci]" && git push
+          git add -f resumen2.txt
+          git commit -m "Resultado de la prueba 2 [skip ci]" && git push

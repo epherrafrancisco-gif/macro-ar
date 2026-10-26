@@ -18,7 +18,7 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-UA = "pulsomacro.com.ar (contacto@pulsomacro.com.ar)"
+UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
 errores = []
 
 # Monedas del BCE (código → se cotiza en dólares por unidad, como CNBC)
