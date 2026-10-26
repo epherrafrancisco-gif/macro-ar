@@ -30,7 +30,6 @@
   "BCRA pases mensual: 46 meses",
   "BCRA lefi mensual: 13 meses",
   "DolarApi: cripto ['2026-10-26'], tarjeta ['2026-10-26']",
-  "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
   "Historia ofi: 39 días en 1 tramos",
   "Historia blue: 37 días en 1 tramos",
@@ -38,7 +37,10 @@
   "Historia ccl: 40 días en 1 tramos",
   "Historia may: 39 días en 1 tramos",
   "Historia cer: 56 días en 1 tramos",
-  "CPI EE.UU. (FRED): 117 meses"
+  "CPI EE.UU. (BLS): 116 meses",
+  "CPI EE.UU., fuentes con error: FRED: The read operation timed out"
  ],
- "errores": []
+ "errores": [
+  "datos.gob.ar fiscal y comercio: The read operation timed out"
+ ]
 }
