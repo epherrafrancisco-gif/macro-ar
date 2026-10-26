@@ -1088,7 +1088,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="note" id="rkN"></p>
     </div>
     <div class="grid2">
-      <div class="card"><div class="head"><h2>Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
+      <div class="card"><div class="head"><h2>Merval en pesos</h2><span class="note">MSCI Merval, puntos, cierre diario (fuente: BYMA)</span></div><div class="chart" id="chMer"></div></div>
       <div class="card"><div class="head"><h2>Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
     </div>
     <div class="card">
@@ -4607,7 +4607,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const real = ((1+pf[1]/1200)/(1+a.infl/100)-1)*100;
       return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
     if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
-      return `El Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
+      return `El MSCI Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
     if(tab==='ganaderia' && gan){ const H = gan.hacienda||{}, fs = Object.keys(H).sort().filter(f=>H[f].grupos?.NOVILLITOS), l = Lp(fs); if(!l) return '';
       const nv = H[l].grupos.NOVILLITOS.prom, w = fs.length>5 ? H[fs[fs.length-6]].grupos.NOVILLITOS.prom : null, as = Lp(act?.c_asado||[]);
       return `El novillito se pagó <strong>$ ${nf(nv,0)} el kilo vivo</strong> en Cañuelas el ${fds(l)}${w ? ` (${pc(nv/w-1,1)} en la semana)` : ''}.${as ? ` En la carnicería, el asado costaba $ ${nf(as[1],0)} el kilo en ${mesN(as[0])}.` : ''}`; }

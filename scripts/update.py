@@ -199,6 +199,41 @@ def rava_merval(desde):
     return {"merval": out}
 
 
+def byma_merval(ahora):
+    """MSCI Merval desde Open BYMADATA, el acceso gratuito y público de BYMA (dueña del dato, junto con MSCI).
+    index-price trae el cierre anterior (previousClosingPrice) y, con el mercado cerrado, el del día (closingPrice o trade).
+    Es la fuente principal desde el 26/10/2026; Rava queda solo de respaldo."""
+    out = {}
+    try:
+        import http.cookiejar
+        cj = http.cookiejar.CookieJar()
+        op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+        h = {"Accept": "application/json, text/plain, */*", "Content-Type": "application/json", "User-Agent": UA,
+             "Origin": "https://open.bymadata.com.ar", "Referer": "https://open.bymadata.com.ar/"}
+        op.open(urllib.request.Request("https://open.bymadata.com.ar/", headers={"User-Agent": UA}), timeout=40).read()
+        r = op.open(urllib.request.Request("https://open.bymadata.com.ar/vanoms-be-core/rest/api/bymadata/free/index-price",
+                                           data=b'{"Content-Type":"application/json"}', headers=h, method="POST"), timeout=40)
+        d = json.loads(r.read().decode("utf-8"))
+        x = next((i for i in d.get("data") or [] if i.get("symbol") == "MMSCI"), None)
+        if not x:
+            raise ValueError("no vino el MSCI Merval (MMSCI)")
+        hoy = x.get("date") or ahora.date().isoformat()
+        ant = date.fromisoformat(hoy) - timedelta(days=1)
+        while ant.weekday() >= 5:
+            ant -= timedelta(days=1)
+        if (x.get("previousClosingPrice") or 0) > 0:
+            out[ant.isoformat()] = round(float(x["previousClosingPrice"]), 2)  # si el día anterior fue feriado, Rava/Ámbito lo corrigen
+        cierre = x.get("closingPrice") or 0
+        if cierre <= 0 and ahora.hour >= 17 and ahora.weekday() < 5 and hoy == ahora.date().isoformat():
+            cierre = x.get("trade") or 0  # mercado ya cerrado: el último operado es el cierre
+        if cierre > 0:
+            out[hoy] = round(float(cierre), 2)
+        log_ok.append(f"BYMA merval: {out}")
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"BYMA merval: {e}")
+    return {"merval": out} if out else {}
+
+
 def propios_cierre(ahora):
     """MEP, CCL y riesgo país calculados por Pulso Macro (scripts/propios.py) con los precios de cierre de los bonos.
     Solo en la corrida de la tarde de un día hábil (después de las 17 h, con el mercado cerrado): así es el cierre del día."""
@@ -501,6 +536,7 @@ def main():
     amb = ambito(desde, hasta, anual_desde)
     rava = rava_merval(desde)
     prop = propios_cierre(datetime.now(TZ_AR))
+    bym = byma_merval(datetime.now(TZ_AR))
     bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
     gm, gt = datos_gob_ar()
@@ -511,7 +547,7 @@ def main():
     # repite en feriados para el MEP y el CCL.
     dias_mercado = set(amb.get("oficial", {})) | set(bd.get("mayorista", {}))
 
-    for fuente in (amb, rava, prop, bd, dapi):
+    for fuente in (amb, rava, bym, prop, bd, dapi):  # el orden importa: lo de BYMA pisa a Rava
         for campo, porfecha in fuente.items():
             for f, val in porfecha.items():
                 if not es_habil(f):

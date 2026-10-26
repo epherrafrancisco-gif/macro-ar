@@ -149,7 +149,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el acceso gratuito de BYMA). El Worker guarda una foto por minuto en `mkt/0..29.json` y publica la de hace 20 min; la página NO
   va nunca directo a data912 y descarta precios con menos de 19 min. Leyenda: "precios de BYMA ... 20 minutos de demora".
 - Merval: desde el 19/10/2026 es el "MSCI Merval" (antes S&P), base 100.000 al cierre del 16/10/2026. Ámbito (`indice/.merv`) y
-  CNBC (`.MERV`) se cortaron el 16/10. update.py: `rava_merval` saca los cierres desde el 19/10 de Rava
+  CNBC (`.MERV`) se cortaron el 16/10. update.py: fuente principal desde el 26/10 `byma_merval` (Open BYMADATA, acceso gratuito
+  de BYMA: POST `.../bymadata/free/index-price`, símbolo `MMSCI`, previousClosingPrice y closingPrice/trade después de las 17 h;
+  la historia por símbolo de esa API no trae índices). Respaldo: `rava_merval` saca los cierres desde el 19/10 de Rava
   (`rava.com/cotizaciones/historico/merval/AAAA/MM/` lista los días; cada día trae los últimos 10 cierres) y la historia de
   Ámbito se re-expresa con `MERVAL_FACTOR` (= 100.000 / 2.843.310,56); lo guardado en la base vieja (>500.000) se convierte
   solo. En la página se llama "Merval" (no "S&P Merval"); el gráfico del Mundo usa data.json (`gSerie('merv')`).
