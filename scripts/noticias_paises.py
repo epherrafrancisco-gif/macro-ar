@@ -25,7 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "noticias_paises.json"
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
+UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
 
 ECON = (r"econom|\bmercados?\b|\bbolsas?\b|wall street|inflaci|\btasas?\b|tipos? de inter|banco central|reserva federal|\bfed\b|"
         r"\bbce\b|banxico|copom|selic|d[oó]lar|\beuros?\b|\breales\b|\bpesos\b|petr[oó]leo\b|\bcrudo\b|arancel|comerci|exportaci|"

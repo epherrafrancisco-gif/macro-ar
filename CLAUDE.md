@@ -180,7 +180,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   lleva a Economías y tasas, a la ficha. Tocar un commodity lleva a Bolsas y acciones, al gráfico.
 - Estados Unidos: arriba SIEMPRE mapa, deuda, Fed y los 6 indicadores. Apartados: Economía (semáforo, rubros, próximos
   datos, empleos, mercado laboral, PBI) · Tasas y deuda (Fed vs inflación, curva, decisiones, hipotecaria) · Wall Street
-  (50 empresas, sectores, 7 magníficas, balances).
+  (mapa del S&P 500, sectores y 7 magníficas: widgets de TradingView; sin balances desde el 26/10/2026).
 
 ### Brasil (`#brasil`, sección `vB`, `renderBrasil`, datos `brasil.json` de scripts/brasil.py en `global.yml`)
 - Arriba siempre 6 indicadores: real por dólar (PTAX), un real en pesos (mayorista de data.json ÷ PTAX del mismo día),
@@ -409,6 +409,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - La OCDE no se puede leer con WebFetch (devuelve binario): se prueba desde Actions mirando el campo `diag` del JSON.
 
 ### Global › Mundo
+- OJO: las notas de cada país más arriba nombran símbolos de CNBC (`bolsas.X`, `.OSEBX`, fondos) de cuando se usaba CNBC.
+  Desde el 26/10/2026 eso lo muestran los widgets de TradingView y los números propios salen de la OCDE: ver "Mercados sin
+  CNBC" en Fuentes. La capa "bolsas" de los globos, el Monitor y "¿Qué rindió más?" usan la OCDE (mensual).
+- Merval en Bolsa y bonos: parte de cierre como noticia (`#merParte`: "El MSCI Merval cerró el ... Fuente: BYMA / MSCI").
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
   el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
@@ -417,7 +421,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   cargadas a mano hasta dic-2027; Banxico y Colombia solo 2026, Turquía hasta jun-2027: completar cuando publiquen), bonos a 10 años vs EE.UU.
   (Argentina = riesgo país), cripto top 10, noticias del mundo.
 - `gExtras`: bolsas, bancos centrales (BIS), commodities (9, con variación en el año y clic al gráfico), Argentinas en
-  Wall Street, Líderes del mundo, gráficos 1M-2A (`GCH`), "¿Qué rindió más en el año?", monedas, termómetro (VIX, 10-2).
+  Wall Street, Líderes del mundo, gráficos (widget `GTV`), "¿Qué rindió más en el año?", monedas, termómetro (estrés OFR, 10-2).
 
 ### Global › Mundo › Geopolítica (`data-sub="geo"`, `renderGeo`, datos `geopolitica.json` de scripts/geopolitica.py en `global.yml`)
 - Pedido del dueño ("que se puedan ver todas las guerras del mundo"), con foco económico. Robot (necesita `pip install xlrd`):
@@ -511,16 +515,38 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - datos.gob.ar: `452.3_RESULTADO_RIO_0_M_18_54`, `452.3_RESULTADO_ERO_0_M_20_25`, `74.3_IET_0_M_16`,
   `74.3_IIT_0_M_25`, `74.3_ISC_0_M_19`, `166.2_PPIB_0_0_3`.
 - DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (las pide el Worker `pulso-vivo`; el navegador solo si el Worker falla).
-- Mundo: CNBC (`quote.cnbc.com/...restQuote` y `ts-api.cnbc.com/harmony/app/charts/1Y.json`; a veces devuelve historia
-  vacía: se reintenta), Banco Mundial (el FMI da 403), BIS WS_CBPOL, Frankfurter, CoinGecko, RSS (El País, DW,
-  Expansión, France 24, Euronews, BBC Mundo filtrado). Yahoo y Stooq se SACARON del código (10/2026): sus términos prohíben redistribuir.
-- Fuentes abiertas en lugar de CNBC (`scripts/abiertas.py`, plan legal 26/10/2026; global.py las usa primero): monedas del
-  BCE (EXR diario, ~30 monedas, misma convención que CNBC) y, las que el BCE no tiene, BIS WS_XRU (1 a 3 semanas de atraso);
+- Mundo: SIN CNBC, Yahoo, Stooq, CoinGecko ni Nasdaq desde el 26/10/2026 (plan legal: sus términos prohíben mostrar o
+  redistribuir sus datos, o no habilitan uso comercial). Ver "Mercados sin CNBC" abajo. Además: FMI DataMapper (o Banco
+  Mundial), BIS WS_CBPOL, Frankfurter (BCE) y RSS (El País, DW, Expansión, France 24, Euronews, BBC Mundo filtrado).
+- Mercados sin CNBC (plan legal 26/10/2026; scripts/abiertas.py, global.py, usa.py):
+  - Números propios SOLO de fuentes que permiten reuso comercial citando: monedas BCE/BIS (+ BCRA, TRM, BCRP), bonos
+    (Tesoro, Bundesbank, BoE, BoC, MOF Japón, Riksbank, Norges Bank; el resto OCDE `DF_FINMARK` IRLT, promedio mensual,
+    `mensual: true`, `t` = AAAA-MM), bolsas de cada país (OCDE SHARE mensual: `bolsas[k].vm/va/v12/m`, historia `sh_ISO`;
+    bonos `ir_ISO`), granos y metales (Banco Mundial Pink Sheet mensual, CC BY 4.0; `banco_mundial_commodities`, necesita
+    openpyxl), petróleo y gas (EIA), estrés financiero OFR (`termo.fsi`, historia `fsi`; reemplaza al VIX). `ocde_mercados`
+    descarta series cortadas (> 5 meses) o fijas (Rusia). global.json lleva `"abiertas": true`; sin esa marca, main() no
+    reusa nada de mercados del JSON anterior (para no volver a publicar datos de CNBC).
+  - Precios del día de bolsas, acciones, ADR, fondos, sectores y cripto: widgets de TradingView (gratis con su marca; la
+    data la muestra TradingView desde sus servidores con sus licencias). Los JSON solo llevan el símbolo (`tv`, `tvn`).
+    En la página: `tvw` (arma cualquier widget; `.tvbox`, `color-scheme:normal` en el iframe o sale fondo blanco),
+    `tvLista` (market-quotes), `tvGrafico` (symbol-overview), `tvBolsa` (tarjeta de bolsa de cada país),
+    `kpiTv` + `data-tvq` (casillero con single-quote; lo monta un MutationObserver), `gHeat` (ahora lista), cinta `#tape2`
+    (ticker-tape; en el celular solo si `body.mglo`), cripto (`screener` crypto_mkt), S&P 500 (`stock-heatmap` SPX500).
+  - TradingView NO deja mostrar en widgets: SP:SPX, DJ:DJI, NASDAQ:NDX, Nikkei, FTSE, VIX, el Merval (BCBA:IMV), futuros de
+    CME/CBOT. Se usan CFD (FOREXCOM:SPXUSD, NSXUSD, DJI, UKXGBP, JPXJPY, AUXAUD; CAPITALCOM:EU50, IT40, SOYBEAN, COPPER) o el
+    fondo del país en Nueva York (EWW, EZA, KSA, INDA, EWY, ENZL, THD, EWM, EPHE, EIS, EWS, EWJ, TUR, COLO). Mapa en
+    `abiertas.TV` y `tv_sym` (bolsa de cada ticker resuelta con la búsqueda de TradingView el 26/10/2026). Símbolos
+    probados uno por uno; si uno muestra "!", buscar el correcto en es.tradingview.com.
+  - Quitados: "Próximos balances" (endpoint interno de Nasdaq), ADR de Despegar y Telefónica (deslistados), ERJ → EMBJ.
+- User-agent de todos los robots: `Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@...)`
+  (identificarse, no hacerse pasar por un navegador). robots.txt revisado el 26/10/2026: Rava, Cañuelas y CAC Rosario
+  permiten lo que se usa; mercados.ambito.com no tiene robots.txt.
+- Monedas (`scripts/abiertas.py`): BCE (EXR diario, ~30 monedas; se guardan con la convención que usaba CNBC, por eso
+  los símbolos `XXX=`) y, las que el BCE no tiene, BIS WS_XRU (1 a 3 semanas de atraso);
   ARS, COP y PEN se completan al día con el mayorista de data.json (BCRA), la TRM de datos.gov.co (`32sa-8pi3`) y el BCRP
   (PD04640PD). Campo `f` de cada cotización = fuente. En la página, una moneda con más de ~4 días (`fresco`) muestra
   "último dato dd/mm" en vez de "% hoy" y no se pinta en el globo "Mundo hoy". Tasas US2Y/US10Y/US30Y del Tesoro y
-  petróleo/gas spot de la EIA (`.xls`, necesita xlrd; vienen con unos días de atraso). CNBC sigue para bolsas, acciones/ADR,
-  bonos de otros países y la historia que no tiene otra fuente.
+  petróleo/gas spot de la EIA (`.xls`, necesita xlrd; vienen con unos días de atraso).
 - EE.UU.: Tesoro (deuda y curva), BLS v1 sin clave (máximo cada 12 h; series nacionales, rubros `r_*`, JOLTS y 51
   estados), BIS (Fed), CNBC, DOL `oui.doleta.gov/unemploy/csv/ar539.csv` (c3 iniciales, c8 continuos, suma de estados,
   sin desestacionalizar), Freddie Mac `PMMS_history.csv`, Nasdaq `api.nasdaq.com/api/calendar/earnings`, BEA (con clave).
