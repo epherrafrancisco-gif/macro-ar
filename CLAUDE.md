@@ -145,7 +145,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   validados contra PPI 2/2/2026, ±0,1 pp) y "Todos los bonos y letras" (`renderBondsAll`, buscador `#bondQ`, monto =
   `v` × `c` / 100). Solo especie en pesos: `espPesos`/`enDolares` descarta D, C y .D aunque el nombre no siga la regla
   (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D) comparando precio × MEP/CCL; BA37D y SA24D sí son en pesos. data912 cada
-  minuto vía `vivo.json` del Worker (`MKT_MS`), con respaldo directo cada 5 min.
+  minuto vía `vivo.json` del Worker (`MKT_MS`) con **20 minutos de demora** (pedido del dueño 26/10/2026, por licencia: igual que
+  el acceso gratuito de BYMA). El Worker guarda una foto por minuto en `mkt/0..29.json` y publica la de hace 20 min; la página NO
+  va nunca directo a data912 y descarta precios con menos de 19 min. Leyenda: "precios de BYMA ... 20 minutos de demora".
 - Merval: desde el 19/10/2026 es el "MSCI Merval" (antes S&P), base 100.000 al cierre del 16/10/2026. Ámbito (`indice/.merv`) y
   CNBC (`.MERV`) se cortaron el 16/10. update.py: `rava_merval` saca los cierres desde el 19/10 de Rava
   (`rava.com/cotizaciones/historico/merval/AAAA/MM/` lista los días; cada día trae los últimos 10 cierres) y la historia de
