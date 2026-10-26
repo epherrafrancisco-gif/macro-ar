@@ -154,6 +154,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Ámbito se re-expresa con `MERVAL_FACTOR` (= 100.000 / 2.843.310,56); lo guardado en la base vieja (>500.000) se convierte
   solo. En la página se llama "Merval" (no "S&P Merval"); el gráfico del Mundo usa data.json (`gSerie('merv')`).
   "En el día" solo si el dato tiene ≤ 4 días (`fresco`/`enDia`); si no, se muestra la fecha.
+- Indicadores propios (scripts/propios.py, plan legal 26/10/2026): MEP Pulso Macro = AL30 ÷ AL30D, CCL = AL30 ÷ AL30C (si falta,
+  GD30), riesgo país Pulso Macro = promedio de (TIR de Globales con duración ≥ 3 años − Tesoro de EE.UU. interpolado a esa
+  duración, de usa.json), en pb. Misma TIR que la página (validada idéntica). update.py los guarda SOLO en la corrida de la
+  tarde de días hábiles (`propios_cierre`, ≥17 h) como `mep_pm`, `ccl_pm`, `riesgo_pm` en `diario`. Primero se comparan unos
+  días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).

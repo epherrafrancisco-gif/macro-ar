@@ -199,6 +199,28 @@ def rava_merval(desde):
     return {"merval": out}
 
 
+def propios_cierre(ahora):
+    """MEP, CCL y riesgo país calculados por Pulso Macro (scripts/propios.py) con los precios de cierre de los bonos.
+    Solo en la corrida de la tarde de un día hábil (después de las 17 h, con el mercado cerrado): así es el cierre del día."""
+    if ahora.weekday() >= 5 or ahora.hour < 17:
+        return {}
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import propios
+        bonos = get_json("https://data912.com/live/arg_bonds")
+        curva = json.loads((ROOT / "usa.json").read_text(encoding="utf-8")).get("curva") or {}
+        r = propios.calcular(bonos, curva, ahora.date())
+        campos = {k + "_pm": r[k] for k in ("mep", "ccl", "riesgo") if r.get(k) is not None}
+        log_ok.append(f"Propios: {campos}")
+        out = {}
+        for k, v in campos.items():
+            out.setdefault(k, {})[ahora.date().isoformat()] = v
+        return out
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"Propios: {e}")
+        return {}
+
+
 def bcra_puntos(var_id, desde, hasta):
     url = f"https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/{var_id}?desde={desde}&hasta={hasta}&limit=3000"
     j = get_json(url)
@@ -478,6 +500,7 @@ def main():
     nuevos = {}  # fecha -> {campo: valor}
     amb = ambito(desde, hasta, anual_desde)
     rava = rava_merval(desde)
+    prop = propios_cierre(datetime.now(TZ_AR))
     bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
     gm, gt = datos_gob_ar()
@@ -488,7 +511,7 @@ def main():
     # repite en feriados para el MEP y el CCL.
     dias_mercado = set(amb.get("oficial", {})) | set(bd.get("mayorista", {}))
 
-    for fuente in (amb, rava, bd, dapi):
+    for fuente in (amb, rava, prop, bd, dapi):
         for campo, porfecha in fuente.items():
             for f, val in porfecha.items():
                 if not es_habil(f):
