@@ -64,7 +64,7 @@ MERCADOS = [
     ("nikkei", "Nikkei", "indice", "^N225", "^nkx", "pts", 1),
     ("shanghai", "Shanghái", "indice", "000001.SS", "^shc", "pts", 1),
     ("t10", "Tasa 10 años EE.UU.", "tasa", "^TNX", "10usy.b", "%", 1),
-    ("dxy", "Índice dólar (DXY)", "moneda", "DX-Y.NYB", "dx.f", "pts", 1),
+    ("dxy", "Índice dólar (6 monedas)", "moneda", "DX-Y.NYB", "dx.f", "pts", 1),
     ("eurusd", "Euro", "moneda", "EURUSD=X", "eurusd", "US$", 1),
     ("usdbrl", "Real brasileño", "moneda", "BRL=X", "usdbrl", "por US$", 1),
     ("usdcny", "Yuan", "moneda", "CNY=X", "usdcny", "por US$", 1),
@@ -198,7 +198,7 @@ def bis(paises):
 
 
 CNBC = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "bvsp": ".BVSP", "dax": ".GDAXI", "ftse": ".FTSE",
-        "nikkei": ".N225", "shanghai": ".SSEC", "t10": "US10Y", "dxy": ".DXY", "oro": "@GC.1", "brent": "@LCO.1",
+        "nikkei": ".N225", "shanghai": ".SSEC", "t10": "US10Y", "oro": "@GC.1", "brent": "@LCO.1",
         "wti": "@CL.1", "soja": "@S.1", "maiz": "@C.1", "trigo": "@W.1", "cobre": "@HG.1"}
 
 
@@ -569,8 +569,8 @@ def mercados(prev):
     viejo = {m["k"]: m for m in prev.get("mercados") or []}
     datos, fuente = {}, {}
     abiertas_m = lambda: {k: (q["v"], q["prev"], q["t"]) for k, q in
-                          ((k, abiertas.sym_cotizaciones(SYM_HIST).get(s)) for k, s in (("t10", "US10Y"), ("brent", "@LCO.1"), ("wti", "@CL.1"))) if q}
-    for nombre, fn in (("Tesoro/EIA", abiertas_m), ("CNBC", cnbc), ("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
+                          ((k, abiertas.sym_cotizaciones(SYM_HIST).get(s)) for k, s in (("t10", "US10Y"), ("brent", "@LCO.1"), ("wti", "@CL.1"), ("dxy", ".DXY"))) if q}
+    for nombre, fn in (("Tesoro/EIA/BCE", abiertas_m), ("CNBC", cnbc), ("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
         try:
             for k, d in fn().items():
                 if k not in datos:
@@ -581,7 +581,7 @@ def mercados(prev):
     for k, n, g, ys, ss, u, conv in MERCADOS:
         if k in datos:
             p, pv, t = datos[k]
-            c = 1 if fuente[k] in ("BCE/Frankfurter", "CoinGecko", "Tesoro/EIA") else conv
+            c = 1 if fuente[k] in ("BCE/Frankfurter", "CoinGecko", "Tesoro/EIA/BCE") else conv
             out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p * c, 4), "prev": round(pv * c, 4), "t": t, "f": fuente[k]})
         elif k in viejo:
             out.append(viejo[k])
@@ -606,6 +606,8 @@ def main():
     global FX_HIST, SYM_HIST
     FX_HIST = abiertas.fx_hist()
     SYM_HIST = {**abiertas.tesoro_hist(), **abiertas.eia_hist()}
+    if FX_HIST:  # índice dólar propio (fórmula del DXY con monedas del BCE) en vez del DXY de CNBC
+        SYM_HIST[".DXY"] = abiertas.dolar_indice(FX_HIST)
     errores.extend(abiertas.errores)
     paises, ok_imf, fuentes = imf(prev)
     n_bis = bis(paises)

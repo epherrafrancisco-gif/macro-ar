@@ -135,6 +135,23 @@ def _pen_bcrp(desde, hoy):
     return out
 
 
+DXY_PESOS = {"EUR": -0.576, "JPY": 0.136, "GBP": -0.119, "CAD": 0.091, "SEK": 0.042, "CHF": 0.036}
+
+
+def dolar_indice(hist):
+    """Índice dólar calculado por Pulso Macro con la fórmula pública del DXY (6 monedas, pesos fijos) y las monedas del BCE.
+    EUR y GBP vienen en dólares por unidad (exponente negativo); el resto en unidades por dólar. Da ±0,3 del DXY de ICE
+    (el BCE toma las monedas a las 14:15 de Fráncfort, no al cierre de Nueva York)."""
+    m = {c: dict(hist.get(c, [])) for c in DXY_PESOS}
+    out = []
+    for t in sorted(set.intersection(*(set(x) for x in m.values()))):
+        v = 50.14348112
+        for c, w in DXY_PESOS.items():
+            v *= m[c][t] ** w
+        out.append([t, round(v, 3)])
+    return out
+
+
 def a_cotizacion(pts, nombre):
     """Último y anterior, en el formato que usaba CNBC: {n, v, prev, t, estado}."""
     if not pts or len(pts) < 2:
@@ -226,7 +243,7 @@ def eia_hist(dias=800):
 
 
 NOMBRES_SYM = {"US2Y": "Bono del Tesoro a 2 años", "US10Y": "Bono del Tesoro a 10 años", "US30Y": "Bono del Tesoro a 30 años",
-               "@CL.1": "Petróleo WTI (spot, EIA)", "@LCO.1": "Petróleo Brent (spot, EIA)", "@NG.1": "Gas natural Henry Hub (spot, EIA)"}
+               ".DXY": "Índice dólar (6 monedas, BCE)", "@CL.1": "Petróleo WTI (spot, EIA)", "@LCO.1": "Petróleo Brent (spot, EIA)", "@NG.1": "Gas natural Henry Hub (spot, EIA)"}
 
 
 def sym_cotizaciones(hist):
@@ -235,6 +252,6 @@ def sym_cotizaciones(hist):
     for sym, pts in hist.items():
         x = a_cotizacion(pts, NOMBRES_SYM.get(sym, sym))
         if x:
-            x["f"] = "Tesoro de EE.UU." if sym.startswith("US") else "EIA"
+            x["f"] = "Tesoro de EE.UU." if sym.startswith("US") else "Pulso Macro con el BCE" if sym == ".DXY" else "EIA"
             q[sym] = x
     return q

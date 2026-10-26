@@ -1238,7 +1238,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="card"><div class="head"><h2>Riesgo geopolítico por país</h2><span class="note" id="gprPN"></span></div><p class="sub">Qué parte de las noticias de tensión mundial menciona a cada país, el último mes. Más alto = más presente en las noticias de guerra, amenazas o sanciones.</p><div class="chart" id="chGprP"></div></div>
       <div class="grid2">
         <div class="card"><div class="head"><h2>Adónde va la plata cuando hay tensión</h2><div class="legend" id="lgRef"></div></div><div class="chart" id="chRef"></div><div class="stats" id="refK"></div>
-          <p class="note">Base 100 hace un año. Oro, dólar (índice DXY) y franco suizo son los "refugios" clásicos: suben cuando el mundo se asusta. El VIX es el "índice del miedo" de Wall Street.</p></div>
+          <p class="note">Base 100 hace un año. Oro, dólar (índice de 6 monedas, calculado por Pulso Macro con la fórmula del DXY y datos del BCE) y franco suizo son los "refugios" clásicos: suben cuando el mundo se asusta. El VIX es el "índice del miedo" de Wall Street.</p></div>
         <div class="card"><div class="head"><h2>Lo que más sacude una guerra</h2><div class="legend" id="lgGuerraC"></div></div><div class="chart" id="chGuerraC"></div>
           <p class="note">Base 100 hace un año. Petróleo, gas y trigo: Rusia, Ucrania y Medio Oriente pesan mucho en los tres. Al trigo argentino le importa.</p></div>
       </div>
@@ -1743,7 +1743,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div class="card"><div class="head"><h2>Tasa del Banco Nacional de Polonia contra inflación</h2><span class="note">Últimos 5 años</span></div><div class="chart" id="chPlTasa"></div><p class="note">Azul: tasa de referencia del Banco Nacional de Polonia (NBP), que fija su Consejo de Política Monetaria. Rojo: inflación de los últimos 12 meses. La diferencia es la tasa real.</p></div>
         <div class="card"><div class="head"><h2>Decisiones del Banco Nacional de Polonia</h2><span class="note" id="plBcN"></span></div><div class="tw"><table class="gcmp" id="plBc"></table></div><p class="note">El Consejo se reúne casi todos los meses y anuncia la decisión el segundo día de la reunión.</p></div>
       </div>
-      <div class="card"><div class="head"><h2>Bono del gobierno polaco a 10 años</h2><span class="note" id="plBonN"></span></div><p class="sub">Cuánto paga Polonia por endeudarse a 10 años en zlotys, contra el bono a 10 años de EE.UU. en dólares. La diferencia refleja sobre todo la inflación y la tasa esperadas en cada país.</p><div class="stats" id="plBonSt"></div><div class="chart" id="chPlBon"></div><div class="legend" id="lgPlBon"></div><p class="note">Polonia: promedio de cada mes, últimos 5 años (rendimiento de largo plazo que la Unión Europea usa para medir la convergencia; fuente: Banco Central Europeo). EE.UU.: cierre diario (CNBC).</p></div>
+      <div class="card"><div class="head"><h2>Bono del gobierno polaco a 10 años</h2><span class="note" id="plBonN"></span></div><p class="sub">Cuánto paga Polonia por endeudarse a 10 años en zlotys, contra el bono a 10 años de EE.UU. en dólares. La diferencia refleja sobre todo la inflación y la tasa esperadas en cada país.</p><div class="stats" id="plBonSt"></div><div class="chart" id="chPlBon"></div><div class="legend" id="lgPlBon"></div><p class="note">Polonia: promedio de cada mes, últimos 5 años (rendimiento de largo plazo que la Unión Europea usa para medir la convergencia; fuente: Banco Central Europeo). EE.UU.: cierre diario (Tesoro de EE.UU.).</p></div>
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
@@ -2900,7 +2900,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
           <li><b>Banco Mundial:</b> The World Bank, World Development Indicators y otras bases, bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>. Su uso no implica respaldo del Banco Mundial.</li>
           <li><b>OCDE:</b> OECD Data Explorer, citado según sus términos de uso. Su uso no implica respaldo de la OCDE.</li>
           <li><b>BIS:</b> estadísticas del Banco de Pagos Internacionales, citadas como fuente. Su uso no implica respaldo ni afiliación con el BIS.</li>
-          <li><b>Banco Central Europeo:</b> fuente BCE. Estos datos están disponibles gratis en ecb.europa.eu.</li>
+          <li><b>Banco Central Europeo:</b> fuente BCE. Estos datos están disponibles gratis en ecb.europa.eu. Con sus tipos de cambio, Pulso Macro calcula el índice dólar (6 monedas, con la fórmula pública del DXY; no es el índice de ICE).</li>
           <li><b>Eurostat:</b> © Unión Europea, Eurostat, bajo licencia CC BY 4.0.</li>
           <li><b>INDEC, Secretaría de Hacienda y datos.gob.ar:</b> datos abiertos bajo licencia Creative Commons Atribución.</li>
           <li><b>BCRA:</b> fuente Banco Central de la República Argentina, citado sin alterar el sentido de los datos.</li>
@@ -5027,7 +5027,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gDetalle(elId, x){ const el = $(elId); el.hidden = !x; if(!x) return; const p = gpc(x);
     const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
     el.innerHTML = st(x.s, 'US$ '+nf(x.v,2), (p==null?'':sg(p,2)+'% en el día'), p>0?'up':p<0?'dn':'') + st('Empresa', esc(GNOM[x.s]||x.n), esc(x.n)) + st('Cierre anterior', 'US$ '+nf(x.prev,2), x.t ? 'Dato: '+esc(String(x.t).slice(0,16).replace('T',' ')) : ''); }
-  const GCH = [['spx','S&P 500',1,''],['merv','Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['wti','Petróleo WTI (US$/barril)',1,''],['gas','Gas natural EE.UU. (US$/MMBtu)',1,''],['soja','Soja (US$/t)',0.3674371,''],['maiz','Maíz (US$/t)',1,''],['trigo','Trigo (US$/t)',1,''],['plata','Plata (US$/onza)',1,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (DXY)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
+  const GCH = [['spx','S&P 500',1,''],['merv','Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['wti','Petróleo WTI (US$/barril)',1,''],['gas','Gas natural EE.UU. (US$/MMBtu)',1,''],['soja','Soja (US$/t)',0.3674371,''],['maiz','Maíz (US$/t)',1,''],['trigo','Trigo (US$/t)',1,''],['plata','Plata (US$/onza)',1,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (6 monedas, BCE)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
   const gSerie = (k, conv=1) => k==='merv' ? series('merval') : (gHist?.series?.[k] || []).map(p=>[p[0], p[1]*(gHist.conv ? 1 : conv)]);  // Merval: desde el 19/10/2026 lo publica MSCI; CNBC lo cortó, sale de data.json
   const gCut = (pts, d) => { if(!d || !pts.length) return pts; const t = T(pts[pts.length-1][0]) - d*864e5; return pts.filter(p=>T(p[0])>=t); };
   function gYtd(pts){ if(pts.length<2) return null; const yr = pts[pts.length-1][0].slice(0,4), base = [...pts].reverse().find(p=>p[0] < yr+'-01-01'); return base ? (pts[pts.length-1][1]/base[1]-1)*100 : null; }
@@ -7973,7 +7973,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // 5. refugios y 6. lo que sacude una guerra (global_hist.json)
     if(!gHist) loadHist();
     const hs = k => gHist?.series?.[k] || [], b100 = (a, inv) => { const d0 = new Date(Date.now()-365*864e5).toISOString().slice(0,10), x = a.filter(p=>p[0]>=d0); if(x.length<2) return []; const v0 = x[0][1]; return x.map(p=>[p[0], inv ? v0/p[1]*100 : p[1]/v0*100]); };
-    const ref = [{n:'Oro', c:'--s4', pts:b100(hs('oro'))},{n:'Dólar (DXY)', c:'--s1', pts:b100(hs('dxy'))},{n:'Franco suizo', c:'--s3', pts:b100(hs('fx_chf'), true)}].filter(x=>x.pts.length);
+    const ref = [{n:'Oro', c:'--s4', pts:b100(hs('oro'))},{n:'Índice dólar', c:'--s1', pts:b100(hs('dxy'))},{n:'Franco suizo', c:'--s3', pts:b100(hs('fx_chf'), true)}].filter(x=>x.pts.length);
     legend($('lgRef'), ref); lineChart($('chRef'), ref, {h:220, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), aria:'Refugios, base 100'});
     const vx = hs('vix'); if(vx.length>1){ const u = vx[vx.length-1][1], p = vx[vx.length-2][1]; $('refK').innerHTML = st('VIX (índice del miedo)', nf(u,1), `${sg(u-p,1)} en el día · ${u<15 ? 'calma' : u<20 ? 'normal' : u<30 ? 'nervios' : 'miedo'}`, u>=20?'dn':''); }
     const gc_ = [{n:'Brent', c:'--s2', pts:b100(hs('brent'))},{n:'Gas natural', c:'--s5', pts:b100(hs('gas'))},{n:'Trigo', c:'--s4', pts:b100(hs('trigo'))}].filter(x=>x.pts.length);
@@ -8131,7 +8131,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       return `<div title="${st.open?'Bolsa abierta':'Bolsa cerrada'}"><i class="${st.open?'on':'off'}">${st.open?'●':'○'}</i>${n}<b>${hh(e[2], 1)}</b></div>`; }).join('');
     // franja de indicadores
     const mk = k => (glob?.mercados||[]).find(m=>m.k===k), kp = (l, v, d, c='') => `<div class="${c}"><small>${l}</small><b>${v}${d}</b></div>`, ch = m => m?.prev ? (m.v/m.prev-1)*100 : null;
-    const K = [['spx','S&P 500',v=>nf(v,0)],['ndx','NASDAQ',v=>nf(v,0)],['dji','DOW JONES',v=>nf(v,0)],['dxy','DÓLAR (DXY)',v=>nf(v,2)],['eurusd','EURO',v=>nf(v,4)],['oro','ORO',v=>nf(v,0)],['brent','BRENT',v=>nf(v,2)],['cobre','COBRE',v=>nf(v,0)],['soja','SOJA',v=>nf(v,0)],['btc','BITCOIN',v=>nf(v,0)]];
+    const K = [['spx','S&P 500',v=>nf(v,0)],['ndx','NASDAQ',v=>nf(v,0)],['dji','DOW JONES',v=>nf(v,0)],['dxy','ÍNDICE DÓLAR',v=>nf(v,2)],['eurusd','EURO',v=>nf(v,4)],['oro','ORO',v=>nf(v,0)],['brent','BRENT',v=>nf(v,2)],['cobre','COBRE',v=>nf(v,0)],['soja','SOJA',v=>nf(v,0)],['btc','BITCOIN',v=>nf(v,0)]];
     let kh = K.map(([k,l,f])=>{ const m = mk(k); return m ? kp(l, f(m.v), xpD(ch(m))) : ''; }).join('');
     const t10 = mk('t10'); if(t10) kh += kp('TASA 10A EE.UU.', nf(t10.v,2)+'%', xpD(t10.prev!=null ? (t10.v-t10.prev)*100 : null, true, true));
     const vx = glob?.termo?.vix; if(vx) kh += kp('VIX', nf(vx.v,2), xpD(gpc(vx), false, true));
@@ -8147,7 +8147,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       xpSet('mnVix', row('VIX · índice del miedo', nf(vx.v,2)) + `<div class="g"><i style="left:calc(${p.toFixed(0)}% - 1px)"></i></div><div class="row"><span>${est}</span><span>${xpD(gpc(vx), false, true)}</span></div>`
         + (t.us2y ? row('Tasa 2 años EE.UU.', nf(t.us2y.v,2)+'%') : '') + (t.us10y ? row('Tasa 10 años EE.UU.', nf(t.us10y.v,2)+'%') : '')
         + (t.us2y && t.us10y ? row('Curva 10 - 2 años', sg((t.us10y.v-t.us2y.v)*100,0)+' pb', t.us10y.v<t.us2y.v ? '<span class="dn">invertida</span>' : '') : '')
-        + (dx ? row('Dólar global (DXY)', nf(dx.v,2), xpD(ch(dx))) : '') + (oro ? row('Oro (US$/onza)', nf(oro.v,0), xpD(ch(oro))) : '')); }
+        + (dx ? row('Índice dólar', nf(dx.v,2), xpD(ch(dx))) : '') + (oro ? row('Oro (US$/onza)', nf(oro.v,0), xpD(ch(oro))) : '')); }
     // Argentina
     const ld = days[days.length-1] || {}, bl = live.blue?.v ?? get(ld,'blue'), me = live.mep?.v ?? get(ld,'mep'), cl = live.ccl?.v ?? get(ld,'ccl'), of = live.oficial?.v ?? get(ld,'oficial'), rs = series('reservas'), im = months.filter(m=>m.infl!=null);
     xpSet('mnAr', (of ? row('Dólar oficial', '$ '+nf(of,2)) : '') + (bl ? row('Dólar blue', '$ '+nf(bl,0)) : '') + (me ? row('Dólar MEP', '$ '+nf(me,2)) : '') + (cl ? row('Dólar CCL', '$ '+nf(cl,2)) : '')
