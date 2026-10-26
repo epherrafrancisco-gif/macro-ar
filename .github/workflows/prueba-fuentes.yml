@@ -2,6 +2,9 @@ name: Prueba de fuentes (temporal)
 on:
   push:
     branches: [prueba-fuentes]
+    paths-ignore: [global.json, global_hist.json, usa.json, resumen.txt]
+permissions:
+  contents: write
 jobs:
   prueba:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
         continue-on-error: true
       - name: Resumen
         run: |
-          python - <<'PY'
+          python - <<'PY' > resumen.txt
           import json
           g = json.load(open("global.json")); h = json.load(open("global_hist.json"))
           print("claves", list(g))
@@ -32,10 +35,8 @@ jobs:
           print("errores", g["errores"])
           u = json.load(open("usa.json")); print("usa", list(u), u.get("errores"))
           PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jsons
-          path: |
-            global.json
-            global_hist.json
-            usa.json
+      - name: Guardar en la rama de prueba
+        run: |
+          git config user.name "github-actions"; git config user.email "github-actions@users.noreply.github.com"
+          git add -f global.json global_hist.json usa.json resumen.txt
+          git commit -m "Resultado de la prueba [skip ci]" && git push
