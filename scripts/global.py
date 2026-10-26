@@ -605,7 +605,7 @@ def main():
             prev = {}
     global FX_HIST, SYM_HIST
     FX_HIST = abiertas.fx_hist()
-    SYM_HIST = {**abiertas.tesoro_hist(), **abiertas.eia_hist()}
+    SYM_HIST = {**abiertas.tesoro_hist(), **abiertas.eia_hist(), **abiertas.bonos_hist()}
     if FX_HIST:  # índice dólar propio (fórmula del DXY con monedas del BCE) en vez del DXY de CNBC
         SYM_HIST[".DXY"] = abiertas.dolar_indice(FX_HIST)
     errores.extend(abiertas.errores)

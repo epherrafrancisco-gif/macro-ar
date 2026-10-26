@@ -242,6 +242,88 @@ def eia_hist(dias=800):
     return out
 
 
+# ---- Bonos del gobierno: cada banco central o ministerio publica su curva diaria, gratis y con reuso citando la fuente ----
+BONOS_FUENTE = {"DE10Y-DE": "Bundesbank", "GB10Y-GB": "Banco de Inglaterra", "CA2Y": "Banco de Canadá", "CA10Y": "Banco de Canadá",
+                "CA30Y": "Banco de Canadá", "JP2Y-JP": "Ministerio de Finanzas de Japón", "JP10Y-JP": "Ministerio de Finanzas de Japón",
+                "JP30Y-JP": "Ministerio de Finanzas de Japón", "SE10Y-SE": "Riksbank", "NO10Y-NO": "Norges Bank"}
+
+
+def _num(x):
+    try:
+        return float(str(x).replace(",", ".").strip())
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def bonos_hist(dias=800):
+    """{símbolo CNBC: [[fecha, tasa %], ...]} de fuentes oficiales. Cada fuente por separado: si una falla, las otras siguen."""
+    desde_d = date.today() - timedelta(days=dias)
+    desde, hoy = desde_d.isoformat(), date.today().isoformat()
+    out = {}
+
+    def poner(sym, t, v):
+        if v is not None and desde <= t <= hoy:
+            out.setdefault(sym, {})[t] = round(v, 4)
+
+    try:  # Bundesbank: rendimiento a 10 años (curva Svensson), CSV con ; y coma decimal
+        for r in get(f"https://api.statistiken.bundesbank.de/rest/data/BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A?format=csv&startPeriod={desde}").decode("utf-8-sig", "replace").splitlines():
+            p = r.split(";")
+            if len(p) > 1 and len(p[0]) == 10 and p[0][4] == "-":
+                poner("DE10Y-DE", p[0], _num(p[1]) if p[1] not in (".", "") else None)
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Bundesbank: {e}")
+    try:  # Banco de Inglaterra: gilt a 10 años (par yield nominal)
+        for r in get("https://www.bankofengland.co.uk/boeapps/database/_iadb-fromshowcolumns.asp?csv.x=yes&Datefrom="
+                     + desde_d.strftime("%d/%b/%Y") + "&Dateto=now&SeriesCodes=IUDMNPY&CSVF=TN&UsingCodes=Y").decode("utf-8", "replace").splitlines()[1:]:
+            p = r.split(",")
+            try:
+                poner("GB10Y-GB", datetime.strptime(p[0].strip(), "%d %b %Y").date().isoformat(), _num(p[1]))
+            except Exception:  # noqa: BLE001
+                continue
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Banco de Inglaterra: {e}")
+    try:  # Banco de Canadá (Valet)
+        sers = {"BD.CDN.2YR.DQ.YLD": "CA2Y", "BD.CDN.10YR.DQ.YLD": "CA10Y", "BD.CDN.LONG.DQ.YLD": "CA30Y"}
+        j = json.loads(get(f"https://www.bankofcanada.ca/valet/observations/{','.join(sers)}/json?start_date={desde}", "application/json"))
+        for o in j.get("observations", []):
+            for s, sym in sers.items():
+                poner(sym, o.get("d", ""), _num((o.get(s) or {}).get("v")))
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Banco de Canadá: {e}")
+    try:  # Ministerio de Finanzas de Japón: histórico (hasta el mes pasado) + mes en curso
+        for url in ("https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/historical/jgbcme_all.csv",
+                    "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv"):
+            filas = get(url).decode("utf-8", "replace").splitlines()
+            cab = next((r.split(",") for r in filas if r.startswith("Date,")), None)
+            if not cab:
+                continue
+            col = {c: cab.index(c) for c in ("2Y", "10Y", "30Y") if c in cab}
+            for r in filas:
+                p = r.split(",")
+                try:
+                    t = datetime.strptime(p[0], "%Y/%m/%d").date().isoformat()
+                except Exception:  # noqa: BLE001
+                    continue
+                for c, sym in (("2Y", "JP2Y-JP"), ("10Y", "JP10Y-JP"), ("30Y", "JP30Y-JP")):
+                    if c in col and p[col[c]] not in ("-", ""):
+                        poner(sym, t, _num(p[col[c]]))
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Ministerio de Finanzas de Japón: {e}")
+    try:  # Riksbank (Suecia): bono del gobierno a 10 años
+        for o in json.loads(get(f"https://api.riksbank.se/swea/v1/Observations/SEGVB10YC/{desde}", "application/json")):
+            poner("SE10Y-SE", o.get("date", ""), _num(o.get("value")))
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Riksbank: {e}")
+    try:  # Norges Bank: bono genérico a 10 años
+        for r in get(f"https://data.norges-bank.no/api/data/GOVT_GENERIC_RATES/B.10Y.GBON?format=csv&startPeriod={desde}").decode("utf-8-sig", "replace").splitlines():
+            p = r.split(";")
+            if len(p) >= 2 and len(p[-2]) == 10 and p[-2][4] == "-":
+                poner("NO10Y-NO", p[-2], _num(p[-1]))
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Norges Bank: {e}")
+    return {s: sorted([t, v] for t, v in d.items()) for s, d in out.items() if len(d) > 20}
+
+
 NOMBRES_SYM = {"US2Y": "Bono del Tesoro a 2 años", "US10Y": "Bono del Tesoro a 10 años", "US30Y": "Bono del Tesoro a 30 años",
                ".DXY": "Índice dólar (6 monedas, BCE)", "@CL.1": "Petróleo WTI (spot, EIA)", "@LCO.1": "Petróleo Brent (spot, EIA)", "@NG.1": "Gas natural Henry Hub (spot, EIA)"}
 
@@ -252,6 +334,7 @@ def sym_cotizaciones(hist):
     for sym, pts in hist.items():
         x = a_cotizacion(pts, NOMBRES_SYM.get(sym, sym))
         if x:
-            x["f"] = "Tesoro de EE.UU." if sym.startswith("US") else "Pulso Macro con el BCE" if sym == ".DXY" else "EIA"
+            x["f"] = (BONOS_FUENTE.get(sym) or ("Tesoro de EE.UU." if sym.startswith("US") else
+                      "Pulso Macro con el BCE" if sym == ".DXY" else "EIA"))
             q[sym] = x
     return q
