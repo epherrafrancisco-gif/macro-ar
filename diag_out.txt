@@ -1,16 +1,15 @@
-AL30 {'c': 86030.0, 'px_bid': 86030.0, 'px_ask': 86050.0, 'v': 38141406.0, 'pct_change': -0.02}
-AL30D {'c': 55.0, 'px_bid': 55.0, 'px_ask': 55.01, 'v': 31663738.0, 'pct_change': -0.14}
-AL30C {'c': 51.45, 'px_bid': 51.43, 'px_ask': 51.44, 'v': 29336223.0, 'pct_change': -1.05}
-GD30 {'c': 88340.0, 'px_bid': 88340.0, 'px_ask': 88400.0, 'v': 1848241.0, 'pct_change': 0.04}
-GD30D {'c': 56.45, 'px_bid': 56.42, 'px_ask': 56.46, 'v': 491482.0, 'pct_change': -0.03}
-GD30C {'c': 52.84, 'px_bid': 52.8, 'px_ask': 52.86, 'v': 256137.0, 'pct_change': -2.13}
-GD29D {'c': 55.77, 'px_bid': 55.01, 'px_ask': 55.37, 'v': 3535.0, 'pct_change': -0.39}
-GD35D {'c': 73.21, 'px_bid': 73.17, 'px_ask': 73.2, 'v': 631270.0, 'pct_change': -0.9}
-GD38D {'c': 77.5, 'px_bid': 77.47, 'px_ask': 77.57, 'v': 80446.0, 'pct_change': -1.77}
-GD41D {'c': 68.07, 'px_bid': 68.04, 'px_ask': 68.1, 'v': 236674.0, 'pct_change': -1.2}
-GD46D {'c': 62.6, 'px_bid': 62.59, 'px_ask': 62.78, 'v': 8000.0, 'pct_change': 0.83}
-campos: ['symbol', 'q_bid', 'px_bid', 'px_ask', 'q_ask', 'v', 'q_op', 'c', 'pct_change']
-PROPIOS: {"mep": 1564.18, "mep_bono": "AL30", "ccl": 1672.11, "ccl_bono": "AL30", "riesgo": 531, "detalle": {"GD29": {"tir": 6.57, "dur": 1.4, "ust": 4.54, "spread": 203}, "GD30": {"tir": 8.55, "dur": 1.84, "ust": 4.65, "spread": 390}, "GD35": {"tir": 11.39, "dur": 5.26, "ust": 4.83, "spread": 656}, "GD38": {"tir": 11.28, "dur": 4.41, "ust": 4.8, "spread": 648}, "GD41": {"tir": 11.38, "dur": 5.62, "ust": 4.84, "spread": 654}, "GD46": {"tir": 11.2, "dur": 5.93, "ust": 4.85, "spread": 634}}}
-AMBITO 2026-10-21 mep 1547.78 ccl 1636.52 riesgo 674.0
-AMBITO 2026-10-22 mep 1549.42 ccl 1632.41 riesgo 704.0
-AMBITO 2026-10-23 mep 1562.27 ccl 1648.62 riesgo 707.0
+home 200
+== index-price 200 {"content":{"page_number":1,"page_count":1,"page_size":50,"total_elements_count":2},"data":[{"date":"2026-10-26","symbol":"GMSCI","country":"Argentina","highestPrice":101140.44,"isRate":false,"lowestPrice":100093.2,"highValue":101140.44,"description":"MSCI BYMA General","variation":-0.0591,"minValue":94892.08,"trade":100093.2,"price":95759.28,"closingPrice":0,"previousClosingPrice":101774.31}, {"date":"2026-10-26","symbol":"MMSCI","country":"Argentina","highestPrice":101654.05,"isRate":false,"lowestPrice":100499.44,"highValue":101654.05,"description":"MSCI MERVAL","variation":-0.0597,"minValue":95347.92,"trade":100499.44,"price":96167.18,"closingPrice":0,"previousClosingPrice":102277.62}],"empty":false,"upgrade":false}
+== market-time 200 {"isWorkingDay":true,"marketClosingTime":"17:00:00","timezone":"GMT-03:00","marketOpeningTime":"10:30:00"}
+== public-bonds 200 124
+ n 0 keys None
+== hist M 200 {"s":"no_data","t":[],"c":[],"o":[],"h":[],"l":[],"v":[]}
+== hist MERVAL 200 {"s":"no_data","t":[],"c":[],"o":[],"h":[],"l":[],"v":[]}
+== hist IMV 200 {"s":"no_data","t":[],"c":[],"o":[],"h":[],"l":[],"v":[]}
+== hist M.MERV 200 {"s":"no_data","t":[],"c":[],"o":[],"h":[],"l":[],"v":[]}
+== hist MERV 200 {"s":"no_data","t":[],"c":[],"o":[],"h":[],"l":[],"v":[]}
+Traceback (most recent call last):
+  File "/home/runner/work/macro-ar/macro-ar/scripts/diag_merval.py", line 29, in <module>
+    s, t = req(B + "chart/historical-series/history?symbol=AL30%2048HS&resolution=D&from=%d&to=%d" % (now-10*86400, now)); print("== hist AL30", s, t[:300])
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+ValueError: unsupported format character 'H' (0x48) at index 48
