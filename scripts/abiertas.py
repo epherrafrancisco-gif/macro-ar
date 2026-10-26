@@ -111,3 +111,82 @@ def fx_cotizaciones(hist):
 def fx_series_hist(hist):
     """Claves fx_xxx de global_hist.json (minúsculas), 2 años."""
     return {f"fx_{c.lower()}": pts[-520:] for c, pts in hist.items() if c not in ("EURPLN", "EURCHF") and len(pts) > 20}
+
+
+# ---- Tasas de EE.UU.: Departamento del Tesoro (dominio público) ----
+TESORO = {"US2Y": "2 Yr", "US10Y": "10 Yr", "US30Y": "30 Yr"}
+
+
+def tesoro_hist(dias=800):
+    """{símbolo CNBC (US2Y, US10Y, US30Y): [[fecha, tasa %], ...]} de la curva diaria del Tesoro."""
+    hoy = date.today()
+    filas = []
+    for y in range(hoy.year - dias // 365 - 1, hoy.year + 1):
+        try:
+            txt = get(f"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{y}/all"
+                      f"?type=daily_treasury_yield_curve&field_tdr_date_value={y}&page&_format=csv", "text/csv")
+            filas += _csv(txt)
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"Tesoro {y}: {e}")
+    out = {}
+    desde = (hoy - timedelta(days=dias)).isoformat()
+    for r in filas:
+        try:
+            t = datetime.strptime(r["Date"], "%m/%d/%Y").date().isoformat()
+        except Exception:  # noqa: BLE001
+            continue
+        if t < desde:
+            continue
+        for sym, col in TESORO.items():
+            if r.get(col) not in (None, ""):
+                out.setdefault(sym, {})[t] = float(r[col])
+    return {s: sorted([t, v] for t, v in d.items()) for s, d in out.items()}
+
+
+# ---- Petróleo y gas: EIA de EE.UU. (precios spot diarios, dominio público; se publican con unos días de atraso) ----
+EIA = {"@CL.1": "https://www.eia.gov/dnav/pet/hist_xls/RWTCd.xls",      # WTI Cushing, US$/barril
+       "@LCO.1": "https://www.eia.gov/dnav/pet/hist_xls/RBRTEd.xls",    # Brent Europa, US$/barril
+       "@NG.1": "https://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls"}    # Henry Hub, US$/MMBtu
+
+
+def eia_hist(dias=800):
+    """{símbolo CNBC: [[fecha, precio], ...]}. Necesita xlrd (las planillas de la EIA son .xls)."""
+    try:
+        import xlrd
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"EIA: falta xlrd ({e})")
+        return {}
+    desde = (date.today() - timedelta(days=dias)).isoformat()
+    out = {}
+    for sym, url in EIA.items():
+        try:
+            wb = xlrd.open_workbook(file_contents=get(url))
+            sh = wb.sheet_by_name("Data 1")
+            pts = []
+            for i in range(3, sh.nrows):
+                f, v = sh.cell_value(i, 0), sh.cell_value(i, 1)
+                if not isinstance(f, float) or v in ("", None):
+                    continue
+                t = xlrd.xldate.xldate_as_datetime(f, wb.datemode).date().isoformat()
+                if t >= desde:
+                    pts.append([t, round(float(v), 4)])
+            if len(pts) > 20:
+                out[sym] = sorted(pts)
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"EIA {sym}: {e}")
+    return out
+
+
+NOMBRES_SYM = {"US2Y": "Bono del Tesoro a 2 años", "US10Y": "Bono del Tesoro a 10 años", "US30Y": "Bono del Tesoro a 30 años",
+               "@CL.1": "Petróleo WTI (spot, EIA)", "@LCO.1": "Petróleo Brent (spot, EIA)", "@NG.1": "Gas natural Henry Hub (spot, EIA)"}
+
+
+def sym_cotizaciones(hist):
+    """Símbolo CNBC → {n, v, prev, t, estado, f} con el último y el anterior dato."""
+    q = {}
+    for sym, pts in hist.items():
+        x = a_cotizacion(pts, NOMBRES_SYM.get(sym, sym))
+        if x:
+            x["f"] = "Tesoro de EE.UU." if sym.startswith("US") else "EIA"
+            q[sym] = x
+    return q

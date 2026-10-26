@@ -75,7 +75,7 @@ jobs:
           python-version: "3.12"
 
       - name: Traer datos del mundo
-        run: python scripts/global.py
+        run: pip install -q xlrd==2.0.1 && python scripts/global.py
 
       - name: Traer datos de Estados Unidos
         run: python scripts/usa.py
