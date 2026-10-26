@@ -1,0 +1,24 @@
+AMBITO indice/.merv 200 [["Fecha","Apertura","Ultimo","Var %","Max.","Min."],["16-10-2026","2.835.603,73","2.843.310,56","-0,55","2.880.639,69","2.835.603,73"],["15-10-2026","2.798.086,09","2.847.212,98","0,40","2.859.262,52","2.798.086,09"],["14-10-2026","2.833.839,22","2.839.221,39","-1,04","2.874.826,13","2.833.839,22"]
+AMBITO indice/merval ERR HTTP Error 404: Not Found
+AMBITO indice/.mervm ERR HTTP Error 404: Not Found
+AMBITO indice/msci-merval ERR HTTP Error 404: Not Found
+AMBITO indice/.msmerv ERR HTTP Error 404: Not Found
+AMBITO indice/.mmerv ERR HTTP Error 404: Not Found
+AMBITO indice/.merv-msci ERR HTTP Error 404: Not Found
+AMBITO indice/.bymagen ERR HTTP Error 404: Not Found
+AMBITO indice/.mar 200 [["Fecha","Apertura","Ultimo","Var %","Max.","Min."]]
+CNBC .MERV 200 [('code', '1}]}}')]
+CNBC .MSCIMERV 200 [('code', '1}]}}')]
+CNBC .MMERV 200 [('code', '1}]}}')]
+CNBC .MERVM 200 [('code', '1}]}}')]
+CNBC .MSMERV 200 [('code', '1}]}}')]
+CNBC MERVAL 200 [('code', '1}]}}')]
+CNBC .MERVAL 200 [('code', '1}]}}')]
+RAVA 2026/10/23 200 22079  
+    plate-columns:1fr} .months-grid{grid-template-columns:repeat(2,1fr)} h1{font-size:18px} } Acciones Bonos CEDEARs Históricos Inicio Cotizaciones historicas MERVAL 2026 Octubre 23 Cotizacion del MERVAL al 23 de octubre de 2026 102.278 puntos +4,4% (+4.285) Apertura 98.219 Maximo 102.445 Minimo 97.994 Cierre anterior 97.993 Ultimos dias Fecha Cierre Variacion Maximo Minimo 23/10/2026 102.278 +4,4% 102.445 97.994 22/10/2026 97.993 -1,5% 99.407 96.949 21/10/2026 99.531 +1,6% 99.586 98.000 20/10/2026 97.943 -0,3% 100.052 97.385 19/10/2026 98.215 -1,8% 100.430 97.625 16/10/2026 100.000 -0,4% 101.112 99.532 15/10/2026 100.355 +0,8% 100.534 98.215 14/10/2026 99.540 -1,2% 100.908 99.417 13/10/2026 100.709 +1,5% 101.544 99.266 09/10/2026 99.266 -0,2% 100.554 98.729 &#8592; 22/10/2026 El MERVAL cerro 
+RAVA 2026/10/22 200 22194  
+    emplate-columns:1fr} .months-grid{grid-template-columns:repeat(2,1fr)} h1{font-size:18px} } Acciones Bonos CEDEARs Históricos Inicio Cotizaciones historicas MERVAL 2026 Octubre 22 Cotizacion del MERVAL al 22 de octubre de 2026 97.993 puntos -1,5% (-1.538) Apertura 99.407 Maximo 99.407 Minimo 96.949 Cierre anterior 99.531 Ultimos dias Fecha Cierre Variacion Maximo Minimo 22/10/2026 97.993 -1,5% 99.407 96.949 21/10/2026 99.531 +1,6% 99.586 98.000 20/10/2026 97.943 -0,3% 100.052 97.385 19/10/2026 98.215 -1,8% 100.430 97.625 16/10/2026 100.000 -0,4% 101.112 99.532 15/10/2026 100.355 +0,8% 100.534 98.215 14/10/2026 99.540 -1,2% 100.908 99.417 13/10/2026 100.709 +1,5% 101.544 99.266 09/10/2026 99.266 -0,2% 100.554 98.729 08/10/2026 99.422 +0,3% 100.954 98.702 &#8592; 21/10/2026 23/10/2026 &#8594
+D912 arg_stocks 200 98 []
+D912 arg_indices ERR HTTP Error 404: Not Found
+D912 arg_index ERR HTTP Error 404: Not Found
+D912 indices ERR HTTP Error 404: Not Found
