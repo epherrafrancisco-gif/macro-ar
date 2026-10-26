@@ -360,7 +360,11 @@ def ocde_mercados(anios=6):
                 out[m].setdefault(a, []).append([t + "-01", round(float(v), 4)])
     except Exception as e:  # noqa: BLE001
         errores.append(f"OCDE bolsas y bonos: {e}")
-    return {m: {a: sorted(p) for a, p in d.items() if len(p) > 2} for m, d in out.items()}
+    corte = (date.today() - timedelta(days=150)).isoformat()  # más de ~5 meses sin dato: serie cortada, no se muestra
+    def viva(p):
+        p.sort()
+        return len(p) > 2 and p[-1][0] >= corte and len({v for _, v in p[-6:]}) > 1  # (Rusia: la OCDE la dejó fija)
+    return {m: {a: p for a, p in d.items() if viva(p)} for m, d in out.items()}
 
 
 # Materias primas: Banco Mundial, "Pink Sheet" (precios promedio de cada mes; CC BY 4.0).
