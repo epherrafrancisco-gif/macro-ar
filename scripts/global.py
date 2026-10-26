@@ -5,7 +5,7 @@ Fuentes (gratuitas, sin clave):
     desempleo, PBI en dólares y PBI per cápita por país (estimación del año en curso).
   - BIS (Banco de Pagos Internacionales): tasas de política monetaria diarias de
     unos 40 bancos centrales, con la fecha de la última decisión.
-  - Yahoo Finance (y Stooq como respaldo): índices bursátiles, monedas, bonos de
+  - (antes Yahoo Finance y Stooq como respaldo: sacados en 10/2026 por sus términos) índices bursátiles, monedas, bonos de
     EE.UU., commodities y bitcoin, con el cierre anterior para la variación.
 
 Uso: python scripts/global.py
@@ -47,7 +47,7 @@ A2A3 = {"AR": "ARG", "AU": "AUS", "BR": "BRA", "CA": "CAN", "CH": "CHE", "CL": "
         "RS": "SRB", "RU": "RUS", "SA": "SAU", "SE": "SWE", "TH": "THA", "TR": "TUR", "US": "USA",
         "ZA": "ZAF", "UY": "URY", "PY": "PRY", "VN": "VNM", "KE": "KEN", "NG": "NGA", "EG": "EGY",
         "MA": "MAR", "BG": "BGR", "HR": "HRV", "CR": "CRI", "DO": "DOM", "GT": "GTM", "AE": "ARE"}
-# Mercados: clave, nombre, grupo, símbolo Yahoo, símbolo Stooq, unidad, conversión
+# Mercados: clave, nombre, grupo, símbolo Yahoo (ya no se usa), símbolo Stooq (ya no se usa), unidad, conversión
 MERCADOS = [
     ("spx", "S&P 500", "indice", "^GSPC", "^spx", "pts", 1),
     ("ndx", "Nasdaq", "indice", "^IXIC", "^ndq", "pts", 1),
@@ -187,51 +187,8 @@ def bis(paises):
     return n
 
 
-def yahoo(sym):
-    j = json.loads(get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.request.quote(sym)}?range=10d&interval=1d", tries=1))
-    r = j["chart"]["result"][0]
-    ts, cl = r.get("timestamp") or [], r["indicators"]["quote"][0].get("close") or []
-    pts = [(t, c) for t, c in zip(ts, cl) if c is not None]
-    if len(pts) < 2:
-        raise ValueError("sin datos")
-    meta = r.get("meta", {})
-    precio = meta.get("regularMarketPrice") or pts[-1][1]
-    t = meta.get("regularMarketTime") or pts[-1][0]
-    # cierre anterior: el último cierre de un día distinto al del precio actual
-    dia = datetime.fromtimestamp(t, timezone.utc).date()
-    prev = next((c for tt, c in reversed(pts) if datetime.fromtimestamp(tt, timezone.utc).date() < dia), pts[-2][1])
-    return float(precio), float(prev), datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
+# Yahoo Finance y Stooq se sacaron (10/2026): sus términos prohíben redistribuir los datos.
 
-
-def stooq(sym):
-    txt = get(f"https://stooq.com/q/d/l/?s={urllib.request.quote(sym)}&i=d", tries=1)
-    rows = [r for r in csv.reader(io.StringIO(txt)) if r and r[0][:1].isdigit()]
-    if len(rows) < 2:
-        raise ValueError("sin datos")
-    return float(rows[-1][4]), float(rows[-2][4]), rows[-1][0] + "T21:00+00:00"
-
-
-def yahoo_spark(syms):
-    """Un solo pedido para todos los símbolos (menos chances de que Yahoo limite)."""
-    out = {}
-    for host in ("query2", "query1"):
-        try:
-            q = ",".join(urllib.request.quote(x) for x in syms)
-            j = json.loads(get(f"https://{host}.finance.yahoo.com/v7/finance/spark?symbols={q}&range=5d&interval=1d", tries=1))
-            for r in (j.get("spark") or {}).get("result") or []:
-                resp = (r.get("response") or [{}])[0]
-                meta = resp.get("meta", {})
-                cl = [c for c in ((resp.get("indicators") or {}).get("quote") or [{}])[0].get("close") or [] if c is not None]
-                precio = meta.get("regularMarketPrice") or (cl[-1] if cl else None)
-                prevc = cl[-2] if len(cl) >= 2 else meta.get("chartPreviousClose")
-                if precio and prevc:
-                    t = meta.get("regularMarketTime")
-                    out[r.get("symbol")] = (float(precio), float(prevc), datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes") if t else "")
-            if out:
-                return out
-        except Exception as e:  # noqa: BLE001
-            errores.append(f"Yahoo spark {host}: {e}")
-    return out
 
 
 CNBC = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "bvsp": ".BVSP", "dax": ".GDAXI", "ftse": ".FTSE",
@@ -601,22 +558,6 @@ def mercados(prev):
                     datos[k], fuente[k] = d, nombre
         except Exception as e:  # noqa: BLE001
             errores.append(f"{nombre}: {e}")
-    faltan = [m for m in MERCADOS if m[0] not in datos]
-    if faltan:
-        spark = yahoo_spark([m[3] for m in faltan])
-        for k, _, _, ys, *_ in faltan:
-            if ys in spark:
-                datos[k], fuente[k] = spark[ys], "Yahoo"
-    for k, _, _, ys, ss, *_ in MERCADOS:  # respaldo uno por uno
-        if k in datos:
-            continue
-        for f, fn, sym in (("Yahoo", yahoo, ys), ("Stooq", stooq, ss)):
-            try:
-                datos[k], fuente[k] = fn(sym), f
-                break
-            except Exception as e:  # noqa: BLE001
-                errores.append(f"{f} {sym}: {e}")
-            time.sleep(1)
     out = []
     for k, n, g, ys, ss, u, conv in MERCADOS:
         if k in datos:

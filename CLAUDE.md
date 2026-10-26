@@ -506,7 +506,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (las pide el Worker `pulso-vivo`; el navegador solo si el Worker falla).
 - Mundo: CNBC (`quote.cnbc.com/...restQuote` y `ts-api.cnbc.com/harmony/app/charts/1Y.json`; a veces devuelve historia
   vacía: se reintenta), Banco Mundial (el FMI da 403), BIS WS_CBPOL, Frankfurter, CoinGecko, RSS (El País, DW,
-  Expansión, France 24, Euronews, BBC Mundo filtrado). Yahoo da 429 y Stooq no responde.
+  Expansión, France 24, Euronews, BBC Mundo filtrado). Yahoo y Stooq se SACARON del código (10/2026): sus términos prohíben redistribuir.
 - EE.UU.: Tesoro (deuda y curva), BLS v1 sin clave (máximo cada 12 h; series nacionales, rubros `r_*`, JOLTS y 51
   estados), BIS (Fed), CNBC, DOL `oui.doleta.gov/unemploy/csv/ar539.csv` (c3 iniciales, c8 continuos, suma de estados,
   sin desestacionalizar), Freddie Mac `PMMS_history.csv`, Nasdaq `api.nasdaq.com/api/calendar/earnings`, BEA (con clave).
