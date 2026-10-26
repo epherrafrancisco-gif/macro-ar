@@ -1,11 +1,11 @@
 {
  "actualizado": "2026-10-26",
  "ok": [
-  "Ámbito blue: 193 días",
-  "Ámbito oficial: 220 días",
-  "Ámbito mep: 235 días",
-  "Ámbito ccl: 235 días",
-  "Ámbito riesgo: 235 días",
+  "Ámbito blue: 194 días",
+  "Ámbito oficial: 221 días",
+  "Ámbito mep: 236 días",
+  "Ámbito ccl: 236 días",
+  "Ámbito riesgo: 236 días",
   "Ámbito merval: 218 días",
   "Rava merval: 5 días (último 2026-10-23)",
   "BYMA merval: {'2026-10-23': 102277.62}",
@@ -31,14 +31,14 @@
   "DolarApi: cripto ['2026-10-26'], tarjeta ['2026-10-26']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
-  "Historia ofi: 38 días en 1 tramos",
-  "Historia blue: 36 días en 1 tramos",
-  "Historia mep: 39 días en 1 tramos",
-  "Historia ccl: 39 días en 1 tramos",
+  "Historia ofi: 39 días en 1 tramos",
+  "Historia blue: 37 días en 1 tramos",
+  "Historia mep: 40 días en 1 tramos",
+  "Historia ccl: 40 días en 1 tramos",
   "Historia may: 38 días en 1 tramos",
-  "Historia cer: 56 días en 1 tramos",
-  "CPI EE.UU. (BLS): 116 meses",
-  "CPI EE.UU., fuentes con error: FRED: The read operation timed out"
+  "Historia cer: 56 días en 1 tramos"
  ],
- "errores": []
+ "errores": [
+  "CPI EE.UU., fuentes con error: FRED: The read operation timed out; BLS: HTTP Error 503: Service Unavailable"
+ ]
 }
