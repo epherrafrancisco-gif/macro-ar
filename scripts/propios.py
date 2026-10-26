@@ -110,7 +110,7 @@ def _settle(hoy):
 
 
 def calcular(bonos, curva, hoy=None):
-    """bonos: lista de data912 arg_bonds ({symbol, c, ...}). Devuelve {mep, ccl, riesgo, detalle} o lo que se pueda."""
+    """bonos: lista de Open BYMADATA ({symbol, c}, ver byma_bonos en update.py). Devuelve {mep, ccl, riesgo, detalle} o lo que se pueda."""
     hoy = hoy or date.today()
     px = {b["symbol"]: float(b["c"]) for b in bonos if isinstance(b, dict) and b.get("symbol") and (b.get("c") or 0) > 0}
     out = {}

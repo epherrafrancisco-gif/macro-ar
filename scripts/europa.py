@@ -119,8 +119,10 @@ def main():
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     resumen = {}
     for k, v in data.items():
+        if k == "errores":
+            continue
         if isinstance(v, list):
-            resumen[k] = f"{len(v)} hasta {v[-1][0]}"
+            resumen[k] = f"{len(v)} hasta {v[-1][0]}" if v else "vacío"
         elif isinstance(v, dict) and k not in ("errores",):
             resumen[k] = {g: (s[-1][0] if s else None) for g, s in v.items()}
     print(resumen)
