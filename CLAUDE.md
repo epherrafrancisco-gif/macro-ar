@@ -521,8 +521,6 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   "último dato dd/mm" en vez de "% hoy" y no se pinta en el globo "Mundo hoy". Tasas US2Y/US10Y/US30Y del Tesoro y
   petróleo/gas spot de la EIA (`.xls`, necesita xlrd; vienen con unos días de atraso). CNBC sigue para bolsas, acciones/ADR,
   bonos de otros países y la historia que no tiene otra fuente.
-- Cartel de mantenimiento del 26/10/2026 (bloque `<!-- MANTENIMIENTO -->`, `#mant`, estilos `.mant` en index.html): sacarlo
-  cuando terminen los cambios de fuentes.
 - EE.UU.: Tesoro (deuda y curva), BLS v1 sin clave (máximo cada 12 h; series nacionales, rubros `r_*`, JOLTS y 51
   estados), BIS (Fed), CNBC, DOL `oui.doleta.gov/unemploy/csv/ar539.csv` (c3 iniciales, c8 continuos, suma de estados,
   sin desestacionalizar), Freddie Mac `PMMS_history.csv`, Nasdaq `api.nasdaq.com/api/calendar/earnings`, BEA (con clave).
