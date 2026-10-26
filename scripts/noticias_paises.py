@@ -270,7 +270,6 @@ FEEDS_EN = [
 
     ("Euronews", "https://www.euronews.com/rss?level=vertical&name=business", INT_EN),
     ("DW", "https://rss.dw.com/rdf/rss-en-bus", INT_EN),
-    ("CNBC", "https://www.cnbc.com/id/100727362/device/rss/rss.html", INT_EN),
 ]
 # temas que no son de economía aunque nombren plata (deportes, policiales, espectáculos, clima)
 RUIDO = re.compile(r"golea|\bgol(es)?\b|f[uú]tbol|\bliga\b|partido de|campeonato|\bnba\b|\bnfl\b|secuestr|asesin|homicid|"

@@ -91,7 +91,7 @@ else {
       });
       if (r.vacios.length) avisos.push(`Pestaña ${tab}: gráficos sin datos: ${r.vacios.join(', ')}.`);
       if (r.charts && r.vacios.length === r.charts) errores.push(`Pestaña ${tab}: ningún gráfico se dibujó.`);
-      if (tab === 'mercado' && !r.heat) avisos.push('Mercado: no cargaron los precios de acciones (data912).');
+      if (tab === 'mercado' && !r.heat) avisos.push('Mercado: no cargaron los precios de acciones (Open BYMADATA vía el Worker).');
       if (tab === 'noticias') {
         const nn = await page.evaluate(() => document.querySelectorAll('#nwList li').length);
         nn ? ok.push(`Noticias: ${nn} titulares en la página.`) : avisos.push('Noticias: la pestaña no muestra titulares.');

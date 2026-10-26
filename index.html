@@ -371,6 +371,7 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 /* el sitio es color-scheme:dark y el iframe de TradingView no: sin esto el navegador le pinta un fondo blanco opaco */
 .tvbox iframe{color-scheme:normal}
 .tvbox .tradingview-widget-container{width:100%}
+.merparte{margin:0 0 12px;padding:10px 14px;border-left:3px solid var(--accent);background:var(--surface);border-radius:8px;font-size:15px;line-height:1.5}.merparte small{color:var(--muted)}
 .tradingview-widget-copyright{font:11.5px/1.4 var(--sans,system-ui);color:var(--muted);margin-top:4px;text-align:right}
 .tradingview-widget-copyright a{color:var(--muted);text-decoration:none}.tradingview-widget-copyright a:hover{color:var(--accent)}
 .k.ktv,.st.ktv{padding:4px 6px 2px;overflow:hidden;min-height:96px}
@@ -1088,6 +1089,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- MERCADO -->
   <section class="view" id="vK" hidden>
+    <p class="merparte" id="merParte" hidden></p>
     <div class="kpis" id="kpisK"></div>
     <div class="card">
       <div class="head"><h2 id="rkT">¿Qué le ganó a la inflación?</h2><span class="note" id="rkS"></span></div>
@@ -1114,13 +1116,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="card">
       <div class="head"><h2>Bonos soberanos en dólares</h2><span class="note" id="bondStamp"></span></div>
       <div class="tablewrap"><table style="min-width:640px"><thead><tr><th>Bono</th><th>Ley</th><th>Vence</th><th>Precio US$</th><th>Var. día</th><th>Precio $</th><th>TIR</th><th>Paridad</th><th>Valor residual</th></tr></thead><tbody id="tBonos"></tbody></table></div>
-      <p class="note">Bonares (ley argentina) y Globales (ley de Nueva York). Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Pulso Macro con el cronograma de pagos de cada bono, liquidación al día siguiente. Datos de mercado gratuitos de data912, <b>con demora</b>: no sirven para operar.</p>
+      <p class="note">Bonares (ley argentina) y Globales (ley de Nueva York). Precios por cada 100 de valor nominal original, en dólares MEP (especie D) y en pesos. TIR anual en dólares calculada por Pulso Macro con el cronograma de pagos de cada bono, liquidación al día siguiente. Precios de BYMA (Open BYMADATA, su acceso gratuito), <b>con 20 minutos de demora</b>: no sirven para operar.</p>
     </div>
     <div class="card">
       <div class="head"><h2>Todos los bonos y letras</h2><span class="note" id="bondAllN"></span></div>
       <input type="search" id="bondQ" class="bq" placeholder="Buscar especie (ej.: T15E7, TZX26, BPOA7)" aria-label="Buscar bono o letra">
       <div class="tablewrap" style="max-height:520px;overflow:auto"><table style="min-width:460px"><thead><tr><th>Especie</th><th>Precio $</th><th>Var. día</th><th>Monto operado</th><th>Operaciones</th></tr></thead><tbody id="tBonosAll"></tbody></table></div>
-      <p class="note">Todo lo que cotiza en BYMA en la especie en pesos, menos los soberanos de arriba: letras y bonos del Tesoro (tasa fija, CER, dólar linked, duales), BOPREAL, provincias y otros. Ordenado por monto operado en el día. Precio en pesos por cada 100 nominales. Fuente: data912, con demora.</p>
+      <p class="note">Todo lo que cotiza en BYMA en la especie en pesos, menos los soberanos de arriba: letras y bonos del Tesoro (tasa fija, CER, dólar linked, duales), BOPREAL, provincias y otros. Ordenado por monto operado en el día. Precio en pesos por cada 100 nominales. Fuente: BYMA (Open BYMADATA), con 20 minutos de demora.</p>
 </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="mercado-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Merval diario</button></div>
   </section>
@@ -2894,7 +2896,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div><b>INDEC y Secretaría de Hacienda</b>Vía datos.gob.ar: PBI, actividad (EMAE), salarios, desocupación, canastas básicas, inflación por rubro, precios de la carne, faena, resultado fiscal, exportaciones e importaciones. Calendario de publicaciones del INDEC.</div>
         <div><b>Ámbito</b>Historia de los dólares (oficial, MEP, CCL, blue), riesgo país y Merval.</div>
         <div><b>DolarApi</b>Cotizaciones del dólar en vivo, cripto y tarjeta.</div>
-        <div><b>BYMA</b>Precios de acciones y bonos, con 20 minutos de demora (vía data912).</div>
+        <div><b>BYMA</b>Precios de acciones y bonos, con 20 minutos de demora, de Open BYMADATA (el acceso gratuito y público de BYMA), y cierre del MSCI Merval.</div>
         <div><b>Mercado Agroganadero y Bolsa de Rosario</b>Precios de la hacienda en Cañuelas (ex Liniers) y precios pizarra de los granos.</div>
         <div><b>Mercados del mundo</b>Cotizaciones del día de bolsas, acciones, fondos y criptomonedas: TradingView (en sus widgets, con su licencia). Monedas: BCE y BIS. Bonos: Tesoro de EE.UU., bancos centrales y OCDE. Bolsas de cada país (mensual): OCDE. Granos y metales: Banco Mundial. Petróleo y gas: EIA. Estrés financiero: OFR (Tesoro de EE.UU.).</div>
         <div><b>Estados Unidos</b>BLS (inflación y empleo), Departamento del Tesoro (deuda y bonos), BEA (PBI), Departamento de Trabajo, Freddie Mac (hipotecas). Acciones, sectores y el mapa del S&amp;P 500: TradingView.</div>
@@ -2909,12 +2911,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
           <li><b>BIS:</b> estadísticas del Banco de Pagos Internacionales, citadas como fuente. Su uso no implica respaldo ni afiliación con el BIS.</li>
           <li><b>Banco Central Europeo:</b> fuente BCE. Estos datos están disponibles gratis en ecb.europa.eu. Con sus tipos de cambio, Pulso Macro calcula el índice dólar (6 monedas, con la fórmula pública del DXY; no es el índice de ICE).</li>
           <li><b>Eurostat:</b> © Unión Europea, Eurostat, bajo licencia CC BY 4.0.</li>
+          <li><b>FMI:</b> Fuente: Fondo Monetario Internacional, World Economic Outlook database (DataMapper). Datos usados según sus términos para datos estadísticos, sin alterarlos.</li>
+          <li><b>Bonos de otros países:</b> Deutsche Bundesbank (fuente: estadísticas del SEBC), Banco de Inglaterra (contiene información del sector público bajo la <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank" rel="noopener">Open Government Licence v3.0</a>), Banco de Canadá, Ministerio de Finanzas de Japón (Public Data License 1.0), Sveriges Riksbank y Norges Bank. Ninguno respalda a Pulso Macro.</li>
+          <li><b>Bancos centrales de América Latina y Polonia:</b> Banco Central do Brasil, Banco Central de Reserva del Perú, Banco de la República de Colombia (TRM vía datos.gov.co) y Narodowy Bank Polski, citados como fuente.</li>
           <li><b>INDEC, Secretaría de Hacienda y datos.gob.ar:</b> datos abiertos bajo licencia Creative Commons Atribución.</li>
           <li><b>BCRA:</b> fuente Banco Central de la República Argentina, citado sin alterar el sentido de los datos.</li>
           <li><b>Organismos de EE.UU.</b> (BLS, BEA, Tesoro, Departamento de Trabajo, EIA y la Oficina de Investigación Financiera, OFR): datos de dominio público.</li>
           <li><b>TradingView:</b> las cotizaciones del día de bolsas, acciones, fondos y criptomonedas las muestran los widgets gratuitos de <a href="https://es.tradingview.com/" target="_blank" rel="noopener">TradingView</a>, desde sus servidores y con sus licencias de cada bolsa. Pulso Macro no guarda ni redistribuye esos precios. Donde TradingView no deja mostrar un índice, se usa el precio de referencia que lo sigue o el fondo del país que cotiza en Nueva York, y se aclara.</li>
           <li><b>Freddie Mac:</b> tasa hipotecaria de su encuesta semanal (Primary Mortgage Market Survey), usada con atribución.</li>
-          <li><b>BYMA:</b> los precios de acciones y bonos son propiedad de Bolsas y Mercados Argentinos y se muestran con 20 minutos de demora. El MSCI Merval es un índice de MSCI y BYMA; el riesgo país (EMBI) es un índice de J.P. Morgan, según lo publican los medios.</li>
+          <li><b>BYMA:</b> los precios de acciones y bonos son de Bolsas y Mercados Argentinos y se muestran tal como BYMA los publica gratis en <a href="https://open.bymadata.com.ar/" target="_blank" rel="noopener">Open BYMADATA</a>, con 20 minutos de demora. MSCI y MSCI Merval son marcas de MSCI Inc.; el índice lo calcula MSCI con BYMA. El riesgo país (EMBI) es un índice de J.P. Morgan, según lo publican los medios.</li>
+          <li><b>Dólar y mercados locales:</b> el dólar blue y las cotizaciones del día, de DolarApi; la historia de los dólares y del riesgo país, de Ámbito; la hacienda, del Mercado Agroganadero de Cañuelas; los precios pizarra, de la Cámara Arbitral de Cereales de la Bolsa de Comercio de Rosario. Son datos de mercado publicados al público, citados en cada sección.</li>
           <li><b>Wikipedia:</b> lista de conflictos armados en curso, bajo licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</li>
           <li><b>Riesgo geopolítico:</b> índice de Caldara e Iacoviello (2022), "Measuring Geopolitical Risk", American Economic Review; sus datos están bajo licencia Creative Commons BY.</li>
           <li><b>Índice Big Mac:</b> The Economist, datos bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>.</li>
@@ -2934,7 +2940,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <details class="legal"><summary>Ver los términos completos</summary>
         <p><b>Qué es.</b> Pulso Macro (pulsomacro.com.ar) es un proyecto independiente, gratuito y sin fines de lucro, hecho por Francisco Epherra. No tiene publicidad, no vende nada y no tiene relación con ninguna entidad financiera, banco, medio ni organismo público. Usar el sitio implica aceptar estos términos.</p>
         <p><b>No es una recomendación de inversión.</b> Todo lo que se publica tiene fines informativos y educativos. Nada es una oferta, una recomendación de compra o venta ni un asesoramiento financiero, legal o impositivo. Las decisiones que se tomen con esta información son de quien las toma: antes de decidir, conviene consultar la fuente oficial y, si corresponde, a un profesional.</p>
-        <p><b>De dónde salen los datos.</b> Pulso Macro no produce cotizaciones ni estadísticas propias: las reúne, las ordena y las explica. Usa datos de organismos oficiales e internacionales (BCRA, INDEC y datos.gob.ar, bancos centrales y oficinas de estadística de otros países, BIS, OCDE, Banco Mundial, Banco Central Europeo y Eurostat, entre otros), según las condiciones de reutilización que cada uno publica y citando la fuente; datos de mercado y cotizaciones de proveedores y sitios de terceros, como referencia y con demora; y titulares de medios, de los que se muestra solo el título, con el nombre del medio y un enlace a la nota original. Los derechos sobre los datos y contenidos de terceros pertenecen a sus titulares: Pulso Macro no reclama propiedad sobre ellos.</p>
+        <p><b>De dónde salen los datos.</b> Pulso Macro no produce cotizaciones: reúne datos de otros, los ordena y los explica. Los únicos números propios son cálculos hechos con esos datos (por ejemplo, la TIR de los bonos o el índice dólar), y se aclara en cada caso cómo se calculan. Usa datos de organismos oficiales e internacionales (BCRA, INDEC y datos.gob.ar, bancos centrales y oficinas de estadística de otros países, BIS, OCDE, Banco Mundial, Banco Central Europeo y Eurostat, entre otros), según las condiciones de reutilización que cada uno publica y citando la fuente; datos de mercado y cotizaciones de proveedores y sitios de terceros, como referencia y con demora; y titulares de medios, de los que se muestra solo el título, con el nombre del medio y un enlace a la nota original. Los derechos sobre los datos y contenidos de terceros pertenecen a sus titulares: Pulso Macro no reclama propiedad sobre ellos.</p>
         <p><b>Exactitud y demoras.</b> Los datos se actualizan solos y pueden tener errores, demoras o interrupciones, incluso cuando una fuente cambia o deja de publicar. Las cotizaciones son de referencia y no son en tiempo real. Cada dato muestra su fecha. Pulso Macro no garantiza que la información esté completa, exacta o actualizada, ni se hace responsable por las decisiones tomadas en base a ella.</p>
         <p><b>Uso del contenido de Pulso Macro.</b> Los textos, gráficos y diseño propios se pueden compartir citando a Pulso Macro (pulsomacro.com.ar) y a la fuente original de los datos. Los datos de terceros siguen sujetos a las condiciones de sus titulares.</p>
         <p><b>Privacidad.</b> El sitio no tiene cuentas de usuario ni pide datos personales. Para contar visitas usa GoatCounter y Cloudflare Web Analytics, que no usan cookies ni identifican a las personas. El navegador guarda algunas preferencias en el propio equipo (por ejemplo, si ya se cerró el cartel de bienvenida) y no se envían a ningún lado. Las tipografías se cargan desde Google Fonts. Las cotizaciones de bolsas, acciones y cripto se cargan desde TradingView, que tiene su propia política de privacidad y puede usar cookies en sus widgets.</p>
@@ -3007,7 +3013,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // ---- en vivo (DolarApi desde el navegador) ----
   const LIVE_URL = 'https://dolarapi.com/v1/dolares', LIVE_MS = 60000;
   // Datos en vivo de nuestro Worker (worker/vivo.js): una copia por minuto, servida desde la caché de Cloudflare.
-  // Si no responde o está atrasado, se cae a DolarApi / data912 directo, como antes.
+  // Si no responde o está atrasado, el dólar se cae a DolarApi directo; acciones y bonos solo salen del Worker.
   const VIVO_URL = 'https://datos.pulsomacro.com.ar/vivo.json';
   let vivoV = -1, vivoP = null;
   function vivo(){
@@ -3981,7 +3987,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     let lo=-0.5, hi=2; for(let k=0;k<80;k++){ const mid=(lo+hi)/2; if(pv(mid)>px) lo=mid; else hi=mid; }
     return {tir:(lo+hi)/2*100, paridad:px/(res+acc)*100, res};
   }
-  const MKT_MS = 60000;  // acciones y bonos: SOLO desde el Worker, que los publica con 20 min de demora (como Open BYMADATA). Nunca directo a data912.
+  const MKT_MS = 60000;  // acciones y bonos: SOLO desde el Worker, que los trae de Open BYMADATA (acceso gratuito de BYMA, con 20 min de demora).
   let mkt = {bonds:null, stocks:null, at:0, err:false}, mktBusy=false, mktT;
   async function pollMkt(){
     clearTimeout(mktT); if(document.hidden || mktBusy) return; mktBusy=true;
@@ -3999,18 +4005,18 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // Especie en pesos: se saltean las D (MEP), C (cable) y .D si existe la misma especie sin la letra.
   // Algunas especies en dólares no siguen la regla del nombre (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D): también se
   // descartan si su precio × MEP (D) o × CCL (C) da, ±6%, el precio de otra especie con la misma primera letra y el mismo
-  // último número. Probado con todo data912 (10/2026): quedan solo especies en pesos (BA37D, SA24D… sí son en pesos).
+  // último número (respaldo por si falta la moneda `m` que informa BYMA): quedan solo especies en pesos (BA37D, SA24D… sí son en pesos).
   const ultDig = t => (t.match(/\d(?=\D*$)/)||[''])[0];
   const tcRef = k => { const L = live[k]; if(L && L.v>0) return L.v; const p = series(k); return p.length ? p[p.length-1][1] : null; };
   const enDolares = (x, O) => { const s = x.symbol; if(/\./.test(s)) return true; if(!/[DC]$/.test(s) || !(x.c>0)) return false;
     if(O[s.slice(0,-1)]) return true; const d = ultDig(s.slice(0,-1)), tc = tcRef(s.endsWith('C') ? 'ccl' : 'mep');
     const ok = r => tc ? Math.abs(r/tc-1) < 0.06 : r>1200 && r<2500;
     return Object.values(O).some(o=>o!==x && o.c>0 && o.symbol[0]===s[0] && (!d || ultDig(o.symbol)===d) && ok(o.c/x.c)); };
-  const espPesos = O => Object.values(O||{}).filter(x=>x && x.symbol && !enDolares(x, O));
-  // BYMA opera de lunes a viernes de 11 a 17 (hora argentina). Fuera de eso, data912 repite los precios del último cierre.
+  const espPesos = O => Object.values(O||{}).filter(x=>x && x.symbol && (x.m ? x.m==='ARS' && !/\./.test(x.symbol) : !enDolares(x, O)));  // m = moneda que informa BYMA
+  // BYMA opera de lunes a viernes de 11 a 17 (hora argentina). Fuera de eso, Open BYMADATA repite los precios del último cierre.
   const bymaAbierto = () => { const p = Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date()).map(x=>[x.type,x.value]));
     const m = (+p.hour%24)*60 + +p.minute; return !['Sat','Sun'].includes(p.weekday) && m>=660 && m<1020; };
-  const mktCuando = () => bymaAbierto() ? `precios de BYMA de las ${horaAR(mkt.dato||mkt.at)} · 20 minutos de demora` : 'mercado cerrado: precios del último cierre';
+  const mktCuando = () => bymaAbierto() ? `precios de BYMA (Open BYMADATA) de las ${horaAR(mkt.dato||mkt.at)} · 20 minutos de demora` : 'mercado cerrado: precios del último cierre';
   let stkOrd = 'var', bondQ = '';
   document.querySelectorAll('#stkOrd button').forEach(b=>b.addEventListener('click', ()=>{ stkOrd = b.dataset.o; renderStocks(); }));
   $('bondQ').addEventListener('input', e=>{ bondQ = e.target.value; renderBondsAll(); });
@@ -4053,6 +4059,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     renderRanking();
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
+    { const el = $('merParte'), {last,prev} = mer.length ? lastTwo(mer) : {};  // parte de cierre, en formato de noticia (plan legal)
+      if(el && last){ const v = prev ? last[1]/prev[1]-1 : null;
+        el.innerHTML = `El MSCI Merval cerró el ${fd(last[0])} en <b>${nf(last[1],0)} puntos</b>${v!=null ? ` (${v>=0?'subió':'bajó'} ${nf(Math.abs(v)*100,2)} %)` : ''}. <small>Fuente: BYMA / MSCI.</small>`;
+        el.hidden = false; } }
     const t=[];
     if(mer.length){ const {last,prev}=lastTwo(mer), a=ago(mer,30); t.push(tileK('Merval', nf(last[1],0), 'pts', (prev&&fresco(last[0])?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Cierre '+fd(last[0]))); }
     if(merU.length){ const {last,prev}=lastTwo(merU), a=ago(merU,30); t.push(tileK('Merval en dólares', 'US$ '+nf(last[1],2), '', (prev&&fresco(last[0])?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Al CCL · '+fd(last[0]))); }
@@ -5035,7 +5045,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     el.classList.remove('heat','stats','chart','hsec','glist'); el.classList.add('tvbox'); el.innerHTML = '';
     const c = document.createElement('div'); c.className = 'tradingview-widget-container'; if(alto) c.style.minHeight = alto+'px';
     const w = document.createElement('div'); w.className = 'tradingview-widget-container__widget'; c.appendChild(w);
-    const cp = document.createElement('div'); cp.className = 'tradingview-widget-copyright'; cp.innerHTML = '<a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">Datos de mercado: TradingView</a>'; c.appendChild(cp);
+    const cp = document.createElement('div'); cp.className = 'tradingview-widget-copyright'; cp.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>'; c.appendChild(cp);
     const sc = document.createElement('script'); sc.src = 'https://s3.tradingview.com/external-embedding/embed-widget-'+tipo+'.js'; sc.async = true; sc.text = JSON.stringify({...TV_BASE, ...cfg}); c.appendChild(sc);
     el.appendChild(c);
   }

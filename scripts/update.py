@@ -234,6 +234,24 @@ def byma_merval(ahora):
     return {"merval": out} if out else {}
 
 
+def byma_bonos():
+    """Bonos (plazo 24 hs) de Open BYMADATA, el acceso gratuito y público de BYMA, en el formato {symbol, c} de propios.py."""
+    req = urllib.request.Request("https://open.bymadata.com.ar/vanoms-be-core/rest/api/bymadata/free/public-bonds",
+                                 data=json.dumps({"excludeZeroPxAndQty": False, "T2": False, "T1": True, "T0": False, "page_size": 3000,
+                                                  "Content-Type": "application/json"}).encode(),
+                                 headers={"Accept": "application/json, text/plain, */*", "Content-Type": "application/json", "User-Agent": UA,
+                                          "Origin": "https://open.bymadata.com.ar", "Referer": "https://open.bymadata.com.ar/"}, method="POST")
+    d = json.loads(urllib.request.urlopen(req, timeout=40).read().decode("utf-8")).get("data") or []
+    out = []
+    for x in d:
+        c = x.get("closingPrice") or x.get("trade") or 0
+        if x.get("symbol") and c > 0:
+            out.append({"symbol": x["symbol"], "c": float(c)})
+    if len(out) < 20:
+        raise ValueError(f"Open BYMADATA devolvió {len(out)} bonos")
+    return out
+
+
 def propios_cierre(ahora):
     """MEP, CCL y riesgo país calculados por Pulso Macro (scripts/propios.py) con los precios de cierre de los bonos.
     Solo en la corrida de la tarde de un día hábil (después de las 17 h, con el mercado cerrado): así es el cierre del día."""
@@ -242,7 +260,7 @@ def propios_cierre(ahora):
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import propios
-        bonos = get_json("https://data912.com/live/arg_bonds")
+        bonos = byma_bonos()  # Open BYMADATA (acceso gratuito de BYMA); antes data912
         curva = json.loads((ROOT / "usa.json").read_text(encoding="utf-8")).get("curva") or {}
         r = propios.calcular(bonos, curva, ahora.date())
         campos = {k + "_pm": r[k] for k in ("mep", "ccl", "riesgo") if r.get(k) is not None}
