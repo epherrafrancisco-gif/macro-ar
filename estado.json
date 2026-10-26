@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-10-23",
+ "actualizado": "2026-10-26",
  "ok": [
   "Ámbito blue: 193 días",
   "Ámbito oficial: 220 días",
@@ -8,6 +8,7 @@
   "Ámbito riesgo: 235 días",
   "Ámbito merval: 218 días",
   "Rava merval: 5 días (último 2026-10-23)",
+  "BYMA merval: {'2026-10-23': 102277.62}",
   "BCRA compras: 214 días desde 2025-12-01",
   "BCRA bopreal: 216 días desde 2025-12-01",
   "BCRA reservas: 4 días",
@@ -27,7 +28,7 @@
   "BCRA leliq mensual: 46 meses",
   "BCRA pases mensual: 46 meses",
   "BCRA lefi mensual: 13 meses",
-  "DolarApi: tarjeta ['2026-10-23']",
+  "DolarApi: cripto ['2026-10-26'], tarjeta ['2026-10-26']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
   "Historia ofi: 38 días en 1 tramos",
