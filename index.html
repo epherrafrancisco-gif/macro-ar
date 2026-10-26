@@ -759,6 +759,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 }
 </style>
 
+<!-- MANTENIMIENTO (26/10/2026, pedido del dueño): sacar este bloque cuando termine -->
+<div class="mant" id="mant" role="status"><b>Pulso Macro está en mantenimiento hasta esta noche.</b> Estamos cambiando las fuentes de algunos datos, así que hasta entonces puede haber inconsistencias o secciones sin datos. Ante cualquier decisión, chequeá la fuente oficial.</div>
+<style>.mant{background:#3a2a0e;border-bottom:1px solid #c98500;color:#f3e2bf;font:14px/1.45 var(--sans,system-ui);padding:9px max(16px,env(safe-area-inset-left,0px));text-align:center}.mant b{color:#ffd88a}</style>
 <div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
 <div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
 <div class="tape tape3" id="tape3" role="marquee" aria-label="Bolsas abiertas y cerradas ahora"><div class="tape-in" id="tape3In"></div></div>
@@ -1451,7 +1454,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El peso mexicano contra el dólar</h2><span class="note">Pesos mexicanos por dólar</span></div><div class="chart" id="chXUsd"></div><p class="note">Si sube, el peso mexicano se devalúa. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El peso mexicano contra el dólar</h2><span class="note">Pesos mexicanos por dólar</span></div><div class="chart" id="chXUsd"></div><p class="note">Si sube, el peso mexicano se devalúa. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>El peso mexicano en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chXArs"></div><p class="note">Cuántos pesos argentinos vale un peso mexicano: dólar mayorista argentino dividido el dólar en México, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>IPC México</h2><span class="note" id="xIpcN"></span></div><div class="chart" id="chXIpc"></div><p class="note">Índice de las 35 acciones más negociadas de la Bolsa Mexicana de Valores. Con demora (CNBC).</p></div>
@@ -1487,7 +1490,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El peso chileno contra el dólar</h2><span class="note">Pesos chilenos por dólar</span></div><div class="chart" id="chClUsd"></div><p class="note">Si sube, el peso chileno se devalúa. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El peso chileno contra el dólar</h2><span class="note">Pesos chilenos por dólar</span></div><div class="chart" id="chClUsd"></div><p class="note">Si sube, el peso chileno se devalúa. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Mil pesos chilenos en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chClArs"></div><p class="note">Cuántos pesos argentinos valen mil pesos chilenos: dólar mayorista argentino dividido el dólar en Chile, del mismo día. Si sube, Chile se encarece para los argentinos.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa chilena, en dólares</h2><span class="note" id="clEchN"></span></div><div class="chart" id="chClEch"></div><p class="note">Fondo iShares MSCI Chile (ECH), que cotiza en Wall Street y reúne a las principales empresas chilenas. Se usa porque la fuente gratuita no tiene el IPSA. Al estar en dólares, también refleja lo que hace el peso chileno. Con demora (CNBC).</p></div>
@@ -1523,7 +1526,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El yen contra el dólar</h2><span class="note">Yenes por dólar</span></div><div class="chart" id="chJpUsd"></div><p class="note">Si sube, el yen se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El yen contra el dólar</h2><span class="note">Yenes por dólar</span></div><div class="chart" id="chJpUsd"></div><p class="note">Si sube, el yen se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Cien yenes en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chJpArs"></div><p class="note">Cuántos pesos argentinos valen cien yenes: dólar mayorista argentino dividido el yen por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Tokio</h2><span class="note" id="jpNikN"></span></div><div class="stats" id="jpNikSt"></div><div class="chart" id="chJpNik"></div><p class="note">Nikkei 225: las 225 empresas más grandes de la bolsa de Tokio. TOPIX: todas las grandes. En yenes, con demora (CNBC).</p></div>
@@ -1559,7 +1562,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>La libra contra el dólar</h2><span class="note">Dólares por libra</span></div><div class="chart" id="chUkUsd"></div><p class="note">Cuántos dólares vale una libra. Si sube, la libra se fortalece. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>La libra contra el dólar</h2><span class="note">Dólares por libra</span></div><div class="chart" id="chUkUsd"></div><p class="note">Cuántos dólares vale una libra. Si sube, la libra se fortalece. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una libra en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chUkArs"></div><p class="note">Cuántos pesos argentinos vale una libra: dólar mayorista argentino por la cotización de la libra en dólares, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Londres</h2><span class="note" id="ukFtN"></span></div><div class="stats" id="ukFtSt"></div><div class="chart" id="chUkFt"></div><p class="note">FTSE 100: las 100 empresas más grandes de la bolsa de Londres; muchas son multinacionales que ganan en dólares. FTSE 250: las 250 que siguen, más atadas a la economía británica. En libras, con demora (CNBC).</p></div>
@@ -1594,7 +1597,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El dólar canadiense contra el estadounidense</h2><span class="note">Dólares canadienses por dólar</span></div><div class="chart" id="chCaUsd"></div><p class="note">Si sube, el dólar canadiense se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El dólar canadiense contra el estadounidense</h2><span class="note">Dólares canadienses por dólar</span></div><div class="chart" id="chCaUsd"></div><p class="note">Si sube, el dólar canadiense se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dólar canadiense en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chCaArs"></div><p class="note">Cuántos pesos argentinos vale un dólar canadiense: dólar mayorista argentino dividido el dólar en Canadá, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Por qué a Canadá le importa tanto el petróleo (y EE.UU.)</h2><span class="note" id="caWtiN"></span></div><p class="sub">Canadá es uno de los mayores productores de petróleo del mundo y cerca de tres cuartos de lo que exporta va a EE.UU. Por eso su moneda suele moverse con el precio del petróleo (le dicen "petrodivisa") y cualquier arancel de Washington le pega de lleno.</p><div class="chart" id="chCaWti"></div><p class="note">Petróleo WTI, dólares por barril, últimos dos años (CNBC, con demora).</p></div>
@@ -1629,7 +1632,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El peso colombiano contra el dólar</h2><span class="note">Pesos colombianos por dólar</span></div><div class="chart" id="chCoUsd"></div><p class="note">Si sube, el peso colombiano se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El peso colombiano contra el dólar</h2><span class="note">Pesos colombianos por dólar</span></div><div class="chart" id="chCoUsd"></div><p class="note">Si sube, el peso colombiano se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Mil pesos colombianos en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chCoArs"></div><p class="note">Cuántos pesos argentinos valen mil pesos colombianos: dólar mayorista argentino dividido el dólar en Colombia, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Colombia</h2><span class="note" id="coIdxN"></span></div><div class="chart" id="chCoIdx"></div><p class="note">MSCI COLCAP: las principales acciones de la Bolsa de Valores de Colombia. En pesos colombianos, con demora (CNBC).</p></div>
@@ -1668,7 +1671,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>La lira turca contra el dólar</h2><span class="note">Liras turcas por dólar</span></div><div class="chart" id="chTrUsd"></div><p class="note">Si sube, la lira se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>La lira turca contra el dólar</h2><span class="note">Liras turcas por dólar</span></div><div class="chart" id="chTrUsd"></div><p class="note">Si sube, la lira se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una lira turca en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chTrArs"></div><p class="note">Cuántos pesos argentinos vale una lira: dólar mayorista argentino dividido la lira por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Estambul</h2><span class="note" id="trIdxN"></span></div><div class="chart" id="chTrIdx"></div><p class="note">BIST 100: las 100 principales acciones de Borsa Istanbul. En liras: con la inflación alta, sube mucho en liras aunque en dólares no tanto. Con demora (CNBC).</p></div>
@@ -1782,7 +1785,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>La rupia contra el dólar</h2><span class="note">Rupias por dólar</span></div><div class="chart" id="chInUsd"></div><p class="note">Si sube, la rupia se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>La rupia contra el dólar</h2><span class="note">Rupias por dólar</span></div><div class="chart" id="chInUsd"></div><p class="note">Si sube, la rupia se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Cien rupias en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chInArs"></div><p class="note">Cuántos pesos argentinos valen 100 rupias: dólar mayorista argentino dividido las rupias por dólar, del mismo día, por 100.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de India: Nifty 50</h2><span class="note" id="inIdxN"></span></div><div class="chart" id="chInIdx"></div><p class="note">Las 50 empresas más grandes de la Bolsa Nacional de India (NSE), en Bombay. En rupias. Con demora (CNBC).</p></div>
@@ -1856,7 +1859,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El franco suizo contra el dólar</h2><span class="note">Francos por dólar</span></div><div class="chart" id="chSzUsd"></div><p class="note">Si baja, el franco se fortalece (hacen falta menos francos para comprar un dólar). Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El franco suizo contra el dólar</h2><span class="note">Francos por dólar</span></div><div class="chart" id="chSzUsd"></div><p class="note">Si baja, el franco se fortalece (hacen falta menos francos para comprar un dólar). Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un franco suizo en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chSzArs"></div><p class="note">Cuántos pesos argentinos vale un franco: dólar mayorista argentino dividido los francos por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Zúrich: SMI</h2><span class="note" id="szIdxN"></span></div><div class="chart" id="chSzIdx"></div><p class="note">Swiss Market Index: las 20 empresas más grandes de la bolsa suiza (SIX), con mucho peso de Nestlé, Novartis y Roche. En francos. Con demora (CNBC).</p></div>
@@ -1893,7 +1896,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El dólar australiano</h2><span class="note">En dólares estadounidenses</span></div><div class="chart" id="chAuUsd"></div><p class="note">Cuántos dólares estadounidenses vale un dólar australiano, como se cotiza en Australia. Si sube, la moneda australiana se fortalece. Suele moverse con el precio del hierro, del cobre y con el ánimo de los mercados. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El dólar australiano</h2><span class="note">En dólares estadounidenses</span></div><div class="chart" id="chAuUsd"></div><p class="note">Cuántos dólares estadounidenses vale un dólar australiano, como se cotiza en Australia. Si sube, la moneda australiana se fortalece. Suele moverse con el precio del hierro, del cobre y con el ánimo de los mercados. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dólar australiano en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chAuArs"></div><p class="note">Cuántos pesos argentinos vale un dólar australiano: dólar mayorista argentino por lo que vale el dólar australiano en dólares, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Sídney: S&amp;P/ASX 200</h2><span class="note" id="auIdxN"></span></div><div class="chart" id="chAuIdx"></div><p class="note">Las 200 empresas más grandes de la bolsa australiana (ASX), con mucho peso de bancos y mineras. En dólares australianos. Con demora (CNBC).</p></div>
@@ -1930,7 +1933,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El won contra el dólar</h2><span class="note">Wones por dólar</span></div><div class="chart" id="chKrUsd"></div><p class="note">Si sube, el won se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El won contra el dólar</h2><span class="note">Wones por dólar</span></div><div class="chart" id="chKrUsd"></div><p class="note">Si sube, el won se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Mil wones en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chKrArs"></div><p class="note">Cuántos pesos argentinos valen 1.000 wones: dólar mayorista argentino dividido los wones por dólar, del mismo día, por 1.000.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Seúl: KOSPI</h2><span class="note" id="krIdxN"></span></div><div class="chart" id="chKrIdx"></div><p class="note" id="krIdxT"></p></div>
@@ -1967,7 +1970,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El rand contra el dólar</h2><span class="note">Rands por dólar</span></div><div class="chart" id="chZaUsd"></div><p class="note">Si sube, el rand se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El rand contra el dólar</h2><span class="note">Rands por dólar</span></div><div class="chart" id="chZaUsd"></div><p class="note">Si sube, el rand se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un rand en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chZaArs"></div><p class="note">Cuántos pesos argentinos vale un rand: dólar mayorista argentino dividido los rands por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Johannesburgo</h2><span class="note" id="zaIdxN"></span></div><div class="chart" id="chZaIdx"></div><p class="note" id="zaIdxT"></p></div>
@@ -2004,7 +2007,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El dólar neozelandés</h2><span class="note">En dólares estadounidenses</span></div><div class="chart" id="chNzUsd"></div><p class="note">Cuántos dólares estadounidenses vale un dólar neozelandés, como se cotiza allá. Si sube, la moneda neozelandesa se fortalece. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El dólar neozelandés</h2><span class="note">En dólares estadounidenses</span></div><div class="chart" id="chNzUsd"></div><p class="note">Cuántos dólares estadounidenses vale un dólar neozelandés, como se cotiza allá. Si sube, la moneda neozelandesa se fortalece. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dólar neozelandés en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chNzArs"></div><p class="note">Cuántos pesos argentinos vale un dólar neozelandés: dólar mayorista argentino por lo que vale el dólar neozelandés en dólares, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Nueva Zelanda: NZX 50</h2><span class="note" id="nzIdxN"></span></div><div class="chart" id="chNzIdx"></div><p class="note">Las 50 empresas más grandes de la bolsa neozelandesa (NZX), con mucho peso de energía, aeropuertos y salud. En dólares neozelandeses. Con demora (CNBC).</p></div>
@@ -2041,7 +2044,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>La rupia indonesia contra el dólar</h2><span class="note">Rupias por dólar</span></div><div class="chart" id="chIoUsd"></div><p class="note">Si sube, la rupia se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>La rupia indonesia contra el dólar</h2><span class="note">Rupias por dólar</span></div><div class="chart" id="chIoUsd"></div><p class="note">Si sube, la rupia se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Mil rupias indonesias en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chIoArs"></div><p class="note">Cuántos pesos argentinos valen 1.000 rupias: dólar mayorista argentino dividido las rupias por dólar, del mismo día, por 1.000.</p></div>
       </div>
       <div class="card"><div class="head"><h2>Bolsa de Yakarta</h2><span class="note" id="ioIdxN"></span></div><div class="chart" id="chIoIdx"></div><p class="note" id="ioIdxT"></p></div>
@@ -2078,7 +2081,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Coronas noruegas contra el dólar</h2><span class="note">Coronas noruegas por dólar</span></div><div class="chart" id="chNoUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Coronas noruegas contra el dólar</h2><span class="note">Coronas noruegas por dólar</span></div><div class="chart" id="chNoUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una corona noruega en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chNoArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas noruegas por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Oslo</h2><span class="note" id="noIdxN"></span></div><div class="chart" id="chNoIdx"></div><p class="note" id="noIdxT"></p></div>
@@ -2115,7 +2118,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Coronas suecas contra el dólar</h2><span class="note">Coronas suecas por dólar</span></div><div class="chart" id="chSeUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Coronas suecas contra el dólar</h2><span class="note">Coronas suecas por dólar</span></div><div class="chart" id="chSeUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una corona sueca en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chSeArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas suecas por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Estocolmo</h2><span class="note" id="seIdxN"></span></div><div class="chart" id="chSeIdx"></div><p class="note" id="seIdxT"></p></div>
@@ -2152,7 +2155,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Bahts contra el dólar</h2><span class="note">Bahts por dólar</span></div><div class="chart" id="chThUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Bahts contra el dólar</h2><span class="note">Bahts por dólar</span></div><div class="chart" id="chThUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un baht en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chThArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los bahts por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Bangkok</h2><span class="note" id="thIdxN"></span></div><div class="chart" id="chThIdx"></div><p class="note" id="thIdxT"></p></div>
@@ -2189,7 +2192,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Ringgits contra el dólar</h2><span class="note">Ringgits por dólar</span></div><div class="chart" id="chMyUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Ringgits contra el dólar</h2><span class="note">Ringgits por dólar</span></div><div class="chart" id="chMyUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un ringgit en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chMyArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los ringgits por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Kuala Lumpur</h2><span class="note" id="myIdxN"></span></div><div class="chart" id="chMyIdx"></div><p class="note" id="myIdxT"></p></div>
@@ -2226,7 +2229,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Pesos filipinos contra el dólar</h2><span class="note">Pesos filipinos por dólar</span></div><div class="chart" id="chPhUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Pesos filipinos contra el dólar</h2><span class="note">Pesos filipinos por dólar</span></div><div class="chart" id="chPhUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un peso filipino en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chPhArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los pesos filipinos por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Manila</h2><span class="note" id="phIdxN"></span></div><div class="chart" id="chPhIdx"></div><p class="note" id="phIdxT"></p></div>
@@ -2263,7 +2266,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Coronas islandesas contra el dólar</h2><span class="note">Coronas islandesas por dólar</span></div><div class="chart" id="chIsUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Coronas islandesas contra el dólar</h2><span class="note">Coronas islandesas por dólar</span></div><div class="chart" id="chIsUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Cien coronas islandesas en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chIsArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas islandesas por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Reikiavik</h2><span class="note" id="isIdxN"></span></div><div class="chart" id="chIsIdx"></div><p class="note" id="isIdxT"></p></div>
@@ -2299,7 +2302,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Forintos contra el dólar</h2><span class="note">Forintos por dólar</span></div><div class="chart" id="chHuUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Forintos contra el dólar</h2><span class="note">Forintos por dólar</span></div><div class="chart" id="chHuUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Cien forintos en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chHuArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los forintos por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Budapest</h2><span class="note" id="huIdxN"></span></div><div class="chart" id="chHuIdx"></div><p class="note" id="huIdxT"></p></div>
@@ -2335,7 +2338,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El dólar de Hong Kong, atado al dólar</h2><span class="note">Dólares de Hong Kong por dólar</span></div><div class="chart" id="chHkUsd"></div><p class="note">Desde 1983 la HKMA lo mantiene entre 7,75 y 7,85 por dólar: compra o vende dólares en los bordes. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El dólar de Hong Kong, atado al dólar</h2><span class="note">Dólares de Hong Kong por dólar</span></div><div class="chart" id="chHkUsd"></div><p class="note">Desde 1983 la HKMA lo mantiene entre 7,75 y 7,85 por dólar: compra o vende dólares en los bordes. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dólar de Hong Kong en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chHkArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los dólares de Hong Kong por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Hong Kong</h2><span class="note" id="hkIdxN"></span></div><div class="chart" id="chHkIdx"></div><p class="note" id="hkIdxT"></p></div>
@@ -2372,7 +2375,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Coronas checas contra el dólar</h2><span class="note">Coronas checas por dólar</span></div><div class="chart" id="chCzUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Coronas checas contra el dólar</h2><span class="note">Coronas checas por dólar</span></div><div class="chart" id="chCzUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una corona checa en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chCzArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas checas por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Praga</h2><span class="note" id="czIdxN"></span></div><div class="chart" id="chCzIdx"></div><p class="note" id="czIdxT"></p></div>
@@ -2408,7 +2411,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Coronas danesas contra el dólar</h2><span class="note">Coronas danesas por dólar</span></div><div class="chart" id="chDkUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Coronas danesas contra el dólar</h2><span class="note">Coronas danesas por dólar</span></div><div class="chart" id="chDkUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Una corona danesa en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chDkArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los coronas danesas por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Copenhague</h2><span class="note" id="dkIdxN"></span></div><div class="chart" id="chDkIdx"></div><p class="note" id="dkIdxT"></p></div>
@@ -2445,7 +2448,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Lei contra el dólar</h2><span class="note">Lei por dólar</span></div><div class="chart" id="chRoUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Lei contra el dólar</h2><span class="note">Lei por dólar</span></div><div class="chart" id="chRoUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un leu en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chRoArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los lei por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Bucarest</h2><span class="note" id="roIdxN"></span></div><div class="chart" id="chRoIdx"></div><p class="note" id="roIdxT"></p></div>
@@ -2481,7 +2484,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Séqueles contra el dólar</h2><span class="note">Séqueles por dólar</span></div><div class="chart" id="chIlUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Séqueles contra el dólar</h2><span class="note">Séqueles por dólar</span></div><div class="chart" id="chIlUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un séquel en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chIlArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los séqueles por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Tel Aviv</h2><span class="note" id="ilIdxN"></span></div><div class="chart" id="chIlIdx"></div><p class="note" id="ilIdxT"></p></div>
@@ -2518,7 +2521,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Dinares contra el dólar</h2><span class="note">Dinares por dólar</span></div><div class="chart" id="chRsUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Dinares contra el dólar</h2><span class="note">Dinares por dólar</span></div><div class="chart" id="chRsUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Cien dinares en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chRsArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los dinares por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Belgrado</h2><span class="note" id="rsIdxN"></span></div><div class="chart" id="chRsIdx"></div><p class="note" id="rsIdxT"></p></div>
@@ -2554,7 +2557,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Yuanes contra el dólar</h2><span class="note">Yuanes por dólar</span></div><div class="chart" id="chCnUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Yuanes contra el dólar</h2><span class="note">Yuanes por dólar</span></div><div class="chart" id="chCnUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un yuan en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chCnArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los yuanes por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Pekín</h2><span class="note" id="cnIdxN"></span></div><div class="chart" id="chCnIdx"></div><p class="note" id="cnIdxT"></p></div>
@@ -2591,7 +2594,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Rublos contra el dólar</h2><span class="note">Rublos por dólar</span></div><div class="chart" id="chRuUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Rublos contra el dólar</h2><span class="note">Rublos por dólar</span></div><div class="chart" id="chRuUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un rublo en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chRuArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los rublos por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Moscú</h2><span class="note" id="ruIdxN"></span></div><div class="chart" id="chRuIdx"></div><p class="note" id="ruIdxT"></p></div>
@@ -2627,7 +2630,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>El euro contra el dólar</h2><span class="note">Dólares por euro</span></div><div class="chart" id="chEsUsd"></div><p class="note">Cuántos dólares vale un euro. Si sube, el euro se fortalece. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>El euro contra el dólar</h2><span class="note">Dólares por euro</span></div><div class="chart" id="chEsUsd"></div><p class="note">Cuántos dólares vale un euro. Si sube, el euro se fortalece. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un euro en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chEsArs"></div><p class="note">Cuántos pesos argentinos vale un euro: dólar mayorista argentino por los dólares que vale un euro, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Madrid</h2><span class="note" id="esIdxN"></span></div><div class="chart" id="chEsIdx"></div><p class="note" id="esIdxT"></p></div>
@@ -2664,7 +2667,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Denares contra el dólar</h2><span class="note">Denares por dólar</span></div><div class="chart" id="chMkUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Denares contra el dólar</h2><span class="note">Denares por dólar</span></div><div class="chart" id="chMkUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un denar en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chMkArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los denares por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Skopie</h2><span class="note" id="mkIdxN"></span></div><div class="chart" id="chMkIdx"></div><p class="note" id="mkIdxT"></p></div>
@@ -2700,7 +2703,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Dólares de singapur contra el dólar</h2><span class="note">Dólares de Singapur por dólar</span></div><div class="chart" id="chSgUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Dólares de singapur contra el dólar</h2><span class="note">Dólares de Singapur por dólar</span></div><div class="chart" id="chSgUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dólar de Singapur en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chSgArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los dólares de Singapur por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Singapur</h2><span class="note" id="sgIdxN"></span></div><div class="chart" id="chSgIdx"></div><p class="note" id="sgIdxT"></p></div>
@@ -2737,7 +2740,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="gsub" data-sub="mercados">
       <div class="grid2">
-        <div class="card"><div class="head"><h2>Dirhams contra el dólar</h2><span class="note">Dirhams por dólar</span></div><div class="chart" id="chMaUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: BIS y CNBC.</p></div>
+        <div class="card"><div class="head"><h2>Dirhams contra el dólar</h2><span class="note">Dirhams por dólar</span></div><div class="chart" id="chMaUsd"></div><p class="note">Si sube, la moneda local se debilita. Fuente: bancos centrales (BCE y BIS).</p></div>
         <div class="card"><div class="head"><h2>Un dirham en pesos argentinos</h2><span class="note">Oficial</span></div><div class="chart" id="chMaArs"></div><p class="note">Cuántos pesos argentinos vale una unidad: dólar mayorista argentino dividido los dirhams por dólar, del mismo día.</p></div>
       </div>
       <div class="card"><div class="head"><h2>La bolsa de Rabat</h2><span class="note" id="maIdxN"></span></div><div class="chart" id="chMaIdx"></div><p class="note" id="maIdxT"></p></div>
