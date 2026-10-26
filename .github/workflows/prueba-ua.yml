@@ -1,0 +1,33 @@
+name: Prueba user-agent (temporal)
+on:
+  push:
+    branches: [sin-cnbc]
+    paths: [.github/workflows/prueba-ua.yml]
+permissions:
+  contents: write
+jobs:
+  ua:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: UA nuevo y viejo
+        shell: bash
+        run: |
+          set +e
+          : > resumen_ua.txt
+          for vuelta in nuevo viejo; do
+            if [ $vuelta = viejo ]; then sed -i 's#^UA = .*#UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"#' scripts/europa.py scripts/actividad.py; fi
+            for s in europa actividad; do
+              a=$(date +%s); timeout 600 python scripts/$s.py > out.txt 2>&1
+              echo "== $vuelta $s salida $? ($(( $(date +%s) - a )) s)" >> resumen_ua.txt
+              tail -25 out.txt >> resumen_ua.txt
+            done
+            git checkout -- scripts/europa.py scripts/actividad.py europa.json actividad.json 2>/dev/null
+          done
+      - run: |
+          git config user.name "github-actions"; git config user.email "github-actions@users.noreply.github.com"
+          git checkout -- . ; git add -f resumen_ua.txt; git commit -m "Prueba UA [skip ci]" && git push

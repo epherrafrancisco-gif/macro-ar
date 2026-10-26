@@ -18,11 +18,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   1000 pedidos / 10 s por IP (bloqueo 10 s); Web Analytics automático. Para forzar un cambio ya: Caching → Configuration
   → Purge Everything (después de que termine el deploy de Pages, no antes).
 - Datos en vivo (worker/vivo.js, Worker `pulso-vivo`, cron cada minuto, binding R2 `DATOS` = bucket `pulso-datos`):
-  trae DolarApi y data912 cada minuto y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
+  trae DolarApi y Open BYMADATA (acciones y bonos, acceso gratuito de BYMA) cada minuto y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
   `https://datos.pulsomacro.com.ar/vivo.json` (dominio propio del bucket, CORS solo pulsomacro.com.ar). Cache Rule
   "Datos en vivo: ignorar query" en ese host: ignora la query para que nadie fuerce lecturas de R2 con URLs inventadas.
   La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 10 min (mercado); si no, va directo a
-  DolarApi/data912 como antes. El editor del panel de Cloudflare no deja editar por script: el código se pega a mano en
+  DolarApi (solo el dólar; acciones y bonos salen únicamente del Worker). El editor del panel de Cloudflare no deja editar por script: el código se pega a mano en
   "Edit code" (si se cambia worker/vivo.js, hay que volver a pegarlo).
   El repo sigue llamándose `macro-ar`: no renombrar (rompe la redirección). Nunca usar "Macro AR" en nada visible.
 - Logo: "pulso en anillo" (anillo celeste #6aa8d8 con un latido blanco adentro, sobre #0e1319; elegido por el dueño el
@@ -144,10 +144,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas
   validados contra PPI 2/2/2026, ±0,1 pp) y "Todos los bonos y letras" (`renderBondsAll`, buscador `#bondQ`, monto =
   `v` × `c` / 100). Solo especie en pesos: `espPesos`/`enDolares` descarta D, C y .D aunque el nombre no siga la regla
-  (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D) comparando precio × MEP/CCL; BA37D y SA24D sí son en pesos. data912 cada
-  minuto vía `vivo.json` del Worker (`MKT_MS`) con **20 minutos de demora** (pedido del dueño 26/10/2026, por licencia: igual que
-  el acceso gratuito de BYMA). El Worker guarda una foto por minuto en `mkt/0..29.json` y publica la de hace 20 min; la página NO
-  va nunca directo a data912 y descarta precios con menos de 19 min. Leyenda: "precios de BYMA ... 20 minutos de demora".
+  (BPOA7 → BPA7D, TZXA7 → TXA7D, BDC33 → BC33D) comparando precio × MEP/CCL; BA37D y SA24D sí son en pesos (respaldo: hoy
+  cada especie trae `m`, la moneda que informa BYMA, y se usa `m === 'ARS'`). Precios cada minuto vía `vivo.json` del Worker
+  (`MKT_MS`), que desde el 26/10/2026 los toma de Open BYMADATA (POST `.../bymadata/free/{leading-equity,general-equity,
+  public-bonds,lebacs}` con `T1: true` y `page_size: 3000`; sin cookies; campos trade/closingPrice/imbalance/volume/
+  numberOfOrders/bidPrice/offerPrice/denominationCcy) y ya vienen con los **20 minutos de demora** de BYMA: `tMkt` = ahora − 20 min.
+  data912 NO se usa más (API anónima sin licencia). La página descarta precios con menos de 19 min. Leyenda: "precios de BYMA
+  (Open BYMADATA) de las HH:MM · 20 minutos de demora". Los indicadores propios (`byma_bonos` en update.py) también usan BYMA.
 - Merval: desde el 19/10/2026 es el "MSCI Merval" (antes S&P), base 100.000 al cierre del 16/10/2026. Ámbito (`indice/.merv`) y
   CNBC (`.MERV`) se cortaron el 16/10. update.py: fuente principal desde el 26/10 `byma_merval` (Open BYMADATA, acceso gratuito
   de BYMA: POST `.../bymadata/free/index-price`, símbolo `MMSCI`, previousClosingPrice y closingPrice/trade después de las 17 h;
@@ -412,7 +415,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - OJO: las notas de cada país más arriba nombran símbolos de CNBC (`bolsas.X`, `.OSEBX`, fondos) de cuando se usaba CNBC.
   Desde el 26/10/2026 eso lo muestran los widgets de TradingView y los números propios salen de la OCDE: ver "Mercados sin
   CNBC" en Fuentes. La capa "bolsas" de los globos, el Monitor y "¿Qué rindió más?" usan la OCDE (mensual).
-- Merval en Bolsa y bonos: parte de cierre como noticia (`#merParte`: "El MSCI Merval cerró el ... Fuente: BYMA / MSCI").
+- Merval en Bolsa y bonos: parte de cierre como noticia (`#merParte` arriba de los indicadores: "El MSCI Merval cerró el ... Fuente: BYMA / MSCI").
+- Atribución de los widgets de TradingView: el texto original "Track all markets on TradingView" (sus términos piden no cambiarla).
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
   `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
   el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
@@ -514,7 +518,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   197 M2 transaccional, 30 CER, 155 LELIQ, 152 pases, 196 LEFI.
 - datos.gob.ar: `452.3_RESULTADO_RIO_0_M_18_54`, `452.3_RESULTADO_ERO_0_M_20_25`, `74.3_IET_0_M_16`,
   `74.3_IIT_0_M_25`, `74.3_ISC_0_M_19`, `166.2_PPIB_0_0_3`.
-- DolarApi `https://dolarapi.com/v1/dolares` y data912 `https://data912.com/live/arg_stocks|arg_bonds` (las pide el Worker `pulso-vivo`; el navegador solo si el Worker falla).
+- DolarApi `https://dolarapi.com/v1/dolares` (la pide el Worker `pulso-vivo`; el navegador solo si el Worker falla) y Open BYMADATA (solo el Worker y update.py).
 - Mundo: SIN CNBC, Yahoo, Stooq, CoinGecko ni Nasdaq desde el 26/10/2026 (plan legal: sus términos prohíben mostrar o
   redistribuir sus datos, o no habilitan uso comercial). Ver "Mercados sin CNBC" abajo. Además: FMI DataMapper (o Banco
   Mundial), BIS WS_CBPOL, Frankfurter (BCE) y RSS (El País, DW, Expansión, France 24, Euronews, BBC Mundo filtrado).
