@@ -2,10 +2,16 @@ name: Diag Merval
 on:
   push:
     branches: [diag-merval]
+    paths: [scripts/diag_merval.py, .github/workflows/diag-merval.yml]
+permissions:
+  contents: write
 jobs:
   d:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/diag_merval.py
+      - run: python3 scripts/diag_merval.py > diag_out.txt 2>&1 || true
+      - run: |
+          git config user.name "diag"; git config user.email "diag@users.noreply.github.com"
+          git add diag_out.txt && git commit -m "salida diag" && git push
