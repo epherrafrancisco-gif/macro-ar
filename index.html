@@ -368,6 +368,8 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:6px}
 /* widgets de TradingView (plan legal 26/10/2026): precios del día de bolsas, acciones, fondos y cripto */
 .tvbox{display:block!important;min-width:0;width:100%}
+/* el sitio es color-scheme:dark y el iframe de TradingView no: sin esto el navegador le pinta un fondo blanco opaco */
+.tvbox iframe{color-scheme:normal}
 .tvbox .tradingview-widget-container{width:100%}
 .tradingview-widget-copyright{font:11.5px/1.4 var(--sans,system-ui);color:var(--muted);margin-top:4px;text-align:right}
 .tradingview-widget-copyright a{color:var(--muted);text-decoration:none}.tradingview-widget-copyright a:hover{color:var(--accent)}
@@ -515,7 +517,7 @@ body.mon .mnTop button{display:none}
 .gst.on{color:var(--pos);background:var(--pos-bg)}.gst.off{color:var(--muted);background:var(--sunk)}
 .gup{color:var(--pos)}.gdn{color:var(--neg)}.geq{color:var(--muted)}
 .tape2{background:var(--bg)}.tape2 .tape-in{animation-direction:reverse}
-.tape2 .tv2{display:block;width:100%;min-height:44px}.tape2 .tv2 .tradingview-widget-copyright{display:none}
+.tape2{position:relative}.tape2 .tv2{display:block;width:100%;min-height:44px;animation:none}.tape2 .tv2 .tradingview-widget-copyright{position:absolute;right:10px;bottom:1px;margin:0;font-size:10px;line-height:1;z-index:2}
 .tape3{font-size:11.5px;background:#0b1016}.tape3::before{background:linear-gradient(90deg,#0b1016,transparent)}.tape3::after{background:linear-gradient(-90deg,#0b1016,transparent)}
 .tape3 .tape-in{padding-block:5px}.tape3 .tk .n{font-size:10.5px}.tape3 .tk .v{font-weight:400;color:var(--ink2)}
 .tape3 .on{color:var(--pos);font-weight:600}.tape3 .off{color:var(--muted)}
@@ -4720,7 +4722,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // cinta de mercados del mundo: widget de TradingView (antes, precios de CNBC)
   function renderTape2(){
     const tape = $('tape2'), inn = $('tape2In'); tape.hidden = false;
-    if(inn.dataset.tvk || (innerWidth<=640 && !document.body.classList.contains('mglo'))) return;  // en el celular, solo cuando se ve (El mundo y países) inn.className = 'tv2';
+    // en el celular, solo cuando se ve (El mundo y países)
+    if(inn.dataset.tvk || (innerWidth<=640 && !document.body.classList.contains('mglo'))) return;
+    inn.className = 'tv2';
     tvw(inn, 'ticker-tape', {symbols: [['S&P 500','FOREXCOM:SPXUSD'],['Nasdaq 100','FOREXCOM:NSXUSD'],['Dow Jones','FOREXCOM:DJI'],['Bovespa','BMFBOVESPA:IBOV'],['DAX','XETR:DAX'],['FTSE 100','FOREXCOM:UKXGBP'],['Nikkei 225','FOREXCOM:JPXJPY'],['Shanghái','SSE:000001'],['Euro','FX:EURUSD'],['Real','FX_IDC:USDBRL'],['Oro','TVC:GOLD'],['Brent','TVC:UKOIL'],['Soja','CAPITALCOM:SOYBEAN'],['Cobre','CAPITALCOM:COPPER'],['Bitcoin','BINANCE:BTCUSDT'],['YPF','NYSE:YPF'],['Galicia','NASDAQ:GGAL'],['Mercado Libre','NASDAQ:MELI']].map(([d,p])=>({proName:p, title:d})),
       showSymbolLogo:false, displayMode:'compact'});
   }
