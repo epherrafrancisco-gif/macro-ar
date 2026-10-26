@@ -4176,7 +4176,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   };
   const toolsHtml = id => `<span class="tools"><button type="button" data-act="share" data-ch="${id}" title="Compartir este gráfico" aria-label="Compartir este gráfico">${IC.share}</button><button type="button" data-act="png" data-ch="${id}" title="Descargar imagen (PNG)" aria-label="Descargar imagen del gráfico">${IC.png}</button><button type="button" data-act="csv" data-ch="${id}" title="Descargar los datos del gráfico (CSV)" aria-label="Descargar datos del gráfico">${IC.csv}</button></span>`;
   function herramientas(){
-    document.querySelectorAll('.card .chart[id]').forEach(ch=>{
+    document.querySelectorAll('.card .chart[id]:not([data-tl])').forEach(ch=>{
+      ch.dataset.tl = '1';  // ya tiene sus botones (antes se buscaba en todo el documento: ~2 s en celulares)
       if(document.querySelector(`.tools [data-ch="${ch.id}"]`)) return;
       // título propio (h3) si hay uno justo antes; si no, el encabezado de la tarjeta
       let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
@@ -4842,7 +4843,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   setInterval(()=>{ if(tab==='global' && !document.hidden) gListas(); }, 30000);
   setInterval(loadGlobal, 15*60000);
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && tab==='global' && G.ready && !G.run){ G.run = true; G.last = 0; requestAnimationFrame(gDraw); }
-    if(!document.hidden){ if(tab==='portada') dgStart('pCv','pHud'); else if(tab==='global' && G.vista==='mundo') dgStart('dCv','dHud','#dLay'); } });
+    if(!document.hidden){ if(tab==='portada' && $('pCv').getBoundingClientRect().width > 2) dgStart('pCv','pHud'); else if(tab==='global' && G.vista==='mundo') dgStart('dCv','dHud','#dLay'); } });
   loadGlobal();
 
   // ---- Global: acciones, gráficos, ranking, monedas y termómetro ----
@@ -4891,6 +4892,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     return true; }
   async function dgStart(id, hud, laySel){
     try{ await gInit(); }catch(e){ return; }
+    if(!G.dots){ try{ const r = await fetch('vendor/dots.json'); if(r.ok) G.dots = await r.json(); }catch(e){} }  // precalculados: calcularlos trababa ~3,5 s
     const S = dgMake(id, hud, laySel); dgDots();
     if(S.run) return; S.run = true; S.last = 0; requestAnimationFrame(t=>dgDraw(S,t));
   }
@@ -4970,7 +4972,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div style="color:var(--muted);font-size:12.5px">En el globo: verde sube, rojo baja. Tocá "Mundo" para ver todo.</div>`;
       if($('pTerm2').dataset.h !== h2){ $('pTerm2').dataset.h = h2; $('pTerm2').innerHTML = h2; } }
     else if(!$('pTerm2').dataset.h) $('pTerm2').innerHTML = '<div>Cargando mercados del mundo…</div>';
-    dgStart('pCv','pHud');
+    if($('pCv') && $('pCv').getBoundingClientRect().width > 2) dgStart('pCv','pHud');  // oculto (celular con Argentina elegido): no cargar el globo
     pvStart();
   }
   async function loadHist(){

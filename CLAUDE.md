@@ -110,6 +110,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Celular: el botón de volver de `#mbar` (`#mLogo`) dice "Volver" (o "Inicio" si se entró por link directo); el selector
   Argentina / El mundo de la portada (`#mTg`) son dos botones separados con ícono, el elegido en celeste (pedido del dueño:
   "que se entienda que son dos botones").
+- Rendimiento (10/2026, en celular medio la portada trababa 3-4,5 s): los puntos del globo "Mundo hoy" están precalculados en
+  `vendor/dots.json` (si se cambia `world.json` o la grilla de `dgDots`, regenerarlo); el globo de la portada solo arranca si
+  se ve (`pCv` con ancho); `herramientas()` marca cada gráfico con `data-tl` (antes buscaba en todo el documento por cada uno).
+  Manifest con `launch_handler` `navigate-existing`: los links abren en la ventana de la app que ya está abierta.
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.

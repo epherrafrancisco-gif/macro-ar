@@ -40,5 +40,11 @@
       "platform": "webapp",
       "url": "https://pulsomacro.com.ar/manifest.webmanifest"
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  }
 }
