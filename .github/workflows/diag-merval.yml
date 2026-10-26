@@ -1,0 +1,11 @@
+name: Diag Merval
+on:
+  push:
+    branches: [diag-merval]
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/diag_merval.py
