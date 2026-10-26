@@ -264,6 +264,7 @@ footer a{color:var(--ink2)}
 .srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .srcs div{border:1px solid var(--line);border-radius:10px;padding:11px 13px;display:grid;gap:3px;font-size:13px;color:var(--ink2);align-content:start}
 .srcs b{color:var(--ink);font-size:14px}
+details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:14px}details.lic ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px}details.lic b{color:var(--ink)}details.lic a{color:var(--accent)}
 .how{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14.5px;line-height:1.55;max-width:80ch}
 .how b{font-weight:600}
 /* noticias */
@@ -1219,7 +1220,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div class="geomap" id="geoMap"><div class="empty">Cargando mapa…</div></div>
         <div class="geoley" id="geoLey"></div>
         <div class="geosel" id="geoSel"></div>
-        <p class="note">Fuente: Wikipedia, <a href="https://en.wikipedia.org/wiki/List_of_ongoing_armed_conflicts" target="_blank" rel="noopener">lista de conflictos armados en curso</a> (CC BY-SA 4.0), que junta datos de UCDP, ACLED y otros. Las cifras de muertes son estimaciones y en algunos casos se discuten.</p>
+        <p class="note">Fuente: Wikipedia, <a href="https://en.wikipedia.org/wiki/List_of_ongoing_armed_conflicts" target="_blank" rel="noopener">lista de conflictos armados en curso</a> (licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>) (CC BY-SA 4.0), que junta datos de UCDP, ACLED y otros. Las cifras de muertes son estimaciones y en algunos casos se discuten.</p>
       </div>
       <div class="card">
         <div class="head"><h2>Todos los conflictos, uno por uno</h2><span class="note">Del más grave al más chico</span></div>
@@ -2891,6 +2892,23 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div><b>Geopolítica</b>Wikipedia (conflictos armados en curso), índice de riesgo geopolítico de Caldara e Iacoviello y gasto militar del SIPRI vía Banco Mundial.</div>
         <div><b>Medios</b>Titulares de Ámbito, Infobae, La Nación, iProfesional y Perfil, y de medios de cada país, en español o inglés. Cada nota se lee en el sitio del medio.</div>
       </div>
+      <details class="lic"><summary>Licencias y créditos de cada fuente</summary>
+        <ul>
+          <li><b>Banco Mundial:</b> The World Bank, World Development Indicators y otras bases, bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>. Su uso no implica respaldo del Banco Mundial.</li>
+          <li><b>OCDE:</b> OECD Data Explorer, citado según sus términos de uso. Su uso no implica respaldo de la OCDE.</li>
+          <li><b>BIS:</b> estadísticas del Banco de Pagos Internacionales, citadas como fuente. Su uso no implica respaldo ni afiliación con el BIS.</li>
+          <li><b>Banco Central Europeo:</b> fuente BCE. Estos datos están disponibles gratis en ecb.europa.eu.</li>
+          <li><b>Eurostat:</b> © Unión Europea, Eurostat, bajo licencia CC BY 4.0.</li>
+          <li><b>INDEC, Secretaría de Hacienda y datos.gob.ar:</b> datos abiertos bajo licencia Creative Commons Atribución.</li>
+          <li><b>BCRA:</b> fuente Banco Central de la República Argentina, citado sin alterar el sentido de los datos.</li>
+          <li><b>Organismos de EE.UU.</b> (BLS, BEA, Tesoro, Departamento de Trabajo, EIA): datos de dominio público.</li>
+          <li><b>BYMA:</b> los precios de acciones y bonos son propiedad de Bolsas y Mercados Argentinos y se muestran con 20 minutos de demora. El MSCI Merval es un índice de MSCI y BYMA; el riesgo país (EMBI) es un índice de J.P. Morgan, según lo publican los medios.</li>
+          <li><b>Wikipedia:</b> lista de conflictos armados en curso, bajo licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</li>
+          <li><b>Riesgo geopolítico:</b> índice de Caldara e Iacoviello (2022), "Measuring Geopolitical Risk", American Economic Review.</li>
+          <li><b>Mapas, banderas y librerías:</b> Natural Earth (dominio público), flag-icons (MIT), d3 (ISC) y TopoJSON (BSD).</li>
+          <li>Los datos y marcas de terceros pertenecen a sus titulares. Si sos titular de un dato y querés que se corrija o se retire, escribí a <a href="mailto:contacto@pulsomacro.com.ar?subject=Pedido%20de%20correcci%C3%B3n%20o%20retiro" data-contacto="mail">contacto@pulsomacro.com.ar</a>.</li>
+        </ul>
+      </details>
     </div>
 
     <div class="card prose">
