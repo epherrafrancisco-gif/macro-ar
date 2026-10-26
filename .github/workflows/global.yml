@@ -53,6 +53,7 @@ on:
       - scripts/marruecos.py
       - scripts/geopolitica.py
       - scripts/pais_bis.py
+      - scripts/abiertas.py
       - scripts/actividad.py
       - .github/workflows/global.yml
 

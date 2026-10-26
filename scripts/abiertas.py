@@ -2,7 +2,9 @@
 Reemplazan a CNBC donde se puede (plan legal del 26/10/2026; ver "Licencias y créditos" en Sobre Pulso Macro).
 
 - Monedas: Banco Central Europeo (tipos de cambio de referencia diarios, ~30 monedas; uso libre citando al BCE) y, para las
-  que el BCE no publica, el BIS (tipo de cambio diario de cada banco central; llega con unos días de atraso).
+  que el BCE no publica, el BIS (tipo de cambio diario de cada banco central; llega con 1 a 3 semanas de atraso).
+  Peso argentino, colombiano y sol se completan al día con el BCRA (mayorista de data.json), la TRM de datos.gov.co y el
+  BCRP. El resto puede quedar atrasado: la página muestra la fecha en vez de "hoy".
   Las cotizaciones se devuelven con la MISMA convención que usaba CNBC, así la página no cambia: EUR, GBP, AUD y NZD en
   dólares por unidad; el resto en unidades por dólar; EURPLN y EURCHF en monedas por euro.
 - Petróleo y gas: EIA de EE.UU. (precios spot diarios, dominio público; se publican con unos días de atraso).
@@ -14,6 +16,7 @@ import json
 import time
 import urllib.request
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 
 UA = "pulsomacro.com.ar (contacto@pulsomacro.com.ar)"
 errores = []
@@ -24,6 +27,7 @@ BCE = ["USD", "JPY", "CZK", "DKK", "GBP", "HUF", "PLN", "RON", "SEK", "CHF", "IS
 USD_POR_UNIDAD = {"EUR", "GBP", "AUD", "NZD"}
 # Monedas que el BCE no publica: tipo de cambio diario del BIS (código de país del BIS)
 BIS_FX = {"ARS": "AR", "CLP": "CL", "COP": "CO", "PEN": "PE", "UYU": "UY", "RSD": "RS", "RUB": "RU", "MAD": "MA", "MKD": "MK", "SAR": "SA"}
+FUENTE_AL_DIA = {}  # moneda → fuente oficial con la que se completó lo que el BIS todavía no tiene
 NOMBRES = {"EUR": "Euro", "GBP": "Libra esterlina", "AUD": "Dólar australiano", "NZD": "Dólar neozelandés"}
 
 
@@ -84,6 +88,50 @@ def fx_hist(dias=800):
         except Exception as e:  # noqa: BLE001
             errores.append(f"BIS moneda {c}: {e}")
         time.sleep(0.3)
+    # El BIS llega con 1 a 3 semanas de atraso: donde hay una fuente oficial abierta al día, se completa con ella
+    for c, fn in (("ARS", _ars_bcra), ("COP", _cop_trm), ("PEN", _pen_bcrp)):
+        try:
+            nuevos = fn(desde, hoy)
+            if nuevos:
+                FUENTE_AL_DIA[c] = {"ARS": "BCRA", "COP": "Superfinanciera de Colombia", "PEN": "BCRP"}[c]
+                m = dict(out.get(c, []))
+                m.update(nuevos)
+                out[c] = sorted([t, v] for t, v in m.items())
+        except Exception as e:  # noqa: BLE001
+            errores.append(f"moneda {c} al día: {e}")
+    return out
+
+
+def _ars_bcra(desde, hoy):
+    """Mayorista del BCRA (Comunicación A 3500) que ya guarda data.json (scripts/update.py)."""
+    d = json.loads((Path(__file__).resolve().parent.parent / "data.json").read_text(encoding="utf-8"))
+    return {r["fecha"]: float(r["mayorista"]["v"]) for r in d.get("diario", [])
+            if desde <= r.get("fecha", "") <= hoy and (r.get("mayorista") or {}).get("v")}
+
+
+def _cop_trm(desde, hoy):
+    """TRM de la Superintendencia Financiera de Colombia (datos.gov.co, datos abiertos). La del finde vale desde el sábado."""
+    filas = json.loads(get("https://www.datos.gov.co/resource/32sa-8pi3.json?$order=vigenciadesde%20DESC&$limit=60", "application/json"))
+    return {r["vigenciadesde"][:10]: round(float(r["valor"]), 2) for r in filas
+            if r.get("valor") and desde <= r.get("vigenciadesde", "")[:10] <= hoy}
+
+
+MESES_BCRP = {"Ene": 1, "Feb": 2, "Mar": 3, "Abr": 4, "May": 5, "Jun": 6, "Jul": 7, "Ago": 8, "Set": 9, "Sep": 9, "Oct": 10, "Nov": 11, "Dic": 12}
+
+
+def _pen_bcrp(desde, hoy):
+    """Soles por dólar del BCRP (venta, sistema bancario; períodos "22.Oct.26", "n.d." = sin dato). Últimos 60 días."""
+    ini = max(desde, (date.today() - timedelta(days=60)).isoformat())
+    d = json.loads(get(f"https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04640PD/json/{ini}/{hoy}", "application/json"))
+    out = {}
+    for p in d.get("periods", []):
+        try:
+            dd, mm, aa = p["name"].split(".")
+            v = p["values"][0]
+            if v != "n.d.":
+                out[date(2000 + int(aa), MESES_BCRP[mm], int(dd)).isoformat()] = float(v)
+        except Exception:  # noqa: BLE001
+            continue
     return out
 
 
@@ -100,7 +148,7 @@ def fx_cotizaciones(hist):
     q = {}
     for c, pts in hist.items():
         sym = c + "=" if c not in ("EURPLN", "EURCHF") else c + "="
-        fuente = "BIS" if c in BIS_FX else "BCE"
+        fuente = FUENTE_AL_DIA.get(c) or ("BIS" if c in BIS_FX else "BCE")
         x = a_cotizacion(pts, NOMBRES.get(c, c))
         if x:
             x["f"] = fuente
