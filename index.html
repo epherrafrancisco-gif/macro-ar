@@ -5038,7 +5038,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // Los precios del día de bolsas, acciones, fondos y cripto los muestra TradingView desde sus servidores, con sus licencias
   // (gratis, con su marca). Pulso Macro no guarda ni redistribuye esos precios. Un elemento con data-tvq (cotización),
   // data-tvc (gráfico) o data-tvl (lista, JSON) se arma solo cuando aparece en la página (tvMontar + MutationObserver).
-  const TV_BASE = {colorTheme:'dark', isTransparent:true, locale:'es'};
+  const TV_BASE = {colorTheme:'dark', isTransparent:false, backgroundColor:'#161d25', locale:'es'};  // fondo propio: con transparente, Edge/Chrome pintan blanco el iframe
   function tvw(el, tipo, cfg, alto){
     if(typeof el==='string') el = $(el); if(!el) return;
     const key = tipo+'|'+JSON.stringify(cfg); if(el.dataset.tvk===key && el.querySelector('.tradingview-widget-container')) return; el.dataset.tvk = key;
