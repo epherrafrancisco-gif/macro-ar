@@ -5,8 +5,9 @@ Fuentes (gratuitas, sin clave):
     desempleo, PBI en dólares y PBI per cápita por país (estimación del año en curso).
   - BIS (Banco de Pagos Internacionales): tasas de política monetaria diarias de
     unos 40 bancos centrales, con la fecha de la última decisión.
-  - (antes Yahoo Finance y Stooq como respaldo: sacados en 10/2026 por sus términos) índices bursátiles, monedas, bonos de
-    EE.UU., commodities y bitcoin, con el cierre anterior para la variación.
+  - Mercados (plan legal, 26/10/2026: sin CNBC, Yahoo, Stooq ni CoinGecko): ver scripts/abiertas.py. Monedas (BCE, BIS),
+    tasas (Tesoro), bonos (bancos centrales y OCDE), petróleo y gas (EIA), materias primas (Banco Mundial), bolsas
+    (OCDE, mensual) y estrés financiero (OFR). Bolsas, acciones y cripto del día: widgets de TradingView en la página.
 
 Uso: python scripts/global.py
 Nunca inventa datos: si una fuente falla, deja lo que había en global.json
@@ -27,14 +28,14 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import abiertas  # noqa: E402  fuentes abiertas que reemplazan a CNBC (plan legal 10/2026)
+import abiertas  # noqa: E402  fuentes abiertas (plan legal 10/2026)
 
 FX_HIST = {}  # monedas del BCE/BIS (se llena en main)
 SYM_HIST = {}  # tasas del Tesoro de EE.UU. y petróleo/gas de la EIA, por símbolo CNBC (se llena en main)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "global.json"
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
+UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
 
 IMF = {  # indicador del FMI: campo
     "PCPIPCH": "infl",        # inflación promedio anual, %
@@ -197,55 +198,6 @@ def bis(paises):
 
 
 
-CNBC = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "bvsp": ".BVSP", "dax": ".GDAXI", "ftse": ".FTSE",
-        "nikkei": ".N225", "shanghai": ".SSEC", "t10": "US10Y", "oro": "@GC.1", "brent": "@LCO.1",
-        "wti": "@CL.1", "soja": "@S.1", "maiz": "@C.1", "trigo": "@W.1", "cobre": "@HG.1"}
-
-
-def cnbc():
-    """Cotizaciones públicas de CNBC (un solo pedido, sin clave)."""
-    syms = "|".join(CNBC.values())
-    j = json.loads(get("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
-                       + urllib.request.quote(syms, safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1",
-                       tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
-    q = ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []
-    num = lambda x: float(str(x).replace(",", "").replace("%", "").strip())
-    por = {r.get("symbol"): r for r in q}
-    out = {}
-    for k, sym in CNBC.items():
-        r = por.get(sym)
-        try:
-            out[k] = (num(r["last"]), num(r["previous_day_closing"]), str(r.get("last_time") or ""))
-        except Exception:  # noqa: BLE001
-            continue
-    if not out:
-        raise ValueError("sin cotizaciones")
-    return out
-
-
-def cnbc_raw(symbols):
-    """Cotizaciones crudas de CNBC para una lista de símbolos (en tandas de 40)."""
-    num = lambda x: float(str(x).replace(",", "").replace("%", "").strip())
-    out = {}
-    for i in range(0, len(symbols), 40):
-        tanda = "|".join(symbols[i:i + 40])
-        try:
-            j = json.loads(get("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
-                               + urllib.request.quote(tanda, safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1",
-                               tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
-        except Exception as e:  # noqa: BLE001
-            errores.append(f"CNBC tanda {i // 40}: {e}")
-            continue
-        for r in ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []:
-            try:
-                out[r["symbol"]] = {"n": r.get("name") or r.get("shortName") or r["symbol"], "v": num(r["last"]),
-                                    "prev": num(r["previous_day_closing"]), "t": str(r.get("last_time") or ""),
-                                    "estado": str(r.get("curmktstatus") or "")}
-            except Exception:  # noqa: BLE001
-                continue
-    return out
-
-
 # Índice principal de cada bolsa (clave de la bolsa en la página → símbolo CNBC, nombre del índice)
 BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": (".BVSP", "Bovespa"),
           "BMV": (".MXX", "IPC México"), "TSX": (".GSPTSE", "S&P/TSX"), "LSE": (".FTSE", "FTSE 100"),
@@ -256,10 +208,10 @@ BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": ("
 # Acciones por grupo (todas cotizan en Wall Street, en US$)
 ACCIONES = {
     "arg": ["YPF", "GGAL", "BMA", "BBAR", "SUPV", "PAM", "CEPU", "TGS", "EDN", "TEO", "VIST", "LOMA", "CRESY", "IRS",
-            "TX", "MELI", "GLOB", "DESP", "BIOX", "ARCO"],
+            "TX", "MELI", "GLOB", "BIOX", "ARCO"],
     "usa": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "BRK.B", "JPM", "LLY", "V", "XOM",
             "WMT", "MA", "NFLX", "KO", "DIS"],
-    "bra": ["PBR", "VALE", "ITUB", "BBD", "NU", "ABEV", "ERJ", "SBS", "GGB", "XP"],
+    "bra": ["PBR", "VALE", "ITUB", "BBD", "NU", "ABEV", "EMBJ", "SBS", "GGB", "XP"],
     "eur": ["ASML", "SAP", "NVO", "AZN", "SHEL", "TTE", "UL", "HSBC", "SAN", "BP", "DEO", "SNY"],
     "chl": ["SQM", "LTM", "BCH", "BSAC", "ENIC", "CCU", "AKO.B"],
     "jpn": ["TM", "SONY", "MUFG", "SMFG", "MFG", "HMC", "NMR", "IX", "TAK", "CAJPY"],
@@ -278,7 +230,7 @@ ACCIONES = {
 # Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
 BONOS = {"USA": "US10Y", "DEU": "DE10Y-DE", "GBR": "GB10Y-GB", "JPN": "JP10Y-JP", "FRA": "FR10Y-FR", "ITA": "IT10Y-IT",
          "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR", "NZL": "NZ10Y", "IDN": "ID10Y", "NOR": "NO10Y-NO", "SWE": "SE10Y-SE", "THA": "TH10Y", "MYS": "MY10Y", "PHL": "PH10Y", "ISL": "IS10Y", "HUN": "HU10Y", "HKG": "HK10Y", "CZE": "CZ10Y", "DNK": "DK10Y", "ROU": "RO10Y", "ISR": "IL10Y", "SRB": "RS10Y", "RUS": "RU10Y", "SGP": "SG10Y", "MAR": "MA10Y",
-         "BRA": "BR10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
+         "BRA": "BR10Y", "COL": "CO10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
 # Commodities (clave, nombre, símbolo CNBC, conversión a la unidad mostrada, unidad)
 COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 0.3936825, "US$/t"),
         ("trigo", "Trigo", "@W.1", 0.3674371, "US$/t"), ("wti", "Petróleo WTI", "@CL.1", 1, "US$/barril"),
@@ -303,7 +255,7 @@ HIST = {"spx": ".SPX", "ndx": ".IXIC", "dji": ".DJI", "merv": ".MERV", "bvsp": "
         "epu": "EPU", "fx_pln": "PLN=", "wig20": ".WIG20", "epol": "EPOL", "fx_inr": "INR=", "in10": "IN10Y", "inda": "INDA", "ksa": "KSA", "nifty": ".NSEI", "tasi": ".TASI", "fx_chf": "CHF=", "smi": ".SSMI", "ch10": "CH10Y-CH", "ewl": "EWL", "fx_aud": "AUD=", "asx": ".AXJO", "au10": "AU10Y", "ewa": "EWA", "fx_krw": "KRW=", "kospi": ".KS11", "kr10": "KR10Y-KR", "ewy": "EWY", "fx_zar": "ZAR=", "jse": ".JTOPI", "za10": "ZA10Y-ZA", "eza": "EZA", "fx_nzd": "NZD=", "nzx": ".NZ50", "nz10": "NZ10Y", "enzl": "ENZL", "fx_idr": "IDR=", "jkse": ".JKSE", "id10": "ID10Y", "eido": "EIDO", "fx_nok": "NOK=", "osebx": ".OSEBX", "no10": "NO10Y-NO", "norw": "NORW", "fx_sek": "SEK=", "omxs30": ".OMXS30", "se10": "SE10Y-SE", "ewd": "EWD", "fx_thb": "THB=", "seti": ".SETI", "th10": "TH10Y", "thd": "THD", "fx_myr": "MYR=", "klci": ".KLSE", "my10": "MY10Y", "ewm": "EWM", "fx_php": "PHP=", "psei": ".PSI", "ph10": "PH10Y", "ephe": "EPHE", "fx_isk": "ISK=", "omxi": ".OMXI15", "is10": "IS10Y", "fx_huf": "HUF=", "bux": ".BUX", "hu10": "HU10Y", "fx_hkd": "HKD=", "hsi": ".HSI", "hk10": "HK10Y", "ewh": "EWH", "fx_czk": "CZK=", "pxi": ".PX", "cz10": "CZ10Y", "fx_dkk": "DKK=", "omxc": ".OMXC20", "dk10": "DK10Y", "eden": "EDEN", "fx_ron": "RON=", "bet": ".BETI", "ro10": "RO10Y", "fx_ils": "ILS=", "ta35": ".TA35", "il10": "IL10Y", "eis": "EIS", "fx_rsd": "RSD=", "belex": ".BELEX15", "cn10": "CN10Y", "fxi": "FXI", "fx_rub": "RUB=", "imoex": ".IMOEX", "ru10": "RU10Y", "ita": "ITA", "fx_sgd": "SGD=", "sti": ".STI", "sg10": "SG10Y", "ews": "EWS", "fx_mad": "MAD=", "masi": ".MASI", "fx_mkd": "MKD=", "mbi10": ".MBI10", "ewp": "EWP"}
 # Bolsas europeas para la sección Europa
 # Bolsa chilena: CNBC no tiene el IPSA; se usa el fondo iShares MSCI Chile (ECH, en dólares)
-CHILE = {"ech": ("ECH", "iShares MSCI Chile")}
+CHILE = {"ech": ("ECH", "iShares MSCI Chile"), "ipsa": ("IPSA", "S&P IPSA")}
 # Japón: TOPIX, yen y bonos a 2 y 30 años (el de 10 está en BONOS)
 JAPON = {"topix": (".TOPX", "TOPIX"), "jpy": ("JPY=", "Yen por dólar"), "jp2": ("JP2Y-JP", "Bono a 2 años"), "jp30": ("JP30Y-JP", "Bono a 30 años")}
 # Reino Unido: FTSE 250, libra (dólares por libra) y gilts a 2 y 30 años (el de 10 está en BONOS)
@@ -330,7 +282,7 @@ ISRAEL = {"ils": ("ILS=", "Israel"), "eis": ("EIS", "iShares MSCI Israel"), "tev
 SERBIA = {"rsd": ("RSD=", "Serbia")}
 CHINA = {"cny": ("CNY=", "China"), "fxi": ("FXI", "iShares China Large-Cap"), "baba": ("BABA", "BABA"), "pdd": ("PDD", "PDD"), "bidu": ("BIDU", "BIDU")}
 RUSIA = {"rub": ("RUB=", "Rusia")}
-ESPANA = {"eur": ("EUR=", "España"), "ewp": ("EWP", "iShares MSCI Spain"), "san": ("SAN", "SAN"), "bbva": ("BBVA", "BBVA"), "tef": ("TEF", "TEF")}
+ESPANA = {"eur": ("EUR=", "España"), "ewp": ("EWP", "iShares MSCI Spain"), "san": ("SAN", "SAN"), "bbva": ("BBVA", "BBVA")}
 SINGAPUR = {"sgd": ("SGD=", "Singapur"), "ews": ("EWS", "iShares MSCI Singapore"), "se": ("SE", "SE"), "grab": ("GRAB", "GRAB")}
 MARRUECOS = {"mad": ("MAD=", "Marruecos")}
 MACEDONIA = {"mkd": ("MKD=", "Macedonia del Norte")}
@@ -352,76 +304,78 @@ PERU = {"epu": ("EPU", "iShares MSCI Peru")}
 EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx Europe 600"), "dax": (".GDAXI", "DAX"), "cac": (".FCHI", "CAC 40"), "ibex": (".IBEX", "IBEX 35"), "ftmib": (".FTMIB", "FTSE MIB")}
 
 
+# ISO de cada bolsa, para su índice mensual de la OCDE (precios de las acciones del país; promedio del mes)
+BOLSA_ISO = {"NYSE": "USA", "B3": "BRA", "BMV": "MEX", "TSX": "CAN", "LSE": "GBR", "Xetra": "DEU", "Euronext": "FRA",
+             "JSE": "ZAF", "NSE": "IND", "SIX": "CHE", "SSE": "CHN", "TSE": "JPN", "ASX": "AUS", "KRX": "KOR", "NZX": "NZL",
+             "IDX": "IDN", "OSE": "NOR", "OMX": "SWE", "ICEX": "ISL", "BUX": "HUN", "PSE_CZ": "CZE", "CPH": "DNK", "BVB": "ROU",
+             "TASE": "ISR", "MOEX": "RUS", "BME": "ESP", "GPW": "POL"}
+# Bono a 10 años: ISO → clave de la historia (global_hist.json). Los que no tienen fuente diaria salen de la OCDE (mensual).
+BONO_HIST = {"USA": "t10", "DEU": "de10", "GBR": "gb10", "JPN": "jp10", "FRA": "fr10", "ITA": "it10", "ESP": "es10", "CHE": "ch10",
+             "CAN": "ca10", "AUS": "au10", "CHN": "cn10", "IND": "in10", "KOR": "kr10", "NZL": "nz10", "NOR": "no10", "SWE": "se10",
+             "HUN": "hu10", "CZE": "cz10", "DNK": "dk10", "ROU": "ro10", "ISR": "il10", "MEX": "mx10", "CHL": "cl10", "ZAF": "za10",
+             "BRA": "br10", "COL": "co10", "POL": "pl10"}
+OCDE = {"SHARE": {}, "IRLT": {}}   # se llena en main
+COMM = {}                          # materias primas del Banco Mundial (mensual), se llena en main
+NOM_COM = {k: (n, u) for k, n, _, _, u in COMS}
+
+
 def extras():
+    """Sin CNBC (plan legal, 26/10/2026). Números solo de fuentes abiertas; lo demás lleva el símbolo de TradingView para que
+    la página muestre el widget (TradingView tiene las licencias; Pulso Macro no guarda esos precios)."""
     alt = lambda s: s if isinstance(s, tuple) else (s,)
-    syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
-            + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()] + [v[0] for v in CANADA.values()] + [v[0] for v in COLOMBIA.values()] + [v[0] for v in TURQUIA.values()] + [v[0] for v in PERU.values()] + [v[0] for v in POLONIA.values()] + [v[0] for v in INDIA.values()] + [v[0] for v in ARABIA.values()] + [v[0] for v in SUIZA.values()] + [v[0] for v in AUSTRALIA.values()] + [v[0] for v in COREA.values()] + [v[0] for v in SUDAFRICA.values()] + [v[0] for v in ZELANDA.values()] + [v[0] for v in INDONESIA.values()] + [v[0] for v in NORUEGA.values()] + [v[0] for v in SUECIA.values()] + [v[0] for v in TAILANDIA.values()] + [v[0] for v in MALASIA.values()] + [v[0] for v in FILIPINAS.values()] + [v[0] for v in ISLANDIA.values()] + [v[0] for v in HUNGRIA.values()] + [v[0] for v in HONGKONG.values()] + [v[0] for v in CHEQUIA.values()] + [v[0] for v in DINAMARCA.values()] + [v[0] for v in RUMANIA.values()] + [v[0] for v in ISRAEL.values()] + [v[0] for v in SERBIA.values()] + [v[0] for v in CHINA.values()] + [v[0] for v in RUSIA.values()] + [v[0] for v in ESPANA.values()] + [v[0] for v in SINGAPUR.values()] + [v[0] for v in MARRUECOS.values()] + [v[0] for v in MACEDONIA.values()] + [v[0] for v in DEFENSA.values()])
     fxq = {**(abiertas.fx_cotizaciones(FX_HIST) if FX_HIST else {}), **abiertas.sym_cotizaciones(SYM_HIST)}
-    q = cnbc_raw([x for x in dict.fromkeys(syms) if x not in fxq])
-    q.update(fxq)  # monedas (BCE/BIS), tasas de EE.UU. (Tesoro), petróleo y gas (EIA) en vez de CNBC
+
+    def item(sym, n):
+        tv, tvn = abiertas.tv_sym(sym)
+        d = {"idx": tvn or n}
+        if sym in fxq:
+            d.update(fxq[sym])
+            d["idx"] = n
+        if tv:
+            d["tv"] = tv
+        return d if (sym in fxq or tv) else None
+
+    def dicc(D):
+        return {k: x for k, (s, n) in D.items() if (x := item(s, n))}
+
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
-        varios = isinstance(s, tuple)
-        s = next((x for x in alt(s) if x in q), None)
-        if s:
-            bolsas[k] = {"idx": q[s]["n"] if varios else n, **q[s]}
-    acciones = {g: [{"s": x, **q[x]} for x in l if x in q] for g, l in ACCIONES.items()}
-    termo = {k: q[s] for k, s in TERMO.items() if s in q}
-    monedas = {k: q[s] for k, s in MONEDAS.items() if s in q}
-    bonos = {k: q[s] for k, s in BONOS.items() if s in q}
-    coms = [{**q[s], "k": k, "n": n, "u": u, "contrato": q[s]["n"], "v": round(q[s]["v"] * c, 4), "prev": round(q[s]["prev"] * c, 4)}
-            for k, n, s, c, u in COMS if s in q]
-    europa = {k: {"idx": n, **q[s]} for k, (s, n) in EUROPA.items() if s in q}
-    chile = {k: {"idx": n, **q[s]} for k, (s, n) in CHILE.items() if s in q}
-    japon = {k: {"idx": n, **q[s]} for k, (s, n) in JAPON.items() if s in q}
-    reino = {k: {"idx": n, **q[s]} for k, (s, n) in REINO.items() if s in q}
-    canada = {k: {"idx": n, **q[s]} for k, (s, n) in CANADA.items() if s in q}
-    colombia = {k: {"idx": n, **q[s]} for k, (s, n) in COLOMBIA.items() if s in q}
-    turquia = {k: {"idx": n, **q[s]} for k, (s, n) in TURQUIA.items() if s in q}
-    peru = {k: {"idx": n, **q[s]} for k, (s, n) in PERU.items() if s in q}
-    polonia = {k: {"idx": n, **q[s]} for k, (s, n) in POLONIA.items() if s in q}
-    india = {k: {"idx": n, **q[s]} for k, (s, n) in INDIA.items() if s in q}
-    arabia = {k: {"idx": n, **q[s]} for k, (s, n) in ARABIA.items() if s in q}
-    suiza = {k: {"idx": n, **q[s]} for k, (s, n) in SUIZA.items() if s in q}
-    australia = {k: {"idx": n, **q[s]} for k, (s, n) in AUSTRALIA.items() if s in q}
-    corea = {k: {"idx": n, **q[s]} for k, (s, n) in COREA.items() if s in q}
-    sudafrica = {k: {"idx": n, **q[s]} for k, (s, n) in SUDAFRICA.items() if s in q}
-    zelanda = {k: {"idx": n, **q[s]} for k, (s, n) in ZELANDA.items() if s in q}
-    indonesia = {k: {"idx": n, **q[s]} for k, (s, n) in INDONESIA.items() if s in q}
-    noruega = {k: {"idx": n, **q[s]} for k, (s, n) in NORUEGA.items() if s in q}
-    suecia = {k: {"idx": n, **q[s]} for k, (s, n) in SUECIA.items() if s in q}
-    tailandia = {k: {"idx": n, **q[s]} for k, (s, n) in TAILANDIA.items() if s in q}
-    malasia = {k: {"idx": n, **q[s]} for k, (s, n) in MALASIA.items() if s in q}
-    filipinas = {k: {"idx": n, **q[s]} for k, (s, n) in FILIPINAS.items() if s in q}
-    islandia = {k: {"idx": n, **q[s]} for k, (s, n) in ISLANDIA.items() if s in q}
-    hungria = {k: {"idx": n, **q[s]} for k, (s, n) in HUNGRIA.items() if s in q}
-    hongkong = {k: {"idx": n, **q[s]} for k, (s, n) in HONGKONG.items() if s in q}
-    chequia = {k: {"idx": n, **q[s]} for k, (s, n) in CHEQUIA.items() if s in q}
-    dinamarca = {k: {"idx": n, **q[s]} for k, (s, n) in DINAMARCA.items() if s in q}
-    rumania = {k: {"idx": n, **q[s]} for k, (s, n) in RUMANIA.items() if s in q}
-    israel = {k: {"idx": n, **q[s]} for k, (s, n) in ISRAEL.items() if s in q}
-    serbia = {k: {"idx": n, **q[s]} for k, (s, n) in SERBIA.items() if s in q}
-    china = {k: {"idx": n, **q[s]} for k, (s, n) in CHINA.items() if s in q}
-    rusia = {k: {"idx": n, **q[s]} for k, (s, n) in RUSIA.items() if s in q}
-    espana = {k: {"idx": n, **q[s]} for k, (s, n) in ESPANA.items() if s in q}
-    singapur = {k: {"idx": n, **q[s]} for k, (s, n) in SINGAPUR.items() if s in q}
-    marruecos = {k: {"idx": n, **q[s]} for k, (s, n) in MARRUECOS.items() if s in q}
-    macedonia = {k: {"idx": n, **q[s]} for k, (s, n) in MACEDONIA.items() if s in q}
-    defensa = {k: {"idx": n, **q[s]} for k, (s, n) in DEFENSA.items() if s in q}
-    return {"polonia": polonia, "india": india, "arabia": arabia, "suiza": suiza, "australia": australia, "corea": corea, "sudafrica": sudafrica, "zelanda": zelanda, "indonesia": indonesia, "noruega": noruega, "suecia": suecia, "tailandia": tailandia, "malasia": malasia, "filipinas": filipinas, "islandia": islandia, "hungria": hungria, "hongkong": hongkong, "chequia": chequia, "dinamarca": dinamarca, "rumania": rumania, "israel": israel, "serbia": serbia, "china": china, "rusia": rusia, "espana": espana, "singapur": singapur, "marruecos": marruecos, "macedonia": macedonia, "defensa": defensa, "bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms, "europa": europa, "chile": chile, "japon": japon, "reino": reino, "canada": canada, "colombia": colombia, "turquia": turquia, "peru": peru}
-
-
-def cripto():
-    """Las 10 criptomonedas más grandes por valor de mercado (CoinGecko)."""
-    j = json.loads(get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1"
-                       "&price_change_percentage=24h,7d,1y"))
-    out = []
-    for c in j:
-        out.append({"s": str(c.get("symbol", "")).upper(), "n": c.get("name"), "v": c.get("current_price"), "mcap": c.get("market_cap"),
-                    "d1": c.get("price_change_percentage_24h_in_currency"), "d7": c.get("price_change_percentage_7d_in_currency"),
-                    "a1": c.get("price_change_percentage_1y_in_currency"), "t": c.get("last_updated")})
-    if not out:
-        raise ValueError("sin datos")
+        tv, tvn = next((abiertas.tv_sym(x) for x in alt(s) if abiertas.tv_sym(x)[0]), (None, None))
+        d = {"idx": n}
+        if tv:
+            d.update({"tv": tv, "tvn": tvn or n})
+        iso = BOLSA_ISO.get(k)
+        if iso and iso in OCDE["SHARE"]:
+            d.update({"iso": iso, **abiertas.var_mensual(OCDE["SHARE"][iso])})
+        if len(d) > 1:
+            bolsas[k] = d
+    acciones = {g: [{"s": x, "tv": abiertas.tv_sym(x)[0]} for x in l if abiertas.tv_sym(x)[0]] for g, l in ACCIONES.items()}
+    termo = {k: fxq[s] for k, s in TERMO.items() if s in fxq}
+    fsi = SYM_HIST.get("FSI") or []
+    if len(fsi) > 1:
+        termo["fsi"] = {"n": "Estrés financiero (OFR)", "v": fsi[-1][1], "prev": fsi[-2][1], "t": fsi[-1][0] + "T21:00:00+00:00",
+                        "f": "Oficina de Investigación Financiera (OFR), Tesoro de EE.UU."}
+    monedas = {k: fxq[s] for k, s in MONEDAS.items() if s in fxq}
+    bonos = {k: fxq[s] for k, s in BONOS.items() if s in fxq}
+    for iso, pts in OCDE["IRLT"].items():
+        if iso in BONOS and iso not in bonos and (x := abiertas.cot_mensual(pts, f"Bono a 10 años ({iso})", "OCDE (promedio del mes)")):
+            bonos[iso] = x
+    coms = []
+    for k, n, s, c, u in COMS:
+        x = fxq.get(s) or abiertas.cot_mensual(COMM.get(k), n, "Banco Mundial (promedio del mes)")
+        if x:
+            coms.append({**x, "k": k, "n": n, "u": u, "contrato": "spot (EIA)" if s in fxq else "promedio del mes (Banco Mundial)"})
+    out = {"bolsas": bolsas, "acciones": acciones, "termo": termo, "monedas": monedas, "bonos": bonos, "commodities": coms}
+    for clave, D in (("europa", EUROPA), ("chile", CHILE), ("japon", JAPON), ("reino", REINO), ("canada", CANADA),
+                     ("colombia", COLOMBIA), ("turquia", TURQUIA), ("peru", PERU), ("polonia", POLONIA), ("india", INDIA),
+                     ("arabia", ARABIA), ("suiza", SUIZA), ("australia", AUSTRALIA), ("corea", COREA), ("sudafrica", SUDAFRICA),
+                     ("zelanda", ZELANDA), ("indonesia", INDONESIA), ("noruega", NORUEGA), ("suecia", SUECIA),
+                     ("tailandia", TAILANDIA), ("malasia", MALASIA), ("filipinas", FILIPINAS), ("islandia", ISLANDIA),
+                     ("hungria", HUNGRIA), ("hongkong", HONGKONG), ("chequia", CHEQUIA), ("dinamarca", DINAMARCA),
+                     ("rumania", RUMANIA), ("israel", ISRAEL), ("serbia", SERBIA), ("china", CHINA), ("rusia", RUSIA),
+                     ("espana", ESPANA), ("singapur", SINGAPUR), ("marruecos", MARRUECOS), ("macedonia", MACEDONIA),
+                     ("defensa", DEFENSA)):
+        out[clave] = dicc(D)
     return out
 
 
@@ -491,59 +445,36 @@ def noticias_mundo(prev):
 
 
 def historia(prev_h):
-    """Cierres diarios de 1 año (CNBC). Se renueva cada 3 horas como máximo."""
-    try:
-        al = datetime.fromisoformat(prev_h.get("actualizado", "2000-01-01T00:00+00:00"))
-        if (datetime.now(timezone.utc) - al).total_seconds() < 3 * 3600 and prev_h.get("series") and prev_h.get("conv") and set(HIST) <= set(prev_h.get("claves") or []):
-            return prev_h
-    except Exception:  # noqa: BLE001
-        pass
-    series = dict(prev_h.get("series") or {})
-    if not prev_h.get("conv"):  # historia vieja guardada en la unidad de CNBC: pasarla a la unidad mostrada
-        for k, c in COM_CONV.items():
-            if k in series and c != 1:
-                series[k] = [[d, round(v * c, 4)] for d, v in series[k]]
-    ok = 0
+    """Historia de cada serie, SOLO de fuentes abiertas (plan legal, 26/10/2026: lo de CNBC se borra).
+    Diarias: monedas (BCE/BIS), tasas de EE.UU. (Tesoro), bonos de 6 países (sus bancos centrales y Japón), petróleo y gas
+    (EIA), índice dólar propio y estrés financiero (OFR). Mensuales (promedio del mes): materias primas (Banco Mundial),
+    bonos a 10 años y precios de las acciones de cada país (OCDE, claves ir_ISO y sh_ISO)."""
+    series = {}
     fxh = abiertas.fx_series_hist(FX_HIST) if FX_HIST else {}
+    series.update(fxh)
     for k, sym in HIST.items():
-        if k in fxh:  # monedas: BCE y BIS en vez de CNBC
-            series[k] = fxh[k]
-            ok += 1
-            continue
-        if sym in SYM_HIST:  # Tesoro de EE.UU. y EIA en vez de CNBC
+        if sym in SYM_HIST:
             series[k] = SYM_HIST[sym][-520:]
-            ok += 1
-            continue
-        try:
-            pts = []
-            for intento in range(3):  # a veces CNBC devuelve la serie vacía: se reintenta con una pausa
-                j = json.loads(get(f"https://ts-api.cnbc.com/harmony/app/charts/1Y.json?symbol={urllib.request.quote(sym, safe='')}",
-                                   tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
-                for b in (j.get("barData") or {}).get("priceBars") or []:
-                    t, c = str(b.get("tradeTime") or ""), b.get("close")
-                    if len(t) >= 8 and c not in (None, ""):
-                        pts.append([f"{t[:4]}-{t[4:6]}-{t[6:8]}", round(float(c) * COM_CONV.get(k, 1), 4)])
-                if len(pts) > 20:
-                    break
-                pts = []
-                time.sleep(3 + 3 * intento)
-            if len(pts) > 20:
-                series[k] = pts
-                ok += 1
-            else:
-                errores.append(f"CNBC historia {sym}: {len(pts)} puntos")
-        except Exception as e:  # noqa: BLE001
-            errores.append(f"CNBC historia {sym}: {e}")
-        time.sleep(0.4)
-    try:  # bitcoin: CoinGecko
-        j = json.loads(get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365&interval=daily"))
-        series["btc"] = [[datetime.fromtimestamp(t / 1000, timezone.utc).date().isoformat(), round(v, 2)] for t, v in j.get("prices", [])]
-        ok += 1
-    except Exception as e:  # noqa: BLE001
-        errores.append(f"CoinGecko historia: {e}")
-    if not ok:
-        return prev_h
-    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series, "conv": True, "claves": list(HIST)}
+    if SYM_HIST.get("FSI"):
+        series["fsi"] = SYM_HIST["FSI"][-520:]
+    for k, pts in COMM.items():  # soja, maíz, trigo, oro, plata, cobre: mensual
+        series[k] = pts
+    for iso, pts in OCDE["SHARE"].items():
+        series["sh_" + iso] = pts
+    for iso, pts in OCDE["IRLT"].items():
+        series["ir_" + iso] = pts
+        k = BONO_HIST.get(iso)
+        if k and k not in series:  # bono sin fuente diaria: la serie mensual de la OCDE
+            series[k] = pts
+    mensual = sorted(set(COMM) | {"sh_" + i for i in OCDE["SHARE"]} | {"ir_" + i for i in OCDE["IRLT"]}
+                     | {BONO_HIST[i] for i in OCDE["IRLT"] if i in BONO_HIST and series.get(BONO_HIST[i]) is OCDE["IRLT"][i]})
+    if len(series) < 10:  # si fallaron casi todas las fuentes, queda lo anterior (pero nunca lo que venía de CNBC)
+        viejas = prev_h.get("series") or {}
+        if prev_h.get("abiertas"):
+            return prev_h
+        series = {k: v for k, v in viejas.items() if k.startswith(("fx_", "sh_", "ir_")) or k in ("t10", "wti", "brent", "gas", "dxy", "fsi")}
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "series": series, "conv": True,
+            "abiertas": True, "mensual": mensual}
 
 
 def frankfurter():
@@ -558,19 +489,12 @@ def frankfurter():
     return {"eurusd": (1 / u["EUR"], 1 / a["EUR"], t), "usdbrl": (u["BRL"], a["BRL"], t), "usdcny": (u["CNY"], a["CNY"], t)}
 
 
-def coingecko():
-    j = json.loads(get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_last_updated_at=true"))
-    b = j["bitcoin"]
-    v, ch = float(b["usd"]), float(b.get("usd_24h_change") or 0)
-    return {"btc": (v, v / (1 + ch / 100), datetime.fromtimestamp(b.get("last_updated_at", time.time()), timezone.utc).isoformat(timespec="minutes"))}
-
-
 def mercados(prev):
-    viejo = {m["k"]: m for m in prev.get("mercados") or []}
+    """Cinta de mercados: solo lo que tiene fuente abierta (el resto lo muestra el widget de TradingView en la página)."""
     datos, fuente = {}, {}
     abiertas_m = lambda: {k: (q["v"], q["prev"], q["t"]) for k, q in
                           ((k, abiertas.sym_cotizaciones(SYM_HIST).get(s)) for k, s in (("t10", "US10Y"), ("brent", "@LCO.1"), ("wti", "@CL.1"), ("dxy", ".DXY"))) if q}
-    for nombre, fn in (("Tesoro/EIA/BCE", abiertas_m), ("CNBC", cnbc), ("BCE/Frankfurter", frankfurter), ("CoinGecko", coingecko)):
+    for nombre, fn in (("Tesoro/EIA/BCE", abiertas_m), ("BCE/Frankfurter", frankfurter)):
         try:
             for k, d in fn().items():
                 if k not in datos:
@@ -581,19 +505,9 @@ def mercados(prev):
     for k, n, g, ys, ss, u, conv in MERCADOS:
         if k in datos:
             p, pv, t = datos[k]
-            c = 1 if fuente[k] in ("BCE/Frankfurter", "CoinGecko", "Tesoro/EIA/BCE") else conv
-            out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p * c, 4), "prev": round(pv * c, 4), "t": t, "f": fuente[k]})
-        elif k in viejo:
-            out.append(viejo[k])
+            out.append({"k": k, "n": n, "g": g, "u": u, "v": round(p, 4), "prev": round(pv, 4), "t": t, "f": fuente[k]})
     return out
 
-
-def cripto_seguro(prev):
-    try:
-        return cripto()
-    except Exception as e:  # noqa: BLE001
-        errores.append(f"CoinGecko top 10: {e}")
-        return prev.get("cripto") or []
 
 
 def main():
@@ -603,11 +517,16 @@ def main():
             prev = json.loads(OUT.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001
             prev = {}
+    if not prev.get("abiertas"):  # global.json armado con CNBC: no se reusa nada de mercados (plan legal 26/10/2026)
+        prev = {k: prev[k] for k in ("paises", "fuentes", "noticias") if k in prev}
     global FX_HIST, SYM_HIST
     FX_HIST = abiertas.fx_hist()
     SYM_HIST = {**abiertas.tesoro_hist(), **abiertas.eia_hist(), **abiertas.bonos_hist()}
-    if FX_HIST:  # índice dólar propio (fórmula del DXY con monedas del BCE) en vez del DXY de CNBC
+    if FX_HIST:  # índice dólar propio (fórmula del DXY con monedas del BCE)
         SYM_HIST[".DXY"] = abiertas.dolar_indice(FX_HIST)
+    SYM_HIST["FSI"] = abiertas.ofr_estres()
+    OCDE.update(abiertas.ocde_mercados())
+    COMM.update(abiertas.banco_mundial_commodities())
     errores.extend(abiertas.errores)
     paises, ok_imf, fuentes = imf(prev)
     n_bis = bis(paises)
@@ -616,7 +535,7 @@ def main():
     except Exception as e:  # noqa: BLE001
         errores.append(f"extras: {e}")
         ex = {}
-    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities", "europa", "chile", "japon", "reino", "canada", "colombia", "turquia", "peru", "polonia", "india", "arabia", "suiza", "australia", "corea", "sudafrica", "zelanda", "indonesia", "noruega", "suecia", "tailandia", "malasia", "filipinas", "islandia", "hungria", "hongkong", "chequia", "dinamarca", "rumania", "israel", "serbia", "china", "rusia", "defensa", "espana", "singapur", "marruecos", "macedonia"):  # si una sección vino vacía, queda la anterior
+    for k in ("bolsas", "acciones", "termo", "monedas", "bonos", "commodities"):  # si una sección vino vacía, queda la anterior
         if not ex.get(k) or (k == "acciones" and not any(ex[k].values())):
             ex[k] = prev.get(k) or {}
     HISTF = ROOT / "global_hist.json"
@@ -627,26 +546,22 @@ def main():
         except Exception:  # noqa: BLE001
             prev_h = {}
     h = historia(prev_h)
-    fxh = abiertas.fx_series_hist(FX_HIST) if FX_HIST else {}
-    fxh.update({k: SYM_HIST[sym][-520:] for k, sym in HIST.items() if sym in SYM_HIST})
-    if fxh and h.get('series') is not None:  # monedas siempre del BCE/BIS, aunque la historia no se haya renovado
-        h = {**h, 'series': {**h['series'], **fxh}}
-    if h is not prev_h or fxh:
-        HISTF.write_text(json.dumps(h, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    HISTF.write_text(json.dumps(h, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     data = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
+        "abiertas": True,
         **ex,
         "anio_fmi": date.today().year,
         "paises": dict(sorted(paises.items())),
         "fuentes": fuentes,
         "mercados": mercados(prev),
-        "cripto": cripto_seguro(prev),
         "noticias": noticias_mundo(prev),
         "errores": errores[:60],
     }
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"FMI {ok_imf}/{len(IMF)} indicadores, {len(paises)} países; BIS {n_bis} países con tasa; "
-          f"{len(data['mercados'])}/{len(MERCADOS)} mercados")
+          f"{len(data['mercados'])} mercados; OCDE {len(OCDE['SHARE'])} bolsas y {len(OCDE['IRLT'])} bonos; "
+          f"Banco Mundial {len(COMM)} materias primas; OFR {len(SYM_HIST.get('FSI') or [])} días")
     for e in errores:
         print("ERROR", e)
     # No corta el workflow: los errores quedan en global.json para poder diagnosticarlos.

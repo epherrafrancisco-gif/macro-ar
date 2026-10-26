@@ -7,10 +7,10 @@ Fuentes oficiales y gratuitas, sin clave:
     empleos creados, salarios y desempleo por estado. Su API sin clave permite pocas
     consultas por día: se renueva como máximo cada 12 horas.
   - BIS: tasa de la Reserva Federal (diaria), para el historial y las decisiones.
-  - CNBC: sectores del S&P 500 (fondos XLK, XLE, ...), las 7 magníficas y las 50 empresas más grandes.
+  - Sectores del S&P 500, 7 magníficas y mapa de las empresas: widgets de TradingView en la página (desde el 26/10/2026; antes
+    CNBC, cuyos términos prohíben mostrar sus datos). Acá solo van los símbolos.
   - Departamento de Trabajo (DOL): pedidos semanales de seguro de desempleo (como máximo cada 12 horas).
   - Freddie Mac: tasa hipotecaria a 30 años (semanal).
-  - Nasdaq: calendario de balances de las empresas grandes (como máximo cada 12 horas).
   - BEA: PBI trimestral, solo si existe el secreto BEA_KEY (clave gratis de apps.bea.gov, cargada el 11/10/2026).
 
 Uso: python scripts/usa.py
@@ -28,7 +28,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "usa.json"
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
+UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
 errores = []
 
 # Reuniones de la Fed (federalreserve.gov/monetarypolicy/fomccalendars.htm): (inicio, fin)
@@ -153,21 +153,6 @@ def bis_fed():
     return {"actual": pts[-1][1], "al": pts[-1][0], "mensual": sorted(mensual.items()), "decisiones": decisiones[-8:][::-1], "proxima": proxima}
 
 
-def cnbc(symbols):
-    num = lambda x: float(str(x).replace(",", "").replace("%", "").strip())
-    j = json.loads(get("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
-                       + urllib.request.quote("|".join(symbols), safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1",
-                       tries=2, headers={"Accept": "application/json", "Referer": "https://www.cnbc.com/"}))
-    out = {}
-    for r in ((j.get("FormattedQuoteResult") or {}).get("FormattedQuote")) or []:
-        try:
-            out[r["symbol"]] = {"v": num(r["last"]), "prev": num(r["previous_day_closing"]), "t": str(r.get("last_time") or ""),
-                                "mcap": r.get("mktcapView") or r.get("mktcap") or None}
-        except Exception:  # noqa: BLE001
-            continue
-    return out
-
-
 def claims():
     """Pedidos semanales de seguro de desempleo (DOL, suma de los estados, sin desestacionalizar)."""
     txt = get("https://oui.doleta.gov/unemploy/csv/ar539.csv", timeout=120)
@@ -203,32 +188,6 @@ def hipotecaria():
     if not pts:
         raise ValueError("sin datos")
     return pts[-260:]
-
-
-def balances():
-    """Próximos balances de empresas grandes (Nasdaq), para los próximos 14 días."""
-    out = []
-    for i in range(0, 15):
-        dia = date.today() + timedelta(days=i)
-        if dia.weekday() >= 5:
-            continue
-        try:
-            j = json.loads(get(f"https://api.nasdaq.com/api/calendar/earnings?date={dia.isoformat()}", tries=2, timeout=30,
-                               headers={"Accept": "application/json", "Origin": "https://www.nasdaq.com", "Referer": "https://www.nasdaq.com/"}))
-        except Exception as e:  # noqa: BLE001
-            errores.append(f"Nasdaq {dia}: {e}")
-            continue
-        for r in ((j.get("data") or {}).get("rows")) or []:
-            try:
-                mcap = float(str(r.get("marketCap") or "0").replace("$", "").replace(",", "") or 0)
-            except ValueError:
-                mcap = 0
-            if mcap >= 50e9:
-                out.append({"f": dia.isoformat(), "s": r.get("symbol"), "n": r.get("name"), "mcap": mcap,
-                            "h": {"time-pre-market": "antes de la apertura", "time-after-hours": "después del cierre"}.get(r.get("time"), ""),
-                            "eps": r.get("epsForecast") or "", "q": r.get("fiscalQuarterEnding") or ""})
-        time.sleep(0.5)
-    return sorted(out, key=lambda x: (x["f"], -x["mcap"]))
 
 
 def pbi():
@@ -288,22 +247,11 @@ def main():
             data["bls_al"] = datetime.now(timezone.utc).isoformat(timespec="minutes")
         except Exception as e:  # noqa: BLE001
             errores.append(f"BLS: {e}")
-    try:
-        q = cnbc([s for s, _ in SECTORES] + [s for s, _ in MAG7])
-        if q:
-            data["sectores"] = [{"s": s, "n": n, **q[s]} for s, n in SECTORES if s in q]
-            data["mag7"] = [{"s": s, "n": n, **q[s]} for s, n in MAG7 if s in q]
-    except Exception as e:  # noqa: BLE001
-        errores.append(f"CNBC: {e}")
-    try:
-        todos = [x for l in HEAT50.values() for x in l]
-        q = {}
-        for i in range(0, len(todos), 25):
-            q.update(cnbc(todos[i:i + 25]))
-        if q:
-            data["heat"] = [{"g": g, "s": x, **q[x]} for g, l in HEAT50.items() for x in l if x in q]
-    except Exception as e:  # noqa: BLE001
-        errores.append(f"CNBC 50: {e}")
+    # sectores y 7 magníficas: solo los símbolos (los precios los muestra el widget de TradingView)
+    data["sectores"] = [{"s": s, "n": n, "tv": ("AMEX:" if s.startswith("XL") else "NASDAQ:" if s in ("NVDA", "MSFT", "AAPL", "AMZN", "GOOGL", "META", "TSLA") else "NYSE:") + s} for s, n in SECTORES]
+    data["mag7"] = [{"s": s, "n": n, "tv": "NASDAQ:" + s} for s, n in MAG7]
+    for viejo in ("heat", "balances", "balances_al"):  # venían de CNBC y del sitio de Nasdaq (sin permiso): se borran
+        data.pop(viejo, None)
     for clave, fn in (("hipotecaria", hipotecaria), ("pbi", pbi)):
         try:
             r = fn()
@@ -311,8 +259,8 @@ def main():
                 data[clave] = r
         except Exception as e:  # noqa: BLE001
             errores.append(f"{clave}: {e}")
-    # DOL y Nasdaq: como máximo cada 12 horas
-    for clave, fn in (("pedidos", claims), ("balances", balances)):
+    # DOL: como máximo cada 12 horas
+    for clave, fn in (("pedidos", claims),):
         try:
             al = datetime.fromisoformat((data.get(clave + "_al") or "2000-01-01T00:00+00:00"))
             if (datetime.now(timezone.utc) - al).total_seconds() < 12 * 3600 and data.get(clave):
@@ -331,8 +279,8 @@ def main():
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print("deuda", bool(data.get("deuda")), "curva", bool(data.get("curva")), "fed", bool(data.get("fed")),
           "bls", bool(data.get("bls")), "estados", len(data.get("estados") or {}), "sectores", len(data.get("sectores") or []),
-          "heat", len(data.get("heat") or []), "pedidos", bool(data.get("pedidos")), "hipotecaria", bool(data.get("hipotecaria")),
-          "balances", len(data.get("balances") or []), "pbi", bool(data.get("pbi")))
+          "pedidos", bool(data.get("pedidos")), "hipotecaria", bool(data.get("hipotecaria")),
+          "pbi", bool(data.get("pbi")))
     for e in errores:
         print("ERROR", e)
 

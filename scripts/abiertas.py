@@ -324,7 +324,10 @@ def bonos_hist(dias=800):
     return {s: sorted([t, v] for t, v in d.items()) for s, d in out.items() if len(d) > 20}
 
 
-NOMBRES_SYM = {"US2Y": "Bono del Tesoro a 2 años", "US10Y": "Bono del Tesoro a 10 años", "US30Y": "Bono del Tesoro a 30 años",
+NOMBRES_SYM = {"DE10Y-DE": "Bund a 10 años", "GB10Y-GB": "Gilt a 10 años", "CA2Y": "Bono a 2 años", "CA10Y": "Bono a 10 años",
+               "CA30Y": "Bono a 30 años", "JP2Y-JP": "Bono a 2 años", "JP10Y-JP": "Bono a 10 años", "JP30Y-JP": "Bono a 30 años",
+               "SE10Y-SE": "Bono a 10 años", "NO10Y-NO": "Bono a 10 años",
+               "US2Y": "Bono del Tesoro a 2 años", "US10Y": "Bono del Tesoro a 10 años", "US30Y": "Bono del Tesoro a 30 años",
                ".DXY": "Índice dólar (6 monedas, BCE)", "@CL.1": "Petróleo WTI (spot, EIA)", "@LCO.1": "Petróleo Brent (spot, EIA)", "@NG.1": "Gas natural Henry Hub (spot, EIA)"}
 
 
@@ -338,3 +341,139 @@ def sym_cotizaciones(hist):
                       "Pulso Macro con el BCE" if sym == ".DXY" else "EIA"))
             q[sym] = x
     return q
+
+
+# ---- Plan legal, segunda etapa (26/10/2026): sin CNBC ----
+# Bolsas y bonos de cada país: OCDE (Main Economic Indicators, promedios mensuales; uso libre, también comercial, citando).
+OCDE_FIN = ("https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/.M.SHARE+IRLT......"
+            "?startPeriod={}&format=csvfile")
+
+
+def ocde_mercados(anios=6):
+    """{'SHARE': {ISO3: [[AAAA-MM-01, índice 2015=100], ...]}, 'IRLT': {ISO3: [[AAAA-MM-01, tasa %], ...]}}.
+    SHARE = índice de precios de las acciones; IRLT = bono del gobierno a 10 años. Los dos son promedios del mes."""
+    out = {"SHARE": {}, "IRLT": {}}
+    try:
+        for r in _csv(get(OCDE_FIN.format(f"{date.today().year - anios}-01"), "text/csv")):
+            m, a, t, v = r.get("MEASURE"), r.get("REF_AREA"), r.get("TIME_PERIOD") or "", r.get("OBS_VALUE")
+            if m in out and a and len(t) == 7 and v not in (None, "", "NaN"):
+                out[m].setdefault(a, []).append([t + "-01", round(float(v), 4)])
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"OCDE bolsas y bonos: {e}")
+    return {m: {a: sorted(p) for a, p in d.items() if len(p) > 2} for m, d in out.items()}
+
+
+# Materias primas: Banco Mundial, "Pink Sheet" (precios promedio de cada mes; CC BY 4.0).
+PINK = {"soja": "Soybeans", "maiz": "Maize", "trigo": "Wheat, US SRW", "oro": "Gold", "plata": "Silver", "cobre": "Copper"}
+
+
+def banco_mundial_commodities(anios=6):
+    """{clave: [[AAAA-MM-01, precio], ...]} en US$/t (soja, maíz, trigo, cobre) y US$/onza (oro, plata). Necesita openpyxl."""
+    import re
+    try:
+        import openpyxl
+        pag = get("https://www.worldbank.org/en/research/commodity-markets").decode("utf-8", "replace")
+        m = re.search(r"https://thedocs\.worldbank\.org/[^\"'\s]+CMO-Historical-Data-Monthly\.xlsx", pag)
+        if not m:
+            raise ValueError("no encontré el link de la planilla mensual")
+        wb = openpyxl.load_workbook(io.BytesIO(get(m.group(0))), read_only=True, data_only=True)
+        filas = list(wb["Monthly Prices"].iter_rows(values_only=True))
+        cab_i = next(i for i, r in enumerate(filas) if r and any(str(c or "").strip() == "Soybeans" for c in r))
+        cab = [str(c or "").strip() for c in filas[cab_i]]
+        cols = {k: cab.index(n) for k, n in PINK.items() if n in cab}
+        desde, out = date.today().year - anios, {}
+        for r in filas[cab_i + 1:]:
+            mm = re.fullmatch(r"(\d{4})M(\d{2})", str(r[0] or "").strip())
+            if not mm or int(mm.group(1)) < desde:
+                continue
+            for k, i in cols.items():
+                if isinstance(r[i], (int, float)):
+                    out.setdefault(k, []).append([f"{mm.group(1)}-{mm.group(2)}-01", round(float(r[i]), 2)])
+        if not out:
+            raise ValueError("planilla sin datos")
+        return out
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"Banco Mundial (materias primas): {e}")
+        return {}
+
+
+def ofr_estres(dias=800):
+    """Índice de estrés financiero de la Oficina de Investigación Financiera de EE.UU. (OFR, Tesoro; dominio público).
+    Diario. 0 = estrés promedio; positivo = más estrés que lo normal. Reemplaza al VIX (de Cboe, con licencia)."""
+    try:
+        desde = (date.today() - timedelta(days=dias)).isoformat()
+        pts = [[r["Date"], round(float(r["OFR FSI"]), 3)] for r in _csv(get(
+            "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv", "text/csv"))
+            if r.get("Date", "") >= desde and r.get("OFR FSI") not in (None, "")]
+        return sorted(pts)
+    except Exception as e:  # noqa: BLE001
+        errores.append(f"OFR estrés financiero: {e}")
+        return []
+
+
+def cot_mensual(pts, nombre, fuente):
+    """Último mes y el anterior: {n, v, prev, t (AAAA-MM), mensual, f}. La página muestra el mes en vez de 'hoy'."""
+    if not pts or len(pts) < 2:
+        return None
+    return {"n": nombre, "v": pts[-1][1], "prev": pts[-2][1], "t": pts[-1][0][:7], "mensual": True, "f": fuente}
+
+
+def var_mensual(pts):
+    """Para una bolsa con el índice mensual de la OCDE: mes, % contra el mes anterior, % en el año y % en 12 meses."""
+    if not pts or len(pts) < 2:
+        return {}
+    (t, v), pv = pts[-1], pts[-2][1]
+    dic = next((p[1] for p in reversed(pts) if p[0] < t[:4] + "-01-01"), None)
+    hace = next((p[1] for p in pts if p[0] == f"{int(t[:4]) - 1}{t[4:]}"), None)
+    r = lambda a, b: round((a / b - 1) * 100, 2) if a and b else None
+    return {"m": t[:7], "vm": r(v, pv), "va": r(v, dic), "v12": r(v, hace), "fm": "OCDE (promedio del mes)"}
+
+
+# ---- Símbolos para los widgets de TradingView (la página los muestra desde los servidores de TradingView, que tiene
+# las licencias de las bolsas; Pulso Macro no guarda ni redistribuye esos precios). Probados uno por uno el 26/10/2026:
+# los índices que TradingView no deja mostrar en widgets (S&P 500, Dow, Nikkei, FTSE...) van con el CFD que lo sigue. ----
+TV = {
+    # índices (o el instrumento que los sigue)
+    ".SPX": ("FOREXCOM:SPXUSD", "S&P 500"), ".IXIC": ("FOREXCOM:NSXUSD", "Nasdaq 100"), ".DJI": ("FOREXCOM:DJI", "Dow Jones"),
+    ".BVSP": ("BMFBOVESPA:IBOV", "Bovespa"), ".GSPTSE": ("TSX:TSX", "S&P/TSX"), ".FTSE": ("FOREXCOM:UKXGBP", "FTSE 100"),
+    ".GDAXI": ("XETR:DAX", "DAX"), ".FCHI": ("EURONEXT:PX1", "CAC 40"), ".SSMI": ("SIX:SMI", "SMI"), ".SSEC": ("SSE:000001", "Shanghái"),
+    ".HSI": ("HSI:HSI", "Hang Seng"), ".N225": ("FOREXCOM:JPXJPY", "Nikkei 225"), ".AXJO": ("FOREXCOM:AUXAUD", "S&P/ASX 200"),
+    ".JKSE": ("IDX:COMPOSITE", "Jakarta Composite"), ".OSEBX": ("OSL:OSEBX", "OSEBX"), ".OMXS30": ("OMXSTO:OMXS30", "OMX Stockholm 30"),
+    ".OMXI15": ("OMXICE:OMXI15", "OMX Iceland 15"), ".BUX": ("BET:BUX", "BUX"), ".PX": ("PSECZ:PX", "PX"),
+    ".OMXC25": ("OMXCOP:OMXC25", "OMX Copenhagen 25"), ".BETI": ("BVB:BET", "BET"), ".IBEX": ("BME:IBC", "IBEX 35"),
+    ".WIG20": ("GPW:WIG20", "WIG20"), ".STOXX50E": ("CAPITALCOM:EU50", "Euro Stoxx 50"), ".FTMIB": ("CAPITALCOM:IT40", "FTSE MIB"),
+    ".VIX": ("CAPITALCOM:VIX", "VIX"), "IPSA": ("BCS:SP_IPSA", "S&P IPSA"),
+    # índices sin widget: fondo de acciones del país que cotiza en Nueva York
+    ".MXX": ("AMEX:EWW", "iShares MSCI Mexico (EWW)"), ".JALSH": ("AMEX:EZA", "iShares MSCI South Africa (EZA)"),
+    ".TASI": ("AMEX:KSA", "iShares MSCI Saudi Arabia (KSA)"), ".NSEI": ("CBOE:INDA", "iShares MSCI India (INDA)"),
+    ".KS11": ("AMEX:EWY", "iShares MSCI South Korea (EWY)"), ".NZ50": ("NASDAQ:ENZL", "iShares MSCI New Zealand (ENZL)"),
+    ".SETI": ("AMEX:THD", "iShares MSCI Thailand (THD)"), ".KLSE": ("AMEX:EWM", "iShares MSCI Malaysia (EWM)"),
+    ".PSI": ("AMEX:EPHE", "iShares MSCI Philippines (EPHE)"), ".TA35": ("AMEX:EIS", "iShares MSCI Israel (EIS)"),
+    ".STI": ("AMEX:EWS", "iShares MSCI Singapore (EWS)"), ".TOPX": ("AMEX:EWJ", "iShares MSCI Japan (EWJ)"),
+    ".XU100": ("NASDAQ:TUR", "iShares MSCI Turkey (TUR)"), ".COLCAP": ("AMEX:COLO", "Global X MSCI Colombia (COLO)"),
+    # fondos y acciones que cotizan en Nueva York
+    "ECH": ("CBOE:ECH", None), "EPU": ("AMEX:EPU", None), "EPOL": ("AMEX:EPOL", None), "INDA": ("CBOE:INDA", None),
+    "KSA": ("AMEX:KSA", None), "EWL": ("AMEX:EWL", None), "EWA": ("AMEX:EWA", None), "EWY": ("AMEX:EWY", None),
+    "EZA": ("AMEX:EZA", None), "ENZL": ("NASDAQ:ENZL", None), "EIDO": ("AMEX:EIDO", None), "NORW": ("AMEX:NORW", None),
+    "EWD": ("AMEX:EWD", None), "THD": ("AMEX:THD", None), "EWM": ("AMEX:EWM", None), "EPHE": ("AMEX:EPHE", None),
+    "EWH": ("AMEX:EWH", None), "EDEN": ("CBOE:EDEN", None), "EIS": ("AMEX:EIS", None), "FXI": ("AMEX:FXI", None),
+    "EWS": ("AMEX:EWS", None), "EWP": ("AMEX:EWP", None), "TUR": ("NASDAQ:TUR", None), "ITA": ("CBOE:ITA", None),
+    "RHM-DE": ("XETR:RHM", None), "BA.-GB": ("OTC:BAESY", "BAE Systems (ADR)"),
+}
+# Bolsa de Nueva York o Nasdaq de cada acción (para el widget). Las que no están acá van a NYSE.
+NASDAQ = {"GGAL", "CRESY", "MELI", "BIOX", "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "NFLX", "WMT", "XP",
+          "ASML", "SNY", "VOD", "ARM", "SHOP", "TRI", "MMYT", "LOGI", "TEAM", "OMAB", "PDD", "BIDU", "JD", "CHKP",
+          "ERIC", "GRAB", "ADBE", "AMD", "CSCO", "INTU", "QCOM", "TXN", "COST", "PEP", "AMGN", "LIN"}
+OTC = {"CAJPY", "ABBNY", "NSRGY", "RHHBY", "BAESY"}
+
+
+def tv_sym(sym):
+    """Símbolo CNBC o ticker de Nueva York → (símbolo de TradingView, nombre a mostrar o None)."""
+    if sym in TV:
+        return TV[sym]
+    import re
+    if sym.startswith((".", "@")) or sym.endswith("=") or re.fullmatch(r"[A-Z]{2}\d+Y(-[A-Z]{2})?", sym):
+        return (None, None)  # índice sin widget, moneda o bono: sin símbolo de TradingView
+    ex = ("NASDAQ" if sym in NASDAQ else "OTC" if sym in OTC else
+          "AMEX" if re.fullmatch(r"XL[A-Z]{1,2}", sym) else "NYSE")  # fondos de sectores (NYSE Arca) = AMEX en TradingView
+    return (f"{ex}:{sym}", None)

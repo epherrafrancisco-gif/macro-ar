@@ -1,0 +1,41 @@
+name: Prueba de fuentes (temporal)
+on:
+  push:
+    branches: [prueba-fuentes]
+jobs:
+  prueba:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: global.py
+        run: pip install -q xlrd==2.0.1 openpyxl==3.1.5 && python scripts/global.py
+      - name: usa.py
+        run: python scripts/usa.py
+        continue-on-error: true
+      - name: Resumen
+        run: |
+          python - <<'PY'
+          import json
+          g = json.load(open("global.json")); h = json.load(open("global_hist.json"))
+          print("claves", list(g))
+          print("bolsas", {k: (v.get("tv"), v.get("vm"), v.get("m")) for k, v in g["bolsas"].items()})
+          print("bonos", {k: (v.get("v"), v.get("t")) for k, v in g["bonos"].items()})
+          print("commodities", [(c["k"], c["v"], c["t"]) for c in g["commodities"]])
+          print("termo", g["termo"])
+          print("mercados", [(m["k"], m["v"]) for m in g["mercados"]])
+          print("series", len(h["series"]), sorted(h["series"]))
+          print("mensual", h.get("mensual"))
+          print("errores", g["errores"])
+          u = json.load(open("usa.json")); print("usa", list(u), u.get("errores"))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jsons
+          path: |
+            global.json
+            global_hist.json
+            usa.json
