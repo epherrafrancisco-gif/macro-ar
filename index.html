@@ -1086,8 +1086,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="note" id="rkN"></p>
     </div>
     <div class="grid2">
-      <div class="card"><div class="head"><h2>S&amp;P Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
-      <div class="card"><div class="head"><h2>S&amp;P Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
+      <div class="card"><div class="head"><h2>Merval en pesos</h2><span class="note">Puntos, cierre diario</span></div><div class="chart" id="chMer"></div></div>
+      <div class="card"><div class="head"><h2>Merval en dólares CCL</h2><span class="note">Merval ÷ CCL, cierre diario</span></div><div class="chart" id="chMerU"></div></div>
     </div>
     <div class="card">
       <div class="head"><h2>Todas las acciones argentinas hoy</h2><span class="note" id="stkStamp"></span></div>
@@ -2880,7 +2880,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <div class="srcs">
         <div><b>BCRA</b>Reservas, compras de dólares, tipo de cambio mayorista, tasas, agregados monetarios, CER, inflación y expectativas (REM).</div>
         <div><b>INDEC y Secretaría de Hacienda</b>Vía datos.gob.ar: PBI, actividad (EMAE), salarios, desocupación, canastas básicas, inflación por rubro, precios de la carne, faena, resultado fiscal, exportaciones e importaciones. Calendario de publicaciones del INDEC.</div>
-        <div><b>Ámbito</b>Historia de los dólares (oficial, MEP, CCL, blue), riesgo país y S&amp;P Merval.</div>
+        <div><b>Ámbito</b>Historia de los dólares (oficial, MEP, CCL, blue), riesgo país y Merval.</div>
         <div><b>DolarApi</b>Cotizaciones del dólar en vivo, cripto y tarjeta.</div>
         <div><b>data912</b>Precios de acciones y bonos, con demora.</div>
         <div><b>Mercado Agroganadero y Bolsa de Rosario</b>Precios de la hacienda en Cañuelas (ex Liniers) y precios pizarra de los granos.</div>
@@ -3252,7 +3252,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const infl = (pi-1)*100;
     const at = (pts, f) => { let r=null; for(const p of pts){ if(p[0]<=f) r=p; else break; } return r; };
     const base = pts => { const b = at(pts, `${+yr-1}-12-31`); return b && b[0] >= `${+yr-1}-12-01` ? b : null; };
-    const ACT = [['oficial','Dólar oficial'],['mep','Dólar MEP'],['ccl','Dólar CCL'],['blue','Dólar blue'],['merval','S&P Merval']];
+    const ACT = [['oficial','Dólar oficial'],['mep','Dólar MEP'],['ccl','Dólar CCL'],['blue','Dólar blue'],['merval','Merval']];
     const rows = [];
     ACT.forEach(([k,n])=>{ const s = series(k), b = base(s), e = at(s, fin); if(b && e && e[0]>b[0]) rows.push({n, v:(e[1]/b[1]-1)*100, desde:b[0], hasta:e[0]}); });
     // plazo fijo a 30 días, renovando con la tasa vigente en cada renovación; el último tramo, proporcional
@@ -4012,16 +4012,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
     const t=[];
-    if(mer.length){ const {last,prev}=lastTwo(mer), a=ago(mer,30); t.push(tileK('S&P Merval', nf(last[1],0), 'pts', (prev?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Cierre '+fd(last[0]))); }
-    if(merU.length){ const {last,prev}=lastTwo(merU), a=ago(merU,30); t.push(tileK('Merval en dólares', 'US$ '+nf(last[1],0), '', (prev?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Al CCL · '+fd(last[0]))); }
+    if(mer.length){ const {last,prev}=lastTwo(mer), a=ago(mer,30); t.push(tileK('Merval', nf(last[1],0), 'pts', (prev&&fresco(last[0])?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Cierre '+fd(last[0]))); }
+    if(merU.length){ const {last,prev}=lastTwo(merU), a=ago(merU,30); t.push(tileK('Merval en dólares', 'US$ '+nf(last[1],2), '', (prev&&fresco(last[0])?chip(last[1]/prev[1]-1,{d:2}):'')+(a?`<span class="chip eq">30d ${pc(last[1]/a[1]-1)}</span>`:''), 'Al CCL · '+fd(last[0]))); }
     if(rp.length){ const {last,prev}=lastTwo(rp); t.push(tileK('Riesgo país', nf(last[1],0), 'pb', prev?chip(last[1]-prev[1],{pct:false,d:0,unit:' pb',bad:true}):'', fd(last[0]))); }
     const hoy = fechaAR(Date.now()), settle = fechaAR(Date.now()+864e5);
     const VTO = {'29':'9/7/2029','30':'9/7/2030','35':'9/7/2035','38':'9/1/2038','41':'9/7/2041','46':'9/7/2046'};
     const rows = SOB.map(([k,f,ley])=>{ const D=mkt.bonds&&mkt.bonds[k+'D'], P=mkt.bonds&&mkt.bonds[k]; const px=D&&D.c, b=bondCalc(px, settle, f); return {k,f,ley,D,P,px,b}; });
     rows.filter(r=>r.k==='AL30'||r.k==='GD30').forEach(r=>{ if(r.b) t.push(tileK('TIR '+r.k, nf(r.b.tir,2)+'%', 'anual US$', r.D?chip(r.D.pct_change/100,{d:2}):'', `US$ ${nf(r.px,2)} · paridad ${nf(r.b.paridad,1)}%`)); });
     $('kpisK').innerHTML = t.join('') || `<div class="k"><span class="lbl">Cargando…</span></div>`;
-    lineChart($('chMer'), [{n:'Merval', c:'--s1', pts:inRange(mer), area:true}], {aria:'S&P Merval en pesos', endLabel:true, labW:70, l:66, yfmt:v=>nf(v/1e6,v%1e6?2:0)+' M', vfmt:v=>nf(v,0)+' pts', lfmt:v=>nf(v/1e6,2)+' M', unitName:'Merval'});
-    lineChart($('chMerU'), [{n:'Merval US$', c:'--s3', pts:inRange(merU), area:true}], {aria:'S&P Merval en dólares CCL', endLabel:true, labW:52, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0), lfmt:v=>nf(v,0), unitName:'Merval US$'});
+    lineChart($('chMer'), [{n:'Merval', c:'--s1', pts:inRange(mer), area:true}], {aria:'Merval en pesos', endLabel:true, labW:70, l:66, yfmt:v=>nf(v/1e6,v%1e6?2:0)+' M', vfmt:v=>nf(v,0)+' pts', lfmt:v=>nf(v/1e6,2)+' M', unitName:'Merval'});
+    lineChart($('chMerU'), [{n:'Merval US$', c:'--s3', pts:inRange(merU), area:true}], {aria:'Merval en dólares CCL', endLabel:true, labW:52, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0), lfmt:v=>nf(v,0), unitName:'Merval US$'});
     const c = v => v!=null&&isFinite(v)?v:null;
     const sinDatos = msg => `<tr><td colspan="9" style="color:var(--muted)">${msg}</td></tr>`;
     $('tBonos').innerHTML = mkt.err && !mkt.at ? sinDatos('Precios de mercado no disponibles en este momento.')
@@ -4109,7 +4109,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     comercio:['Exportaciones e importaciones','Ventas y compras de bienes al exterior, en dólares, según el INDEC. No incluye servicios como turismo.'],
     saldo:['Saldo comercial','Exportaciones menos importaciones de bienes. Positivo: entran más dólares por comercio de los que salen.'],
     mervalusd:['Merval en dólares','El Merval dividido por el CCL: cuánto valen las acciones argentinas medidas en dólares. Saca el efecto de la devaluación.'],
-    merval:['S&P Merval','Índice de las acciones argentinas más negociadas en la bolsa porteña (BYMA). Sube si en promedio suben esas acciones.'],
+    merval:['Merval','Índice de las acciones argentinas más negociadas en la bolsa porteña (BYMA). Sube si en promedio suben esas acciones. Desde el 19/10/2026 lo calcula MSCI (antes S&P) y arrancó en 100.000 puntos al cierre del 16/10: los datos anteriores están pasados a esa misma base, con las mismas subas y bajas.'],
     tir:['TIR','Tasa interna de retorno: lo que rinde por año el bono si lo comprás hoy, lo tenés hasta el final y el país paga todo. Más TIR = bono más barato y más riesgo percibido.'],
     paridad:['Paridad','Precio del bono dividido por su valor técnico (el capital que falta pagar más los intereses corridos). 70% = cotiza al 70% de lo que debería pagar.'],
     residual:['Valor residual','Parte del capital original del bono que todavía no se devolvió. Si ya pagó la mitad de las cuotas de capital, el residual es 50%.'],
@@ -4127,7 +4127,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     [/^M2 transaccional/,'m2t','g'],[/^M2/,'m2','g'],[/^Agregados en pesos de hoy/,'pesoshoy','g'],[/^Agregados en % del PBI/,'pbi','g'],
     [/^Pasivos remunerados/,'pasivos','g'],[/^Deuda (BCRA|del BCRA) en/,'bopreal','g'],[/^Resultado fiscal/,'fiscal','g'],
     [/^Primario/,'primario','g'],[/^Financiero/,'financiero','g'],[/^Exportaciones e importaciones/,'comercio','g'],[/^Saldo comercial/,'saldo','g'],
-    [/Merval en d[óo]lares|^Merval en dólares/,'mervalusd','g'],[/^S&P Merval/,'merval','g'],
+    [/Merval en d[óo]lares|^Merval en dólares/,'mervalusd','g'],[/^(S&P |MSCI )?Merval/,'merval','g'],
     [/^TIR/,'tir','g'],[/^Paridad$/,'paridad','th'],[/^Valor residual$/,'residual','th'],[/^Precio US\$$/,'especied','th'],[/^Primario$/,'primario','th'],[/^Financiero$/,'financiero','th'],[/^Brecha CCL$/,'brecha','th'],[/^TIR$/,'tir','th']
   ];
   const GLOS_SEL = {q:'.q .name', g:'.card h2, .card h3.subh, .k .lbl, .stats .lbl', th:'th'};
@@ -4378,7 +4378,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     fiscal:['Cuentas del Estado','Si el Estado gasta más o menos de lo que recauda, y el comercio exterior'],
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
-    mercado:['Bolsa y bonos','S&P Merval, acciones y bonos argentinos'],
+    mercado:['Bolsa y bonos','Merval, acciones y bonos argentinos'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación, sueldo en dólares y viajes'],
     global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
@@ -4577,7 +4577,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const real = ((1+pf[1]/1200)/(1+a.infl/100)-1)*100;
       return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
     if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
-      return `El S&amp;P Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
+      return `El Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
     if(tab==='ganaderia' && gan){ const H = gan.hacienda||{}, fs = Object.keys(H).sort().filter(f=>H[f].grupos?.NOVILLITOS), l = Lp(fs); if(!l) return '';
       const nv = H[l].grupos.NOVILLITOS.prom, w = fs.length>5 ? H[fs[fs.length-6]].grupos.NOVILLITOS.prom : null, as = Lp(act?.c_asado||[]);
       return `El novillito se pagó <strong>$ ${nf(nv,0)} el kilo vivo</strong> en Cañuelas el ${fds(l)}${w ? ` (${pc(nv/w-1,1)} en la semana)` : ''}.${as ? ` En la carnicería, el asado costaba $ ${nf(as[1],0)} el kilo en ${mesN(as[0])}.` : ''}`; }
@@ -4645,7 +4645,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const of = cardSeries('oficial').pts, cc = cardSeries('ccl').pts;
     if(of.length && cc.length){ const g = cc[cc.length-1][1]/of[of.length-1][1]-1; items.push({k:'brecha', n:'Brecha CCL', v:pc(g,1).replace(/^\+/,''), x:g, ch:null}); }
     const rp = series('riesgo'); if(rp.length){ const {last, prev} = lastTwo(rp); items.push({k:'riesgo', n:'Riesgo país', v:nf(last[1],0)+' pb', x:last[1], ch: prev ? last[1]-prev[1] : null, pb:true, bad:true}); }
-    const mv = series('merval'); if(mv.length){ const {last, prev} = lastTwo(mv); items.push({k:'merval', n:'S&P Merval', v:nf(last[1],0), x:last[1], ch: prev ? last[1]/prev[1]-1 : null}); }
+    const mv = series('merval'); if(mv.length){ const {last, prev} = lastTwo(mv); const fr = fresco(last[0]); items.push({k:'merval', n:'Merval', v:nf(last[1],0) + (fr ? '' : ' ('+fd(last[0])+')'), x:last[1], ch: prev && fr ? last[1]/prev[1]-1 : null}); }
     const tape = $('tape'), inn = $('tapeIn'); if(!items.length){ tape.hidden = true; return; } tape.hidden = false;
     const d = it => { if(it.ch==null || !isFinite(it.ch)) return ''; const z = it.pb ? Math.abs(it.ch)<0.5 : Math.abs(it.ch)<0.00005;
       const up = it.ch>0, cls = z ? 'eq' : (up !== !!it.bad) ? 'up' : 'dn';
@@ -4937,6 +4937,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       : 'Monedas de la región, el euro y el yuan: verde = se fortaleció contra el dólar en el día, rojo = se debilitó. Fuente: CNBC, con demora.';
     $('dFecha').textContent = 'Arrastralo para girarlo'; }
 
+  // un dato diario es "del día" si tiene a lo sumo 4 días corridos (fin de semana o feriado en el medio); si no, se aclara la fecha
+  const fresco = f => (Date.now() - new Date(f+'T12:00:00-03:00').getTime()) / 864e5 <= 4.6;
+  const enDia = f => fresco(f) ? 'en el día' : 'último dato '+String(f).slice(8,10)+'/'+String(f).slice(5,7);
   // ---- portada ----
   function renderPortada(){
     const spark = (pts, ok) => { if(pts.length<2) return ''; const v = pts.map(p=>p[1]), mn = Math.min(...v), mx = Math.max(...v), X = i=>i/(v.length-1)*200, Y = x=>32-(x-mn)/(mx-mn||1)*28;
@@ -4946,17 +4949,17 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const rp = series('riesgo'), rs = series('reservas'), mv = series('merval'), im = months.filter(m=>m.infl!=null);
     const cel = (n, v, d) => `<div><small>${n}</small><b>${v}</b>${d}</div>`;
     const dd = (x, txt, bad) => `<i class="${Math.abs(x)<1e-9 ? '' : (x>0)!==!!bad ? 'up' : 'dn'}">${txt}</i>`;
-    if(rp.length>1) h.push(cel('Riesgo país', nf(L(rp),0)+' pb', dd(L(rp)-P(rp), `${sg(L(rp)-P(rp),0)} pb en el día`, true)));
+    if(rp.length>1) h.push(cel('Riesgo país', nf(L(rp),0)+' pb', dd(L(rp)-P(rp), `${sg(L(rp)-P(rp),0)} pb ${enDia(rp[rp.length-1][0])}`, true)));
     if(im.length){ const a = im[im.length-1]; h.push(cel('Inflación del mes', nf(a.infl,1)+'%', `<i style="color:var(--muted)">${a.inflYoY!=null ? nf(a.inflYoY,1)+'% en 12 meses' : a.mes}</i>`)); }
     if(rs.length>1) h.push(cel('Reservas', `US$ ${nf(L(rs)/1000,1)} mil M`, dd(L(rs)-P(rs), `${sg(L(rs)-P(rs),0)} M en el día`)));
-    if(mv.length>1) h.push(cel('S&amp;P Merval', nf(L(mv),0), dd(L(mv)/P(mv)-1, `${pc(L(mv)/P(mv)-1,2)} en el día`)));
+    if(mv.length>1) h.push(cel('Merval', nf(L(mv),0), dd(L(mv)/P(mv)-1, `${pc(L(mv)/P(mv)-1,2)} ${enDia(mv[mv.length-1][0])}`)));
     $('pHoy').innerHTML = h.join('') || '<p class="empty">Cargando datos…</p>';
     { const mb = [], pf = series('pf'), a = im[im.length-1];
       const big = (href, l, v, d, cls='') => `<a href="#${href}"><small>${l}</small><b class="${cls}">${v}</b><em>${d}</em></a>`;
       if(a) mb.push(big('macro', 'Inflación de '+MESL[+a.mes.slice(5,7)-1], nf(a.infl,1)+'%', a.inflYoY!=null ? nf(a.inflYoY,1)+'% en un año' : ''));
       if(rp.length>1) mb.push(big('macro', 'Riesgo país', nf(L(rp),0), `<i class="${L(rp)>P(rp)?'dn':'up'}" style="font-style:normal">${sg(L(rp)-P(rp),0)}</i> en el día`));
       if(pf.length && a){ const real = ((1+L(pf)/1200)/(1+a.infl/100)-1)*100; mb.push(big('dinero', 'Plazo fijo vs. inflación', real>=0 ? 'Le gana' : 'Pierde', `${sg(real,2)}% por mes`, real>=0 ? 'up' : 'dn')); }
-      if(mv.length>1) mb.push(big('mercado', 'S&amp;P Merval', nf(L(mv),0), `<i class="${L(mv)>=P(mv)?'up':'dn'}" style="font-style:normal">${pc(L(mv)/P(mv)-1,2)}</i> en el día`));
+      if(mv.length>1) mb.push(big('mercado', 'Merval', nf(L(mv),0), `<i class="${L(mv)>=P(mv)?'up':'dn'}" style="font-style:normal">${pc(L(mv)/P(mv)-1,2)}</i> ${enDia(mv[mv.length-1][0])}`));
       $('mHoy').innerHTML = mb.join(''); }
     const it = glob ? dgItems('bolsa') : [];
     if(it.length){ const su = it.filter(x=>x[2]>0).length, best = it.reduce((a,x)=>x[2]>a[2]?x:a), worst = it.reduce((a,x)=>x[2]<a[2]?x:a), f = it.map(x=>x[4]).sort().pop();
@@ -4987,8 +4990,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function gDetalle(elId, x){ const el = $(elId); el.hidden = !x; if(!x) return; const p = gpc(x);
     const st=(l,val,d,cls='')=>`<div class="st"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
     el.innerHTML = st(x.s, 'US$ '+nf(x.v,2), (p==null?'':sg(p,2)+'% en el día'), p>0?'up':p<0?'dn':'') + st('Empresa', esc(GNOM[x.s]||x.n), esc(x.n)) + st('Cierre anterior', 'US$ '+nf(x.prev,2), x.t ? 'Dato: '+esc(String(x.t).slice(0,16).replace('T',' ')) : ''); }
-  const GCH = [['spx','S&P 500',1,''],['merv','S&P Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['wti','Petróleo WTI (US$/barril)',1,''],['gas','Gas natural EE.UU. (US$/MMBtu)',1,''],['soja','Soja (US$/t)',0.3674371,''],['maiz','Maíz (US$/t)',1,''],['trigo','Trigo (US$/t)',1,''],['plata','Plata (US$/onza)',1,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (DXY)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
-  const gSerie = (k, conv=1) => (gHist?.series?.[k] || []).map(p=>[p[0], p[1]*(gHist.conv ? 1 : conv)]);
+  const GCH = [['spx','S&P 500',1,''],['merv','Merval (en pesos)',1,''],['bvsp','Bovespa',1,''],['dax','DAX',1,''],['ftse','FTSE 100',1,''],['nikkei','Nikkei',1,''],['shanghai','Shanghái',1,''],['oro','Oro (US$/onza)',1,''],['brent','Petróleo Brent (US$/barril)',1,''],['wti','Petróleo WTI (US$/barril)',1,''],['gas','Gas natural EE.UU. (US$/MMBtu)',1,''],['soja','Soja (US$/t)',0.3674371,''],['maiz','Maíz (US$/t)',1,''],['trigo','Trigo (US$/t)',1,''],['plata','Plata (US$/onza)',1,''],['cobre','Cobre (US$/t)',2204.623,''],['dxy','Índice dólar (DXY)',1,''],['t10','Tasa 10 años EE.UU. (%)',1,'%'],['vix','VIX (índice del miedo)',1,''],['btc','Bitcoin (US$)',1,'']];
+  const gSerie = (k, conv=1) => k==='merv' ? series('merval') : (gHist?.series?.[k] || []).map(p=>[p[0], p[1]*(gHist.conv ? 1 : conv)]);  // Merval: desde el 19/10/2026 lo publica MSCI; CNBC lo cortó, sale de data.json
   const gCut = (pts, d) => { if(!d || !pts.length) return pts; const t = T(pts[pts.length-1][0]) - d*864e5; return pts.filter(p=>T(p[0])>=t); };
   function gYtd(pts){ if(pts.length<2) return null; const yr = pts[pts.length-1][0].slice(0,4), base = [...pts].reverse().find(p=>p[0] < yr+'-01-01'); return base ? (pts[pts.length-1][1]/base[1]-1)*100 : null; }
   // ---- Mundo: agenda de bancos centrales, bonos, "¿dónde está Argentina?", cripto y noticias ----
@@ -5073,7 +5076,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('dpaNota').textContent = `${dn}. ${orden}. ` + ({infl:`Argentina: interanual del INDEC${ai?` (${ai.mes.slice(5)}/${ai.mes.slice(0,4)})`:''}; el resto, Banco Mundial (último año completo).`,
       crec:'Banco Mundial, último año completo.', desemp:'Banco Mundial, último año completo.',
       tasa:'BIS. Argentina no figura: el BCRA no tiene hoy una tasa de política monetaria que informe el BIS.',
-      bolsa:'S&P Merval al dólar CCL; S&P 500; Bovespa al real; DAX al euro; Shanghái al yuan. Desde el último cierre del año pasado.',
+      bolsa:'Merval al dólar CCL; S&P 500; Bovespa al real; DAX al euro; Shanghái al yuan. Desde el último cierre del año pasado.',
       moneda:'Positivo: la moneda se fortaleció contra el dólar; negativo: se devaluó. Argentina: dólar oficial.'})[dpaSel];
     // cripto
     const C = g.cripto || [];
@@ -5100,7 +5103,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // gráfico
     if(!gHist){ loadHist(); $('chGlob').innerHTML = '<div class="empty">Cargando historia…</div>'; $('chGRank').innerHTML = '<div class="empty">Cargando…</div>'; $('chVix').innerHTML = ''; }
     else {
-      $('gChSel').innerHTML = GCH.filter(([k])=>gHist.series[k]).map(([k,n])=>`<button type="button" data-k="${k}" aria-pressed="${k===gChSel}">${n.replace(/ \(.*\)$/,'')}</button>`).join('');
+      $('gChSel').innerHTML = GCH.filter(([k])=>k==='merv' ? series('merval').length : gHist.series[k]).map(([k,n])=>`<button type="button" data-k="${k}" aria-pressed="${k===gChSel}">${n.replace(/ \(.*\)$/,'')}</button>`).join('');
       $('gChSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ gChSel = b.dataset.k; gc('global-grafico-'+gChSel, true); gExtras(); }));
       document.querySelectorAll('#gChR button').forEach(b=>b.setAttribute('aria-selected', String(+b.dataset.r===gChR)));
       const C = GCH.find(c=>c[0]===gChSel) || GCH[0], pts = gCut(gSerie(C[0], C[2]), gChR);
@@ -5112,7 +5115,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const yr = (gHist.series.spx||[]).slice(-1)[0]?.[0]?.slice(0,4) || '';
       const mervUsd = (()=>{ const base = [...days].reverse().find(d=>d.fecha < yr+'-01-01' && d.merval && get(d,'ccl')), last = [...days].reverse().find(d=>d.merval && get(d,'ccl')); return base && last ? (last.merval/get(last,'ccl'))/(base.merval/get(base,'ccl'))*100-100 : null; })();
       const R = [['S&P 500','spx'],['Bovespa','bvsp'],['DAX','dax'],['FTSE 100','ftse'],['Nikkei','nikkei'],['Shanghái','shanghai'],['Oro','oro'],['Petróleo Brent','brent'],['Soja','soja'],['Maíz','maiz'],['Trigo','trigo'],['Cobre','cobre'],['Plata','plata'],['Índice dólar','dxy'],['Bitcoin','btc']]
-        .map(([n,k])=>({n, v:gYtd(gSerie(k))})).concat(mervUsd!=null ? [{n:'S&P Merval (US$ CCL)', v:mervUsd, ref:true}] : [])
+        .map(([n,k])=>({n, v:gYtd(gSerie(k))})).concat(mervUsd!=null ? [{n:'Merval (US$ CCL)', v:mervUsd, ref:true}] : [])
         .filter(r=>r.v!=null && isFinite(r.v)).sort((a,b)=>b.v-a.v).map(r=>({...r, c: r.v>=0 ? '--pos' : '--neg'}));
       $('gRkT').textContent = `¿Qué rindió más en ${yr}?`;
       hBars($('chGRank'), R, {aria:'Rendimiento en el año'});
@@ -7536,7 +7539,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       return `<div><small>${n}</small><b>${fv(v[v.length-1])}</b><i class="${ch===0?'':(up!==!!malo)?'up':'dn'}">${fd(v[v.length-1],v[0])} en un mes</i>
         <svg viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"><g class="cl"><path class="ar" d="${d}L200,44L0,44Z" style="fill:var(${col})"/><path class="ln" d="${d}" style="stroke:var(${col})"/></g><circle cx="200" cy="${Y(v[v.length-1]).toFixed(1)}" r="2.5" style="fill:var(${col})"/></svg></div>`; };
     const sp = [mini('Dólar MEP','mep','--s2',x=>'$ '+nf(x,0),(a,b)=>pc(a/b-1,1),true), mini('Riesgo país','riesgo','--s5',x=>nf(x,0)+' pb',(a,b)=>sg(a-b,0)+' pb',true),
-      mini('S&amp;P Merval','merval','--s3',x=>nf(x,0),(a,b)=>pc(a/b-1,1)), mini('Reservas','reservas','--s4',x=>'US$ '+nf(x/1000,1)+' mil M',(a,b)=>sg(a-b,0)+' M')].join('');
+      mini('Merval','merval','--s3',x=>nf(x,0),(a,b)=>pc(a/b-1,1)), mini('Reservas','reservas','--s4',x=>'US$ '+nf(x/1000,1)+' mil M',(a,b)=>sg(a-b,0)+' M')].join('');
     const h = `<div class="vvh"><i></i>Argentina en vivo</div>
       <div class="vv" id="pvCal"></div>
       <div class="vv"><span class="lbl">Hora en Buenos Aires</span><span class="v" id="pvHora">—</span><span class="d" id="pvByma"></span></div>
@@ -7982,7 +7985,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       if(act){ const d = cL(act.desoc); if(d) o.desemp = [d[1], `${Math.floor((+d[0].slice(5)-1)/3)+1}º trim ${d[0].slice(0,4)}`];
         const e = cYoY(act.emae); if(e) o.crec = [e[1], 'actividad (EMAE), '+mesTxt(e[0])]; } else loadAct();
       const mv = series('merval'), cc = new Map(series('ccl')), mu = mv.filter(p=>cc.has(p[0])).map(p=>[p[0], p[1]/cc.get(p[0])]), yt = gYtd(mu);
-      if(yt!=null) o.bolsa = [yt, 'S&P Merval en dólares CCL'];
+      if(yt!=null) o.bolsa = [yt, 'Merval en dólares CCL'];
     } else if(D){
       const pick = (inf, tas, des, cre) => { if(inf) o.infl = [inf[1], cPer(inf[0])]; if(tas) o.tasa = [tas[1], cPer(tas[0])]; if(des) o.desemp = [des[1], cPer(des[0])]; if(cre) o.crec = cre; };
       if(iso==='USA'){ const i = cYoY(D.bls?.ipc), u = cL(D.bls?.desemp), g = glob?.paises?.USA;

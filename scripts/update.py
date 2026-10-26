@@ -16,6 +16,7 @@ Nunca inventa datos: si una fuente falla, ese campo queda como estaba.
 
 import argparse
 import json
+import re
 import sys
 import time
 import urllib.request
@@ -36,6 +37,13 @@ AMBITO = {
     "riesgo": ("riesgopais", "n"),
     "merval": ("indice/.merv", "idx"),  # columnas: Fecha, Apertura, Último, ...; se pide desde el 1/1
 }
+# Merval: desde el 19/10/2026 lo administra MSCI ("MSCI Merval") con base 100.000 al cierre del 16/10/2026.
+# Ámbito y CNBC dejaron de publicarlo el 16/10. Desde el 19/10 los cierres salen de Rava; la historia anterior
+# (S&P Merval de Ámbito) se re-expresa en la base nueva (encadenada: mismas variaciones, 16/10 = 100.000).
+MERVAL_BASE_FECHA = "2026-10-16"
+MERVAL_FACTOR = 100000 / 2843310.56  # cierre del S&P Merval el 16/10/2026 según Ámbito
+RAVA_MERVAL = "https://www.rava.com/cotizaciones/historico/merval/"
+
 # Se piden siempre desde el 1 de diciembre del año anterior: hacen falta para el
 # ranking "¿Qué le ganó a la inflación?" (rendimiento desde el último cierre del año pasado).
 AMBITO_LARGO = {"merval", "blue", "oficial", "mep", "ccl", "riesgo"}
@@ -136,7 +144,9 @@ def ambito(desde, hasta, desde_largo):
                 elif tipo == "v":
                     val = {"v": num_ar(row[1])}
                 elif tipo == "idx":
-                    val = num_ar(row[2])
+                    if f > MERVAL_BASE_FECHA:
+                        continue  # después del cambio de base, el Merval sale de Rava
+                    val = round(num_ar(row[2]) * MERVAL_FACTOR, 2)
                 else:
                     val = num_ar(row[1])
                 out.setdefault(campo, {})[f] = val
@@ -145,6 +155,48 @@ def ambito(desde, hasta, desde_largo):
         except Exception as e:  # noqa: BLE001
             log_err.append(f"Ámbito {campo}: {e}")
     return out
+
+
+def rava_merval(desde):
+    """Cierres del MSCI Merval (base 100.000 al 16/10/2026) desde Rava. Cada página de un día trae los últimos
+    10 cierres; la página del mes lista los días con dato. Solo se usan fechas posteriores al 16/10/2026."""
+    out = {}
+    try:
+        hoy = datetime.now(TZ_AR).date()
+        meses = {(hoy.year, hoy.month)}
+        d0 = max(date.fromisoformat(desde), date.fromisoformat(MERVAL_BASE_FECHA) + timedelta(days=1))
+        m = date(d0.year, d0.month, 1)
+        while m <= hoy:
+            meses.add((m.year, m.month)); m = (m + timedelta(days=32)).replace(day=1)
+        dias = set()
+        for y, mo in sorted(meses):
+            try:
+                html = get_text(f"{RAVA_MERVAL}{y}/{mo:02d}/")
+            except Exception:  # noqa: BLE001
+                continue
+            for yy, mm, dd in re.findall(r"historico/merval/(\d{4})/(\d{2})/(\d{2})/", html):
+                f = f"{yy}-{mm}-{dd}"
+                if f > MERVAL_BASE_FECHA:
+                    dias.add(f)
+        # de la más nueva para atrás: cada página cubre 10 días hábiles
+        for f in sorted(dias, reverse=True):
+            if f in out:
+                continue
+            html = get_text(RAVA_MERVAL + f.replace("-", "/") + "/")
+            txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+            i = txt.find("Ultimos dias")
+            for dd, mm, yy, v in re.findall(r"(\d{2})/(\d{2})/(\d{4}) ([\d.]+(?:,\d+)?) ", txt[i:] if i >= 0 else txt):
+                g = f"{yy}-{mm}-{dd}"
+                if g > MERVAL_BASE_FECHA and es_habil(g):
+                    out[g] = num_ar(v)
+            if min(out, default=f) <= d0.isoformat():
+                break
+        if not out:
+            raise ValueError("sin cierres posteriores al 16/10/2026")
+        log_ok.append(f"Rava merval: {len(out)} días (último {max(out)})")
+    except Exception as e:  # noqa: BLE001
+        log_err.append(f"Rava merval: {e}")
+    return {"merval": out}
 
 
 def bcra_puntos(var_id, desde, hasta):
@@ -425,6 +477,7 @@ def main():
 
     nuevos = {}  # fecha -> {campo: valor}
     amb = ambito(desde, hasta, anual_desde)
+    rava = rava_merval(desde)
     bd, bm = bcra(desde, hasta, mensual_desde, anual_desde)
     dapi = dolarapi()
     gm, gt = datos_gob_ar()
@@ -435,7 +488,7 @@ def main():
     # repite en feriados para el MEP y el CCL.
     dias_mercado = set(amb.get("oficial", {})) | set(bd.get("mayorista", {}))
 
-    for fuente in (amb, bd, dapi):
+    for fuente in (amb, rava, bd, dapi):
         for campo, porfecha in fuente.items():
             for f, val in porfecha.items():
                 if not es_habil(f):
@@ -452,6 +505,11 @@ def main():
     hist = historico(data.get("historico", []), hoy, args.historia)
     diario = {d["fecha"]: d for d in data.get("diario", [])}
     mensual = {m["mes"]: m for m in data.get("mensual", [])}
+
+    # Merval guardado en la base vieja (S&P, millones de puntos): se pasa a la base nueva una sola vez
+    for f, d in diario.items():
+        if f <= MERVAL_BASE_FECHA and isinstance(d.get("merval"), (int, float)) and d["merval"] > 500000:
+            d["merval"] = round(d["merval"] * MERVAL_FACTOR, 2)
 
     agregados, actualizados = [], []
     for f, campos in sorted(nuevos.items()):

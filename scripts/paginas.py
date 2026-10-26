@@ -322,8 +322,8 @@ pag_diaria("reservas-bcra", "Reservas del BCRA", "Reservas del Banco Central hoy
            P(("¿Qué son las reservas?", "Son los activos en moneda extranjera y oro que tiene el Banco Central: dólares, otras monedas, oro, posiciones en el FMI. Respaldan al peso y sirven para pagar deuda e intervenir en el mercado de cambios."),
              ("Brutas y netas", "El dato que publica el BCRA cada día son las reservas brutas. Las netas descuentan lo que no es realmente propio (encajes de depósitos en dólares, swaps, préstamos de corto plazo) y son bastante más bajas.")),
            "macro", "BCRA (con uno o dos días de atraso)", grupo="Argentina")
-pag_diaria("merval-hoy", "S&P Merval", "Merval hoy", diaria("merval"), lambda z: nf(z, 0), "puntos", "#6aa8d8",
-           P(("¿Qué es el Merval?", "El S&P Merval es el principal índice de la Bolsa de Buenos Aires: sigue el precio de las acciones argentinas más negociadas (bancos, energéticas, servicios). Desde el 19/10/2026 lo administra MSCI."),
+pag_diaria("merval-hoy", "Merval", "Merval hoy", diaria("merval"), lambda z: nf(z, 0), "puntos", "#6aa8d8",
+           P(("¿Qué es el Merval?", "El Merval es el principal índice de la Bolsa de Buenos Aires: sigue el precio de las acciones argentinas más negociadas (bancos, energéticas, servicios). Desde el 19/10/2026 lo calcula MSCI (antes S&P) y arrancó en 100.000 puntos al cierre del 16/10/2026; los datos anteriores están pasados a esa base, con las mismas subas y bajas."),
              ("En pesos y en dólares", "Como el peso pierde valor, una suba del Merval en pesos puede ser una baja en dólares. En el tablero también lo mostramos convertido a dólares contado con liqui.")),
            "mercado", "Ámbito")
 pag_diaria("tasa-plazo-fijo", "Tasa de plazo fijo", "Tasa de plazo fijo hoy", diaria("pf"), lambda z: nf(z, 2), "%", "#3987e5",
