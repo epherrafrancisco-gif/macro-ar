@@ -1,0 +1,83 @@
+== update salida 0 (238 s)
+== global salida 0 (110 s)
+== usa salida 0 (41 s)
+== noticias salida 0 (1 s)
+== noticias_paises salida 0 (326 s)
+ERROR NHK World · www3.nhk.or.jp: The read operation timed out
+ERROR EFE · efe.com: HTTP Error 500: Internal Server Error
+ERROR Euronews · www.euronews.com: HTTP Error 404: Not Found
+ERROR Business Standard · www.business-standard.com: HTTP Error 403: Forbidden
+ERROR Romania Insider · www.romania-insider.com: HTTP Error 429: Too Many Requests
+ERROR CBC · www.cbc.ca: The read operation timed out
+ERROR NHK World · www3.nhk.or.jp: The read operation timed out
+== ganaderia salida 0 (4 s)
+== actividad salida 124 (900 s)
+== geopolitica salida 0 (4 s)
+conflictos: 48 | gpr diario: 1100 | paises gpr: 44 | errores: []
+== paises_extra salida 0 (9 s)
+== brasil salida 0 (14 s)
+== europa salida 1 (12 s)
+Traceback (most recent call last):
+IndexError: list index out of range
+== mexico salida 0 (7 s)
+== chile salida 0 (7 s)
+== japon salida 0 (9 s)
+== reinounido salida 0 (7 s)
+== canada salida 0 (8 s)
+== colombia salida 0 (7 s)
+== turquia salida 0 (8 s)
+== peru salida 0 (6 s)
+== polonia salida 0 (15 s)
+== india salida 0 (9 s)
+ERROR desemp: HTTP Error 404: Not Found
+== arabia salida 0 (8 s)
+ERROR desemp: HTTP Error 404: Not Found
+== suiza salida 0 (11 s)
+ERROR desemp: HTTP Error 404: Not Found
+== australia salida 0 (8 s)
+== corea salida 0 (8 s)
+== sudafrica salida 0 (9 s)
+ERROR desemp: HTTP Error 404: Not Found
+== zelanda salida 0 (10 s)
+ERROR desemp: HTTP Error 404: Not Found
+== indonesia salida 0 (8 s)
+ERROR desemp: HTTP Error 404: Not Found
+ERROR pbi_anual: HTTP Error 429: Too Many Requests
+== noruega salida 0 (8 s)
+== suecia salida 0 (10 s)
+== tailandia salida 0 (6 s)
+== malasia salida 0 (6 s)
+== filipinas salida 0 (5 s)
+== islandia salida 0 (8 s)
+ERROR pbi_anual: HTTP Error 429: Too Many Requests
+== hungria salida 0 (7 s)
+ERROR desemp: HTTP Error 429: Too Many Requests
+ERROR pbi_tri: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+ERROR pbi_anual: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+== hongkong salida 0 (5 s)
+== chequia salida 0 (8 s)
+ERROR pbi_tri: HTTP Error 429: Too Many Requests
+ERROR pbi_anual: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+== dinamarca salida 0 (8 s)
+ERROR desemp: HTTP Error 429: Too Many Requests
+ERROR pbi_tri: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+ERROR pbi_anual: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+== rumania salida 0 (6 s)
+== israel salida 0 (8 s)
+ERROR pbi_tri: HTTP Error 429: Too Many Requests
+ERROR pbi_anual: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+== serbia salida 0 (6 s)
+== china salida 0 (5 s)
+== rusia salida 0 (7 s)
+== espana salida 0 (8 s)
+ERROR desemp: HTTP Error 429: Too Many Requests
+ERROR pbi_tri: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+ERROR pbi_anual: la OCDE cortó por exceso de pedidos (429); queda el dato anterior
+== singapur salida 0 (5 s)
+ERROR tasa: HTTP Error 404: 
+== marruecos salida 0 (6 s)
+== macedonia salida 0 (5 s)
+estado {"actualizado": "2026-10-26", "ok": ["Ámbito blue: 194 días", "Ámbito oficial: 221 días", "Ámbito mep: 236 días", "Ámbito ccl: 236 días", "Ámbito riesgo: 236 días", "Ámbito merval: 218 días", "Rava merval: 5 días (último 2026-10-23)", "Propios: {'mep_pm': 1574.4, 'ccl_pm': 1679.57, 'riesgo_pm': 672}", "BYMA merval: {'2026-10-23': 102277.62, '2026-10-26': 99227.28}", "BCRA compras: 215 días desde 2025-12-01", "BCRA bopreal: 217 días desde 2025-12-01", "BCRA reservas: 5 días", "BCRA mayorista: 218 días", "BCRA base: 5 días", "BCRA badlar: 6 días", "BCRA tamar: 6 días", "BCRA pf: 217 días", "BCRA depusd: 4 días", "BCRA infl: 4 meses", "BCRA inflYoY: 4 meses", "BCRA expect: 4 meses", "BCRA base mensual: 46 meses", "BCRA m2 mensual: 46 meses", "BCRA m2t mensual: 46 meses", "BCRA cer mensual: 46 meses", "BCRA leliq mensual: 46 meses", "BCRA pases mensual: 46 meses", "BCRA lefi mensual: 13 meses", "DolarApi: cripto ['2026-10-26'], tarjeta ['2026-10-26']", "datos.gob.ar fiscal y comercio: 44 meses", "datos.gob.ar PBI: 16 trimestres", "Historia ofi: 39 días en 1 tramos", "Historia blue: 37 días en 1 tramos", "Historia mep: 40 días en 1 tramos", "Historia ccl: 40 días en 1 tramos", "Historia may: 39 días en 1 tramos", "Historia cer: 56 días en 1 tramos", "CPI EE.UU. (FRED): 117 meses"], "errores": []}
+ultimos diario [{"fecha": "2026-10-23", "blue": {"c": 1545.0, "v": 1565.0}, "oficial": {"c": 1496.32, "v": 1549.77}, "mep": {"v": 1562.27}, "ccl": {"v": 1648.62}, "riesgo": 707.0, "cripto": {"c": 1638.33, "v": 1644.34}, "tarjeta": {"c": 1950.0, "v": 2015.0}, "mayorista": {"v": 1528.26}, "merval": 102277.62, "bopreal": 4889.69, "badlar": 23.0625, "tamar": 24.375, "pf": 22.22}, {"fecha": "2026-10-26", "cripto": {"c": 1671.26, "v": 1675.37}, "tarjeta": {"c": 1963.0, "v": 2028.0}, "blue": {"c": 1555.0, "v": 1575.0}, "oficial": {"c": 1507.26, "v": 1560.4}, "mep": {"v": 1574.4}, "ccl": {"v": 1682.65}, "riesgo": 765.0, "merval": 99227.28, "mep_pm": 1574.4, "ccl_pm": 1679.57, "riesgo_pm": 672, "mayorista": {"v": 1540.48}}]
+global abiertas True errores []
+usa errores []
