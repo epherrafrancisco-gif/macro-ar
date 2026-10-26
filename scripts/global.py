@@ -26,6 +26,11 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import abiertas  # noqa: E402  fuentes abiertas que reemplazan a CNBC (plan legal 10/2026)
+
+FX_HIST = {}  # monedas del BCE/BIS (se llena en main)
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "global.json"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 PulsoMacro/1.0"
@@ -350,7 +355,9 @@ def extras():
     alt = lambda s: s if isinstance(s, tuple) else (s,)
     syms = ([x for v in BOLSAS.values() for x in alt(v[0])] + [x for l in ACCIONES.values() for x in l] + list(TERMO.values())
             + list(MONEDAS.values()) + list(BONOS.values()) + [c[2] for c in COMS] + [v[0] for v in EUROPA.values()] + [v[0] for v in CHILE.values()] + [v[0] for v in JAPON.values()] + [v[0] for v in REINO.values()] + [v[0] for v in CANADA.values()] + [v[0] for v in COLOMBIA.values()] + [v[0] for v in TURQUIA.values()] + [v[0] for v in PERU.values()] + [v[0] for v in POLONIA.values()] + [v[0] for v in INDIA.values()] + [v[0] for v in ARABIA.values()] + [v[0] for v in SUIZA.values()] + [v[0] for v in AUSTRALIA.values()] + [v[0] for v in COREA.values()] + [v[0] for v in SUDAFRICA.values()] + [v[0] for v in ZELANDA.values()] + [v[0] for v in INDONESIA.values()] + [v[0] for v in NORUEGA.values()] + [v[0] for v in SUECIA.values()] + [v[0] for v in TAILANDIA.values()] + [v[0] for v in MALASIA.values()] + [v[0] for v in FILIPINAS.values()] + [v[0] for v in ISLANDIA.values()] + [v[0] for v in HUNGRIA.values()] + [v[0] for v in HONGKONG.values()] + [v[0] for v in CHEQUIA.values()] + [v[0] for v in DINAMARCA.values()] + [v[0] for v in RUMANIA.values()] + [v[0] for v in ISRAEL.values()] + [v[0] for v in SERBIA.values()] + [v[0] for v in CHINA.values()] + [v[0] for v in RUSIA.values()] + [v[0] for v in ESPANA.values()] + [v[0] for v in SINGAPUR.values()] + [v[0] for v in MARRUECOS.values()] + [v[0] for v in MACEDONIA.values()] + [v[0] for v in DEFENSA.values()])
-    q = cnbc_raw(syms)
+    fxq = abiertas.fx_cotizaciones(FX_HIST) if FX_HIST else {}
+    q = cnbc_raw([x for x in dict.fromkeys(syms) if not x.endswith('=') or x not in fxq])
+    q.update(fxq)  # monedas: BCE y BIS en vez de CNBC
     bolsas = {}
     for k, (s, n) in BOLSAS.items():
         varios = isinstance(s, tuple)
@@ -496,7 +503,12 @@ def historia(prev_h):
             if k in series and c != 1:
                 series[k] = [[d, round(v * c, 4)] for d, v in series[k]]
     ok = 0
+    fxh = abiertas.fx_series_hist(FX_HIST) if FX_HIST else {}
     for k, sym in HIST.items():
+        if k in fxh:  # monedas: BCE y BIS en vez de CNBC
+            series[k] = fxh[k]
+            ok += 1
+            continue
         try:
             pts = []
             for intento in range(3):  # a veces CNBC devuelve la serie vacía: se reintenta con una pausa
@@ -584,6 +596,9 @@ def main():
             prev = json.loads(OUT.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001
             prev = {}
+    global FX_HIST
+    FX_HIST = abiertas.fx_hist()
+    errores.extend(abiertas.errores)
     paises, ok_imf, fuentes = imf(prev)
     n_bis = bis(paises)
     try:
@@ -602,7 +617,10 @@ def main():
         except Exception:  # noqa: BLE001
             prev_h = {}
     h = historia(prev_h)
-    if h is not prev_h:
+    fxh = abiertas.fx_series_hist(FX_HIST) if FX_HIST else {}
+    if fxh and h.get('series') is not None:  # monedas siempre del BCE/BIS, aunque la historia no se haya renovado
+        h = {**h, 'series': {**h['series'], **fxh}}
+    if h is not prev_h or fxh:
         HISTF.write_text(json.dumps(h, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     data = {
         "actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"),
