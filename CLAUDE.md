@@ -100,6 +100,17 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `app-instalada`. La app abre `/?app=1`.
 - Manual de uso (pedido del dueño, "que no sea molesto"): botón `[data-man]` "¿Cómo se usa?" en `.hello` (compu), `#mHero`
   (celular) y arriba de Aclaraciones en Sobre; abre `#manual` (8 bloques cortos). Nunca se abre solo. Evento GoatCounter `manual`.
+- Buscador (pedido del dueño: "que encuentre todo", "que perdone bastante" y que con una palabra vaga muestre todas las
+  opciones, como Google): ventana `#bus` (`busAbrir`/`busPintar`/`busIr`), se abre con cualquier `[data-bus]` (caja `.bfake`
+  en la portada del celular y de la compu, lupa `.mbus` en `#mbar`, botón `.hbus` en el encabezado) o con "/" y Ctrl+K.
+  El índice (`busArmar`) se arma solo al abrir: secciones (`SECC`), cotizaciones, calculadoras, apartados (`SUBS`), cada
+  `.card > .head > h2` (con su nota y el comienzo de `p.sub`) y `GLOS`. Perdona errores (`bLev`, letras cambiadas = 1 error),
+  plurales y tildes; sinónimos de la gente en `BSIN` (los de varias palabras se buscan enteros). Primero lo de Argentina.
+  Al tocar un gráfico: va a la sección y al apartado, lo abre (`mAb`), baja hasta él y lo marca (`.bflash`); `NAV.salto`
+  evita que `setTab` lo vuelva a subir. Eventos GoatCounter `buscar` y `buscar-ir`.
+- Celular: el botón de volver de `#mbar` (`#mLogo`) dice "Volver" (o "Inicio" si se entró por link directo); el selector
+  Argentina / El mundo de la portada (`#mTg`) son dos botones separados con ícono, el elegido en celeste (pedido del dueño:
+  "que se entienda que son dos botones").
 - Funciones de gráfico: `lineChart`, `barChart`, `dailyBars`, `hBars` (barras horizontales; opciones `vfmt`, `rh`,
   `ref`, filas con `hl` para resaltar). Cada gráfico guarda `el._exp` para compartir/PNG/CSV (`herramientas()`).
 - Glosario (i): objetos `GLOS` y `GLOS_REGLAS`, `decorar()` los agrega solo. Popover `#tipbox`.
