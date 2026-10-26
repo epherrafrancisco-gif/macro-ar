@@ -172,7 +172,7 @@ def pagina(slug, titulo_seo, desc, cuerpo, crumb, extra_head=""):
 <div class="crumb"><a href="/">Inicio</a> › {crumb}</div>
 {cuerpo}
 <footer>Pulso Macro es un tablero gratuito de la economía argentina y del mundo, que se actualiza solo cada día hábil.
-Los datos son informativos y no constituyen una recomendación de inversión. <a href="/#sobre">Sobre Pulso Macro</a> · <a href="/legal/">Términos y aviso legal</a></footer>
+Los datos son informativos y no constituyen una recomendación de inversión. <a href="/#sobre">Sobre Pulso Macro</a> · <a href="/#sobre">Términos y aviso legal</a></footer>
 </div></body></html>
 """
 
@@ -472,7 +472,7 @@ cambios += escribir(ROOT / "indicadores" / "index.html", pagina("", "Indicadores
                                                               "Dólar blue, MEP y CCL, riesgo país, inflación, reservas, Merval, balanza comercial, novillo, granos y más: todos los indicadores de Pulso Macro con su gráfico.",
                                                               hub, "Indicadores"))
 
-urls = [f"{SITE}/", f"{SITE}/indicadores/", f"{SITE}/legal/"] + [f"{SITE}/{s}/" for s in SALIDA]
+urls = [f"{SITE}/", f"{SITE}/indicadores/"] + [f"{SITE}/{s}/" for s in SALIDA]
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n"
 cambios += escribir(ROOT / "sitemap.xml", sm)
 cambios += escribir(ROOT / "robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")

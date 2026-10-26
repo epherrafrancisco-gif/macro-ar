@@ -155,8 +155,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
-- Términos y aviso legal: página estática `legal/index.html` (escrita a mano, pedido del dueño 26/10/2026), enlazada en el pie,
-  en Aclaraciones y en el pie de las páginas de paginas.py (y en sitemap). Incluye cómo pedir corrección o retiro de un dato.
+- Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
+  `h3#legal` + `details.legal` desplegable. El link del pie (`[data-legal]`) abre Sobre, despliega y baja hasta ahí.
+  `legal/index.html` solo redirige a `/#sobre` (noindex). Incluye cómo pedir corrección o retiro de un dato.
 - Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Contacto: arriba (junto a la foto) primero el mail
   y después LinkedIn; en "Aclaraciones" y el resto de los avisos, solo el mail y siempre en tercera persona (nunca "escribime").
 

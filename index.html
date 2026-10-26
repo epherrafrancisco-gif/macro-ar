@@ -260,6 +260,7 @@ footer a{color:var(--ink2)}
 .prose p{margin:0;font-size:15px;line-height:1.6;color:var(--ink);max-width:78ch}
 .prose a,.how a{color:var(--accent);font-weight:600}
 .prose h3{margin:6px 0 0;font-size:16px}
+.prose details.legal{display:grid;gap:10px}.prose details.legal summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:15px}.prose details.legal[open] summary{margin-bottom:10px}.prose details.legal p{color:var(--ink2);margin-bottom:10px}
 .srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .srcs div{border:1px solid var(--line);border-radius:10px;padding:11px 13px;display:grid;gap:3px;font-size:13px;color:var(--ink2);align-content:start}
 .srcs b{color:var(--ink);font-size:14px}
@@ -2897,7 +2898,17 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <h3>Aclaraciones</h3>
       <p>Pulso Macro es un proyecto independiente, gratuito y sin fines de lucro. No tiene publicidad ni relación con ninguna entidad, banco o medio.</p>
       <p>La información es solo informativa y no constituye una recomendación de inversión. Los datos pueden tener errores o demoras: ante cualquier decisión, chequeá la fuente oficial.</p>
-      <p>Los datos son de sus titulares y se citan en cada sección. Si sos titular de un dato y querés que se corrija o se retire, escribí a <a href="mailto:contacto@pulsomacro.com.ar?subject=Pedido%20de%20correcci%C3%B3n%20o%20retiro" data-contacto="mail">contacto@pulsomacro.com.ar</a>. Más detalle en los <a href="legal/">términos de uso y aviso legal</a>.</p>
+      <h3 id="legal">Términos de uso y aviso legal</h3>
+      <p>Los datos son de sus titulares y se citan en cada sección. Si sos titular de un dato o contenido y querés que se corrija o se retire, escribí a <a href="mailto:contacto@pulsomacro.com.ar?subject=Pedido%20de%20correcci%C3%B3n%20o%20retiro" data-contacto="mail">contacto@pulsomacro.com.ar</a>: los pedidos se atienden a la brevedad y, mientras se revisan, el dato puede retirarse.</p>
+      <details class="legal"><summary>Ver los términos completos</summary>
+        <p><b>Qué es.</b> Pulso Macro (pulsomacro.com.ar) es un proyecto independiente, gratuito y sin fines de lucro, hecho por Francisco Epherra. No tiene publicidad, no vende nada y no tiene relación con ninguna entidad financiera, banco, medio ni organismo público. Usar el sitio implica aceptar estos términos.</p>
+        <p><b>No es una recomendación de inversión.</b> Todo lo que se publica tiene fines informativos y educativos. Nada es una oferta, una recomendación de compra o venta ni un asesoramiento financiero, legal o impositivo. Las decisiones que se tomen con esta información son de quien las toma: antes de decidir, conviene consultar la fuente oficial y, si corresponde, a un profesional.</p>
+        <p><b>De dónde salen los datos.</b> Pulso Macro no produce cotizaciones ni estadísticas propias: las reúne, las ordena y las explica. Usa datos de organismos oficiales e internacionales (BCRA, INDEC y datos.gob.ar, bancos centrales y oficinas de estadística de otros países, BIS, OCDE, Banco Mundial, Banco Central Europeo y Eurostat, entre otros), según las condiciones de reutilización que cada uno publica y citando la fuente; datos de mercado y cotizaciones de proveedores y sitios de terceros, como referencia y con demora; y titulares de medios, de los que se muestra solo el título, con el nombre del medio y un enlace a la nota original. Los derechos sobre los datos y contenidos de terceros pertenecen a sus titulares: Pulso Macro no reclama propiedad sobre ellos.</p>
+        <p><b>Exactitud y demoras.</b> Los datos se actualizan solos y pueden tener errores, demoras o interrupciones, incluso cuando una fuente cambia o deja de publicar. Las cotizaciones son de referencia y no son en tiempo real. Cada dato muestra su fecha. Pulso Macro no garantiza que la información esté completa, exacta o actualizada, ni se hace responsable por las decisiones tomadas en base a ella.</p>
+        <p><b>Uso del contenido de Pulso Macro.</b> Los textos, gráficos y diseño propios se pueden compartir citando a Pulso Macro (pulsomacro.com.ar) y a la fuente original de los datos. Los datos de terceros siguen sujetos a las condiciones de sus titulares.</p>
+        <p><b>Privacidad.</b> El sitio no tiene cuentas de usuario ni pide datos personales. Para contar visitas usa GoatCounter y Cloudflare Web Analytics, que no usan cookies ni identifican a las personas. El navegador guarda algunas preferencias en el propio equipo (por ejemplo, si ya se cerró el cartel de bienvenida) y no se envían a ningún lado. Las tipografías se cargan desde Google Fonts.</p>
+        <p><b>Cambios.</b> Estos términos pueden actualizarse; la versión vigente es la publicada acá. Última actualización: 26 de octubre de 2026.</p>
+      </details>
       <p><b>Cuidado con las estafas:</b> Pulso Macro nunca te va a pedir dinero, datos bancarios ni claves, y nunca recomienda inversiones por mensaje privado (DM, WhatsApp, Telegram ni ninguna otra vía). Si alguien te escribe en nombre de Pulso Macro ofreciendo algo de eso, es una estafa: no respondas y avisá a <a href="mailto:contacto@pulsomacro.com.ar?subject=Posible%20estafa" data-contacto="mail">contacto@pulsomacro.com.ar</a>.</p>
       <p>¿Encontraste un error, tenés una idea o querés sumar algo? Escribí a <a href="mailto:contacto@pulsomacro.com.ar?subject=Pulso%20Macro" data-contacto="mail">contacto@pulsomacro.com.ar</a>. Todas las sugerencias son bienvenidas.</p>
     </div>
@@ -2905,7 +2916,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <footer>
     <span>Fuentes oficiales de cada país (BCRA, INDEC, bancos centrales, BIS, OCDE, entre otras) y datos de mercado con demora. El detalle, en cada sección y en <a href="#sobre">Sobre Pulso Macro</a>. Las tarjetas de dólares se refrescan cada minuto; los gráficos usan el cierre de cada día hábil.</span>
-    <span><a href="#sobre">Sobre Pulso Macro</a> · <a href="indicadores/">Todos los indicadores</a> · <a href="diario/">Imagen del día</a> · <a href="legal/">Términos y aviso legal</a> · Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
+    <span><a href="#sobre">Sobre Pulso Macro</a> · <a href="indicadores/">Todos los indicadores</a> · <a href="diario/">Imagen del día</a> · <a href="#sobre" data-legal>Términos y aviso legal</a> · Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span><b>Pulso Macro nunca pide dinero ni recomienda inversiones por mensaje privado.</b> Si alguien lo hace en su nombre, es una estafa.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
     <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Pulso Macro con datos de los organismos que figuran en cada sección.</span>
@@ -4617,6 +4628,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     as.forEach(a=>a.classList.toggle('on', a===cur)); if(cur && !cur._v){ as.forEach(x=>x._v=false); cur._v=true; cur.scrollIntoView({block:'nearest', inline:'center'}); } }, {passive:true});
   document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
   window.addEventListener('hashchange', ()=>{ setTab(location.hash.slice(1)); NAV.volver = false; });
+  // "Términos y aviso legal" (pie): abre Sobre Pulso Macro en los términos, desplegados
+  const irLegal = () => setTimeout(()=>{ const d = document.querySelector('details.legal'); if(d) d.open = true; const h = $('legal'); if(!h) return; const mb = mobil() && $('mbar').offsetParent!==null ? $('mbar').getBoundingClientRect().height : 0; scrollTo({top:Math.max(0, h.getBoundingClientRect().top + scrollY - mb - 16), behavior:'smooth'}); }, 200);
+  document.querySelectorAll('[data-legal]').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); NAV.salto = true; setTimeout(()=>{ NAV.salto = false; }, 1600); navPush('#sobre'); setTab('sobre'); irLegal(); }));
   const irPortada = ()=>{ navPush(location.pathname+location.search); setTab('portada'); scrollTo({top:0}); };
   $('brandH').addEventListener('click', irPortada);
   for(const id of ['modoH','flHome']) $(id).addEventListener('click', e=>{ e.preventDefault(); irPortada(); gc('volver-inicio-'+id, true); });
