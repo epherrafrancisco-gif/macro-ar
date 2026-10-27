@@ -314,7 +314,7 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .sim .simcur{justify-self:start}.simq{position:relative}
 .simls{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);max-height:330px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.45);padding:4px}
 .simls button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:9px 10px;text-align:left;background:none;border:0;border-radius:6px;color:var(--ink);font:500 14px var(--sans);cursor:pointer}
-.simls button small{color:var(--muted);font-size:11.5px;flex:none}.simls button.on,.simls button:hover{background:var(--sunk)}.simls .empty{padding:10px}.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.simls button small{color:var(--muted);font-size:11.5px;flex:none}.simls button.on,.simls button:hover{background:var(--sunk)}.simls .empty{padding:10px}.simls .sg{margin:8px 10px 2px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.simls .sgt{margin:4px 10px 6px;font-size:12px;color:var(--muted)}.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
 @media (max-width:760px){.sim .simf{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sim .simf label:first-child{grid-column:1/-1}}
 .sim .simf select,.sim .simf input{min-width:0;max-width:100%;width:100%}
 .sim .simc{display:grid;gap:6px}.sim .simc .row{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px}
@@ -4177,7 +4177,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       || `<tr><td colspan="5" style="color:var(--muted)">Ninguna especie coincide con "${esc(q)}".</td></tr>`;
   }
   function renderMercado(){
-    renderRanking(); simRender('k');
+    renderRanking(); if(!$('kSIM')?.dataset.ok) simRender('k');  // el simulador no se recalcula con cada precio en vivo
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
     { const el = $('merParte'), {last,prev} = mer.length ? lastTwo(mer) : {};  // parte de cierre, en formato de noticia (plan legal)
@@ -8620,7 +8620,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(!HIS){ el.innerHTML = '<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2></div><div class="empty">Cargando la historia de precios…</div>'; loadHis(); return; }
     if(!HIS.fechas?.length){ el.innerHTML = '<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2></div><div class="empty">Sin datos por ahora.</div>'; return; }
     if(!el.dataset.ok){ el.dataset.ok = '1'; el.innerHTML = simHTML(p);
-      el.dataset.k = p==='k' ? 'GGAL' : (HIS.info.SPY ? 'SPY' : Object.keys(HIS.info)[0]); $(p+'sQ').value = simNom(el.dataset.k);
+      el.dataset.k = p==='k' && HIS.info.GGAL ? 'GGAL' : HIS.info.SPY ? 'SPY' : HIS.info.MERVAL ? 'MERVAL' : Object.keys(HIS.info)[0]; $(p+'sQ').value = simNom(el.dataset.k);
       [$(p+'sD'), $(p+'sM')].forEach(i=>{ i.addEventListener('input', ()=>simIr(p)); i.addEventListener('change', ()=>{ simIr(p); gcUna('simulador-'+p); }); });
       simBuscador(p);
       $(p+'sM').addEventListener('blur', ()=>{ const v = parseAR($(p+'sM').value); if(isFinite(v)) $(p+'sM').value = nf(v,0); });
@@ -8649,23 +8649,36 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const el = document.querySelector(`[data-sim="${p}"]`), q = $(p+'sQ'), L = $(p+'sL'); let sel = 0, res = [];
     const pintar = () => {
       const t = simNorm(q.value.trim()), ks = Object.keys(HIS.info);
-      if(!t || t===simNorm(simNom(el.dataset.k))) res = SIM_POP.filter(k=>HIS.info[k]);
+      let grupos = null;
+      if(!t || t===simNorm(simNom(el.dataset.k))){  // sin buscar: los más buscados y después TODOS, por tipo (pedido del dueño: que se vea que están todas)
+        const pop = SIM_POP.filter(k=>HIS.info[k]), por = t => ks.filter(k=>HIS.info[k].t===t).sort((a,b)=>simNom(a).localeCompare(simNom(b),'es'));
+        grupos = [['Más buscados', pop], ['Índice', por('idx')], ['Acciones argentinas', por('acc')], ['CEDEARs', por('ced')], ['Bonos en dólares', por('bon')]].filter(g=>g[1].length);
+        res = grupos.flatMap(g=>g[1]); }
       else res = ks.map(k=>{ const tk = simNorm(k), n = simNorm(HIS.info[k].n||'');
           const pts = tk===t ? 0 : tk.startsWith(t) ? 1 : n.startsWith(t) ? 2 : n.split(/[\s()]+/).some(w=>w.startsWith(t)) ? 3 : (n.includes(t)||tk.includes(t)) ? 4 : 9;
-          return [k, pts]; }).filter(x=>x[1]<9).sort((a,b)=>a[1]-b[1] || a[0].localeCompare(b[0])).slice(0,40).map(x=>x[0]);
+          return [k, pts]; }).filter(x=>x[1]<9).sort((a,b)=>a[1]-b[1] || a[0].localeCompare(b[0])).slice(0,80).map(x=>x[0]);
       sel = 0;
-      L.innerHTML = res.length ? res.map((k,i)=>`<button type="button" role="option" data-k="${esc(k)}" class="${i===sel?'on':''}"><span>${esc(simNom(k))}</span><small>${SIM_T[HIS.info[k].t]||''}</small></button>`).join('')
+      const bt = (k,i) => `<button type="button" role="option" data-k="${esc(k)}" class="${i===sel?'on':''}"><span>${esc(simNom(k))}</span><small>${SIM_T[HIS.info[k].t]||''}</small></button>`;
+      let n = 0;
+      L.innerHTML = grupos ? `<p class="sgt">${Object.keys(HIS.info).length} activos: escribí para buscar o elegí de la lista</p>` + grupos.map(([g, a])=>`<p class="sg">${g} · ${a.length}</p>` + a.map(k=>bt(k, n++)).join('')).join('')
+        : res.length ? res.map(bt).join('')
         : '<div class="empty">No encontramos ese activo. Probá con el ticker (por ejemplo GGAL o AAPL).</div>';
       L.hidden = false; };
     const elegir = k => { if(!k) return; el.dataset.k = k; q.value = simNom(k); L.hidden = true; q.blur(); simIr(p); gcUna('simulador-activo'); };
-    q.addEventListener('focus', ()=>{ q.select(); pintar(); });
+    q.addEventListener('focus', ()=>{ q.select(); pintar();
+      if(innerWidth<=640) setTimeout(()=>{ const y = q.getBoundingClientRect().top - 70; if(Math.abs(y) > 8) scrollBy({top:y, behavior:'smooth'}); }, 250); });  // que el teclado no tape la lista
     q.addEventListener('input', pintar);
     q.addEventListener('keydown', e=>{ if(L.hidden) return;
       if(e.key==='ArrowDown' || e.key==='ArrowUp'){ e.preventDefault(); sel = Math.max(0, Math.min(res.length-1, sel + (e.key==='ArrowDown'?1:-1)));
         L.querySelectorAll('button').forEach((b,i)=>{ b.classList.toggle('on', i===sel); if(i===sel) b.scrollIntoView({block:'nearest'}); }); }
       else if(e.key==='Enter'){ e.preventDefault(); elegir(res[sel]); } else if(e.key==='Escape'){ L.hidden = true; q.value = simNom(el.dataset.k); q.blur(); } });
-    L.addEventListener('pointerdown', e=>{ const b = e.target.closest('button[data-k]'); if(b){ e.preventDefault(); elegir(b.dataset.k); } });
-    q.addEventListener('blur', ()=>setTimeout(()=>{ L.hidden = true; if(q.value!==simNom(el.dataset.k)) q.value = simNom(el.dataset.k); }, 150));
+    // celular: con pointerdown, al querer deslizar la lista se elegía lo primero que tocabas. Ahora se elige con el toque (click)
+    // y la lista no se cierra mientras el dedo está encima.
+    let tocando = false;
+    L.addEventListener('pointerdown', e=>{ if(e.pointerType==='mouse') e.preventDefault(); else tocando = true; });
+    L.addEventListener('click', e=>{ const b = e.target.closest('button[data-k]'); tocando = false; if(b){ e.preventDefault(); elegir(b.dataset.k); } });
+    L.addEventListener('touchend', ()=>setTimeout(()=>{ tocando = false; if(document.activeElement!==q && !L.hidden) L.hidden = true; }, 600));
+    q.addEventListener('blur', ()=>setTimeout(()=>{ if(tocando) return; L.hidden = true; if(q.value!==simNom(el.dataset.k)) q.value = simNom(el.dataset.k); }, 150));
   }
   // inflación de EE.UU. (BLS, usa.json): índice del mes de la fecha o el último publicado
   const cpiAt = f => { const a = usa?.bls?.ipc; if(!a?.length) return null; const m = f.slice(0,7); let v = null; for(const [mm,x] of a){ if(mm<=m) v = x; else break; } return v; };

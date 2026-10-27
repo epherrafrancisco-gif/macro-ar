@@ -90,6 +90,70 @@ NOMBRES = {
     "PINS": "Pinterest", "HUT": "Hut 8", "RIOT": "Riot Platforms", "MARA": "MARA Holdings",
 }
 
+# Más nombres (27/10/2026: CEDEARs que aparecían solo con el ticker)
+NOMBRES.update({
+    "AAP": "Advance Auto Parts", "ABEV": "Ambev", "ABEV3": "Ambev (B3)", "ABT": "Abbott", "ACN": "Accenture",
+    "ACWI": "Acciones del mundo (ACWI)", "ADI": "Analog Devices", "ADP": "ADP", "ADS": "Adidas", "AEG": "Aegon",
+    "AEM": "Agnico Eagle", "AI": "C3.ai", "AIG": "AIG", "AKO.B": "Embotelladora Andina", "ALAB": "Astera Labs", "AMGN": "Amgen",
+    "ANET": "Arista Networks", "ANF": "Abercrombie & Fitch", "ARCO": "Arcos Dorados", "ASR": "Aeropuertos del Sureste (México)",
+    "ASTS": "AST SpaceMobile", "AVY": "Avery Dennison", "AZN": "AstraZeneca", "B": "Barrick", "BAK": "Braskem", "BAYN": "Bayer",
+    "BB": "BlackBerry", "BBAS3": "Banco do Brasil", "BBDC3": "Bradesco (B3)", "BBV": "BBVA", "BCS": "Barclays", "BIIB": "Biogen",
+    "BKR": "Baker Hughes", "BMNR": "BitMine", "BMY": "Bristol-Myers Squibb", "BNG": "Bunge", "BNY": "BNY Mellon",
+    "BSBR": "Santander Brasil", "BX": "Blackstone", "CAAP": "Corporación América Airports", "CAH": "Cardinal Health",
+    "CAR": "Avis Budget", "CCJ": "Cameco", "CCL": "Carnival", "CDE": "Coeur Mining", "CEG": "Constellation Energy",
+    "CIBR": "Ciberseguridad (CIBR)", "CL": "Colgate-Palmolive", "CLS": "Celestica", "COP": "ConocoPhillips",
+    "COPX": "Mineras de cobre (COPX)", "CORN": "Maíz (CORN)", "COUR": "Coursera", "CRWD": "CrowdStrike", "CRWV": "CoreWeave",
+    "CSNA3": "CSN (B3)", "CVS": "CVS Health", "CX": "Cemex", "DD": "DuPont", "DECK": "Deckers", "DHR": "Danaher", "DOW": "Dow",
+    "E": "Eni", "ECL": "Ecolab", "EFA": "Países desarrollados (EFA)", "EFX": "Equifax", "EQNR": "Equinor", "ERIC": "Ericsson",
+    "ESGU": "S&P 500 sustentable (ESGU)", "EWJ": "Japón (EWJ)", "EWY": "Corea del Sur (EWY)", "FDX": "FedEx", "FISV": "Fiserv",
+    "FMCC": "Freddie Mac", "FMX": "FEMSA", "FNMA": "Fannie Mae", "FSLR": "First Solar", "FXI": "China (FXI)",
+    "GDX": "Mineras de oro (GDX)", "GEV": "GE Vernova", "GFI": "Gold Fields", "GILD": "Gilead", "GLNG": "Golar LNG",
+    "GLW": "Corning", "GPRK": "GeoPark", "GRMN": "Garmin", "GSG": "Materias primas (GSG)", "GSK": "GSK", "GT": "Goodyear",
+    "HAL": "Halliburton", "HDB": "HDFC Bank", "HIMS": "Hims & Hers", "HL": "Hecla Mining", "HMC": "Honda", "HOOD": "Robinhood",
+    "HSBC": "HSBC", "HSY": "Hershey", "HWM": "Howmet", "IBB": "Biotecnología (IBB)", "IBKR": "Interactive Brokers",
+    "IBN": "ICICI Bank", "ICLN": "Energía limpia (ICLN)", "IEMG": "Mercados emergentes (IEMG)", "IEUR": "Europa (IEUR)",
+    "IFF": "IFF", "IJH": "S&P 400 (IJH)", "ILF": "Latinoamérica (ILF)", "INFY": "Infosys", "ING": "ING",
+    "IP": "International Paper", "IREN": "IREN", "ISRG": "Intuitive Surgical", "ITA": "Defensa de EE.UU. (ITA)",
+    "ITUB3": "Itaú (B3)", "IVE": "S&P 500 Value (IVE)", "IVV": "S&P 500 (IVV)", "IVW": "S&P 500 Growth (IVW)",
+    "JCI": "Johnson Controls", "JMIA": "Jumia", "JOYY": "JOYY", "KB": "KB Financial", "KEP": "Korea Electric Power",
+    "KGC": "Kinross Gold", "KLAC": "KLA", "KMB": "Kimberly-Clark", "KOFM": "Coca-Cola FEMSA", "LAR": "Lithium Argentina",
+    "LIN": "Linde", "LND": "BrasilAgro", "LREN3": "Lojas Renner", "LVS": "Las Vegas Sands", "LYG": "Lloyds",
+    "MBG": "Mercedes-Benz", "MDLZ": "Mondelez", "MDT": "Medtronic", "MFG": "Mizuho", "MOS": "Mosaic", "MP": "MP Materials",
+    "MRVL": "Marvell", "MSI": "Motorola Solutions", "MUB": "Bonos municipales de EE.UU. (MUB)", "MUFG": "Mitsubishi UFJ",
+    "MUX": "McEwen Mining", "NATU3": "Natura", "NBIS": "Nebius", "NEE": "NextEra Energy", "NG": "NovaGold",
+    "NGG": "National Grid", "NMR": "Nomura", "NOKA": "Nokia", "NSAN": "Nissan", "NTES": "NetEase", "NTRA": "Natera",
+    "NUE": "Nucor", "NVS": "Novartis", "NXE": "NexGen Energy", "O": "Realty Income", "OKLO": "Oklo", "ONDS": "Ondas",
+    "ORLY": "O'Reilly", "OXY": "Occidental", "PAC": "Aeropuertos del Pacífico (México)", "PAGS": "PagSeguro",
+    "PANW": "Palo Alto Networks", "PATH": "UiPath", "PBI": "Pitney Bowes", "PCAR": "Paccar", "PETR3": "Petrobras (B3)",
+    "PHG": "Philips", "PLD": "Prologis", "PRIO3": "PRIO (B3)", "PSQ": "Nasdaq 100 inverso (PSQ)", "PSX": "Phillips 66",
+    "QCOM": "Qualcomm", "SCCO": "Southern Copper", "SLB": "SLB (Schlumberger)", "SNY": "Sanofi", "SPGI": "S&P Global",
+    "SYY": "Sysco", "TEF": "Telefónica", "TGT": "Target", "TMO": "Thermo Fisher", "TRV": "Travelers", "TS": "Tenaris",
+    "TTE": "TotalEnergies", "TWTR": "Twitter", "UNP": "Union Pacific", "UPS": "UPS", "URA": "Uranio (URA)", "USB": "U.S. Bancorp",
+    "VIST": "Vista Energy", "VRSN": "VeriSign", "WBA": "Walgreens", "XLB": "Materiales de EE.UU. (XLB)",
+    "XLC": "Comunicaciones de EE.UU. (XLC)", "XLI": "Industria de EE.UU. (XLI)", "XLK": "Tecnología de EE.UU. (XLK)",
+    "XLP": "Consumo básico de EE.UU. (XLP)", "XLRE": "Inmobiliario de EE.UU. (XLRE)", "XLU": "Servicios públicos de EE.UU. (XLU)",
+    "XLV": "Salud de EE.UU. (XLV)", "XLY": "Consumo de EE.UU. (XLY)", "YELP": "Yelp", "YY": "JOYY", "ZTS": "Zoetis",
+    "SPOT": "Spotify", "SHOP": "Shopify", "TSLA": "Tesla", "SPY": "S&P 500 (SPY)", "WMT": "Walmart", "V": "Visa",
+    "TXN": "Texas Instruments", "UBER": "Uber", "VALE": "Vale", "VZ": "Verizon", "XOM": "Exxon Mobil", "TM": "Toyota",
+    "TSM": "TSMC", "UNH": "UnitedHealth", "SBUX": "Starbucks", "SONY": "Sony", "SNOW": "Snowflake", "SE": "Sea Ltd",
+    "SID": "CSN", "SAP": "SAP", "STNE": "StoneCo", "TEN": "Tenaris", "SATL": "Satellogic", "SLV": "Plata (SLV)",
+    "SMCI": "Super Micro", "STLA": "Stellantis", "TCEHY": "Tencent", "TWLO": "Twilio", "UL": "Unilever", "UAL": "United Airlines",
+    "WFC": "Wells Fargo", "X": "US Steel", "XP": "XP Inc", "XYZ": "Block (Square)", "ZM": "Zoom", "T": "AT&T",
+})
+
+
+def variante(tk, todos):
+    """Otra forma de la misma especie (AAPLB, BMA.B, KO..B, MOLA5, ON con F al final): no se muestra aparte."""
+    if tk in NOMBRES:
+        return False
+    if "." in tk:
+        return True
+    if len(tk) >= 3 and tk[-1] in "BF":  # sin nombre y con B o F al final: casi siempre otra clase o una ON
+        return True
+    if len(tk) >= 4 and tk[-1] in "CD" and tk[:-1] in todos:
+        return True
+    return len(tk) >= 4 and tk[-1].isdigit() and tk[:-1] in todos
+
 CTX = ssl.create_default_context()
 CTX_LAXO = ssl.create_default_context()
 CTX_LAXO.check_hostname = False
@@ -250,16 +314,20 @@ def main():
             acc.add(k)
         elif v.get("t") == "ced" and k not in acc:
             ced.add(k)
+    todos = acc | ced
+    acc = {tk for tk in acc if not variante(tk, todos)}
+    ced = {tk for tk in ced if not variante(tk, todos)}
     pedidos = [(tk, "bon") for tk, _ in BONOS] + [(tk, "acc") for tk in sorted(acc)] + [(tk, "ced") for tk in sorted(ced)]
-    # primero los que ya tienen historia (rápidos), después los nuevos
-    pedidos.sort(key=lambda x: 0 if (DIR / f"{x[0]}.json").exists() else 1)
+    # primero los más buscados y los que ya tienen historia (rápidos); después los que tienen nombre; al final el resto
+    POP = {"SPY", "QQQ", "GGAL", "YPFD", "PAMP", "AAPL", "NVDA", "MELI", "TSLA", "MSFT", "KO", "VIST", "BMA", "AMZN", "GOOGL", "META"}
+    pedidos.sort(key=lambda x: (0 if x[0] in POP else 1, 0 if (DIR / f"{x[0]}.json").exists() else 1, 0 if x[0] in NOMBRES else 1))
     info = {}
     for tk, tipo in pedidos:
         viejo = leer(tk)
         if time.time() - t0 > TOPE_SEG:
             diag["faltan"] += 1
             if viejo:
-                info[tk] = info_prev.get(tk) or {"t": tipo}
+                info[tk] = {**(info_prev.get(tk) or {"t": tipo}), **({"n": NOMBRES[tk]} if tk in NOMBRES else {})}
             continue
         try:
             nuevo = byma_hist("chart/historical-series/history", f"{tk} 24HS", corto=bool(viejo))
@@ -277,7 +345,7 @@ def main():
         except Exception as e:  # noqa: BLE001
             diag["errores"].append(f"{tk}: {str(e)[:80]}")
             if viejo:
-                info[tk] = info_prev.get(tk) or {"t": tipo}
+                info[tk] = {**(info_prev.get(tk) or {"t": tipo}), **({"n": NOMBRES[tk]} if tk in NOMBRES else {})}
         time.sleep(0.12)
     diag["ok"].append(f"activos con historia: {len(info)} (pedidos {len(pedidos)}, {time.time() - t0:.0f} s)")
     # dólar (para el MEP): AL30D y GD30D
