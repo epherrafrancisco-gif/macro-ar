@@ -106,6 +106,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   navegador (`pasos()`: Edge, Chrome, Android, Samsung, Safari de Mac; evento `instalar-pasos`); en Firefox de compu no aparece. Si ya está instalada tampoco: marca `pm-app` en localStorage (al instalar o abrir como
   app) + `getInstalledRelatedApps` (`related_applications` en el manifest); `beforeinstallprompt` borra la marca. Eventos GoatCounter `instalar-click`, `instalar-ios`,
   `app-instalada`. La app abre `/?app=1`.
+- Avisos de novedades (pedido del dueño): cartel chico `#nove` (`noveIni`), una sola vez (se cierra con la X y no vuelve:
+  `pm-nove-1027`), SOLO a quien ya usaba el sitio (tenía alguna marca vieja en localStorage) y hasta `FIN` (29/10/2026 01:10).
+  `pm-visita` = desde cuándo se conoce a ese navegador ('0' = de antes del 27/10/2026): para un próximo aviso, mostrarlo a
+  quien tenga `pm-visita` anterior a la fecha del cambio, con clave y fecha de fin nuevas. A los nuevos no se les muestra.
 - Manual de uso (pedido del dueño, "que no sea molesto"): botón `[data-man]` "¿Cómo se usa?" en `.hello` (compu), `#mHero`
   (celular) y arriba de Aclaraciones en Sobre; abre `#manual` (8 bloques cortos). Nunca se abre solo. Evento GoatCounter `manual`.
 - Buscador (pedido del dueño: "que encuentre todo", "que perdone bastante" y que con una palabra vaga muestre todas las
