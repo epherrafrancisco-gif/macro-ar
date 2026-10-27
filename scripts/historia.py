@@ -115,6 +115,30 @@ def bcra_cer():
     return out
 
 
+def guardado(prev, clave):
+    """Serie guardada en la corrida anterior, como {fecha: valor}."""
+    F = prev.get("fechas") or []
+    arr = prev.get("mep") if clave == "mep" else (prev.get("p") or {}).get(clave)
+    return {f: v for f, v in zip(F, arr or []) if v}
+
+
+def unir(nuevo, viejo, escalar=True):
+    """Open BYMADATA solo da ~2 años: lo más viejo sale de lo guardado. BYMA re-ajusta su historia (pagos de bonos,
+    splits), así que la parte guardada se escala para empalmar con la nueva en la primera fecha que tienen en común."""
+    if not viejo:
+        return nuevo
+    if not nuevo:
+        return viejo
+    f0 = min(nuevo)
+    ant = {f: v for f, v in viejo.items() if f < f0}
+    if not ant:
+        return nuevo
+    r = nuevo[f0] / viejo[f0] if escalar and viejo.get(f0) else 1
+    out = {f: round(v * r, 4 if v * r < 100 else 2) for f, v in ant.items()}
+    out.update(nuevo)
+    return out
+
+
 def main():
     prev = {}
     if OUT.exists():
@@ -175,6 +199,12 @@ def main():
         diag["errores"].append(f"CER: {e}")
         cer = {}
 
+    # historia acumulada: lo más viejo que ya no da BYMA sale de la corrida anterior
+    for k in set(series) | set((prev.get("p") or {}).keys()):
+        series[k] = unir(series.get(k, {}), guardado(prev, k))
+        if k not in info and k in (prev.get("info") or {}):
+            info[k] = prev["info"][k]
+    series = {k: v for k, v in series.items() if v}
     if len(series) < 10:
         print("Muy pocas series: no se reemplaza historia.json", json.dumps(diag, ensure_ascii=False, indent=1))
         if prev:
@@ -186,6 +216,7 @@ def main():
 
     fechas = sorted(set().union(*[set(s) for s in series.values()]))
     # MEP de cada día: AL30 ÷ AL30D (si falta, GD30 ÷ GD30D)
+    mep_viejo = guardado(prev, "mep")
     mep = []
     for f in fechas:
         v = None
@@ -194,7 +225,7 @@ def main():
             if a and b:
                 v = round(a / b, 2)
                 break
-        mep.append(v)
+        mep.append(v if v is not None else mep_viejo.get(f))
     # CER del día (o el último anterior)
     cer_al = []
     ks = sorted(cer)

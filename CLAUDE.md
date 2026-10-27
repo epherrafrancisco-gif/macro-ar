@@ -186,6 +186,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `ipc_largo` de actividad.py; si falta, `act.general` desde 2022) completado con `months[].infl` del BCRA para los meses que
   datos.gob.ar todavía no cargó (marcados con *). Tabla con qué meses usa cada ajuste, fila vigente resaltada, ajustes sin
   IPC publicado como "pendiente", botones copiar (tabulado) y descargar CSV. `.card` y `.calc` con columna `minmax(0,1fr)`: sin eso, al girar el celular el contenido quedaba más ancho que la tarjeta.
+- Simulador de inversión histórica (pedido del dueño 26/10/2026; en Calculadoras `calc='sim'` → `#cSIM` y en Bolsa y bonos
+  debajo del mapa de calor `#kSIM`; una sola lógica `simRender(p)`/`simCalc(p)`, `data-sim` = prefijo de ids): activo
+  (Merval, 21 acciones, 11 soberanos, 10 CEDEARs), fecha y monto → valor hoy, rendimiento en pesos, contra la inflación
+  (CER) y en dólares MEP, comparación con MEP/inflación/Merval/SPY y gráfico. Datos `historia.json` (scripts/historia.py,
+  workflow `historia.yml` L a V 18:35 ART): Open BYMADATA `chart/historical-series/history?symbol=GGAL%2024HS` (solo da ~2
+  años: arranca el 28/10/2024; el robot ACUMULA lo viejo de la corrida anterior, escalándolo para empalmar), índice
+  `chart/index-historical-series/history?symbol=M` (S&P Merval × `MERVAL_FACTOR`; desde el 19/10/2026 el MSCI de
+  data.json), MEP propio AL30/AL30D (o GD30) y CER BCRA (serie 30). Series con saltos de >45 % en un día se descartan (BYMA,
+  split 05/2025). Bonos: la historia de BYMA viene ajustada por ALGUNOS pagos y por otros no (AL30: el de 01/2025 sin
+  ajustar, los siguientes ajustados): `simCalc` mira si el precio en dólares cayó en cada fecha de pago (BFLUJO) y solo
+  suma lo cobrado (al MEP de ese día, sin reinvertir) cuando cayó. `HIS` se declara arriba de todo (TDZ: renderMercado
+  corre al arrancar).
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
