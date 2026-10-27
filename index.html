@@ -59,7 +59,6 @@
   body.insec .quotes.compact .q .cv,body.insec .quotes.compact .q .when,body.insec .quotes.compact .q .row .chip+.chip{display:none}
   body.insec .quotes.compact .q .v{font-size:17px}
   body.insec .quotes.compact .q .name .info{display:none}
-  body.insec .quotes.compact .q{order:5}body.insec .quotes.compact .q:nth-child(1){order:1}body.insec .quotes.compact .q:nth-child(5){order:2}body.insec .quotes.compact .q:nth-child(3){order:3}
   body.insec .quotes.compact .q .row{gap:0}
   [data-mid]{scroll-margin-top:124px}
 
@@ -294,14 +293,14 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form .pre{position:relative}
 .form .pre span{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-family:var(--mono);font-size:14px;pointer-events:none}
-.form .pre input{padding-left:30px}
+.form .pre input{padding-left:30px}.form .pre.usd input{padding-left:46px}
 .form .hint{font-size:11.5px;color:var(--muted);font-weight:400}
 .res{display:grid;gap:16px}
 .res .stats{gap:12px 30px}
 .verd{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14px;line-height:1.5}
 .verd b{font-family:var(--mono);font-weight:600}
 .minit{width:100%;font-size:13px;min-width:0}
-.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.sim .simcur{justify-self:start}.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
 @media (max-width:760px){.sim .simf{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sim .simf label:first-child{grid-column:1/-1}}
 .sim .simf select,.sim .simf input{min-width:0;max-width:100%;width:100%}
 .sim .simc{display:grid;gap:6px}.sim .simc .row{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px}
@@ -3244,7 +3243,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   // ---- DÓLARES ----
   function renderQuotes(){
-    $('quotes').innerHTML = DOL.map(q=>{
+    // Mismo orden en la compu y en el celular (pedido del dueño): Oficial, Blue y MEP primero
+    const QORD = ['oficial','blue','mep','mayorista','ccl','cripto','tarjeta'];
+    $('quotes').innerHTML = [...DOL].sort((a,b)=>QORD.indexOf(a.k)-QORD.indexOf(b.k)).map(q=>{
       const {pts, c, hora} = cardSeries(q.k); if(!pts.length) return `<div class="q"><div class="name">${q.n}</div><div class="v">—</div><div class="when">${q.d}</div></div>`;
       const {last, prev} = lastTwo(pts);
       const m30 = ago(pts,30);
@@ -8565,10 +8566,11 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       return `<optgroup label="${n}">${ks.map(k=>`<option value="${k}">${esc(I[k].n)}${k!=='MERVAL' && !I[k].n.includes(k)?` (${k})`:''}</option>`).join('')}</optgroup>`; }).join('');
     const d0 = F[0], d1 = F[F.length-1], def = F.find(f=>f>=`${+d1.slice(0,4)-1}-01-01`) || d0;
     return `<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2><span class="note">Elegí qué comprabas, cuándo y con cuánta plata</span></div>
+      <div class="seg simcur" id="${p}sCur" role="tablist" aria-label="Moneda"><button type="button" data-cur="usd" aria-selected="true">En dólares</button><button type="button" data-cur="ars" aria-selected="false">En pesos</button></div>
       <div class="simf form">
         <label>¿Qué comprabas?<select id="${p}sA">${opt}</select></label>
         <label>¿Cuándo?<input type="date" id="${p}sD" min="${d0}" max="${d1}" value="${def}"></label>
-        <label>¿Cuántos pesos?<div class="pre"><span>$</span><input id="${p}sM" inputmode="decimal" autocomplete="off" value="500.000"></div></label>
+        <label><span id="${p}sML">¿Cuántos dólares?</span><div class="pre usd" id="${p}sMP"><span id="${p}sMS">US$</span><input id="${p}sM" inputmode="decimal" autocomplete="off" value="1.000"></div></label>
       </div>
       <div class="res" id="${p}sR"></div>
       <div class="chart" id="${p}sCh"></div><div class="legend" id="${p}sLg"></div>
@@ -8580,19 +8582,31 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(!HIS.fechas?.length){ el.innerHTML = '<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2></div><div class="empty">Sin datos por ahora.</div>'; return; }
     if(!el.dataset.ok){ el.dataset.ok = '1'; el.innerHTML = simHTML(p); if(p==='k') $(p+'sA').value = 'GGAL';
       el.querySelectorAll('select,input').forEach(i=>{ i.addEventListener('input', ()=>simCalc(p)); i.addEventListener('change', ()=>{ simCalc(p); gcUna('simulador-'+p); }); });
-      $(p+'sM').addEventListener('blur', ()=>{ const v = parseAR($(p+'sM').value); if(isFinite(v)) $(p+'sM').value = nf(v,0); }); }
+      $(p+'sM').addEventListener('blur', ()=>{ const v = parseAR($(p+'sM').value); if(isFinite(v)) $(p+'sM').value = nf(v,0); });
+      // pedido del dueño: también en dólares ("la mayoría no invierte en pesos"); arranca en dólares
+      el.dataset.cur = 'usd';
+      $(p+'sCur').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ const c = b.dataset.cur; if(el.dataset.cur===c) return; el.dataset.cur = c;
+        $(p+'sCur').querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected', String(x===b)));
+        $(p+'sML').textContent = c==='usd' ? '¿Cuántos dólares?' : '¿Cuántos pesos?'; $(p+'sMS').textContent = c==='usd' ? 'US$' : '$'; $(p+'sMP').classList.toggle('usd', c==='usd');
+        $(p+'sM').value = c==='usd' ? '1.000' : '500.000'; simCalc(p); gcUna('simulador-'+c); })); }
     simCalc(p);
   }
+  // inflación de EE.UU. (BLS, usa.json): índice del mes de la fecha o el último publicado
+  const cpiAt = f => { const a = usa?.bls?.ipc; if(!a?.length) return null; const m = f.slice(0,7); let v = null; for(const [mm,x] of a){ if(mm<=m) v = x; else break; } return v; };
   function simCalc(p){
-    const k = $(p+'sA').value, dIn = $(p+'sD').value, M = parseAR($(p+'sM').value), F = HIS.fechas, P = HIS.p[k], nom = HIS.info[k].n, R = $(p+'sR');
+    const el = document.querySelector(`[data-sim="${p}"]`), cur = el.dataset.cur || 'usd', enUsd = cur==='usd';
+    const k = $(p+'sA').value, dIn = $(p+'sD').value, M0 = parseAR($(p+'sM').value), F = HIS.fechas, P = HIS.p[k], nom = HIS.info[k].n, R = $(p+'sR');
     const limpiar = msg => { R.innerHTML = `<div class="empty">${msg}</div>`; $(p+'sCh').innerHTML = ''; $(p+'sLg').innerHTML = ''; $(p+'sN').textContent = ''; };
-    if(!(M>0)) return limpiar('Poné cuántos pesos invertías.');
+    if(!(M0>0)) return limpiar(enUsd ? 'Poné cuántos dólares invertías.' : 'Poné cuántos pesos invertías.');
+    if(enUsd && !usa && !usaLoading) loadUsa().then(()=>{ if(el.dataset.cur==='usd') simCalc(p); });
     let i0 = F.findIndex((f,i)=>f>=dIn && P[i]!=null); if(i0<0) return limpiar('No hay precio para esa fecha.');
     let i1 = P.length-1; while(i1>i0 && P[i1]==null) i1--;
     if(i1<=i0) return limpiar('Elegí una fecha más vieja: no hay días posteriores para comparar.');
     const at = (arr, i) => { for(let j=i; j>=0; j--) if(arr[j]!=null) return arr[j]; for(let j=i; j<arr.length; j++) if(arr[j]!=null) return arr[j]; return null; };
-    const p0 = P[i0], u = M/p0, mep0 = at(HIS.mep, i0), mep1 = at(HIS.mep, i1), cer0 = at(HIS.cer, i0), cer1 = at(HIS.cer, i1);
-    // bonos: pagos cobrados entre la compra y hoy (por cada 100 nominales originales; el precio es por 100 nominales)
+    const mep0 = at(HIS.mep, i0), mep1 = at(HIS.mep, i1), cer0 = at(HIS.cer, i0), cer1 = at(HIS.cer, i1);
+    if(enUsd && !(mep0 && mep1)) return limpiar('No hay dólar MEP para esa fecha.');
+    // en dólares: se pasan a pesos al MEP del día, se compra el activo en pesos y al final se vuelve a dólares al MEP de hoy
+    const M = enUsd ? M0*mep0 : M0, p0 = P[i0], u = M/p0;
     // La historia de BYMA viene ajustada por algunos pagos y por otros no: para cada pago se mira si el precio en dólares
     // cayó ese día. Si cayó (serie sin ajustar), se suma lo cobrado; si no cayó, BYMA ya lo descontó del precio viejo.
     const bk = (SOB.find(x=>x[0]===k)||[])[1], pagos = []; let ajus = 0;
@@ -8605,29 +8619,48 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // valor de la inversión cada día (para el gráfico): precio × cantidad + lo cobrado hasta ese día
     const val = i => { const px = at(P, i), cob = pagos.filter(x=>x.d<=F[i]).reduce((a,x)=>a+x.ars,0); return px*u + cob; };
     const V = val(i1), cobUsd = pagos.reduce((a,x)=>a+x.usd,0), cobArs = pagos.reduce((a,x)=>a+x.ars,0);
-    const rN = V/M-1, rR = cer0 && cer1 ? V/(M*cer1/cer0)-1 : null, rU = mep0 && mep1 ? (V/mep1)/(M/mep0)-1 : null;
+    const dias = (T(F[i1])-T(F[i0]))/864e5, anual = r => dias>=180 ? Math.pow(1+r, 365/dias)-1 : null;
     const fl = f => `${+f.slice(8)} de ${MESL[+f.slice(5,7)-1]} de ${f.slice(0,4)}`, cls = v => v>=0 ? 'up' : 'dn', pct = v => pc(v,1);
-    // comparación con otras opciones, mismo monto y mismas fechas
-    const otros = [{n:nom+(k!=='MERVAL' && !nom.includes(k)?` (${k})`:''), v:V, yo:true}];
-    if(mep0 && mep1) otros.push({n:'Dólar MEP', v:M/mep0*mep1});
-    if(cer0 && cer1) otros.push({n:'Solo seguir la inflación', v:M*cer1/cer0});
-    if(k!=='MERVAL' && HIS.p.MERVAL){ const a = at(HIS.p.MERVAL, i0), b = at(HIS.p.MERVAL, i1); if(a && b) otros.push({n:'Merval', v:M*b/a}); }
-    if(k!=='SPY' && HIS.p.SPY){ const a = at(HIS.p.SPY, i0), b = at(HIS.p.SPY, i1); if(a && b) otros.push({n:'S&P 500 (CEDEAR SPY)', v:M*b/a}); }
-    otros.sort((a,b)=>b.v-a.v); const mx = Math.max(...otros.map(o=>o.v));
-    R.innerHTML = `<div class="stats">${stc('Hoy valdrían', pesos(V,0), `al cierre del ${fd(F[i1])} · ${V>=M?'ganaste':'perdiste'} ${pesos(Math.abs(V-M),0)}`, '', true)}</div>
-      <div class="stats">${stc('Rendimiento en pesos', pct(rN), 'sin contar la inflación', cls(rN))}
-      ${rR!=null?stc('Contra la inflación', pct(rR), rR>=0?'le ganaste a la inflación':'perdiste contra la inflación', cls(rR)):''}
-      ${rU!=null?stc('En dólares MEP', pct(rU), `de ${usd(M/mep0)} a ${usd(V/mep1)}`, cls(rU)):''}</div>
-      <div class="verd">Si el ${fl(F[i0])} ponías <b>${pesos(M,0)}</b> en ${esc(nom)}, hoy tendrías <b>${pesos(V,0)}</b>${rR!=null?`: ${rR>=0?'le ganaste':'perdiste'} <b>${nf(Math.abs(rR)*100,1)} %</b> contra la inflación`:''}${rU!=null?` y ${rU>=0?'ganaste':'perdiste'} <b>${nf(Math.abs(rU)*100,1)} %</b> en dólares`:''}.${F[i0]!==dIn?` <small>(${fd(dIn)} no hubo cotización: se toma el ${fd(F[i0])})</small>`:''}</div>
+    const mon = v => enUsd ? usd(v) : pesos(v,0), nomA = nom+(k!=='MERVAL' && !nom.includes(k)?` (${k})`:'');
+    const otroIdx = (kk, a, b) => { const x = at(HIS.p[kk], i0), y = at(HIS.p[kk], i1); return x && y ? (enUsd ? M0*mep0*y/x/mep1 : M*y/x) : null; };
+    let fin, rMain, rReal, realTxt, rOtra, otraTxt, otros = [];
+    if(enUsd){
+      const Vu = V/mep1, c0 = cpiAt(F[i0]), c1 = cpiAt(F[i1]); fin = Vu; rMain = Vu/M0-1;
+      rReal = c0 && c1 ? Vu/(M0*c1/c0)-1 : null; realTxt = 'Contra la inflación de EE.UU.';
+      rOtra = cer0 && cer1 ? V/(M*cer1/cer0)-1 : null; otraTxt = 'En pesos, contra la inflación de acá';
+      otros = [{n:nomA, v:Vu, yo:true}, {n:'Quedarte con los dólares', v:M0}];
+      if(c0 && c1) otros.push({n:'Empatarle a la inflación de EE.UU.', v:M0*c1/c0});
+    } else {
+      fin = V; rMain = V/M-1; rReal = cer0 && cer1 ? V/(M*cer1/cer0)-1 : null; realTxt = 'Contra la inflación';
+      rOtra = mep0 && mep1 ? (V/mep1)/(M/mep0)-1 : null; otraTxt = 'En dólares MEP';
+      otros = [{n:nomA, v:V, yo:true}];
+      if(mep0 && mep1) otros.push({n:'Dólar MEP', v:M/mep0*mep1});
+      if(cer0 && cer1) otros.push({n:'Solo seguir la inflación', v:M*cer1/cer0});
+    }
+    if(k!=='MERVAL' && HIS.p.MERVAL){ const v = otroIdx('MERVAL'); if(v) otros.push({n:'Merval', v}); }
+    if(k!=='SPY' && HIS.p.SPY){ const v = otroIdx('SPY'); if(v) otros.push({n:'S&P 500 (CEDEAR SPY)', v}); }
+    otros.sort((a,b)=>b.v-a.v); const mx = Math.max(...otros.map(o=>o.v)), an = anual(rMain);
+    R.innerHTML = `<div class="stats">${stc('Hoy valdrían', mon(fin), `al cierre del ${fd(F[i1])} · ${fin>=M0?'ganaste':'perdiste'} ${mon(Math.abs(fin-M0))}`, '', true)}</div>
+      <div class="stats">${stc(enUsd?'Rendimiento en dólares':'Rendimiento en pesos', pct(rMain), an!=null?`${pc(an,1)} por año`:'en todo el período', cls(rMain))}
+      ${rReal!=null?stc(realTxt, pct(rReal), rReal>=0?'le ganaste a la inflación':'perdiste contra la inflación', cls(rReal)):''}
+      ${rOtra!=null?stc(otraTxt, pct(rOtra), enUsd?`de ${pesos(M,0)} a ${pesos(V,0)}`:`de ${usd(M/mep0)} a ${usd(V/mep1)}`, cls(rOtra)):''}</div>
+      <div class="verd">Si el ${fl(F[i0])} ponías <b>${mon(M0)}</b> en ${esc(nom)}${enUsd?' (pasándolos a pesos por MEP y volviendo a dólares al vender)':''}, hoy tendrías <b>${mon(fin)}</b>: ${rMain>=0?'ganaste':'perdiste'} <b>${nf(Math.abs(rMain)*100,1)} %</b> en ${enUsd?'dólares':'pesos'}${rReal!=null?`, que ${rReal>=0?'es':'es perder'} <b>${nf(Math.abs(rReal)*100,1)} %</b> ${rReal>=0?'más que':'contra'} la inflación${enUsd?' de EE.UU':''}`:''}.${F[i0]!==dIn?` <small>(el ${fd(dIn)} no hubo cotización: se toma el ${fd(F[i0])})</small>`:''}</div>
       ${pagos.length||ajus?`<p class="note">${pagos.length?`Incluye <b>${usd(cobUsd)}</b> cobrados en ${pagos.length} ${pagos.length>1?'pagos':'pago'} de cupones y amortizaciones (${pesos(cobArs,0)} al MEP de cada pago, sin reinvertirlos). `:''}${ajus?`Otros ${ajus} ${ajus>1?'pagos ya están':'pago ya está'} dentro del precio: la historia de BYMA los descuenta.`:''}</p>`:''}
-      <div class="simc">${otros.map(o=>`<div class="row${o.yo?' yo':''}"><span>${esc(o.n)}</span><div class="bar"><i style="width:${Math.max(2,o.v/mx*100).toFixed(1)}%;background:var(${o.yo?'--accent':o.v>=M?'--pos':'--neg'})"></i></div><b>${pesos(o.v,0)}</b></div>`).join('')}</div>`;
-    // gráfico: valor de la inversión, lo que hacía falta para empatarle a la inflación y lo mismo en dólar MEP (una muestra por semana)
-    const paso = Math.max(1, Math.round((i1-i0)/160)), ss = [{n:'Tu inversión', c:'--s1', pts:[]}, {n:'Empatarle a la inflación', c:'--s4', pts:[]}, {n:'Dólar MEP', c:'--s2', pts:[]}];
-    for(let i=i0; i<=i1; i+=paso){ const ii = Math.min(i, i1); ss[0].pts.push([F[ii], val(ii)]); const c = at(HIS.cer, ii), m = at(HIS.mep, ii); if(cer0 && c) ss[1].pts.push([F[ii], M*c/cer0]); if(mep0 && m) ss[2].pts.push([F[ii], M/mep0*m]); }
-    if(ss[0].pts[ss[0].pts.length-1][0] !== F[i1]){ ss[0].pts.push([F[i1], V]); if(cer1) ss[1].pts.push([F[i1], M*cer1/cer0]); if(mep1) ss[2].pts.push([F[i1], M/mep0*mep1]); }
-    lineChart($(p+'sCh'), ss, {aria:'Valor de la inversión', yfmt:v=>'$ '+nf(v/1000,0)+' mil', vfmt:v=>pesos(v,0), labW:96});
+      <div class="simc">${otros.map(o=>`<div class="row${o.yo?' yo':''}"><span>${esc(o.n)}</span><div class="bar"><i style="width:${Math.max(2,o.v/mx*100).toFixed(1)}%;background:var(${o.yo?'--accent':o.v>=M0?'--pos':'--neg'})"></i></div><b>${mon(o.v)}</b></div>`).join('')}</div>`;
+    // gráfico (una muestra por semana): la inversión contra no hacer nada (dólares o inflación)
+    const paso = Math.max(1, Math.round((i1-i0)/160)), idx = []; for(let i=i0; i<i1; i+=paso) idx.push(i); idx.push(i1);
+    let ss;
+    if(enUsd){ const c0 = cpiAt(F[i0]);
+      ss = [{n:'Tu inversión', c:'--s1', pts:idx.map(i=>[F[i], val(i)/at(HIS.mep,i)])}, {n:'Quedarte con los dólares', c:'--s2', pts:idx.map(i=>[F[i], M0])}];
+      if(c0) ss.push({n:'Empatarle a la inflación de EE.UU.', c:'--s4', pts:idx.map(i=>{ const c = cpiAt(F[i]); return c ? [F[i], M0*c/c0] : null; }).filter(Boolean)});
+    } else {
+      ss = [{n:'Tu inversión', c:'--s1', pts:idx.map(i=>[F[i], val(i)])}];
+      if(cer0) ss.push({n:'Empatarle a la inflación', c:'--s4', pts:idx.map(i=>[F[i], M*at(HIS.cer,i)/cer0])});
+      if(mep0) ss.push({n:'Dólar MEP', c:'--s2', pts:idx.map(i=>[F[i], M/mep0*at(HIS.mep,i)])});
+    }
+    lineChart($(p+'sCh'), ss, {aria:'Valor de la inversión', yfmt:v=>enUsd ? 'US$ '+nf(v,0) : '$ '+nf(v/1000,0)+' mil', vfmt:mon, labW:enUsd?86:96});
     legend($(p+'sLg'), ss.filter(s=>s.pts.length));
-    $(p+'sN').textContent = `Precios de cierre de BYMA (Open BYMADATA), desde ${fd(F[0])}. ${HIS.info[k].t==='bon' ? 'Bonos: precio en pesos más los cupones y amortizaciones cobrados.' : HIS.info[k].t==='idx' ? 'El índice no se compra directo: es lo que habría hecho una cartera igual al Merval.' : 'Precio de cierre de BYMA: puede no incluir dividendos.'} Sin comisiones ni impuestos. Inflación: CER del BCRA (sigue al IPC con un mes y medio de atraso). Dólar MEP: calculado por Pulso Macro con los cierres del AL30 y AL30D. No es una recomendación de inversión.`;
+    $(p+'sN').textContent = `Precios de cierre de BYMA (Open BYMADATA), desde ${fd(F[0])}. ${HIS.info[k].t==='bon' ? 'Bonos: precio en pesos más los cupones y amortizaciones cobrados.' : HIS.info[k].t==='idx' ? 'El índice no se compra directo: es lo que habría hecho una cartera igual al Merval.' : 'Precio de cierre de BYMA: puede no incluir dividendos.'} Sin comisiones ni impuestos. ${enUsd ? 'En dólares: se compra y se vende pasando por el dólar MEP de cada día; inflación de EE.UU. del BLS (mensual).' : 'Inflación: CER del BCRA (sigue al IPC con un mes y medio de atraso).'} Dólar MEP: calculado por Pulso Macro con los cierres del AL30 y AL30D. No es una recomendación de inversión.`;
   }
 })();
 </script>

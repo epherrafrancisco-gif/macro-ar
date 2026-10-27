@@ -45,7 +45,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el período = dispositivos que la tienen (no se puede saber quién la desinstala). `app-instalada` (solo Chrome/Edge) sigue.
 
 ## Estructura de la página (`index.html`, todo en un archivo, sin librerías salvo d3/topojson en Global)
-- Arriba: dos cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo). La tercera (reloj de mercados)
+- Arriba: dos cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo). Tarjetas de dólares en el mismo
+  orden en compu y celular (`QORD` en `renderQuotes`: Oficial, Blue, MEP, Mayorista, CCL, Cripto, Tarjeta; pedido del dueño). La tercera (reloj de mercados)
   se sacó el 26/10/2026 (pedido del dueño: ocupaban mucho en la compu): ahora es la ficha fija `#tChip` a la izquierda de
   `#tape` ("Bolsas 12 de 41 abiertas", `renderTape3`; solo ≥641px), que lleva al reloj de Mundo
   y los 7 dólares (`#dolHoy`/`#quotes`, `renderQuotes()`): siempre en la portada y en todo Argentina (requisito no
@@ -189,7 +190,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Simulador de inversión histórica (pedido del dueño 26/10/2026; en Calculadoras `calc='sim'` → `#cSIM` y en Bolsa y bonos
   debajo del mapa de calor `#kSIM`; una sola lógica `simRender(p)`/`simCalc(p)`, `data-sim` = prefijo de ids): activo
   (Merval, 21 acciones, 11 soberanos, 10 CEDEARs), fecha y monto → valor hoy, rendimiento en pesos, contra la inflación
-  (CER) y en dólares MEP, comparación con MEP/inflación/Merval/SPY y gráfico. Datos `historia.json` (scripts/historia.py,
+  (CER) y en dólares MEP, comparación con MEP/inflación/Merval/SPY y gráfico. Arranca en dólares (`data-cur`, selector
+  `#{p}sCur`, pedido del dueño: "la mayoría no invierte en pesos"): US$ → pesos al MEP del día de compra → activo → dólares al
+  MEP de hoy; contra la inflación de EE.UU. (`cpiAt`, BLS de usa.json) y rendimiento por año (si hay ≥180 días). Datos `historia.json` (scripts/historia.py,
   workflow `historia.yml` L a V 18:35 ART): Open BYMADATA `chart/historical-series/history?symbol=GGAL%2024HS` (solo da ~2
   años: arranca el 28/10/2024; el robot ACUMULA lo viejo de la corrida anterior, escalándolo para empalmar), índice
   `chart/index-historical-series/history?symbol=M` (S&P Merval × `MERVAL_FACTOR`; desde el 19/10/2026 el MSCI de
