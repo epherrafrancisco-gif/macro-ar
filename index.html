@@ -301,6 +301,11 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .verd{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14px;line-height:1.5}
 .verd b{font-family:var(--mono);font-weight:600}
 .minit{width:100%;font-size:13px;min-width:0}
+#alT{margin-top:14px}.altab td:nth-child(n+3),.altab th:nth-child(n+3){text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.altab .alm{display:none}#cALQ select,#cALQ input{min-width:0;max-width:100%}#cALQ .calc,#cALQ .form,#cALQ .res{min-width:0}
+@media (max-width:640px){.altab th:nth-child(2),.altab td:nth-child(2),.altab th:nth-child(5),.altab td:nth-child(5){display:none}.altab .alm{display:block;font-size:11px;color:var(--muted);font-family:var(--sans)}}
+.altab tr.hl td{background:color-mix(in srgb,var(--accent) 14%,transparent)}.altab .muted{color:var(--muted)}
+.albtn{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.albtn button{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}.albtn button:hover{border-color:var(--accent);color:var(--accent)}
 .minit td,.minit th{padding:6px 8px}
 .chipsel{display:flex;flex-wrap:wrap;gap:6px}
 .chipsel button{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;padding:5px 12px;cursor:pointer}
@@ -369,7 +374,7 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 /* widgets de TradingView (plan legal 26/10/2026): precios del día de bolsas, acciones, fondos y cripto */
 .tvbox{display:block!important;min-width:0;width:100%}
 /* el sitio es color-scheme:dark y el iframe de TradingView no: sin esto el navegador le pinta un fondo blanco opaco */
-.tvbox iframe{color-scheme:normal}
+.tvbox iframe{color-scheme:normal;mix-blend-mode:lighten}.tvbox{isolation:isolate}
 .tvbox .tradingview-widget-container{width:100%}
 .merparte{margin:0 0 12px;padding:10px 14px;border-left:3px solid var(--accent);background:var(--surface);border-radius:8px;font-size:15px;line-height:1.5}.merparte small{color:var(--muted)}
 .tradingview-widget-copyright{font:11.5px/1.4 var(--sans,system-ui);color:var(--muted);margin-top:4px;text-align:right}
@@ -874,8 +879,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   <div class="iosinst" id="iosInst" hidden role="dialog" aria-modal="true" aria-label="Agregar Pulso Macro a la pantalla de inicio"><div class="ii">
     <button type="button" class="iix" id="iosX" aria-label="Cerrar">✕</button>
     <h3>Agregá Pulso Macro a tu pantalla de inicio</h3>
-    <ol><li id="iosPaso1">Tocá el botón <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg> (el cuadrado con la flecha para arriba): en Safari está abajo, a veces dentro del botón <b>•••</b>; en el iPad, arriba.</li><li>Bajá y elegí <b>Agregar a inicio</b> (o "Agregar a pantalla de inicio").</li><li>Tocá <b>Agregar</b>. Listo: ya tenés la app de Pulso Macro en tu pantalla de inicio.</li></ol>
-    <p class="note">Apple no deja que una página lo haga sola: son estos tres toques.</p></div></div>
+    <ol><li id="iosPaso1">Tocá <b>•••</b> (abajo a la derecha) y después <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg></li><li>Tocá <b>Agregar a inicio</b> (si no lo ves, deslizá para abajo).</li><li>Tocá <b>Agregar</b>. Listo.</li></ol>
+    <p class="note">Apple no deja hacerlo con un solo botón: son 3 toques.</p></div></div>
   <div class="iosinst manual" id="manual" hidden role="dialog" aria-modal="true" aria-labelledby="manT"><div class="ii">
     <button type="button" class="iix" id="manX" aria-label="Cerrar">✕</button>
     <h3 id="manT">Cómo se usa Pulso Macro</h3><p class="manl">Argentina y el mundo en un solo tablero, gratis y actualizado solo.</p>
@@ -2776,6 +2781,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <div class="seg calcsel" role="tablist" aria-label="Elegir calculadora">
       <button type="button" data-calc="pf" aria-selected="true">¿Plazo fijo o dólar?</button>
       <button type="button" data-calc="inf" aria-selected="false">Inflación</button>
+      <button type="button" data-calc="alq" aria-selected="false">Ajuste por IPC</button>
       <button type="button" data-calc="sue" aria-selected="false">Sueldo en dólares</button>
       <button type="button" data-calc="via" aria-selected="false">De viaje</button>
     </div>
@@ -2810,6 +2816,27 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
         <div class="res" id="inR"></div>
       </div>
       <p class="note" id="inN"></p>
+    </div>
+
+    <div class="card" id="cALQ" hidden>
+      <div class="head"><h2>Ajuste por IPC</h2><span class="note">Alquileres y contratos que se actualizan por inflación</span></div>
+      <div class="calc">
+        <div class="form">
+          <label>Monto al inicio del contrato<div class="pre"><span>$</span><input id="alM" inputmode="decimal" autocomplete="off" value="500.000"></div></label>
+          <div class="two">
+            <label>Mes de inicio<select id="alMes"><option value="01">enero</option><option value="02">febrero</option><option value="03">marzo</option><option value="04">abril</option><option value="05">mayo</option><option value="06">junio</option><option value="07">julio</option><option value="08">agosto</option><option value="09">septiembre</option><option value="10">octubre</option><option value="11">noviembre</option><option value="12">diciembre</option></select></label>
+            <label>Año<select id="alAn"></select></label>
+          </div>
+          <div class="two">
+            <label>Se ajusta cada<select id="alF"><option value="1">1 mes</option><option value="2">2 meses</option><option value="3" selected>3 meses</option><option value="4">4 meses</option><option value="6">6 meses</option><option value="12">12 meses</option></select></label>
+            <label>Duración<select id="alD"><option value="1">1 año</option><option value="2" selected>2 años</option><option value="3">3 años</option></select></label>
+          </div>
+          <label>Qué meses de IPC se toman<select id="alL"><option value="2">Últimos publicados (lo más común)</option><option value="1">Del período (hasta el mes anterior)</option></select><span class="hint">Ejemplo con ajuste cada 3 meses en abril: la primera toma diciembre a febrero; la segunda, enero a marzo. Usá la que dice el contrato.</span></label>
+        </div>
+        <div class="res" id="alR"></div>
+      </div>
+      <div id="alT"></div>
+      <p class="note" id="alN">IPC nacional nivel general del INDEC. El ajuste se calcula con el cociente de los índices (no sumando porcentajes), que es lo exacto. Si el INDEC publicó un mes que todavía no está en su base de datos abierta, se completa con la variación del mes que publica el BCRA (un decimal). Cada fila muestra qué meses usa, para que se pueda controlar. No es asesoramiento legal.</p>
     </div>
 
     <div class="card" id="cSUE" hidden>
@@ -3401,7 +3428,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     $('viD').innerHTML = VIA.map(v=>`<option value="${v.k}">${v.d} (${v.n})</option>`).join('');
     try{ const d = localStorage.getItem('macro-viaje'); if(VIA.some(v=>v.k===d)) $('viD').value = d; }catch(e){}
     $('viD').addEventListener('change', ()=>{ try{ localStorage.setItem('macro-viaje', $('viD').value); }catch(e){} });
-    const hoy = new Date(); llenarAnios($('inAn'), $('inMes'), 2019, '03'); llenarAnios($('suAn'), $('suMes'), hoy.getFullYear()-2, String(hoy.getMonth()+1).padStart(2,'0'));
+    const hoy = new Date(); llenarAnios($('inAn'), $('inMes'), 2019, '03');
+    { const d = new Date(hoy.getFullYear()-1, hoy.getMonth(), 1); llenarAnios($('alAn'), $('alMes'), d.getFullYear(), String(d.getMonth()+1).padStart(2,'0')); } llenarAnios($('suAn'), $('suMes'), hoy.getFullYear()-2, String(hoy.getMonth()+1).padStart(2,'0'));
     // precio del dólar: se completa solo hasta que el usuario lo cambie
     $('pfP').addEventListener('input', ()=>{ $('pfP').dataset.toc = '1'; });
     $('pfK').addEventListener('change', ()=>{ delete $('pfP').dataset.toc; renderCalc(); });
@@ -3416,7 +3444,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function renderCalc(){
     initCalc();
     document.querySelectorAll('[data-calc]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.calc===calc)));
-    $('cPF').hidden = calc!=='pf'; $('cINF').hidden = calc!=='inf'; $('cSUE').hidden = calc!=='sue'; $('cVIA').hidden = calc!=='via';
+    $('cPF').hidden = calc!=='pf'; $('cINF').hidden = calc!=='inf'; $('cSUE').hidden = calc!=='sue'; $('cVIA').hidden = calc!=='via'; $('cALQ').hidden = calc!=='alq';
+    if(calc==='alq' && !act) loadAct();
     if(calc==='via'){ if(!glob) loadGlobal(); if(!gHist) loadHist(); }
     const k = $('pfK').value, sp = spot(k);
     if(sp && !$('pfP').dataset.toc) $('pfP').value = nf(sp[1], 2);
@@ -3425,7 +3454,55 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   function calcular(){
     if(!loaded.m) return;
-    if(calc==='pf') calcPF(); else if(calc==='inf') calcInf(); else if(calc==='via') calcVia(); else calcSue();
+    if(calc==='pf') calcPF(); else if(calc==='inf') calcInf(); else if(calc==='via') calcVia(); else if(calc==='alq') calcAlq(); else calcSue();
+  }
+  // ---- Ajuste por IPC (pedido del dueño, 26/10/2026: para inmobiliarias que actualizan alquileres varios meses) ----
+  // Índice: IPC nacional nivel general (actividad.json `ipc` desde dic-2016; si todavía no está, `general` desde 2022),
+  // completado con la variación mensual del BCRA (data.json `infl`) para los meses que datos.gob.ar todavía no cargó.
+  function ipcIdx(){
+    const base = act?.ipc?.length ? act.ipc : (act?.general || []), I = new Map(base), ext = new Set();
+    if(!base.length) return {I, ext};
+    let last = base[base.length-1][0];
+    for(const x of months){ if(x.mes===mAdd(last,1) && x.infl!=null){ I.set(x.mes, I.get(last)*(1+x.infl/100)); ext.add(x.mes); last = x.mes; } }
+    return {I, ext};
+  }
+  const mesLargo = m => `${MESL[+m.slice(5)-1]} ${m.slice(0,4)}`;
+  let alFilas = [];
+  function calcAlq(){
+    if(!act){ loadAct(); $('alR').innerHTML = '<div class="empty">Cargando el IPC…</div>'; $('alT').innerHTML = ''; return; }
+    const M = parseAR($('alM').value), ini = mesSel($('alMes'), $('alAn')), f = +$('alF').value, lag = +$('alL').value, dur = +$('alD').value;
+    const {I, ext} = ipcIdx(), ks = [...I.keys()].sort(), primero = ks[0], ultimo = ks[ks.length-1];
+    if(!(M>0)){ $('alR').innerHTML = '<div class="empty">Poné el monto del inicio del contrato.</div>'; $('alT').innerHTML = ''; return; }
+    if(!ks.length){ $('alR').innerHTML = '<div class="empty">Sin datos del IPC por ahora.</div>'; $('alT').innerHTML = ''; return; }
+    // el primer ajuste necesita el índice del mes anterior a su primer mes de IPC: mAdd(ini, -lag)
+    if(f < dur*12 && mAdd(ini, -lag) < primero){ $('alR').innerHTML = `<div class="empty">El IPC cargado alcanza para contratos que empiezan desde ${mesLargo(mAdd(primero, lag))}.</div>`; $('alT').innerHTML = ''; return; }
+    const hoy = hoyAR().slice(0,7), filas = [{desde:ini, monto:M}];
+    let monto = M, pend = null;
+    for(let k=1; k*f < dur*12; k++){
+      const A = mAdd(ini, k*f), E = mAdd(A, -lag), S0 = mAdd(E, -f), meses = f===1 ? mesLargo(E) : `${mesLargo(mAdd(S0,1))} a ${mesLargo(E)}`;
+      if(pend || !I.has(E) || !I.has(S0)){ if(!pend) pend = {A, E}; filas.push({desde:A, meses, pend:true}); continue; }
+      const v = I.get(E)/I.get(S0)-1, nuevo = monto*(1+v);
+      filas.push({desde:A, meses, v, ant:monto, monto:nuevo, est:ext.has(E) || ext.has(S0)}); monto = nuevo;
+    }
+    alFilas = filas;
+    const vig = [...filas].reverse().find(x=>x.desde<=hoy && !x.pend), cal = filas.filter(x=>!x.pend), uc = cal[cal.length-1];
+    const proxima = filas.find(x=>x.desde>hoy), atrasado = filas.find(x=>x.pend && x.desde<=hoy);
+    let html = `<div class="stats">${stc(vig ? 'Monto vigente hoy' : 'Monto al inicio', pesos(vig ? vig.monto : M, 0), vig ? `desde ${mesLargo(vig.desde)}` : 'el contrato todavía no empezó', '', true)}</div>`;
+    html += `<div class="stats">${stc('Aumento desde el inicio', pc(uc.monto/M-1, 1).replace('+',''), `de ${pesos(M,0)} a ${pesos(uc.monto,0)}`)}`
+      + (proxima ? stc('Próximo ajuste', mesLargo(proxima.desde), proxima.pend ? 'falta publicar el IPC' : `${pc(proxima.v,2)} → ${pesos(proxima.monto,0)}`) : stc('Próximo ajuste', '—', 'el contrato termina antes')) + `</div>`;
+    if(atrasado) html += `<div class="verd">El ajuste de <b>${mesLargo(atrasado.desde)}</b> todavía no se puede calcular: falta el IPC de <b>${mesLargo(pend.E)}</b>, que el INDEC publica a mediados de ${mesLargo(mAdd(pend.E,1))}. Hasta entonces sigue el monto anterior.</div>`;
+    $('alR').innerHTML = html;
+    const tr = x => `<tr${x===vig?' class="hl"':''}><td>${mesLargo(x.desde)}${x.meses && !x.pend ? `<small class="alm">IPC ${esc(x.meses)}</small>` : ''}</td><td>${x.pend ? '<span class="muted">pendiente</span>' : x.meses ? esc(x.meses) : 'inicio'}</td><td>${x.v!=null ? pc(x.v,2)+(x.est?'*':'') : '—'}</td><td><b>${x.pend ? '—' : pesos(x.monto,0)}</b></td><td>${x.v!=null ? '+'+pesos(x.monto-x.ant,0).replace('$ ','$ ') : '—'}</td></tr>`;
+    $('alT').innerHTML = `<div class="tablewrap"><table class="minit altab"><thead><tr><th>Desde</th><th>IPC que se toma</th><th>Ajuste</th><th>Monto</th><th>Aumento</th></tr></thead><tbody>${filas.map(tr).join('')}</tbody></table></div>
+      <div class="albtn"><button type="button" id="alCopy">Copiar tabla</button><button type="button" id="alCsv">Descargar (Excel)</button></div>
+      ${filas.some(x=>x.est) ? '<p class="note">* Incluye un mes que todavía no está en la base del INDEC: se usó la variación publicada por el BCRA (un decimal). Puede diferir en centavos.</p>' : ''}`;
+    $('alCopy').onclick = async ()=>{ const t = alTexto('\t'); try{ await navigator.clipboard.writeText(t); toast('Tabla copiada: pegala en Excel, WhatsApp o un mail.'); }catch(e){ toast('No se pudo copiar: usá Descargar.'); } gcUna('alquiler-copiar'); };
+    $('alCsv').onclick = ()=>{ bajar(new Blob(['\ufeff'+alTexto(';')+'\r\n'], {type:'text/csv;charset=utf-8'}), `pulso-macro_ajuste-ipc_${ini}.csv`); gcUna('alquiler-csv'); };
+  }
+  function alTexto(sep){
+    const n = (v,d) => sep===';' ? nf(v,d) : nf(v,d);
+    return [['Desde','IPC que se toma','Ajuste %','Monto','Aumento'].join(sep),
+      ...alFilas.map(x=>[mesLargo(x.desde), x.pend ? 'pendiente' : (x.meses||'inicio'), x.v!=null ? n(x.v*100,2) : '', x.pend ? '' : n(x.monto,0), x.v!=null ? n(x.monto-x.ant,0) : ''].join(sep))].join('\r\n');
   }
   function calcPF(){
     const M = parseAR($('pfM').value), d = Math.round(parseAR($('pfD').value)), T = parseAR($('pfT').value), P = parseAR($('pfP').value), k = $('pfK').value;
@@ -5076,7 +5153,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // Los precios del día de bolsas, acciones, fondos y cripto los muestra TradingView desde sus servidores, con sus licencias
   // (gratis, con su marca). Pulso Macro no guarda ni redistribuye esos precios. Un elemento con data-tvq (cotización),
   // data-tvc (gráfico) o data-tvl (lista, JSON) se arma solo cuando aparece en la página (tvMontar + MutationObserver).
-  const TV_BASE = {colorTheme:'dark', isTransparent:false, backgroundColor:'#161d25', locale:'es'};  // fondo propio: con transparente, Edge/Chrome pintan blanco el iframe
+  // Mismo color que Pulso Macro (pedido del dueño, 26/10/2026): el widget va con fondo negro (o el negro casi puro del tema
+  // oscuro de TradingView, en los que no aceptan color) y el iframe se mezcla con "lighten" sobre el fondo real de donde
+  // está (`tvFondo`): el negro desaparece y queda el color de la tarjeta o la cinta; letras y líneas no cambian.
+  // NO usar isTransparent: con fondo transparente, Edge/Chrome pintan blanco el iframe.
+  const TV_BASE = {colorTheme:'dark', isTransparent:false, backgroundColor:'#000000', locale:'es'};
+  const tvFondo = el => { for(let n = el.parentElement; n; n = n.parentElement){ const b = getComputedStyle(n).backgroundColor;
+    if(b && b!=='transparent' && !/rgba\([^)]*,\s*0\)$/.test(b)) return b; } return getComputedStyle(document.body).backgroundColor; };
   function tvw(el, tipo, cfg, alto){
     if(typeof el==='string') el = $(el); if(!el) return;
     const key = tipo+'|'+JSON.stringify(cfg); if(el.dataset.tvk===key && el.querySelector('.tradingview-widget-container')) return; el.dataset.tvk = key;
@@ -5085,7 +5168,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const w = document.createElement('div'); w.className = 'tradingview-widget-container__widget'; c.appendChild(w);
     const cp = document.createElement('div'); cp.className = 'tradingview-widget-copyright'; cp.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>'; c.appendChild(cp);
     const sc = document.createElement('script'); sc.src = 'https://s3.tradingview.com/external-embedding/embed-widget-'+tipo+'.js'; sc.async = true; sc.text = JSON.stringify({...TV_BASE, ...cfg});
-    el.appendChild(c);
+    el.appendChild(c); el.style.backgroundColor = tvFondo(el);
     // Rendimiento (equipos lentos): cada widget es una página entera de TradingView. Se carga solo cuando el recuadro
     // está a la vista o cerca (400 px); lo que está en apartados ocultos no se carga hasta que se abre.
     if(tvIO){ c._tvsc = sc; tvIO.observe(c); } else c.appendChild(sc);
@@ -6889,19 +6972,23 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const ic = $('iosInst'), h = ic.querySelector('h3'), ol = ic.querySelector('ol'), no = ic.querySelector('.note');
       const edge = /Edg\//.test(UA), sams = /SamsungBrowser/.test(UA);
       h.textContent = andr || ios ? 'Agregá Pulso Macro a tu pantalla de inicio' : 'Instalá Pulso Macro en tu compu';
-      if(andr) ol.innerHTML = sams ? '<li>Tocá el menú <b>≡</b> (abajo a la derecha).</li><li>Elegí <b>Agregar página a</b> → <b>Pantalla de inicio</b>.</li><li>Tocá <b>Agregar</b>.</li>'
-        : '<li>Tocá el menú <b>⋮</b> (arriba a la derecha).</li><li>Elegí <b>Instalar app</b> o <b>Agregar a la pantalla principal</b>.</li><li>Tocá <b>Instalar</b>.</li>';
-      else if(safMac) ol.innerHTML = '<li>En la barra de arriba de la Mac, abrí el menú <b>Archivo</b>.</li><li>Elegí <b>Agregar al Dock</b>.</li><li>Tocá <b>Agregar</b>. Listo: ya tenés la app en el Dock.</li>';
-      else if(edge) ol.innerHTML = '<li>Arriba a la derecha, abrí el menú <b>···</b> de Edge.</li><li>Andá a <b>Aplicaciones</b> → <b>Instalar este sitio como una aplicación</b>.</li><li>Tocá <b>Instalar</b>. Queda con su ícono en el escritorio y en el menú Inicio.</li>';
-      else ol.innerHTML = '<li>Arriba a la derecha, abrí el menú <b>⋮</b> de Chrome.</li><li>Andá a <b>Transmitir, guardar y compartir</b> → <b>Instalar página como app</b> (o tocá el ícono de instalar al final de la barra de la dirección).</li><li>Tocá <b>Instalar</b>. Listo: ya tenés la app en tu compu.</li>';
-      no.textContent = 'El navegador no deja que una página se instale sola: son estos tres toques.';
+      if(andr) ol.innerHTML = sams ? '<li>Tocá <b>≡</b> (abajo a la derecha).</li><li>Tocá <b>Agregar página a</b> → <b>Pantalla de inicio</b>.</li><li>Tocá <b>Agregar</b>. Listo.</li>'
+        : '<li>Tocá <b>⋮</b> (arriba a la derecha).</li><li>Tocá <b>Instalar app</b> (o <b>Agregar a la pantalla principal</b>).</li><li>Tocá <b>Instalar</b>. Listo.</li>';
+      else if(safMac) ol.innerHTML = '<li>Arriba, abrí el menú <b>Archivo</b>.</li><li>Elegí <b>Agregar al Dock</b>.</li><li>Tocá <b>Agregar</b>. Listo.</li>';
+      else if(edge) ol.innerHTML = '<li>Abrí el menú <b>···</b> (arriba a la derecha).</li><li>Andá a <b>Aplicaciones</b> → <b>Instalar este sitio como una aplicación</b>.</li><li>Tocá <b>Instalar</b>. Listo.</li>';
+      else ol.innerHTML = '<li>Abrí el menú <b>⋮</b> (arriba a la derecha).</li><li>Andá a <b>Transmitir, guardar y compartir</b> → <b>Instalar página como app</b>.</li><li>Tocá <b>Instalar</b>. Listo.</li>';
+      no.textContent = 'Son 3 toques.';
       ic.hidden = false; };
 
     bs().forEach(b=>b.addEventListener('click', async ()=>{
       if(aviso){ gcUna('instalar-click'); aviso.prompt(); try{ const r = await aviso.userChoice; if(r.outcome==='accepted') mostrar(false); }catch(e){} aviso = null; }
       else if(ios){ gcUna('instalar-ios');
         // Chrome, Edge o Firefox en iPhone: el botón Compartir está arriba, en la barra de la dirección
-        if(/CriOS|EdgiOS|FxiOS/.test(navigator.userAgent)) $('iosPaso1').innerHTML = 'Tocá el botón <b>Compartir</b> (el cuadrado con la flecha para arriba), arriba a la derecha, en la barra de la dirección.';
+        // Chrome, Edge o Firefox en iPhone: Compartir está arriba, en la barra de la dirección. iPad: Compartir arriba.
+        if(/CriOS|EdgiOS|FxiOS/.test(navigator.userAgent)) $('iosPaso1').innerHTML = 'Tocá <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg> (arriba a la derecha).';
+        else if(/iPad/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1)) $('iosPaso1').innerHTML = 'Tocá <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg> (arriba a la derecha).';
+        // Safari de iOS 18 o anterior: Compartir está a la vista abajo (sin •••). Desde iOS 26 está dentro de •••.
+        else { const v = +((navigator.userAgent.match(/Version\/(\d+)/)||[])[1]||0); if(v && v < 26) $('iosPaso1').innerHTML = 'Tocá <b>Compartir</b> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1"/></svg> (abajo, en el medio).'; }
         $('iosInst').hidden = false; }
       else { gcUna('instalar-pasos'); pasos(); } }));
     const cerrar = ()=>{ $('iosInst').hidden = true; };
@@ -7819,7 +7906,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     for(const k in SECC) add({kind:'sec', k, t:SECC[k][0], p:bGrp(k), x:SECC[k][1] + (k==='eeuu' ? ' usa fed wall street' : '') + (k==='global' ? ' mundo internacional' : ''), d:SECC[k][1]});
     [['Dólar oficial','oficial banco nacion minorista'],['Dólar blue','blue informal paralelo'],['Dólar MEP','mep bolsa'],['Dólar CCL (contado con liqui)','ccl contado liqui cable'],['Dólar mayorista','mayorista'],['Dólar cripto','cripto usdt'],['Dólar tarjeta','tarjeta turista']]
       .forEach(([t,x])=>add({kind:'dol', k:'dolares', t, p:'Argentina › Dólares', x:'dolar cotizacion hoy '+x, d:'Precio en vivo, se actualiza cada minuto'}));
-    const CX = {pf:'plazo fijo dolar conviene ahorro', inf:'inflacion cer cuanto aumento actualizar precio', sue:'sueldo salario dolares', via:'viaje viajar turismo exterior afuera moneda tarjeta'};
+    const CX = {pf:'plazo fijo dolar conviene ahorro', inf:'inflacion cer cuanto aumento actualizar precio', alq:'alquiler alquileres ipc ajuste inmobiliaria contrato actualizar aumento trimestral cuatrimestral semestral locacion', sue:'sueldo salario dolares', via:'viaje viajar turismo exterior afuera moneda tarjeta'};
     document.querySelectorAll('[data-calc]').forEach(b=>add({kind:'calc', k:'calculadoras', calc:b.dataset.calc, t:b.textContent.trim(), p:'Calculadoras', x:'calculadora calcular '+(CX[b.dataset.calc]||'')}));
     for(const sk in SUBS){ const [tid, vid] = SUBS[sk], key = secDe(vid); if(!key || !SECC[key]) continue;
       document.querySelectorAll(`#${tid} button[data-s]`).forEach(b=>{ if(b.dataset.s==='explorar' && !xpDesk()) return;

@@ -101,7 +101,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   mismo dibujo que el favicon) y `sw.js`, que NO guarda nada (todo va a la red; solo muestra un aviso si no hay conexión).
   Botón `[data-inst]` en la portada (`.hello` en la compu, `#mHero` en el celular): en Chrome/Edge (`chromium`) aparece SOLO con
   `beforeinstallprompt` (que no llega si ya está instalada; pedido del dueño: no ofrecerla a quien ya la tiene) y abre el cartel del navegador; en iPhone/iPad abre `#iosInst` con los 3 pasos (Apple no permite
-  hacerlo solo); si el navegador no manda su aviso (pasa después de desinstalar), el botón igual aparece y abre los pasos para ese
+  hacerlo solo; pasos lo más cortos posible, pedido del dueño: Safari 26+ = ••• → Compartir; Safari ≤18 = Compartir abajo; Chrome/iPad = Compartir arriba); si el navegador no manda su aviso (pasa después de desinstalar), el botón igual aparece y abre los pasos para ese
   navegador (`pasos()`: Edge, Chrome, Android, Samsung, Safari de Mac; evento `instalar-pasos`); en Firefox de compu no aparece. Si ya está instalada tampoco: marca `pm-app` en localStorage (al instalar o abrir como
   app) + `getInstalledRelatedApps` (`related_applications` en el manifest); `beforeinstallprompt` borra la marca. Eventos GoatCounter `instalar-click`, `instalar-ios`,
   `app-instalada`. La app abre `/?app=1`.
@@ -180,6 +180,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   tarde de días hábiles (`propios_cierre`, ≥17 h) como `mep_pm`, `ccl_pm`, `riesgo_pm` en `diario`. Primero se comparan unos
   días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
 - Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
+- Ajuste por IPC (calculadora `alq`, `#cALQ`, `calcAlq`, pedido del dueño 26/10/2026: inmobiliarias que actualizan alquileres):
+  monto inicial, mes de inicio, cada cuántos meses, duración y qué meses toma (`alL`: 2 = últimos publicados al ajustar,
+  lo común; 1 = del período). Cociente de índices del IPC nacional nivel general (`act.ipc` desde dic-2016, de la tanda
+  `ipc_largo` de actividad.py; si falta, `act.general` desde 2022) completado con `months[].infl` del BCRA para los meses que
+  datos.gob.ar todavía no cargó (marcados con *). Tabla con qué meses usa cada ajuste, fila vigente resaltada, ajustes sin
+  IPC publicado como "pendiente", botones copiar (tabulado) y descargar CSV.
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
@@ -546,6 +552,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     openpyxl), petróleo y gas (EIA), estrés financiero OFR (`termo.fsi`, historia `fsi`; reemplaza al VIX). `ocde_mercados`
     descarta series cortadas (> 5 meses) o fijas (Rusia). global.json lleva `"abiertas": true`; sin esa marca, main() no
     reusa nada de mercados del JSON anterior (para no volver a publicar datos de CNBC).
+  - Color de los widgets (pedido del dueño: "que parezca todo una misma cosa"): `TV_BASE.backgroundColor` negro + iframe con
+    `mix-blend-mode:lighten` sobre `.tvbox` aislado (`isolation:isolate`) con el fondo real del lugar (`tvFondo`): el negro
+    toma el color de la tarjeta o la cinta. NO usar `isTransparent` (Edge pinta blanco el iframe, probado 26/10/2026).
   - Precios del día de bolsas, acciones, ADR, fondos, sectores y cripto: widgets de TradingView (gratis con su marca; la
     data la muestra TradingView desde sus servidores con sus licencias). Los JSON solo llevan el símbolo (`tv`, `tvn`).
     En la página: `tvw` (arma cualquier widget; `.tvbox`, `color-scheme:normal` en el iframe o sale fondo blanco),

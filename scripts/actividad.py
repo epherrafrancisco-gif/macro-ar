@@ -43,6 +43,8 @@ TANDAS = {
                 "146.3_IRECREANAL_DICI_M_31": "recreacion", "146.3_IEDUCACNAL_DICI_M_22": "educacion", "146.3_IRESTAUNAL_DICI_M_33": "restaurantes",
                 "146.3_IBIENESNAL_DICI_M_36": "varios", "148.3_INUCLEONAL_DICI_M_19": "nucleo", "148.3_IREGULANAL_DICI_M_22": "regulados",
                 "148.3_IESTACINAL_DICI_M_25": "estacionales"}, "2022-01-01", 4),
+    # IPC nacional nivel general desde dic-2016 (base del índice) para la calculadora de ajuste de alquileres
+    "ipc_largo": ({"145.3_INGNACNAL_DICI_M_15": "ipc"}, "2016-12-01", 4),
 }
 
 
@@ -116,7 +118,7 @@ def main():
     try:
         al = datetime.fromisoformat(prev.get("actualizado", "2000-01-01T00:00+00:00"))
         completo = all(huecos(v, 3 if k in TRIM else 1) == 0 for k, v in prev.items() if isinstance(v, list) and v and isinstance(v[0], list))
-        if (datetime.now(timezone.utc) - al) < timedelta(hours=6) and not prev.get("errores") and completo:
+        if (datetime.now(timezone.utc) - al) < timedelta(hours=6) and not prev.get("errores") and completo and "ipc" in prev:
             print("actividad.json reciente: no se renueva")
             return
     except ValueError:
