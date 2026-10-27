@@ -554,7 +554,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     reusa nada de mercados del JSON anterior (para no volver a publicar datos de CNBC).
   - Color de los widgets (pedido del dueño: "que parezca todo una misma cosa"): `TV_BASE.backgroundColor` negro + iframe con
     `mix-blend-mode:lighten` sobre `.tvbox` aislado (`isolation:isolate`) con el fondo real del lugar (`tvFondo`): el negro
-    toma el color de la tarjeta o la cinta. NO usar `isTransparent` (Edge pinta blanco el iframe, probado 26/10/2026).
+    toma el color de la tarjeta o la cinta (el ticker-tape ignora backgroundColor: su fondo es rgb(19,19,19), medido 26/10/2026; con lighten queda igual a la cinta). `#tape2In` se recorta a la altura del iframe − 1 px (`renderTape2`) para que no quede la franja vacía de 32 px ni la línea de abajo. NO usar `isTransparent` (Edge pinta blanco el iframe, probado 26/10/2026).
   - Precios del día de bolsas, acciones, ADR, fondos, sectores y cripto: widgets de TradingView (gratis con su marca; la
     data la muestra TradingView desde sus servidores con sus licencias). Los JSON solo llevan el símbolo (`tv`, `tvn`).
     En la página: `tvw` (arma cualquier widget; `.tvbox`, `color-scheme:normal` en el iframe o sale fondo blanco),
