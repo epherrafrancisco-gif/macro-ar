@@ -4984,8 +4984,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // El giro usa el tiempo real, así que va a la misma velocidad, solo que menos fluido. Sin brillo en equipos lentos.
   // Si es muy lento (más de 40 ms por cuadro) deja de girar solo: queda quieto y se redibuja al tocarlo o cada 2 s.
   const lento = S => S.cost > 40 && !S.drag;
+  // 27/10/2026: con el límite en 12 ms, en compus comunes saltaba cuadros y se notaba trabado. Ahora solo se frena si de verdad
+  // pesa (más de 30 ms en compu, 16 en celular), con margen para no prender y apagar el brillo a cada rato.
+  const LIM_CUADRO = matchMedia('(pointer:fine)').matches ? 30 : 16;
+  const pesado = S => { if(S.cost > LIM_CUADRO) S.slow = true; else if(S.cost < LIM_CUADRO*.6) S.slow = false; return !!S.slow; };
   const cuadroOk = (S, now) => { const gap = now-(S.lastDraw||0);
-    if(lento(S) ? gap < 2000 : (S.cost > 12 && gap < S.cost*5)) return false; S.lastDraw = now; return true; };
+    if(lento(S) ? gap < 2000 : (pesado(S) && gap < S.cost*3)) return false; S.lastDraw = now; return true; };
   // cualquier toque o clic (capa, país, arrastre) redibuja enseguida aunque el globo esté en modo lento
   addEventListener('pointerdown', ()=>{ G.lastDraw = 0; for(const k in DGS) DGS[k].lastDraw = 0; }, {capture:true, passive:true});
   addEventListener('click', ()=>{ setTimeout(()=>{ G.lastDraw = 0; for(const k in DGS) DGS[k].lastDraw = 0; }, 0); }, {capture:true, passive:true});
@@ -5002,7 +5006,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const cs = getComputedStyle(document.documentElement), tok = n=>cs.getPropertyValue('--'+n).trim();
     if(!G.flat){ const r = G.proj.scale(), g = ctx.createRadialGradient(G.W/2-r*.3, G.H/2-r*.35, r*.1, G.W/2, G.H/2, r*1.05); g.addColorStop(0,'#13304b'); g.addColorStop(1,'#0a1622');
       ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-      ctx.save(); if(!(G.cost > 12)){ ctx.shadowColor = 'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
+      ctx.save(); if(!pesado(G)){ ctx.shadowColor = 'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
     else { ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = '#0a1622'; ctx.fill(); }
     ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = 'rgba(106,168,216,.08)'; ctx.lineWidth = .6; ctx.stroke();
     for(const f of G.feats){ ctx.beginPath(); path(f); ctx.fillStyle = gcol(gval(f.id)) || '#1d2733'; ctx.fill(); }
@@ -5136,7 +5140,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     proj.rotate(S.rot); ctx.clearRect(0,0,W,H); const r = proj.scale();
     const g = ctx.createRadialGradient(W/2, H/2, r*.2, W/2, H/2, r*1.05); g.addColorStop(0,'#06221f'); g.addColorStop(1,'#030d0c');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    ctx.save(); if(!(S.cost > 12)){ ctx.shadowColor = 'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+    ctx.save(); if(!pesado(S)){ ctx.shadowColor = 'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
     ctx.beginPath(); path(d3.geoGraticule().step([20,20])()); ctx.strokeStyle = 'rgba(63,208,192,.07)'; ctx.lineWidth = .6; ctx.stroke();
     const c0 = proj.invert([W/2,H/2]), cache = {};
     for(const [lo,la,iso] of G.dots){ if(d3.geoDistance([lo,la], c0) > Math.PI/2-.02) continue; const p = proj([lo,la]);

@@ -126,7 +126,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Rendimiento en equipos lentos (26/10/2026, medido con la CPU 6 veces más lenta): widgets de TradingView con carga
   diferida (`tvIO`: el script se agrega recién cuando el recuadro está a ≤400 px de la pantalla; los apartados ocultos no
   cargan nada); glosario y botones de gráficos en tandas de 8 ms (`enTandas`, `decorar1`, `herramienta1`, primero lo
-  visible; antes ~1 s de bloqueo); globos con cuadros adaptativos (`cuadroOk`/`cuadroCosto`: si un cuadro tarda >12 ms
+  visible; antes ~1 s de bloqueo); globos con cuadros adaptativos (`cuadroOk`/`cuadroCosto`: si un cuadro tarda >30 ms en compu o >16 en celular (`LIM_CUADRO`, `pesado` con margen; con 12 ms las compus comunes saltaban cuadros y se veía trabado)
   dibuja menos seguido y sin brillo; >40 ms deja de girar y se redibuja al tocar o cada 2 s; texto del globo 4 veces por
   segundo); `#mbar` y `#mNav` sin `backdrop-filter`. Resultado: portada del celular 3,1 s → 0,5 s de bloqueo; Mundo de
   6 a 58 cuadros por segundo. No volver a montar widgets de TradingView sin pasar por `tvw`.
