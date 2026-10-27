@@ -300,7 +300,10 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .verd{padding:12px 14px;border-radius:10px;background:var(--sunk);font-size:14px;line-height:1.5}
 .verd b{font-family:var(--mono);font-weight:600}
 .minit{width:100%;font-size:13px;min-width:0}
-.sim .simcur{justify-self:start}.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.sim .simcur{justify-self:start}.simq{position:relative}
+.simls{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);max-height:330px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.45);padding:4px}
+.simls button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:9px 10px;text-align:left;background:none;border:0;border-radius:6px;color:var(--ink);font:500 14px var(--sans);cursor:pointer}
+.simls button small{color:var(--muted);font-size:11.5px;flex:none}.simls button.on,.simls button:hover{background:var(--sunk)}.simls .empty{padding:10px}.sim .simf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
 @media (max-width:760px){.sim .simf{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sim .simf label:first-child{grid-column:1/-1}}
 .sim .simf select,.sim .simf input{min-width:0;max-width:100%;width:100%}
 .sim .simc{display:grid;gap:6px}.sim .simc .row{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px}
@@ -8560,15 +8563,18 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   async function loadHis(){ if(hisCarg) return; hisCarg = true;
     try{ const r = await fetch('historia.json?t='+VER(), {cache:'no-store'}); if(r.ok) HIS = await r.json(); }catch(e){}
     hisCarg = false; document.querySelectorAll('[data-sim]').forEach(el=>{ if(el.offsetParent) simRender(el.dataset.sim); }); }
-  var SIM_G = [['idx','Índice'],['acc','Acciones argentinas'],['bon','Bonos en dólares (con cupones y amortizaciones)'],['ced','CEDEARs (empresas de afuera, en pesos)']];
+  var SIM_T = {idx:'Índice', acc:'Acción', bon:'Bono', ced:'CEDEAR'};
+  var SIM_POP = ['MERVAL','SPY','QQQ','GGAL','YPFD','PAMP','AL30','GD30','AAPL','NVDA','MELI','TSLA','MSFT','KO','VIST','BMA'];
+  const nomA0 = k => simNom(k);
+  const simNom = k => { const i = HIS.info[k]||{}; return i.n ? (i.n.includes(k) || k==='MERVAL' ? i.n : `${i.n} (${k})`) : k; };
+  const simNorm = t => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   function simHTML(p){
-    const I = HIS.info, F = HIS.fechas, opt = SIM_G.map(([g,n])=>{ const ks = Object.keys(I).filter(k=>I[k].t===g && HIS.p[k]); if(!ks.length) return '';
-      return `<optgroup label="${n}">${ks.map(k=>`<option value="${k}">${esc(I[k].n)}${k!=='MERVAL' && !I[k].n.includes(k)?` (${k})`:''}</option>`).join('')}</optgroup>`; }).join('');
+    const F = HIS.fechas;
     const d0 = F[0], d1 = F[F.length-1], def = F.find(f=>f>=`${+d1.slice(0,4)-1}-01-01`) || d0;
     return `<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2><span class="note">Elegí qué comprabas, cuándo y con cuánta plata</span></div>
       <div class="seg simcur" id="${p}sCur" role="tablist" aria-label="Moneda"><button type="button" data-cur="usd" aria-selected="true">En dólares</button><button type="button" data-cur="ars" aria-selected="false">En pesos</button></div>
       <div class="simf form">
-        <label>¿Qué comprabas?<select id="${p}sA">${opt}</select></label>
+        <label>¿Qué comprabas?<div class="simq"><input id="${p}sQ" autocomplete="off" spellcheck="false" placeholder="Buscá: Galicia, Apple, AL30, Merval…"><div class="simls" id="${p}sL" role="listbox" hidden></div></div></label>
         <label>¿Cuándo?<input type="date" id="${p}sD" min="${d0}" max="${d1}" value="${def}"></label>
         <label><span id="${p}sML">¿Cuántos dólares?</span><div class="pre usd" id="${p}sMP"><span id="${p}sMS">US$</span><input id="${p}sM" inputmode="decimal" autocomplete="off" value="1.000"></div></label>
       </div>
@@ -8580,26 +8586,64 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const el = document.querySelector(`[data-sim="${p}"]`); if(!el) return;
     if(!HIS){ el.innerHTML = '<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2></div><div class="empty">Cargando la historia de precios…</div>'; loadHis(); return; }
     if(!HIS.fechas?.length){ el.innerHTML = '<div class="head"><h2>Simulador: ¿cuánto habrías ganado?</h2></div><div class="empty">Sin datos por ahora.</div>'; return; }
-    if(!el.dataset.ok){ el.dataset.ok = '1'; el.innerHTML = simHTML(p); if(p==='k') $(p+'sA').value = 'GGAL';
-      el.querySelectorAll('select,input').forEach(i=>{ i.addEventListener('input', ()=>simCalc(p)); i.addEventListener('change', ()=>{ simCalc(p); gcUna('simulador-'+p); }); });
+    if(!el.dataset.ok){ el.dataset.ok = '1'; el.innerHTML = simHTML(p);
+      el.dataset.k = p==='k' ? 'GGAL' : (HIS.info.SPY ? 'SPY' : Object.keys(HIS.info)[0]); $(p+'sQ').value = simNom(el.dataset.k);
+      [$(p+'sD'), $(p+'sM')].forEach(i=>{ i.addEventListener('input', ()=>simIr(p)); i.addEventListener('change', ()=>{ simIr(p); gcUna('simulador-'+p); }); });
+      simBuscador(p);
       $(p+'sM').addEventListener('blur', ()=>{ const v = parseAR($(p+'sM').value); if(isFinite(v)) $(p+'sM').value = nf(v,0); });
       // pedido del dueño: también en dólares ("la mayoría no invierte en pesos"); arranca en dólares
       el.dataset.cur = 'usd';
       $(p+'sCur').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ const c = b.dataset.cur; if(el.dataset.cur===c) return; el.dataset.cur = c;
         $(p+'sCur').querySelectorAll('button').forEach(x=>x.setAttribute('aria-selected', String(x===b)));
         $(p+'sML').textContent = c==='usd' ? '¿Cuántos dólares?' : '¿Cuántos pesos?'; $(p+'sMS').textContent = c==='usd' ? 'US$' : '$'; $(p+'sMP').classList.toggle('usd', c==='usd');
-        $(p+'sM').value = c==='usd' ? '1.000' : '500.000'; simCalc(p); gcUna('simulador-'+c); })); }
-    simCalc(p);
+        $(p+'sM').value = c==='usd' ? '1.000' : '500.000'; simIr(p); gcUna('simulador-'+c); })); }
+    simIr(p);
+  }
+  // historia de cada activo: historia/<TICKER>.json, se baja al elegirlo y queda alineada con HIS.fechas
+  const simCarga = {};
+  function simSerie(k){
+    HIS.p = HIS.p || {}; if(HIS.p[k] || !HIS.info[k]) return Promise.resolve(HIS.p[k]);
+    return simCarga[k] = simCarga[k] || fetch(`historia/${encodeURIComponent(k)}.json?t=${VER()}`, {cache:'no-store'}).then(r=>r.ok ? r.json() : null).then(j=>{
+      if(!j) return null; const m = new Map(j.d.map((d,i)=>[d, j.c[i]])); return HIS.p[k] = HIS.fechas.map(f=>m.get(f) ?? null); }).catch(()=>null);
+  }
+  function simIr(p){
+    const el = document.querySelector(`[data-sim="${p}"]`), k = el.dataset.k;
+    Promise.all([simSerie(k), simSerie('MERVAL'), simSerie('SPY')]).then(()=>{ if(el.dataset.k!==k) return;
+      if(!HIS.p?.[k]){ $(p+'sR').innerHTML = '<div class="empty">No se pudo cargar la historia de ese activo.</div>'; return; } simCalc(p); });
+  }
+  // buscador del activo (pedido del dueño: "todas las acciones y CEDEARs que se puedan, y un buscador")
+  function simBuscador(p){
+    const el = document.querySelector(`[data-sim="${p}"]`), q = $(p+'sQ'), L = $(p+'sL'); let sel = 0, res = [];
+    const pintar = () => {
+      const t = simNorm(q.value.trim()), ks = Object.keys(HIS.info);
+      if(!t || t===simNorm(simNom(el.dataset.k))) res = SIM_POP.filter(k=>HIS.info[k]);
+      else res = ks.map(k=>{ const tk = simNorm(k), n = simNorm(HIS.info[k].n||'');
+          const pts = tk===t ? 0 : tk.startsWith(t) ? 1 : n.startsWith(t) ? 2 : n.split(/[\s()]+/).some(w=>w.startsWith(t)) ? 3 : (n.includes(t)||tk.includes(t)) ? 4 : 9;
+          return [k, pts]; }).filter(x=>x[1]<9).sort((a,b)=>a[1]-b[1] || a[0].localeCompare(b[0])).slice(0,40).map(x=>x[0]);
+      sel = 0;
+      L.innerHTML = res.length ? res.map((k,i)=>`<button type="button" role="option" data-k="${esc(k)}" class="${i===sel?'on':''}"><span>${esc(simNom(k))}</span><small>${SIM_T[HIS.info[k].t]||''}</small></button>`).join('')
+        : '<div class="empty">No encontramos ese activo. Probá con el ticker (por ejemplo GGAL o AAPL).</div>';
+      L.hidden = false; };
+    const elegir = k => { if(!k) return; el.dataset.k = k; q.value = simNom(k); L.hidden = true; q.blur(); simIr(p); gcUna('simulador-activo'); };
+    q.addEventListener('focus', ()=>{ q.select(); pintar(); });
+    q.addEventListener('input', pintar);
+    q.addEventListener('keydown', e=>{ if(L.hidden) return;
+      if(e.key==='ArrowDown' || e.key==='ArrowUp'){ e.preventDefault(); sel = Math.max(0, Math.min(res.length-1, sel + (e.key==='ArrowDown'?1:-1)));
+        L.querySelectorAll('button').forEach((b,i)=>{ b.classList.toggle('on', i===sel); if(i===sel) b.scrollIntoView({block:'nearest'}); }); }
+      else if(e.key==='Enter'){ e.preventDefault(); elegir(res[sel]); } else if(e.key==='Escape'){ L.hidden = true; q.value = simNom(el.dataset.k); q.blur(); } });
+    L.addEventListener('pointerdown', e=>{ const b = e.target.closest('button[data-k]'); if(b){ e.preventDefault(); elegir(b.dataset.k); } });
+    q.addEventListener('blur', ()=>setTimeout(()=>{ L.hidden = true; if(q.value!==simNom(el.dataset.k)) q.value = simNom(el.dataset.k); }, 150));
   }
   // inflación de EE.UU. (BLS, usa.json): índice del mes de la fecha o el último publicado
   const cpiAt = f => { const a = usa?.bls?.ipc; if(!a?.length) return null; const m = f.slice(0,7); let v = null; for(const [mm,x] of a){ if(mm<=m) v = x; else break; } return v; };
   function simCalc(p){
     const el = document.querySelector(`[data-sim="${p}"]`), cur = el.dataset.cur || 'usd', enUsd = cur==='usd';
-    const k = $(p+'sA').value, dIn = $(p+'sD').value, M0 = parseAR($(p+'sM').value), F = HIS.fechas, P = HIS.p[k], nom = HIS.info[k].n, R = $(p+'sR');
+    const k = el.dataset.k, dIn = $(p+'sD').value, M0 = parseAR($(p+'sM').value), F = HIS.fechas, P = HIS.p[k], nom = HIS.info[k].n || k, R = $(p+'sR');
     const limpiar = msg => { R.innerHTML = `<div class="empty">${msg}</div>`; $(p+'sCh').innerHTML = ''; $(p+'sLg').innerHTML = ''; $(p+'sN').textContent = ''; };
     if(!(M0>0)) return limpiar(enUsd ? 'Poné cuántos dólares invertías.' : 'Poné cuántos pesos invertías.');
     if(enUsd && !usa && !usaLoading) loadUsa().then(()=>{ if(el.dataset.cur==='usd') simCalc(p); });
     let i0 = F.findIndex((f,i)=>f>=dIn && P[i]!=null); if(i0<0) return limpiar('No hay precio para esa fecha.');
+    const fPrim = F[P.findIndex(v=>v!=null)]; if(dIn < fPrim) return limpiar(`La historia de ${esc(nomA0(k))} arranca el ${fd(fPrim)}: elegí una fecha desde ahí.`);
     let i1 = P.length-1; while(i1>i0 && P[i1]==null) i1--;
     if(i1<=i0) return limpiar('Elegí una fecha más vieja: no hay días posteriores para comparar.');
     const at = (arr, i) => { for(let j=i; j>=0; j--) if(arr[j]!=null) return arr[j]; for(let j=i; j<arr.length; j++) if(arr[j]!=null) return arr[j]; return null; };
@@ -8621,7 +8665,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const V = val(i1), cobUsd = pagos.reduce((a,x)=>a+x.usd,0), cobArs = pagos.reduce((a,x)=>a+x.ars,0);
     const dias = (T(F[i1])-T(F[i0]))/864e5, anual = r => dias>=180 ? Math.pow(1+r, 365/dias)-1 : null;
     const fl = f => `${+f.slice(8)} de ${MESL[+f.slice(5,7)-1]} de ${f.slice(0,4)}`, cls = v => v>=0 ? 'up' : 'dn', pct = v => pc(v,1);
-    const mon = v => enUsd ? usd(v) : pesos(v,0), nomA = nom+(k!=='MERVAL' && !nom.includes(k)?` (${k})`:'');
+    const mon = v => enUsd ? usd(v) : pesos(v,0), nomA = simNom(k);
     const otroIdx = (kk, a, b) => { const x = at(HIS.p[kk], i0), y = at(HIS.p[kk], i1); return x && y ? (enUsd ? M0*mep0*y/x/mep1 : M*y/x) : null; };
     let fin, rMain, rReal, realTxt, rOtra, otraTxt, otros = [];
     if(enUsd){
@@ -8637,8 +8681,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       if(mep0 && mep1) otros.push({n:'Dólar MEP', v:M/mep0*mep1});
       if(cer0 && cer1) otros.push({n:'Solo seguir la inflación', v:M*cer1/cer0});
     }
-    if(k!=='MERVAL' && HIS.p.MERVAL){ const v = otroIdx('MERVAL'); if(v) otros.push({n:'Merval', v}); }
-    if(k!=='SPY' && HIS.p.SPY){ const v = otroIdx('SPY'); if(v) otros.push({n:'S&P 500 (CEDEAR SPY)', v}); }
+    if(k!=='MERVAL' && HIS.p?.MERVAL){ const v = otroIdx('MERVAL'); if(v) otros.push({n:'Merval', v}); }
+    if(k!=='SPY' && HIS.p?.SPY){ const v = otroIdx('SPY'); if(v) otros.push({n:'S&P 500 (SPY)', v}); }
     otros.sort((a,b)=>b.v-a.v); const mx = Math.max(...otros.map(o=>o.v)), an = anual(rMain);
     R.innerHTML = `<div class="stats">${stc('Hoy valdrían', mon(fin), `al cierre del ${fd(F[i1])} · ${fin>=M0?'ganaste':'perdiste'} ${mon(Math.abs(fin-M0))}`, '', true)}</div>
       <div class="stats">${stc(enUsd?'Rendimiento en dólares':'Rendimiento en pesos', pct(rMain), an!=null?`${pc(an,1)} por año`:'en todo el período', cls(rMain))}
