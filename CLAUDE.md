@@ -204,7 +204,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   ajustar, los siguientes ajustados): `simCalc` mira si el precio en dólares cayó en cada fecha de pago (BFLUJO) y solo
   suma lo cobrado (al MEP de ese día, sin reinvertir) cuando cayó. `HIS` se declara arriba de todo (TDZ: renderMercado
   corre al arrancar).
-- Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
+- Calculadoras (pedido del dueño: siempre abre en la primera, `calc='sim'` en `setTab`; no se guarda la última). Orden pedido por el dueño: Simulador, Inflación, De viaje, Sueldo en dólares, Ajuste por IPC, ¿Plazo fijo o dólar?. Plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
   `h3#legal` + `details.legal` desplegable. El link del pie (`[data-legal]`) abre Sobre, despliega y baja hasta ahí.

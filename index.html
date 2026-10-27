@@ -2789,15 +2789,15 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   <!-- CALCULADORAS -->
   <section class="view" id="vC" hidden>
     <div class="seg calcsel" role="tablist" aria-label="Elegir calculadora">
-      <button type="button" data-calc="pf" aria-selected="true">¿Plazo fijo o dólar?</button>
+      <button type="button" data-calc="sim" aria-selected="true">Simulador de inversión</button>
       <button type="button" data-calc="inf" aria-selected="false">Inflación</button>
-      <button type="button" data-calc="alq" aria-selected="false">Ajuste por IPC</button>
-      <button type="button" data-calc="sim" aria-selected="false">Simulador de inversión</button>
-      <button type="button" data-calc="sue" aria-selected="false">Sueldo en dólares</button>
       <button type="button" data-calc="via" aria-selected="false">De viaje</button>
+      <button type="button" data-calc="sue" aria-selected="false">Sueldo en dólares</button>
+      <button type="button" data-calc="alq" aria-selected="false">Ajuste por IPC</button>
+      <button type="button" data-calc="pf" aria-selected="false">¿Plazo fijo o dólar?</button>
     </div>
 
-    <div class="card" id="cPF">
+    <div class="card" id="cPF" hidden>
       <div class="head"><h2>¿Plazo fijo o dólar?</h2><span class="note">A qué precio tiene que llegar el dólar para que convenga</span></div>
       <div class="calc">
         <div class="form">
@@ -2829,7 +2829,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <p class="note" id="inN"></p>
     </div>
 
-    <div class="card sim" id="cSIM" data-sim="c" hidden></div>
+    <div class="card sim" id="cSIM" data-sim="c"></div>
 
     <div class="card" id="cALQ" hidden>
       <div class="head"><h2>Ajuste por IPC</h2><span class="note">Alquileres y contratos que se actualizan por inflación</span></div>
@@ -3429,7 +3429,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const HK = {oficial:'ofi', mep:'mep', ccl:'ccl', blue:'blue'};  // claves del histórico mensual
   const spot = k => { const p = cardSeries(k).pts; return p.length ? p[p.length-1] : null; };
   const stc = (l,v,d,cls='',hero=false) => `<div class="st${hero?' hero':''}"><span class="lbl">${l}</span><span class="v ${cls}">${v}</span><span class="d">${d||''}</span></div>`;
-  let calc = 'pf', calcInit = false;
+  let calc = 'sim', calcInit = false;
   // pedido del dueño: Calculadoras abre siempre en la primera (no se recuerda la última)
   function llenarAnios(sel, mesSel, defY, defM){
     const ms = hist.filter(m=>m.cer).map(m=>m.mes); if(!ms.length) return;
@@ -4545,7 +4545,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
     mercado:['Bolsa y bonos','Merval, acciones y bonos argentinos'],
     noticias:['Noticias','Los titulares de economía del día'],
-    calculadoras:['Calculadoras','¿Plazo fijo o dólar? Inflación, sueldo en dólares y viajes'],
+    calculadoras:['Calculadoras','Simulador de inversión, inflación, viajes, sueldo, alquileres por IPC y plazo fijo'],
     global:['Mundo','Bolsas, monedas, tasas y economías de cada país'],
     eeuu:['Estados Unidos','La Fed, empleo, inflación, deuda y Wall Street'],
     brasil:['Brasil','El real, la Selic, la inflación y la bolsa de nuestro principal socio'],
@@ -4621,7 +4621,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const key = tab==='global' ? (G.vista==='usa' ? 'eeuu' : 'global') : tab;
     if(key !== tabContado){ tabContado = key; gc(location.pathname + '#' + key);
       // pedido del dueño: al entrar a una sección, siempre el primer apartado y todas las tarjetas cerradas (celular)
-      try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); calc = 'pf'; }catch(e){}
+      try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); calc = 'sim'; }catch(e){}
       // pedido del dueño (celular): al entrar a una sección, arriba de todo, aunque la última vez haya quedado abajo
       // pero si se vuelve para atrás, a la altura donde estaba (NAV.y, guardada en history.state al scrollear)
       try{ if(mobil()){ history.scrollRestoration = 'manual'; const y = NAV.volver ? (NAV.y || 0) : 0; NAV.volver = false; NAV.y = null; scrollTo(0,y); let toco = false; const f = ()=>{ toco = true; };
