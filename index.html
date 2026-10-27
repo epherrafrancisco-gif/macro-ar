@@ -25,7 +25,7 @@
 /* ---- celular: barra fija, hoja de secciones, dólares compactos e índice ---- */
 .mbar,.msheet,.mnav,.mhero,.mporta-m,.mres,.mtip,.mmas{display:none}
 @media (max-width:640px){
-  .mbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(14,19,25,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+  .mbar{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#0e1319;border-bottom:1px solid var(--line);padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
   .mb1{display:flex;align-items:center;gap:10px;min-height:58px;padding-block:6px}
   .mhome{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--ink);text-decoration:none;font-size:10.5px;font-weight:600;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px 9px}
   .mhome svg{width:19px;height:19px}
@@ -52,7 +52,7 @@
   .ms-g a svg{width:18px;height:18px;flex:none;color:var(--accent)}
   .ms-g a img.flag{width:24px;height:18px}
   .ms-g a.on{border-color:var(--accent);background:rgba(106,168,216,.14)}
-  body.insec header,body.insec #tape3,body.insec #live,body.insec #crumb,body.insec #tabsNav,body.insec #paisPanel,body.insec .flhome{display:none!important}
+  body.insec header,body.insec #live,body.insec #crumb,body.insec #tabsNav,body.insec #paisPanel,body.insec .flhome{display:none!important}
   body.insec .quotes.compact{display:flex;overflow-x:auto;gap:8px;scrollbar-width:none;margin-inline:-2px;padding:2px}
   body.insec .quotes.compact::-webkit-scrollbar{display:none}
   body.insec .quotes.compact .q{flex:0 0 auto;padding:7px 11px;gap:1px}
@@ -64,7 +64,7 @@
   [data-mid]{scroll-margin-top:124px}
 
   /* ---- celular v2: barra de abajo, portada que explica, secciones plegables ---- */
-  .mnav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:40;grid-template-columns:repeat(4,1fr);background:rgba(18,24,32,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:6px max(4px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px))}
+  .mnav{display:grid;position:fixed;left:0;right:0;bottom:0;z-index:40;grid-template-columns:repeat(4,1fr);background:#121820;border-top:1px solid var(--line);padding:6px max(4px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px))}
   .mnav button{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:var(--muted);font:600 11.5px var(--sans);padding:5px 0;cursor:pointer}
   .mnav button svg{width:23px;height:23px}
   .mnav button[aria-current="true"]{color:var(--accent)}
@@ -519,10 +519,10 @@ body.mon .mnTop button{display:none}
 .gup{color:var(--pos)}.gdn{color:var(--neg)}.geq{color:var(--muted)}
 .tape2{background:var(--bg)}.tape2 .tape-in{animation-direction:reverse}
 .tape2{position:relative}.tape2 .tv2{display:block;width:100%;min-height:44px;animation:none}.tape2 .tv2 .tradingview-widget-copyright{position:absolute;right:10px;bottom:1px;margin:0;font-size:10px;line-height:1;z-index:2}
-.tape3{font-size:11.5px;background:#0b1016}.tape3::before{background:linear-gradient(90deg,#0b1016,transparent)}.tape3::after{background:linear-gradient(-90deg,#0b1016,transparent)}
-.tape3 .tape-in{padding-block:5px}.tape3 .tk .n{font-size:10.5px}.tape3 .tk .v{font-weight:400;color:var(--ink2)}
-.tape3 .on{color:var(--pos);font-weight:600}.tape3 .off{color:var(--muted)}
-.tape3 .lbl{color:var(--accent);font-weight:600;letter-spacing:.06em}
+.tchip{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;gap:7px;padding:0 16px;background:var(--sunk);border-right:1px solid var(--line);font-size:11.5px;color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase}
+.tchip b{color:var(--ink);font-weight:600}.tchip i{width:7px;height:7px;border-radius:50%;background:var(--muted)}.tchip i.on{background:var(--pos)}
+.tchip:hover{color:var(--accent)}.tape.conchip::before{left:var(--chipW,0px)}
+@media (max-width:640px){.tchip{display:none!important}.tape.conchip::before{left:0}}
 .reloj{width:100%;display:block;font-family:var(--mono)}
 .reloj text{font-size:11px;fill:var(--muted)}.reloj .nm{fill:var(--ink);font-family:var(--sans);font-size:12.5px;font-weight:600}.reloj .st{font-size:11px}
 .rlj-wrap{overflow-x:auto}.rlj-wrap svg{min-width:640px}
@@ -771,9 +771,8 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 }
 </style>
 
-<div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><div class="tape-in" id="tapeIn"></div></div>
+<div class="tape" id="tape" role="marquee" aria-label="Cotizaciones del día"><a class="tchip" id="tChip" href="#global" hidden></a><div class="tape-in" id="tapeIn"></div></div>
 <div class="tape tape2" id="tape2" role="marquee" aria-label="Mercados del mundo" hidden><div class="tape-in" id="tape2In"></div></div>
-<div class="tape tape3" id="tape3" role="marquee" aria-label="Bolsas abiertas y cerradas ahora"><div class="tape-in" id="tape3In"></div></div>
 <div class="mbar" id="mbar">
   <div class="mb1"><a href="#" class="mhome" id="mLogo" aria-label="Volver al inicio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg><span>Inicio</span></a><div class="mwhere" id="mWhere"></div><button type="button" class="mbtn" id="mBtn" aria-expanded="false" aria-controls="mSheet"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Secciones</button><button type="button" class="mbus" data-bus aria-label="Buscar en Pulso Macro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg></button></div>
   <nav class="midx" id="mIdx" aria-label="Ir a"></nav>
@@ -2956,6 +2955,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     <span><a href="#sobre">Sobre Pulso Macro</a> · <a href="indicadores/">Todos los indicadores</a> · <a href="diario/">Imagen del día</a> · <a href="#sobre" data-legal>Términos y aviso legal</a> · Hecho por Francisco · Datos con fines informativos, no constituyen recomendación de inversión.</span>
     <span><b>Pulso Macro nunca pide dinero ni recomienda inversiones por mensaje privado.</b> Si alguien lo hace en su nombre, es una estafa.</span>
     <span>Algunas series del BCRA se publican con uno o dos días de atraso: cada dato muestra su propia fecha.</span>
+    <span id="yoNota" hidden>● Este dispositivo no se cuenta en las visitas (<a href="#contarme">volver a contarlo</a>).</span>
     <span>Los CSV usan punto y coma y coma decimal (formato de Excel en español). Si los usás, citá la fuente: Pulso Macro con datos de los organismos que figuran en cada sección.</span>
   </footer>
 </div>
@@ -2969,8 +2969,19 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   // ---- contador de visitas: cada pestaña como página (/#pestaña) y algunos eventos ----
   // No cuenta navegadores automatizados (el chequeo diario del sitio).
   const gcCola = []; let gcT = null; const gcVistos = new Set();
+  // Dispositivos del dueño: no se cuentan. Se activa una vez por navegador entrando a pulsomacro.com.ar/#no-contarme
+  // (se desactiva con #contarme). Marca 'pm-yo' + 'skipgc' (la de GoatCounter) en localStorage; en Android y en la compu
+  // la app instalada comparte esa memoria con el navegador. Al pie aparece el aviso "Este dispositivo no se cuenta".
+  let yo = false; try{ yo = localStorage.getItem('pm-yo')==='1'; }catch(e){}
+  function yoHash(){ const h = location.hash; if(h!=='#no-contarme' && h!=='#contarme') return;
+    yo = h==='#no-contarme';
+    try{ if(yo){ localStorage.setItem('pm-yo','1'); localStorage.setItem('skipgc','t'); } else { localStorage.removeItem('pm-yo'); localStorage.removeItem('skipgc'); } }catch(e){}
+    history.replaceState(history.state, '', location.pathname);
+    setTimeout(()=>{ yoNota(); toast(yo ? 'Listo: este dispositivo ya no se cuenta en las visitas ni en la app.' : 'Este dispositivo vuelve a contarse en las visitas.'); }, 700); }
+  function yoNota(){ const n = document.getElementById('yoNota'); if(n) n.hidden = !yo; }
+  yoHash(); yoNota(); addEventListener('hashchange', yoHash);
   function gc(path, evento=false){
-    if(navigator.webdriver) return;
+    if(navigator.webdriver || yo) return;
     gcCola.push({path, title: evento ? path : document.title, event: evento});
     const vaciar = () => { if(!(window.goatcounter && window.goatcounter.count)) return false;
       while(gcCola.length){ try{ window.goatcounter.count(gcCola.shift()); }catch(e){} } return true; };
@@ -4184,17 +4195,25 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   ];
   const GLOS_SEL = {q:'.q .name', g:'.card h2, .card h3.subh, .k .lbl, .stats .lbl', th:'th'};
   const infoBtn = k => `<button type="button" class="info" data-tip="${k}" aria-label="¿Qué es ${esc(GLOS[k][0])}?" aria-expanded="false">i</button>`;
+  // Rendimiento (10/2026): antes recorría todo el sitio de una vez (~1 s trabado en celulares lentos). Ahora va en tandas
+  // de ~8 ms entre cuadro y cuadro, primero lo que está a la vista; el resto se completa cuando el equipo está libre.
+  const enTandas = (lista, fn) => { let i = 0; const paso = () => { const t0 = performance.now();
+      while(i < lista.length && performance.now()-t0 < 8) fn(lista[i++]);
+      if(i < lista.length) (window.requestIdleCallback ? requestIdleCallback(paso, {timeout:400}) : setTimeout(paso, 16)); };
+    paso(); };
+  const alFrente = l => { const v = [], o = []; l.forEach(x=>(x.offsetParent ? v : o).push(x)); return v.concat(o); };
   function decorar(){
-    for(const [donde, sel] of Object.entries(GLOS_SEL)){
-      document.querySelectorAll(sel).forEach(el=>{
-        if(el.querySelector('.info') || el.closest('#tipbox')) return;
-        const txt = [...el.childNodes].filter(n=>n.nodeType===3 || (n.nodeType===1 && !n.matches('i,small,.tools,button'))).map(n=>n.textContent).join('').trim();
-        const r = GLOS_REGLAS.find(([re,,d])=>d===donde && re.test(txt)); if(!r) return;
-        const tl = el.querySelector(':scope > .tools');
-        tl ? tl.insertAdjacentHTML('beforebegin', infoBtn(r[1])) : el.insertAdjacentHTML('beforeend', infoBtn(r[1]));
-      });
-    }
-    herramientas();
+    const els = []; for(const [donde, sel] of Object.entries(GLOS_SEL)) document.querySelectorAll(sel).forEach(el=>els.push([el, donde, !!el.offsetParent]));
+    els.sort((a,b)=>b[2]-a[2]);
+    enTandas(els, ([el, donde])=>decorar1(el, donde));
+    enTandas(alFrente([...document.querySelectorAll('.card .chart[id]:not([data-tl])')]), herramienta1);
+  }
+  function decorar1(el, donde){
+    if(!el.isConnected || el.querySelector('.info') || el.closest('#tipbox')) return;
+    const txt = [...el.childNodes].filter(n=>n.nodeType===3 || (n.nodeType===1 && !n.matches('i,small,.tools,button'))).map(n=>n.textContent).join('').trim();
+    const r = GLOS_REGLAS.find(([re,,d])=>d===donde && re.test(txt)); if(!r) return;
+    const tl = el.querySelector(':scope > .tools');
+    tl ? tl.insertAdjacentHTML('beforebegin', infoBtn(r[1])) : el.insertAdjacentHTML('beforeend', infoBtn(r[1]));
   }
   const tipbox = $('tipbox'); let tipFor = null, tipHide;
   function showTip(b){
@@ -4226,15 +4245,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     csv:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h7l3 3v8H3z M10 2.5v3h3 M5.5 8.5h5 M5.5 11h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>'
   };
   const toolsHtml = id => `<span class="tools"><button type="button" data-act="share" data-ch="${id}" title="Compartir este gráfico" aria-label="Compartir este gráfico">${IC.share}</button><button type="button" data-act="png" data-ch="${id}" title="Descargar imagen (PNG)" aria-label="Descargar imagen del gráfico">${IC.png}</button><button type="button" data-act="csv" data-ch="${id}" title="Descargar los datos del gráfico (CSV)" aria-label="Descargar datos del gráfico">${IC.csv}</button></span>`;
-  function herramientas(){
-    document.querySelectorAll('.card .chart[id]:not([data-tl])').forEach(ch=>{
-      ch.dataset.tl = '1';  // ya tiene sus botones (antes se buscaba en todo el documento: ~2 s en celulares)
-      if(document.querySelector(`.tools [data-ch="${ch.id}"]`)) return;
-      // título propio (h3) si hay uno justo antes; si no, el encabezado de la tarjeta
-      let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
-      if(p && p.matches('h3.subh')){ p.classList.add('wt'); p.insertAdjacentHTML('beforeend', toolsHtml(ch.id)); return; }
-      const head = ch.closest('.card').querySelector(':scope > .head'); if(head) head.insertAdjacentHTML('beforeend', toolsHtml(ch.id));
-    });
+  function herramienta1(ch){
+    if(ch.dataset.tl || !ch.isConnected) return;
+    ch.dataset.tl = '1';  // ya tiene sus botones
+    const card = ch.closest('.card'); if(!card || card.querySelector(`.tools [data-ch="${ch.id}"]`)) return;  // antes buscaba en todo el sitio
+    // título propio (h3) si hay uno justo antes; si no, el encabezado de la tarjeta
+    let p = ch.previousElementSibling; while(p && !p.matches('h3.subh, .chart, .head')) p = p.previousElementSibling;
+    if(p && p.matches('h3.subh')){ p.classList.add('wt'); p.insertAdjacentHTML('beforeend', toolsHtml(ch.id)); return; }
+    const head = card.querySelector(':scope > .head'); if(head) head.insertAdjacentHTML('beforeend', toolsHtml(ch.id));
   }
   function chartInfo(ch){
     const card = ch.closest('.card');
@@ -4764,19 +4782,21 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   const durTxt = m => m<60 ? `${m} min` : m<1440 ? `${Math.floor(m/60)} h ${m%60} min` : null;
   function gEstado(e){ const s = gEx(e); if(s.open) return {open:true, hora:s.hora, txt:s.txt};
     const p = gProx(e); return {open:false, hora:s.hora, txt: p ? (durTxt(p.min) ? `abre en ${durTxt(p.min)}` : `abre el ${DSEM[p.wd]} ${p.hora}`) : 'cerrada'}; }
-  // ---- tercera cinta: bolsas abiertas y cerradas ahora ----
+  // ---- ficha fija a la izquierda de la cinta de dólares (compu): cuántas bolsas del mundo están abiertas ----
+  // Antes era una tercera cinta ("reloj de mercados"); pedido del dueño 26/10/2026: menos barras arriba en la compu.
+  const cintasAbajo = () => Math.max(0, ...['tape','tape2'].map(i=>{ const e = $(i); return e && !e.hidden ? e.getBoundingClientRect().bottom : 0; }));
   function renderTape3(){
-    const inn = $('tape3In'), mob = innerWidth < 600;
-    const est = GEX.map(e=>[e, gEstado(e)]), ab = est.filter(x=>x[1].open);
-    const one = (x) => { const [e,s] = x; return `<span class="tk"><span class="n">${esc(e[0])} · ${esc(e[1])} ${s.hora}</span><span class="${s.open?'on':'off'}">${s.open?'● ABIERTA':'○ CERRADA'}</span><span class="v">${esc(s.txt)}</span></span>`; };
-    let lista = mob ? ab : est;
-    let html = `<span class="tk"><span class="lbl">RELOJ DE MERCADOS</span><span class="v">${ab.length} de ${GEX.length} bolsas abiertas</span></span>` + lista.map(one).join('');
-    if(mob && !ab.length){ const nx = est.map(([e])=>[e, gProx(e)]).filter(x=>x[1]).sort((a,b)=>a[1].min-b[1].min)[0];
-      if(nx) html += `<span class="tk"><span class="v">La próxima en abrir: <b>${esc(nx[0][0])}</b> (${esc(nx[0][1])}), ${durTxt(nx[1].min) ? 'en '+durTxt(nx[1].min) : 'el '+DSEM[nx[1].wd]+' '+nx[1].hora}</span></span>`; }
-    if(inn.dataset.h === html) return; inn.dataset.h = html;
-    inn.innerHTML = html + html.replace(/class="tk"/g,'class="tk" aria-hidden="true"');
-    requestAnimationFrame(()=>{ inn.style.setProperty('--dur', Math.max(40, inn.scrollWidth/2/28)+'s'); });
+    const ch = $('tChip'); if(!ch) return;
+    const ab = GEX.filter(e=>gEx(e).open).length;
+    let h = `<i class="${ab?'on':''}"></i>Bolsas<b>${ab} de ${GEX.length}</b>abiertas`;
+    if(!ab){ const nx = GEX.map(e=>[e, gProx(e)]).filter(x=>x[1]).sort((a,b)=>a[1].min-b[1].min)[0];
+      if(nx) h = `<i></i>Bolsas cerradas · abre <b>${esc(nx[0][1])}</b>${durTxt(nx[1].min) ? 'en '+durTxt(nx[1].min) : 'el '+DSEM[nx[1].wd]}`; }
+    if(ch.dataset.h === h) return; ch.dataset.h = h; ch.innerHTML = h; ch.hidden = false;
+    ch.title = 'Ver el reloj de mercados (horario de cada bolsa)';
+    requestAnimationFrame(()=>{ const t = $('tape'); t.classList.add('conchip'); t.style.setProperty('--chipW', ch.offsetWidth+'px'); });
   }
+  $('tChip').addEventListener('click', ()=>{ gcUna('ficha-bolsas');
+    setTimeout(()=>{ const c = $('rlj')?.closest('.card'); if(c && c.offsetParent) c.scrollIntoView({behavior:'smooth', block:'start'}); }, 600); });
   // ---- reloj de mercados 24 h (hora argentina) ----
   function renderReloj(){
     const el = $('rlj'); if(!el) return;
@@ -4826,17 +4846,30 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(G.W<2) return false; cv.width = G.W*d; cv.height = G.H*d; G.ctx.setTransform(d,0,0,d,0,0); G.flat = innerWidth < 560;
     G.proj = G.flat ? d3.geoNaturalEarth1().fitExtent([[4,4],[G.W-4,G.H-4]], {type:'Sphere'}) : d3.geoOrthographic().scale(Math.min(G.W,G.H)/2-14).translate([G.W/2,G.H/2]).clipAngle(90);
     G.path = d3.geoPath(G.proj, G.ctx); return true; }
+  // Rendimiento (equipos lentos): cada globo mide cuánto tarda en dibujarse. Si un cuadro tarda más de 12 ms, dibuja
+  // menos seguido (como mucho un tercio del tiempo), así el celular sigue respondiendo al scroll y a los toques.
+  // El giro usa el tiempo real, así que va a la misma velocidad, solo que menos fluido. Sin brillo en equipos lentos.
+  // Si es muy lento (más de 40 ms por cuadro) deja de girar solo: queda quieto y se redibuja al tocarlo o cada 2 s.
+  const lento = S => S.cost > 40 && !S.drag;
+  const cuadroOk = (S, now) => { const gap = now-(S.lastDraw||0);
+    if(lento(S) ? gap < 2000 : (S.cost > 12 && gap < S.cost*5)) return false; S.lastDraw = now; return true; };
+  // cualquier toque o clic (capa, país, arrastre) redibuja enseguida aunque el globo esté en modo lento
+  addEventListener('pointerdown', ()=>{ G.lastDraw = 0; for(const k in DGS) DGS[k].lastDraw = 0; }, {capture:true, passive:true});
+  addEventListener('click', ()=>{ setTimeout(()=>{ G.lastDraw = 0; for(const k in DGS) DGS[k].lastDraw = 0; }, 0); }, {capture:true, passive:true});
+  const cuadroCosto = (S, t0) => { const d = performance.now()-t0; S.cost = S.cost==null ? d : S.cost*.8 + d*.2; };
   function gDraw(now){
     if(tab!=='global' || document.hidden || G.vista==='usa'){ G.run = false; return; }
     { const gr = $('gWrap').getBoundingClientRect(); if(gr.bottom < 0 || gr.top > innerHeight){ G.last = now; requestAnimationFrame(gDraw); return; } }
-    const ctx = G.ctx, path = G.path, dt = now-(G.last||now); G.last = now;
-    if(!G.flat && !G.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(G.idle||0)>2500) G.rot[0] += dt*.006;
+    if(!cuadroOk(G, now)){ requestAnimationFrame(gDraw); return; }
+    const t0 = performance.now();
+    const ctx = G.ctx, path = G.path, dt = Math.min(500, now-(G.last||now)); G.last = now;
+    if(!G.flat && !G.drag && !lento(G) && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(G.idle||0)>2500) G.rot[0] += dt*.006;
     if(!G.flat) G.proj.rotate(G.rot);
     ctx.clearRect(0,0,G.W,G.H);
     const cs = getComputedStyle(document.documentElement), tok = n=>cs.getPropertyValue('--'+n).trim();
     if(!G.flat){ const r = G.proj.scale(), g = ctx.createRadialGradient(G.W/2-r*.3, G.H/2-r*.35, r*.1, G.W/2, G.H/2, r*1.05); g.addColorStop(0,'#13304b'); g.addColorStop(1,'#0a1622');
       ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-      ctx.save(); ctx.shadowColor = 'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
+      ctx.save(); if(!(G.cost > 12)){ ctx.shadowColor = 'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
     else { ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = '#0a1622'; ctx.fill(); }
     ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = 'rgba(106,168,216,.08)'; ctx.lineWidth = .6; ctx.stroke();
     for(const f of G.feats){ ctx.beginPath(); path(f); ctx.fillStyle = gcol(gval(f.id)) || '#1d2733'; ctx.fill(); }
@@ -4847,7 +4880,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       const ch = bm(glob?.bolsas?.[e[0].split(' ')[0]]), rgb = ch==null ? '160,170,180' : ch>=0 ? '76,195,138' : '240,122,112';
       ctx.beginPath(); ctx.arc(xy[0], xy[1], o?3.6:2.6, 0, 7); ctx.fillStyle = `rgba(${rgb},${o?1:.55})`; ctx.fill();
       if(o){ ctx.beginPath(); ctx.arc(xy[0], xy[1], 5+pulse*7, 0, 7); ctx.strokeStyle = `rgba(${rgb},${.6-pulse*.5})`; ctx.lineWidth = 1.2; ctx.stroke(); } }
-    $('gHud').innerHTML = G.flat ? '' : `LAT ${nf(-G.rot[1],1)}° · LON ${nf(-((G.rot[0]%360+540)%360-180),1)}°<br>CAPA <b>${GL[G.layer].t.toUpperCase()}</b><br>BOLSAS ABIERTAS <b>${abiertas}/${GEX.length}</b>`;
+    if(now-(G.hudT||0) > 250){ G.hudT = now;  // el recuadro de texto, 4 veces por segundo (antes en cada cuadro)
+      $('gHud').innerHTML = G.flat ? '' : `LAT ${nf(-G.rot[1],1)}° · LON ${nf(-((G.rot[0]%360+540)%360-180),1)}°<br>CAPA <b>${GL[G.layer].t.toUpperCase()}</b><br>BOLSAS ABIERTAS <b>${abiertas}/${GEX.length}</b>`; }
+    cuadroCosto(G, t0);
     requestAnimationFrame(gDraw);
   }
   function gLegend(){ const C = GL[G.layer], cut = C.cut, fm = v => nf(v,0);
@@ -4961,12 +4996,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   function dgDraw(S, now){
     if(document.hidden || !S.cv.offsetParent || !dgSize(S)){ S.run = false; return; }
     { const vr = S.cv.getBoundingClientRect(); if(vr.bottom < 0 || vr.top > innerHeight){ S.last = now; requestAnimationFrame(t=>dgDraw(S,t)); return; } }
-    const {ctx, proj, path, W, H} = S, dt = now-(S.last||now); S.last = now;
-    if(!S.drag && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(S.idle||0)>2500) S.rot[0] -= dt*.007;
+    if(!cuadroOk(S, now)){ requestAnimationFrame(t=>dgDraw(S,t)); return; }
+    const t0 = performance.now();
+    const {ctx, proj, path, W, H} = S, dt = Math.min(500, now-(S.last||now)); S.last = now;
+    if(!S.drag && !lento(S) && !matchMedia('(prefers-reduced-motion: reduce)').matches && now-(S.idle||0)>2500) S.rot[0] -= dt*.007;
     proj.rotate(S.rot); ctx.clearRect(0,0,W,H); const r = proj.scale();
     const g = ctx.createRadialGradient(W/2, H/2, r*.2, W/2, H/2, r*1.05); g.addColorStop(0,'#06221f'); g.addColorStop(1,'#030d0c');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    ctx.save(); ctx.shadowColor = 'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+    ctx.save(); if(!(S.cost > 12)){ ctx.shadowColor = 'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = 'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
     ctx.beginPath(); path(d3.geoGraticule().step([20,20])()); ctx.strokeStyle = 'rgba(63,208,192,.07)'; ctx.lineWidth = .6; ctx.stroke();
     const c0 = proj.invert([W/2,H/2]), cache = {};
     for(const [lo,la,iso] of G.dots){ if(d3.geoDistance([lo,la], c0) > Math.PI/2-.02) continue; const p = proj([lo,la]);
@@ -4984,6 +5021,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const capa = {bolsa:'BOLSAS EN EL ÚLTIMO MES (OCDE)', mon:'MONEDAS CONTRA EL DÓLAR HOY', monA:'MONEDAS CONTRA EL DÓLAR EN EL AÑO', bono:'TASA DEL BONO A 10 AÑOS'}[S.layer];
     const h = `CAPA <b>${capa}</b><br>${S.layer==='bono' ? `${items.length} PAÍSES · MÁS ALTA <b>${items.length ? esc(items.reduce((a,x)=>x[2]>a[2]?x:a)[1]).toUpperCase() : '—'}</b>` : `<b style="color:var(--pos)">${su} ${S.layer==='bolsa'?'SUBEN':'SE FORTALECEN'}</b> · <b style="color:var(--neg)">${ba} ${S.layer==='bolsa'?'BAJAN':'SE DEBILITAN'}</b>`}${f ? `<br>DATOS AL <b>${fds(f)}</b>` : ''}`;
     if(S.hudH !== h && !$(S.hud).hidden){ S.hudH = h; $(S.hud).innerHTML = h; }
+    cuadroCosto(S, t0);
     requestAnimationFrame(t=>dgDraw(S,t));
   }
   function dgHint(){ const S = DGS.dCv, l = S ? S.layer : 'bolsa';
@@ -5046,9 +5084,14 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const c = document.createElement('div'); c.className = 'tradingview-widget-container'; if(alto) c.style.minHeight = alto+'px';
     const w = document.createElement('div'); w.className = 'tradingview-widget-container__widget'; c.appendChild(w);
     const cp = document.createElement('div'); cp.className = 'tradingview-widget-copyright'; cp.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>'; c.appendChild(cp);
-    const sc = document.createElement('script'); sc.src = 'https://s3.tradingview.com/external-embedding/embed-widget-'+tipo+'.js'; sc.async = true; sc.text = JSON.stringify({...TV_BASE, ...cfg}); c.appendChild(sc);
+    const sc = document.createElement('script'); sc.src = 'https://s3.tradingview.com/external-embedding/embed-widget-'+tipo+'.js'; sc.async = true; sc.text = JSON.stringify({...TV_BASE, ...cfg});
     el.appendChild(c);
+    // Rendimiento (equipos lentos): cada widget es una página entera de TradingView. Se carga solo cuando el recuadro
+    // está a la vista o cerca (400 px); lo que está en apartados ocultos no se carga hasta que se abre.
+    if(tvIO){ c._tvsc = sc; tvIO.observe(c); } else c.appendChild(sc);
   }
+  const tvIO = 'IntersectionObserver' in window ? new IntersectionObserver(es=>{ for(const e of es){ if(!e.isIntersecting) continue;
+    tvIO.unobserve(e.target); const sc = e.target._tvsc; e.target._tvsc = null; if(sc && e.target.isConnected) e.target.appendChild(sc); } }, {rootMargin:'400px 0px'}) : null;
   // lista de cotizaciones: items [{tv, n}] (tv = símbolo de TradingView)
   function tvLista(el, items, titulo){
     const it = (items||[]).filter(x=>x && x.tv); if(typeof el==='string') el = $(el); if(!el) return;
@@ -6828,7 +6871,13 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     // navegador vuelve a ofrecer instalarla (beforeinstallprompt), la marca se borra y el botón vuelve.
     const marca = v => { try{ v ? localStorage.setItem('pm-app','1') : localStorage.removeItem('pm-app'); }catch(e){} };
     let instalada = false; try{ instalada = localStorage.getItem('pm-app')==='1'; }catch(e){}
-    if(yaApp){ marca(1); instalada = true; }
+    if(yaApp){ marca(1); instalada = true;
+      // Contador de usuarios con la app (pedido del dueño, 26/10/2026). GoatCounter recibe "app-nueva-<tipo>" UNA vez por
+      // dispositivo (la primera vez que se abre como app; también cuenta a los que ya la tenían) y "app-abierta-<tipo>"
+      // una vez por día de uso. Tipo: ios (pantalla de inicio de iPhone/iPad), android, compu. Nunca de los del dueño.
+      const tipo = ios ? 'ios' : andr ? 'android' : 'compu', hoy = new Date().toISOString().slice(0,10);
+      try{ if(!localStorage.getItem('pm-app-n')){ localStorage.setItem('pm-app-n', hoy); gcUna('app-nueva-'+tipo); }
+        if(localStorage.getItem('pm-app-d') !== hoy){ localStorage.setItem('pm-app-d', hoy); gcUna('app-abierta-'+tipo); } }catch(e){} }
     // Chrome y Edge (no en iPhone): solo mandan beforeinstallprompt si la app NO está instalada. Ahí el botón aparece
     // únicamente con ese aviso; así nunca se ofrece instalar a quien ya la tiene (pedido del dueño, 26/10/2026).
     const chromium = /Chrome|Chromium|Edg\//.test(UA) && !/SamsungBrowser|OPR\//.test(UA) && !ios;
@@ -8269,10 +8318,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   }
   // modo monitor: pantalla completa, solo cintas + monitor, pantalla siempre prendida
   async function xpModo(on){
-    if(on){ scrollTo(0,0); document.body.classList.add('mon'); const t3 = $('tape3').getBoundingClientRect().bottom; document.body.style.setProperty('--monTop', Math.max(0, t3)+'px');
+    if(on){ scrollTo(0,0); document.body.classList.add('mon'); document.body.style.setProperty('--monTop', cintasAbajo()+'px');
       try{ await document.documentElement.requestFullscreen(); }catch(e){}
       try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){}
-      setTimeout(()=>document.body.style.setProperty('--monTop', Math.max(0, $('tape3').getBoundingClientRect().bottom)+'px'), 400); gc('monitor-pantalla-completa', true); }
+      setTimeout(()=>document.body.style.setProperty('--monTop', cintasAbajo()+'px'), 400); gc('monitor-pantalla-completa', true); }
     else { document.body.classList.remove('mon'); try{ XP.wl?.release(); }catch(e){} XP.wl = null; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
   }
   async function xpStart(){
@@ -8295,7 +8344,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     if(!usa){ loadUsa(); $('uKpis').innerHTML = '<div class="empty">Cargando datos de Estados Unidos…</div>'; return; }
     const b = usa.bls || {}, f = usa.fed, D = usa.deuda, st=(l,val,d,cls='')=>`<div class="k"><span class="lbl">${l}</span><span class="v ${cls}">${val}</span><span class="d">${d}</span></div>`;
     // reloj de la deuda y Fed
-    if(D){ $('uDebtF').textContent = `Tesoro · al ${fd(D.fecha)}`;
+    if(D){ $('uDebtF').textContent = `dato del Tesoro al ${fd(D.fecha)} · ahora, estimado`;
       $('uDebtMini').innerHTML = `<div>Por habitante<b id="uPc">—</b></div><div>Crece por segundo<b>${D.por_seg?'US$ '+nf(D.por_seg,0):'—'}</b></div><div>Aumento en 12 meses<b>${D.hace_un_anio?'US$ '+nf((D.monto-D.hace_un_anio)/1e12,2)+' billones':'—'}</b></div><div>Variación anual<b>${D.hace_un_anio?pc(D.monto/D.hace_un_anio-1,1):'—'}</b></div>`; }
     if(f){ const lo = f.actual-0.125, hi = f.actual+0.125, ult = (f.decisiones||[]).find(x=>Math.abs(x.despues-x.antes)>1e-9), dd = ult ? ult.despues-ult.antes : 0;
       const dias = s => { const [y,m,d] = s.split('-'); return `${+d} de ${MESES[+m-1]}`; };

@@ -36,10 +36,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
 - Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
-  automatizados. Para no contar las visitas propias: abrir el sitio con `#toggle-goatcounter`.
+  automatizados. Dispositivos del dueño (pedido 26/10/2026): entrar UNA vez por navegador a `pulsomacro.com.ar/#no-contarme`
+  (`yo`, `yoHash`; marca `pm-yo` + `skipgc` en localStorage; se deshace con `#contarme`); al pie aparece `#yoNota`.
+  En Android y en la compu la app instalada comparte esa memoria con el navegador. Cloudflare Web Analytics (automático,
+  plan gratis sin reglas) NO se puede filtrar así: el número oficial es el de GoatCounter.
+- Usuarios con la app: eventos GoatCounter `app-nueva-{ios|android|compu}` una vez por dispositivo (la primera vez que se
+  abre como app, `pm-app-n`) y `app-abierta-{tipo}` una vez por día de uso (`pm-app-d`). Sumar los `app-nueva-*` de todo
+  el período = dispositivos que la tienen (no se puede saber quién la desinstala). `app-instalada` (solo Chrome/Edge) sigue.
 
 ## Estructura de la página (`index.html`, todo en un archivo, sin librerías salvo d3/topojson en Global)
-- Arriba: tres cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo; `#tape3` reloj de mercados)
+- Arriba: dos cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo). La tercera (reloj de mercados)
+  se sacó el 26/10/2026 (pedido del dueño: ocupaban mucho en la compu): ahora es la ficha fija `#tChip` a la izquierda de
+  `#tape` ("Bolsas 12 de 41 abiertas", `renderTape3`; solo ≥641px), que lleva al reloj de Mundo
   y los 7 dólares (`#dolHoy`/`#quotes`, `renderQuotes()`): siempre en la portada y en todo Argentina (requisito no
   negociable); NO en Mundo, Estados Unidos ni Sobre Pulso Macro (pedido del dueño).
   Dólar en vivo: cada 60 s (+0-10 s al azar) desde `vivo.json` del Worker, con respaldo a DolarApi directo (si todo
@@ -77,7 +85,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   que el que entra por primera vez entienda qué es, dónde está y cómo moverse.
   - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
     hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
-    para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, `#tape3`, migas, pestañas y `#mBtn`. Arriba queda una cinta (pedido del dueño): `#tape` (dólares) en portada y Argentina, `#tape2` (mercados) en El mundo y países (`body.mglo`, en `mActualizar`). En la portada no va `#mbar`.
+    para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, `#tChip`, migas, pestañas y `#mBtn`. Arriba queda una cinta (pedido del dueño): `#tape` (dólares) en portada y Argentina, `#tape2` (mercados) en El mundo y países (`body.mglo`, en `mActualizar`). En la portada no va `#mbar`.
   - Portada: `#mHero` (logo Pulso Macro, la firma y una bajada corta; nada de eslogan, pedido del dueño) (antes: qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares (pedido del dueño 26/10/2026: SIN "Los datos del día"; `#mHoy` queda oculto, como en la compu) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
     compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
@@ -110,6 +118,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Celular: el botón de volver de `#mbar` (`#mLogo`) dice "Volver" (o "Inicio" si se entró por link directo); el selector
   Argentina / El mundo de la portada (`#mTg`) son dos botones separados con ícono, el elegido en celeste (pedido del dueño:
   "que se entienda que son dos botones").
+- Rendimiento en equipos lentos (26/10/2026, medido con la CPU 6 veces más lenta): widgets de TradingView con carga
+  diferida (`tvIO`: el script se agrega recién cuando el recuadro está a ≤400 px de la pantalla; los apartados ocultos no
+  cargan nada); glosario y botones de gráficos en tandas de 8 ms (`enTandas`, `decorar1`, `herramienta1`, primero lo
+  visible; antes ~1 s de bloqueo); globos con cuadros adaptativos (`cuadroOk`/`cuadroCosto`: si un cuadro tarda >12 ms
+  dibuja menos seguido y sin brillo; >40 ms deja de girar y se redibuja al tocar o cada 2 s; texto del globo 4 veces por
+  segundo); `#mbar` y `#mNav` sin `backdrop-filter`. Resultado: portada del celular 3,1 s → 0,5 s de bloqueo; Mundo de
+  6 a 58 cuadros por segundo. No volver a montar widgets de TradingView sin pasar por `tvw`.
 - Rendimiento (10/2026, en celular medio la portada trababa 3-4,5 s): los puntos del globo "Mundo hoy" están precalculados en
   `vendor/dots.json` (si se cambia `world.json` o la grilla de `dgDots`, regenerarlo); el globo de la portada solo arranca si
   se ve (`pCv` con ancho); `herramientas()` marca cada gráfico con `data-tl` (antes buscaba en todo el documento por cada uno).
@@ -465,7 +480,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   segundo, países agrupados por color y solo la cara visible; los globos de arriba se pausan si no están en pantalla.
 
 ### Global › Estados Unidos (`renderUsa`, `usaExtra`)
-- Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda, cuenta regresiva a la Fed, 6 indicadores,
+- Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda (base = Debt to the Penny del Tesoro, 1 día
+  hábil de atraso; el avance por segundo es una proyección al ritmo de ~40 días hábiles: el encabezado lo dice), cuenta regresiva a la Fed, 6 indicadores,
   Fed vs inflación, curva del Tesoro, empleos por mes, sectores, 7 magníficas, decisiones de la Fed.
 - Semáforo de recesión (regla de Sahm, curva 10-2, VIX, pedidos de desempleo vs un año), inflación por rubro,
   próximos datos (`CAL_US`, fechas BLS/BEA a mano hasta dic-2027),
