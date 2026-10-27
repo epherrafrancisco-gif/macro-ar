@@ -198,7 +198,7 @@ section.view[hidden]{display:none}
 .q .row{display:flex;gap:6px;flex-wrap:wrap}
 .q .when{font-size:11px;color:var(--muted)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;min-width:0;align-content:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:12px;min-width:0;align-content:start;grid-template-columns:minmax(0,1fr)}
 .card h2{margin:0;font-size:15px;font-weight:600;text-wrap:balance}
 .card .sub{margin:0;color:var(--muted);font-size:12.5px}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
@@ -284,7 +284,7 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 /* calculadoras */
 .calcsel{justify-self:start;flex-wrap:wrap}
 .calc{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:22px 28px;align-items:start}
-@media (max-width:760px){.calc{grid-template-columns:1fr}}
+@media (max-width:760px){.calc{grid-template-columns:minmax(0,1fr)}}.calc>*,.res>*{min-width:0}
 .form{display:grid;gap:12px}
 .form label{display:grid;gap:4px;font-size:12.5px;color:var(--ink2);font-weight:500}
 .form .lab{display:flex;align-items:center}
@@ -302,7 +302,7 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .verd b{font-family:var(--mono);font-weight:600}
 .minit{width:100%;font-size:13px;min-width:0}
 #alT{margin-top:14px}.altab td:nth-child(n+3),.altab th:nth-child(n+3){text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
-.altab .alm{display:none}#cALQ select,#cALQ input{min-width:0;max-width:100%}#cALQ .calc,#cALQ .form,#cALQ .res{min-width:0}
+.altab .alm{display:none}.altab td{white-space:normal}.altab td:nth-child(n+3){white-space:nowrap}#cALQ select,#cALQ input{min-width:0;max-width:100%}#cALQ .calc,#cALQ .form,#cALQ .res{min-width:0}
 @media (max-width:640px){.altab th:nth-child(2),.altab td:nth-child(2),.altab th:nth-child(5),.altab td:nth-child(5){display:none}.altab .alm{display:block;font-size:11px;color:var(--muted);font-family:var(--sans)}}
 .altab tr.hl td{background:color-mix(in srgb,var(--accent) 14%,transparent)}.altab .muted{color:var(--muted)}
 .albtn{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.albtn button{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}.albtn button:hover{border-color:var(--accent);color:var(--accent)}

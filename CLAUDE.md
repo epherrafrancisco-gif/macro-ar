@@ -185,7 +185,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   lo común; 1 = del período). Cociente de índices del IPC nacional nivel general (`act.ipc` desde dic-2016, de la tanda
   `ipc_largo` de actividad.py; si falta, `act.general` desde 2022) completado con `months[].infl` del BCRA para los meses que
   datos.gob.ar todavía no cargó (marcados con *). Tabla con qué meses usa cada ajuste, fila vigente resaltada, ajustes sin
-  IPC publicado como "pendiente", botones copiar (tabulado) y descargar CSV.
+  IPC publicado como "pendiente", botones copiar (tabulado) y descargar CSV. `.card` y `.calc` con columna `minmax(0,1fr)`: sin eso, al girar el celular el contenido quedaba más ancho que la tarjeta.
 - Calculadoras (pedido del dueño: siempre abre en la primera, `calc='pf'` en `setTab`; no se guarda la última): plazo fijo vs dólar, inflación (CER), sueldo en dólares y de viaje (`calcVia`, `VIA`: 12 monedas con
   cotización de `global.json`/`global_hist.json`; tarjeta, MEP, blue y cripto; "hace un año" con MEP mensual y CER).
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
