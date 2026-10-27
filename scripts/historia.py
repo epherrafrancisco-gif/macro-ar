@@ -68,19 +68,31 @@ def get_json(url, headers=None):
 
 
 def byma_hist(path, symbol):
-    t0 = int(datetime(DESDE.year, DESDE.month, DESDE.day, tzinfo=timezone.utc).timestamp())
-    t1 = int(time.time()) + 86400
-    q = urllib.parse.urlencode({"symbol": symbol, "resolution": "D", "from": t0, "to": t1})
-    j = get_json(f"{BYMA}{path}?{q}", {"Origin": "https://open.bymadata.com.ar", "Referer": "https://open.bymadata.com.ar/"})
-    if j.get("s") != "ok":
-        raise ValueError(f"s={j.get('s')}")
+    """La API devuelve como mucho ~2 años por pedido: se pide por tramos de un año, del más nuevo al más viejo,
+    hasta que un tramo viene vacío o se llega a DESDE."""
+    h = {"Origin": "https://open.bymadata.com.ar", "Referer": "https://open.bymadata.com.ar/"}
     out = {}
-    for t, c in zip(j.get("t") or [], j.get("c") or []):
-        if c and c > 0:
-            # los timestamps vienen a medianoche/mediodía de Buenos Aires: se pasa a la fecha argentina
-            f = (datetime.fromtimestamp(t, timezone.utc) - timedelta(hours=3)).date()
-            if f.weekday() < 5:
-                out[f.isoformat()] = round(float(c), 4 if c < 100 else 2)
+    fin = datetime.now(timezone.utc) + timedelta(days=1)
+    tope = datetime(DESDE.year, DESDE.month, DESDE.day, tzinfo=timezone.utc)
+    while fin > tope:
+        ini = max(fin - timedelta(days=365), tope)
+        q = urllib.parse.urlencode({"symbol": symbol, "resolution": "D", "from": int(ini.timestamp()), "to": int(fin.timestamp())})
+        j = get_json(f"{BYMA}{path}?{q}", h)
+        n = 0
+        if j.get("s") == "ok":
+            for t, c in zip(j.get("t") or [], j.get("c") or []):
+                if c and c > 0:
+                    # los timestamps son de la jornada en Buenos Aires: se pasan a la fecha argentina
+                    f = (datetime.fromtimestamp(t, timezone.utc) - timedelta(hours=3)).date()
+                    if f.weekday() < 5 and f.isoformat() not in out:
+                        out[f.isoformat()] = round(float(c), 4 if c < 100 else 2)
+                        n += 1
+        if n == 0 and out:
+            break  # antes de este tramo no hay más historia
+        fin = ini
+        time.sleep(0.25)
+    if not out:
+        raise ValueError("sin datos")
     return out
 
 
@@ -141,7 +153,7 @@ def main():
         m = byma_hist("chart/index-historical-series/history", "M")
         for f, v in m.items():
             if f <= MERVAL_BASE_FECHA:
-                merval[f] = round(v * MERVAL_FACTOR, 2) if v > 500000 else v
+                merval[f] = round(v * MERVAL_FACTOR, 2)  # S&P Merval → base del MSCI Merval
         diag["ok"].append(f"Merval BYMA: {len(merval)} días desde {min(merval) if merval else '-'}")
     except Exception as e:  # noqa: BLE001
         diag["errores"].append(f"Merval BYMA: {e}")
