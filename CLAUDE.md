@@ -45,7 +45,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el período = dispositivos que la tienen (no se puede saber quién la desinstala). `app-instalada` (solo Chrome/Edge) sigue.
 
 ## Estructura de la página (`index.html`, todo en un archivo, sin librerías salvo d3/topojson en Global)
-- Arriba: dos cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo). Tarjetas de dólares en el mismo
+- Arriba: dos cintas (`#tape` dólares/brecha/riesgo/Merval; `#tape2` mercados del mundo, PROPIA desde el 28/10/2026 (pedido del dueño: no le gustaba la de TradingView): `renderTape2` con índice dólar, monedas (BCE), tasas 2 y 10 años de EE.UU., bonos alemán y japonés, petróleo (EIA; si tiene más de ~4 días dice "al dd/mm") y lo mensual con su mes (oro, soja, cobre del Banco Mundial; bolsas de la OCDE "S&P 500 en sep"). Nada de TradingView en la cinta). Tarjetas de dólares en el mismo
   orden en compu y celular (`QORD` en `renderQuotes`: Oficial, Blue, MEP, Mayorista, CCL, Cripto, Tarjeta; pedido del dueño). La tercera (reloj de mercados)
   se sacó el 26/10/2026 (pedido del dueño: ocupaban mucho en la compu): ahora es la ficha fija `#tChip` a la izquierda de
   `#tape` ("Bolsas 12 de 41 abiertas", `renderTape3`; solo ≥641px), que lleva al reloj de Mundo

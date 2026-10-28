@@ -543,7 +543,7 @@ body.mon .mnTop button{display:none}
 .gst.on{color:var(--pos);background:var(--pos-bg)}.gst.off{color:var(--muted);background:var(--sunk)}
 .gup{color:var(--pos)}.gdn{color:var(--neg)}.geq{color:var(--muted)}
 .tape2{background:var(--bg)}.tape2 .tape-in{animation-direction:reverse}
-.tape2{position:relative}.tape2 .tv2{display:block;width:100%;min-height:44px;animation:none;overflow:hidden}.tape2{padding-bottom:14px}.tape2 .tv2 .tradingview-widget-copyright{position:absolute;right:10px;bottom:2px;margin:0;padding:0!important;height:auto!important;font-size:10px;line-height:11px!important;z-index:2}.tape2 .tv2 .tradingview-widget-copyright a{line-height:11px!important;padding:0!important}
+.tape2{position:relative}.tape2 .tv2{display:block;width:100%;min-height:44px;animation:none;overflow:hidden}.tape2 .tv2 .tradingview-widget-copyright{position:absolute;right:10px;bottom:2px;margin:0;padding:0!important;height:auto!important;font-size:10px;line-height:11px!important;z-index:2}.tape2 .tv2 .tradingview-widget-copyright a{line-height:11px!important;padding:0!important}
 .tchip{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;gap:7px;padding:0 16px;background:var(--sunk);border-right:1px solid var(--line);font-size:11.5px;color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase}
 .tchip b{color:var(--ink);font-weight:600}.tchip i{width:7px;height:7px;border-radius:50%;background:var(--muted)}.tchip i.on{background:var(--pos)}
 .tchip:hover{color:var(--accent)}.tape.conchip::before{left:var(--chipW,0px)}
@@ -4874,20 +4874,52 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     try{ const r = await fetch('global.json?t='+VER(), {cache:'no-store'}); if(!r.ok) throw 0; glob = await r.json(); }catch(e){ return; }
     renderTape2(); if(tab==='macro') renderExpo(); if(tab==='calculadoras') renderCalc(); if(tab==='global') renderGlobal(); if(tab==='portada') renderPortada(); if(tab==='brasil') renderBrasil(); if(tab==='europa') renderEuropa(); if(tab==='mexico') renderMexico(); if(tab==='chile') renderChile(); if(tab==='japon') renderJapon(); if(tab==='reinounido') renderReino(); if(tab==='canada') renderCanada(); if(tab==='colombia') renderColombia(); if(tab==='turquia') renderTurquia(); if(tab==='peru') renderPeru(); if(tab==='polonia') renderPolonia(); if(tab==='india') renderIndia(); if(tab==='arabia') renderArabia(); if(tab==='suiza') renderSuiza(); if(tab==='australia') renderAustralia(); if(tab==='corea') renderCorea(); if(tab==='sudafrica') renderSudafrica(); if(tab==='zelanda') renderZelanda(); if(tab==='indonesia') renderIndonesia(); if(tab==='noruega') renderNoruega(); if(tab==='suecia') renderSuecia(); if(tab==='tailandia') renderTailandia(); if(tab==='malasia') renderMalasia(); if(tab==='filipinas') renderFilipinas(); if(tab==='islandia') renderIslandia(); if(tab==='hungria') renderHungria(); if(tab==='hongkong') renderHongkong(); if(tab==='chequia') renderChequia(); if(tab==='dinamarca') renderDinamarca(); if(tab==='rumania') renderRumania(); if(tab==='israel') renderIsrael(); if(tab==='serbia') renderSerbia(); if(tab==='china') renderChina(); if(tab==='rusia') renderRusia(); if(tab==='espana') renderEspana(); if(tab==='macedonia') renderMacedonia(); if(tab==='singapur') renderSingapur(); if(tab==='marruecos') renderMarruecos();
   }
-  // cinta de mercados del mundo: widget de TradingView (antes, precios de CNBC)
+  // cinta de mercados del mundo, PROPIA (pedido del dueño 28/10/2026: no le gustaba el widget de TradingView).
+  // Solo números de fuentes que permiten reusarlos citando (BCE, Tesoro, Bundesbank, MOF Japón, EIA, OCDE, Banco Mundial).
+  // Lo diario con más de ~4 días muestra su fecha; lo mensual (bolsas de la OCDE, oro, soja) dice de qué mes es.
+  // Nunca se muestra un dato viejo como si fuera de hoy.
+  let tape2Keys = '';
   function renderTape2(){
-    const tape = $('tape2'), inn = $('tape2In'); tape.hidden = false;
-    // en el celular, solo cuando se ve (El mundo y países)
-    if(inn.dataset.tvk || (innerWidth<=640 && !document.body.classList.contains('mglo'))) return;
-    inn.className = 'tv2';
-    tvw(inn, 'ticker-tape', {symbols: [['S&P 500','FOREXCOM:SPXUSD'],['Nasdaq 100','FOREXCOM:NSXUSD'],['Dow Jones','FOREXCOM:DJI'],['Bovespa','BMFBOVESPA:IBOV'],['DAX','XETR:DAX'],['FTSE 100','FOREXCOM:UKXGBP'],['Nikkei 225','FOREXCOM:JPXJPY'],['Shanghái','SSE:000001'],['Euro','FX:EURUSD'],['Real','FX_IDC:USDBRL'],['Oro','TVC:GOLD'],['Brent','TVC:UKOIL'],['Soja','CAPITALCOM:SOYBEAN'],['Cobre','CAPITALCOM:COPPER'],['Bitcoin','BINANCE:BTCUSDT'],['YPF','NYSE:YPF'],['Galicia','NASDAQ:GGAL'],['Mercado Libre','NASDAQ:MELI']].map(([d,p])=>({proName:p, title:d})),
-      showSymbolLogo:false, displayMode:'compact'});
-    // Que la cinta sea una sola franja (pedido del dueño): la caja mide lo mismo que el widget menos 1 px (así no se ve
-    // la línea de abajo de TradingView ni la franja vacía de 32 px); la atribución queda adentro, abajo a la derecha.
-    const aj = () => { const f = inn.querySelector('iframe'); if(!f) return; const h = f.getBoundingClientRect().height; if(h > 20) inn.style.height = Math.floor(h-1)+'px'; };
-    const mo = new MutationObserver(()=>{ const f = inn.querySelector('iframe'); if(!f) return; mo.disconnect(); aj();
-      if('ResizeObserver' in window) new ResizeObserver(aj).observe(f); else f.addEventListener('load', aj); });
-    mo.observe(inn, {childList:true, subtree:true});
+    const tape = $('tape2'), inn = $('tape2In');
+    if(!glob || (innerWidth<=640 && !document.body.classList.contains('mglo'))) return;
+    const MES3 = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    const dia = t => (t||'').slice(0,10), items = [];
+    // x: cotización con t (fecha) y prev; fmt: cómo se escribe; pb: es una tasa (cambio en puntos básicos)
+    const add = (k, n, x, fmt, pb) => { if(!x || x.v==null) return; const f = dia(x.t), fr = f.length===10 && fresco(f);
+      const ch = fr && x.prev ? (pb ? (x.v-x.prev)*100 : x.v/x.prev-1) : null;
+      items.push({k, n, v: fmt(x.v) + (fr ? '' : ` (al ${f.slice(8,10)}/${f.slice(5,7)})`), ch, pb}); };
+    const M = Object.fromEntries((glob.mercados||[]).map(x=>[x.k, x])), mon = glob.monedas||{};
+    add('dxy', 'Índice dólar', M.dxy, v=>nf(v,2));
+    add('eur', 'Euro', M.eurusd || (mon.EUR && {...mon.EUR}), v=>'US$ '+nf(v,4));
+    add('gbp', 'Libra', glob.reino?.gbp, v=>'US$ '+nf(v,4));
+    add('jpy', 'Yen por US$', glob.japon?.jpy, v=>nf(v,2));
+    add('brl', 'Real por US$', mon.BRL, v=>nf(v,4));
+    add('mxn', 'Peso mexicano por US$', mon.MXN, v=>nf(v,3));
+    add('cny', 'Yuan por US$', mon.CNY, v=>nf(v,4));
+    add('chf', 'Franco suizo por US$', mon.CHF, v=>nf(v,4));
+    add('t10', 'Tasa 10 años EE.UU.', M.t10 || glob.termo?.us10y, v=>nf(v,2)+'%', true);
+    add('t2', 'Tasa 2 años EE.UU.', glob.termo?.us2y, v=>nf(v,2)+'%', true);
+    const bo = glob.bonos||{};
+    if(bo.DEU && !bo.DEU.mensual) add('de10', 'Bono alemán 10 años', bo.DEU, v=>nf(v,2)+'%', true);
+    if(bo.JPN && !bo.JPN.mensual) add('jp10', 'Bono japonés 10 años', bo.JPN, v=>nf(v,2)+'%', true);
+    add('brent', 'Petróleo Brent', M.brent, v=>'US$ '+nf(v,2));
+    add('wti', 'Petróleo WTI', M.wti, v=>'US$ '+nf(v,2));
+    // mensuales: el cambio es el del mes, y se dice cuál
+    const mesN = m => MES3[+m.slice(5,7)-1] || '';
+    for(const c of glob.commodities||[]) if(['oro','soja','cobre'].includes(c.k) && c.mensual && c.v!=null){
+      const m = String(c.t).slice(0,7); items.push({k:c.k, n:c.n+' · '+mesN(m), v:'US$ '+nf(c.v, c.v<100?2:0), ch: c.prev ? c.v/c.prev-1 : null}); }
+    for(const [k, n] of [['NYSE','S&P 500'],['B3','Bovespa'],['Xetra','DAX'],['LSE','FTSE 100'],['TSE','Nikkei'],['SSE','Shanghái'],['GPW','WIG20']]){
+      const b = glob.bolsas?.[k]; if(!b || b.vm==null || !b.m) continue;
+      items.push({k:'b'+k, n:n+' en '+mesN(b.m), v:'', ch: b.vm/100}); }
+    if(!items.length){ tape.hidden = true; return; } tape.hidden = false;
+    inn.className = 'tape-in'; inn.style.height = '';
+    const d = it => { if(it.ch==null || !isFinite(it.ch)) return ''; const z = it.pb ? Math.abs(it.ch)<0.5 : Math.abs(it.ch)<0.00005, up = it.ch>0, cls = z ? 'eq' : up ? 'up' : 'dn';
+      return `<span class="d ${cls}">${z?'■':up?'▲':'▼'} ${it.pb ? sg(it.ch,0)+' pb' : pc(it.ch,2)}</span>`; };
+    const html = it => `<span class="n">${it.n}</span>${it.v ? `<span class="v">${it.v}</span>` : ''}${d(it)}`;
+    const one = items.map(it=>`<span class="tk">${html(it)}</span>`).join(''), key = one;
+    if(key === tape2Keys) return; tape2Keys = key;
+    inn.innerHTML = one + one.replace(/class="tk"/g,'class="tk" aria-hidden="true"');
+    requestAnimationFrame(()=>{ inn.style.setProperty('--dur', Math.max(30, inn.scrollWidth/2/50)+'s'); });
   }
   const G = {ready:false, loading:null, layer:'infl', sel:'ARG', rot:[60,-15], run:false};
   const GL = {
