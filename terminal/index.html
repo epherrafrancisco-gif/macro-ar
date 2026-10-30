@@ -43,7 +43,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(0,1
 .b{padding:2px 8px 4px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 table{width:100%;border-collapse:collapse}
 th{color:var(--dim);font-weight:400;text-align:right;padding:2px 0;font-size:.88em}
-td{text-align:right;padding:3px 0;border-top:1px solid #151515;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+td{text-align:right;padding:3px 0;border-top:1px solid #151515;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
 table{table-layout:auto}
 th:first-child,td:first-child{text-align:left}td:first-child{color:var(--amber)}
 .up{color:var(--up)}.down{color:var(--down)}.mut{color:var(--dim)}
@@ -111,8 +111,7 @@ th:first-child,td:first-child{text-align:left}td:first-child{color:var(--amber)}
   <section class="p">
     <div class="h"><b>BONOS SOBERANOS</b><i>US$ · BYMA</i></div>
     <div class="b"><table id="bonds"><thead><tr><th>BONO</th><th>PRECIO</th><th>VAR</th><th>BONO</th><th>PRECIO</th><th>VAR</th></tr></thead><tbody></tbody></table>
-      <div class="h sub"><b>ACCIONES: SUBAS Y BAJAS</b><i>BYMA</i></div><table id="mov"><tbody></tbody></table>
-      <div class="h sub"><b>MÁS OPERADAS</b><i>MONTO $</i></div><table id="vol"><tbody></tbody></table></div>
+      <div class="h sub"><b>ACCIONES: SUBAS Y BAJAS</b><i>BYMA</i></div><table id="mov"><tbody></tbody></table></div>
   </section>
 
   <section class="p">
@@ -182,12 +181,10 @@ function pintarDol(arr){
 
 const LID=[['GGAL','GALICIA'],['YPFD','YPF'],['PAMP','PAMPA'],['BMA','MACRO'],['TXAR','TERNIUM'],['ALUA','ALUAR'],['CEPU','C. PUERTO'],['LOMA','LOMA NEGRA'],['SUPV','SUPERVIELLE'],['TGSU2','TGS'],['EDN','EDENOR'],['BBAR','FRANCÉS'],['CRES','CRESUD'],['TECO2','TELECOM']];
 function pintarAcc(st){
-  const todas=st.filter(s=>s.m==='ARS'&&s.c>0&&s.v>0&&!/\.|^[A-Z0-9]+[DC]$/.test(s.symbol));
+  const sy=new Set(st.map(s=>s.symbol));const todas=st.filter(s=>s.m==='ARS'&&s.c>0&&s.v*s.c>=1e8&&!/\./.test(s.symbol)&&!(/[BDC]$/.test(s.symbol)&&sy.has(s.symbol.slice(0,-1))));
   const ord=[...todas].sort((a,b)=>b.pct_change-a.pct_change),up=ord.slice(0,3),dn=ord.slice(-3).reverse();
   const fila=o=>`<td>${o.symbol}</td><td>$ ${f(o.c,o.c<1000?2:0)}</td><td class="${cls(o.pct_change)}">${sg(o.pct_change)}</td>`;
   $('mov').tBodies[0].innerHTML=up.map((u,i)=>`<tr>${fila(u)}${dn[i]?fila(dn[i]).replace('<td>','<td style="padding-left:10px">'):''}</tr>`).join('');
-  const mon=o=>o.v*o.c,top=[...todas].sort((a,b)=>mon(b)-mon(a)).slice(0,3),mm=x=>x>=1e9?f(x/1e9,1)+' mil M':f(x/1e6,0)+' M';
-  $('vol').tBodies[0].innerHTML=top.map(o=>`<tr><td>${o.symbol}</td><td>$ ${mm(mon(o))}</td><td class="${cls(o.pct_change)}">${sg(o.pct_change)}</td></tr>`).join('');
   const by={};st.forEach(s=>{if(s.m==='ARS')by[s.symbol]=s});
   const tl=$('tiles');if(!tl.children.length)tl.innerHTML=LID.filter(l=>by[l[0]]).map(l=>`<div class="t" id="s-${l[0]}"><span class="n">${l[0]} <span>${l[1]}</span></span><div class="row"><span class="px"></span><span class="c"></span></div></div>`).join('');
   LID.forEach(([s])=>{const o=by[s],el=$('s-'+s);if(!o||!el)return;const v=o.pct_change||0;
