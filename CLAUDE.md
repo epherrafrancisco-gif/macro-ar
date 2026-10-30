@@ -69,7 +69,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`#pVivo`, `pvStart`/`pvTick`, `PV`): cuenta regresiva al próximo dato oficial (`calendario.json`; sin hora = 16:00
   estimada) y los 3 siguientes, hora de Buenos Aires con BYMA, habitantes y PBI mientras mirás (Banco Mundial, `wb` ARG) y
   mini gráficos del último mes (MEP, riesgo, Merval, reservas) que se dibujan al aparecer. No va en celular ni ≤900px.
-- Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | El mundo | Sobre Pulso Macro `#modoS`; en celular grilla 2x2);
+- Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | Terminal `#modoT` | El mundo | Sobre Pulso Macro `#modoS`; en celular el encabezado no se ve);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
   solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 39 países
@@ -514,6 +514,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Semáforo de recesión (regla de Sahm, curva 10-2, VIX, pedidos de desempleo vs un año), inflación por rubro,
   próximos datos (`CAL_US`, fechas BLS/BEA a mano hasta dic-2027),
   mapa de 50 empresas por sector, mercado laboral, hipotecaria 30 años, próximos balances y PBI.
+
+## Terminal (`/terminal/index.html`, página aparte; pedido del dueño 29/10/2026, inspirada en la de MacroLibre)
+- Una pantalla sin scroll en compu (≤900px se apila), negro y ámbar estilo Bloomberg (el dueño la quiere así, distinta al resto).
+- Links: `#modoT` en el encabezado (entre Argentina y El mundo), `#tabTerm` en las pestañas de Argentina después de Calculadoras
+  (el click de `#tabsNav` deja pasar los href que no empiezan con #) y una fila en la hoja de Argentina del celular.
+- Datos: `vivo.json` del Worker cada 60 s (dólares, 14 líderes, 11 soberanos en US$; respaldo DolarApi solo dólar), data.json
+  (IPC, REM, riesgo, reservas, TAMAR, plazo fijo, base, Merval con su fecha), calendario.json, global.json (monedas BCE y Tesoro).
+  Commodities y bolsas del mundo: widgets market-quotes de TradingView con su atribución. Celdas titilan verde/rojo al cambiar.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):

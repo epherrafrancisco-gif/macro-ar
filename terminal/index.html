@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Terminal · Pulso Macro</title>
+<meta name="description" content="Terminal de Pulso Macro: dólares, Merval, bonos, commodities, bolsas del mundo y economía argentina en una sola pantalla, en vivo.">
+<link rel="icon" href="/icons/anillo.svg" type="image/svg+xml">
+<link rel="canonical" href="https://pulsomacro.com.ar/terminal/">
+<script>try{if(!localStorage.getItem("skipgc"))document.write('<script data-goatcounter="https://macroar.goatcounter.com/count" async src="//gc.zgo.at/count.js"><\/script>')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* Terminal: una pantalla, negro y ámbar estilo Bloomberg (pedido del dueño 29/10/2026). En ≤900px se apila y scrollea. */
+:root{color-scheme:dark;
+  --bg:#000;--panel:#0b0b0b;--head:#161616;--line:#262626;--fg:#e6e6e6;--muted:#8a8a8a;--dim:#5a5a5a;
+  --amber:#f0a73a;--up:#41c17f;--down:#ec5a52;--upf:rgba(65,193,127,.28);--downf:rgba(236,90,82,.28);
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;--fs:clamp(10.5px,.78vw,13px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:var(--mono);font-size:var(--fs);font-variant-numeric:tabular-nums;padding:6px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px));display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:6px;overflow:hidden}
+a{color:inherit}
+.top{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:5px;min-width:0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;color:var(--amber);font-weight:700;letter-spacing:.18em;text-decoration:none;white-space:nowrap}
+.logo img{width:18px;height:18px}
+.back{color:var(--muted);text-decoration:none;border:1px solid var(--line);background:var(--head);padding:2px 8px}
+.back:hover,.back:focus-visible{color:var(--fg);border-color:var(--amber);outline:none}
+.right{margin-left:auto;display:flex;gap:14px;color:var(--muted);white-space:nowrap}
+.right b{color:var(--fg);font-weight:500}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--dim);margin-right:5px;vertical-align:1px}
+.dot.on{background:var(--up);animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.25}}
+.tape{overflow:hidden;white-space:nowrap;border-block:1px solid var(--line);background:var(--panel);padding:3px 0}
+.tape .run{display:inline-block;animation:run 70s linear infinite;padding-left:100%}
+.tape span{margin-right:28px}.tape em{font-style:normal;color:var(--amber);margin-right:6px}
+@keyframes run{to{transform:translateX(-100%)}}
+main{display:grid;grid-template-columns:1.05fr 1.25fr 1.15fr 1fr;grid-template-rows:minmax(0,1.1fr) minmax(0,1fr);gap:6px;min-height:0}
+.p{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden}
+.span2{grid-row:span 2}
+.h{display:flex;justify-content:space-between;gap:8px;background:var(--head);padding:3px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.h b{color:var(--amber);font-weight:600;letter-spacing:.08em}.h i{font-style:normal;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.b{padding:2px 8px 4px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{color:var(--dim);font-weight:400;text-align:right;padding:2px 0;font-size:.88em}
+td{text-align:right;padding:3px 0;border-top:1px solid #151515;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}td:first-child{color:var(--amber)}
+.up{color:var(--up)}.down{color:var(--down)}.mut{color:var(--dim)}
+.fu{animation:fu 1s}.fd{animation:fd 1s}
+@keyframes fu{0%{background:var(--upf)}100%{background:transparent}}
+@keyframes fd{0%{background:var(--downf)}100%{background:transparent}}
+.k{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.k div{border-top:1px solid #151515;padding:3px 0}
+.k small{display:block;color:var(--muted);font-size:.85em}.k strong{font-weight:600}.k .s{color:var(--dim);font-size:.82em}
+.ag{list-style:none;margin:0;padding:0}
+.ag li{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #151515;padding:3px 0}
+.ag li span:last-child{color:var(--amber);white-space:nowrap}
+.sub{margin:6px -8px 0}
+.tiles{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:4px;flex:1;min-height:0;padding-top:4px}
+.t{border:1px solid var(--line);padding:5px 7px;display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:0;transition:background .6s}
+.t .n{color:var(--amber);font-weight:600}.t .n span{color:var(--dim);font-weight:400}
+.t .row{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.t .px{font-size:1.2em;font-weight:600}
+.tv{flex:1;min-height:0;position:relative}
+.tv .tradingview-widget-container{position:absolute;inset:0 0 14px 0}
+.tv iframe{color-scheme:normal}
+.tv .tradingview-widget-copyright{position:absolute;left:0;right:0;bottom:-14px;font-size:10px;text-align:right}
+.tv .tradingview-widget-copyright a{color:var(--dim);text-decoration:none}
+.foot{display:flex;justify-content:space-between;gap:10px;color:var(--dim);font-size:.85em;border-top:1px solid var(--line);padding-top:4px;flex-wrap:wrap}
+.foot a{color:var(--muted)}
+@media (max-width:900px){
+  body{overflow:auto;height:auto;display:flex;flex-direction:column}
+  main{display:flex;flex-direction:column}
+  .p{min-height:auto;overflow:visible}.b{overflow:visible}
+  .tiles{grid-auto-rows:64px}.tv{height:330px;flex:none}
+  .right{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){.tape .run,.dot.on{animation:none}.fu,.fd{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="logo" href="/"><img src="/icons/anillo.svg" alt="">PULSO TERMINAL</a>
+  <a class="back" href="/">← Volver a Pulso Macro</a>
+  <div class="right"><span><i class="dot" id="dByma"></i>BYMA</span><span><i class="dot" id="dNy"></i>NYSE</span><span>BS AS <b id="clk">--:--:--</b></span></div>
+</div>
+
+<div class="tape"><div class="run" id="tape">Cargando…</div></div>
+
+<main>
+  <section class="p">
+    <div class="h"><b>DÓLARES</b><i id="tDol">ARS</i></div>
+    <div class="b"><table id="usd"><thead><tr><th>TIPO</th><th>COMPRA</th><th>VENTA</th><th>VAR</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="p">
+    <div class="h"><b>COMMODITIES</b><i>TradingView · en vivo</i></div>
+    <div class="b"><div class="tv" id="tvCom"></div></div>
+  </section>
+
+  <section class="p span2">
+    <div class="h"><b>MERVAL · LÍDERES</b><i id="tMkt">ARS</i></div>
+    <div class="b"><div class="tiles" id="tiles"></div></div>
+  </section>
+
+  <section class="p">
+    <div class="h"><b>BONOS SOBERANOS</b><i>US$ · BYMA</i></div>
+    <div class="b"><table id="bonds"><thead><tr><th>BONO</th><th>PRECIO</th><th>VAR</th><th>BONO</th><th>PRECIO</th><th>VAR</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="p">
+    <div class="h"><b>ECONOMÍA AR</b><i>ÚLTIMO DATO</i></div>
+    <div class="b"><div class="k" id="kpi"></div>
+      <div class="h sub"><b>PRÓXIMOS DATOS</b><i>INDEC · BCRA</i></div><ul class="ag" id="ag"></ul>
+    </div>
+  </section>
+
+  <section class="p">
+    <div class="h"><b>BOLSAS DEL MUNDO</b><i>TradingView · en vivo</i></div>
+    <div class="b"><div class="tv" id="tvIdx"></div></div>
+  </section>
+
+  <section class="p">
+    <div class="h"><b>MONEDAS Y TASAS</b><i id="tFx">VS US$</i></div>
+    <div class="b"><table id="fx"><thead><tr><th>PAR</th><th>ÚLT</th><th>VAR</th></tr></thead><tbody></tbody></table></div>
+  </section>
+</main>
+
+<div class="foot"><span>Fuentes: DolarApi, Open BYMADATA (BYMA, con demora), BCRA, INDEC, BCE, Tesoro de EE.UU. · commodities y bolsas: gráficos de <a href="https://es.tradingview.com/" target="_blank" rel="noopener">TradingView</a></span><span id="upd">—</span></div>
+
+<script>
+(function(){
+const VER=()=>Math.floor(Date.now()/60000);
+const $=id=>document.getElementById(id);
+const f=(n,d=2)=>Number(n).toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sg=v=>(v>0?'+':v<0?'−':'')+f(Math.abs(v))+'%';
+const cls=v=>v>0.004?'up':v<-0.004?'down':'';
+const hhmm=d=>d.toLocaleTimeString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',hour:'2-digit',minute:'2-digit',hour12:false});
+const ddmm=s=>s?s.slice(8,10)+'/'+s.slice(5,7):'';
+const MES=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+const flash=(el,d)=>{if(!el||!d)return;el.classList.remove('fu','fd');void el.offsetWidth;el.classList.add(d>0?'fu':'fd')};
+let DATA=null,prev={};
+
+// reloj y mercados abiertos (BYMA 11 a 17, NYSE 10:30 a 17 hora de Buenos Aires, días hábiles)
+function clk(){
+  const p=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+  $('clk').textContent=`${p.hour}:${p.minute}:${p.second}`;
+  const m=+p.hour*60+ +p.minute,hab=!['Sat','Sun'].includes(p.weekday);
+  $('dByma').classList.toggle('on',hab&&m>=660&&m<1020);$('dNy').classList.toggle('on',hab&&m>=630&&m<1020);
+}
+clk();setInterval(clk,1000);
+
+// cierre anterior del dólar desde data.json
+function cierreAnt(casa){
+  if(!DATA)return null;const k={oficial:'oficial',blue:'blue',bolsa:'mep',contadoconliqui:'ccl',mayorista:'mayorista',cripto:'cripto',tarjeta:'tarjeta'}[casa];if(!k)return null;
+  const hoy=new Date().toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'});
+  const d=DATA.diario;for(let i=d.length-1;i>=0;i--){if(d[i].fecha<hoy&&d[i][k]&&d[i][k].v)return d[i][k].v}return null;
+}
+const ORD=['oficial','blue','bolsa','mayorista','contadoconliqui','cripto','tarjeta'];
+const NOM={oficial:'OFICIAL',blue:'BLUE',bolsa:'MEP',mayorista:'MAYORISTA',contadoconliqui:'CCL',cripto:'CRIPTO',tarjeta:'TARJETA'};
+function pintarDol(arr){
+  const tb=$('usd').tBodies[0];const rows=ORD.map(c=>arr.find(x=>x.casa===c)).filter(Boolean);
+  if(!tb.children.length)tb.innerHTML=rows.map(r=>`<tr id="u-${r.casa}"><td>${NOM[r.casa]}</td><td class="c"></td><td class="v"></td><td class="x"></td></tr>`).join('');
+  let ult='';
+  rows.forEach(r=>{const tr=$('u-'+r.casa);if(!tr)return;const ca=cierreAnt(r.casa),v=ca?(r.venta/ca-1)*100:null;
+    tr.querySelector('.c').textContent=r.compra?f(r.compra):'—';tr.querySelector('.v').textContent=f(r.venta);
+    const x=tr.querySelector('.x');x.textContent=v==null?'':sg(v);x.className='x '+(v==null?'':cls(v));
+    const k='d'+r.casa;if(prev[k]!=null)flash(tr,r.venta-prev[k]);prev[k]=r.venta;
+    if(r.fechaActualizacion>ult)ult=r.fechaActualizacion});
+  if(ult)$('tDol').textContent='ARS · '+hhmm(new Date(ult));
+}
+
+const LID=[['GGAL','GALICIA'],['YPFD','YPF'],['PAMP','PAMPA'],['BMA','MACRO'],['TXAR','TERNIUM'],['ALUA','ALUAR'],['CEPU','C. PUERTO'],['LOMA','LOMA NEGRA'],['SUPV','SUPERVIELLE'],['TGSU2','TGS'],['EDN','EDENOR'],['BBAR','FRANCÉS'],['CRES','CRESUD'],['TECO2','TELECOM']];
+function pintarAcc(st){
+  const by={};st.forEach(s=>{if(s.m==='ARS')by[s.symbol]=s});
+  const tl=$('tiles');if(!tl.children.length)tl.innerHTML=LID.filter(l=>by[l[0]]).map(l=>`<div class="t" id="s-${l[0]}"><span class="n">${l[0]} <span>${l[1]}</span></span><div class="row"><span class="px"></span><span class="c"></span></div></div>`).join('');
+  LID.forEach(([s])=>{const o=by[s],el=$('s-'+s);if(!o||!el)return;const v=o.pct_change||0;
+    el.querySelector('.px').textContent='$ '+f(o.c,o.c<1000?2:0);const c=el.querySelector('.c');c.textContent=sg(v);c.className='c '+cls(v);
+    const a=Math.min(Math.abs(v)/4,1)*0.24+0.03;el.style.background=v>=0?`rgba(65,193,127,${a})`:`rgba(236,90,82,${a})`;
+    if(prev['s'+s]!=null)flash(el,o.c-prev['s'+s]);prev['s'+s]=o.c});
+}
+const SOB=[['AL29','GD29'],['AL30','GD30'],['AL35','GD35'],['AE38','GD38'],['AL41','GD41'],[null,'GD46']];
+function pintarBon(bd){
+  const by={};bd.forEach(b=>{if(b.m==='USD')by[b.symbol]=b});const g=s=>s&&(by[s+'D']||by[s]);
+  const cell=(s)=>{const o=g(s);if(!s)return '<td></td><td></td><td></td>';if(!o)return `<td>${s}</td><td class="mut">—</td><td></td>`;const v=o.pct_change||0;return `<td>${s}</td><td>${f(o.c)}</td><td class="${cls(v)}">${sg(v)}</td>`};
+  $('bonds').tBodies[0].innerHTML=SOB.map(([a,b])=>`<tr>${cell(a)}${cell(b).replace('<td>','<td style="padding-left:10px">')}</tr>`).join('');
+}
+
+async function vivo(){
+  try{const r=await fetch('https://datos.pulsomacro.com.ar/vivo.json?t='+VER());if(!r.ok)throw 0;const j=await r.json();
+    if(j.dolares)pintarDol(j.dolares);if(j.stocks)pintarAcc(j.stocks);if(j.bonds)pintarBon(j.bonds);
+    if(j.tMkt)$('tMkt').textContent='ARS · BYMA '+hhmm(new Date(j.tMkt));
+    tape(j);$('upd').textContent='ACTUALIZADO '+hhmm(new Date());
+  }catch(e){
+    try{const r=await fetch('https://dolarapi.com/v1/dolares');const a=await r.json();pintarDol(a);tape({dolares:a})}catch(_){}
+  }
+}
+function tape(j){
+  const it=[];const dol=j.dolares||[];
+  ['blue','bolsa','contadoconliqui','oficial'].forEach(c=>{const o=dol.find(x=>x.casa===c);if(o)it.push(['DÓLAR '+NOM[c],'$ '+f(o.venta),null])});
+  if(DATA){const d=DATA.diario.at(-1),hoy=new Date().toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'}),fe=d.fecha===hoy?'':' ('+ddmm(d.fecha)+')';if(d.riesgo)it.push(['RIESGO PAÍS',f(d.riesgo,0)+' pb'+fe,null]);if(d.merval)it.push(['MERVAL',f(d.merval,0)+fe,null])}
+  (j.stocks||[]).filter(s=>s.m==='ARS'&&LID.some(l=>l[0]===s.symbol)).forEach(s=>it.push([s.symbol,'$ '+f(s.c,0),s.pct_change]));
+  if(it.length)$('tape').innerHTML=it.map(i=>`<span><em>${i[0]}</em>${i[1]}${i[2]!=null?` <span class="${cls(i[2])}">${sg(i[2])}</span>`:''}</span>`).join('');
+}
+
+async function fijo(){
+  try{
+    const [d,c,g]=await Promise.all(['/data.json','/calendario.json','/global.json'].map(u=>fetch(u+'?t='+VER()).then(r=>r.json()).catch(()=>null)));
+    DATA=d;
+    if(d){const ult=k=>{for(let i=d.diario.length-1;i>=0;i--){const v=d.diario[i][k];if(v!=null)return [typeof v==='object'?v.v:v,d.diario[i].fecha]}return [null,'']};
+      const um=k=>{for(let i=d.mensual.length-1;i>=0;i--)if(d.mensual[i][k]!=null)return [d.mensual[i][k],d.mensual[i].mes];return [null,'']};
+      const mm=s=>s?MES[+s.slice(5,7)-1]+' '+s.slice(2,4):'';
+      const [inf,im]=um('infl'),[ia]=um('inflYoY'),[ex,em]=um('expect'),[ri,rf]=ult('riesgo'),[re,ref]=ult('reservas'),[ta,tf]=ult('tamar'),[pf,pff]=ult('pf'),[ba,bf]=ult('base');
+      const K=[];
+      if(inf!=null)K.push(['IPC',f(inf,1)+'% m/m',(ia!=null?f(ia,1)+'% a/a · ':'')+mm(im)]);
+      if(ex!=null)K.push(['INFL. ESPERADA',f(ex,1)+'%','REM · '+mm(em)]);
+      if(ri!=null)K.push(['RIESGO PAÍS',f(ri,0)+' pb',ddmm(rf)]);
+      if(re!=null)K.push(['RESERVAS','US$ '+f(re,0)+' M','BCRA · '+ddmm(ref)]);
+      if(ta!=null)K.push(['TAMAR',f(ta)+'% TNA',ddmm(tf)]);
+      if(pf!=null)K.push(['PLAZO FIJO 30D',f(pf)+'% TNA',ddmm(pff)]);
+      if(ba!=null)K.push(['BASE MONETARIA','$ '+f(ba/1e6,1)+' billones',ddmm(bf)]);
+      const dm=d.diario.at(-1);if(dm&&dm.merval)K.push(['MERVAL',f(dm.merval,0),'cierre '+ddmm(dm.fecha)]);
+      $('kpi').innerHTML=K.map(k=>`<div><small>${k[0]}</small><strong>${k[1]}</strong> <span class="s">${k[2]}</span></div>`).join('');
+    }
+    if(c&&c.eventos){const hoy=new Date().toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'});const DI=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+      $('ag').innerHTML=c.eventos.filter(e=>e.f>=hoy).slice(0,4).map(e=>{const dt=new Date(e.f+'T12:00:00');return `<li><span>${e.n} · ${e.org}</span><span>${DI[dt.getDay()]} ${ddmm(e.f)}</span></li>`}).join('')||'<li><span class="mut">Sin fechas cargadas</span></li>'}
+    if(g){const rows=[];const M=g.monedas||{};
+      [['EUR','EUR/US$',4],['BRL','US$/BRL',4],['CNY','US$/CNY',4],['CHF','US$/CHF',4],['MXN','US$/MXN',2],['CLP','US$/CLP',2]].forEach(([k,n,dd])=>{const o=M[k];if(o&&o.v)rows.push([n,f(o.v,dd),o.prev?(o.v/o.prev-1)*100:null,o.t])});
+      const T=g.termo||{};[['us2y','TESORO 2A'],['us10y','TESORO 10A'],['us30y','TESORO 30A']].forEach(([k,n])=>{const o=T[k];if(o&&o.v!=null)rows.push([n,f(o.v)+'%',null,o.t,o.prev!=null?o.v-o.prev:null])});
+      $('fx').tBodies[0].innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="${r[2]!=null?cls(r[2]):r[4]!=null?cls(-r[4]):''}">${r[2]!=null?sg(r[2]):r[4]!=null?(r[4]>0?'+':r[4]<0?'−':'')+f(Math.abs(r[4]*100),0)+' pb':''}</td></tr>`).join('');
+      const t=rows.find(r=>r[3]);if(t)$('tFx').textContent='CIERRE '+ddmm(String(t[3]).slice(0,10));
+    }
+  }catch(e){}
+}
+
+// widgets de TradingView (cotizaciones en vivo)
+function tv(id,grupo,syms){
+  const box=document.createElement('div');box.className='tradingview-widget-container';box.innerHTML='<div class="tradingview-widget-container__widget"></div>';
+  const sc=document.createElement('script');sc.src='https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js';sc.async=true;
+  sc.text=JSON.stringify({width:'100%',height:'100%',colorTheme:'dark',isTransparent:false,backgroundColor:'#0b0b0b',locale:'es',showSymbolLogo:true,symbolsGroups:[{name:grupo,symbols:syms.map(([s,n])=>({name:s,displayName:n}))}]});
+  box.appendChild(sc);const cp=document.createElement('div');cp.className='tradingview-widget-copyright';cp.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>';box.appendChild(cp);$(id).appendChild(box);
+}
+tv('tvCom','Commodities',[['TVC:USOIL','Petróleo WTI'],['TVC:UKOIL','Petróleo Brent'],['CAPITALCOM:SOYBEAN','Soja'],['CAPITALCOM:CORN','Maíz'],['CAPITALCOM:WHEAT','Trigo'],['TVC:GOLD','Oro'],['TVC:SILVER','Plata'],['CAPITALCOM:COPPER','Cobre']]);
+tv('tvIdx','Bolsas',[['FOREXCOM:SPXUSD','S&P 500'],['FOREXCOM:NSXUSD','Nasdaq 100'],['FOREXCOM:DJI','Dow Jones'],['BMFBOVESPA:IBOV','Bovespa'],['XETR:DAX','DAX'],['FOREXCOM:UKXGBP','FTSE 100'],['FOREXCOM:JPXJPY','Nikkei 225'],['HSI:HSI','Hang Seng']]);
+
+fijo().then(vivo);
+setInterval(vivo,60000+Math.floor(Math.random()*10000));
+setInterval(fijo,15*60000);
+})();
+</script>
+</body>
+</html>

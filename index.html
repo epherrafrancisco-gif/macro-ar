@@ -824,7 +824,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     </div>
     <div class="hright">
       <button type="button" class="hbus" data-bus aria-label="Buscar en Pulso Macro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscar</span><kbd>/</kbd></button>
-      <div class="modo" id="modo" role="group" aria-label="Sección"><a href="#" id="modoH" class="mh" aria-current="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg>Inicio</a><button type="button" data-m="arg" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-m="glo" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
+      <div class="modo" id="modo" role="group" aria-label="Sección"><a href="#" id="modoH" class="mh" aria-current="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7.5L8 2.5l6 5M3.8 6.2V13.5h8.4V6.2"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg>Inicio</a><button type="button" data-m="arg" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><a href="/terminal/" id="modoT" class="mh"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M4 10l2.2-2.6 2 1.6L12 5"/></svg>Terminal</a><button type="button" data-m="glo" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button><a href="#sobre" id="modoS" aria-current="false">Sobre Pulso Macro</a></div>
       <div class="stamp" id="stamp">Cargando datos…</div>
     </div>
   </header>
@@ -849,6 +849,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
       <button type="button" class="pbtn" id="tabPaises" data-g="glo" aria-expanded="false" aria-controls="paisPanel">Países</button>
       <a href="#noticias" role="tab" id="tabW" data-g="arg" aria-selected="false">Noticias</a>
       <a href="#calculadoras" role="tab" id="tabC" data-g="arg" aria-selected="false">Calculadoras</a>
+      <a href="/terminal/" id="tabTerm" data-g="arg">Terminal</a>
     </nav>
     <nav class="paispanel" id="paisPanel" aria-label="Países" hidden>
       <a href="#eeuu" role="tab" id="tabU" data-g="pais" aria-selected="false">Estados Unidos</a>
@@ -4674,7 +4675,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
     const fila = k => `<a href="#${k}" data-k="${k}" class="${k===key?'on':''}">${ico(k)}<span>${SECC[k][0]}<em>${k===key ? 'Estás acá' : SECC[k][1]}</em></span></a>`;
     const sob = `<a href="#sobre" data-k="sobre" class="${key==='sobre'?'on':''}">${ico('sobre')}<span>Sobre Pulso Macro<em>Quién lo hace y de dónde salen los datos</em></span></a>`;
     $('msIn').innerHTML = `<div class="ms-h"><b>${grp==='arg' ? 'Argentina' : 'El mundo'}</b><button type="button" id="msX" aria-label="Cerrar">✕</button></div>`
-      + (grp==='arg' ? `<div class="ms-l">${ARG_T.filter(k=>k!=='calculadoras').map(fila).join('')}</div>`
+      + (grp==='arg' ? `<div class="ms-l">${ARG_T.filter(k=>k!=='calculadoras').map(fila).join('')}<a href="/terminal/"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M4 10l2.2-2.6 2 1.6L12 5"/></svg><span>Terminal<em>Todo el mercado en una pantalla, en vivo</em></span></a></div>`
         : `<div class="ms-l">${fila('global')}</div><h4>Países</h4><div class="ms-l">${PAISES_M.map(fila).join('')}</div>`)
       + `<h4>Pulso Macro</h4><div class="ms-l">${sob}</div>`;
     $('msX').addEventListener('click', ()=>mSheet(false));
@@ -4812,7 +4813,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
   addEventListener('scroll', ()=>{ if(!mobil()) return; const as = [...$('mIdx').querySelectorAll('a')]; if(!as.length) return;
     let cur = null; for(const a of as){ const c = document.querySelector(`[data-mid="${a.dataset.to}"]`); if(c && c.getBoundingClientRect().top < 140) cur = a; }
     as.forEach(a=>a.classList.toggle('on', a===cur)); if(cur && !cur._v){ as.forEach(x=>x._v=false); cur._v=true; cur.scrollIntoView({block:'nearest', inline:'center'}); } }, {passive:true});
-  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
+  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ if(a.getAttribute('href')[0]!=='#') return; e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
   window.addEventListener('hashchange', ()=>{ setTab(location.hash.slice(1)); NAV.volver = false; });
   // "Términos y aviso legal" (pie): abre Sobre Pulso Macro en los términos, desplegados
   const irLegal = () => setTimeout(()=>{ const d = document.querySelector('details.legal'); if(d) d.open = true; const h = $('legal'); if(!h) return; const mb = mobil() && $('mbar').offsetParent!==null ? $('mbar').getBoundingClientRect().height : 0; scrollTo({top:Math.max(0, h.getBoundingClientRect().top + scrollY - mb - 16), behavior:'smooth'}); }, 200);
