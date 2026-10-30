@@ -63,8 +63,8 @@ th:first-child,td:first-child{text-align:left}td:first-child{color:var(--amber)}
 .t .row{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
 .t .px{font-size:1.2em;font-weight:600}
 .tv{flex:1;min-height:0;position:relative}
-.tv .sc{position:absolute;top:0;left:0;transform-origin:0 0}
-.tv .sc .tradingview-widget-container{width:100%;height:100%}
+.tv .tvg{display:flex;flex-direction:column;gap:6px;height:calc(100% - 16px);overflow:hidden}
+.tv .tvg .tradingview-widget-container{flex:none}
 .tv iframe{color-scheme:normal}
 .tv .tradingview-widget-copyright{position:absolute;left:0;right:0;bottom:0;font-size:10px;text-align:right;line-height:14px}
 .tv .tradingview-widget-copyright a{color:var(--dim);text-decoration:none}
@@ -236,27 +236,25 @@ async function fijo(){
   }catch(e){}
 }
 
-// widgets de TradingView: se achican (escala) y muestran tantas filas como entren, sin barras para scrollear
+// widgets de TradingView: fichas "tickers" (nombre, precio, cambio), 2 o 3 por fila y tantas filas como entren: nada cortado ni para scrollear
 const TVS={};
 function tvArmar(id){
-  const t=TVS[id],box=$(id),W=box.clientWidth,H=box.clientHeight-14;if(W<50||H<50)return;
-  const sc=Math.min(1,W/470),iw=W/sc,ih=H/sc,n=Math.max(3,Math.min(t.syms.length,Math.floor((ih-80)/36)));
-  if(t.n===n&&t.w===Math.round(W)&&t.h===Math.round(H))return;
-  const rehacer=t.n!==n;t.n=n;t.w=Math.round(W);t.h=Math.round(H);
-  let wrap=box.querySelector('.sc');
-  if(!wrap||rehacer){
-    box.innerHTML='';wrap=document.createElement('div');wrap.className='sc';
+  const t=TVS[id],box=$(id),W=box.clientWidth,H=box.clientHeight-16;if(W<50||H<50)return;
+  const por=W>=640?3:2,filas=Math.max(1,Math.min(Math.ceil(t.syms.length/por),Math.floor(H/80))),k=por+'x'+filas;
+  if(t.k===k)return;t.k=k;box.innerHTML='';
+  const g=document.createElement('div');g.className='tvg';box.appendChild(g);
+  for(let f=0;f<filas;f++){
+    const fila=t.syms.slice(f*por,f*por+por);if(!fila.length)break;
     const c=document.createElement('div');c.className='tradingview-widget-container';c.innerHTML='<div class="tradingview-widget-container__widget"></div>';
-    const js=document.createElement('script');js.src='https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js';js.async=true;
-    js.text=JSON.stringify({width:'100%',height:'100%',colorTheme:'dark',isTransparent:false,backgroundColor:'#0b0b0b',locale:'es',showSymbolLogo:true,symbolsGroups:[{name:t.g,symbols:t.syms.slice(0,n).map(([s,nm])=>({name:s,displayName:nm}))}]});
-    c.appendChild(js);wrap.appendChild(c);box.appendChild(wrap);
-    const cp=document.createElement('div');cp.className='tradingview-widget-copyright';cp.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>';box.appendChild(cp);
+    const js=document.createElement('script');js.src='https://s3.tradingview.com/external-embedding/embed-widget-tickers.js';js.async=true;
+    js.text=JSON.stringify({symbols:fila.map(([s,nm])=>({proName:s,title:nm})),colorTheme:'dark',isTransparent:false,showSymbolLogo:true,locale:'es'});
+    c.appendChild(js);g.appendChild(c);
   }
-  wrap.style.width=iw+'px';wrap.style.height=ih+'px';wrap.style.transform=sc<1?`scale(${sc})`:'';
+  const cp=document.createElement('div');cp.className='tradingview-widget-copyright';cp.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>';box.appendChild(cp);
 }
 function tv(id,g,syms){TVS[id]={g,syms};tvArmar(id)}
-tv('tvCom','Commodities',[['TVC:USOIL','Petróleo WTI'],['CAPITALCOM:SOYBEAN','Soja'],['CAPITALCOM:CORN','Maíz'],['CAPITALCOM:WHEAT','Trigo'],['TVC:GOLD','Oro'],['TVC:UKOIL','Petróleo Brent'],['TVC:SILVER','Plata'],['CAPITALCOM:COPPER','Cobre']]);
-tv('tvIdx','Bolsas',[['FOREXCOM:SPXUSD','S&P 500'],['FOREXCOM:NSXUSD','Nasdaq 100'],['FOREXCOM:DJI','Dow Jones'],['BMFBOVESPA:IBOV','Bovespa'],['XETR:DAX','DAX'],['FOREXCOM:UKXGBP','FTSE 100'],['FOREXCOM:JPXJPY','Nikkei 225'],['HSI:HSI','Hang Seng']]);
+tv('tvCom','Commodities',[['TVC:USOIL','Petróleo WTI'],['TVC:UKOIL','Petróleo Brent'],['CAPITALCOM:SOYBEAN','Soja'],['CAPITALCOM:CORN','Maíz'],['CAPITALCOM:WHEAT','Trigo'],['TVC:GOLD','Oro'],['TVC:SILVER','Plata'],['CAPITALCOM:COPPER','Cobre'],['CAPITALCOM:NATURALGAS','Gas natural']]);
+tv('tvIdx','Bolsas',[['FOREXCOM:SPXUSD','S&P 500'],['FOREXCOM:NSXUSD','Nasdaq 100'],['FOREXCOM:DJI','Dow Jones'],['BMFBOVESPA:IBOV','Bovespa'],['XETR:DAX','DAX'],['FOREXCOM:UKXGBP','FTSE 100'],['FOREXCOM:JPXJPY','Nikkei 225'],['HSI:HSI','Hang Seng'],['EURONEXT:PX1','CAC 40']]);
 let tvT=0;addEventListener('resize',()=>{clearTimeout(tvT);tvT=setTimeout(()=>Object.keys(TVS).forEach(tvArmar),400)});
 
 fijo().then(vivo);
