@@ -63,9 +63,10 @@ th:first-child,td:first-child{text-align:left}td:first-child{color:var(--amber)}
 .t .row{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
 .t .px{font-size:1.2em;font-weight:600}
 .tv{flex:1;min-height:0;position:relative}
-.tv .tradingview-widget-container{position:absolute;inset:0 0 14px 0}
+.tv .sc{position:absolute;top:0;left:0;transform-origin:0 0}
+.tv .sc .tradingview-widget-container{width:100%;height:100%}
 .tv iframe{color-scheme:normal}
-.tv .tradingview-widget-copyright{position:absolute;left:0;right:0;bottom:-14px;font-size:10px;text-align:right}
+.tv .tradingview-widget-copyright{position:absolute;left:0;right:0;bottom:0;font-size:10px;text-align:right;line-height:14px}
 .tv .tradingview-widget-copyright a{color:var(--dim);text-decoration:none}
 .foot{display:flex;justify-content:space-between;gap:10px;color:var(--dim);font-size:.85em;border-top:1px solid var(--line);padding-top:4px;flex-wrap:wrap}
 .foot a{color:var(--muted)}
@@ -235,15 +236,28 @@ async function fijo(){
   }catch(e){}
 }
 
-// widgets de TradingView (cotizaciones en vivo)
-function tv(id,grupo,syms){
-  const box=document.createElement('div');box.className='tradingview-widget-container';box.innerHTML='<div class="tradingview-widget-container__widget"></div>';
-  const sc=document.createElement('script');sc.src='https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js';sc.async=true;
-  sc.text=JSON.stringify({width:'100%',height:'100%',colorTheme:'dark',isTransparent:false,backgroundColor:'#0b0b0b',locale:'es',showSymbolLogo:true,symbolsGroups:[{name:grupo,symbols:syms.map(([s,n])=>({name:s,displayName:n}))}]});
-  box.appendChild(sc);const cp=document.createElement('div');cp.className='tradingview-widget-copyright';cp.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>';box.appendChild(cp);$(id).appendChild(box);
+// widgets de TradingView: se achican (escala) y muestran tantas filas como entren, sin barras para scrollear
+const TVS={};
+function tvArmar(id){
+  const t=TVS[id],box=$(id),W=box.clientWidth,H=box.clientHeight-14;if(W<50||H<50)return;
+  const sc=Math.min(1,W/470),iw=W/sc,ih=H/sc,n=Math.max(3,Math.min(t.syms.length,Math.floor((ih-80)/36)));
+  if(t.n===n&&t.w===Math.round(W)&&t.h===Math.round(H))return;
+  const rehacer=t.n!==n;t.n=n;t.w=Math.round(W);t.h=Math.round(H);
+  let wrap=box.querySelector('.sc');
+  if(!wrap||rehacer){
+    box.innerHTML='';wrap=document.createElement('div');wrap.className='sc';
+    const c=document.createElement('div');c.className='tradingview-widget-container';c.innerHTML='<div class="tradingview-widget-container__widget"></div>';
+    const js=document.createElement('script');js.src='https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js';js.async=true;
+    js.text=JSON.stringify({width:'100%',height:'100%',colorTheme:'dark',isTransparent:false,backgroundColor:'#0b0b0b',locale:'es',showSymbolLogo:true,symbolsGroups:[{name:t.g,symbols:t.syms.slice(0,n).map(([s,nm])=>({name:s,displayName:nm}))}]});
+    c.appendChild(js);wrap.appendChild(c);box.appendChild(wrap);
+    const cp=document.createElement('div');cp.className='tradingview-widget-copyright';cp.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>';box.appendChild(cp);
+  }
+  wrap.style.width=iw+'px';wrap.style.height=ih+'px';wrap.style.transform=sc<1?`scale(${sc})`:'';
 }
-tv('tvCom','Commodities',[['TVC:USOIL','Petróleo WTI'],['CAPITALCOM:SOYBEAN','Soja'],['CAPITALCOM:CORN','Maíz'],['CAPITALCOM:WHEAT','Trigo'],['TVC:GOLD','Oro']]);
-tv('tvIdx','Bolsas',[['FOREXCOM:SPXUSD','S&P 500'],['FOREXCOM:NSXUSD','Nasdaq 100'],['FOREXCOM:DJI','Dow Jones'],['BMFBOVESPA:IBOV','Bovespa'],['XETR:DAX','DAX']]);
+function tv(id,g,syms){TVS[id]={g,syms};tvArmar(id)}
+tv('tvCom','Commodities',[['TVC:USOIL','Petróleo WTI'],['CAPITALCOM:SOYBEAN','Soja'],['CAPITALCOM:CORN','Maíz'],['CAPITALCOM:WHEAT','Trigo'],['TVC:GOLD','Oro'],['TVC:UKOIL','Petróleo Brent'],['TVC:SILVER','Plata'],['CAPITALCOM:COPPER','Cobre']]);
+tv('tvIdx','Bolsas',[['FOREXCOM:SPXUSD','S&P 500'],['FOREXCOM:NSXUSD','Nasdaq 100'],['FOREXCOM:DJI','Dow Jones'],['BMFBOVESPA:IBOV','Bovespa'],['XETR:DAX','DAX'],['FOREXCOM:UKXGBP','FTSE 100'],['FOREXCOM:JPXJPY','Nikkei 225'],['HSI:HSI','Hang Seng']]);
+let tvT=0;addEventListener('resize',()=>{clearTimeout(tvT);tvT=setTimeout(()=>Object.keys(TVS).forEach(tvArmar),400)});
 
 fijo().then(vivo);
 setInterval(vivo,60000+Math.floor(Math.random()*10000));
