@@ -1,7 +1,7 @@
 {
   "name": "Pulso Macro",
   "short_name": "Pulso Macro",
-  "description": "La economía argentina y el mundo en un solo tablero: dólares, inflación, tasas, mercados y más.",
+  "description": "La economía argentina y el mundo en una sola plataforma: dólares, inflación, tasas, mercados y más.",
   "lang": "es-AR",
   "start_url": "/?app=1",
   "scope": "/",

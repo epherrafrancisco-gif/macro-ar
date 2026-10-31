@@ -1,7 +1,7 @@
 """Genera una página estática por indicador (para que Google las encuentre) + /indicadores/, sitemap.xml y robots.txt.
 
 Cada página tiene el dato escrito como texto, un gráfico SVG, una tabla con los últimos valores, qué es el indicador
-y un botón a la sección del tablero. Sale solo de los JSON que ya arman los otros robots: no pide nada a internet.
+y un botón a la sección de la plataforma. Sale solo de los JSON que ya arman los otros robots: no pide nada a internet.
 Solo reescribe un archivo si cambió su contenido, así no hay commits vacíos.
 """
 import json
@@ -171,7 +171,7 @@ def pagina(slug, titulo_seo, desc, cuerpo, crumb, extra_head=""):
 <header><a class="lg" href="/">Pulso<span>Macro</span></a><a href="/indicadores/">Todos los indicadores</a></header>
 <div class="crumb"><a href="/">Inicio</a> › {crumb}</div>
 {cuerpo}
-<footer>Pulso Macro es un tablero gratuito de la economía argentina y del mundo, que se actualiza solo cada día hábil.
+<footer>Pulso Macro es una plataforma gratuita de la economía argentina y del mundo, que se actualiza solo cada día hábil.
 Los datos son informativos y no constituyen una recomendación de inversión. <a href="/#sobre">Sobre Pulso Macro</a> · <a href="/#sobre">Términos y aviso legal</a></footer>
 </div></body></html>
 """
@@ -243,7 +243,7 @@ def pag_diaria(slug, nombre, h1, serie, fmt, unidad, color, que_es, tab, fuente,
               f'<div class="cuando">Dato del {fecha_larga(f)} · Fuente: {esc(fuente)}</div>'
               f'<p class="lead">{" ".join(frases)}</p>{kpis(k)}{extra}'
               f'<div class="card"><h2>Evolución</h2>{svg_linea(serie[-260:], color, lambda z: pref + fmt(z))}</div>'
-              f'<a class="btn" href="/#{tab}">Ver todo en el tablero →</a>'
+              f'<a class="btn" href="/#{tab}">Ver todo en la plataforma →</a>'
               f'<div class="card"><h2>Últimos datos</h2>{tabla(filas, ["Fecha", nombre, "Cambio"])}</div>'
               f'<div class="prose">{que_es}</div>')
     ts = titulo_seo or f"{h1}: {uu(v)} ({fecha_corta(f)})"
@@ -276,7 +276,7 @@ def pag_mensual(slug, nombre, h1, serie, fmt, unidad, color, que_es, tab, fuente
               f'<div class="cuando">Último dato publicado: {mes_txt(m)} · Fuente: {esc(fuente)}</div>'
               f'<p class="lead">{" ".join(frases)}</p>{kpis(k)}'
               f'<div class="card"><h2>Evolución</h2>{svg_linea(serie[-60:], color, lambda z: fmt(z) + unidad, mensual_=True)}</div>'
-              f'<a class="btn" href="/#{tab}">Ver todo en el tablero →</a>'
+              f'<a class="btn" href="/#{tab}">Ver todo en la plataforma →</a>'
               f'<div class="card"><h2>Últimos 12 meses</h2>{tabla(filas, cab)}</div><div class="prose">{que_es}</div>')
     ts = f"{h1}: {fmt(v)}{unidad} en {mes_txt(m)}"
     desc = re.sub("<[^>]+>", "", " ".join(frases[:2]))[:300]
@@ -293,7 +293,7 @@ peso = lambda z: nf(z, 2)
 for slug, clave, nombre, h1, color, txt in [
     ("dolar-blue-hoy", "blue", "Dólar blue", "Dólar blue hoy", "#c98500",
      P(("¿Qué es el dólar blue?", "Es el dólar que se compra y vende en el mercado informal (las \"cuevas\" y arbolitos). No está regulado: su precio sale de la oferta y la demanda del día. Se usa como termómetro de cuánto vale el peso para quien no puede o no quiere operar en el mercado oficial."),
-       ("¿De dónde sale el dato?", "Cotización de venta informada por los medios que relevan el mercado informal. En el tablero se actualiza cada minuto durante el día."))),
+       ("¿De dónde sale el dato?", "Cotización de venta informada por los medios que relevan el mercado informal. En la plataforma se actualiza cada minuto durante el día."))),
     ("dolar-mep-hoy", "mep", "Dólar MEP", "Dólar MEP hoy", "#d95926",
      P(("¿Qué es el dólar MEP?", "El dólar MEP (Mercado Electrónico de Pagos), o dólar bolsa, se consigue comprando un bono en pesos y vendiéndolo en dólares. Es una forma legal de comprar dólares sin límite de monto, desde cualquier cuenta comitente."),
        ("¿Cuál es la diferencia con el CCL?", "Con el MEP los dólares quedan en una cuenta en Argentina; con el contado con liquidación (CCL) quedan en una cuenta del exterior. Por eso el CCL suele cotizar un poco más caro."))),
@@ -324,11 +324,11 @@ pag_diaria("reservas-bcra", "Reservas del BCRA", "Reservas del Banco Central hoy
            "macro", "BCRA (con uno o dos días de atraso)", grupo="Argentina")
 pag_diaria("merval-hoy", "Merval", "Merval hoy", diaria("merval"), lambda z: nf(z, 0), "puntos", "#6aa8d8",
            P(("¿Qué es el Merval?", "El Merval es el principal índice de la Bolsa de Buenos Aires: sigue el precio de las acciones argentinas más negociadas (bancos, energéticas, servicios). Desde el 19/10/2026 lo calcula MSCI (antes S&P) y arrancó en 100.000 puntos al cierre del 16/10/2026; los datos anteriores están pasados a esa base, con las mismas subas y bajas."),
-             ("En pesos y en dólares", "Como el peso pierde valor, una suba del Merval en pesos puede ser una baja en dólares. En el tablero también lo mostramos convertido a dólares contado con liqui.")),
+             ("En pesos y en dólares", "Como el peso pierde valor, una suba del Merval en pesos puede ser una baja en dólares. En la plataforma también lo mostramos convertido a dólares contado con liqui.")),
            "mercado", "Ámbito")
 pag_diaria("tasa-plazo-fijo", "Tasa de plazo fijo", "Tasa de plazo fijo hoy", diaria("pf"), lambda z: nf(z, 2), "%", "#3987e5",
            P(("¿Qué tasa es?", "Es la tasa nominal anual promedio que pagan los bancos por plazos fijos a 30 días de personas (dato del BCRA). Para comparar con la inflación mensual, dividila por 12: es lo que gana por mes."),
-             ("¿Le gana a la inflación?", "En el tablero comparamos todos los meses lo que rinde el plazo fijo contra la inflación del INDEC, y te decimos si ganó o perdió.")),
+             ("¿Le gana a la inflación?", "En la plataforma comparamos todos los meses lo que rinde el plazo fijo contra la inflación del INDEC, y te decimos si ganó o perdió.")),
            "dinero", "BCRA")
 
 # compras del BCRA: suma del año
@@ -391,7 +391,7 @@ if piz:
               f'<p class="lead">Precios pizarra del {fecha_larga(f)} en Rosario: soja <b>$ {nf(soja.get("ars", 0), 0)}</b> por tonelada'
               f'{", trigo $ " + nf(p["trigo"]["ars"], 0) if "trigo" in p else ""}{" y maíz $ " + nf(p["maiz"]["ars"], 0) if "maiz" in p else ""}.</p>'
               f'<div class="card"><h2>Precios por tonelada</h2>{tabla(fil, ["Grano", "Pesos", "Dólares"])}</div>'
-              f'<a class="btn" href="/#ganaderia">Ver todo en el tablero →</a>'
+              f'<a class="btn" href="/#ganaderia">Ver todo en la plataforma →</a>'
               + P(("¿Qué es el precio pizarra?", "Es el precio de referencia que fija cada día la Cámara Arbitral de Cereales de la Bolsa de Comercio de Rosario, con las operaciones del día en el mercado físico. Se usa para liquidar contratos y como referencia para todo el campo."),
                   ("¿Cuándo se publica?", "La pizarra de cada día hábil se publica a la mañana del día hábil siguiente. Los valores marcados como estimados no tuvieron operaciones suficientes ese día.")))
     PAGINAS.append(("precios-pizarra-rosario", "Pizarra de Rosario", f"Soja US$ {nf(soja.get('usd', 0), 0)}", "Argentina"))
@@ -405,7 +405,7 @@ ptax = [(d, v) for d, v in B.get("ptax", [])]
 real = cruzar(may, ptax, lambda a, b: a / b)
 pag_diaria("real-en-pesos", "Real en pesos", "Cuánto vale un real en pesos hoy", real, lambda z: nf(z, 2), "", "#199e70",
            P(("¿Cómo se calcula?", "Dividimos el dólar mayorista argentino por el dólar PTAX de Brasil del mismo día (cuántos reales vale un dólar). El resultado es cuántos pesos vale un real brasileño al tipo de cambio oficial."),
-             ("Para viajar", "Si pagás con tarjeta o con dólar MEP, el real te sale más caro que este valor. En la calculadora de viaje del tablero podés ver cuánto te cuesta según cómo pagues.")),
+             ("Para viajar", "Si pagás con tarjeta o con dólar MEP, el real te sale más caro que este valor. En la calculadora de viaje de la plataforma podés ver cuánto te cuesta según cómo pagues.")),
            "brasil", "BCRA y Banco Central de Brasil (PTAX)", pref="$ ", grupo="El mundo", sube_bien=False)
 E = cargar("europa.json")
 eur = cruzar(may, [(d, v) for d, v in E.get("eurusd", [])], lambda a, b: a * b)
@@ -417,7 +417,7 @@ pln = cruzar(may, [(d, v) for d, v in PL.get("usdpln", [])], lambda a, b: a / b)
 if pln:
     pag_diaria("zloty-en-pesos", "Zloty en pesos", "Cuánto vale un zloty polaco en pesos hoy", pln, lambda z: nf(z, 2), "", "#d55181",
                P(("¿Cómo se calcula?", "Dividimos el dólar mayorista argentino por la cotización oficial del dólar en zlotys del Banco Nacional de Polonia del mismo día. El resultado es cuántos pesos vale un zloty al tipo de cambio oficial."),
-                 ("Polonia y el euro", "Polonia está en la Unión Europea pero no usa el euro: mantiene el zloty y su propio banco central. En el tablero está su tasa de interés, la inflación y la comparación con Argentina desde 1990.")),
+                 ("Polonia y el euro", "Polonia está en la Unión Europea pero no usa el euro: mantiene el zloty y su propio banco central. En la plataforma está su tasa de interés, la inflación y la comparación con Argentina desde 1990.")),
                "polonia", "BCRA y Banco Nacional de Polonia", pref="$ ", grupo="El mundo", sube_bien=False)
 sel = [(d, v) for d, v in B.get("selic", [])]
 if sel:
@@ -444,7 +444,7 @@ if ti and inya:
     ar = dict(inya)
     comp = f"En Argentina, la inflación de {mes_txt(ti[-1][0])} fue {nf(ar[ti[-1][0]], 1)}% interanual." if ti[-1][0] in ar else ""
     pag_mensual("inflacion-turquia", "Inflación interanual", "Inflación en Turquía", ti, lambda z: nf(z, 1), "%", "#e0663a",
-                P(("Turquía y Argentina", "Turquía es uno de los pocos países con una inflación comparable a la argentina. En el tablero las comparamos mes a mes, junto con la tasa del Banco Central de Turquía y la lira contra el peso."),),
+                P(("Turquía y Argentina", "Turquía es uno de los pocos países con una inflación comparable a la argentina. En la plataforma las comparamos mes a mes, junto con la tasa del Banco Central de Turquía y la lira contra el peso."),),
                 "turquia", "BIS y OCDE", grupo="El mundo", frases_extra=comp, etq="Inflación Turquía")
 
 
@@ -467,7 +467,7 @@ for s, n, v, g in PAGINAS:
 hub = '<h1>Todos los indicadores</h1><p class="lead">Los datos más buscados de la economía argentina y del mundo, cada uno con su gráfico, su historia y qué significa. Se actualizan solos cada día hábil.</p>'
 for g, items in grupos.items():
     hub += f'<div class="card"><h2>{esc(g)}</h2><div class="grid">' + "".join(f'<a href="/{s}/"><span>{esc(n)}</span><b>{esc(v)}</b></a>' for s, n, v in items) + "</div></div>"
-hub += '<a class="btn" href="/">Ir al tablero completo →</a>'
+hub += '<a class="btn" href="/">Ir a la plataforma completa →</a>'
 cambios += escribir(ROOT / "indicadores" / "index.html", pagina("", "Indicadores de la economía argentina y del mundo, hoy | Pulso Macro",
                                                               "Dólar blue, MEP y CCL, riesgo país, inflación, reservas, Merval, balanza comercial, novillo, granos y más: todos los indicadores de Pulso Macro con su gráfico.",
                                                               hub, "Indicadores"))
