@@ -1,0 +1,960 @@
+{
+ "q_vino": [
+  [
+   "176.1_VINO_1988_0_4",
+   "Vino",
+   "R/P1M",
+   "1989-05-01",
+   "2000-10-01",
+   "Índice de Precios al Consumidor GBA - Base 1988. SERIE DISCONTINUADA"
+  ],
+  [
+   "453.2_VINOINO_0_0_4_89",
+   "IPI Divisiones y Subclases Vino",
+   "R/P1M",
+   "2016-01-01",
+   "2026-08-01",
+   "Índice de Producción Industrial Manufacturero (IPI)"
+  ],
+  [
+   "105.1_I2VC_2016_M_19",
+   "IPC-GBA. Precios. Vino común. Mensual",
+   "R/P1M",
+   "2016-04-01",
+   "2026-08-01",
+   "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016."
+  ],
+  [
+   "41.1_DAVMI_0_M_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P1Y",
+   "2014-01-01",
+   "2025-01-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "41.3_DAVMI_0_A_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P1M",
+   "2014-01-01",
+   "2026-06-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "41.2_DAVMI_0_T_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P3M",
+   "2014-01-01",
+   "2026-04-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "105.2_I2016_VMUN_2016_T_19",
+   "IPC-GBA. Vino común. Base dic 2016. Trimestral",
+   "R/P3M",
+   "2016-04-01",
+   "2024-10-01",
+   "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016."
+  ],
+  [
+   "38.1_V_1994_A_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P1Y",
+   "1980-01-01",
+   "2019-01-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ],
+  [
+   "38.2_V_1994_T_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P3M",
+   "1994-01-01",
+   "2022-10-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ],
+  [
+   "38.3_V_1994_M_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P1M",
+   "1994-01-01",
+   "2020-10-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ]
+ ],
+ "q_mosto": [],
+ "q_uva": [
+  [
+   "94.2_UVAD_D_0_0_10",
+   "UVA diario",
+   "R/P1D",
+   "2016-03-31",
+   "2026-08-31",
+   "CER, UVA y UVI"
+  ],
+  [
+   "90.1_DPNACUT_0_0_39",
+   "Depósitos del sector privado y del sector público. Plazos fijos no ajustables por CER/UVA total",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ],
+  [
+   "93.1_UU68DCI_0_0_25",
+   "UVA y UVIs en millones de pesos 60-89 días. Categoría I",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "93.1_UUM9DCIV_0_0_30",
+   "UVA y UVIs en millones de pesos a más de 90 días. Categoría II-VI",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "90.1_DPACUT_0_0_36",
+   "Depósitos del sector privado y del sector público. Plazos fijos ajustables por CER/UVA total",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ],
+  [
+   "93.1_UU35DCIV_0_0_29",
+   "UVA y UVIs en millones de pesos 30-59 días. Categoría II-VI",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "94.2_CD_D_0_0_10",
+   "CER diario",
+   "R/P1D",
+   "2003-01-01",
+   "2026-08-31",
+   "CER, UVA y UVI"
+  ],
+  [
+   "94.2_UVID_D_0_0_10",
+   "UVI diario",
+   "R/P1D",
+   "2016-03-31",
+   "2026-08-31",
+   "CER, UVA y UVI"
+  ],
+  [
+   "90.1_DPACUPRI_0_0_38",
+   "Depósitos del sector privado y del sector público. Plazos fijos ajustables por CER/UVA sector público",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ],
+  [
+   "90.1_DPACUPUB_0_0_38",
+   "Depósitos del sector privado y del sector público. Plazos fijos ajustables por CER/UVA sector privado",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ],
+  [
+   "93.1_UU35DCI_0_0_25",
+   "UVA y UVIs en millones de pesos 30-59 días. Categoría I",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "93.1_UUM9DCI_0_0_26",
+   "UVA y UVIs en millones de pesos a más de 90 días. Categoría I",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "93.1_UU68DCIV_0_0_29",
+   "UVA y UVIs en millones de pesos 60-89 días. Categoría II-VI",
+   "R/P1M",
+   "2016-04-01",
+   "2025-06-01",
+   "Exigencias de encaje o liquidez"
+  ],
+  [
+   "90.1_DPNACUPRIV_0_0_41",
+   "Depósitos del sector privado y del sector público. Plazos fijos no ajustables por CER/UVA sector privado",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ],
+  [
+   "90.1_DPNACUPUB_0_0_41",
+   "Depósitos del sector privado y del sector público. Plazos fijos no ajustables por CER/UVA sector público",
+   "R/P1M",
+   "2003-01-01",
+   "2026-08-01",
+   "Agregados monetarios"
+  ]
+ ],
+ "q_vitivinicola": [
+  [
+   "354.1_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P1Y",
+   "1960-01-01",
+   "1975-01-01",
+   "Salarios básicos de convenio del oficial de la industria manufacturera."
+  ],
+  [
+   "354.2_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P3M",
+   "1968-01-01",
+   "1975-10-01",
+   "Salarios básicos de convenio del oficial de la industria manufacturera."
+  ],
+  [
+   "353.1_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P1Y",
+   "1960-01-01",
+   "1975-01-01",
+   "Salarios básicos de convenio del peón de la industria manufacturera"
+  ],
+  [
+   "353.2_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P3M",
+   "1968-01-01",
+   "1975-10-01",
+   "Salarios básicos de convenio del peón de la industria manufacturera"
+  ]
+ ],
+ "q_vitivinícola": [
+  [
+   "354.1_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P1Y",
+   "1960-01-01",
+   "1975-01-01",
+   "Salarios básicos de convenio del oficial de la industria manufacturera."
+  ],
+  [
+   "354.2_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P3M",
+   "1968-01-01",
+   "1975-10-01",
+   "Salarios básicos de convenio del oficial de la industria manufacturera."
+  ],
+  [
+   "353.1_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P1Y",
+   "1960-01-01",
+   "1975-01-01",
+   "Salarios básicos de convenio del peón de la industria manufacturera"
+  ],
+  [
+   "353.2_VITIVINICOOLA__12",
+   "Salario del sector vitivinicola",
+   "R/P3M",
+   "1968-01-01",
+   "1975-10-01",
+   "Salarios básicos de convenio del peón de la industria manufacturera"
+  ]
+ ],
+ "q_espumante": [],
+ "q_exportaciones vino": [
+  [
+   "176.1_VINO_1988_0_4",
+   "Vino",
+   "R/P1M",
+   "1989-05-01",
+   "2000-10-01",
+   "Índice de Precios al Consumidor GBA - Base 1988. SERIE DISCONTINUADA"
+  ],
+  [
+   "453.2_VINOINO_0_0_4_89",
+   "IPI Divisiones y Subclases Vino",
+   "R/P1M",
+   "2016-01-01",
+   "2026-08-01",
+   "Índice de Producción Industrial Manufacturero (IPI)"
+  ],
+  [
+   "105.1_I2VC_2016_M_19",
+   "IPC-GBA. Precios. Vino común. Mensual",
+   "R/P1M",
+   "2016-04-01",
+   "2026-08-01",
+   "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016."
+  ],
+  [
+   "41.1_DAVMI_0_M_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P1Y",
+   "2014-01-01",
+   "2025-01-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "41.3_DAVMI_0_A_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P1M",
+   "2014-01-01",
+   "2026-06-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "41.2_DAVMI_0_T_42",
+   "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+   "R/P3M",
+   "2014-01-01",
+   "2026-04-01",
+   "Indicadores de producción de la Industria manufacturera"
+  ],
+  [
+   "105.2_I2016_VMUN_2016_T_19",
+   "IPC-GBA. Vino común. Base dic 2016. Trimestral",
+   "R/P3M",
+   "2016-04-01",
+   "2024-10-01",
+   "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016."
+  ],
+  [
+   "38.1_V_1994_A_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P1Y",
+   "1980-01-01",
+   "2019-01-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ],
+  [
+   "38.2_V_1994_T_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P3M",
+   "1994-01-01",
+   "2022-10-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ],
+  [
+   "38.3_V_1994_M_4",
+   "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+   "R/P1M",
+   "1994-01-01",
+   "2020-10-01",
+   "Ventas al Mercado Interno de Producción Nacional. Base 1994"
+  ],
+  [
+   "350.1_TOTAL_EXPONES__39",
+   "Exportaciones total exportaciones total exportaciones",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TOTAL_EXPOCYE__23",
+   "Exportaciones total exportaciones cye",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TOTAL_EXPOMOA__23",
+   "Exportaciones total exportaciones moa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TOTAL_EXPOMOI__23",
+   "Exportaciones total exportaciones moi",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TOTAL_EXPO_PP__22",
+   "Exportaciones total exportaciones pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "368.3_BIODISEL_ENES__22",
+   "Biodisel exportaciones",
+   "R/P1M",
+   "2008-01-01",
+   "2026-08-01",
+   "Producción y ventas de biocombustibles"
+  ],
+  [
+   "368.1_BIODISEL_ENES__22",
+   "Biodisel exportaciones",
+   "R/P1Y",
+   "2008-01-01",
+   "2025-01-01",
+   "Producción y ventas de biocombustibles"
+  ],
+  [
+   "368.2_BIODISEL_ENES__22",
+   "Biodisel exportaciones",
+   "R/P3M",
+   "2008-01-01",
+   "2026-04-01",
+   "Producción y ventas de biocombustibles"
+  ],
+  [
+   "234.1_PEXPORTTAL_0_0_23",
+   "PIB Exportaciones Total",
+   "R/P3M",
+   "1970-01-01",
+   "1980-10-01",
+   "Cuentas Nacionales 1970-1980. Base 1970"
+  ],
+  [
+   "181.1_UNCTAD_TOTNES_0_A_26",
+   "UNCTAD Total Exportaciones",
+   "R/P1Y",
+   "1995-01-01",
+   "2016-01-01",
+   "Exportaciones e importaciones por Intensidad tecnológica"
+  ],
+  [
+   "181.1_UNCTAD_EXPRAS_0_A_26",
+   "UNCTAD Exportaciones Otras",
+   "R/P1Y",
+   "1995-01-01",
+   "2016-01-01",
+   "Exportaciones e importaciones por Intensidad tecnológica"
+  ],
+  [
+   "350.1_MENDOZA_MOMOA__11",
+   "Exportaciones mendoza moa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_FORMOSA_TOOSA__21",
+   "Exportaciones formosa total formosa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_SANTA_CRUZCYE__14",
+   "Exportaciones santa cruz cye",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TUCUMAN_CYCYE__11",
+   "Exportaciones tucuman cye",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_TUCUMAN_PP_PP__10",
+   "Exportaciones tucuman pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_SANTA_CRUZ_PP__13",
+   "Exportaciones santa cruz pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_RIO_NEGRO_CYE__13",
+   "Exportaciones rio negro cye",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_NEUQUEN_PP_PP__10",
+   "Exportaciones neuquen pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_MISIONES_CCYE__12",
+   "Exportaciones misiones cye",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_CORDOBA_MOMOI__11",
+   "Exportaciones cordoba moi",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_CORRIENTESTES__27",
+   "Exportaciones corrientes total corrientes",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_NEUQUEN_MOMOA__11",
+   "Exportaciones neuquen moa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_CHUBUT_PP_PP__9",
+   "Exportaciones chubut pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_MISIONES_MMOA__12",
+   "Exportaciones misiones moa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_MENDOZA_TOOZA__21",
+   "Exportaciones mendoza total mendoza",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_CORDOBA_MOMOA__11",
+   "Exportaciones cordoba moa",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "350.1_INDETERMIN_PP__16",
+   "Exportaciones indeterminado pp",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y rubro"
+  ],
+  [
+   "357.1_INDETERMINLIA__21",
+   "Datos exportaciones Indeterminado Argelia",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y por país de destino"
+  ],
+  [
+   "357.1_TUCUMAN_CHINA__13",
+   "Datos exportaciones Tucuman China",
+   "R/P1Y",
+   "1993-01-01",
+   "2024-01-01",
+   "Exportaciones por provincia y por país de destino"
+  ]
+ ],
+ "series": {
+  "data": [
+   [
+    "2025-07-01",
+    5.757734254999999,
+    null,
+    2194.58
+   ],
+   [
+    "2025-08-01",
+    6.123,
+    null,
+    2218.63
+   ],
+   [
+    "2025-09-01",
+    6.164,
+    null,
+    2215.06
+   ],
+   [
+    "2025-10-01",
+    7.139240153260412,
+    null,
+    2197.14
+   ],
+   [
+    "2025-11-01",
+    5.894408319572076,
+    null,
+    2199.07
+   ],
+   [
+    "2025-12-01",
+    7.175,
+    null,
+    2253.4
+   ],
+   [
+    "2026-01-01",
+    4.415337529999999,
+    null,
+    2263.26
+   ],
+   [
+    "2026-02-01",
+    4.489485311654905,
+    null,
+    2266.39
+   ],
+   [
+    "2026-03-01",
+    5.449,
+    null,
+    2291.75
+   ],
+   [
+    "2026-04-01",
+    5.167729379186397,
+    null,
+    2285.55
+   ],
+   [
+    "2026-05-01",
+    5.52209324856835,
+    null,
+    2317.53
+   ],
+   [
+    "2026-06-01",
+    6.512322467439001,
+    null,
+    2311.51
+   ],
+   [
+    "2026-07-01",
+    null,
+    null,
+    2329.0
+   ],
+   [
+    "2026-08-01",
+    null,
+    null,
+    2316.0
+   ]
+  ],
+  "count": 150,
+  "meta": [
+   {
+    "frequency": "month",
+    "start_date": "2025-07-01",
+    "end_date": "2026-08-01"
+   },
+   {
+    "catalog": {
+     "title": "Datos Programación Macroeconómica"
+    },
+    "dataset": {
+     "title": "Indicadores de producción de la Industria manufacturera",
+     "description": "Indicadores desagregados de producción de productos de la industria manufacturera",
+     "issued": "2017-09-28",
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas"
+    },
+    "distribution": {
+     "title": "Producción de la Industria manufacturera. Valores anuales",
+     "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/41/distribution/41.3/download/indicadores-produccion-industria-manufacturera-valores-anuales.csv"
+    },
+    "field": {
+     "description": "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+     "id": "41.3_DAVMI_0_A_42",
+     "units": "Miles de Litros",
+     "representation_mode": "value",
+     "representation_mode_units": "Miles de Litros"
+    }
+   },
+   {
+    "catalog": {
+     "title": "Datos Programación Macroeconómica"
+    },
+    "dataset": {
+     "title": "Índice de Producción Industrial Manufacturero (IPI)",
+     "description": "Índice de Producción Industrial Manufacturero (IPI)",
+     "issued": "2019-04-15",
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)"
+    },
+    "distribution": {
+     "title": "Índice de Producción Industrial Manufacturero (IPI). Divisiones y subclases",
+     "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/453/distribution/453.2/download/ipi-manufacturero-sectores.csv"
+    },
+    "field": {
+     "description": "IPI Divisiones y Subclases Vino",
+     "id": "453.2_VINOINO_0_0_4_89",
+     "units": "Índice 2004 = 100",
+     "representation_mode": "value",
+     "representation_mode_units": "Índice 2004 = 100"
+    }
+   },
+   {
+    "catalog": {
+     "title": "Datos Programación Macroeconómica"
+    },
+    "dataset": {
+     "title": "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016.",
+     "description": "Índice de Precios al Consumidor del Gran Buenos Aires. Apertura por capítulos. Base diciembre 2016.",
+     "issued": "2017-09-28",
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)"
+    },
+    "distribution": {
+     "title": "Precios al consumidor de un conjunto de alimentos y bebidas. Base diciembre 2016. Valores mensuales",
+     "downloadURL": "https://infra.datos.gob.ar/catalog/sspm/dataset/101/distribution/101.9/download/precios-al-consumidor-conjunto-alimentos-bebidas-base-diciembre-2016-mensual.csv"
+    },
+    "field": {
+     "description": "IPC-GBA. Precios. Vino común. Mensual",
+     "id": "105.1_I2VC_2016_M_19",
+     "units": "Pesos",
+     "representation_mode": "value",
+     "representation_mode_units": "Pesos"
+    }
+   }
+  ],
+  "params": {
+   "ids": "41.3_DAVMI_0_A_42,453.2_VINOINO_0_0_4_89,105.1_I2VC_2016_M_19",
+   "last": "14",
+   "format": "json",
+   "identifiers": [
+    {
+     "id": "41.3_DAVMI_0_A_42",
+     "distribution": "41.3",
+     "dataset": "41"
+    },
+    {
+     "id": "453.2_VINOINO_0_0_4_89",
+     "distribution": "453.2",
+     "dataset": "453"
+    },
+    {
+     "id": "105.1_I2VC_2016_M_19",
+     "distribution": "101.9",
+     "dataset": "101"
+    }
+   ]
+  }
+ },
+ "ckan_uvas": [
+  "INV - Producción de uvas",
+  "2026-07-27T19:56:49.029782",
+  [
+   [
+    "Serie de tiempo",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/2a928aef-7f9e-4335-bf3d-a1c5eab49037/download/serie-tiempo-produccion-de-uvas-de-argentina-2012-2017.csv",
+    "2019-05-17T10:31:09.870361"
+   ],
+   [
+    "Producción de uvas de Argentina. Serie 2012 - 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/ab0321ba-5a82-4b1e-8b96-9d6169b4e980/download/inv-produccion-uvas-2012-2025.csv",
+    "2026-04-06T13:24:31.578638"
+   ],
+   [
+    "Producción de uvas 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/d154f571-7d01-40d9-9e39-aa4af10bfa3f/download/inv-produccion-uvas-2025.csv",
+    "2026-03-26T08:10:59.923565"
+   ]
+  ]
+ ],
+ "ckan_search": [
+  [
+   "agroindustria-inv---elaboracion-mostos-vino",
+   "INV - Elaboración de mostos y vino",
+   "2026-03-27T15:58:44.414894",
+   [
+    [
+     "Elaboración de mostos y vinos 2025",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/f3b52a18-a717-426b-a4c4-029bd2c2a546/resource/02d02872-b37e-47a2-a7eb-ef593ad07db1/download/inv-elaboracion-mosto-vinos-2025.csv"
+    ],
+    [
+     "Anuario de cosecha y elaboración 2025",
+     "PDF",
+     "https://datos.magyp.gob.ar/dataset/f3b52a18-a717-426b-a4c4-029bd2c2a546/resource/beb31504-876d-4bf2-8d3c-55c58ccf775f/download/inv-anuario_cosecha_uvas_elaboracion_mosto_vinos_2025.pdf"
+    ]
+   ]
+  ],
+  [
+   "agroindustria-inv---superficie-implantada-con-vinedos",
+   "INV - Superficie implantada con viñedos",
+   "2026-04-21T15:20:12.573744",
+   [
+    [
+     "Serie de tiempo",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/221859a8-c51e-47c2-95ab-a8525bb2b55d/download/serie-tiempo-inv-superficie-de-vinedos-por-pcia-2012-2017.csv"
+    ],
+    [
+     "Superficie implantada con viñedos en la República Argentina",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/a0d05450-4dd1-4ce4-bfaf-6d9a72af6eb4/download/inv-superficie-viniedos-2012-2024.csv"
+    ],
+    [
+     "Superficie con viñedos 2024",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/dac76751-3dfd-4291-868c-658a8368908e/download/inv-superficie-viniedos-2024.csv"
+    ],
+    [
+     "Superficie con viñedos 2025",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/b5e49c34-0a6e-448a-80d7-2bbf61632204/download/inv-superficie-viniedos-2025.csv"
+    ],
+    [
+     "Anuario de superficie vitivinícola 2024",
+     "PDF",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/07a2168a-2681-4244-821b-fdee8f760138/download/inv-superficie-vitivinicola-anuario-2024.pdf"
+    ],
+    [
+     "Anuario de superficie vitivinícola 2025",
+     "PDF",
+     "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/d7574857-d741-42e2-a4cb-1e075a3f9906/download/inv-superficie-vitivinicola-anuario-2025.pdf"
+    ]
+   ]
+  ],
+  [
+   "agroindustria-inv---produccion-uvas",
+   "INV - Producción de uvas",
+   "2026-04-07T04:24:04.883898",
+   [
+    [
+     "Serie de tiempo",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/2a928aef-7f9e-4335-bf3d-a1c5eab49037/download/serie-tiempo-produccion-de-uvas-de-argentina-2012-2017.csv"
+    ],
+    [
+     "Producción de uvas de Argentina. Serie 2012 - 2025",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/ab0321ba-5a82-4b1e-8b96-9d6169b4e980/download/inv-produccion-uvas-2012-2025.csv"
+    ],
+    [
+     "Producción de uvas 2025",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/d154f571-7d01-40d9-9e39-aa4af10bfa3f/download/inv-produccion-uvas-2025.csv"
+    ]
+   ]
+  ],
+  [
+   "ssprys-indicadores-sectoriales-provinciales",
+   "Indicadores Sectoriales y Provinciales",
+   "2026-07-09T03:04:59.595839",
+   [
+    [
+     "Indicadores de Algodonera - textil en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/algodonera-textil.csv"
+    ],
+    [
+     "Indicadores de Apícola en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/apicola.csv"
+    ],
+    [
+     "Indicadores de Arroz en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/arroz.csv"
+    ],
+    [
+     "Indicadores de Automotriz y Autopartista en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/automotriz-y-autopartista.csv"
+    ],
+    [
+     "Indicadores de Azúcar en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/azucar.csv"
+    ],
+    [
+     "Indicadores de Cárnica - Aviar en valores anuales, trimestrales y mensuales",
+     "CSV",
+     "https://www.economia.gob.ar/catalogo-sspmi/nuevo_dataset/carnica-aviar.csv"
+    ]
+   ]
+  ],
+  [
+   "agroindustria-inv---actividad-vitivinicola",
+   "INV - Actividad vitivinícola",
+   "2025-12-16T17:39:58.249064",
+   [
+    [
+     "Establecimientos vinculados a la actividad vitivinícola",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/16e20ac2-e396-4a30-ba71-45e1cb10c284/download/establecimientos-nivel-departamental-vinculados-actividad-vitivinicola-acuerdo-al-inv.csv"
+    ],
+    [
+     "Mercado interno 2024",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/90f42554-1305-4c2e-9a2d-ea12b07b82e9/download/inv-mercado-interno-2024.csv"
+    ],
+    [
+     "Mercado Externo 2024",
+     "PDF",
+     "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/a71c4540-8b98-48c1-88e6-728b371a69f3/download/inv-mercado-externo-2025-04abr.pdf"
+    ],
+    [
+     "Exportaciones 2025 - Enero a Abril",
+     "CSV",
+     "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/be779a10-42a3-4e0a-9d1a-7df1486b69c3/download/inv-exportanciones-2025-ene-abr.csv"
+    ]
+   ]
+  ]
+ ],
+ "bcm_robots": {
+  "status": 200,
+  "txt": "User-agent: *\nDisallow:\nCrawl-delay: 60 # 60 segundos entre cada request\nVisit-time: 0300-1200 # 00:00 AM a 09:00 AM (America/Buenos_Aires)\nRequest-rate: 6/60m # permite indexar 6 documentos cada 60 minutos\nRequest-rate: 3/60m 1200-0300 # permite indexar 3 documentos cada 60 minutos entre las 09:00 AM a 00:00 AM (America/Buenos_Aires)\n\nDisallow: /cgi-bin/\nDisallow: /admin/\nDisallow: /*.sql$\n\n# Bloqueo de las URL dinamicas\nDisallow: /*?\n\n# Bloqueo de busquedas\nDisallow: /?s=\nDisallow: /search\n\n# Bloqueo de trackbacks\nDisallow: /trackback\nDisallow: /*trackback\nDisallow: /*trackback*\nDisallow: /*/trackback\n\n# Permitir Google Webmaster Tool\nUser-agent: Googlebot\nAllow: /*.js$\nAllow: /*.css$\n\n# wordpress\nDisallow: /xmlrpc.php\nDisallow: /wp-admin/\nDisallow: /wp-includes/\nDisallow: /wp-content/plugins/\nDisallow: /wp-content/cache/\nDisallow: /wp-content/themes/\n\nDisallow: /*/xmlrpc.php\nDisallow: /*/wp-admin/\nDisallow: /*/wp-includes/\nDisallow: /*/wp-content/plugins/\nDisallow: /*/wp-content/cache/\nDisallow: /*/wp-content/themes/\n\n# joomla\nDisallow: /administrator/\nDisallow: /bin/\nDisallow: /cache/\nDisallow: /cli/\nDisallow: /components/\nDisallow: /images/\nDisallow: /includes/\nDisallow: /installation/\nDisallow: /language/\nDisallow: /layouts/\nDisallow: /libraries/\nDisallow: /logs/\nDisallow: /media/\nDisallow: /modules/\nDisallow: /plugins/\nDisallow: /templates/\nDisallow: /tmp/\n\nDisallow: /*/administrator/\nDisallow: /*/bin/\nDisallow: /*/cache/\nDisallow: /*/cli/\nDisallow: /*/components/\nDisallow: /*/images/\nDisallow: /*/includes/\nDisallow: /*/installation/\nDisallow: /*/language/\nDisallow: /*/layouts/\nDisallow: /*/libraries/\nDisallow: /*/logs/\nDisallow: /*/media/\nDisallow: /*/modules/\nDisallow: /*/plugins/\nDisallow: /*/templates/\nDisallow: /*/tmp/\n\n"
+ },
+ "oiv_robots": {
+  "status": 200,
+  "txt": "#\n# robots.txt\n#\n# This file is to prevent the crawling and indexing of certain parts\n# of your site by web crawlers and spiders run by sites like Yahoo!\n# and Google. By telling these \"robots\" where not to go on your site,\n# you save bandwidth and server resources.\n#\n# This file will be ignored unless it is at the root of your host:\n# Used:    http://example.com/robots.txt\n# Ignored: http://example.com/site/robots.txt\n#\n# For more information about the robots.txt standard, see:\n# http://www.robotstxt.org/robotstxt.html\n\nUser-agent: *\n# CSS, JS, Images\nAllow: /core/*.css$\nAllow: /core/*.css?\nAllow: /core/*.js$\nAllow: /core/*.js?\nAllow: /core/*.gif\nAllow: /core/*.jpg\nAllow: /core/*.jpeg\nAllow: /core/*.png\nAllow: /core/*.svg\nAllow: /profiles/*.css$\nAllow: /profiles/*.css?\nAllow: /profiles/*.js$\nAllow: /profiles/*.js?\nAllow: /profiles/*.gif\nAllow: /profiles/*.jpg\nAllow: /profiles/*.jpeg\nAllow: /profiles/*.png\nAllow: /profiles/*.svg\n# Directories\nDisallow: /core/\nDisallow: /profiles/\n# Files\nDisallow: /README.txt\nDisallow: /web.config\n# Paths (clean URLs)\nDisallow: /admin/\nDisallow: /comment/reply/\nDisallow: /filter/tips\nDisallow: /node/add/\nDisallow: /search/\nDisallow: /user/register\nDisallow: /user/password\nDisallow: /user/login\nDisallow: /user/logout\nDisallow: /media/oembed\nDisallow: /*/media/oembed\n# Paths (no clean URLs)\nDisallow: /index.php/admin/\nDisallow: /index.php/comment/reply/\nDisallow: /index.php/filter/tips\nDisallow: /index.php/node/add/\nDisallow: /index.php/search/\nDisallow: /index.php/user/password\nDisallow: /index.php/user/register\nDisallow: /index.php/user/login\nDisallow: /index.php/user/logout\nDisallow: /index.php/media/oembed\nDisallow: /index.php/*/media/oembed\n"
+ },
+ "inv_gov_robots": {
+  "status": 404,
+  "txt": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n</body></html>\n"
+ }
+}
