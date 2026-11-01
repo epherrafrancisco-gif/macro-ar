@@ -59,7 +59,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
 - Orden de Argentina en la portada, la hoja y la grilla del celular (`ARG_T`, pedido del dueño): Dólares, Noticias, Bolsa y bonos,
-  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Calculadoras.
+  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Vinos y uvas, Calculadoras.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
@@ -161,6 +161,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   hasta la tarde, `def`), ~400 días; pizarra de la CAC Rosario (UTF-8, solo el día: la historia se arma guardando, desde
   15/10/2026). Carne al consumidor (`c_*` GBA, `rp_*` picada por región), faena trimestral `faena_t` (la mensual 41.3_FCV
   viene vacía en la API) e IPI carne vacuna `ipi_carne` vienen de actividad.json. Novillo/maíz = novillo $/kg ÷ maíz $/kg.
+- Vinos y uvas (`#vinos`, `vVi`, `renderVinos`, `loadVin`; pedido del dueño 01/11/2026, "como MacroLibre pero mejor"; datos
+  `vinos.json` de scripts/vinos.py, workflow `vinos.yml` los lunes 9:17 ART): precio del vino común $/litro GBA (INDEC, serie
+  `105.1_I2VC_2016_M_19` de la API de series, en pesos o pesos de hoy con `act.ipc`) y datos abiertos del INV en datos.gob.ar
+  (CKAN `package_show` → CSV de datos.magyp.gob.ar): cosecha por provincia y variedad (quintales; 1 qq = 100 kg), superficie
+  (total, variedades, color, edad, provincias), elaboración (vino/mosto, color), mercado interno (envase, variedad, mes; litros
+  por habitante con `wb.pop.ARG` de paises_extra.json), exportaciones (países, variedades, fraccionado/granel) y bodegas/viñedos.
+  Los informes mensuales del INV son PDF y robots.txt de argentina.gob.ar prohíbe `/*.pdf$`: NO usarlos. Lo abierto va atrasado
+  (consumo de un año entero, exportaciones parciales): cada número muestra su período. La serie IPI vino viene vacía (sacada).
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas
