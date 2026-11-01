@@ -1,0 +1,296 @@
+{
+ "agroindustria-inv---actividad-vitivinicola": {
+  "title": "INV - Actividad vitivinícola",
+  "mod": "2025-12-16T17:39:58.249064",
+  "res": [
+   [
+    "Establecimientos vinculados a la actividad vitivinícola",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/16e20ac2-e396-4a30-ba71-45e1cb10c284/download/establecimientos-nivel-departamental-vinculados-actividad-vitivinicola-acuerdo-al-inv.csv"
+   ],
+   [
+    "Mercado interno 2024",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/90f42554-1305-4c2e-9a2d-ea12b07b82e9/download/inv-mercado-interno-2024.csv"
+   ],
+   [
+    "Mercado Externo 2024",
+    "PDF",
+    "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/a71c4540-8b98-48c1-88e6-728b371a69f3/download/inv-mercado-externo-2025-04abr.pdf"
+   ],
+   [
+    "Exportaciones 2025 - Enero a Abril",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/94cd4864-1739-4e5e-b65f-034486afa407/resource/be779a10-42a3-4e0a-9d1a-7df1486b69c3/download/inv-exportanciones-2025-ene-abr.csv"
+   ]
+  ],
+  "muestras": {
+   "Establecimientos vinculados a la actividad vitivinícola": {
+    "filas": 527,
+    "cab": [
+     "pais_id,nompais_id,codprovincia,provincia,departamento_id,partido_nom,link,cant_bodegas,cant_vinedos,cant_fabrica,sag",
+     "32,ARGENTINA,66,SALTA,35,CERRILLOS,66035,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,66,SALTA,42,CHICOANA,66042,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,66,SALTA,98,LA VINA,66098,0,2,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,22,CHACO,133,QUITILIPI,22133,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,22,CHACO,168,25 DE MAYO,22168,0,0,0,Instituto Nacional de Vitivinicultura"
+    ],
+    "fin": [
+     "32,ARGENTINA,94,TIERRA DEL FUEGO,14,USHUAIA,94014,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,6,BUENOS AIRES,749,SAN FERNANDO (ISLAS),6749,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,6,BUENOS AIRES,749,SAN FERNANDO,6749,0,0,0,Instituto Nacional de Vitivinicultura",
+     "32,ARGENTINA,6,BUENOS AIRES,217,CHASCOMUS,6217,0,0,0,Instituto Nacional de Vitivinicultura"
+    ]
+   },
+   "Mercado interno 2024": {
+    "filas": 41976,
+    "cab": [
+     "anio,mes,provincia_id,provincia_nombre,departamento_id,departamento_nombre,localidad_id,localidad_nombre,establecimiento,producto,grupo,envase,i_geografica,variedad_1,variedad_2,variedad_3,anio_elaboracion,tipo,consumo",
+     "2024,1,06,Buenos Aires,06028,Almirante Brown,06028010,Burzaco,planta de fraccionamiento,vino varietal tinto,varietal,lata,-,Malbec,-,-,2021,fraccionado,719",
+     "2024,1,06,Buenos Aires,06063,Balcarce,06063010,Balcarce,bodega,vino varietal blanco,varietal,botella,Balcarce,Riesling,-,-,2022,fraccionado,2",
+     "2024,1,06,Buenos Aires,06063,Balcarce,06063010,Balcarce,bodega,vino varietal blanco,varietal,botella,Balcarce,Riesling,-,-,2021,fraccionado,2",
+     "2024,1,06,Buenos Aires,06063,Balcarce,06063010,Balcarce,bodega,vino varietal blanco,varietal,botella,Balcarce,Chardonnay,-,-,2020,fraccionado,1",
+     "2024,1,06,Buenos Aires,06063,Balcarce,06063010,Balcarce,bodega,vino varietal blanco,varietal,botella,Balcarce,Alvarinho,-,-,2018,fraccionado,2"
+    ],
+    "fin": [
+     "2024,9,90,Tucumán,90098,Tafí del Valle,90098020,Colalao del Valle,bodega,vino varietal blanco,varietal,botella,Valles Calchaquies,Torrontes Riojano,-,-,2024,fraccionado,1008",
+     "2024,9,90,Tucumán,90098,Tafí del Valle,90098A12,El Bañado,bodega,vino varietal tinto,varietal,botella,Valles Calchaquies,Malbec,-,-,2022,fraccionado,573",
+     "2024,9,90,Tucumán,90098,Tafí del Valle,90098A12,El Bañado,bodega,vino varietal endulzado blanco,varietal,botella,Valles Calchaquies,Torrontes Riojano,-,-,2023,fraccionado,275",
+     "2024,9,90,Tucumán,90098,Tafí del Valle,90098A12,El Bañado,bodega,vino varietal tinto,varietal,botella,Valles Calchaquies,Tannat,Malbec,-,2022,fraccionado,53"
+    ]
+   },
+   "Exportaciones 2025 - Enero a Abril": {
+    "filas": 22521,
+    "cab": [
+     "anio,mes,pais,producto,color,anio_elaboracion,variedad_1,variedad_2,variedad_3,litros_exportados,hl_exportados,modalidad_envio,envase,cantidad_envases,valor_fob_litros,valor_fob_miles,provincia_depositario,departamento_depositario,provincia_exportador,departamento_exportador",
+     "2025,Ene,Dinamarca,vino varietal blanco,blanco,2024,Sauvignon Blanc,sin variedad,sin variedad,9,0.09,fraccionado,botella,12,0,0,Mendoza,Tupungato,Mendoza,Tupungato",
+     "2025,Ene,Dinamarca,vino varietal tinto,tinto,2023,Malbec,sin variedad,sin variedad,9,0.09,fraccionado,botella,12,0,0,Mendoza,Tupungato,Mendoza,Tupungato",
+     "2025,Ene,Dinamarca,vino varietal tinto,tinto,2024,Cabernet Franc,sin variedad,sin variedad,9,0.09,fraccionado,botella,12,0,0,Mendoza,Tupungato,Mendoza,Tupungato",
+     "2025,Ene,Dinamarca,vino varietal tinto,tinto,2024,Malbec,sin variedad,sin variedad,9,0.09,fraccionado,botella,12,0,0,Mendoza,Tupungato,Mendoza,Tupungato",
+     "2025,Feb,Colombia,vino varietal blanco,blanco,2021,Semillon,sin variedad,sin variedad,2,0.02,fraccionado,botella,3,0,0,Mendoza,Tupungato,Mendoza,Tupungato"
+    ],
+    "fin": [
+     "2025,Abr,Colombia,vino varietal tinto,tinto,2021,Cabernet Sauvignon,Malbec,Cabernet Franc,11,0.11,fraccionado,botella,15,2508.9999,2.509,Mendoza,Lujan de Cuyo,Mendoza,Lujan de Cuyo",
+     "2025,Feb,Mexico,vino varietal tinto,tinto,2021,Cabernet Sauvignon,Malbec,Cabernet Franc,9,0.09,fraccionado,botella,12,2208.9996,2.209,Mendoza,Lujan de Cuyo,Mendoza,Lujan de Cuyo",
+     "2025,Feb,Mexico,vino varietal tinto,tinto,2021,Malbec,sin variedad,sin variedad,9,0.09,fraccionado,botella,12,2208.9996,2.209,Mendoza,Lujan de Cuyo,Mendoza,Lujan de Cuyo",
+     "2025,Abr,Australia,vino varietal tinto,tinto,2021,Cabernet Franc,sin variedad,sin variedad,1,0.01,fraccionado,botella,1,300,0.3,Mendoza,Lujan de Cuyo,Mendoza,Lujan de Cuyo"
+    ]
+   }
+  }
+ },
+ "agroindustria-inv---produccion-uvas": {
+  "title": "INV - Producción de uvas",
+  "mod": "2026-04-07T04:24:04.883898",
+  "res": [
+   [
+    "Serie de tiempo",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/2a928aef-7f9e-4335-bf3d-a1c5eab49037/download/serie-tiempo-produccion-de-uvas-de-argentina-2012-2017.csv"
+   ],
+   [
+    "Producción de uvas de Argentina. Serie 2012 - 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/ab0321ba-5a82-4b1e-8b96-9d6169b4e980/download/inv-produccion-uvas-2012-2025.csv"
+   ],
+   [
+    "Producción de uvas 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/e217791c-e898-4204-8a62-63273cf81ef7/resource/d154f571-7d01-40d9-9e39-aa4af10bfa3f/download/inv-produccion-uvas-2025.csv"
+   ]
+  ],
+  "muestras": {
+   "Serie de tiempo": {
+    "filas": 7,
+    "cab": [
+     "indice_tiempo,produccion_bs_as,produccion_catamarca,produccion_chubut,produccion_cordoba,produccion_entre_rios,produccion_jujuy,produccion_la_pampa,produccion_la_rioja,produccion_mendoza,produccion_misiones,produccion_neuquen,produccion_rio_negro,produccion_salta,produccion_san_juan,produccion_san_luis,produccion_tucuman",
+     "2012,2114.05,171089.7,130,12509.89,717.42,260.69,15943.71,886182.87,14842594.15,15.2,169897.27,72669.05,239817.08,6023639.03,1062.45,3555.47",
+     "2013,2455.7,159772.41,,11191.03,319.38,226.05,16319.99,901125.13,19874054.54,22.4,168332.73,80831.92,294072.28,7204670.18,1103.36,2990.2",
+     "2014,3849.6,156263.52,15,7407.47,646.7,304.9,12032.04,1025646.78,18065704.36,,115203.49,63723.97,323966.09,6573407.06,469.77,2446.22",
+     "2015,854.87,148229.45,52.53,5590.81,116.1,517.7,11820.72,863624.58,16884088.73,,158332.76,67786.69,314563.55,5694606.38,2067.75,3458.92",
+     "2016,1303.14,100032.38,181.1,3638.15,730.92,235.91,17459.66,717815.88,10196051.85,,125719.84,54717.49,211961.91,6152287.35,1153.46,889.04"
+    ],
+    "fin": [
+     "2014,3849.6,156263.52,15,7407.47,646.7,304.9,12032.04,1025646.78,18065704.36,,115203.49,63723.97,323966.09,6573407.06,469.77,2446.22",
+     "2015,854.87,148229.45,52.53,5590.81,116.1,517.7,11820.72,863624.58,16884088.73,,158332.76,67786.69,314563.55,5694606.38,2067.75,3458.92",
+     "2016,1303.14,100032.38,181.1,3638.15,730.92,235.91,17459.66,717815.88,10196051.85,,125719.84,54717.49,211961.91,6152287.35,1153.46,889.04",
+     "2017,1417.32,136598.72,548.95,5870.06,1596.71,465.86,12116.38,755261.25,12621819.58,,101298.21,48193.29,364485.73,5597716.11,1754.66,2911.83"
+    ]
+   },
+   "Producción de uvas de Argentina. Serie 2012 - 2025": {
+    "filas": 7583,
+    "cab": [
+     "anio,provincia,provincia_id,departamento,departamento_id,localidad,localidad_id,quintales",
+     "2012,Buenos Aires,06,Coronel Suárez,06203,Villa La Arcadia,06203100,765.1",
+     "2012,Buenos Aires,06,General Pueyrredón,06357,Chapadmalal,06357080,670.84",
+     "2012,Buenos Aires,06,Tornquist,06819,Saldungaray,06819020,244.31",
+     "2012,Buenos Aires,06,Tornquist,06819,Villa Ventana,06819070,40.95",
+     "2012,Buenos Aires,06,Villarino,06875,Médanos,06875060,392.85"
+    ],
+    "fin": [
+     "2025,Tucumán,90,Tafí del Valle,90098,Colalao del Valle,90098020,1716.95",
+     "2025,Tucumán,90,Tafí del Valle,90098,El Bañado,90098A12,60",
+     "2025,Tucumán,90,Tafí del Valle,90098,El Paso,90098A18,317",
+     "2025,Tucumán,90,Tafí del Valle,90098,Los Zazos,90098A40,23"
+    ]
+   },
+   "Producción de uvas 2025": {
+    "filas": 44586,
+    "cab": [
+     "anio,establecimiento_vinia,provincia_vinia,provincia_vinia_id,departamento_vinia,departamento_vinia_id,localidad_vinia,localidad_vinia_id,establecimiento_ingreso_uva,provincia_ingreso,provincia_ingreso_id,departamento_ingreso,departamento_ingreso_id,localidad_ingreso,localidad_ingreso_id,variedad,aptitud_uva,color,destino_uva,tipo_cosecha,quintales",
+     "2025,viñedo,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Tannat,elaboración,tinta,elaboracion,cosecha manual,69.34",
+     "2025,viñedo,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Riesling,elaboración,blanca,elaboracion,cosecha manual,72.44",
+     "2025,viñedo,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Bonarda,elaboración,tinta,elaboracion,cosecha manual,16.4",
+     "2025,viñedo,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Alvarinho,elaboración,blanca,elaboracion,cosecha manual,43.6",
+     "2025,viñedo,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Cabernet Franc,elaboración,tinta,elaboracion,cosecha manual,45.48"
+    ],
+    "fin": [
+     "2025,viñedo,Tucumán,90,Tafí del Valle,90098,El Paso,90098A18,bodega,Tucumán,90,Tafí del Valle,90098,Amaicha del Valle,90098010,Torrontes Riojano,elaboración,blanca,elaboracion,cosecha manual,20.8",
+     "2025,viñedo,Tucumán,90,Tafí del Valle,90098,El Paso,90098A18,bodega,Tucumán,90,Tafí del Valle,90098,Amaicha del Valle,90098010,Malbec,elaboración,tinta,elaboracion,cosecha manual,83.2",
+     "2025,viñedo,Tucumán,90,Tafí del Valle,90098,El Paso,90098A18,bodega,Tucumán,90,Tafí del Valle,90098,El Bañado,90098A12,Malbec,elaboración,tinta,elaboracion,cosecha manual,44.8",
+     "2025,viñedo,Tucumán,90,Tafí del Valle,90098,Los Zazos,90098A40,bodega,Salta,66,Cafayate,66021,Tolombón,66021020,Malbec,elaboración,tinta,elaboracion,cosecha manual,23"
+    ]
+   }
+  }
+ },
+ "agroindustria-inv---superficie-implantada-con-vinedos": {
+  "title": "INV - Superficie implantada con viñedos",
+  "mod": "2026-04-21T15:20:12.573744",
+  "res": [
+   [
+    "Serie de tiempo",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/221859a8-c51e-47c2-95ab-a8525bb2b55d/download/serie-tiempo-inv-superficie-de-vinedos-por-pcia-2012-2017.csv"
+   ],
+   [
+    "Superficie implantada con viñedos en la República Argentina",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/a0d05450-4dd1-4ce4-bfaf-6d9a72af6eb4/download/inv-superficie-viniedos-2012-2024.csv"
+   ],
+   [
+    "Superficie con viñedos 2024",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/dac76751-3dfd-4291-868c-658a8368908e/download/inv-superficie-viniedos-2024.csv"
+   ],
+   [
+    "Superficie con viñedos 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/b5e49c34-0a6e-448a-80d7-2bbf61632204/download/inv-superficie-viniedos-2025.csv"
+   ],
+   [
+    "Anuario de superficie vitivinícola 2024",
+    "PDF",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/07a2168a-2681-4244-821b-fdee8f760138/download/inv-superficie-vitivinicola-anuario-2024.pdf"
+   ],
+   [
+    "Anuario de superficie vitivinícola 2025",
+    "PDF",
+    "https://datos.magyp.gob.ar/dataset/5f97a0b9-f677-4657-9e07-0cd3b98da754/resource/d7574857-d741-42e2-a4cb-1e075a3f9906/download/inv-superficie-vitivinicola-anuario-2025.pdf"
+   ]
+  ],
+  "muestras": {
+   "Serie de tiempo": {
+    "filas": 7,
+    "cab": [
+     "indice_tiempo,superficie_ha_bs_as,superficie_ha_catamarca,superficie_ha_chubut,superficie_ha_cordoba,superficie_ha_entre_rios,superficie_ha_jujuy,superficie_ha_la_pampa,superficie_ha_la_rioja,superficie_ha_mendoza,superficie_ha_misiones,superficie_ha_neuquen,superficie_ha_rio_negro,superficie_ha_salta,superficie_ha_san_juan,superficie_ha_san_luis,superficie_ha_santiago_del_estero,superficie_ha_tucuman",
+     "2012,109.82,2634.66,20,261.36,23.64,11.11,215.67,7139.87,157204.23,5.25,1683.01,1673.1,2649.92,47394.54,83.99,8.8,82.79",
+     "2013,117.75,2638.87,21.02,274.93,25.08,12.11,215.67,7198.54,158965,5.25,1689.02,1684.81,2921.85,47632.89,85.32,8.8,83.45",
+     "2014,128.29,2651.01,21.02,276.99,34.66,12.11,215.67,7455.2,160982.89,17.77,1741.92,1674.26,3050.67,47926.34,96.65,8.8,93.79",
+     "2015,122.05,2678.46,36.75,278.39,40.13,17.43,243.47,7449.03,159649.08,17.77,1751.2,1675.92,3143.82,47394.46,102.43,8.8,98.52",
+     "2016,128.92,2697.01,66.25,298.55,45.2,21.22,242.89,7428.18,158584.63,17.77,1757.88,1654.91,3245.25,47533.5,103.32,8.8,110.07"
+    ],
+    "fin": [
+     "2014,128.29,2651.01,21.02,276.99,34.66,12.11,215.67,7455.2,160982.89,17.77,1741.92,1674.26,3050.67,47926.34,96.65,8.8,93.79",
+     "2015,122.05,2678.46,36.75,278.39,40.13,17.43,243.47,7449.03,159649.08,17.77,1751.2,1675.92,3143.82,47394.46,102.43,8.8,98.52",
+     "2016,128.92,2697.01,66.25,298.55,45.2,21.22,242.89,7428.18,158584.63,17.77,1757.88,1654.91,3245.25,47533.5,103.32,8.8,110.07",
+     "2017,145.03,2769.17,67.25,309.52,46.63,25.76,275.39,7509.38,155901.2,17.77,1758.4,1658.54,3335.84,46787.12,103.32,26.18,111.87"
+    ]
+   },
+   "Superficie implantada con viñedos en la República Argentina": {
+    "filas": 9054,
+    "cab": [
+     "anio,provincia,provincia_id,departamento,departamento_id,localidad,localidad_id,superficie_ha",
+     "2012,Buenos Aires,06,Avellaneda,06035,Sarandí,06035010,1.03",
+     "2012,Buenos Aires,06,Avellaneda,06035,Villa Domínico,06035010,2.74",
+     "2012,Buenos Aires,06,Benito Juárez,06084,Barker,06084010,0.25",
+     "2012,Buenos Aires,06,Berisso,06098,Los Talas,06098010,0.07",
+     "2012,Buenos Aires,06,Berisso,06098,Berisso,06098010,11.35"
+    ],
+    "fin": [
+     "2024,Tucumán,90,Tafí del Valle,90098,Quilmes,90098A48,0.87",
+     "2024,Tucumán,90,Tafí Viejo,90105,Villa Las Flores,90105090,2.3",
+     "2024,Tucumán,90,Trancas,90112,Choromoro,90112010,1",
+     "2024,Tucumán,90,Trancas,90112,Villa de Trancas,90112030,4.55"
+    ]
+   },
+   "Superficie con viñedos 2024": {
+    "filas": 88307,
+    "cab": [
+     "anio,provincia,provincia_id,departamento,departamento_id,localidad,localidad_id,variedad,color,anio_plantacion,tipo_uva,sistema_conduccion,tipo_pie,pie,superficie_plantada",
+     "2024,Buenos Aires,06,Avellaneda,06035,Sarandí,06035010,Isabella,tinta,1896,sin tipo uva,espaldera alta,americano,si,1.0341",
+     "2024,Buenos Aires,06,Avellaneda,06035,Villa Domínico,06035010,Isabella,tinta,1956,sin tipo uva,espaldera alta,americano,si,0.7365",
+     "2024,Buenos Aires,06,Avellaneda,06035,Villa Domínico,06035010,Isabella,tinta,1970,sin tipo uva,espaldera alta,americano,si,2",
+     "2024,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Chardonnay,blanca,2013,fina,espaldera alta,americano,si,0.66",
+     "2024,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,Sauvignon Blanc,blanca,2021,fina,espaldera baja,americano,si,0.0704"
+    ],
+    "fin": [
+     "2024,Tucumán,90,Tafí Viejo,90105,Villa Las Flores,90105090,Merlot,tinta,2023,fina,espaldera baja,vinifera,si,0.26",
+     "2024,Tucumán,90,Trancas,90112,Choromoro,90112010,Malbec,tinta,2017,fina,espaldera baja,americano,si,1",
+     "2024,Tucumán,90,Trancas,90112,Villa de Trancas,90112030,Torrontes Riojano,blanca,2008,fina,espaldera baja,vinifera,si,4.05",
+     "2024,Tucumán,90,Trancas,90112,Villa de Trancas,90112030,Cabernet Sauvignon,tinta,2008,fina,espaldera baja,vinifera,si,0.5"
+    ]
+   },
+   "Superficie con viñedos 2025": {
+    "filas": 85741,
+    "cab": [
+     "anio,provincia,provincia_id,departamento,departamento_id,localidad,localidad_id,variedad,color,anio_plantacion,estado_variedad,tipo_uva,sistema_conduccion,tipo_pie,pie,superficie_plantada",
+     "2025,Buenos Aires,06,Adolfo Alsina,06007,Carhué,06007010,Cabernet Sauvignon,tinta,2021,productiva,fina,espaldera alta,americano,si,0.075",
+     "2025,Buenos Aires,06,Adolfo Alsina,06007,Carhué,06007010,Cabernet Sauvignon,tinta,2016,productiva,fina,espaldera alta,franco,si,0.3",
+     "2025,Buenos Aires,06,Adolfo Alsina,06007,Carhué,06007010,Merlot,tinta,2016,productiva,fina,espaldera alta,franco,si,0.3",
+     "2025,Buenos Aires,06,Adolfo Alsina,06007,Carhué,06007010,Merlot,tinta,2021,productiva,fina,espaldera alta,franco,si,0.075",
+     "2025,Buenos Aires,06,Adolfo Alsina,06007,Carhué,06007010,Malbec,tinta,2016,productiva,fina,espaldera alta,franco,si,0.12"
+    ],
+    "fin": [
+     "2025,Tucumán,90,Tafí Viejo,90105,Villa Las Flores,90105090,Chardonnay,blanca,2023,productiva,fina,espaldera baja,vinifera,si,0.7",
+     "2025,Tucumán,90,Trancas,90112,Choromoro,90112010,Malbec,tinta,2017,productiva,fina,espaldera baja,americano,si,1",
+     "2025,Tucumán,90,Trancas,90112,Villa de Trancas,90112030,Cabernet Sauvignon,tinta,2008,productiva,fina,espaldera baja,vinifera,si,0.5",
+     "2025,Tucumán,90,Trancas,90112,Villa de Trancas,90112030,Torrontes Riojano,blanca,2008,productiva,fina,espaldera baja,vinifera,si,4.05"
+    ]
+   }
+  }
+ },
+ "agroindustria-inv---elaboracion-mostos-vino": {
+  "title": "INV - Elaboración de mostos y vino",
+  "mod": "2026-03-27T15:58:44.414894",
+  "res": [
+   [
+    "Elaboración de mostos y vinos 2025",
+    "CSV",
+    "https://datos.magyp.gob.ar/dataset/f3b52a18-a717-426b-a4c4-029bd2c2a546/resource/02d02872-b37e-47a2-a7eb-ef593ad07db1/download/inv-elaboracion-mosto-vinos-2025.csv"
+   ],
+   [
+    "Anuario de cosecha y elaboración 2025",
+    "PDF",
+    "https://datos.magyp.gob.ar/dataset/f3b52a18-a717-426b-a4c4-029bd2c2a546/resource/beb31504-876d-4bf2-8d3c-55c58ccf775f/download/inv-anuario_cosecha_uvas_elaboracion_mosto_vinos_2025.pdf"
+   ]
+  ],
+  "muestras": {
+   "Elaboración de mostos y vinos 2025": {
+    "filas": 2166,
+    "cab": [
+     "anio,provincia,provincia_id,departamento,departamento_id,localidad,localidad_id,tipo_establecimiento,tipo_producto,codigo_producto,color,litros",
+     "2025,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,vino,vino tinto,tinto,12000",
+     "2025,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,mosto,mosto virgen de uva blanco,blanco,50",
+     "2025,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,vino,vino blanco,blanco,18000",
+     "2025,Buenos Aires,06,Balcarce,06063,Balcarce,06063010,bodega,vino,vino rosado,rosado,2300",
+     "2025,Buenos Aires,06,Cañuelas,06134,Cañuelas,06134030,bodega,vino,vino tinto,tinto,5700"
+    ],
+    "fin": [
+     "2025,Tucumán,90,Tafí del Valle,90098,Colalao del Valle,90098020,bodega,vino,vino regional tinto,tinto,20700",
+     "2025,Tucumán,90,Tafí del Valle,90098,Colalao del Valle,90098020,bodega,vino,vino rosado,rosado,225",
+     "2025,Tucumán,90,Tafí del Valle,90098,El Bañado,90098A12,bodega,vino,vino regional tinto,tinto,5960",
+     "2025,Tucumán,90,Tafí del Valle,90098,El Bañado,90098A12,bodega,vino,vino regional blanco,blanco,3500"
+    ]
+   }
+  }
+ }
+}
