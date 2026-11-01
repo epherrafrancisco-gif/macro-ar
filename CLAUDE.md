@@ -523,6 +523,22 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (IPC, REM, riesgo, reservas, TAMAR, plazo fijo, base, Merval con su fecha), calendario.json, global.json (monedas BCE y Tesoro).
   Commodities y bolsas del mundo: widgets market-quotes de TradingView con su atribución. Celdas titilan verde/rojo al cambiar.
 
+## Pulso Live (`/live/`, reels; pedido del dueño 27/10/2026, publicado 01/11/2026)
+- Feed vertical a pantalla completa de "reels" armados con datos reales (no tarjetas; Pulso Macro sigue igual). Página
+  `live/index.html` + `live/live.js` (los moldes: dólares, récords, brechas, riesgo y Merval, "hace N años", poder de compra,
+  inflación, acciones del día, "si ponías US$ 1.000", rankings, países, monedas, PBI desde 1990, crecimiento, Big Mac, bolsas,
+  bonos, commodities, trivia, agenda, noticias y **verdadero o falso** (`mold: 'vf'`, pedido del dueño: muchos, y al votar se
+  muestra la respuesta correcta). Orden al azar pesado por interés con cuota por tema (`CUOTA`), sin repetir molde seguido; el
+  primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir = imagen 1080×1920 (descargar o
+  `navigator.share`). "Ver más" lleva a la sección del sitio (`go`).
+- Datos: `live/datos.json` (~1 MB, ~290 KB comprimido) y `live/portada.json` (6 miniaturas de la entrada) de
+  `scripts/live.py`, que solo lee los JSON del repo. Workflow `live.yml`: al terminar Actualizar datos, Global, Historia o
+  Noticias, y 00:50 ART. Acciones: solo con nombre, operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 %
+  (un precio roto da un "si ponías…" falso). Monedas: un día sí y otro no (achica el archivo).
+- Entrada en Inicio: bloque `#pLive` arriba de "¿Qué querés ver?" (compu) / arriba de `#mTg` (celular), versión chica
+  aprobada (que se siga viendo "¿Qué querés ver?"); botón "Ver reels" `.plgo` achicado el 01/11/2026 (pedido del dueño).
+  Miniaturas `#plRow` desde `live/portada.json`. Bandera argentina para los reels: `vendor/flags/ar.svg`.
+
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):
   - `diario`: `fecha`, `oficial {c,v}`, `blue {c,v}`, `mep {v}`, `ccl {v}`, `mayorista {v}`, `cripto {c,v}`,

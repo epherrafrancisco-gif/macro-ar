@@ -140,6 +140,44 @@
 .novex:hover{background:#ffffff14;color:#fff}
 @keyframes noveIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.nove{left:14px;right:14px;width:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+
+/* Pulso Live: entrada en la portada (maqueta aprobada 27/10/2026, versión chica; botón achicado 01/11/2026) */
+.plive{display:grid;gap:20px;align-items:center;margin:0 0 18px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;
+  background:radial-gradient(80% 140% at 0% 0%,#6aa8d81f,transparent 60%),radial-gradient(60% 120% at 100% 100%,#d5518114,transparent 60%),var(--surface);overflow:hidden}
+@media (min-width:901px){.plive{grid-template-columns:minmax(0,260px) minmax(0,1fr)}}
+.pltx{display:grid;gap:7px;justify-items:start}
+.plb{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#bfe9d3}
+.plb i{width:7px;height:7px;border-radius:50%;background:#2fbf7a;animation:plLat 1.8s infinite}
+.plb span{color:#0e1319;background:#6aa8d8;border-radius:4px;padding:1px 5px;font-size:10px;letter-spacing:.06em}
+@keyframes plLat{0%{box-shadow:0 0 0 0 #2fbf7a88}70%{box-shadow:0 0 0 7px #2fbf7a00}100%{box-shadow:0 0 0 0 #2fbf7a00}}
+.pltx h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.pltx p{margin:0;color:var(--ink2);font-size:13.5px;line-height:1.45}
+.plgo{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:6px 13px;border-radius:999px;background:#6aa8d8;color:#0e1319;font:600 13px/1 var(--sans,inherit);text-decoration:none}
+.plgo svg{width:11px;height:11px}
+.pln{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.plrow{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:2px;mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.plrow:empty{display:none}
+.plrow::-webkit-scrollbar{display:none}
+.plt{position:relative;flex:none;width:112px;aspect-ratio:9/16;border-radius:10px;border:1px solid #ffffff1a;padding:9px 8px;text-align:left;color:inherit;text-decoration:none;
+  display:flex;flex-direction:column;gap:5px;background:radial-gradient(120% 60% at 50% 0%,color-mix(in srgb,var(--k) 30%,transparent),transparent 70%),#0e1319;transition:transform .2s,border-color .2s}
+.plt:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--k) 70%,transparent)}
+.plk{font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;color:var(--k)}
+.plh{font-size:11px;line-height:1.25;font-weight:600;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.plt b{font-family:var(--mono);font-weight:500;font-size:15px;letter-spacing:-.02em}
+.plt svg{width:100%;height:24px;margin-top:auto;fill:none;stroke-width:1.6}
+.plt svg path{vector-effect:non-scaling-stroke}
+.plq{display:grid;gap:5px;margin-top:auto}.plq i{height:11px;border-radius:5px;border:1px solid #ffffff26}
+.plvf{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:auto;margin-right:24px}.plvf i{height:14px;border-radius:4px;border:1px solid #ffffff26;font:normal 7px/14px var(--mono);text-align:center;color:var(--muted)}
+.plp{position:absolute;right:6px;bottom:6px;width:20px;height:20px;border-radius:50%;background:#0e1319cc;border:1px solid #ffffff33;display:grid;place-items:center}
+.plp svg{width:9px;height:9px;margin:0}
+@media (max-width:900px){.plive{gap:14px}}
+@media (max-width:640px){
+  .plive{margin:12px 0 0;padding:11px 0 11px 12px;border-radius:12px;gap:8px}
+  .pltx{grid-template-columns:1fr auto;align-items:center;padding-right:12px;gap:4px 10px}
+  .pltx .plb{grid-column:1}.pltx h2{grid-column:1;font-size:16px}.pltx p,.pln{display:none}
+  .plgo{grid-column:2;grid-row:1/3;margin:0;padding:5px 10px;font-size:12px}
+  .plt{width:86px;padding:7px 6px}.plk{font-size:6.5px}.plh{font-size:9.5px}.plt b{font-size:12px}.plt svg{height:18px}
+}
 </style>
 </head>
 <body>
@@ -915,6 +953,16 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
+    <section class="plive" id="pLive" aria-label="Pulso Live: reels de la economía">
+      <div class="pltx">
+        <div class="plb"><i></i>PULSO LIVE <span>NUEVO</span></div>
+        <h2>Reels de la economía</h2>
+        <p>Datos reales de Argentina y el mundo, uno atrás de otro. Deslizás y aparece el siguiente.</p>
+        <a class="plgo" href="/live/"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Ver reels</a>
+        <span class="pln">Cientos de reels · se renuevan todo el día</span>
+      </div>
+      <div class="plrow" id="plRow"></div>
+    </section>
     <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá cualquier dato: dólar blue, inflación, plazo fijo, Polonia…</span></button><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button></div></div>
     <div class="mporta-m"><div class="mbig" id="mHoy" hidden></div><!-- "Los datos del día" sacado del celular (pedido del dueño, 26/10/2026) -->
       <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-d="gl" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button></div></div>
@@ -8792,5 +8840,24 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 })();
 </script>
 
+<script>
+/* Pulso Live: miniaturas de la entrada en la portada (live/portada.json, lo arma scripts/live.py) */
+(function(){
+  const row = document.getElementById('plRow'); if (!row) return;
+  const CC = {arg:'#6aa8d8', mer:'#d95926', mun:'#199e70', his:'#c98500', tri:'#d55181'};
+  const e = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  fetch('/live/portada.json?t=' + Math.floor(Date.now() / 60000)).then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !d.th) return;
+    row.innerHTML = d.th.map(x => {
+      const col = CC[x.c] || '#6aa8d8';
+      let viz = '';
+      if (x.l === 'Q') viz = '<span class="plq"><i></i><i></i><i></i></span>';
+      else if (x.l === 'VF') viz = '<span class="plvf"><i>V</i><i>F</i></span>';
+      else if (x.l) viz = '<svg viewBox="0 0 90 36" preserveAspectRatio="none">' + x.l.split('|').map((p, j) => `<path d="${e(p)}" stroke="${j ? '#3987e5' : col}"/>`).join('') + '</svg>';
+      return `<a class="plt" href="/live/" style="--k:${col}"><span class="plk">${e(x.k)}</span><span class="plh">${e(x.t)}</span>${x.b ? `<b>${e(x.b)}</b>` : ''}${viz}<span class="plp"><svg viewBox="0 0 16 16"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg></span></a>`;
+    }).join('');
+  }).catch(() => {});
+})();
+</script>
 </body>
 </html>

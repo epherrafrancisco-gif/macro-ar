@@ -1,0 +1,52 @@
+name: Pulso Live
+
+# Arma live/datos.json (los datos de los reels de /live/) cada vez que termina otro robot,
+# así los reels siempre usan lo último. Solo lee los JSON del repo.
+on:
+  workflow_run:
+    workflows: ["Actualizar datos", "Global", "Historia", "Noticias"]
+    types: [completed]
+  schedule:
+    - cron: "50 3 * * *"   # 00:50 ART, por si algo se perdió
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/live.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Armar los datos de los reels
+        run: python scripts/live.py
+
+      - name: Guardar cambios
+        run: |
+          git add live/datos.json live/portada.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Pulso Live: datos de los reels"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            sleep 5
+          done
+          exit 1
