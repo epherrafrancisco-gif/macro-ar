@@ -224,7 +224,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
   `h3#legal` + `details.legal` desplegable. El link del pie (`[data-legal]`) abre Sobre, despliega y baja hasta ahí.
   `legal/index.html` solo redirige a `/#sobre` (noindex). Incluye cómo pedir corrección o retiro de un dato.
-- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Contacto: arriba (junto a la foto) primero el mail
+- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Sin foto del dueño (la sacó el 01/11/2026; `foto.jpg` borrado). Contacto: arriba primero el mail
   y después LinkedIn; en "Aclaraciones" y el resto de los avisos, solo el mail y siempre en tercera persona (nunca "escribime").
 
 ### Apartados dentro de Mundo y Estados Unidos
@@ -555,9 +555,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Orden al azar pesado por interés; el primero siempre de Argentina. Pedido del dueño 01/11/2026: que nadie vea la misma dos veces.
   Memoria `pl-vistas2` por TEXTO de la pregunta (hash base 36 → día, 180 días; si se llena localStorage se olvidan las más viejas), se marca
   a los 1,2 s en pantalla o al responder, y las vistas no vuelven nunca (antes `pl-vistos`, 7 días, por id). Para que haya miles nuevas en
-  cada visita, el bloque "miles de preguntas nuevas" arma ventanas de fechas al azar sobre `his` (A vs B entre dos fechas, "si ponías
-  US$ 1.000 el … y vendías el …", un mes en dólares o contra el Merval, el MEP de un día) y meses al azar del dólar real y la inflación:
-  ~5.500 por visita, casi todas distintas de la anterior. Compartir =
+  cada visita, el bloque "miles de preguntas nuevas" usa períodos que la gente recuerda (cada año, cada semestre, "desde <mes> hasta
+  hoy") sobre `his` (A vs B, subió en dólares, contra el Merval, "si ponías US$ 1.000 a principios de <mes>") y meses lejanos del dólar
+  real y la inflación: ~4.800 por visita. Pedido del dueño 01/11/2026: que se puedan SABER: nada de fechas exactas ni datos de un día
+  (el MEP del 14/03), y todas con diferencias grandes (acciones ≥25 pp entre sí, inflación entre países ≥1,5 pp, Big Mac ≥US$ 0,6,
+  dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,

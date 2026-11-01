@@ -182,7 +182,7 @@ for (const [pk, dias, pn, pfr] of PER.slice(0, 4)) for (const uni of ['acc', 'ce
     const ks = Object.keys(res);
     for (let n = 0; n < 45; n++) {
       const a = ks[Math.floor(rnd() * ks.length)], b = ks[Math.floor(rnd() * ks.length)];
-      if (a === b || Math.abs(res[a] - res[b]) < 4) continue;
+      if (a === b || Math.abs(res[a] - res[b]) < (dias < 100 ? 12 : 25)) continue;
       const id = `tvs-${[a, b].sort().join('-')}-${pk}`, ok = res[a] > res[b] ? a : b;
       add({id, cat: 'tri', mold: 'tvs', key: a, kick: 'Trivia · ¿Qué rindió más?', score: .55 + rnd() * .3,
         title: `¿Qué rindió más en dólares ${pfr}?`, viz: {t: 'quiz', opts: [a, b].map(x => ({l: NOMA(x), fl: P.his.acc[x].t === 'ced' ? null : 'ar', ok: x === ok, txt: fP(res[x])})),
@@ -361,32 +361,32 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
   for (let n = 0; n < 400; n++) {
     const a = conI[Math.floor(rnd() * conI.length)], b = conI[Math.floor(rnd() * conI.length)];
-    if (a === b || Math.abs(a.infl[1] - b.infl[1]) < .4) continue;
+    if (a === b || Math.abs(a.infl[1] - b.infl[1]) < 1.5) continue;
     vf('inf-' + a.k + '-' + b.k, a.k, a.fl, 'Inflación', `En ${a.n} los precios suben más rápido que en ${b.n}`, a.infl[1] > b.infl[1],
       `${a.n}: ${fN(a.infl[1], 1)}% en 12 meses. ${b.n}: ${fN(b.infl[1], 1)}%.`, 'Fuentes: BIS y bancos centrales.', ['global', 'Ver el comparador de países']);
   }
   // tasas de los bancos centrales
   const conT = Object.values(P.paises).filter(o => o.tasa != null && o.k !== 'eeuu');
   const eu = P.paises.eeuu;
-  for (const o of conT) if (eu && eu.tasa != null && Math.abs(o.tasa - eu.tasa) >= .25)
+  for (const o of conT) if (eu && eu.tasa != null && Math.abs(o.tasa - eu.tasa) >= 1)
     vf('tas-us-' + o.k, o.k, o.fl, 'Tasas', `El banco central de ${o.n} tiene la tasa más alta que la Fed`, o.tasa > eu.tasa,
       `${o.n}: ${fN(o.tasa, 2)}%. Estados Unidos: ${fN(eu.tasa - .125, 2)}–${fN(eu.tasa + .125, 2)}%.`, 'Fuente: BIS.', [o.k, 'Ver ' + o.n]);
   // inflación real: ¿la tasa le gana a los precios?
-  for (const o of conT) if (o.infl && Math.abs(o.tasa - o.infl[1]) >= .3)
+  for (const o of conT) if (o.infl && Math.abs(o.tasa - o.infl[1]) >= 1)
     vf('treal-' + o.k, o.k, o.fl, 'Tasas', `En ${o.n}, la tasa del banco central le gana a la inflación`, o.tasa > o.infl[1],
       `Tasa: ${fN(o.tasa, 2)}%. Inflación de 12 meses: ${fN(o.infl[1], 1)}%. ${o.tasa > o.infl[1] ? 'La tasa real es positiva: ahorrar en esa moneda rinde.' : 'La tasa real es negativa: el ahorro pierde contra los precios.'}`, 'Fuentes: BIS y bancos centrales.', [o.k, 'Ver ' + o.n]);
   // desempleo
   const conD = Object.values(P.paises).filter(o => o.desemp);
   for (let n = 0; n < 30; n++) {
     const a = conD[Math.floor(rnd() * conD.length)], b = conD[Math.floor(rnd() * conD.length)];
-    if (a === b || Math.abs(a.desemp[1] - b.desemp[1]) < .4) continue;
+    if (a === b || Math.abs(a.desemp[1] - b.desemp[1]) < 1.5) continue;
     vf('des-' + a.k + '-' + b.k, a.k, a.fl, 'Desempleo', `Hay más desempleo en ${a.n} que en ${b.n}`, a.desemp[1] > b.desemp[1],
       `${a.n}: ${fN(a.desemp[1], 1)}%. ${b.n}: ${fN(b.desemp[1], 1)}%.`, 'Fuentes: OCDE y bancos centrales.', ['global', 'Ver el comparador de países']);
   }
   // Big Mac contra Argentina
   if (BA) for (const iso in BM) {
     if (iso === 'ARG' || !ISO[iso]) continue; const o = ISO[iso], b = BM[iso];
-    if (Math.abs(b.usd - BA.usd) < .1) continue;
+    if (Math.abs(b.usd - BA.usd) < .5) continue;
     vf('bm-' + iso, o.k, o.fl, 'Big Mac', `En dólares, un Big Mac sale más barato en Argentina que en ${o.n}`, BA.usd < b.usd,
       `Argentina: US$ ${fN(BA.usd, 2)}. ${o.n}: US$ ${fN(b.usd, 2)}.`, 'Fuente: The Economist' + BMF + '.', [o.k, 'Ver ' + o.n]);
   }
@@ -395,9 +395,9 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     if (iso === 'ARG' || !ISO[iso]) continue; const o = ISO[iso], s2 = PPA[iso];
     const a0 = ARP.find(z => z[0] === s2[0][0]); if (!a0) continue;
     const y0 = s2[0][0], ar0 = a0[1], ot0 = s2[0][1], aN = ult(ARP), oN = s2.find(z => z[0] === aN[0]);
-    if (Math.abs(ar0 / ot0 - 1) > .04) vf('ppa0-' + iso, o.k, o.fl, 'Historia', `En ${y0}, Argentina producía más por habitante que ${o.n}`, ar0 > ot0,
+    if (Math.abs(ar0 / ot0 - 1) > .15) vf('ppa0-' + iso, o.k, o.fl, 'Historia', `En ${y0}, Argentina producía más por habitante que ${o.n}`, ar0 > ot0,
       `Argentina: US$ ${fN(ar0)} por habitante. ${o.n}: US$ ${fN(ot0)} (a paridad de poder de compra, en dólares de hoy).`, 'Fuente: Banco Mundial.', [o.k, 'Ver ' + o.n]);
-    if (oN && Math.abs(aN[1] / oN[1] - 1) > .04) vf('ppa1-' + iso, o.k, o.fl, 'Hoy', `Hoy, Argentina produce más por habitante que ${o.n}`, aN[1] > oN[1],
+    if (oN && Math.abs(aN[1] / oN[1] - 1) > .15) vf('ppa1-' + iso, o.k, o.fl, 'Hoy', `Hoy, Argentina produce más por habitante que ${o.n}`, aN[1] > oN[1],
       `${aN[0]}: Argentina US$ ${fN(aN[1])} por habitante, ${o.n} US$ ${fN(oN[1])} (a paridad de poder de compra).`, 'Fuente: Banco Mundial.', [o.k, 'Ver ' + o.n]);
   }
   // crecimiento en la última década
@@ -431,35 +431,35 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     const ks = Object.keys(res).filter(k => k !== 'MERVAL');
     for (let n = 0; n < 160; n++) {
       const a = ks[Math.floor(rnd() * ks.length)], b = ks[Math.floor(rnd() * ks.length)];
-      if (a === b || Math.abs(res[a] - res[b]) < 4) continue;
+      if (a === b || Math.abs(res[a] - res[b]) < (dias < 100 ? 12 : 25)) continue;
       vf(`acc-${a}-${b}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `${NOMA(a)} rindió más que ${NOMA(b)} ${pfr}, en dólares`, res[a] > res[b],
         `${NOMA(a)}: ${fP(res[a])}. ${NOMA(b)}: ${fP(res[b])}. En dólares MEP.`, 'Precios de BYMA y dólar MEP.', ['calculadoras', 'Probalo en el simulador']);
     }
     // ¿le ganó al dólar? (rendimiento en dólares positivo)
     for (const a of ks) {
-      if (Math.abs(res[a]) < 3) continue;
+      if (Math.abs(res[a]) < (dias < 100 ? 6 : 12)) continue;
       vf(`accd-${a}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `Quien compró ${NOMA(a)} hace ${pn} hoy tiene más dólares que antes`, res[a] > 0,
         `${fP(res[a])} en dólares MEP: US$ 1.000 pasaron a US$ ${fN(1000 * (1 + res[a] / 100))}.`, 'Precios de BYMA y dólar MEP.', ['calculadoras', 'Probalo en el simulador']);
       // "si hubieras invertido": ¿hoy tendrías más de X?
-      const fin = 1000 * (1 + res[a] / 100), umb = [1100, 1250, 1500, 2000, 900, 750, 500].map(u => u).filter(u => Math.abs(fin / u - 1) > .06);
+      const fin = 1000 * (1 + res[a] / 100), umb = [1100, 1250, 1500, 2000, 900, 750, 500].map(u => u).filter(u => Math.abs(fin / u - 1) > .2);
       if (umb.length) { const u = umb[Math.floor(rnd() * umb.length)];
         vf(`si-${a}-${pk}-${u}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Si hubieras invertido', `Si ponías US$ 1.000 en ${NOMA(a)} hace ${pn}, hoy tendrías más de US$ ${fN(u)}`, fin > u,
           `Hoy tendrías US$ ${fN(fin)} (${fP(res[a])} en dólares MEP).`, 'Comprando en pesos al MEP de ese día y vendiendo al MEP de hoy. Precios de BYMA.', ['calculadoras', 'Probalo en el simulador']); }
       // ¿le ganó al Merval?
-      if (MV && res[MV] != null && Math.abs(res[a] - res[MV]) >= 3)
+      if (MV && res[MV] != null && Math.abs(res[a] - res[MV]) >= (dias < 100 ? 8 : 15))
         vf(`mv-${a}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `${NOMA(a)} le ganó al Merval ${pfr}, en dólares`, res[a] > res[MV],
           `${NOMA(a)}: ${fP(res[a])}. Merval: ${fP(res[MV])}. En dólares MEP.`, 'Precios de BYMA y dólar MEP.', ['mercado', 'Ver Bolsa y bonos']);
     }
   }
   // inflación de un país contra un número
-  for (const o of conI) for (const u of [2, 3, 5, 10, 20]) if (Math.abs(o.infl[1] - u) >= .4)
+  for (const o of conI) for (const u of [2, 3, 5, 10, 20]) if (Math.abs(o.infl[1] - u) >= Math.max(1, u * .3))
     vf(`infu-${o.k}-${u}`, o.k, o.fl, 'Inflación', `En ${o.n}, los precios subieron más del ${u}% en el último año`, o.infl[1] > u,
       `${o.n}: ${fN(o.infl[1], 1)}% en 12 meses, a ${fMes(o.infl[0])}.`, 'Fuentes: BIS y bancos centrales.', [o.k, 'Ver ' + o.n]);
   // Big Mac entre países
   const bmK = Object.keys(BM).filter(i => ISO[i] && i !== 'ARG');
   for (let n = 0; n < 250; n++) {
     const a = bmK[Math.floor(rnd() * bmK.length)], b = bmK[Math.floor(rnd() * bmK.length)];
-    if (a === b || Math.abs(BM[a].usd - BM[b].usd) < .15) continue;
+    if (a === b || Math.abs(BM[a].usd - BM[b].usd) < .6) continue;
     vf(`bm2-${a}-${b}`, ISO[a].k, ISO[a].fl, 'Big Mac', `En dólares, un Big Mac es más caro en ${ISO[a].n} que en ${ISO[b].n}`, BM[a].usd > BM[b].usd,
       `${ISO[a].n}: US$ ${fN(BM[a].usd, 2)}. ${ISO[b].n}: US$ ${fN(BM[b].usd, 2)}.`, 'Fuente: The Economist' + BMF + '.', ['global', 'Ver el mundo']);
   }
@@ -467,12 +467,12 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   const ppK = Object.keys(PPA).filter(i => ISO[i] && i !== 'ARG' && PPA[i].length);
   for (let n = 0; n < 250; n++) {
     const a = ppK[Math.floor(rnd() * ppK.length)], b = ppK[Math.floor(rnd() * ppK.length)]; if (a === b) continue;
-    const va = ult(PPA[a]), vb = PPA[b].find(z => z[0] === va[0]); if (!vb || Math.abs(va[1] / vb[1] - 1) < .05) continue;
+    const va = ult(PPA[a]), vb = PPA[b].find(z => z[0] === va[0]); if (!vb || Math.abs(va[1] / vb[1] - 1) < .2) continue;
     vf(`pp2-${a}-${b}`, ISO[a].k, ISO[a].fl, 'Riqueza', `Por habitante, ${ISO[a].n} produce más que ${ISO[b].n}`, va[1] > vb[1],
       `${va[0]}: ${ISO[a].n} US$ ${fN(va[1])}, ${ISO[b].n} US$ ${fN(vb[1])} por habitante (a paridad de poder de compra).`, 'Fuente: Banco Mundial.', [ISO[a].k, 'Ver ' + ISO[a].n]);
   }
   // inflación mensual de Argentina en la historia reciente
-  for (const [m, v] of A.infl.slice(-24)) for (const u of [1.5, 2, 2.5, 3, 4]) if (Math.abs(v - u) >= .2)
+  for (const [m, v] of A.infl.slice(-24)) for (const u of [1.5, 2, 2.5, 3, 4]) if (Math.abs(v - u) >= .7)
     vf(`ia-${m}-${u}`, 'ia' + m, 'ar', 'Inflación', `En ${fMes(m)}, la inflación en Argentina fue mayor al ${fN(u, 1)}%`, v > u,
       `Fue ${fN(v, 1)}% en el mes.`, 'Fuente: INDEC, vía BCRA.', ['macro', 'Ver inflación y reservas']);
   // dólar de hoy contra el de otros años, a precios de hoy
@@ -480,7 +480,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   for (const anios of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
     const mesA = (+mesHoy.slice(0, 4) - anios) + mesHoy.slice(4), r = H.find(x => x[0] === mesA); if (!r || !r[5]) continue;
     for (const [c, k, art] of [[2, 'blue', 'el blue'], [3, 'mep', 'el MEP'], [1, 'oficial', 'el oficial']]) {
-      if (!r[c]) continue; const hoy = ult(A[k])[1], real = r[c] * cerHoy / r[5]; if (Math.abs(hoy / real - 1) < .03) continue;
+      if (!r[c]) continue; const hoy = ult(A[k])[1], real = r[c] * cerHoy / r[5]; if (Math.abs(hoy / real - 1) < .15) continue;
       vf(`real-${k}-${anios}`, k + anios, 'ar', 'Dólar', `Descontando la inflación, ${art} de hoy está más caro que en ${fMes(mesA)}`, hoy > real,
         `En ${fMes(mesA)} valía $ ${fA(r[c])}, que a precios de hoy son $ ${fA(real)}. Hoy está en $ ${fA(hoy)}.`, 'Promedio mensual; inflación medida con el CER del BCRA.', ['dolares', 'Ver el dólar a precios de hoy']);
     }
@@ -489,66 +489,64 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   const ofi = ult(A.oficial)[1];
   for (const [k, n] of [['blue', 'blue'], ['mep', 'MEP'], ['ccl', 'contado con liqui'], ['tarjeta', 'tarjeta'], ['cripto', 'cripto']]) {
     if (!A[k] || !A[k].length) continue; const b = (ult(A[k])[1] / ofi - 1) * 100; const umb = [5, 10, 20, 30][Math.floor(rnd() * 4)];
-    if (Math.abs(b - umb) < 1.5) continue;
+    if (Math.abs(b - umb) < 4) continue;
     vf(`bre-${k}-${umb}-${ult(A[k])[0]}`, 'brecha', 'ar', 'Dólar', `La brecha entre el dólar ${n} y el oficial supera el ${umb}%`, b > umb,
       `El ${n} cerró en $ ${fN(ult(A[k])[1], 2)} y el oficial en $ ${fN(ofi, 2)}: brecha de ${fP(b)}.`, `Cotizaciones del ${fFe(ult(A[k])[0])}.`, ['dolares', 'Ver los dólares']);
   }
 }
 
 // ---------- miles de preguntas nuevas en cada visita (pedido del dueño 01/11/2026: que nadie vea la misma dos veces) ----------
-// Ventanas de fechas elegidas al azar sobre la historia diaria de BYMA y la mensual del dólar: cada visita arma otras.
+// Pedido del dueño 01/11/2026: que se puedan SABER (nada de "el MEP del 14/03" o "entre el 03/02 y el 18/09"): períodos que
+// la gente recuerda (un año calendario, un semestre, desde un mes hasta hoy) y diferencias grandes, que se deducen sabiendo
+// cómo le fue a cada empresa o a la economía.
 {
   const tks = Object.keys(P.his.acc).filter(k => k !== 'MERVAL'), N = HF.length, MV = P.his.acc.MERVAL ? 'MERVAL' : null;
   const fl = a => P.his.acc[a].t === 'ced' ? null : 'ar';
   const ok = (tk, i, paso) => { for (let k = 0; k < 6 && i >= 0 && i < N; k++, i += paso) if (usd(tk, i)) return i; return -1; };
-  const rinde = (tk, i0, i1) => { const a = ok(tk, i0, 1), b = ok(tk, i1, -1); if (a < 0 || b <= a) return null; return {r: (usd(tk, b) / usd(tk, a) - 1) * 100, f0: HF[a], f1: HF[b]}; };
-  const al = () => { const i0 = Math.floor(rnd() * (N - 30)), i1 = i0 + 20 + Math.floor(rnd() * (N - 1 - i0 - 20)); return [i0, Math.min(N - 1, i1)]; };
-  const tk = () => tks[Math.floor(rnd() * tks.length)];
+  const rinde = (tk, i0, i1) => { const a = ok(tk, i0, 1), b = ok(tk, i1, -1); if (a < 0 || b <= a) return null; return {r: (usd(tk, b) / usd(tk, a) - 1) * 100}; };
   const SIM = ['calculadoras', 'Probalo en el simulador'], SRC = 'Precios de BYMA y dólar MEP.';
-  // A rindió más que B entre dos fechas
+  const PERS = [], mesesH = [...new Set(HF.map(f => f.slice(0, 7)))], iMes = m => HF.findIndex(f => f.slice(0, 7) >= m);
+  const ultIdx = m => { let r = -1; HF.forEach((f, i) => { if (f.slice(0, 7) <= m) r = i; }); return r; };
+  for (const y of [...new Set(HF.map(f => f.slice(0, 4)))]) {
+    if (HF[0] <= y + '-01-05' && HF[N - 1] >= y + '-12-25') PERS.push([`en ${y}`, iMes(y + '-01') - 1, ultIdx(y + '-12'), 'y' + y]);
+    for (const [s0, s1, nm] of [['01', '06', 'el primer semestre'], ['07', '12', 'el segundo semestre']])
+      if (HF[0] <= `${y}-${s0}-05` && HF[N - 1] >= `${y}-${s1}-25`) PERS.push([`en ${nm} de ${y}`, iMes(`${y}-${s0}`) - 1, ultIdx(`${y}-${s1}`), 's' + y + s0]);
+  }
+  for (const m of mesesH.slice(1, -6)) PERS.push([`desde ${fMes(m)} hasta hoy`, iMes(m), N - 1, 'd' + m]);
+  for (const p of PERS) p[1] = Math.max(0, p[1]);
+  const per = () => PERS[Math.floor(rnd() * PERS.length)], tk = () => tks[Math.floor(rnd() * tks.length)];
+  const may = t => t.charAt(0).toUpperCase() + t.slice(1);
+  for (let n = 0; n < 1500; n++) {
+    const a = tk(), b = tk(); if (a === b) continue; const [pn, i0, i1, pk] = per();
+    const ra = rinde(a, i0, i1), rb = rinde(b, i0, i1); if (!ra || !rb || Math.abs(ra.r - rb.r) < 25) continue;
+    vf(`p-${a}-${b}-${pk}`, a, fl(a), 'Acciones', `${may(pn)}, ${NOMA(a)} rindió más que ${NOMA(b)} en dólares`, ra.r > rb.r,
+      `${NOMA(a)}: ${fP(ra.r)}. ${NOMA(b)}: ${fP(rb.r)}. En dólares MEP, ${pn}.`, SRC, SIM);
+  }
+  for (let n = 0; n < 1200; n++) {
+    const a = tk(), [pn, i0, i1, pk] = per(), r = rinde(a, i0, i1); if (!r) continue;
+    if (rnd() < .5) { if (Math.abs(r.r) >= 15) vf(`p-sub-${a}-${pk}`, a, fl(a), 'Acciones', `${may(pn)}, ${NOMA(a)} subió en dólares`, r.r > 0, `${fP(r.r)} en dólares MEP, ${pn}.`, SRC, SIM); }
+    else if (MV) { const rm = rinde(MV, i0, i1); if (rm && Math.abs(r.r - rm.r) >= 20)
+      vf(`p-mv-${a}-${pk}`, a, fl(a), 'Acciones', `${may(pn)}, ${NOMA(a)} le ganó al Merval en dólares`, r.r > rm.r, `${NOMA(a)}: ${fP(r.r)}. Merval: ${fP(rm.r)}. En dólares MEP, ${pn}.`, SRC, ['mercado', 'Ver Bolsa y bonos']); }
+  }
   for (let n = 0; n < 900; n++) {
-    const a = tk(), b = tk(); if (a === b) continue; const [i0, i1] = al();
-    const ra = rinde(a, i0, i1), rb = rinde(b, i0, i1); if (!ra || !rb || ra.f0 !== rb.f0 || ra.f1 !== rb.f1 || Math.abs(ra.r - rb.r) < 5) continue;
-    vf(`w-${a}-${b}-${ra.f0}-${ra.f1}`, a, fl(a), 'Acciones', `Entre el ${fFe(ra.f0)} y el ${fFe(ra.f1)}, ${NOMA(a)} rindió más que ${NOMA(b)} en dólares`, ra.r > rb.r,
-      `${NOMA(a)}: ${fP(ra.r)}. ${NOMA(b)}: ${fP(rb.r)}. En dólares MEP, entre esas dos fechas.`, SRC, SIM);
-  }
-  // si ponías US$ 1.000 en una fecha y vendías en otra
-  for (let n = 0; n < 700; n++) {
-    const a = tk(), [i0, i1] = al(), r = rinde(a, i0, i1); if (!r) continue;
-    const fin = 1000 * (1 + r.r / 100), us = [600, 750, 900, 1100, 1250, 1500, 2000, 3000].filter(u => Math.abs(fin / u - 1) > .07); if (!us.length) continue;
+    const a = tk(), m = mesesH[1 + Math.floor(rnd() * (mesesH.length - 7))], r = rinde(a, iMes(m), N - 1); if (!r) continue;
+    const fin = 1000 * (1 + r.r / 100), us = [500, 750, 1000, 1500, 2000, 3000].filter(u => Math.abs(fin / u - 1) > .25); if (!us.length) continue;
     const u = us[Math.floor(rnd() * us.length)];
-    vf(`w-si-${a}-${r.f0}-${r.f1}-${u}`, a, fl(a), 'Si hubieras invertido', `Si ponías US$ 1.000 en ${NOMA(a)} el ${fFe(r.f0)} y vendías el ${fFe(r.f1)}, te quedaban más de US$ ${fN(u)}`, fin > u,
-      `Te quedaban US$ ${fN(fin)} (${fP(r.r)} en dólares MEP).`, 'Comprando en pesos al MEP de ese día y vendiendo al MEP del día de venta. Precios de BYMA.', SIM);
+    vf(`p-si-${a}-${m}-${u}`, a, fl(a), 'Si hubieras invertido', `Si ponías US$ 1.000 en ${NOMA(a)} a principios de ${fMes(m)}, hoy tendrías más de US$ ${fN(u)}`, fin > u,
+      `Hoy tendrías US$ ${fN(fin)} (${fP(r.r)} en dólares MEP).`, 'Comprando en pesos al MEP de ese día y vendiendo al MEP de hoy. Precios de BYMA.', SIM);
   }
-  // en un mes: ¿subió en dólares? / ¿le ganó al Merval?
-  const meses = [...new Set(HF.map(f => f.slice(0, 7)))].slice(1, -1);
-  const rangoMes = m => { const i0 = HF.findIndex(f => f.slice(0, 7) === m), i1 = HF.findLastIndex(f => f.slice(0, 7) === m); return [Math.max(0, i0 - 1), i1]; };
-  for (let n = 0; n < 700; n++) {
-    const a = tk(), m = meses[Math.floor(rnd() * meses.length)], [i0, i1] = rangoMes(m), r = rinde(a, i0, i1); if (!r || Math.abs(r.r) < 3) continue;
-    if (rnd() < .5) vf(`w-mes-${a}-${m}`, a, fl(a), 'Acciones', `En ${fMes(m)}, ${NOMA(a)} subió en dólares`, r.r > 0, `${fP(r.r)} en dólares MEP en ${fMes(m)}.`, SRC, SIM);
-    else if (MV) { const rm = rinde(MV, i0, i1); if (rm && Math.abs(r.r - rm.r) >= 3)
-      vf(`w-mv-${a}-${m}`, a, fl(a), 'Acciones', `En ${fMes(m)}, ${NOMA(a)} le ganó al Merval en dólares`, r.r > rm.r, `${NOMA(a)}: ${fP(r.r)}. Merval: ${fP(rm.r)}. En dólares MEP, en ${fMes(m)}.`, SRC, ['mercado', 'Ver Bolsa y bonos']); }
-  }
-  // el dólar MEP en una fecha
-  for (let n = 0; n < 250; n++) {
-    const i = Math.floor(rnd() * N), m = HM[i]; if (!m) continue;
-    const us = [900, 1000, 1100, 1200, 1300, 1400, 1500, 1600].filter(u => Math.abs(m / u - 1) > .03); if (!us.length) continue; const u = us[Math.floor(rnd() * us.length)];
-    vf(`w-mep-${HF[i]}-${u}`, 'mep' + HF[i], 'ar', 'Dólar', `El ${fFe(HF[i])}, el dólar MEP estaba arriba de $ ${fN(u)}`, m > u, `Cerró en $ ${fN(m)}.`, 'Dólar MEP calculado con bonos AL30 / AL30D de BYMA.', ['dolares', 'Ver los dólares']);
-  }
-  // dólares de dos meses distintos, a precios de hoy
   const H = A.hist.filter(x => x[5]), cerH = ult(H)[5];
-  for (let n = 0; n < 500; n++) {
-    const x = H[Math.floor(rnd() * (H.length - 1))], y = H[Math.floor(rnd() * (H.length - 1))]; if (x[0] >= y[0]) continue;
+  for (let n = 0; n < 600; n++) {
+    const i = Math.floor(rnd() * (H.length - 1)), j = Math.floor(rnd() * (H.length - 1)); if (j - i < 18) continue; const x = H[i], y = H[j];
     const [c, nm] = [[2, 'blue'], [3, 'MEP'], [1, 'oficial']][Math.floor(rnd() * 3)]; if (!x[c] || !y[c]) continue;
-    const rx = x[c] * cerH / x[5], ry = y[c] * cerH / y[5]; if (Math.abs(rx / ry - 1) < .06) continue;
-    vf(`w-dr-${c}-${x[0]}-${y[0]}`, 'dr' + c, 'ar', 'Dólar', `Descontando la inflación, el dólar ${nm} estaba más caro en ${fMes(x[0])} que en ${fMes(y[0])}`, rx > ry,
+    const rx = x[c] * cerH / x[5], ry = y[c] * cerH / y[5]; if (Math.abs(rx / ry - 1) < .25) continue;
+    vf(`p-dr-${c}-${x[0]}-${y[0]}`, 'dr' + c, 'ar', 'Dólar', `Descontando la inflación, el dólar ${nm} estaba más caro en ${fMes(x[0])} que en ${fMes(y[0])}`, rx > ry,
       `A precios de hoy: $ ${fA(rx)} en ${fMes(x[0])} y $ ${fA(ry)} en ${fMes(y[0])}.`, 'Promedio de cada mes; inflación medida con el CER del BCRA.', ['dolares', 'Ver el dólar a precios de hoy']);
   }
-  // inflación de Argentina: un mes contra otro
   const IA = A.infl;
   for (let n = 0; n < 300; n++) {
-    const x = IA[Math.floor(rnd() * IA.length)], y = IA[Math.floor(rnd() * IA.length)]; if (x[0] >= y[0] || Math.abs(x[1] - y[1]) < .2) continue;
-    vf(`w-ia-${x[0]}-${y[0]}`, 'ia' + x[0], 'ar', 'Inflación', `La inflación de ${fMes(x[0])} fue más alta que la de ${fMes(y[0])}`, x[1] > y[1],
+    const x = IA[Math.floor(rnd() * IA.length)], y = IA[Math.floor(rnd() * IA.length)]; if (x[0] >= y[0] || Math.abs(x[1] - y[1]) < 1.5) continue;
+    vf(`p-ia-${x[0]}-${y[0]}`, 'ia' + x[0], 'ar', 'Inflación', `La inflación de ${fMes(x[0])} fue más alta que la de ${fMes(y[0])}`, x[1] > y[1],
       `${fMes(x[0])}: ${fN(x[1], 1)}%. ${fMes(y[0])}: ${fN(y[1], 1)}%.`, 'Fuente: INDEC, vía BCRA.', ['macro', 'Ver inflación y reservas']);
   }
 }
