@@ -96,7 +96,7 @@ def recurso(patron):
 def candidatos(r):
     """El mismo archivo por varios caminos: desde Actions datos.energia.gob.ar a veces no responde (timeout)."""
     u = r['url']; out = []
-    if r.get('id'): out.append(f'https://datos.gob.ar/dataset/{PAQ}/archivo/energia_{r["id"]}')
+    if r.get('id'): out.append(f'https://datos.gob.ar/dataset/{PAQ}/archivo/{r["id"]}')
     out += [u.replace('http://', 'https://'), u]
     return out
 
@@ -221,7 +221,7 @@ if not out.get('mensual') and viejo.get('mensual'): out['mensual'] = viejo['mens
 # ---------- nafta súper en el IPC (INDEC, precio medio GBA), para la serie larga ----------
 try:
     diag['series_nafta'] = []
-    for qq in ('nafta%20super%20precio', 'precio%20medio%20nafta', 'combustible%20precio', 'gas%20oil%20ventas', 'nafta%20ventas'):
+    for qq in ('por%20litro', 'nafta%20litro', 'precio%20promedio%20nafta', 'gnc', 'gas%20natural%20comprimido'):
         q = json.loads(bajar('https://apis.datos.gob.ar/series/api/search/?q=' + qq + '&limit=25'))
         diag['series_nafta'] += [[x['field'].get('id'), x['field'].get('description'), x['field'].get('time_index_start'), x['field'].get('time_index_end'), x['field'].get('frequency')] for x in q.get('data', [])]
     ids = [x[0] for x in diag['series_nafta'] if x[1] and re.search(r'precio', x[1], re.I) and re.search(r'nafta', x[1], re.I) and (x[3] or '') >= '2026']
@@ -232,6 +232,24 @@ try:
 except Exception as e:
     diag['errores'].append(f'indec: {e}'); diag['fuentes']['indec'] = 'error'
     if viejo.get('indec'): out['indec'] = viejo['indec']
+
+# ---------- ventas mensuales al mercado interno (miles de m³; Secretaría de Energía vía la API de series) ----------
+VENTAS = {'super': '38.3_NS_1994_M_11', 'premium': '38.3_NU_1994_M_11', 'gasoil': '41.3_GO_0_A_7'}
+try:
+    d = json.loads(bajar('https://apis.datos.gob.ar/series/api/series/?ids=' + ','.join(VENTAS.values()) + '&limit=1000&format=json'))
+    out['ventas'] = {k: [[r[0][:7], round(r[i + 1], 1)] for r in d['data'] if r[i + 1] is not None] for i, k in enumerate(VENTAS)}
+    diag['fuentes']['ventas'] = 'ok'
+except Exception as e:
+    diag['errores'].append(f'ventas: {e}'); diag['fuentes']['ventas'] = 'error'
+    if viejo.get('ventas'): out['ventas'] = viejo['ventas']
+
+# prueba: ¿responde el servidor de Energía desde acá?
+for u in ('https://datos.energia.gob.ar/', 'http://datos.energia.gob.ar/api/3/action/status_show'):
+    try:
+        with abrir(u, 25) as r: diag.setdefault('energia', []).append([u, r.status])
+    except Exception as e:
+        diag.setdefault('energia', []).append([u, str(e)[:80]])
+diag['robots_datosgob'] = permitido(f'https://datos.gob.ar/dataset/{PAQ}/archivo/x')
 
 out['diag'] = diag
 out['actualizado'] = str(HOY)
