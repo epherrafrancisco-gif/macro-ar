@@ -1,0 +1,289 @@
+{
+ "robots": "#\n# robots.txt\n#\n# This file is to prevent the crawling and indexing of certain parts\n# of your site by web crawlers and spiders run by sites like Yahoo!\n# and Google. By telling these \"robots\" where not to go on your site,\n# you save bandwidth and server resources.\n#\n# This file will be ignored unless it is at the root of your host:\n# Used:    http://example.com/robots.txt\n# Ignored: http://example.com/site/robots.txt\n#\n# For more information about the robots.txt standard, see:\n# http://www.robotstxt.org/robotstxt.html\n\nUser-agent: *\nCrawl-delay: 10\nSitemap: https://www.argentina.gob.ar/sitemap.xml\nDisallow: *?tca=*\n# CSS, JS, Images\nAllow: /misc/*.css$\nAllow: /misc/*.css?\nAllow: /misc/*.js$\nAllow: /misc/*.js?\nAllow: /misc/*.gif\nAllow: /misc/*.jpg\nAllow: /misc/*.jpeg\nAllow: /misc/*.png\nAllow: /misc/*.svg\nAllow: /modules/*.css$\nAllow: /modules/*.css?\nAllow: /modules/*.js$\nAllow: /modules/*.js?\nAllow: /modules/*.gif\nAllow: /modules/*.jpg\nAllow: /modules/*.jpeg\nAllow: /modules/*.png\nAllow: /modules/*.svg\nAllow: /profiles/*.css$\nAllow: /profiles/*.css?\nAllow: /profiles/*.js$\nAllow: /profiles/*.js?\nAllow: /profiles/*.gif\nAllow: /profiles/*.jpg\nAllow: /profiles/*.jpeg\nAllow: /profiles/*.png\nAllow: /profiles/*.svg\nAllow: /themes/*.css$\nAllow: /themes/*.css?\nAllow: /themes/*.js$\nAllow: /themes/*.js?\nAllow: /themes/*.gif\nAllow: /themes/*.jpg\nAllow: /themes/*.jpeg\nAllow: /themes/*.png\nAllow: /themes/*.svg\n# Directories\nDisallow: /includes/\nDisallow: /misc/\nDisallow: /modules/\nDisallow: /profiles/\nDisallow: /scripts/\nDisallow: /themes/\nDisallow: /tags/\nDisallow: /sites/default/files/infoleg/\n# Files\nDisallow: /CHANGELOG.txt\nDisallow: /cron.php\nDisallow: /INSTALL.mysql.txt\nDisallow: /INSTALL.pgsql.txt\nDisallow: /INSTALL.sqlite.txt\nDisallow: /install.php\nDisallow: /INSTALL.txt\nDisallow: /LICENSE.txt\nDisallow: /MAINTAINERS.txt\nDisallow: /update.php\nDisallow: /UPGRADE.txt\nDisallow: /xmlrpc.php\nDisallow: /*.pdf$\nDisallow: /*.doc$\nDisallow: /*.docx$\nDisallow: /*.xls$\nDisallow: /*.xlsx$\n# Paths (clean URLs)\nDisallow: /admin/\nDisallow: /comment/reply/\nDisallow: /filter/tips/\nDisallow: /node/add/\nDisallow: /search/\nDisallow: /user/register/\nDisallow: /user/password/\nDisallow: /user/login/\nDisallow: /user/logout/\nDisallow: /circular/*\nDisallow: /jefatura/innovacion-publica/acciones-coronavirus/certificado-unico-circulacion\nDisallow: /viajar-coronavirus\nDisallow: /verano/certificado\nDisallow: /verano/certificado/condni\nDisallow: /verano/certificado/sindni\nDisallow: /verano/certificado/descarga \nDisallow: /cud/planilla-cud*\nDisallow: /solicitar-certificado-unico-habilitante-para-circulacion-covid-19\nDisallow: /solicitar-certificado-verano-covid-19\nDisallow: /justicia/adopcion/buscamosfamilia/seguimosbuscando\nDisallow: /noticias/nueva-marca-pais\nDisallow: /jefatura/mediosycomunicacion/contenidosdedifusion/*\nDisallow: /salud/pase-sanitario \nDisallow: /salud/coronavirus-COVID-19/pase-sanitario-nacional-2022\nDisallow: /miargentina/consultas\nDisallow: /sugerencias\nDisallow: /search\nDisallow: /buscar\nDisallow: /tramitar\nDisallow: /servicios\n# Paths (no clean URLs)\nDisallow: /?q=admin/\nDisallow: /?q=comment/reply/\nDisallow: /?q=filter/tips/\nDisallow: /?q=node/add/\nDisallow: /?q=search/\nDisallow: /?q=tramitar/\nDisallow: /?q=servicios/\nDisallow: /?q=user/password/\nDisallow: /?q=user/register/\nDisallow: /?q=user/login/\nDisallow: /?q=user/logout/\nDisallow: /?q=search/\nDisallow: /?q=buscar/\n",
+ "mi_status": 200,
+ "mi_links": [
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_merc._interno-jul26.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_merc._interno_-_enero_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_merc._interno_de_vinos_-_agosto_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_merc._interno_de_vinos_-_sep26.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_merc._interno_de_vinos_junio_2026_final.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_mercado_interno_-_abril_2026_0.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_mercado_interno_-_marzo_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mensual_mercado_interno_de_vinos_-_mayo_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_mercado_interno_-_febrero_2026.pdf"
+ ],
+ "me_status": 200,
+ "me_links": [
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/com._mensual_exportaciones_enero_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_abril_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_abril_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_agosto_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_agosto_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_diciembre_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_enero_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_febrero_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_febrero_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_julio_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_julio_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_junio_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_junio_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_marzo_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_marzo_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_mayo_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_mayo_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_noviembre_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_octubre_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/comercializacion_mercado_externo_septiembre_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/mensual_exportaciones_-_septiembre_2025.pdf"
+ ],
+ "cos_status": 200,
+ "cos_links": [
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/anuario_cosecha_y_elaboracion_2022.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/anuario_cosecha_y_elaboracion_2023.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/anuario_cosecha_y_elaboracion_2024_0.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/anuario_cosecha_y_elaboracion_2025.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/anuario_cosecha_y_elaboracion_2026.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_anual_elaboracion_2021.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/informe_anual_produccion_2021.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2011.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2012.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2013.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2014.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2015.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2016.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/anuario_cosecha_y_elaboracion_2017.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_1996-97.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_1998.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_1999.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2000.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2001.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2002.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2003.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2004.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2005.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2006.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2007.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2008.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_2009.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/cosecha_y_elaboracion_2018.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/informe_anual_cosecha_y_elaboracion_2010.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/informe_anual_de_cosecha_y_elaboracion_2020_1.pdf",
+  "https://www.argentina.gob.ar/sites/default/files/informe_final_cosecha_y_elaboracion_2019_0.pdf"
+ ],
+ "cpc_status": 200,
+ "cpc_links": [
+  "https://www.argentina.gob.ar/sites/default/files/2018/10/consumo_per_capita_1963-2024.pdf"
+ ],
+ "exist_status": 200,
+ "exist_links": [],
+ "mi_sep26_pags": 33,
+ "me_sep26_pags": 29,
+ "cpc_pags": 1,
+ "series_vino": {
+  "data": [
+   {
+    "field": {
+     "id": "176.1_VINO_1988_0_4",
+     "description": "Vino",
+     "title": "vino",
+     "frequency": "R/P1M",
+     "time_index_start": "1989-05-01",
+     "time_index_end": "2000-10-01",
+     "units": "Índice base 100",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Índice de Precios al Consumidor GBA - Base 1988. SERIE DISCONTINUADA",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+     "theme": "Precios"
+    }
+   },
+   {
+    "field": {
+     "id": "453.2_VINOINO_0_0_4_89",
+     "description": "IPI Divisiones y Subclases Vino",
+     "title": "vino",
+     "frequency": "R/P1M",
+     "time_index_start": "2016-01-01",
+     "time_index_end": "2026-08-01",
+     "units": "Índice 2004 = 100",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Índice de Producción Industrial Manufacturero (IPI)",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "105.1_I2VC_2016_M_19",
+     "description": "IPC-GBA. Precios. Vino común. Mensual",
+     "title": "ipc_2016_vino_comun",
+     "frequency": "R/P1M",
+     "time_index_start": "2016-04-01",
+     "time_index_end": "2026-08-01",
+     "units": "Pesos",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016.",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+     "theme": "Precios"
+    }
+   },
+   {
+    "field": {
+     "id": "41.1_DAVMI_0_M_42",
+     "description": "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+     "title": "despachos_autorizados_vino_mercado_interno",
+     "frequency": "R/P1Y",
+     "time_index_start": "2014-01-01",
+     "time_index_end": "2025-01-01",
+     "units": "Miles de Litros",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Indicadores de producción de la Industria manufacturera",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "41.3_DAVMI_0_A_42",
+     "description": "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+     "title": "despachos_autorizados_vino_mercado_interno",
+     "frequency": "R/P1M",
+     "time_index_start": "2014-01-01",
+     "time_index_end": "2026-06-01",
+     "units": "Miles de Litros",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Indicadores de producción de la Industria manufacturera",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "41.2_DAVMI_0_T_42",
+     "description": "Despachos autorizados de vino Mercado interno en Miles de Hectolitros",
+     "title": "despachos_autorizados_vino_mercado_interno",
+     "frequency": "R/P3M",
+     "time_index_start": "2014-01-01",
+     "time_index_end": "2026-04-01",
+     "units": "Miles de Litros",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Indicadores de producción de la Industria manufacturera",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "105.2_I2016_VMUN_2016_T_19",
+     "description": "IPC-GBA. Vino común. Base dic 2016. Trimestral",
+     "title": "ipc_gba_vino_comun",
+     "frequency": "R/P3M",
+     "time_index_start": "2016-04-01",
+     "time_index_end": "2024-10-01",
+     "units": "Índice",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Índice de Precios al Consumidor GBA (IPC-GBA). Base diciembre 2016.",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Instituto Nacional de Estadística y Censos (INDEC)",
+     "theme": "Precios"
+    }
+   },
+   {
+    "field": {
+     "id": "38.1_V_1994_A_4",
+     "description": "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+     "title": "vino",
+     "frequency": "R/P1Y",
+     "time_index_start": "1980-01-01",
+     "time_index_end": "2019-01-01",
+     "units": "Miles de hectrolitos",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Ventas al Mercado Interno de Producción Nacional. Base 1994",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "38.2_V_1994_T_4",
+     "description": "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+     "title": "vino",
+     "frequency": "R/P3M",
+     "time_index_start": "1994-01-01",
+     "time_index_end": "2022-10-01",
+     "units": "Miles de hectrolitos",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Ventas al Mercado Interno de Producción Nacional. Base 1994",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   },
+   {
+    "field": {
+     "id": "38.3_V_1994_M_4",
+     "description": "Ventas al mercado interno de Producción Nacional de Vino en miles de hectolitros",
+     "title": "vino",
+     "frequency": "R/P1M",
+     "time_index_start": "1994-01-01",
+     "time_index_end": "2020-10-01",
+     "units": "Miles de hectrolitos",
+     "hits_90_days": "0"
+    },
+    "dataset": {
+     "title": "Ventas al Mercado Interno de Producción Nacional. Base 1994",
+     "publisher": {
+      "name": "Subsecretaría de Programación Macroeconómica"
+     },
+     "source": "Ministerio de Economía sobre la base de INDEC, otros Organismos Oficiales y Cámaras  e Instituciones Privadas",
+     "theme": "Actividad"
+    }
+   }
+  ],
+  "count": 10,
+  "limit": 30,
+  "start": 0
+ }
+}
