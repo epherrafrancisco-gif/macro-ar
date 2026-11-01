@@ -3,7 +3,7 @@
 'use strict';
 const VER = () => Math.floor(Date.now() / 60000);
 fetch('datos.json?t=' + VER()).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(arrancar).catch(() => {
-  const e = document.getElementById('estado'); if (e) e.innerHTML = 'No se pudieron cargar los reels. <a href="">Probá de nuevo</a> o <a href="/">volvé a Pulso Macro</a>.';
+  const e = document.getElementById('estado'); if (e) e.innerHTML = 'No se pudieron cargar las preguntas. <a href="">Probá de nuevo</a> o <a href="/">volvé a Pulso Macro</a>.';
 });
 function arrancar(P) {
 // ---------- utilidades ----------
@@ -27,12 +27,12 @@ const ISO = {}; for (const k in P.paises) ISO[P.paises[k].iso] = P.paises[k];
 ISO.ARG = {n: 'Argentina', fl: 'ar', k: 'argentina'};
 const NOM = {DEU:'Alemania',FRA:'Francia',ITA:'Italia',NLD:'Países Bajos',AUT:'Austria',BEL:'Bélgica',PRT:'Portugal',IRL:'Irlanda',GRC:'Grecia',FIN:'Finlandia',EA20:'Zona euro'};
 const pais = iso => ISO[iso] || {n: NOM[iso] || iso, fl: null};
-const CC = {vf: '#ff5c8a', sim: '#2ee59d', tri: '#b57bff', arg: '#5fb4ff', mer: '#ff8a3d', mun: '#2ad4c8', his: '#ffc23d'};
+const CC = {acc: '#2ee59d', inf: '#ff5c8a', dol: '#5fb4ff', bm: '#ffc23d', tas: '#b57bff', vf: '#ff5c8a', sim: '#2ee59d', tri: '#b57bff', arg: '#5fb4ff', mer: '#ff8a3d', mun: '#2ad4c8', his: '#ffc23d'};
 // cada reel con su color (pedido del dueño: que cambien, que no parezca un tablero): pares de colores vivos, nunca dos iguales seguidos
 const PAL = [['#7b2ff7', '#f107a3'], ['#ff512f', '#f09819'], ['#00b09b', '#1d6fe0'], ['#e5266b', '#7a1fd1'], ['#f7971e', '#e8336d'],
   ['#11998e', '#38ef7d'], ['#3a1c71', '#d76d77'], ['#0061ff', '#60efff'], ['#c31432', '#240b36'], ['#8e2de2', '#4a00e0'],
   ['#fc466b', '#3f5efb'], ['#f12711', '#f5af19'], ['#00c6ff', '#0072ff'], ['#d4145a', '#fbb03b'], ['#1fa2ff', '#12d8fa']];
-const CATN = {vf:'Verdadero o falso', sim:'Si hubieras invertido', tri:'Trivia', arg:'Argentina', mer:'Mercados', mun:'El mundo', his:'Historia'};
+const CATN = {acc:'Acciones', inf:'Inflación', his:'Países', dol:'Dólar', bm:'Big Mac', tas:'Tasas'};
 
 // ---------- series ----------
 const A = P.arg;
@@ -54,7 +54,8 @@ const NOMA = tk => P.his.acc[tk].n;
 
 // ---------- moldes: cada uno arma reels con datos reales ----------
 const R = [];   // todos los reels posibles hoy
-const add = r => { if (r && r.id) R.push(r); };
+const IDS = new Set();
+const add = r => { if (r && r.id && !IDS.has(r.id)) { IDS.add(r.id); R.push(r); } };
 const line = (series, a, b, opt = {}) => ({t: 'line', s: series, a, b, ...opt});
 
 // 1. dólares del día
@@ -347,7 +348,7 @@ for (const x of P.nots.slice(0, 40)) {
 }
 
 // 22. verdadero o falso (pedido del dueño: muchos, y al votar se ve la respuesta)
-const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-' + id, cat: 'tri', mold: 'vf', key, fl, kick: 'Verdadero o falso' + (kick ? ' · ' + kick : ''),
+const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-' + id, cat: 'tri', mold: 'vf', key, fl, kick: kick || 'Verdadero o falso',
   score: score == null ? .55 + rnd() * .35 : score, title: claim,
   viz: {t: 'quiz', vf: 1, opts: [{l: 'Verdadero', ok: !!ok, txt: ''}, {l: 'Falso', ok: !ok, txt: ''}], exp}, src, go});
 {
@@ -358,7 +359,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     vf('inf-ar-' + o.k, o.k, o.fl, 'Inflación', `${o.n} tiene más inflación que Argentina`, mas,
       `${o.n}: ${fN(o.infl[1], 1)}% en 12 meses. Argentina: ${fN(AI[2], 1)}%.`, 'Fuentes: BIS / bancos centrales e INDEC.', [o.k, 'Ver ' + o.n]);
   }
-  for (let n = 0; n < 60; n++) {
+  for (let n = 0; n < 400; n++) {
     const a = conI[Math.floor(rnd() * conI.length)], b = conI[Math.floor(rnd() * conI.length)];
     if (a === b || Math.abs(a.infl[1] - b.infl[1]) < .4) continue;
     vf('inf-' + a.k + '-' + b.k, a.k, a.fl, 'Inflación', `En ${a.n} los precios suben más rápido que en ${b.n}`, a.infl[1] > b.infl[1],
@@ -424,22 +425,56 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
   // acciones: A rindió más que B en dólares
   const tks = Object.keys(P.his.acc);
-  for (const [pk, dias, pn, pfr] of PER.slice(1, 4)) {
+  const MV = P.his.acc.MERVAL ? 'MERVAL' : null;
+  for (const [pk, dias, pn, pfr] of PER) {
     const res = {}; tks.forEach(tk => { const r = retUsd(tk, dias); if (r) res[tk] = r.r; });
-    const ks = Object.keys(res);
-    for (let n = 0; n < 40; n++) {
+    const ks = Object.keys(res).filter(k => k !== 'MERVAL');
+    for (let n = 0; n < 160; n++) {
       const a = ks[Math.floor(rnd() * ks.length)], b = ks[Math.floor(rnd() * ks.length)];
       if (a === b || Math.abs(res[a] - res[b]) < 4) continue;
       vf(`acc-${a}-${b}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `${NOMA(a)} rindió más que ${NOMA(b)} ${pfr}, en dólares`, res[a] > res[b],
         `${NOMA(a)}: ${fP(res[a])}. ${NOMA(b)}: ${fP(res[b])}. En dólares MEP.`, 'Precios de BYMA y dólar MEP.', ['calculadoras', 'Probalo en el simulador']);
     }
     // ¿le ganó al dólar? (rendimiento en dólares positivo)
-    for (let n = 0; n < 25; n++) {
-      const a = ks[Math.floor(rnd() * ks.length)]; if (Math.abs(res[a]) < 3) continue;
+    for (const a of ks) {
+      if (Math.abs(res[a]) < 3) continue;
       vf(`accd-${a}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `Quien compró ${NOMA(a)} hace ${pn} hoy tiene más dólares que antes`, res[a] > 0,
         `${fP(res[a])} en dólares MEP: US$ 1.000 pasaron a US$ ${fN(1000 * (1 + res[a] / 100))}.`, 'Precios de BYMA y dólar MEP.', ['calculadoras', 'Probalo en el simulador']);
+      // "si hubieras invertido": ¿hoy tendrías más de X?
+      const fin = 1000 * (1 + res[a] / 100), umb = [1100, 1250, 1500, 2000, 900, 750, 500].map(u => u).filter(u => Math.abs(fin / u - 1) > .06);
+      if (umb.length) { const u = umb[Math.floor(rnd() * umb.length)];
+        vf(`si-${a}-${pk}-${u}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Si hubieras invertido', `Si ponías US$ 1.000 en ${NOMA(a)} hace ${pn}, hoy tendrías más de US$ ${fN(u)}`, fin > u,
+          `Hoy tendrías US$ ${fN(fin)} (${fP(res[a])} en dólares MEP).`, 'Comprando en pesos al MEP de ese día y vendiendo al MEP de hoy. Precios de BYMA.', ['calculadoras', 'Probalo en el simulador']); }
+      // ¿le ganó al Merval?
+      if (MV && res[MV] != null && Math.abs(res[a] - res[MV]) >= 3)
+        vf(`mv-${a}-${pk}`, a, P.his.acc[a].t === 'ced' ? null : 'ar', 'Acciones', `${NOMA(a)} le ganó al Merval ${pfr}, en dólares`, res[a] > res[MV],
+          `${NOMA(a)}: ${fP(res[a])}. Merval: ${fP(res[MV])}. En dólares MEP.`, 'Precios de BYMA y dólar MEP.', ['mercado', 'Ver Bolsa y bonos']);
     }
   }
+  // inflación de un país contra un número
+  for (const o of conI) for (const u of [2, 3, 5, 10, 20]) if (Math.abs(o.infl[1] - u) >= .4)
+    vf(`infu-${o.k}-${u}`, o.k, o.fl, 'Inflación', `En ${o.n}, los precios subieron más del ${u}% en el último año`, o.infl[1] > u,
+      `${o.n}: ${fN(o.infl[1], 1)}% en 12 meses, a ${fMes(o.infl[0])}.`, 'Fuentes: BIS y bancos centrales.', [o.k, 'Ver ' + o.n]);
+  // Big Mac entre países
+  const bmK = Object.keys(BM).filter(i => ISO[i] && i !== 'ARG');
+  for (let n = 0; n < 250; n++) {
+    const a = bmK[Math.floor(rnd() * bmK.length)], b = bmK[Math.floor(rnd() * bmK.length)];
+    if (a === b || Math.abs(BM[a].usd - BM[b].usd) < .15) continue;
+    vf(`bm2-${a}-${b}`, ISO[a].k, ISO[a].fl, 'Big Mac', `En dólares, un Big Mac es más caro en ${ISO[a].n} que en ${ISO[b].n}`, BM[a].usd > BM[b].usd,
+      `${ISO[a].n}: US$ ${fN(BM[a].usd, 2)}. ${ISO[b].n}: US$ ${fN(BM[b].usd, 2)}.`, 'Fuente: The Economist' + BMF + '.', ['global', 'Ver el mundo']);
+  }
+  // PBI por habitante entre países
+  const ppK = Object.keys(PPA).filter(i => ISO[i] && i !== 'ARG' && PPA[i].length);
+  for (let n = 0; n < 250; n++) {
+    const a = ppK[Math.floor(rnd() * ppK.length)], b = ppK[Math.floor(rnd() * ppK.length)]; if (a === b) continue;
+    const va = ult(PPA[a]), vb = PPA[b].find(z => z[0] === va[0]); if (!vb || Math.abs(va[1] / vb[1] - 1) < .05) continue;
+    vf(`pp2-${a}-${b}`, ISO[a].k, ISO[a].fl, 'Riqueza', `Por habitante, ${ISO[a].n} produce más que ${ISO[b].n}`, va[1] > vb[1],
+      `${va[0]}: ${ISO[a].n} US$ ${fN(va[1])}, ${ISO[b].n} US$ ${fN(vb[1])} por habitante (a paridad de poder de compra).`, 'Fuente: Banco Mundial.', [ISO[a].k, 'Ver ' + ISO[a].n]);
+  }
+  // inflación mensual de Argentina en la historia reciente
+  for (const [m, v] of A.infl.slice(-24)) for (const u of [1.5, 2, 2.5, 3, 4]) if (Math.abs(v - u) >= .2)
+    vf(`ia-${m}-${u}`, 'ia' + m, 'ar', 'Inflación', `En ${fMes(m)}, la inflación en Argentina fue mayor al ${fN(u, 1)}%`, v > u,
+      `Fue ${fN(v, 1)}% en el mes.`, 'Fuente: INDEC, vía BCRA.', ['macro', 'Ver inflación y reservas']);
   // dólar de hoy contra el de otros años, a precios de hoy
   const H = A.hist, cerHoy = ult(H)[5], mesHoy = ult(H)[0];
   for (const anios of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
@@ -463,13 +498,15 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
 // ---------- afuera lo poco llamativo (pedido del dueño 01/11/2026) ----------
 // monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
 {
-  const FUERA_M = new Set(['mon', 'cd', 'nw', 'bol', 'com']);
+  const FUERA_M = new Set(['mon', 'cd', 'nw', 'bol', 'com']);  // (desde el 01/11/2026 queda SOLO verdadero o falso)
   const FUERA_K = /^(rtas|rbon|rdes|rbol)/, FUERA_VF = /^vf-(bol|com|tas|des)-/;
   for (let i = R.length - 1; i >= 0; i--) {
     const r = R[i];
-    if (FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
-    else if (r.mold === 'vf') r.cat = 'vf';
-    else if (r.mold === 'si') r.cat = 'sim';
+    if (r.mold !== 'vf' || FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
+    else {  // grupo por tema, para que se mezclen y no sean todas de acciones
+      const k = r.kick.replace('Verdadero o falso · ', '');
+      r.cat = /Acciones|Si hubieras/.test(k) ? 'acc' : /Inflación/.test(k) ? 'inf' : /Dólar/.test(k) ? 'dol' : /Big Mac/.test(k) ? 'bm' : /Tasas/.test(k) ? 'tas' : 'his';
+    }
   }
 }
 // ---------- el orden: al azar, pesado por interés, sin repetir molde ni tema seguido ----------
@@ -478,7 +515,7 @@ let vistos = {}; try { vistos = JSON.parse(localStorage.getItem(VISTOS_K) || '{}
 const SEMANA = 7 * 864e5;
 const frescos = R.filter(r => !(vistos[r.id] && Date.now() - vistos[r.id] < SEMANA));
 // cuánto de cada tema: así los cientos de "simulador" no tapan al resto
-const CUOTA = {vf: 52, sim: 20, tri: 8, arg: 7, his: 6, mun: 4, mer: 3};
+const CUOTA = {acc: 34, inf: 22, his: 18, dol: 12, bm: 9, tas: 5};
 const base = frescos.length > 40 ? frescos : R;
 const colas = {};
 base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
@@ -491,8 +528,7 @@ const sirve = (r, estricto) => {
 };
 for (let total = base.length; ORD.length < total;) {
   const ultCat = ORD.length ? ORD[ORD.length - 1].cat : null;
-  const dosVf = ORD.length > 1 && ORD[ORD.length - 1].cat === 'vf' && ORD[ORD.length - 2].cat === 'vf';
-  const cats = Object.keys(colas).filter(c => colas[c].length && (c !== ultCat || (c === 'vf' && !dosVf)));
+  const cats = Object.keys(colas).filter(c => colas[c].length && c !== ultCat);
   const usables = cats.length ? cats : Object.keys(colas).filter(c => colas[c].length);
   let t = usables.reduce((s, c) => s + (CUOTA[c] || 5), 0) * rnd(), cat = usables[0];
   for (const c of usables) { t -= CUOTA[c] || 5; if (t <= 0) { cat = c; break; } }
@@ -501,7 +537,7 @@ for (let total = base.length; ORD.length < total;) {
 }
 
 // el primero siempre es de Argentina y del día (a eso viene la mayoría)
-{ const i = ORD.findIndex(r => r.cat === 'arg' && ['rec', 'dol', 'dia', 'infl'].includes(r.mold)); if (i > 0) ORD.unshift(ORD.splice(i, 1)[0]); }
+
 
 // ---------- dibujar ----------
 function svgLine(viz) {
@@ -556,10 +592,9 @@ const feed = $('#feed'); feed.innerHTML = '';
 let primera = true; try { primera = !localStorage.getItem('pl-intro'); } catch (e) {}
 const nCats = {}; R.forEach(r => nCats[r.cat] = (nCats[r.cat] || 0) + 1);
 const INTRO = `<section class="reel intro c-arg" data-i="-1"><div class="rin">
-  <h1>Pulso <span>Live</span></h1>
-  <p>La economía de Argentina y el mundo, en reels. Datos reales, uno atrás de otro, que cambian todo el día.</p>
-  <div class="n"><b>${fN(R.length)}</b> reels distintos hoy</div>
-  <div class="cats">${Object.entries(CATN).map(([k, n]) => nCats[k] ? `<span style="--k:${CC[k]}">${n} · ${fN(nCats[k])}</span>` : '').join('')}</div>
+  <h1>Verdadero <span>o falso</span></h1>
+  <p>La economía de Argentina y el mundo, con datos reales. ¿Cuántas acertás seguidas?</p>
+  <div class="n"><b>${fN(R.length)}</b> preguntas distintas hoy</div>
   <div class="swipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>Deslizá para arriba</div></div></section>`;
 let pintados = 0;
 function pintar(n) { let h = ''; for (let k = 0; k < n && pintados < ORD.length; k++, pintados++) h += reelHTML(ORD[pintados], pintados); feed.insertAdjacentHTML('beforeend', h); feed.querySelectorAll('.reel:not([data-o])').forEach(el => { el.dataset.o = 1; io.observe(el); }); }
@@ -708,7 +743,7 @@ function compartir(r) {
   const sh = $('#mSh'); sh.hidden = true;
   cv.toBlob(b => {
     if (!b) return; const f = new File([b], 'pulso-macro_reel.png', {type: 'image/png'});
-    if (navigator.canShare && navigator.canShare({files: [f]})) { sh.hidden = false; sh.onclick = () => navigator.share({files: [f], text: (r.title || '') + ' · pulsomacro.com.ar/live/'}).catch(() => {}); }
+    if (navigator.canShare && navigator.canShare({files: [f]})) { sh.hidden = false; sh.onclick = () => navigator.share({files: [f], text: (r.title || '') + ' · pulsomacro.com.ar/live/ · ¿Vos sabés?'}).catch(() => {}); }
   }, 'image/png');
   try { window.goatcounter && goatcounter.count({path: 'live-compartir', event: true}); } catch (e) {}
 }

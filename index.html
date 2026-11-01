@@ -932,10 +932,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
-    <a class="plive" id="pLive" href="/live/" aria-label="Pulso Live: reels de la economía">
-      <span class="plb"><i></i>PULSO LIVE</span>
-      <span class="plt1"><b>Reels de la economía</b><span class="pltt" id="plTxt">Verdadero o falso, “si hubieras invertido…” y más</span></span>
-      <span class="plgo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Ver</span>
+    <a class="plive" id="pLive" href="/live/" aria-label="Verdadero o falso de economía">
+      <span class="plb"><i></i>VERDADERO O FALSO</span>
+      <span class="plt1"><b>¿Cuántas acertás seguidas?</b><span class="pltt" id="plTxt">Inflación, dólar, acciones y países, con datos reales</span></span>
+      <span class="plgo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Jugar</span>
     </a>
     <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá cualquier dato: dólar blue, inflación, plazo fijo, Polonia…</span></button><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button></div></div>
     <div class="mporta-m"><div class="mbig" id="mHoy" hidden></div><!-- "Los datos del día" sacado del celular (pedido del dueño, 26/10/2026) -->
@@ -8815,12 +8815,12 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 </script>
 
 <script>
-/* Pulso Live: la franja de la portada va rotando titulares de reels de hoy (live/portada.json, lo arma scripts/live.py) */
+/* Verdadero o falso: la franja de la portada va rotando afirmaciones de hoy (live/portada.json, lo arma scripts/live.py) */
 (function(){
   const el = document.getElementById('plTxt'); if (!el) return;
   fetch('/live/portada.json?t=' + Math.floor(Date.now() / 60000)).then(r => r.ok ? r.json() : null).then(d => {
     const t = (d && d.th || []).map(x => x.t).filter(Boolean); if (!t.length) return;
-    let i = 0; const pon = () => { el.textContent = t[i++ % t.length]; }; pon(); setInterval(pon, 4000);
+    let i = 0; const pon = () => { el.textContent = '¿' + t[i++ % t.length] + '?'; }; pon(); setInterval(pon, 4000);
   }).catch(() => {});
 })();
 </script>

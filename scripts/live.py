@@ -156,45 +156,37 @@ def spark(vals, n=10):
     return ' '.join(('M' if i == 0 else 'L') + '%d %d' % (round(i * 90 / (len(pts) - 1)), round(32 - (v - lo) / rg * 28)) for i, v in enumerate(pts))
 
 fmt = lambda v, d=0: ('{:,.%df}' % d).format(v).replace(',', 'X').replace('.', ',').replace('X', '.')
-th = []
+th = []  # afirmaciones de verdadero o falso para la franja de Inicio (la página les pone ¿ ?)
+nom = {o['iso']: o['n'] for o in paises.values()}
 try:
-    m = arg['mep'][-31:]; v, p = m[-1][1], arg['mep'][-2][1]
-    th.append({'c': 'arg', 'k': 'ARGENTINA · DÓLAR MEP', 't': 'El MEP %s %s%% en el día' % ('subió' if v >= p else 'bajó', fmt(abs(v / p - 1) * 100, 2)), 'b': '$ ' + fmt(v, 2), 'l': spark([x[1] for x in m])})
-except Exception as e: print('  aviso portada mep', e)
+    ok = [o for o in paises.values() if 'infl' in o]; o = max(ok, key=lambda o: o['infl'][1])
+    th.append({'t': '%s tiene más inflación que Argentina' % o['n']})
+    o = max([o for o in ok if o['infl'][1] > 0], key=lambda o: arg['infl'][-1][2] / o['infl'][1])
+    k2 = arg['infl'][-1][2] / o['infl'][1]
+    th.append({'t': 'La inflación de Argentina es más de %d veces la de %s' % (int(k2 // 5 * 5) if k2 >= 10 else int(k2), o['n'])})
+except Exception as e: print('  aviso portada infl', e)
 try:
-    fx = 'vf'; ok = [o for o in paises.values() if 'infl' in o]; ai = arg['infl'][-1][2]
-    o = max(ok, key=lambda o: o['infl'][1])
-    th.append({'c': 'tri', 'k': 'VERDADERO O FALSO', 't': '%s tiene más inflación que Argentina' % o['n'], 'b': '', 'l': 'VF'})
-except Exception as e: print('  aviso portada vf', e)
-try:
-    ar = ppa['ARG']; cand = []
-    for iso, s in ppa.items():
-        if iso == 'ARG' or len(s) < 20: continue
-        a0 = dict(ar).get(s[0][0]); aN = dict(ar).get(s[-1][0])
-        if a0 and aN and a0 > s[0][1] and aN < s[-1][1]: cand.append(iso)
-    nom = {o['iso']: o['n'] for o in paises.values()}
-    iso = next((i for i in ['CHL', 'POL', 'KOR', 'ESP'] if i in cand), cand[0] if cand else None)
-    if iso: th.append({'c': 'his', 'k': '%s Y ARGENTINA' % nom.get(iso, iso).upper(), 't': 'En %d Argentina era más rica que %s. Hoy %s está adelante' % (ppa[iso][0][0], nom.get(iso, iso), nom.get(iso, iso)), 'b': '', 'l': spark([x[1] for x in ppa[iso]]) + '|' + spark([x[1] for x in ar])})
+    ar = dict(ppa['ARG'])
+    for iso in ['CHL', 'POL', 'KOR', 'ESP']:
+        s_ = ppa.get(iso)
+        if s_ and ar.get(s_[0][0]) and ar[s_[0][0]] > s_[0][1]:
+            th.append({'t': 'En %d Argentina era más rica que %s' % (s_[0][0], nom.get(iso, iso))}); break
 except Exception as e: print('  aviso portada ppa', e)
 try:
-    th.append({'c': 'tri', 'k': 'TRIVIA', 't': '¿En qué país es más caro el Big Mac?', 'b': '', 'l': 'Q'})
-except Exception: pass
+    a_ = bigmac.get('ARG'); iso = max((i for i in bigmac if i in nom), key=lambda i: bigmac[i]['usd'])
+    if a_: th.append({'t': 'Un Big Mac es más caro en %s que en Argentina' % nom[iso]})
+except Exception as e: print('  aviso portada bm', e)
 try:
     i0 = max(0, n - 1 - 250); best = None
     for tk, a in acc.items():
         c0, c1, m0, m1 = a['c'][i0], a['c'][-1], his['mep'][i0], his['mep'][-1]
-        if c0 and c1 and m0 and m1:
+        if a['t'] in ('acc', 'ced') and c0 and c1 and m0 and m1:
             r = (c1 / m1) / (c0 / m0)
-            if a['t'] in ('acc', 'ced') and (best is None or r > best[1]): best = (tk, r)
+            if best is None or r > best[1]: best = (tk, r)
     if best:
-        a = acc[best[0]]; serie_ = [c / mm for c, mm in zip(a['c'][i0:], his['mep'][i0:]) if c and mm]
-        th.append({'c': 'mer', 'k': 'SIMULADOR', 't': 'Si ponías US$ 1.000 en %s hace un año, hoy tendrías…' % a['n'], 'b': 'US$ ' + fmt(1000 * best[1]), 'l': spark(serie_)})
+        u = int(1000 * best[1] // 500 * 500)
+        th.append({'t': 'Si ponías US$ 1.000 en %s hace un año, hoy tendrías más de US$ %s' % (acc[best[0]]['n'], fmt(u))})
 except Exception as e: print('  aviso portada sim', e)
-try:
-    o = max([o for o in paises.values() if 'infl' in o and o['infl'][1] > 0], key=lambda o: arg['infl'][-1][2] / o['infl'][1])
-    k2 = arg['infl'][-1][2] / o['infl'][1]
-    th.append({'c': 'mun', 'k': '%s · INFLACIÓN' % o['n'].upper(), 't': 'La inflación de Argentina es %s veces la de %s' % (fmt(k2, 1 if k2 < 10 else 0), o['n']), 'b': fmt(arg['infl'][-1][2], 1) + '%', 'l': ''})
-except Exception as e: print('  aviso portada infl', e)
 txt = json.dumps({'gen': D['actualizado'], 'th': th}, ensure_ascii=False, separators=(',', ':'))
 viejo = open(R + 'live/portada.json', encoding='utf-8').read() if os.path.exists(R + 'live/portada.json') else ''
 if txt != viejo: open(R + 'live/portada.json', 'w', encoding='utf-8').write(txt)
