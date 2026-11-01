@@ -2,7 +2,7 @@ name: Prueba vinos (temporal)
 on:
   push:
     branches: [prueba-vinos]
-    paths: [.github/workflows/prueba-vinos.yml, prueba/vinos.py]
+    paths: [.github/workflows/prueba-vinos.yml, prueba/vinos.py, scripts/vinos.py]
 permissions:
   contents: write
 jobs:
@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: pip install pdfplumber requests
-      - run: python prueba/vinos.py
+      - run: python scripts/vinos.py
       - run: |
-          git add prueba/
+          git add prueba/ vinos.json
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "prueba vinos: resultados" || true
           git push
