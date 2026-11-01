@@ -89,18 +89,35 @@ diag['recursos'] = [[r.get('name'), r.get('format'), r.get('url'), r.get('last_m
 def recurso(patron):
     for r in recs or []:
         if (r.get('format') or '').upper() == 'CSV' and re.search(patron, (r.get('name') or '') + ' ' + (r.get('url') or ''), re.I):
-            return r['url']
+            return r
     return None
+
+
+def candidatos(r):
+    """El mismo archivo por varios caminos: desde Actions datos.energia.gob.ar a veces no responde (timeout)."""
+    u = r['url']; out = []
+    if r.get('id'): out.append(f'https://datos.gob.ar/dataset/{PAQ}/archivo/energia_{r["id"]}')
+    out += [u.replace('http://', 'https://'), u]
+    return out
+
+
+def abrir_alguno(r, timeout):
+    errs = []
+    for u in candidatos(r):
+        try:
+            if not permitido(u): errs.append('robots ' + u); continue
+            x = abrir(u, timeout); diag.setdefault('url_ok', []).append(u); return x
+        except Exception as e:
+            errs.append(f'{u}: {e}')
+    raise Exception(' | '.join(errs))
 
 
 # ---------- precios vigentes: todas las estaciones ----------
 est = {}
 try:
-    url = recurso(r'vigente|resoluci[oó]n|surtidor') or recurso(r'.')
-    diag['url_vigentes'] = url
-    if not url: raise Exception('sin recurso de precios vigentes')
-    if not permitido(url): raise Exception('robots.txt no permite ' + url)
-    with abrir(url, 300) as r:
+    rec = recurso(r'vigente')
+    if not rec: raise Exception('sin recurso de precios vigentes')
+    with abrir_alguno(rec, 90) as r:
         txt = io.TextIOWrapper(r, encoding='utf-8-sig', errors='replace', newline='')
         rd = csv.DictReader(txt)
         diag['columnas'] = rd.fieldnames
@@ -178,11 +195,10 @@ else:
 
 # ---------- historia mensual: precios históricos (si el archivo se puede leer en un tiempo razonable) ----------
 try:
-    url = recurso(r'hist[oó]ric')
-    diag['url_historicos'] = url
-    if url and permitido(url):
+    rec = recurso(r'hist[oó]ric')
+    if rec:
         t0, men, n = time.time(), defaultdict(lambda: defaultdict(list)), 0
-        with abrir(url, 600) as r:
+        with abrir_alguno(rec, 90) as r:
             diag['hist_bytes'] = r.headers.get('Content-Length')
             rd = csv.DictReader(io.TextIOWrapper(r, encoding='utf-8-sig', errors='replace', newline=''))
             diag['hist_columnas'] = rd.fieldnames
@@ -204,9 +220,11 @@ if not out.get('mensual') and viejo.get('mensual'): out['mensual'] = viejo['mens
 
 # ---------- nafta súper en el IPC (INDEC, precio medio GBA), para la serie larga ----------
 try:
-    q = json.loads(bajar('https://apis.datos.gob.ar/series/api/search/?q=nafta&limit=20'))
-    diag['series_nafta'] = [[x['field'].get('id'), x['field'].get('description'), x['field'].get('time_index_end')] for x in q.get('data', [])]
-    ids = [x[0] for x in diag['series_nafta'] if x[1] and re.search(r'precio', x[1], re.I) and re.search(r'nafta', x[1], re.I)]
+    diag['series_nafta'] = []
+    for qq in ('nafta%20super%20precio', 'precio%20medio%20nafta', 'combustible%20precio', 'gas%20oil%20ventas', 'nafta%20ventas'):
+        q = json.loads(bajar('https://apis.datos.gob.ar/series/api/search/?q=' + qq + '&limit=25'))
+        diag['series_nafta'] += [[x['field'].get('id'), x['field'].get('description'), x['field'].get('time_index_start'), x['field'].get('time_index_end'), x['field'].get('frequency')] for x in q.get('data', [])]
+    ids = [x[0] for x in diag['series_nafta'] if x[1] and re.search(r'precio', x[1], re.I) and re.search(r'nafta', x[1], re.I) and (x[3] or '') >= '2026']
     if ids:
         d = json.loads(bajar('https://apis.datos.gob.ar/series/api/series/?ids=' + ids[0] + '&limit=1000&format=json'))
         out['indec'] = {'id': ids[0], 'd': [[r[0][:7], round(r[1], 2)] for r in d['data'] if r[1] is not None]}
