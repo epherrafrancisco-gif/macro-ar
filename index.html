@@ -775,6 +775,9 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .hello .bfake{margin:10px 0 4px}
 .hbus{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 10px 7px 12px;font:600 13.5px var(--sans);cursor:pointer}
 .hbus:hover{border-color:var(--accent)}
+/* Inicio: sin la lupa chica de arriba (ya está la caja de buscar) y todo un poco más arriba (pedido del dueño 01/11/2026) */
+body.mporta .hbus{display:none}
+@media (min-width:641px){body.mporta .wrap{padding-top:12px}body.mporta header{row-gap:4px}body.mporta #pLive{margin-bottom:4px}body.mporta .hello h2{margin-top:0}}
 .hbus svg{width:16px;height:16px;color:var(--accent)}
 .hbus kbd{font:500 11px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 5px}
 .mbus{display:none}

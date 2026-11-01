@@ -495,6 +495,64 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
 }
 
+// ---------- miles de preguntas nuevas en cada visita (pedido del dueño 01/11/2026: que nadie vea la misma dos veces) ----------
+// Ventanas de fechas elegidas al azar sobre la historia diaria de BYMA y la mensual del dólar: cada visita arma otras.
+{
+  const tks = Object.keys(P.his.acc).filter(k => k !== 'MERVAL'), N = HF.length, MV = P.his.acc.MERVAL ? 'MERVAL' : null;
+  const fl = a => P.his.acc[a].t === 'ced' ? null : 'ar';
+  const ok = (tk, i, paso) => { for (let k = 0; k < 6 && i >= 0 && i < N; k++, i += paso) if (usd(tk, i)) return i; return -1; };
+  const rinde = (tk, i0, i1) => { const a = ok(tk, i0, 1), b = ok(tk, i1, -1); if (a < 0 || b <= a) return null; return {r: (usd(tk, b) / usd(tk, a) - 1) * 100, f0: HF[a], f1: HF[b]}; };
+  const al = () => { const i0 = Math.floor(rnd() * (N - 30)), i1 = i0 + 20 + Math.floor(rnd() * (N - 1 - i0 - 20)); return [i0, Math.min(N - 1, i1)]; };
+  const tk = () => tks[Math.floor(rnd() * tks.length)];
+  const SIM = ['calculadoras', 'Probalo en el simulador'], SRC = 'Precios de BYMA y dólar MEP.';
+  // A rindió más que B entre dos fechas
+  for (let n = 0; n < 900; n++) {
+    const a = tk(), b = tk(); if (a === b) continue; const [i0, i1] = al();
+    const ra = rinde(a, i0, i1), rb = rinde(b, i0, i1); if (!ra || !rb || ra.f0 !== rb.f0 || ra.f1 !== rb.f1 || Math.abs(ra.r - rb.r) < 5) continue;
+    vf(`w-${a}-${b}-${ra.f0}-${ra.f1}`, a, fl(a), 'Acciones', `Entre el ${fFe(ra.f0)} y el ${fFe(ra.f1)}, ${NOMA(a)} rindió más que ${NOMA(b)} en dólares`, ra.r > rb.r,
+      `${NOMA(a)}: ${fP(ra.r)}. ${NOMA(b)}: ${fP(rb.r)}. En dólares MEP, entre esas dos fechas.`, SRC, SIM);
+  }
+  // si ponías US$ 1.000 en una fecha y vendías en otra
+  for (let n = 0; n < 700; n++) {
+    const a = tk(), [i0, i1] = al(), r = rinde(a, i0, i1); if (!r) continue;
+    const fin = 1000 * (1 + r.r / 100), us = [600, 750, 900, 1100, 1250, 1500, 2000, 3000].filter(u => Math.abs(fin / u - 1) > .07); if (!us.length) continue;
+    const u = us[Math.floor(rnd() * us.length)];
+    vf(`w-si-${a}-${r.f0}-${r.f1}-${u}`, a, fl(a), 'Si hubieras invertido', `Si ponías US$ 1.000 en ${NOMA(a)} el ${fFe(r.f0)} y vendías el ${fFe(r.f1)}, te quedaban más de US$ ${fN(u)}`, fin > u,
+      `Te quedaban US$ ${fN(fin)} (${fP(r.r)} en dólares MEP).`, 'Comprando en pesos al MEP de ese día y vendiendo al MEP del día de venta. Precios de BYMA.', SIM);
+  }
+  // en un mes: ¿subió en dólares? / ¿le ganó al Merval?
+  const meses = [...new Set(HF.map(f => f.slice(0, 7)))].slice(1, -1);
+  const rangoMes = m => { const i0 = HF.findIndex(f => f.slice(0, 7) === m), i1 = HF.findLastIndex(f => f.slice(0, 7) === m); return [Math.max(0, i0 - 1), i1]; };
+  for (let n = 0; n < 700; n++) {
+    const a = tk(), m = meses[Math.floor(rnd() * meses.length)], [i0, i1] = rangoMes(m), r = rinde(a, i0, i1); if (!r || Math.abs(r.r) < 3) continue;
+    if (rnd() < .5) vf(`w-mes-${a}-${m}`, a, fl(a), 'Acciones', `En ${fMes(m)}, ${NOMA(a)} subió en dólares`, r.r > 0, `${fP(r.r)} en dólares MEP en ${fMes(m)}.`, SRC, SIM);
+    else if (MV) { const rm = rinde(MV, i0, i1); if (rm && Math.abs(r.r - rm.r) >= 3)
+      vf(`w-mv-${a}-${m}`, a, fl(a), 'Acciones', `En ${fMes(m)}, ${NOMA(a)} le ganó al Merval en dólares`, r.r > rm.r, `${NOMA(a)}: ${fP(r.r)}. Merval: ${fP(rm.r)}. En dólares MEP, en ${fMes(m)}.`, SRC, ['mercado', 'Ver Bolsa y bonos']); }
+  }
+  // el dólar MEP en una fecha
+  for (let n = 0; n < 250; n++) {
+    const i = Math.floor(rnd() * N), m = HM[i]; if (!m) continue;
+    const us = [900, 1000, 1100, 1200, 1300, 1400, 1500, 1600].filter(u => Math.abs(m / u - 1) > .03); if (!us.length) continue; const u = us[Math.floor(rnd() * us.length)];
+    vf(`w-mep-${HF[i]}-${u}`, 'mep' + HF[i], 'ar', 'Dólar', `El ${fFe(HF[i])}, el dólar MEP estaba arriba de $ ${fN(u)}`, m > u, `Cerró en $ ${fN(m)}.`, 'Dólar MEP calculado con bonos AL30 / AL30D de BYMA.', ['dolares', 'Ver los dólares']);
+  }
+  // dólares de dos meses distintos, a precios de hoy
+  const H = A.hist.filter(x => x[5]), cerH = ult(H)[5];
+  for (let n = 0; n < 500; n++) {
+    const x = H[Math.floor(rnd() * (H.length - 1))], y = H[Math.floor(rnd() * (H.length - 1))]; if (x[0] >= y[0]) continue;
+    const [c, nm] = [[2, 'blue'], [3, 'MEP'], [1, 'oficial']][Math.floor(rnd() * 3)]; if (!x[c] || !y[c]) continue;
+    const rx = x[c] * cerH / x[5], ry = y[c] * cerH / y[5]; if (Math.abs(rx / ry - 1) < .06) continue;
+    vf(`w-dr-${c}-${x[0]}-${y[0]}`, 'dr' + c, 'ar', 'Dólar', `Descontando la inflación, el dólar ${nm} estaba más caro en ${fMes(x[0])} que en ${fMes(y[0])}`, rx > ry,
+      `A precios de hoy: $ ${fA(rx)} en ${fMes(x[0])} y $ ${fA(ry)} en ${fMes(y[0])}.`, 'Promedio de cada mes; inflación medida con el CER del BCRA.', ['dolares', 'Ver el dólar a precios de hoy']);
+  }
+  // inflación de Argentina: un mes contra otro
+  const IA = A.infl;
+  for (let n = 0; n < 300; n++) {
+    const x = IA[Math.floor(rnd() * IA.length)], y = IA[Math.floor(rnd() * IA.length)]; if (x[0] >= y[0] || Math.abs(x[1] - y[1]) < .2) continue;
+    vf(`w-ia-${x[0]}-${y[0]}`, 'ia' + x[0], 'ar', 'Inflación', `La inflación de ${fMes(x[0])} fue más alta que la de ${fMes(y[0])}`, x[1] > y[1],
+      `${fMes(x[0])}: ${fN(x[1], 1)}%. ${fMes(y[0])}: ${fN(y[1], 1)}%.`, 'Fuente: INDEC, vía BCRA.', ['macro', 'Ver inflación y reservas']);
+  }
+}
+
 // ---------- afuera lo poco llamativo (pedido del dueño 01/11/2026) ----------
 // monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
 {
@@ -510,13 +568,21 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
 }
 // ---------- el orden: al azar, pesado por interés, sin repetir molde ni tema seguido ----------
-const VISTOS_K = 'pl-vistos';
+// memoria de vistas (pedido del dueño 01/11/2026: que nadie vea la misma dos veces): por el TEXTO de la pregunta (así una igual
+// con otro id tampoco vuelve), 180 días, guardado corto (hash en base 36 → día). Las vistas no se vuelven a mostrar nunca.
+const VISTOS_K = 'pl-vistas2', DIA = Math.floor(Date.now() / 864e5);
+const vk = r => hash(r.title || r.id).toString(36);
 let vistos = {}; try { vistos = JSON.parse(localStorage.getItem(VISTOS_K) || '{}'); } catch (e) {}
-const SEMANA = 7 * 864e5;
-const frescos = R.filter(r => !(vistos[r.id] && Date.now() - vistos[r.id] < SEMANA));
+for (const k in vistos) if (DIA - vistos[k] > 180) delete vistos[k];
+const guardarVistos = () => { try { localStorage.setItem(VISTOS_K, JSON.stringify(vistos)); } catch (e) {
+  const ks = Object.keys(vistos).sort((a, b) => vistos[a] - vistos[b]); ks.slice(0, ks.length >> 1).forEach(k => delete vistos[k]);  // lleno: se olvidan las más viejas
+  try { localStorage.setItem(VISTOS_K, JSON.stringify(vistos)); } catch (e2) {} } };
+const marcarVisto = r => { if (r && vistos[vk(r)] == null) { vistos[vk(r)] = DIA; guardarVistos(); } };
+try { localStorage.removeItem('pl-vistos'); } catch (e) {}
+const frescos = R.filter(r => vistos[vk(r)] == null);
 // cuánto de cada tema: así los cientos de "simulador" no tapan al resto
 const CUOTA = {acc: 34, inf: 22, his: 18, dol: 12, bm: 9, tas: 5};
-const base = frescos.length > 40 ? frescos : R;
+const base = frescos;
 const colas = {};
 base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
 const ORD = [], recientes = [];
@@ -608,11 +674,11 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   el.querySelectorAll('.br .t i').forEach(b => requestAnimationFrame(() => b.style.width = b.dataset.w + '%'));
   const bg = el.querySelector('.big[data-v]'); if (bg && !bg.dataset.ok) { bg.dataset.ok = 1; contar(bg); }
   clearTimeout(tVisto);
-  if (i >= 0) { tVisto = setTimeout(() => { vistos[ORD[i].id] = Date.now(); try { localStorage.setItem(VISTOS_K, JSON.stringify(vistos)); } catch (er) {} }, 1200); }
+  if (i >= 0) { tVisto = setTimeout(() => marcarVisto(ORD[i]), 1200); }
   else { try { localStorage.setItem('pl-intro', '1'); } catch (er) {} }
   if (i >= pintados - 4) pintar(8);
   const r = ORD[i]; $('#fCat').textContent = r ? CATN[r.cat] : 'Inicio'; $('#fBar').style.width = Math.min(100, (Math.max(0, i + 1) / ORD.length) * 100) + '%'; $('#fBar').style.background = r && r.pal ? `linear-gradient(90deg,${r.pal[0]},${r.pal[1]})` : '';
-  $('#fN').textContent = i >= 0 ? `${fN(i + 1)} de ${fN(ORD.length)}` : `${fN(ORD.length)} reels`;
+  $('#fN').textContent = i >= 0 ? `${fN(i + 1)} de ${fN(ORD.length)}` : `${fN(ORD.length)} preguntas`;
 }), {threshold: .6});
 function contar(el) {
   const v = +el.dataset.v, d = +el.dataset.d, pre = el.dataset.pre, suf = el.dataset.suf, t0 = performance.now(), dur = 900;
@@ -664,6 +730,7 @@ function rachaServidor(reel) {
     }).catch(() => {});
 }
 function premio(ok, btn, reel) {
+  marcarVisto(ORD[+reel.dataset.i]);
   if (ok) rachaServidor(reel); else TK = '';
   if (ok) {
     PT.r++; PT.max = Math.max(PT.max, PT.r);

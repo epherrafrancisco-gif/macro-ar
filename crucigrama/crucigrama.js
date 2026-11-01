@@ -155,23 +155,22 @@ function verdes(anim) {
     if (anim) try { navigator.vibrate && navigator.vibrate(15); } catch (e) {}
   }
 }
-// ---------- reloj, comprobar, pista ----------
+// ---------- reloj y pista ----------
 let tic = null, t0 = 0;
 function fmtT(s) { return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
 function arrancarReloj() { if (tic || E.fin) return; t0 = Date.now() - E.t * 1000; tic = setInterval(() => { E.t = Math.round((Date.now() - t0) / 1000); $('#reloj').textContent = fmtT(E.t); if (E.t % 5 === 0) guardar(); }, 1000); }
 $('#reloj').textContent = fmtT(E.t);
-$('#comprobar').onclick = () => {
-  let malas = 0;
-  grid.querySelectorAll('.cl').forEach(c => { const x = +c.dataset.x, y = +c.dataset.y, v = c.querySelector('input').value; if (v && v !== SOL[y][x]) { c.classList.add('mal'); malas++; } });
-  aviso(malas ? `Hay ${malas} ${malas === 1 ? 'letra mal' : 'letras mal'}, marcadas en rojo.` : 'Vas bien: todo lo que pusiste está bien.');
-};
+// pista (pedido del dueño 01/11/2026): la letra va en el casillero donde estás parado; si ese ya está bien, en uno al azar
 $('#pista').onclick = () => {
-  const vac = [...grid.querySelectorAll('.cl:not(.okw)')].filter(c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x]);
-  if (!vac.length) return;
-  const act = cur ? vac.filter(c => c.classList.contains('act')) : [];
-  const c = (act.length ? act : vac)[0], x = +c.dataset.x, y = +c.dataset.y;
+  const mal = c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x];
+  let c = cur ? inp(cur.x, cur.y)?.parentNode : null, aqui = !!(c && mal(c));
+  if (!aqui) { const vac = [...grid.querySelectorAll('.cl')].filter(mal); if (!vac.length) return; c = vac[Math.floor(Math.random() * vac.length)]; }
+  const x = +c.dataset.x, y = +c.dataset.y;
   c.querySelector('input').value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x]; E.pistas++; c.classList.add('ayu'); c.classList.remove('mal');
-  arrancarReloj(); guardar(); verdes(true); revisarFin();
+  arrancarReloj(); guardar(); verdes(true);
+  if (aqui) { let n = paso(1); while (inp(n.x, n.y) && inp(n.x, n.y).readOnly) { cur = n; n = paso(1); } if (!ir(n.x, n.y)) ir(x, y); }
+  else { if (!palabraDe(x, y, dir)) dir = dir === 'h' ? 'v' : 'h'; ir(x, y); }
+  revisarFin();
 };
 function aviso(t) { const a = $('#aviso'); a.textContent = t; a.hidden = false; clearTimeout(aviso.t); aviso.t = setTimeout(() => a.hidden = true, 3000); }
 

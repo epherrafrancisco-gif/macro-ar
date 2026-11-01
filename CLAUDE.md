@@ -116,7 +116,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (celular) y arriba de Aclaraciones en Sobre; abre `#manual` (8 bloques cortos). Nunca se abre solo. Evento GoatCounter `manual`.
 - Buscador (pedido del dueño: "que encuentre todo", "que perdone bastante" y que con una palabra vaga muestre todas las
   opciones, como Google): ventana `#bus` (`busAbrir`/`busPintar`/`busIr`), se abre con cualquier `[data-bus]` (caja `.bfake`
-  en la portada del celular y de la compu, lupa `.mbus` en `#mbar`, botón `.hbus` en el encabezado) o con "/" y Ctrl+K.
+  en la portada del celular y de la compu, lupa `.mbus` en `#mbar`, botón `.hbus` en el encabezado, oculto en Inicio con `body.mporta`
+  porque ya está la caja; pedido del dueño 01/11/2026, junto con menos espacio arriba en la portada de la compu) o con "/" y Ctrl+K.
   El índice (`busArmar`) se arma solo al abrir: secciones (`SECC`), cotizaciones, calculadoras, apartados (`SUBS`), cada
   `.card > .head > h2` (con su nota y el comienzo de `p.sub`) y `GLOS`. Perdona errores (`bLev`, letras cambiadas = 1 error),
   plurales y tildes; sinónimos de la gente en `BSIN` (los de varias palabras se buscan enteros). Primero lo de Argentina.
@@ -551,7 +552,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   temblor del botón y "Se cortó la racha de N". Puntos y racha en la ficha `#pts` del encabezado (localStorage `pl-pts`;
   en ≤440px el chip "PULSO LIVE" queda solo como punto). Después de responder aparece "Seguí la racha" / "Probá con la
   próxima" (`.sigue`, baja al siguiente). Eventos GoatCounter `live-acierto` / `live-error`. Respeta reduced-motion.
-- Orden al azar pesado por interés; el primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir =
+- Orden al azar pesado por interés; el primero siempre de Argentina. Pedido del dueño 01/11/2026: que nadie vea la misma dos veces.
+  Memoria `pl-vistas2` por TEXTO de la pregunta (hash base 36 → día, 180 días; si se llena localStorage se olvidan las más viejas), se marca
+  a los 1,2 s en pantalla o al responder, y las vistas no vuelven nunca (antes `pl-vistos`, 7 días, por id). Para que haya miles nuevas en
+  cada visita, el bloque "miles de preguntas nuevas" arma ventanas de fechas al azar sobre `his` (A vs B entre dos fechas, "si ponías
+  US$ 1.000 el … y vendías el …", un mes en dólares o contra el Merval, el MEP de un día) y meses al azar del dólar real y la inflación:
+  ~5.500 por visita, casi todas distintas de la anterior. Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
@@ -580,7 +586,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   = un `<input>` (anda con el teclado del celular); tocar de nuevo cambia la dirección; flechas, Enter (próxima palabra) y
   borrar. Pedido del dueño (como La Nación): la palabra que estás completando va en rojo (`.act`, la letra actual `.cur` más
   fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; la pista se tacha
-  `.hecha`; al escribir se saltean los casilleros ya resueltos). Reloj, "Comprobar" (marca en rojo), "Una letra de ayuda" (cuenta pistas), progreso por día en localStorage
+  `.hecha`; al escribir se saltean los casilleros ya resueltos). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 
