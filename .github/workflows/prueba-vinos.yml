@@ -1,0 +1,22 @@
+name: Prueba vinos (temporal)
+on:
+  push:
+    branches: [prueba-vinos]
+    paths: [.github/workflows/prueba-vinos.yml, prueba/vinos.py]
+permissions:
+  contents: write
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install pdfplumber requests
+      - run: python prueba/vinos.py
+      - run: |
+          git add prueba/
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "prueba vinos: resultados" || true
+          git push
