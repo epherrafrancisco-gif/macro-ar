@@ -47,8 +47,35 @@ a{color:inherit}
 #feed{position:fixed;inset:0;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
 #feed::-webkit-scrollbar{display:none}
 .reel{position:relative;height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;
-  --c:var(--acc);background:radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--c) 22%,transparent),transparent 62%),
-  radial-gradient(90% 50% at 100% 100%,color-mix(in srgb,var(--c) 10%,transparent),transparent 70%),var(--bg)}
+  --c:var(--acc);--c2:var(--acc);
+  background:radial-gradient(90% 60% at 15% 0%,color-mix(in srgb,var(--c) 75%,transparent),transparent 70%),
+  radial-gradient(80% 60% at 100% 100%,color-mix(in srgb,var(--c2) 60%,transparent),transparent 72%),
+  linear-gradient(165deg,color-mix(in srgb,var(--c) 38%,#07080d),color-mix(in srgb,var(--c2) 30%,#07080d));
+  background-size:140% 140%,140% 140%,100% 100%;animation:fondo 9s ease-in-out infinite alternate}
+@keyframes fondo{to{background-position:30% 20%,70% 80%,0 0}}
+/* más llamativo (pedido del dueño 01/11/2026): color por reel, títulos grandes, entrada animada */
+.reel .kick{color:#fff;opacity:.85}.reel .kick b{color:#fff}
+.reel .tit{font-size:clamp(27px,7.6vw,38px);font-weight:700;text-shadow:0 2px 18px #0006}
+.reel .big{background:linear-gradient(90deg,#fff,color-mix(in srgb,var(--c2) 35%,#fff));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 22px #0007)}
+.reel .chip{background:#0000002e;border-color:#ffffff30;color:#fff}
+.reel .chip.up{background:#16c47833;border-color:#3ef0a0aa;color:#b9ffe0}.reel .chip.dn{background:#ff3b5c33;border-color:#ff7a90aa;color:#ffd0d8}
+.reel .nota{color:#f1f3f8}.reel .src{color:#ffffffa0}
+.reel .rin>*{transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .55s}
+.reel:not(.on) .rin>*{transform:translateY(22px);opacity:0}
+.reel.on .rin>*:nth-child(2){transition-delay:.06s}.reel.on .rin>*:nth-child(3){transition-delay:.12s}.reel.on .rin>*:nth-child(n+4){transition-delay:.18s}
+.reel .op{background:#00000040;border-color:#ffffff40;color:#fff}
+.reel .op:hover{border-color:#fff}
+.reel .vf .op[data-q="0"]{background:linear-gradient(135deg,#16c47855,#0f8f5a55);border-color:#3ef0a0}
+.reel .vf .op[data-q="1"]{background:linear-gradient(135deg,#ff3b5c55,#b0123355);border-color:#ff7a90}
+.reel .quiz.ok .op.si{background:#16c478aa;border-color:#7dffc4;transform:scale(1.03)}
+.reel .quiz.ok .op.mal{background:#ff3b5c99;border-color:#ffb0bd}
+.reel .quiz.ok .op:not(.si):not(.mal){opacity:.45}
+.reel .op{transition:transform .25s,background .25s,border-color .25s,opacity .25s}
+.reel .qres{color:#fff;font-size:16px}
+.reel .br .t{background:#ffffff1f}.reel .br .t i{background:linear-gradient(90deg,#fff,color-mix(in srgb,var(--c2) 50%,#fff))}
+.reel .vb{background:#00000040;border-color:#ffffff30}.reel .vb.w{background:#ffffff1f;border-color:#fff}
+.rb i{background:#00000052;border-color:#ffffff40}
+.reel .lnl{color:#ffffffb0}
 .c-arg{--c:#6aa8d8}.c-mer{--c:#d95926}.c-mun{--c:#199e70}.c-his{--c:#c98500}.c-tri{--c:#d55181}.c-age{--c:#3987e5}.c-not{--c:#8b9bb0}
 .rin{position:absolute;inset:0;margin:0 auto;max-width:520px;display:flex;flex-direction:column;gap:14px;
   padding:calc(70px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(92px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
@@ -144,6 +171,7 @@ a{color:inherit}
 .nwm{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:12px;color:var(--mut)}
 .nwb{align-self:flex-start;text-decoration:none;font-size:14px;padding:10px 14px;border-radius:10px;border:1px solid #ffffff26}
 /* intro */
+.intro{--c:#7b2ff7;--c2:#f107a3}
 .intro .rin{justify-content:center;gap:18px}
 .intro h1{margin:0;font-size:clamp(40px,12vw,64px);line-height:1;letter-spacing:-.03em}
 .intro h1 span{font-family:var(--mono);color:var(--acc);font-weight:500}
@@ -201,6 +229,6 @@ a{color:inherit}
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 
-<script src="live.js?v=1"></script>
+<script src="live.js?v=2"></script>
 </body>
 </html>

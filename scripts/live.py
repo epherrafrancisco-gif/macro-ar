@@ -135,8 +135,7 @@ for tk, inf in H['info'].items():
     acc[tk] = {'n': inf['n'], 't': inf['t'], 'c': c}
 his = {'f': F, 'mep': [sig(x) if x else None for x in H['mep']], 'acc': acc}
 
-cal = J('calendario.json').get('eventos', [])
-nots = [{'t': x['t'], 'u': x['u'], 'f': x['f'], 'h': x['h']} for x in J('noticias.json').get('items', [])[:60]]
+cal, nots = [], []  # agenda y noticias se sacaron de los reels (pedido del dueño 01/11/2026: poco llamativos)
 
 pack = {'hoy': HOY, 'gen': D['actualizado'], 'arg': arg, 'paises': paises, 'ppa': ppa, 'crec': crec, 'bigmac': bigmac, 'bmf': bm_fecha,
         'bolsas': bolsas, 'bonos': bonos, 'com': com, 'his': his, 'cal': cal, 'nots': nots}

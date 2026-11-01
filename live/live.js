@@ -27,8 +27,12 @@ const ISO = {}; for (const k in P.paises) ISO[P.paises[k].iso] = P.paises[k];
 ISO.ARG = {n: 'Argentina', fl: 'ar', k: 'argentina'};
 const NOM = {DEU:'Alemania',FRA:'Francia',ITA:'Italia',NLD:'Países Bajos',AUT:'Austria',BEL:'Bélgica',PRT:'Portugal',IRL:'Irlanda',GRC:'Grecia',FIN:'Finlandia',EA20:'Zona euro'};
 const pais = iso => ISO[iso] || {n: NOM[iso] || iso, fl: null};
-const CC = {arg: '#6aa8d8', mer: '#d95926', mun: '#199e70', his: '#c98500', tri: '#d55181', age: '#3987e5', not: '#8b9bb0'};
-const CATN = {arg:'Argentina', mer:'Mercados', mun:'El mundo', his:'Historia', tri:'Trivia', age:'Agenda', not:'Noticias'};
+const CC = {vf: '#ff5c8a', sim: '#2ee59d', tri: '#b57bff', arg: '#5fb4ff', mer: '#ff8a3d', mun: '#2ad4c8', his: '#ffc23d'};
+// cada reel con su color (pedido del dueño: que cambien, que no parezca un tablero): pares de colores vivos, nunca dos iguales seguidos
+const PAL = [['#7b2ff7', '#f107a3'], ['#ff512f', '#f09819'], ['#00b09b', '#1d6fe0'], ['#e5266b', '#7a1fd1'], ['#f7971e', '#e8336d'],
+  ['#11998e', '#38ef7d'], ['#3a1c71', '#d76d77'], ['#0061ff', '#60efff'], ['#c31432', '#240b36'], ['#8e2de2', '#4a00e0'],
+  ['#fc466b', '#3f5efb'], ['#f12711', '#f5af19'], ['#00c6ff', '#0072ff'], ['#d4145a', '#fbb03b'], ['#1fa2ff', '#12d8fa']];
+const CATN = {vf:'Verdadero o falso', sim:'Si hubieras invertido', tri:'Trivia', arg:'Argentina', mer:'Mercados', mun:'El mundo', his:'Historia'};
 
 // ---------- series ----------
 const A = P.arg;
@@ -456,26 +460,39 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
 }
 
+// ---------- afuera lo poco llamativo (pedido del dueño 01/11/2026) ----------
+// monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
+{
+  const FUERA_M = new Set(['mon', 'cd', 'nw', 'bol', 'com']);
+  const FUERA_K = /^(rtas|rbon|rdes|rbol)/, FUERA_VF = /^vf-(bol|com|tas|des)-/;
+  for (let i = R.length - 1; i >= 0; i--) {
+    const r = R[i];
+    if (FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
+    else if (r.mold === 'vf') r.cat = 'vf';
+    else if (r.mold === 'si') r.cat = 'sim';
+  }
+}
 // ---------- el orden: al azar, pesado por interés, sin repetir molde ni tema seguido ----------
 const VISTOS_K = 'pl-vistos';
 let vistos = {}; try { vistos = JSON.parse(localStorage.getItem(VISTOS_K) || '{}'); } catch (e) {}
 const SEMANA = 7 * 864e5;
 const frescos = R.filter(r => !(vistos[r.id] && Date.now() - vistos[r.id] < SEMANA));
 // cuánto de cada tema: así los cientos de "simulador" no tapan al resto
-const CUOTA = {mer: 26, mun: 18, his: 14, tri: 24, arg: 12, not: 5, age: 3};
+const CUOTA = {vf: 52, sim: 20, tri: 8, arg: 7, his: 6, mun: 4, mer: 3};
 const base = frescos.length > 40 ? frescos : R;
 const colas = {};
 base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
 const ORD = [], recientes = [];
 const sirve = (r, estricto) => {
   const u = ORD.slice(-4);
-  if (u.length && r.mold === u[u.length - 1].mold) return false;
-  if (estricto && u.some(x => x.mold === r.mold)) return false;
+  if (u.length && r.mold === u[u.length - 1].mold && r.mold !== 'vf') return false;
+  if (estricto && r.mold !== 'vf' && u.some(x => x.mold === r.mold)) return false;
   return !recientes.includes(r.key);
 };
 for (let total = base.length; ORD.length < total;) {
   const ultCat = ORD.length ? ORD[ORD.length - 1].cat : null;
-  const cats = Object.keys(colas).filter(c => colas[c].length && c !== ultCat);
+  const dosVf = ORD.length > 1 && ORD[ORD.length - 1].cat === 'vf' && ORD[ORD.length - 2].cat === 'vf';
+  const cats = Object.keys(colas).filter(c => colas[c].length && (c !== ultCat || (c === 'vf' && !dosVf)));
   const usables = cats.length ? cats : Object.keys(colas).filter(c => colas[c].length);
   let t = usables.reduce((s, c) => s + (CUOTA[c] || 5), 0) * rnd(), cat = usables[0];
   for (const c of usables) { t -= CUOTA[c] || 5; if (t <= 0) { cat = c; break; } }
@@ -495,7 +512,9 @@ function svgLine(viz) {
   let out = '';
   if (viz.base != null) out += `<line x1="0" x2="${W}" y1="${y(viz.base)}" y2="${y(viz.base)}" stroke="#ffffff30" stroke-dasharray="4 5" vector-effect="non-scaling-stroke"/>`;
   for (let g = 1; g < 4; g++) out += `<line x1="0" x2="${W}" y1="${H * g / 4}" y2="${H * g / 4}" stroke="#ffffff0c" vector-effect="non-scaling-stroke"/>`;
+  const solo = viz.s.length === 1;  // una sola línea: blanca, que resalte sobre el color del reel
   viz.s.forEach((s, j) => {
+  if (solo) s = {...s, c: '#ffffff'};
     const n = s.v.length, pts = s.v.map((v, i) => [(i / (n - 1)) * W, y(v)]);
     const d = 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
     if (viz.area && j === 0) out += `<path class="ar" d="${d}L${W} ${H}L0 ${H}Z" fill="url(#g${j})"/>`;
@@ -525,7 +544,8 @@ const ICO = {
 function reelHTML(r, i) {
   const big = r.big ? `<div class="big" data-v="${r.big.v}" data-d="${r.big.d || 0}" data-pre="${esc(r.big.pre || '')}" data-suf="${esc(r.big.suf || '')}">${esc((r.big.pre || '') + fN(r.big.v, r.big.d || 0) + (r.big.suf || ''))}</div>` : '';
   const chips = r.chips ? `<div class="chips">${r.chips.filter(c => c[0]).map(c => `<span class="chip ${c[1]}">${esc(c[0])}</span>`).join('')}</div>` : '';
-  return `<section class="reel c-${r.cat}" data-i="${i}">
+  const pa = PAL[(hash(r.id) + i * 7) % PAL.length]; if (i > 0 && ORD[i - 1].pal === pa) r.pal = PAL[(PAL.indexOf(pa) + 4) % PAL.length]; else r.pal = pa;
+  return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
     <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}<div class="src">${esc(r.src)}</div></div>
@@ -556,7 +576,7 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   if (i >= 0) { tVisto = setTimeout(() => { vistos[ORD[i].id] = Date.now(); try { localStorage.setItem(VISTOS_K, JSON.stringify(vistos)); } catch (er) {} }, 1200); }
   else { try { localStorage.setItem('pl-intro', '1'); } catch (er) {} }
   if (i >= pintados - 4) pintar(8);
-  const r = ORD[i]; $('#fCat').textContent = r ? CATN[r.cat] : 'Inicio'; $('#fBar').style.width = Math.min(100, (Math.max(0, i + 1) / ORD.length) * 100) + '%'; $('#fBar').style.background = r ? CC[r.cat] : '';
+  const r = ORD[i]; $('#fCat').textContent = r ? CATN[r.cat] : 'Inicio'; $('#fBar').style.width = Math.min(100, (Math.max(0, i + 1) / ORD.length) * 100) + '%'; $('#fBar').style.background = r && r.pal ? `linear-gradient(90deg,${r.pal[0]},${r.pal[1]})` : '';
   $('#fN').textContent = i >= 0 ? `${fN(i + 1)} de ${fN(ORD.length)}` : `${fN(ORD.length)} reels`;
 }), {threshold: .6});
 function contar(el) {
@@ -592,7 +612,8 @@ addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'j' ||
 // ---------- imagen para compartir (1080 × 1920, para historias) ----------
 function compartir(r) {
   const W = 1080, H = 1920, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const x = cv.getContext('2d');
-  const col = CC[r.cat]; x.fillStyle = '#0e1319'; x.fillRect(0, 0, W, H);
+  const col = r.pal ? r.pal[0] : CC[r.cat]; x.fillStyle = '#0b0d14'; x.fillRect(0, 0, W, H);
+  if (r.pal) { const lg = x.createLinearGradient(0, 0, W, H); lg.addColorStop(0, r.pal[0] + 'aa'); lg.addColorStop(1, r.pal[1] + '66'); x.fillStyle = lg; x.fillRect(0, 0, W, H); }
   let g = x.createRadialGradient(W / 2, 0, 0, W / 2, 0, 1300); g.addColorStop(0, col + '55'); g.addColorStop(1, '#0e131900'); x.fillStyle = g; x.fillRect(0, 0, W, H);
   const M = 90, F = (s, w = 500, f = 'Instrument Sans') => `${w} ${s}px "${f}", system-ui, sans-serif`, MO = (s, w = 500) => `${w} ${s}px "JetBrains Mono", ui-monospace, monospace`;
   const wrap = (t, y, s, w, lh, maxw = W - 2 * M) => { x.font = F(s, w); const ws = t.split(' '); let l = ''; for (const p of ws) { if (x.measureText(l + p).width > maxw && l) { x.fillText(l.trim(), M, y); y += lh; l = ''; } l += p + ' '; } x.fillText(l.trim(), M, y); return y + lh; };

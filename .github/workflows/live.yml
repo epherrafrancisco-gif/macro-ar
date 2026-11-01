@@ -4,7 +4,7 @@ name: Pulso Live
 # así los reels siempre usan lo último. Solo lee los JSON del repo.
 on:
   workflow_run:
-    workflows: ["Actualizar datos", "Global", "Historia", "Noticias"]
+    workflows: ["Actualizar datos", "Global", "Historia"]
     types: [completed]
   schedule:
     - cron: "50 3 * * *"   # 00:50 ART, por si algo se perdió

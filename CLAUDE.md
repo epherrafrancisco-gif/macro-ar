@@ -524,20 +524,23 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Commodities y bolsas del mundo: widgets market-quotes de TradingView con su atribución. Celdas titilan verde/rojo al cambiar.
 
 ## Pulso Live (`/live/`, reels; pedido del dueño 27/10/2026, publicado 01/11/2026)
-- Feed vertical a pantalla completa de "reels" armados con datos reales (no tarjetas; Pulso Macro sigue igual). Página
-  `live/index.html` + `live/live.js` (los moldes: dólares, récords, brechas, riesgo y Merval, "hace N años", poder de compra,
-  inflación, acciones del día, "si ponías US$ 1.000", rankings, países, monedas, PBI desde 1990, crecimiento, Big Mac, bolsas,
-  bonos, commodities, trivia, agenda, noticias y **verdadero o falso** (`mold: 'vf'`, pedido del dueño: muchos, y al votar se
-  muestra la respuesta correcta). Orden al azar pesado por interés con cuota por tema (`CUOTA`), sin repetir molde seguido; el
-  primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir = imagen 1080×1920 (descargar o
-  `navigator.share`). "Ver más" lleva a la sección del sitio (`go`).
-- Datos: `live/datos.json` (~1 MB, ~290 KB comprimido) y `live/portada.json` (6 miniaturas de la entrada) de
-  `scripts/live.py`, que solo lee los JSON del repo. Workflow `live.yml`: al terminar Actualizar datos, Global, Historia o
-  Noticias, y 00:50 ART. Acciones: solo con nombre, operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 %
-  (un precio roto da un "si ponías…" falso). Monedas: un día sí y otro no (achica el archivo).
-- Entrada en Inicio: bloque `#pLive` arriba de "¿Qué querés ver?" (compu) / arriba de `#mTg` (celular), versión chica
-  aprobada (que se siga viendo "¿Qué querés ver?"); botón "Ver reels" `.plgo` achicado el 01/11/2026 (pedido del dueño).
-  Miniaturas `#plRow` desde `live/portada.json`. Bandera argentina para los reels: `vendor/flags/ar.svg`.
+- Feed vertical a pantalla completa de "reels" con datos reales (Pulso Macro sigue igual). `live/index.html` + `live/live.js`.
+- Pedido del dueño 01/11/2026: la MAYORÍA de verdadero o falso (`mold: 'vf'`, cat `vf`; al votar se muestra la respuesta) y
+  bastantes "si hubieras invertido US$ 1.000" (`si`, cat `sim`): `CUOTA` vf 52 / sim 20 / resto. Pueden ir hasta dos vf
+  seguidos. Afuera por poco llamativos (filtro antes del orden): monedas en pesos ("cuántos pesos es una libra"), agenda /
+  próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo, y los vf de bolsas,
+  commodities, tasas y desempleo entre países. No volver a sumarlos.
+- Colores (pedido del dueño: "que cambien, que genere dopamina como un casino; siempre igual parece un tablero"): cada reel
+  con un par de colores vivos de `PAL` (`--c`/`--c2`, degradé animado), nunca el mismo seguido; títulos grandes, número con
+  degradé, entrada animada, líneas blancas. La imagen para compartir usa el mismo color.
+- Orden al azar pesado por interés; el primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir =
+  imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
+- Datos: `live/datos.json` (~950 KB, ~290 KB comprimido) y `live/portada.json` de `scripts/live.py` (solo lee los JSON del
+  repo). Workflow `live.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
+  operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 % (un precio roto da un "si ponías…" falso).
+- Entrada en Inicio: franja finita `a#pLive` (una línea, pedido del dueño 01/11/2026: "bastante más chico", que en el
+  celular se vea "¿Qué querés ver?") arriba de "¿Qué querés ver?" / `#mTg`; en la compu rota titulares de `portada.json`
+  (`#plTxt`). Bandera argentina para los reels: `vendor/flags/ar.svg`.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):
