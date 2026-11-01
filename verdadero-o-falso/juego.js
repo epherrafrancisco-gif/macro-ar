@@ -652,7 +652,19 @@ const ptsPintar = (anim) => {
 ptsPintar();
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
+// récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
+let RECORD = null, TK = '';
+const recPintar = () => { const el = $('#rec'); if (RECORD == null || !el) return; el.hidden = false; el.querySelector('b').textContent = fN(RECORD); };
+fetch('/api/racha?t=' + VER()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.n != null) { RECORD = d.n; recPintar(); } }).catch(() => {});
+function rachaServidor(reel) {
+  fetch('/api/racha', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})})
+    .then(r => r.ok ? r.json() : null).then(d => {
+      if (!d || !d.tk) return; TK = d.tk; RECORD = d.record; recPintar();
+      if (d.nuevo && d.n >= 3) { setTimeout(() => cartel(reel, '¡Nuevo récord!<small>la mejor racha de todo Pulso Macro</small>'), 1100); const el = $('#rec'); el.classList.remove('gana'); void el.offsetWidth; el.classList.add('gana'); }
+    }).catch(() => {});
+}
 function premio(ok, btn, reel) {
+  if (ok) rachaServidor(reel); else TK = '';
   if (ok) {
     PT.r++; PT.max = Math.max(PT.max, PT.r);
     const gana = 10 * Math.min(5, PT.r);           // la racha multiplica (tope ×5): da ganas de no cortarla
@@ -682,7 +694,8 @@ function flotar(el, txt, col) {
   document.body.appendChild(d); setTimeout(() => d.remove(), 1100);
 }
 function cartel(reel, txt) {
-  const d = document.createElement('div'); d.className = 'cartel'; d.textContent = txt;
+  reel.querySelectorAll('.cartel').forEach(x => x.remove());
+  const d = document.createElement('div'); d.className = 'cartel'; d.innerHTML = txt;
   reel.appendChild(d); setTimeout(() => d.remove(), 1500);
 }
 function confeti(el, n) {
@@ -743,7 +756,7 @@ function compartir(r) {
   const sh = $('#mSh'); sh.hidden = true;
   cv.toBlob(b => {
     if (!b) return; const f = new File([b], 'pulso-macro_reel.png', {type: 'image/png'});
-    if (navigator.canShare && navigator.canShare({files: [f]})) { sh.hidden = false; sh.onclick = () => navigator.share({files: [f], text: (r.title || '') + ' · pulsomacro.com.ar/live/ · ¿Vos sabés?'}).catch(() => {}); }
+    if (navigator.canShare && navigator.canShare({files: [f]})) { sh.hidden = false; sh.onclick = () => navigator.share({files: [f], text: (r.title || '') + ' · pulsomacro.com.ar/verdadero-o-falso/ · ¿Vos sabés?'}).catch(() => {}); }
   }, 'image/png');
   try { window.goatcounter && goatcounter.count({path: 'live-compartir', event: true}); } catch (e) {}
 }

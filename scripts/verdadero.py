@@ -1,4 +1,4 @@
-# Pulso Live: arma live/datos.json con los datos que usan los reels.
+# Verdadero o falso (/verdadero-o-falso/): arma verdadero-o-falso/datos.json con los datos de las preguntas.
 # Solo lee los JSON que ya generan los otros robots del repo; no baja nada de afuera.
 import json, os
 from math import log10, floor
@@ -139,12 +139,12 @@ cal, nots = [], []  # agenda y noticias se sacaron de los reels (pedido del due�
 
 pack = {'hoy': HOY, 'gen': D['actualizado'], 'arg': arg, 'paises': paises, 'ppa': ppa, 'crec': crec, 'bigmac': bigmac, 'bmf': bm_fecha,
         'bolsas': bolsas, 'bonos': bonos, 'com': com, 'his': his, 'cal': cal, 'nots': nots}
-os.makedirs(R + 'live', exist_ok=True)
+os.makedirs(R + 'verdadero-o-falso', exist_ok=True)
 txt = json.dumps(pack, ensure_ascii=False, separators=(',', ':'))
-viejo = open(R + 'live/datos.json', encoding='utf-8').read() if os.path.exists(R + 'live/datos.json') else ''
+viejo = open(R + 'verdadero-o-falso/datos.json', encoding='utf-8').read() if os.path.exists(R + 'verdadero-o-falso/datos.json') else ''
 if txt != viejo:
-    open(R + 'live/datos.json', 'w', encoding='utf-8').write(txt)
-print('live/datos.json', len(txt.encode()) // 1024, 'KB · acciones', len(acc), 'afuera', fuera,
+    open(R + 'verdadero-o-falso/datos.json', 'w', encoding='utf-8').write(txt)
+print('verdadero-o-falso/datos.json', len(txt.encode()) // 1024, 'KB · acciones', len(acc), 'afuera', fuera,
       '· países con inflación', sum('infl' in o for o in paises.values()), '· bolsas', len(bolsas), '· commodities', len(com))
 
 # Miniaturas de la entrada en Inicio (live/portada.json, chiquito: la portada no baja los datos enteros)
@@ -188,6 +188,6 @@ try:
         th.append({'t': 'Si ponías US$ 1.000 en %s hace un año, hoy tendrías más de US$ %s' % (acc[best[0]]['n'], fmt(u))})
 except Exception as e: print('  aviso portada sim', e)
 txt = json.dumps({'gen': D['actualizado'], 'th': th}, ensure_ascii=False, separators=(',', ':'))
-viejo = open(R + 'live/portada.json', encoding='utf-8').read() if os.path.exists(R + 'live/portada.json') else ''
-if txt != viejo: open(R + 'live/portada.json', 'w', encoding='utf-8').write(txt)
-print('live/portada.json', len(th), 'miniaturas')
+viejo = open(R + 'verdadero-o-falso/portada.json', encoding='utf-8').read() if os.path.exists(R + 'verdadero-o-falso/portada.json') else ''
+if txt != viejo: open(R + 'verdadero-o-falso/portada.json', 'w', encoding='utf-8').write(txt)
+print('verdadero-o-falso/portada.json', len(th), 'miniaturas')

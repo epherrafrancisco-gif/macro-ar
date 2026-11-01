@@ -932,7 +932,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
-    <a class="plive" id="pLive" href="/live/" aria-label="Verdadero o falso de economía">
+    <a class="plive" id="pLive" href="/verdadero-o-falso/" aria-label="Verdadero o falso de economía">
       <span class="plb"><i></i>VERDADERO O FALSO</span>
       <span class="plt1"><b>¿Cuántas acertás seguidas?</b><span class="pltt" id="plTxt">Inflación, dólar, acciones y países, con datos reales</span></span>
       <span class="plgo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Jugar</span>
@@ -8818,7 +8818,7 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 /* Verdadero o falso: la franja de la portada va rotando afirmaciones de hoy (live/portada.json, lo arma scripts/live.py) */
 (function(){
   const el = document.getElementById('plTxt'); if (!el) return;
-  fetch('/live/portada.json?t=' + Math.floor(Date.now() / 60000)).then(r => r.ok ? r.json() : null).then(d => {
+  fetch('/verdadero-o-falso/portada.json?t=' + Math.floor(Date.now() / 60000)).then(r => r.ok ? r.json() : null).then(d => {
     const t = (d && d.th || []).map(x => x.t).filter(Boolean); if (!t.length) return;
     let i = 0; const pon = () => { el.textContent = '¿' + t[i++ % t.length] + '?'; }; pon(); setInterval(pon, 4000);
   }).catch(() => {});

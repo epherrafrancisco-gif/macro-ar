@@ -523,8 +523,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (IPC, REM, riesgo, reservas, TAMAR, plazo fijo, base, Merval con su fecha), calendario.json, global.json (monedas BCE y Tesoro).
   Commodities y bolsas del mundo: widgets market-quotes de TradingView con su atribución. Celdas titilan verde/rojo al cambiar.
 
-## Verdadero o falso (`/live/`, ex "Pulso Live"/reels; pedido del dueño 27/10/2026, publicado 01/11/2026)
-- Feed vertical a pantalla completa. `live/index.html` + `live/live.js`. Pedido del dueño 01/11/2026: SOLO verdadero o
+## Verdadero o falso (`/verdadero-o-falso/`, ex "Pulso Live"/reels en /live/; pedido del dueño 27/10/2026, publicado 01/11/2026)
+- Feed vertical a pantalla completa. `verdadero-o-falso/index.html` + `verdadero-o-falso/juego.js` (`/live/` solo redirige; noindex). Pedido del dueño 01/11/2026: SOLO verdadero o
   falso ("es lo que más atrapa", "que haya un montón") y que se llame "Verdadero o falso", no "reels". Los otros moldes
   (dólares del día, récords, monedas en pesos, agenda, noticias, rankings, trivia, "si ponías" como gráfico) siguen en el
   código pero el filtro deja pasar solo `mold: 'vf'`; no volver a mostrarlos. Hoy ~3.500 preguntas distintas por día:
@@ -543,12 +543,20 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   próxima" (`.sigue`, baja al siguiente). Eventos GoatCounter `live-acierto` / `live-error`. Respeta reduced-motion.
 - Orden al azar pesado por interés; el primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
-- La URL sigue siendo `/live/` (no cambiarla: ya está compartida). Datos: `live/datos.json` (~950 KB, ~290 KB comprimido) y `live/portada.json` de `scripts/live.py` (solo lee los JSON del
-  repo). Workflow `live.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
+- URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
+  repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
   operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 % (un precio roto da un "si ponías…" falso).
 - Entrada en Inicio: franja finita `a#pLive` "VERDADERO O FALSO · ¿Cuántas acertás seguidas? · Jugar" (una línea, pedido
   del dueño 01/11/2026: "bastante más chico", que en el celular se vea "¿Qué querés ver?") arriba de "¿Qué querés ver?" /
   `#mTg`; en la compu rota afirmaciones de `portada.json` entre ¿ ? (`#plTxt`). Bandera argentina para los reels: `vendor/flags/ar.svg`.
+
+- Récord de racha entre todos (pedido del dueño 01/11/2026): `/api/racha` en el Worker `pulso-vivo` (worker/vivo.js, ruta
+  `pulsomacro.com.ar/api/*` en Cloudflare). GET = récord (`racha/record.json` en R2). POST {tk} en cada acierto: devuelve
+  una ficha firmada con HMAC (clave al azar guardada en R2 `racha/clave`) con la racha +1; solo suma de a uno, con ≥2,5 s
+  entre respuestas (si no, 429), se corta a los 10 min sin jugar, tope 1000. No guarda nada por jugador. Límite honesto:
+  no puede saber si la respuesta era correcta (eso lo decide el navegador), solo frena trampas fáciles (mandar "999" o
+  muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. En la página: `#rec` al pie
+  ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):

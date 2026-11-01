@@ -59,10 +59,45 @@ async function actualizar(env, ahora){
   return out;
 }
 
+// ---------- Verdadero o falso: récord de racha entre todos los jugadores (pulsomacro.com.ar/api/racha) ----------
+// Cada acierto el navegador manda la ficha que recibió en el acierto anterior; el Worker la firma (HMAC) y solo deja sumar
+// de a uno y con al menos RACHA_GAP entre respuestas. Sin guardar nada por jugador: en R2 solo el récord y la clave.
+const RACHA_GAP = 2500, RACHA_CORTE = 10 * 60000, RACHA_TOPE = 1000;
+let RACHA_KEY = null;
+const b64 = u8 => btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+async function rachaClave(env){
+  if (RACHA_KEY) return RACHA_KEY;
+  let raw = null; try{ const o = await env.DATOS.get('racha/clave'); if (o) raw = new Uint8Array(await o.arrayBuffer()); }catch(e){}
+  if (!raw || raw.length < 32){ raw = crypto.getRandomValues(new Uint8Array(32)); await env.DATOS.put('racha/clave', raw); }
+  RACHA_KEY = await crypto.subtle.importKey('raw', raw, {name: 'HMAC', hash: 'SHA-256'}, false, ['sign']);
+  return RACHA_KEY;
+}
+async function firmar(env, txt){ return b64(new Uint8Array(await crypto.subtle.sign('HMAC', await rachaClave(env), new TextEncoder().encode(txt)))).slice(0, 32); }
+async function rachaRecord(env){ try{ const o = await env.DATOS.get('racha/record.json'); if (o) return await o.json(); }catch(e){} return {n: 0, t: 0}; }
+async function racha(req, env){
+  const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
+  if (req.method === 'GET') return new Response(JSON.stringify(await rachaRecord(env)), {headers: {...H, 'cache-control': 'public, max-age=20'}});
+  if (req.method !== 'POST') return new Response('{}', {status: 405, headers: H});
+  const ahora = Date.now(); let tk = '';
+  try{ tk = String((await req.json()).tk || ''); }catch(e){}
+  let n = 1;
+  const [nn, t, sig] = tk.split('.');
+  if (sig && sig === await firmar(env, nn + '.' + t)){
+    const dt = ahora - +t;
+    if (dt < RACHA_GAP) return new Response(JSON.stringify({err: 'rapido'}), {status: 429, headers: H});
+    if (dt < RACHA_CORTE) n = Math.min(RACHA_TOPE, +nn + 1);
+  }
+  let rec = await rachaRecord(env), nuevo = false;
+  if (n > rec.n){ rec = {n, t: ahora}; nuevo = true; await env.DATOS.put('racha/record.json', JSON.stringify(rec), {httpMetadata: {contentType: 'application/json'}}); }
+  const base = n + '.' + ahora;
+  return new Response(JSON.stringify({tk: base + '.' + await firmar(env, base), n, record: rec.n, nuevo}), {headers: H});
+}
+
 export default {
   async scheduled(ev, env, ctx){ ctx.waitUntil(actualizar(env, ev.scheduledTime || Date.now())); },
   // Visitar la dirección del Worker muestra el estado (sin datos), para revisar que corre.
   async fetch(req, env){
+    if (new URL(req.url).pathname === '/api/racha') return racha(req, env);
     let o = null; try{ const x = await env.DATOS.get('vivo.json'); if(x) o = await x.json(); }catch(e){}
     const s = o ? {t: new Date(o.t).toISOString(), dolar: new Date(o.tDol).toISOString(), mercado: o.tMkt ? new Date(o.tMkt).toISOString() : null,
                    fuente: o.fuente || 'data912 (versión vieja)', acciones: o.stocks ? o.stocks.length : 0, bonos: o.bonds ? o.bonds.length : 0, err: o.err} : {vacio: true};

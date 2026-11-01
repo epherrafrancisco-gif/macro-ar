@@ -472,7 +472,7 @@ cambios += escribir(ROOT / "indicadores" / "index.html", pagina("", "Indicadores
                                                               "Dólar blue, MEP y CCL, riesgo país, inflación, reservas, Merval, balanza comercial, novillo, granos y más: todos los indicadores de Pulso Macro con su gráfico.",
                                                               hub, "Indicadores"))
 
-urls = [f"{SITE}/", f"{SITE}/indicadores/"] + [f"{SITE}/{s}/" for s in SALIDA]
+urls = [f"{SITE}/", f"{SITE}/indicadores/", f"{SITE}/verdadero-o-falso/", f"{SITE}/terminal/"] + [f"{SITE}/{s}/" for s in SALIDA]
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n"
 cambios += escribir(ROOT / "sitemap.xml", sm)
 cambios += escribir(ROOT / "robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
