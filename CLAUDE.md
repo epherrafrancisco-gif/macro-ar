@@ -5,7 +5,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 
 ## Cómo trabajar
 - El dueño no es programador: hablale en español rioplatense, de "vos", conciso, en criollo.
-  Cuando tenga que hacer algo él (GitHub, configuraciones), de a un paso por mensaje, explicando lo que esté en inglés.
+  Cuando tenga que hacer algo él (GitHub, Cloudflare, configuraciones): TODOS los pasos juntos en un solo mensaje, numerados
+  y cortos (pedido del dueño 01/11/2026: menos idas y vueltas), explicando lo que esté en inglés. Su notebook es chica y no
+  tiene tecla Supr: para reemplazar texto, Ctrl+A y después Ctrl+V (pega encima, no hace falta borrar).
 - Trabajá por bloques y verificá cada bloque antes de seguir. Para cambios visuales grandes, primero una maqueta.
 - Nunca mostrar datos viejos como si fueran actuales: si una fuente está atrasada, se saca o se aclara la fecha.
 - Commits: terminar con las líneas de atribución que indique el sistema.
