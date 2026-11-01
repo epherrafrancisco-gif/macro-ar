@@ -93,8 +93,39 @@ async function racha(req, env){
   return new Response(JSON.stringify({tk: base + '.' + await firmar(env, base), n, record: rec.n, nuevo}), {headers: H});
 }
 
+// ---------- Surtidores: copia del CSV de precios en surtidor (Secretaría de Energía, datos abiertos) ----------
+// datos.energia.gob.ar no responde desde GitHub Actions: el Worker baja el archivo tal cual y lo guarda en R2
+// (surtidores/vigentes.csv); el robot de GitHub lo procesa desde datos.pulsomacro.com.ar. Cada 6 horas como mucho.
+const SURT_URL = 'http://datos.energia.gob.ar/dataset/1c181390-5045-475e-94dc-410429be4b17/resource/80ac25de-a44a-4445-9215-090cf55cfda5/download/precios-en-surtidor-resolucin-3142016.csv';
+const SURT_KEY = 'surtidores/vigentes.csv', SURT_CADA = 6 * 3600e3;
+async function robotsOk(url){
+  try{ const u = new URL(url), r = await fetch(u.origin + '/robots.txt', {headers: {'user-agent': UA}}); if(!r.ok) return true;
+    let todos = false, no = [];
+    for(const l of (await r.text()).split('\n')){ const [k, ...v] = l.split(':'), val = v.join(':').trim(), kk = k.trim().toLowerCase();
+      if(kk === 'user-agent') todos = val === '*'; else if(kk === 'disallow' && todos && val) no.push(val); }
+    return !no.some(d => u.pathname.startsWith(d.replace(/\*.*$/, '')));
+  }catch(e){ return true; }
+}
+async function surtidores(env){
+  try{
+    const h = await env.DATOS.head(SURT_KEY);
+    if(h && Date.now() - h.uploaded.getTime() < SURT_CADA) return;
+    let est = null; try{ const o = await env.DATOS.get('surtidores/estado.json'); if(o) est = await o.json(); }catch(e){}
+    if(est && Date.now() - est.t < (est.corriendo ? 15 : 30) * 60e3 && !est.ok) return;   // bajando ahora, o falló hace poco
+    await env.DATOS.put('surtidores/estado.json', JSON.stringify({t: Date.now(), corriendo: true}));
+    if(!(await robotsOk(SURT_URL))){ await env.DATOS.put('surtidores/estado.json', JSON.stringify({t: Date.now(), err: 'robots.txt no lo permite'})); return; }
+    const r = await fetch(SURT_URL, {headers: {'user-agent': UA}});
+    if(!r.ok) throw new Error('energia ' + r.status);
+    const meta = {httpMetadata: {contentType: 'text/csv; charset=utf-8', cacheControl: 'public, max-age=600'}};
+    const len = +r.headers.get('content-length');
+    if(len > 0){ const {readable, writable} = new FixedLengthStream(len); r.body.pipeTo(writable); await env.DATOS.put(SURT_KEY, readable, meta); }
+    else await env.DATOS.put(SURT_KEY, await r.arrayBuffer(), meta);
+    await env.DATOS.put('surtidores/estado.json', JSON.stringify({t: Date.now(), ok: true, bytes: len || null}));
+  }catch(e){ try{ await env.DATOS.put('surtidores/estado.json', JSON.stringify({t: Date.now(), err: String(e.message || e)})); }catch(e2){} }
+}
+
 export default {
-  async scheduled(ev, env, ctx){ ctx.waitUntil(actualizar(env, ev.scheduledTime || Date.now())); },
+  async scheduled(ev, env, ctx){ ctx.waitUntil(actualizar(env, ev.scheduledTime || Date.now())); ctx.waitUntil(surtidores(env)); },
   // Visitar la dirección del Worker muestra el estado (sin datos), para revisar que corre.
   async fetch(req, env){
     if (new URL(req.url).pathname === '/api/racha') return racha(req, env);

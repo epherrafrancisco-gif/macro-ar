@@ -59,7 +59,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
 - Orden de Argentina en la portada, la hoja y la grilla del celular (`ARG_T`, pedido del dueño): Dólares, Noticias, Bolsa y bonos,
-  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Vinos y uvas, Calculadoras.
+  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Vinos y uvas, Surtidores, Calculadoras.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
@@ -170,6 +170,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   por habitante con `wb.pop.ARG` de paises_extra.json), exportaciones (países, variedades, fraccionado/granel) y bodegas/viñedos.
   Los informes mensuales del INV son PDF y robots.txt de argentina.gob.ar prohíbe `/*.pdf$`: NO usarlos. Lo abierto va atrasado
   (consumo de un año entero, exportaciones parciales): cada número muestra su período. La serie IPI vino viene vacía (sacada).
+- Surtidores (`#surtidores`, `vSu`, `renderSurtidores`, `loadSur`; pedido del dueño 01/11/2026): precios en surtidor de la
+  Secretaría de Energía (Resolución 314/2016, cada estación informa los suyos). datos.energia.gob.ar NO responde desde
+  GitHub Actions (timeout) y la copia de datos.gob.ar (`/archivo/`) está prohibida por su robots.txt: el Worker `pulso-vivo`
+  (`surtidores()` en worker/vivo.js, cada 6 h como mucho, con traba en `surtidores/estado.json`) baja el CSV tal cual a R2
+  `surtidores/vigentes.csv` y scripts/surtidores.py (workflow `surtidores.yml`, 9:37 y 17:37 ART) lo lee de
+  `datos.pulsomacro.com.ar/surtidores/vigentes.csv`. Solo precios de día informados en los últimos 45 días: mediana por
+  producto (súper, premium, gasoil, gasoil premium, GNC), provincia, bandera y localidad; la historia es propia (una mediana por
+  día en `hist`, desde que anda). `surtidores_est.json` = todas las estaciones (bandera, empresa, dirección, localidad,
+  provincia, precios con fecha, lat/lon) para el buscador y "Las más cercanas a mí" (geolocalización del navegador; en el
+  celular la tabla muestra solo el combustible elegido). Ventas mensuales al mercado interno (miles de m³) de la API de
+  series: `38.3_NS_1994_M_11` súper, `38.3_NU_1994_M_11` premium, `41.3_GO_0_A_7` gasoil (`364.3_GNCGNC__3` GNC, sin unidad
+  confirmada: no se muestra). No hay serie de precio de la nafta en la API de series (INDEC no la publica ahí).
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas

@@ -234,6 +234,12 @@ section.view[hidden]{display:none}
 .legend span{display:inline-flex;align-items:center}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .grid2.in{gap:8px 22px}.grid2.in>div{min-width:0}
+.suctl{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}.suctl .bq{flex:1 1 260px;min-width:0;max-width:none;margin:0}
+.subtn{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.subtn svg{width:15px;height:15px;color:var(--accent)}.subtn.on{border-color:var(--accent);color:var(--accent)}
+.sutab{min-width:720px}.sutab td:nth-child(-n+2),.sutab th:nth-child(-n+2){text-align:left}
+@media (max-width:640px){.sutab{min-width:0;font-size:12.5px}.sutab [data-c]:not(.sel){display:none}.sutab td,.sutab th{padding-left:5px;padding-right:5px;white-space:normal}}.sutab td small,.minit td small{display:block;color:var(--muted);font-size:11.5px;font-weight:400}
+.sutab td b{font-weight:600}.sutab th.sel,.sutab td.sel{background:color-mix(in srgb,var(--accent) 10%,transparent)}.sutab td.viejo b{color:var(--muted)}.sutab td.na{color:var(--muted)}
 .h3s{font-size:13px;font-weight:600;color:var(--ink2);margin:14px 0 4px}
 @media (max-width:820px){.grid2{grid-template-columns:1fr}}
 
@@ -868,6 +874,7 @@ body.mporta .hbus{display:none}
       <a href="#actividad" role="tab" id="tabA" data-g="arg" aria-selected="false">Actividad</a>
       <a href="#ganaderia" role="tab" id="tabGa" data-g="arg" aria-selected="false">Ganadería</a>
       <a href="#vinos" role="tab" id="tabVi" data-g="arg" aria-selected="false">Vinos</a>
+      <a href="#surtidores" role="tab" id="tabSu" data-g="arg" aria-selected="false">Surtidores</a>
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <button type="button" class="pbtn" id="tabPaises" data-g="glo" aria-expanded="false" aria-controls="paisPanel">Países</button>
@@ -1199,6 +1206,43 @@ body.mporta .hbus{display:none}
       <p class="note">Bodegas inscriptas y viñedos registrados en el Instituto Nacional de Vitivinicultura. Hectáreas: superficie implantada del último relevamiento.</p>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="vinos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cosecha y superficie por año</button><button type="button" data-csv="vinos-precio"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio del vino común</button></div>
+  </section>
+  <section class="view" id="vSu" hidden>
+    <div class="kpis" id="kpisSu"></div>
+    <div class="card">
+      <div class="head"><h2>Buscá tu estación</h2><span class="note" id="suEstS"></span></div>
+      <div class="suctl">
+        <input type="search" id="suQ" class="bq" placeholder="Localidad, provincia, calle o marca (ej.: Rosario, YPF, Av. Rivadavia)" aria-label="Buscar estación">
+        <button type="button" class="subtn" id="suGeo"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2.5M8 12.5V15M1 8h2.5M12.5 8H15"/></svg>Las más cercanas a mí</button>
+      </div>
+      <div class="seg calcsel" role="tablist" aria-label="Combustible" id="suProdE"></div>
+      <div class="tablewrap"><table class="sutab"><thead><tr><th>Estación</th><th>Dónde</th><th data-c="super">Súper</th><th data-c="premium">Premium</th><th data-c="gasoil">Gasoil</th><th data-c="gasoil3">Gasoil premium</th><th data-c="gnc">GNC</th></tr></thead><tbody id="tSuEst"></tbody></table></div>
+      <p class="note" id="suEstN">Pesos por litro (GNC: por m³), precio de día. Cada estación carga sus precios en el sistema de la Secretaría de Energía cuando los cambia: al lado de cada precio va la fecha en que lo informó. Un precio con más de 45 días puede no ser el de hoy.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Precio en cada provincia</h2><span class="note" id="suPrS"></span></div>
+      <div class="seg calcsel" role="tablist" aria-label="Combustible" id="suProdP"></div>
+      <div class="chart" id="chSuPr"></div>
+      <p class="note">Mediana de las estaciones de cada provincia que informaron su precio en los últimos 45 días (la mitad cobra menos y la otra mitad más). En buena parte de la Patagonia no se cobra el impuesto a los combustibles líquidos: por eso ahí el litro suele salir más barato.</p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Por marca</h2><span class="note" id="suBaS"></span></div><div class="chart" id="chSuBa"></div><p class="note">Mediana de cada bandera en todo el país. "Sin bandera": estaciones blancas, que compran el combustible a cualquier refinería.</p></div>
+      <div class="card"><div class="head"><h2>Dónde está más barata y más cara</h2><span class="note" id="suLoS"></span></div>
+        <div class="tablewrap"><table class="minit"><thead><tr><th>Localidad</th><th>Mediana</th><th>Estaciones</th></tr></thead><tbody id="tSuLo"></tbody></table></div>
+        <p class="note">Localidades con al menos 4 estaciones que informaron precio en los últimos 45 días.</p></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Cómo se mueve el precio</h2><div class="legend" id="lgSuH"></div></div>
+      <div class="chart" id="chSuH"></div>
+      <p class="note" id="suHN"></p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Cuánto combustible se vende</h2><div class="legend" id="lgSuV"></div></div>
+      <div class="stats" id="suVSt"></div>
+      <div class="chart" id="chSuV"></div>
+      <p class="note" id="suVN"></p>
+    </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-provincias"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio por provincia</button><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
   </section>
 
   <!-- MERCADO -->
@@ -3985,7 +4029,7 @@ body.mporta .hbus{display:none}
   async function loadAct(){
     if(actLoading) return; actLoading = true;
     try{ const r = await fetch('actividad.json?t='+VER(), {cache:'no-store'}); if(r.ok) act = await r.json(); }catch(e){}
-    actLoading = false; if(tab==='actividad' || tab==='macro' || tab==='ganaderia' || tab==='vinos') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
+    actLoading = false; if(tab==='actividad' || tab==='macro' || tab==='ganaderia' || tab==='vinos' || tab==='surtidores') render(); if(tab==='global' && SUBS.M[2]==='economias') renderComparador();
   }
   const RUB = [['alimentos','Alimentos'],['bebidas','Alcohol y tabaco'],['prendas','Ropa y calzado'],['vivienda','Vivienda y servicios'],['equipamiento','Equipamiento hogar'],
     ['salud','Salud'],['transporte','Transporte'],['comunicacion','Comunicación'],['recreacion','Recreación'],['educacion','Educación'],['restaurantes','Restaurantes'],['varios','Otros']];
@@ -4061,6 +4105,90 @@ body.mporta .hbus{display:none}
       $('nCan').textContent = `Pesos por mes que necesita un hogar de dos adultos y dos chicos (6 y 8 años) para no ser pobre o indigente, en GBA. ${fmes(cl[0])}: $ ${nf(cl[1]*FT,0)}${a12?`, ${sg((cl[1]/a12[1]-1)*100,1)}% en un año`:''}. Fuente: INDEC.`; }
   }
 
+  // ---- SURTIDORES (surtidores.json + surtidores_est.json de scripts/surtidores.py: precios en surtidor de la Secretaría de Energía) ----
+  let sur = null, surLoading = false, surEst = null, suProd = 'super', suGeoPos = null, suN = 15;
+  const SU_P = [['super','Súper','--s1'],['premium','Premium','--s5'],['gasoil','Gasoil','--s2'],['gasoil3','Gasoil premium','--s4'],['gnc','GNC','--s3']];
+  const suNom = k => (SU_P.find(p=>p[0]===k)||[,k])[1];
+  async function loadSur(){
+    if(sur || surLoading) return; surLoading = true;
+    try{ const r = await fetch('surtidores.json?t='+VER(), {cache:'no-store'}); if(r.ok) sur = await r.json(); }catch(e){}
+    surLoading = false; if(tab==='surtidores'){ renderSurtidores(); mResumen(); }
+  }
+  async function loadSurEst(){
+    if(surEst) return surEst;
+    try{ const r = await fetch('surtidores_est.json?t='+VER(), {cache:'no-store'}); if(r.ok) surEst = await r.json(); }catch(e){}
+    return surEst;
+  }
+  const suNorm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const suKm = (a,b,c,d) => { const R=6371, r=x=>x*Math.PI/180, dl=r(c-a), dg=r(d-b), h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dg/2)**2; return 2*R*Math.asin(Math.sqrt(h)); };
+  function suSeg(el, cb){ const P = sur?.productos||{};
+    el.innerHTML = SU_P.filter(p=>P[p[0]]).map(([k,n])=>`<button type="button" data-su="${k}" aria-selected="${k===suProd}">${n}</button>`).join('');
+    el.querySelectorAll('[data-su]').forEach(b=>b.onclick = ()=>{ suProd = b.dataset.su; cb(); }); }
+  async function suEstPintar(){
+    const tb = $('tSuEst'); if(!tb) return;
+    const q = suNorm($('suQ').value.trim());
+    if(!q && !suGeoPos){ tb.innerHTML = '<tr><td colspan="7" class="note">Escribí tu localidad o tocá "Las más cercanas a mí".</td></tr>'; return; }
+    const E = await loadSurEst(); if(!E){ tb.innerHTML = '<tr><td colspan="7" class="note">No se pudo cargar la lista de estaciones.</td></tr>'; return; }
+    let L = E.e;
+    if(q){ const ws = q.split(/\s+/); L = L.filter(e=>{ const t = suNorm(e[0]+' '+e[1]+' '+e[2]+' '+e[3]+' '+e[4]+' '+e[5]); return ws.every(w=>t.includes(w)); }); }
+    if(suGeoPos) L = L.filter(e=>e[7]!=null).map(e=>[...e.slice(0,9), suKm(suGeoPos[0],suGeoPos[1],e[7],e[8])]).sort((a,b)=>a[9]-b[9]).slice(0,90);
+    const lim = new Date(Date.now()-45*864e5).toISOString().slice(0,10), ps = e => e[6][suProd];
+    if(!suGeoPos) L = L.slice().sort((a,b)=>(ps(a)&&ps(a)[1]>=lim ? ps(a)[0] : 1e9) - (ps(b)&&ps(b)[1]>=lim ? ps(b)[0] : 1e9));
+    const tot = L.length; L = L.slice(0, suN);
+    const cel = (e,k) => { const x = e[6][k]; if(!x) return `<td data-c="${k}" class="na${k===suProd?' sel':''}">—</td>`; const viejo = x[1] < lim;
+      return `<td data-c="${k}" class="${k===suProd?'sel ':''}${viejo?'viejo':''}"><b>$ ${nf(x[0],0)}</b><small>${fds(x[1])}${x[1].slice(0,4)!==String(new Date().getFullYear())?'/'+x[1].slice(2,4):''}</small></td>`; };
+    tb.innerHTML = L.length ? L.map(e=>`<tr><td><b>${esc(e[0]==='Otras'?e[1]||'Otra':e[0])}</b><small>${esc(e[2])}</small></td><td>${esc(e[3])}<small>${esc(e[4])}, ${esc(e[5])}${e[9]!=null?` · ${nf(e[9],e[9]<10?1:0)} km`:''}</small></td>${['super','premium','gasoil','gasoil3','gnc'].map(k=>cel(e,k)).join('')}</tr>`).join('')
+      : '<tr><td colspan="7" class="note">No encontramos estaciones con esa búsqueda.</td></tr>';
+    if(tot > L.length) tb.innerHTML += `<tr><td colspan="7"><button type="button" class="subtn" data-sumas>Ver ${Math.min(15, tot-L.length)} más (hay ${nf(tot,0)})</button></td></tr>`;
+    $('suEstS').textContent = tot ? (suGeoPos ? 'de la más cercana a la más lejana' : `${nf(tot,0)} estaciones · de la más barata a la más cara en ${suNom(suProd).toLowerCase()}`) : '';
+    document.querySelectorAll('.sutab th[data-c]').forEach(th=>th.classList.toggle('sel', th.dataset.c===suProd));
+  }
+  document.addEventListener('click', e=>{ if(e.target.closest('[data-sumas]')){ suN += 15; suEstPintar(); } });
+  let suQt; document.addEventListener('input', e=>{ if(e.target.id==='suQ'){ suGeoPos = null; suN = 15; $('suGeo').classList.remove('on'); clearTimeout(suQt); suQt = setTimeout(suEstPintar, 200); } });
+  document.addEventListener('click', e=>{ if(!e.target.closest('#suGeo')) return;
+    if(!navigator.geolocation){ $('suEstS').textContent = 'Tu navegador no deja usar la ubicación.'; return; }
+    $('suEstS').textContent = 'Buscando tu ubicación…';
+    navigator.geolocation.getCurrentPosition(p=>{ suGeoPos = [p.coords.latitude, p.coords.longitude]; suN = 15; $('suQ').value = ''; $('suGeo').classList.add('on'); suEstPintar(); gc('surtidores-cerca', true); },
+      ()=>{ $('suEstS').textContent = 'No pudimos saber tu ubicación: escribí tu localidad.'; }, {timeout:10000, maximumAge:600000}); });
+  function renderSurtidores(){
+    if(!sur){ loadSur(); $('kpisSu').innerHTML = '<div class="empty">Cargando precios de los surtidores…</div>'; return; }
+    const P = sur.productos || {}, L = a => a?.length ? a[a.length-1] : null, fe = sur.fecha;
+    const of = L(series('oficial')), t = [];
+    for(const [k,n] of SU_P){ const p = P[k]; if(!p) continue;
+      t.push(tileK(n, '$ '+nf(p.med,0), k==='gnc'?'/m³':'/litro', '', `mediana de ${nf(p.est,0)} estaciones · 8 de cada 10 cobran entre $ ${nf(p.p10,0)} y $ ${nf(p.p90,0)}`)); }
+    if(P.super && of) t.push(tileK('Nafta súper en dólares', 'US$ '+nf(P.super.med/of[1],2), '/litro', '', `al dólar oficial de ${fds(of[0])}`));
+    if(P.super && P.premium) t.push(tileK('La premium cuesta', pc(P.premium.med/P.super.med-1,0).replace('+',''), 'más', '', 'que la súper (mediana del país)'));
+    if(!t.length){ $('kpisSu').innerHTML = '<div class="empty">Todavía no hay precios de las estaciones: se cargan en la próxima actualización.</div>'; }
+    else $('kpisSu').innerHTML = t.join('');
+    if(!P[suProd]) suProd = Object.keys(P)[0] || 'super';
+    const todo = ()=>{ renderSurtidores(); suEstPintar(); };
+    suSeg($('suProdE'), todo); suSeg($('suProdP'), todo);
+    const p = P[suProd];
+    if(p){
+      $('suPrS').textContent = `${suNom(suProd)} · ${fe ? 'precios informados hasta el '+fd(fe) : ''}`;
+      hBars($('chSuPr'), (p.prov||[]).map(([n,v,c])=>({n, v, c: n==='CABA'?'--s5':'--s1'})).sort((a,b)=>b.v-a.v), {aria:'Precio por provincia', rh:28, ref:p.med, refLabel:'país $ '+nf(p.med,0)+' ·', vfmt:v=>'$ '+nf(v,0)});
+      $('suBaS').textContent = suNom(suProd);
+      hBars($('chSuBa'), (p.band||[]).map(([n,v,c])=>({n:`${n} (${nf(c,0)})`, v, c: n==='YPF'?'--s1':n==='Shell'?'--s4':n==='Axion'?'--s5':'--s3'})).sort((a,b)=>b.v-a.v), {aria:'Precio por marca', vfmt:v=>'$ '+nf(v,0)});
+      $('suLoS').textContent = suNom(suProd);
+      const fila = (r,cls) => `<tr class="${cls}"><td>${esc(r[0])}<small>${esc(r[1])}</small></td><td>$ ${nf(r[2],0)}</td><td>${r[3]}</td></tr>`;
+      $('tSuLo').innerHTML = '<tr class="gt"><td colspan="3">Las más baratas</td></tr>' + (p.loc_bar||[]).slice(0,5).map(r=>fila(r,'')).join('') + '<tr class="gt"><td colspan="3">Las más caras</td></tr>' + (p.loc_car||[]).slice(0,5).map(r=>fila(r,'')).join('');
+    } else { ['chSuPr','chSuBa'].forEach(id=>$(id).innerHTML = '<div class="empty">Sin datos todavía.</div>'); $('tSuLo').innerHTML = ''; }
+    // historia propia (una mediana por día, desde que se empezó a guardar)
+    const H = sur.hist || {}, hd = Object.keys(H).sort();
+    const hs = SU_P.filter(([k])=>k!=='gnc').map(([k,n,c])=>({n, c, pts: hd.filter(d=>H[d][k]).map(d=>[d, H[d][k]])})).filter(s=>s.pts.length);
+    legend($('lgSuH'), hs.map(s=>({n:s.n, c:s.c})));
+    if(hd.length >= 2) lineChart($('chSuH'), hs, {aria:'Precio mediano por día', labW:96, l:58, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,0)});
+    else $('chSuH').innerHTML = `<div class="empty">Esta serie arranca ${hd[0] ? 'el '+fd(hd[0]) : 'con la primera actualización'}: se guarda un punto por día y el gráfico se arma solo.</div>`;
+    $('suHN').textContent = hd.length ? `Mediana de todo el país de cada día, desde el ${fd(hd[0])}. Fuente: Secretaría de Energía (precios en surtidor, Resolución 314/2016).` : '';
+    // ventas
+    const V = sur.ventas || {}, VS = [['super','Nafta súper','--s1'],['premium','Nafta premium','--s5'],['gasoil','Gasoil','--s2']].filter(([k])=>V[k]?.length > 12);
+    const c5 = String(new Date().getFullYear()-5);
+    legend($('lgSuV'), VS.map(([,n,c])=>({n, c})));
+    lineChart($('chSuV'), VS.map(([k,n,c])=>({n, c, pts: V[k].filter(p=>p[0]>=c5).map(p=>[p[0]+'-01', p[1]])})), {aria:'Ventas de combustible por mes', labW:96, l:52, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mil m³', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    const st = VS.map(([k,n])=>{ const s = V[k], u = L(s), a = s.find(x=>x[0]===mAdd(u[0],-12)); return stc(n+' en '+MESL[+u[0].slice(5)-1], nf(u[1],0)+' mill. L', a ? `${pc(u[1]/a[1]-1,1)} contra un año antes` : ''); });
+    $('suVSt').innerHTML = st.join('');
+    $('suVN').textContent = 'Miles de metros cúbicos vendidos al mercado interno cada mes (un metro cúbico = 1.000 litros). Fuente: Secretaría de Energía, vía datos.gob.ar.';
+  }
   // ---- VINOS Y UVAS (vinos.json de scripts/vinos.py: datos abiertos del INV + precio del vino común del INDEC) ----
   let vin = null, vinLoading = false, viMoneda = 'ars';
   async function loadVin(){
@@ -4657,6 +4785,10 @@ body.mporta .hbus{display:none}
       return [['fecha',...G.flatMap(g=>[g.toLowerCase()+'_precio_promedio_kg_vivo', g.toLowerCase()+'_cabezas']),'total_precio_promedio','total_cabezas','definitivo'], ds.map(f=>{ const h=gan.hacienda[f]; return [f, ...G.flatMap(g=>[h.grupos[g]?.prom, h.grupos[g]?.cab]), h.total.prom, h.total.cab, h.def?1:0]; })]; },
     'ganaderia-mensual': ()=>{ const K=['c_asado','c_nalga','c_cuadril','c_paleta','c_picada','c_pollo','ipi_carne'], nm=gaMensual(), ms=[...new Set([...K.flatMap(k=>(act?.[k]||[]).map(p=>p[0])), ...Object.keys(nm)])].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
       return [['mes','asado_kg','nalga_kg','cuadril_kg','paleta_kg','carne_picada_kg','pollo_entero_kg','ipi_carne_vacuna','novillo_promedio_mes_kg_vivo','novillito_promedio_mes_kg_vivo'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m)), nm[m]?.NOVILLOS, nm[m]?.NOVILLITOS])]; },
+    'surtidores-provincias': ()=>{ const P = sur?.productos||{}, ks = SU_P.map(p=>p[0]).filter(k=>P[k]), pv = [...new Set(ks.flatMap(k=>P[k].prov.map(r=>r[0])))].sort();
+      return [['provincia',...ks.map(k=>k+'_mediana_pesos')], pv.map(p=>[p, ...ks.map(k=>(P[k].prov.find(r=>r[0]===p)||[])[1])])]; },
+    'surtidores-ventas': ()=>{ const V = sur?.ventas||{}, ks = Object.keys(V), ms = [...new Set(ks.flatMap(k=>V[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(V[k])]));
+      return [['mes',...ks.map(k=>k+'_miles_m3')], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m))])]; },
     'vinos': ()=>{ const c=vin?.cosecha||{}, s=vin?.superficie||{}, as=[...new Set([...(c.anios||[]), ...(s.anios||[])])].sort(), P=Object.keys(c.prov||{});
       return [['anio','cosecha_uva_quintales',...P.map(p=>'cosecha_'+p.toLowerCase().replace(/[^a-z]+/g,'_')),'superficie_hectareas'], as.map(a=>{ const i=(c.anios||[]).indexOf(a), j=(s.anios||[]).indexOf(a); return [a, i>=0?c.total[i]:null, ...P.map(p=>i>=0?c.prov[p][i]:null), j>=0?s.total[j]:null]; })]; },
     'vinos-precio': ()=>[['mes','vino_comun_pesos_por_litro_gba'], (vin?.series?.precio||[]).map(p=>[p[0], p[1]])],
@@ -4675,8 +4807,8 @@ body.mporta .hbus{display:none}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
-  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','ganaderia','vinos','calculadoras'];  // orden pedido por el dueño
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], surtidores:['tabSu','vSu',()=>renderSurtidores()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
+  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','ganaderia','vinos','surtidores','calculadoras'];  // orden pedido por el dueño
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
@@ -4686,6 +4818,7 @@ body.mporta .hbus{display:none}
     actividad:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18M11 13v2h2v-2"/>',
     ganaderia:'<path d="M5 9c-1.5 0-2.5-1-2.5-2.5M19 9c1.5 0 2.5-1 2.5-2.5"/><path d="M6 8.5h12v4.5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z"/><path d="M9 17v3M15 17v3M10 12.5h.01M14 12.5h.01"/>',
     vinos:'<path d="M7 3h10l-.5 5.5a4.5 4.5 0 0 1-9 0z"/><path d="M7.3 7h9.4M12 13v7M8.5 21h7"/>',
+    surtidores:'<path d="M5 20V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 14 5v15M3.5 20h12M7 7.5h5"/><path d="M14 10h1.5a1.5 1.5 0 0 1 1.5 1.5v4a1.3 1.3 0 0 0 2.6 0V8.5L17 6"/>',
     mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
     noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
@@ -4737,6 +4870,7 @@ body.mporta .hbus{display:none}
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
     vinos:['Vinos y uvas','Precio del vino, cosecha de uva, viñedos, consumo y exportaciones'],
+    surtidores:['Surtidores','Nafta, gasoil y GNC: el precio en cada estación del país, por provincia y por marca'],
     mercado:['Bolsa y bonos','Merval, todas las acciones y bonos argentinos, mapa de calor y simulador de inversión'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','Simulador de inversión, inflación, viajes, sueldo, alquileres por IPC y plazo fijo'],
@@ -4839,7 +4973,7 @@ body.mporta .hbus{display:none}
     $('modoS').setAttribute('aria-current', String(tab==='sobre'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['ganaderia','vinos','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
+    $('segRange').hidden = ['ganaderia','vinos','surtidores','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
@@ -4954,6 +5088,8 @@ body.mporta .hbus{display:none}
       return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
     if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
       return `El MSCI Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
+    if(tab==='surtidores' && sur?.productos?.super){ const P = sur.productos;
+      return `El litro de nafta súper cuesta <strong>$ ${nf(P.super.med,0)}</strong> en la estación del medio del país${P.gasoil ? `, y el gasoil $ ${nf(P.gasoil.med,0)}` : ''}. Buscá tu localidad para ver cuánto cobra cada estación.`; }
     if(tab==='vinos' && vin){ const pr = vin.series?.precio||[], l = Lp(pr), a = l ? pr.find(p=>p[0]===mAdd(l[0],-12)) : null, co = vin.cosecha||{}, n = (co.total||[]).length-1;
       if(!l) return '';
       return `El litro de vino común costaba <strong>$ ${nf(l[1],0)}</strong> en el Gran Buenos Aires en ${mesN(l[0])}${a ? ` (${pc(l[1]/a[1]-1,0)} en un año)` : ''}.${n>0 ? ` La vendimia ${co.anios[n]} dio ${nf(co.total[n]/1e7,2)} millones de toneladas de uva, ${pc(co.total[n]/co.total[n-1]-1,0)} contra la del año anterior.` : ''}${vin.mercado?.por_hab ? ` En ${vin.mercado.anio} se vendieron ${nf(vin.mercado.por_hab,1)} litros de vino por habitante en el país.` : ''}`; }
@@ -8151,6 +8287,7 @@ body.mporta .hbus{display:none}
     sueldo:['salario','salarios','sueldos'], sueldos:['salarios','sueldo'], salario:['sueldo','salarios'], salarios:['sueldo'],
     trabajo:['empleo','desocupacion','desempleo'], empleo:['desocupacion','desempleo'], desempleo:['desocupacion','empleo'], desocupacion:['desempleo'],
     pobreza:['canasta'], canasta:['pobreza'],
+    nafta:['surtidores','combustible'], naftas:['surtidores'], combustible:['surtidores','nafta'], combustibles:['surtidores'], gasoil:['surtidores','diesel'], diesel:['surtidores','gasoil'], gnc:['surtidores'], surtidor:['surtidores'], ypf:['surtidores'], estacion:['surtidores'], shell:['surtidores'], axion:['surtidores'], 'precio nafta':['surtidores'],
     vino:['vinos','uva','bodega'], vinos:['vino','uvas'], uva:['vinos','vino','cosecha'], uvas:['vinos'], vendimia:['vinos','cosecha','uva'], bodega:['vinos'], bodegas:['vinos'], malbec:['vinos','variedad'], vinedo:['vinos','superficie'], vinedos:['vinos'], mosto:['vinos'], damajuana:['vino comun','vinos'], mendoza:['vinos','uva'],
     carne:['ganaderia','hacienda','novillo','asado'], vaca:['ganaderia','hacienda','vacas'], vacas:['ganaderia','hacienda','vaca'], hacienda:['ganaderia'], asado:['carne'], campo:['ganaderia','soja','maiz','trigo'], liniers:['canuelas','hacienda'],
     petroleo:['brent','wti','crudo'], crudo:['petroleo'], nafta:['petroleo'],
