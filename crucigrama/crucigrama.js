@@ -125,17 +125,36 @@ grid.addEventListener('input', e => {
   let v = i.value.toUpperCase().normalize('NFD').replace(/[̀-̂̄-ͯ]/g, '').normalize('NFC').replace(/[^A-ZÑ]/g, '');
   v = v.slice(-1); i.value = v; E.l[cur.x + ',' + cur.y] = v; i.parentNode.classList.remove('mal');
   arrancarReloj(); guardar();
-  if (v) { const n = paso(1); if (inp(n.x, n.y)) ir(n.x, n.y); }
+  verdes(true);
+  if (v) { let n = paso(1); while (inp(n.x, n.y) && inp(n.x, n.y).readOnly) { cur = n; n = paso(1); } if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }
   revisarFin();
 });
 grid.addEventListener('keydown', e => {
   if (!cur) return;
   const mov = {ArrowRight: [1, 0, 'h'], ArrowLeft: [-1, 0, 'h'], ArrowDown: [0, 1, 'v'], ArrowUp: [0, -1, 'v']}[e.key];
   if (mov) { e.preventDefault(); dir = mov[2]; let x = cur.x + mov[0], y = cur.y + mov[1]; while (x >= 0 && y >= 0 && x < W && y < H) { if (ir(x, y)) return; x += mov[0]; y += mov[1]; } marcar(); return; }
+  if (e.key === 'Backspace' && e.target.readOnly) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) ir(n.x, n.y); return; }
   if (e.key === 'Backspace' && !e.target.value) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) { ir(n.x, n.y); inp(n.x, n.y).value = ''; E.l[n.x + ',' + n.y] = ''; guardar(); } }
   if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); const lst = dir === 'h' ? HOR : VER, p = palabraDe(cur.x, cur.y, dir), j = lst.indexOf(p), q = lst[(j + 1) % lst.length]; ir(q.x, q.y); }
 });
 
+// ---------- palabras bien = verde al instante (pedido del dueño: "para ir descartando") ----------
+const OKW = new Set();
+function verdes(anim) {
+  for (const p of P.puestas) {
+    const key = p.n + (p.dx ? 'h' : 'v');
+    let ok = true; for (let i = 0; i < p.w.length; i++) if ((E.l[(p.x + p.dx * i) + ',' + (p.y + p.dy * i)] || '') !== p.w[i]) { ok = false; break; }
+    if (!ok || OKW.has(key)) continue;
+    OKW.add(key);
+    for (let i = 0; i < p.w.length; i++) {
+      const c = inp(p.x + p.dx * i, p.y + p.dy * i); c.readOnly = true; const d = c.parentNode;
+      d.classList.add('okw'); d.classList.remove('mal');
+      if (anim) { d.style.animationDelay = (i * 45) + 'ms'; d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); }
+    }
+    const li = document.querySelector(`.pistas li[data-n="${p.n}"][data-d="${p.dx ? 'h' : 'v'}"]`); if (li) li.classList.add('hecha');
+    if (anim) try { navigator.vibrate && navigator.vibrate(15); } catch (e) {}
+  }
+}
 // ---------- reloj, comprobar, pista ----------
 let tic = null, t0 = 0;
 function fmtT(s) { return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
@@ -147,12 +166,12 @@ $('#comprobar').onclick = () => {
   aviso(malas ? `Hay ${malas} ${malas === 1 ? 'letra mal' : 'letras mal'}, marcadas en rojo.` : 'Vas bien: todo lo que pusiste está bien.');
 };
 $('#pista').onclick = () => {
-  const vac = [...grid.querySelectorAll('.cl')].filter(c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x]);
+  const vac = [...grid.querySelectorAll('.cl:not(.okw)')].filter(c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x]);
   if (!vac.length) return;
   const act = cur ? vac.filter(c => c.classList.contains('act')) : [];
   const c = (act.length ? act : vac)[0], x = +c.dataset.x, y = +c.dataset.y;
   c.querySelector('input').value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x]; E.pistas++; c.classList.add('ayu'); c.classList.remove('mal');
-  arrancarReloj(); guardar(); revisarFin();
+  arrancarReloj(); guardar(); verdes(true); revisarFin();
 };
 function aviso(t) { const a = $('#aviso'); a.textContent = t; a.hidden = false; clearTimeout(aviso.t); aviso.t = setTimeout(() => a.hidden = true, 3000); }
 
@@ -196,5 +215,6 @@ function confeti(n) {
 if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); let R = {n: 1}; try { R = JSON.parse(localStorage.getItem(RK) || '{"n":1}'); } catch (e) {} festejo(R.n); $('#fin').hidden = true; $('#yaFin').hidden = false; }
 $('#yaFin').onclick = () => $('#fin').hidden = false;
 $('#ayuda').textContent = `${P.puestas.length} palabras de economía. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
+verdes(false);
 window.__cruci = {W, H, palabras: P.puestas.map(p => p.w)};
 })();

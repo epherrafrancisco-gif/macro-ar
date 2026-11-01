@@ -570,7 +570,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `armar()` con esa semilla y queda la de más palabras (~15), grilla máx. 13×13 de palabras cruzadas sin pegarse en
   paralelo; numeración clásica, Horizontales/Verticales. Igual para todos el mismo día; N.º 1 = 01/11/2026. Un casillero
   = un `<input>` (anda con el teclado del celular); tocar de nuevo cambia la dirección; flechas, Enter (próxima palabra) y
-  borrar. Reloj, "Comprobar" (marca en rojo), "Una letra de ayuda" (cuenta pistas), progreso por día en localStorage
+  borrar. Pedido del dueño (como La Nación): la palabra que estás completando va en rojo (`.act`, la letra actual `.cur` más
+  fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; la pista se tacha
+  `.hecha`; al escribir se saltean los casilleros ya resueltos). Reloj, "Comprobar" (marca en rojo), "Una letra de ayuda" (cuenta pistas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 
