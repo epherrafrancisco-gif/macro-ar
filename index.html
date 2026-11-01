@@ -141,21 +141,22 @@
 @keyframes noveIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.nove{left:14px;right:14px;width:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 
-/* Pulso Live: entrada en la portada. Pedido del dueño 01/11/2026: "bastante más chico" (una sola franja, que se vea lo de abajo) */
-.plive{display:flex;align-items:center;gap:14px;margin:0 0 16px;padding:9px 12px 9px 14px;border-radius:12px;text-decoration:none;color:inherit;
-  border:1px solid #ffffff1f;background:linear-gradient(100deg,#7b2ff733,#f107a326 45%,#ff512f1f);transition:border-color .2s}
-.plive:hover{border-color:#ffffff55}
-.plb{display:flex;align-items:center;gap:6px;flex:none;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:#ffd0ea}
-.plb i{width:7px;height:7px;border-radius:50%;background:#ff4f9a;animation:plLat 1.8s infinite}
-@keyframes plLat{0%{box-shadow:0 0 0 0 #ff4f9a88}70%{box-shadow:0 0 0 6px #ff4f9a00}100%{box-shadow:0 0 0 0 #ff4f9a00}}
-.plt1{display:flex;align-items:baseline;gap:10px;min-width:0;flex:1}
-.plt1 b{font-size:14px;white-space:nowrap}
-.pltt{font-size:12.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.plgo{display:inline-flex;align-items:center;gap:5px;flex:none;padding:4px 11px;border-radius:999px;background:#fff;color:#0e1319;font:600 12px/1.2 var(--sans,inherit)}
-.plgo svg{width:9px;height:9px}
+/* Juegos en la portada (pedido del dueño 01/11/2026): dos botones en el lugar de la franja, Crucigrama a la izquierda y Verdadero o falso a la derecha */
+.juegos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+.jg{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;text-decoration:none;color:inherit;border:1px solid #ffffff1f;transition:transform .15s,border-color .15s;min-width:0}
+.jg:hover{transform:translateY(-1px);border-color:#ffffff55}
+.jc{background:linear-gradient(100deg,#ff8a3d33,#ffd23d1f)}
+.jv{background:linear-gradient(100deg,#7b2ff733,#f107a326)}
+.ji{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center}
+.jc .ji{background:#ffd23d26;color:#ffd23d}.jv .ji{background:#ff4f9a26;color:#ff7ab3}
+.ji svg{width:20px;height:20px}
+.jt{display:grid;min-width:0}
+.jt b{font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jt small{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:640px){
-  .plive{margin:10px 0 0;padding:7px 8px 7px 11px;gap:9px}
-  .plb{font-size:9.5px}.plt1 b{font-size:13px}.pltt{display:none}.plgo{padding:3px 9px;font-size:11.5px}
+  .juegos{margin:10px 0 0;gap:8px}
+  .jg{padding:7px 9px;gap:8px}.ji{width:28px;height:28px}.ji svg{width:17px;height:17px}
+  .jt b{font-size:13px}.jt small{font-size:11px}
 }
 </style>
 </head>
@@ -932,11 +933,10 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 
   <!-- PORTADA -->
   <section class="view" id="vP" hidden>
-    <a class="plive" id="pLive" href="/verdadero-o-falso/" aria-label="Verdadero o falso de economía">
-      <span class="plb"><i></i>VERDADERO O FALSO</span>
-      <span class="plt1"><b>¿Cuántas acertás seguidas?</b><span class="pltt" id="plTxt">Inflación, dólar, acciones y países, con datos reales</span></span>
-      <span class="plgo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Jugar</span>
-    </a>
+    <div class="juegos" id="pLive">
+      <a class="jg jc" href="/crucigrama/"><span class="ji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none" opacity=".9"/></svg></span><span class="jt"><b>Crucigrama</b><small>Uno nuevo cada día</small></span></a>
+      <a class="jg jv" href="/verdadero-o-falso/"><span class="ji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l4 4 8-9"/><path d="M15 15l5 5M20 15l-5 5"/></svg></span><span class="jt"><b>Verdadero o falso</b><small>Sumá rachas</small></span></a>
+    </div>
     <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá cualquier dato: dólar blue, inflación, plazo fijo, Polonia…</span></button><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button></div></div>
     <div class="mporta-m"><div class="mbig" id="mHoy" hidden></div><!-- "Los datos del día" sacado del celular (pedido del dueño, 26/10/2026) -->
       <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-d="gl" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button></div></div>
@@ -8814,15 +8814,5 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 })();
 </script>
 
-<script>
-/* Verdadero o falso: la franja de la portada va rotando afirmaciones de hoy (live/portada.json, lo arma scripts/live.py) */
-(function(){
-  const el = document.getElementById('plTxt'); if (!el) return;
-  fetch('/verdadero-o-falso/portada.json?t=' + Math.floor(Date.now() / 60000)).then(r => r.ok ? r.json() : null).then(d => {
-    const t = (d && d.th || []).map(x => x.t).filter(Boolean); if (!t.length) return;
-    let i = 0; const pon = () => { el.textContent = '¿' + t[i++ % t.length] + '?'; }; pon(); setInterval(pon, 4000);
-  }).catch(() => {});
-})();
-</script>
 </body>
 </html>

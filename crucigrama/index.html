@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Crucigrama de economía del día | Pulso Macro</title>
+<meta name="description" content="El crucigrama diario de economía de Pulso Macro: uno nuevo cada día, igual para todos. Inflación, dólar, bolsa, bancos centrales y monedas del mundo. ¿En cuánto lo resolvés?">
+<link rel="canonical" href="https://pulsomacro.com.ar/crucigrama/">
+<meta property="og:title" content="Crucigrama de economía del día · Pulso Macro">
+<meta property="og:description" content="Uno nuevo cada día, igual para todos. ¿En cuánto lo resolvés?">
+<meta property="og:url" content="https://pulsomacro.com.ar/crucigrama/">
+<meta property="og:image" content="https://pulsomacro.com.ar/preview.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Game","name":"Crucigrama de economía de Pulso Macro","url":"https://pulsomacro.com.ar/crucigrama/","inLanguage":"es","description":"Crucigrama diario de economía: uno nuevo cada día, igual para todos.","isAccessibleForFree":true,"publisher":{"@type":"Organization","name":"Pulso Macro","url":"https://pulsomacro.com.ar/"}}</script>
+<link rel="icon" href="/icons/anillo.svg" type="image/svg+xml">
+<script>try{if(!localStorage.getItem("skipgc"))document.write('<script data-goatcounter="https://macroar.goatcounter.com/count" async src="//gc.zgo.at/count.js"><\/script>')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Crucigrama diario (pedido del dueño 01/11/2026: "estilo crucigrama de La Nación pero de economía") */
+:root{color-scheme:dark;--bg:#0e1319;--bg2:#141c26;--line:#233040;--fg:#e6edf3;--mut:#8b9bb0;--acc:#ffd23d;--acc2:#ff8a3d;
+  --papel:#f6f1e3;--tinta:#141414;--sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{min-height:100vh;background:radial-gradient(90% 50% at 10% 0%,#ff8a3d33,transparent 60%),radial-gradient(70% 50% at 100% 10%,#ffd23d22,transparent 60%),var(--bg)}
+a{color:inherit}
+.top{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;max-width:1100px;margin:0 auto}
+.back{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;font-size:15px}
+.back svg.lg{width:22px;height:22px}.back .ar{width:16px;height:16px;color:var(--mut)}.back span{font-family:var(--mono);color:#6aa8d8;font-weight:500}
+.reloj{margin-left:auto;font:600 14px var(--mono);padding:5px 12px;border-radius:99px;border:1px solid #ffd23d66;background:#ffd23d1a;color:#ffe9a8}
+main{max-width:1100px;margin:0 auto;padding:0 16px 120px}
+.cab{margin:6px 0 14px}
+.cab h1{margin:0;font-size:clamp(26px,6vw,40px);letter-spacing:-.02em;line-height:1.05}
+.cab h1 span{font-family:var(--mono);font-weight:500;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cab p{margin:6px 0 0;color:var(--mut);font-size:14px}
+.cab .fe{font-family:var(--mono);font-size:12px;color:var(--acc);letter-spacing:.06em;text-transform:uppercase}
+.zona{display:grid;gap:22px;align-items:start;grid-template-columns:minmax(0,1fr)}
+@media (min-width:880px){.zona{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}}
+.tablero{background:#0b0f15;border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;place-items:center;overflow:auto}
+#grid{--w:13;--h:13;--c:min(calc((100vw - 58px - (var(--w) - 1) * 2px) / var(--w)),40px);display:grid;grid-template-columns:repeat(var(--w),var(--c));grid-auto-rows:var(--c);gap:2px}
+.cv{background:transparent}
+.cl{position:relative;background:var(--papel);border-radius:3px;box-shadow:0 0 0 1px #0004}
+.cl input{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;text-align:center;font:700 calc(var(--c) * .55)/1 var(--sans);color:var(--tinta);text-transform:uppercase;caret-color:transparent;outline:0;padding:calc(var(--c) * .12) 0 0;border-radius:3px}
+.cl .nm{position:absolute;left:2px;top:1px;font:600 calc(var(--c) * .26)/1 var(--mono);color:#555;pointer-events:none;z-index:1}
+.cl.act{background:#ffe79a}.cl.cur{background:#ffc93d}.cl.cur input{box-shadow:inset 0 0 0 2px #c26b00}
+.cl.mal input{color:#d0021b}.cl.ayu input{color:#1b5fd0}
+#grid.ok .cl{background:#bff5d8;animation:okc .6s both}
+@keyframes okc{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:none}}
+.pact{position:sticky;bottom:0;margin-top:10px;padding:10px 14px;border-radius:12px;background:#1b2531;border:1px solid #ffd23d55;font-size:15px;line-height:1.35;cursor:pointer;min-height:44px}
+.pact b{color:var(--acc);margin-right:6px}.pact i{color:var(--mut);font-style:normal}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.btns button{flex:1;min-width:110px;padding:10px 12px;border-radius:10px;border:1px solid #ffffff2a;background:#ffffff10;color:var(--fg);font:600 14px var(--sans);cursor:pointer}
+.btns button.pri{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#1a1206;border:0}
+.pistas h2{margin:0 0 8px;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.pistas ol{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:2px}
+.pistas li{padding:7px 10px;border-radius:8px;font-size:14.5px;line-height:1.35;cursor:pointer;color:#c9d3df}
+.pistas li b{display:inline-block;min-width:1.8em;font-family:var(--mono);color:var(--fg)}
+.pistas li i{color:var(--mut);font-style:normal;font-size:12.5px}
+.pistas li.act{background:#ffd23d22;color:#fff}
+.ayuda{font-size:13px;color:var(--mut);margin:10px 0 0}
+.aviso{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:#1b2531;border:1px solid var(--line);padding:10px 16px;border-radius:10px;font-size:14px;max-width:calc(100% - 32px)}
+.yafin{margin-top:10px;width:100%;padding:10px;border-radius:10px;border:1px solid #3ef0a066;background:#16c47822;color:#b9ffe0;font:600 14px var(--sans);cursor:pointer}
+.fin{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:#05080cd0;padding:16px}
+.fin .box{width:min(420px,100%);background:linear-gradient(160deg,#2a1f05,#141c26 60%);border:1px solid #ffd23d66;border-radius:18px;padding:22px;text-align:center;display:grid;gap:8px;animation:pop .5s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:none;opacity:1}}
+.fin h2{margin:0;font-size:28px}.fin .t{font:800 54px/1 var(--mono);background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.fin p{margin:0;color:#c9d3df}.fin .d{color:#7dffc4;font-weight:600}
+.fin .acc{display:grid;gap:8px;margin-top:8px}
+.fin .acc a,.fin .acc button{display:block;padding:11px;border-radius:10px;border:1px solid #ffffff2a;background:#ffffff10;color:var(--fg);font:600 15px var(--sans);text-decoration:none;cursor:pointer}
+.fin .acc .pri{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#1a1206;border:0}
+.fin .x{justify-self:center;background:none;border:0;color:var(--mut);font:14px var(--sans);cursor:pointer;margin-top:4px}
+.confeti{position:fixed;inset:0;width:100%;height:100%;z-index:45;pointer-events:none}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="/" aria-label="Volver a Pulso Macro"><svg class="ar" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg><svg class="lg" viewBox="40 40 432 432" aria-hidden="true"><circle cx="256" cy="256" r="176" fill="none" stroke="#6aa8d8" stroke-width="22"/><path d="M97.6 270 H205.6 L230.8 216 L259.6 342 L288.4 171 L313.6 270 H414.4" fill="none" stroke="#e6edf3" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>Pulso<span>Macro</span></a>
+  <div class="reloj" id="reloj" aria-label="Tiempo">0:00</div>
+</header>
+<main>
+  <div class="cab">
+    <div class="fe" id="fecha"></div>
+    <h1>Crucigrama <span>del día</span></h1>
+    <p>Uno nuevo cada día, igual para todos, con palabras de economía. Mañana hay otro.</p>
+  </div>
+  <div class="zona">
+    <div>
+      <div class="tablero"><div id="grid" aria-label="Crucigrama"></div></div>
+      <div class="pact" id="pAct" role="button" tabindex="0">Tocá un casillero para empezar.</div>
+      <div class="btns"><button type="button" id="comprobar">Comprobar</button><button type="button" id="pista">Una letra de ayuda</button></div>
+      <button type="button" class="yafin" id="yaFin" hidden>Ya lo resolviste hoy · ver tu resultado</button>
+      <p class="ayuda" id="ayuda"></p>
+    </div>
+    <div class="pistas">
+      <h2>Horizontales</h2><ol id="hor"></ol>
+      <h2>Verticales</h2><ol id="ver"></ol>
+    </div>
+  </div>
+</main>
+<div class="aviso" id="aviso" hidden></div>
+<div class="fin" id="fin" hidden><div class="box">
+  <h2>¡Lo resolviste!</h2>
+  <div class="t" id="finT">0:00</div>
+  <p id="finP"></p>
+  <p class="d" id="finD"></p>
+  <p>El próximo sale en <b id="finN"></b>.</p>
+  <div class="acc"><button type="button" class="pri" id="finSh">Compartir mi tiempo</button><a href="/verdadero-o-falso/">Mientras tanto: Verdadero o falso</a></div>
+  <button type="button" class="x" id="finX">Cerrar</button>
+</div></div>
+<script src="palabras.js?v=1"></script>
+<script src="crucigrama.js?v=1"></script>
+</body>
+</html>

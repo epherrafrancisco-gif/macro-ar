@@ -649,7 +649,7 @@ const ptsPintar = (anim) => {
   const ra = ptsEl.querySelector('.ra'); ra.hidden = PT.r < 2; ra.textContent = '×' + PT.r;
   if (anim) { ptsEl.classList.remove(anim); void ptsEl.offsetWidth; ptsEl.classList.add(anim); }
 };
-ptsPintar();
+ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
@@ -669,8 +669,11 @@ function premio(ok, btn, reel) {
     PT.r++; PT.max = Math.max(PT.max, PT.r);
     const gana = 10 * Math.min(5, PT.r);           // la racha multiplica (tope ×5): da ganas de no cortarla
     PT.p += gana;
-    flotar(btn, '+' + gana, '#7dffc4');
-    confeti(btn, PT.r >= 3 ? 34 : 18);
+    fx('bien'); onda(btn);
+    grande('+' + gana, PT.r >= 2 ? '×' + Math.min(5, PT.r) : '');
+    confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
+    if (PT.r >= 5) setTimeout(() => lluvia(PT.r >= 10 ? 160 : 90), 250);
+    medidor();
     if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
     try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
     ptsPintar('gana');
@@ -678,7 +681,10 @@ function premio(ok, btn, reel) {
     const perdio = PT.r;
     PT.r = 0;
     btn.classList.remove('tiembla'); void btn.offsetWidth; btn.classList.add('tiembla');
+    fx('mal'); medidor();
     if (perdio >= 2) flotar(btn, 'Se cortó la racha de ' + perdio, '#ffd0d8');
+    // "casi": si estaba cerca del récord de todos, decírselo (empuja a volver a intentar)
+    if (RECORD && perdio >= 3 && RECORD - perdio <= 3 && RECORD - perdio >= 0) setTimeout(() => cartel(reel, `¡Casi!<small>te ${RECORD - perdio === 0 ? 'faltaba 1' : 'faltaban ' + (RECORD - perdio + 1)} para el récord de todos</small>`), 500);
     try { navigator.vibrate && navigator.vibrate([12, 40, 12]); } catch (e) {}
     ptsPintar('pierde');
   }
@@ -687,6 +693,46 @@ function premio(ok, btn, reel) {
   const sig = reel.querySelector('.sigue'); if (sig) sig.hidden = false;
   else reel.querySelector('.rin').insertAdjacentHTML('beforeend', `<button type="button" class="sigue">${ok ? 'Seguí la racha' : 'Probá con la próxima'} <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button>`);
   try { window.goatcounter && goatcounter.count({path: ok ? 'live-acierto' : 'live-error', event: true}); } catch (e) {}
+}
+// destello de pantalla completa: verde al acertar, rojo al errar (y la pantalla tiembla)
+function fx(tipo) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const d = document.createElement('div'); d.className = 'fx ' + tipo; document.body.appendChild(d); setTimeout(() => d.remove(), tipo === 'mal' ? 900 : 700);
+  if (tipo === 'mal') { feed.classList.remove('sacude'); void feed.offsetWidth; feed.classList.add('sacude'); }
+  else { document.body.classList.remove('late'); void document.body.offsetWidth; document.body.classList.add('late'); }
+}
+// anillos que salen del botón
+function onda(el) {
+  const b = el.getBoundingClientRect();
+  for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 'onda';
+    d.style.cssText = `left:${b.left + b.width / 2}px;top:${b.top + b.height / 2}px;animation-delay:${i * 120}ms`; document.body.appendChild(d); setTimeout(() => d.remove(), 1100); }
+}
+// número gigante al centro
+function grande(txt, mult) {
+  const d = document.createElement('div'); d.className = 'grande'; d.innerHTML = txt + (mult ? `<small>${mult}</small>` : '');
+  document.body.appendChild(d); setTimeout(() => d.remove(), 1000);
+}
+// lluvia de confeti desde arriba (rachas largas)
+function lluvia(n) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = document.createElement('canvas'), dpr = Math.min(2, devicePixelRatio || 1);
+  cv.className = 'confeti'; cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.appendChild(cv);
+  const x = cv.getContext('2d'); x.scale(dpr, dpr);
+  const COL = ['#7dffc4', '#ffd23d', '#ff5c8a', '#5fb4ff', '#ffffff', '#b57bff', '#ff8a3d'];
+  const ps = Array.from({length: n}, () => ({x: rnd() * innerWidth, y: -20 - rnd() * innerHeight * .6, vy: 3 + rnd() * 4, vx: rnd() * 2 - 1, r: 3 + rnd() * 5, c: COL[Math.floor(rnd() * COL.length)], g: rnd() * 6, w: rnd() * .2 - .1}));
+  const t0 = performance.now();
+  (function paso(t) { const k = (t - t0) / 1000; x.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of ps) { p.y += p.vy; p.x += p.vx + Math.sin(p.g) * .6; p.g += p.w;
+      x.save(); x.globalAlpha = Math.max(0, Math.min(1, 2.2 - k)); x.translate(p.x, p.y); x.rotate(p.g); x.fillStyle = p.c; x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); }
+    if (k < 2.2) requestAnimationFrame(paso); else cv.remove(); })(t0);
+}
+// medidor de racha: cuánto falta para el próximo cartel (3, 5, 7, 10, 15, 20...)
+function medidor() {
+  const el = $('#med'); if (!el) return;
+  const hitos = [3, 5, 7, 10, 15, 20, 30, 50, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
+  el.hidden = PT.r < 1;
+  el.querySelector('i').style.width = Math.max(4, (PT.r - ant) / (sig - ant) * 100) + '%';
+  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` : '';
 }
 function flotar(el, txt, col) {
   const b = el.getBoundingClientRect(), d = document.createElement('div');

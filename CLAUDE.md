@@ -548,10 +548,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
   operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 % (un precio roto da un "si ponías…" falso).
-- Entrada en Inicio: franja finita `a#pLive` "VERDADERO O FALSO · ¿Cuántas acertás seguidas? · Jugar" (una línea, pedido
-  del dueño 01/11/2026: "bastante más chico", que en el celular se vea "¿Qué querés ver?") arriba de "¿Qué querés ver?" /
-  `#mTg`; en la compu rota afirmaciones de `portada.json` entre ¿ ? (`#plTxt`). Bandera argentina para los reels: `vendor/flags/ar.svg`.
+- Entrada en Inicio: `.juegos#pLive`, dos botones lado a lado en el lugar de la vieja franja (pedido del dueño 01/11/2026):
+  a la izquierda Crucigrama (`/crucigrama/`), a la derecha Verdadero o falso. Chicos, para que en el celular se vea
+  "¿Qué querés ver?" abajo. `portada.json` ya no lo usa la portada (queda generado, sin uso). Bandera argentina para los reels: `vendor/flags/ar.svg`.
 
+- Más dopamina (pedido del dueño 01/11/2026, "la mayor dopamina posible" y "pantalla roja si perdés"): al acertar, destello
+  verde de pantalla (`fx('bien')`), anillos desde el botón (`onda`), número gigante "+N ×racha" (`grande`), confeti 45-110
+  y lluvia desde arriba con racha ≥5 (`lluvia`), medidor de racha `#med` ("faltan N para el próximo hito"). Al errar:
+  pantalla roja + temblor del feed (`fx('mal')`, `.sacude`) y, si quedó a ≤3 del récord de todos, cartel "¡Casi!". Sin sonido.
 - Récord de racha entre todos (pedido del dueño 01/11/2026): `/api/racha` en el Worker `pulso-vivo` (worker/vivo.js, ruta
   `pulsomacro.com.ar/api/*` en Cloudflare). GET = récord (`racha/record.json` en R2). POST {tk} en cada acierto: devuelve
   una ficha firmada con HMAC (clave al azar guardada en R2 `racha/clave`) con la racha +1; solo suma de a uno, con ≥2,5 s
@@ -559,6 +563,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   no puede saber si la respuesta era correcta (eso lo decide el navegador), solo frena trampas fáciles (mandar "999" o
   muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. En la página: `#rec` al pie
   ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
+
+## Crucigrama (`/crucigrama/`, pedido del dueño 01/11/2026: "uno por día, estilo crucigrama de La Nación pero de economía")
+- `crucigrama/index.html` + `crucigrama.js` + `palabras.js` (banco `PALABRAS` [palabra, pista], ~180, 3-11 letras sin
+  tildes; para sumar, agregar ahí). Todo en el navegador, sin robot: semilla = fecha de Buenos Aires (UTC−3), 30 pruebas
+  `armar()` con esa semilla y queda la de más palabras (~15), grilla máx. 13×13 de palabras cruzadas sin pegarse en
+  paralelo; numeración clásica, Horizontales/Verticales. Igual para todos el mismo día; N.º 1 = 01/11/2026. Un casillero
+  = un `<input>` (anda con el teclado del celular); tocar de nuevo cambia la dirección; flechas, Enter (próxima palabra) y
+  borrar. Reloj, "Comprobar" (marca en rojo), "Una letra de ayuda" (cuenta pistas), progreso por día en localStorage
+  `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
+  Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):

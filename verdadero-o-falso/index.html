@@ -182,6 +182,25 @@ a{color:inherit}
 .foot .rec{color:#ffe9a8;white-space:nowrap}.foot .rec b{color:#ffd23d;font-weight:700}
 .foot .rec.gana{animation:ptsG .6s cubic-bezier(.3,1.6,.5,1)}
 .foot .rec:not([hidden])~#fCat{display:none}
+/* más dopamina (pedido del dueño 01/11/2026): destello, anillos, número gigante, lluvia, medidor; rojo al errar */
+.fx{position:fixed;inset:0;z-index:44;pointer-events:none}
+.fx.bien{background:radial-gradient(circle at 50% 60%,#3ef0a066,#16c47822 45%,transparent 75%);animation:fxB .7s ease-out forwards}
+.fx.mal{background:radial-gradient(circle at 50% 50%,#ff1f4a55,#c8102ecc 85%);animation:fxM .9s ease-out forwards}
+@keyframes fxB{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+@keyframes fxM{0%{opacity:0}10%{opacity:1}35%{opacity:.85}100%{opacity:0}}
+#feed.sacude{animation:sacude .5s}
+@keyframes sacude{0%,100%{transform:none}15%{transform:translate(-10px,2px)}30%{transform:translate(9px,-2px)}45%{transform:translate(-7px,1px)}60%{transform:translate(5px,0)}80%{transform:translate(-2px,0)}}
+body.late .top{animation:late .45s}
+@keyframes late{50%{transform:scale(1.04)}}
+.onda{position:fixed;z-index:46;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #7dffc4;pointer-events:none;animation:onda 1s ease-out forwards}
+@keyframes onda{0%{transform:scale(1);opacity:1}100%{transform:scale(16);opacity:0}}
+.grande{position:fixed;left:50%;top:44%;z-index:47;transform:translate(-50%,-50%);font:800 clamp(64px,22vw,120px)/1 var(--mono);color:#fff;pointer-events:none;
+  text-shadow:0 0 30px #3ef0a0aa,0 6px 30px #0009;animation:grande 1s cubic-bezier(.2,1.5,.4,1) forwards;text-align:center}
+.grande small{display:block;font-size:.32em;color:#ffd23d;margin-top:4px;text-shadow:0 2px 14px #000a}
+@keyframes grande{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}45%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-70%) scale(.9)}}
+.med{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(40px + env(safe-area-inset-bottom,0px));z-index:16;width:min(420px,calc(100% - 32px));height:20px;border-radius:99px;background:#0000005c;border:1px solid #ffffff33;overflow:hidden}
+.med i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#ffd23d,#ff5c8a);border-radius:99px;transition:width .5s cubic-bezier(.3,1.5,.5,1)}
+.med span{position:relative;display:block;text-align:center;font:700 11px/20px var(--mono);color:#fff;text-shadow:0 1px 4px #000}
 /* verdadero o falso */
 .vf{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .vf .op{justify-content:center;font-size:17px;padding:18px 10px}
@@ -255,10 +274,11 @@ a{color:inherit}
   <div class="live"><i></i>VERDADERO O FALSO</div>
 </header>
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
+<div class="med" id="med" hidden><i></i><span></span></div>
 <div class="foot"><div class="row"><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 
-<script src="juego.js?v=8"></script>
+<script src="juego.js?v=10"></script>
 </body>
 </html>
