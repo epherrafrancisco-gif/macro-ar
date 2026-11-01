@@ -1,0 +1,46 @@
+name: Surtidores
+
+# Precios de nafta, gasoil y GNC de todas las estaciones (Secretaría de Energía) → surtidores.json y surtidores_est.json.
+# Todos los días a las 9:37 y 17:37 hora argentina (las estaciones informan cuando cambian el precio).
+on:
+  schedule:
+    - cron: "37 12,20 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/surtidores.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: surtidores
+  cancel-in-progress: false
+
+jobs:
+  surtidores:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer precios de los surtidores
+        run: python scripts/surtidores.py
+
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet surtidores.json surtidores_est.json 2>/dev/null && git ls-files --error-unmatch surtidores.json >/dev/null 2>&1; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add surtidores.json; [ -f surtidores_est.json ] && git add surtidores_est.json
+          git commit -m "Surtidores $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
