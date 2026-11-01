@@ -533,6 +533,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Colores (pedido del dueño: "que cambien, que genere dopamina como un casino; siempre igual parece un tablero"): cada reel
   con un par de colores vivos de `PAL` (`--c`/`--c2`, degradé animado), nunca el mismo seguido; títulos grandes, número con
   degradé, entrada animada, líneas blancas. La imagen para compartir usa el mismo color.
+- Premios al responder (pedido del dueño 01/11/2026: "dopamina como en un casino, que te incite a seguir, sin exagerar"):
+  `premio(ok, btn, reel)` en verdadero o falso y trivia. Acierto: +10 × racha (tope ×5), número que sube (`.flota`),
+  confeti chico (`confeti`, más con racha ≥3), cartel en 3/5/7/10/15 seguidas (`FRASE_RACHA`), vibración corta. Error:
+  temblor del botón y "Se cortó la racha de N". Puntos y racha en la ficha `#pts` del encabezado (localStorage `pl-pts`;
+  en ≤440px el chip "PULSO LIVE" queda solo como punto). Después de responder aparece "Seguí la racha" / "Probá con la
+  próxima" (`.sigue`, baja al siguiente). Eventos GoatCounter `live-acierto` / `live-error`. Respeta reduced-motion.
 - Orden al azar pesado por interés; el primero siempre de Argentina; memoria de vistos 7 días (`pl-vistos`). Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - Datos: `live/datos.json` (~950 KB, ~290 KB comprimido) y `live/portada.json` de `scripts/live.py` (solo lee los JSON del

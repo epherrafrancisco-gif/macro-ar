@@ -600,10 +600,75 @@ feed.addEventListener('click', e => {
     if (!o.ok) op.classList.add('mal');
     const ver = r.viz.vf ? `Es <b>${r.viz.opts[0].ok ? 'verdadero' : 'falso'}</b>. ` : '';
     q.nextElementSibling.innerHTML = (o.ok ? '¡Bien! ' : 'No. ') + ver + r.viz.exp;
+    premio(o.ok, op, q.closest('.reel'));
     return;
   }
   const sh = e.target.closest('[data-share]'); if (sh) compartir(ORD[+sh.dataset.share]);
 });
+// ---------- premios al responder (pedido del dueño 01/11/2026: dopamina tipo casino, sin exagerar) ----------
+let PT = {p: 0, r: 0, max: 0}; try { PT = {...PT, ...JSON.parse(localStorage.getItem('pl-pts') || '{}')}; } catch (e) {}
+const ptsEl = $('#pts');
+const ptsPintar = (anim) => {
+  ptsEl.hidden = !PT.p && !PT.r;
+  ptsEl.querySelector('b').textContent = fN(PT.p);
+  const ra = ptsEl.querySelector('.ra'); ra.hidden = PT.r < 2; ra.textContent = '×' + PT.r;
+  if (anim) { ptsEl.classList.remove(anim); void ptsEl.offsetWidth; ptsEl.classList.add(anim); }
+};
+ptsPintar();
+const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
+const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
+function premio(ok, btn, reel) {
+  if (ok) {
+    PT.r++; PT.max = Math.max(PT.max, PT.r);
+    const gana = 10 * Math.min(5, PT.r);           // la racha multiplica (tope ×5): da ganas de no cortarla
+    PT.p += gana;
+    flotar(btn, '+' + gana, '#7dffc4');
+    confeti(btn, PT.r >= 3 ? 34 : 18);
+    if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
+    try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
+    ptsPintar('gana');
+  } else {
+    const perdio = PT.r;
+    PT.r = 0;
+    btn.classList.remove('tiembla'); void btn.offsetWidth; btn.classList.add('tiembla');
+    if (perdio >= 2) flotar(btn, 'Se cortó la racha de ' + perdio, '#ffd0d8');
+    try { navigator.vibrate && navigator.vibrate([12, 40, 12]); } catch (e) {}
+    ptsPintar('pierde');
+  }
+  try { localStorage.setItem('pl-pts', JSON.stringify(PT)); } catch (e) {}
+  // empujoncito a seguir: la flecha de abajo late
+  const sig = reel.querySelector('.sigue'); if (sig) sig.hidden = false;
+  else reel.querySelector('.rin').insertAdjacentHTML('beforeend', `<button type="button" class="sigue">${ok ? 'Seguí la racha' : 'Probá con la próxima'} <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button>`);
+  try { window.goatcounter && goatcounter.count({path: ok ? 'live-acierto' : 'live-error', event: true}); } catch (e) {}
+}
+function flotar(el, txt, col) {
+  const b = el.getBoundingClientRect(), d = document.createElement('div');
+  d.className = 'flota'; d.textContent = txt; d.style.cssText = `left:${Math.max(120, Math.min(innerWidth - 120, b.left + b.width / 2))}px;top:${b.top}px;color:${col}`;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 1100);
+}
+function cartel(reel, txt) {
+  const d = document.createElement('div'); d.className = 'cartel'; d.textContent = txt;
+  reel.appendChild(d); setTimeout(() => d.remove(), 1500);
+}
+function confeti(el, n) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+  const cv = document.createElement('canvas'), dpr = Math.min(2, devicePixelRatio || 1);
+  cv.className = 'confeti'; cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.appendChild(cv);
+  const x = cv.getContext('2d'); x.scale(dpr, dpr);
+  const COL = ['#7dffc4', '#ffd23d', '#ff5c8a', '#5fb4ff', '#ffffff', '#b57bff'];
+  const ps = Array.from({length: n}, () => { const a = -Math.PI / 2 + (rnd() - .5) * 2.2, v = 5 + rnd() * 7;
+    return {x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 3 + rnd() * 4, c: COL[Math.floor(rnd() * COL.length)], g: rnd() * 6, w: rnd() * .3 - .15}; });
+  const t0 = performance.now();
+  (function paso(t) {
+    const k = (t - t0) / 1000; x.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of ps) { p.vy += .32; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.g += p.w;
+      x.save(); x.globalAlpha = Math.max(0, 1 - k / 1.1); x.translate(p.x, p.y); x.rotate(p.g); x.fillStyle = p.c; x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); }
+    if (k < 1.1) requestAnimationFrame(paso); else cv.remove();
+  })(t0);
+}
+feed.addEventListener('click', e => { if (e.target.closest('.sigue')) ir(1); });
+
 // teclado, botones y rueda
 const ir = d => { const h = feed.clientHeight; feed.scrollBy({top: d * h, behavior: 'smooth'}); };
 $('#up').onclick = () => ir(-1); $('#down').onclick = () => ir(1);
