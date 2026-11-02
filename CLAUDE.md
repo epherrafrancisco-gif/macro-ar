@@ -619,8 +619,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   paralelo; numeración clásica, Horizontales/Verticales. Igual para todos el mismo día; N.º 1 = 01/11/2026. Un casillero
   = un `<input>` (anda con el teclado del celular); tocar de nuevo cambia la dirección; flechas, Enter (próxima palabra) y
   borrar. Pedido del dueño (como La Nación): la palabra que estás completando va en rojo (`.act`, la letra actual `.cur` más
-  fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; sus letras no se pueden cambiar ni borrar desde una palabra que la cruza: guarda en `input` y Backspace; las resueltas se guardan en `E.okw` y `reparar()` las repone al cargar; la pista se tacha
-  `.hecha`; al escribir se saltean los casilleros ya resueltos). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
+  fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; sus letras no se pueden cambiar ni borrar desde una palabra que la cruza (`fija()`, sin readOnly para que el teclado del celular no se cierre); al escribir NO se saltean los casilleros fijos: si tecleás la misma letra pasa al siguiente y si tecleás otra va al próximo libre (02/11/2026: saltearlos hacía que, escribiendo la palabra entera, las letras cayeran corridas y nunca se pusiera verde); las resueltas se guardan en `E.okw` y `reparar()` las repone al cargar; la pista se tacha
+  `.hecha`). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 

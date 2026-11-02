@@ -119,23 +119,34 @@ document.querySelector('.pistas').addEventListener('click', e => {
   ir(p.x, p.y);
 });
 $('#pAct').addEventListener('click', () => { if (cur && palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus(); } });
+const fija = c => !!c && c.parentNode.classList.contains('okw');  // casillero de una palabra ya resuelta (no se puede cambiar)
 const paso = (d) => { const dx = dir === 'h' ? d : 0, dy = dir === 'v' ? d : 0; return {x: cur.x + dx, y: cur.y + dy}; };
 grid.addEventListener('input', e => {
   const i = e.target; if (!cur) return;
-  if (i.parentNode.classList.contains('okw')) { const x = +i.parentNode.dataset.x, y = +i.parentNode.dataset.y; i.value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x]; return; }  // las de palabras ya resueltas no se tocan
   let v = i.value.toUpperCase().normalize('NFD').replace(/[̀-̂̄-ͯ]/g, '').normalize('NFC').replace(/[^A-ZÑ]/g, '');
-  v = v.slice(-1); i.value = v; E.l[cur.x + ',' + cur.y] = v; i.parentNode.classList.remove('mal');
+  v = v.slice(-1);
+  if (fija(i)) {  // letra de una palabra ya resuelta: queda fija. Si escribiste esa misma letra, pasa a la siguiente;
+    // si escribiste otra, va al próximo casillero libre de la palabra (así se puede escribir la palabra entera o solo lo que falta)
+    const x = +i.parentNode.dataset.x, y = +i.parentNode.dataset.y; i.value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x];
+    if (!v) return;
+    let n = paso(1);
+    if (v !== SOL[y][x]) { while (fija(inp(n.x, n.y))) { cur = n; n = paso(1); } const c = inp(n.x, n.y); if (!c) { marcar(); return; }
+      cur = n; c.value = v; E.l[n.x + ',' + n.y] = v; c.parentNode.classList.remove('mal'); arrancarReloj(); guardar(); verdes(true); n = paso(1); }
+    if (inp(n.x, n.y)) ir(n.x, n.y); else ir(cur.x, cur.y);
+    revisarFin(); return;
+  }
+  i.value = v; E.l[cur.x + ',' + cur.y] = v; i.parentNode.classList.remove('mal');
   arrancarReloj(); guardar();
   verdes(true);
-  if (v) { let n = paso(1); while (inp(n.x, n.y) && inp(n.x, n.y).readOnly) { cur = n; n = paso(1); } if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }
+  if (v) { const n = paso(1); if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }  // pasa a la siguiente aunque esté resuelta (no se saltea: si no, la letra que sigue cae en otro casillero)
   revisarFin();
 });
 grid.addEventListener('keydown', e => {
   if (!cur) return;
   const mov = {ArrowRight: [1, 0, 'h'], ArrowLeft: [-1, 0, 'h'], ArrowDown: [0, 1, 'v'], ArrowUp: [0, -1, 'v']}[e.key];
   if (mov) { e.preventDefault(); dir = mov[2]; let x = cur.x + mov[0], y = cur.y + mov[1]; while (x >= 0 && y >= 0 && x < W && y < H) { if (ir(x, y)) return; x += mov[0]; y += mov[1]; } marcar(); return; }
-  if (e.key === 'Backspace' && e.target.readOnly) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) ir(n.x, n.y); return; }
-  if (e.key === 'Backspace' && !e.target.value) { e.preventDefault(); const n = paso(-1), c = inp(n.x, n.y); if (c) { ir(n.x, n.y); if (!c.readOnly) { c.value = ''; E.l[n.x + ',' + n.y] = ''; guardar(); } } }
+  if (e.key === 'Backspace' && fija(e.target)) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) ir(n.x, n.y); return; }
+  if (e.key === 'Backspace' && !e.target.value) { e.preventDefault(); const n = paso(-1), c = inp(n.x, n.y); if (c) { ir(n.x, n.y); if (!fija(c)) { c.value = ''; E.l[n.x + ',' + n.y] = ''; guardar(); } } }
   if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); const lst = dir === 'h' ? HOR : VER, p = palabraDe(cur.x, cur.y, dir), j = lst.indexOf(p), q = lst[(j + 1) % lst.length]; ir(q.x, q.y); }
 });
 
@@ -148,7 +159,7 @@ function verdes(anim) {
     if (!ok || OKW.has(key)) continue;
     OKW.add(key); E.okw = [...OKW];
     for (let i = 0; i < p.w.length; i++) {
-      const c = inp(p.x + p.dx * i, p.y + p.dy * i); c.readOnly = true; const d = c.parentNode;
+      const c = inp(p.x + p.dx * i, p.y + p.dy * i); const d = c.parentNode;
       c.value = p.w[i]; E.l[(p.x + p.dx * i) + ',' + (p.y + p.dy * i)] = p.w[i];
       d.classList.add('okw'); d.classList.remove('mal');
       if (anim) { d.style.animationDelay = (i * 45) + 'ms'; d.classList.remove('pop'); void d.offsetWidth; d.classList.add('pop'); }
@@ -174,7 +185,7 @@ $('#pista').onclick = () => {
   const x = +c.dataset.x, y = +c.dataset.y;
   c.querySelector('input').value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x]; E.pistas++; c.classList.add('ayu'); c.classList.remove('mal');
   arrancarReloj(); guardar(); verdes(true);
-  if (aqui) { let n = paso(1); while (inp(n.x, n.y) && inp(n.x, n.y).readOnly) { cur = n; n = paso(1); } if (!ir(n.x, n.y)) ir(x, y); }
+  if (aqui) { let n = paso(1); while (fija(inp(n.x, n.y))) { cur = n; n = paso(1); } if (!ir(n.x, n.y)) ir(x, y); }
   else { if (!palabraDe(x, y, dir)) dir = dir === 'h' ? 'v' : 'h'; ir(x, y); }
   revisarFin();
 };
