@@ -108,7 +108,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
     para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, `#tChip`, migas, pestañas y `#mBtn`. Arriba queda una cinta (pedido del dueño): `#tape` (dólares) en portada y Argentina, `#tape2` (mercados) en El mundo y países (`body.mglo`, en `mActualizar`). En la portada no va `#mbar`.
   - Portada: `#mHero` (logo Pulso Macro, la firma y una bajada corta; nada de eslogan, pedido del dueño) (antes: qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares (pedido del dueño 26/10/2026: SIN "Los datos del día"; `#mHoy` queda oculto, como en la compu) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
-    compacta. Cartel de primera visita `#mTip` (localStorage `mtip`).
+    compacta. El cartel de primera visita `#mTip` se sacó el 02/11/2026 (pedido del dueño): queda en el HTML, siempre oculto.
   - Secciones: "En resumen" en criollo (`#mRes`, `mResumen`/`mResTxt`: dólares, macro, dinero, mercado, ganadería; si no
     hay, queda `#here`), 4 indicadores y botón "Ver los N indicadores" (`.mmas`), y tarjetas plegables (`mAcordeon`,
     clases `.macc`/`.mk`/`.mc`): pedido del dueño, al entrar a una sección o cambiar de apartado TODAS cerradas (`mAb` se

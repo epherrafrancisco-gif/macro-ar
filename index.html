@@ -5075,7 +5075,7 @@ body.mporta .hbus{display:none}
       setTimeout(()=>{ if(!localStorage.getItem(K)) $('nove').hidden = false; }, 1500);
     }catch(e){}
   })();
-  try{ if(!localStorage.getItem('mtip')) $('mTip').hidden = false; }catch(e){}
+  // cartel "¿Primera vez en Pulso Macro?" sacado (pedido del dueño 02/11/2026): #mTip queda siempre oculto
   $('mTipOk').addEventListener('click', ()=>{ $('mTip').hidden = true; try{ localStorage.setItem('mtip','1'); }catch(e){} });
   // secciones plegables: cada tarjeta muestra su título y se abre al tocarla
   const MAC_NO = ['portada','sobre','calculadoras','noticias'], mAb = new Set(), mVis = new Set();
