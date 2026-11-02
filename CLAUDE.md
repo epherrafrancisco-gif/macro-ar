@@ -215,8 +215,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
 - Noticias: `noticias.json` (scripts/noticias.py, 72 h, hasta 900). Pedido del dueño 02/11/2026: muchas más, de economía y alrededor
   (negocios, finanzas, política). `FUENTES` = medio → secciones → direcciones alternativas (la primera que ande): Ámbito, Infobae,
-  La Nación, iProfesional, Perfil (`/feed/economia` da 404 desde 10/2026: Reperfilar), Clarín, Página/12, El Cronista, El
-  Economista y TN; `RUIDO` saca deportes, espectáculos y policiales; tema `politica` en el filtro (`NWT`). Pedido del dueño 02/11/2026: tarjetas
+  La Nación, iProfesional, Perfil (`/feed/economia` da 404 desde 10/2026: Reperfilar), Clarín, El Economista y TN (Página/12 da 404 y
+  el RSS de El Cronista viene roto: sacados); `RUIDO` saca deportes, espectáculos y policiales; tema `politica` en el filtro (`NWT`). Pedido del dueño 02/11/2026: tarjetas
   con foto como la portada de Edge (`.nwg`/`.nwc`, la primera de cada día grande en compu; 2 columnas en celular; sin foto,
   las iniciales del medio). Solo en estas noticias generales: las de cada país siguen como lista. Foto `i`: la del feed
   (media:content/thumbnail/enclosure/<img>), achicada a 560 px en el resizer de Arc (Infobae, La Nación; se prueba con una

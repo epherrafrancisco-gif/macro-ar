@@ -37,8 +37,6 @@ FUENTES = {
     # Perfil: desde 10/2026 /feed/economia da 404; Reperfilar es su sección de economía
     "Perfil": [["https://www.perfil.com/feed/economia/", "https://www.perfil.com/feed/reperfilar"]],
     "Clarín": [["https://www.clarin.com/rss/economia/"], ["https://www.clarin.com/rss/politica/"]],
-    "Página/12": [["https://www.pagina12.com.ar/rss/secciones/economia/notas"]],
-    "El Cronista": [["https://www.cronista.com/files/rss/economia.xml", "https://www.cronista.com/rss/economia/", "https://www.cronista.com/rss/"]],
     "El Economista": [["https://eleconomista.com.ar/rss/", "https://eleconomista.com.ar/feed/"]],
     "TN": [["https://tn.com.ar/rss/economia/", "https://tn.com.ar/rss.xml"]],
 }
