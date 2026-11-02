@@ -1248,40 +1248,19 @@ body.mporta .hbus{display:none}
   </section>
   <section class="view" id="vSu" hidden>
     <div class="kpis" id="kpisSu"></div>
-    <div class="card supx">
-      <div class="head"><h2>Buscá tu estación</h2><span class="note" id="suEstS"></span></div>
-      <div class="suctl">
-        <input type="search" id="suQ" class="bq" placeholder="Localidad, provincia, calle o marca (ej.: Rosario, YPF, Av. Rivadavia)" aria-label="Buscar estación">
-        <button type="button" class="subtn" id="suGeo"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2.5M8 12.5V15M1 8h2.5M12.5 8H15"/></svg>Las más cercanas a mí</button>
-      </div>
-      <div class="seg calcsel" role="tablist" aria-label="Combustible" id="suProdE"></div>
-      <div class="tablewrap"><table class="sutab"><thead><tr><th>Estación</th><th>Dónde</th><th data-c="super">Súper</th><th data-c="premium">Premium</th><th data-c="gasoil">Gasoil</th><th data-c="gasoil3">Gasoil premium</th><th data-c="gnc">GNC</th></tr></thead><tbody id="tSuEst"></tbody></table></div>
-      <p class="note" id="suEstN">Pesos por litro (GNC: por m³), precio de día. Cada estación carga sus precios en el sistema de la Secretaría de Energía cuando los cambia: al lado de cada precio va la fecha en que lo informó. Un precio con más de 45 días puede no ser el de hoy.</p>
-    </div>
-    <div class="card supx">
-      <div class="head"><h2>Precio en cada provincia</h2><span class="note" id="suPrS"></span></div>
-      <div class="seg calcsel" role="tablist" aria-label="Combustible" id="suProdP"></div>
-      <div class="chart" id="chSuPr"></div>
-      <p class="note">Mediana de las estaciones de cada provincia que informaron su precio en los últimos 45 días (la mitad cobra menos y la otra mitad más). En buena parte de la Patagonia no se cobra el impuesto a los combustibles líquidos: por eso ahí el litro suele salir más barato.</p>
-    </div>
-    <div class="grid2 supx">
-      <div class="card"><div class="head"><h2>Por marca</h2><span class="note" id="suBaS"></span></div><div class="chart" id="chSuBa"></div><p class="note">Mediana de cada bandera en todo el país. "Sin bandera": estaciones blancas, que compran el combustible a cualquier refinería.</p></div>
-      <div class="card"><div class="head"><h2>Dónde está más barata y más cara</h2><span class="note" id="suLoS"></span></div>
-        <div class="tablewrap"><table class="minit"><thead><tr><th>Localidad</th><th>Mediana</th><th>Estaciones</th></tr></thead><tbody id="tSuLo"></tbody></table></div>
-        <p class="note">Localidades con al menos 4 estaciones que informaron precio en los últimos 45 días.</p></div>
-    </div>
-    <div class="card supx">
-      <div class="head"><h2>Cómo se mueve el precio</h2><div class="legend" id="lgSuH"></div></div>
-      <div class="chart" id="chSuH"></div>
-      <p class="note" id="suHN"></p>
-    </div>
     <div class="card">
-      <div class="head"><h2>Cuánto combustible se vende</h2><div class="legend" id="lgSuV"></div></div>
-      <div class="stats" id="suVSt"></div>
+      <div class="head"><h2>Cuánto combustible se vende cada mes</h2><div class="legend" id="lgSuV"></div></div>
       <div class="chart" id="chSuV"></div>
       <p class="note" id="suVN"></p>
     </div>
-    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-provincias"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio por provincia</button><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Nafta vendida cada año</h2><span class="note" id="suAS"></span></div><div class="chart" id="chSuA"></div>
+        <p class="note">Súper más premium, en millones de litros, años completos desde 2010 (antes también se vendía nafta común, que no está en estas series). El último año va hasta el último mes publicado y se compara contra los mismos meses del año anterior.</p></div>
+      <div class="card"><div class="head"><h2>Cuánto de la nafta es premium</h2><span class="note" id="suPS"></span></div><div class="chart" id="chSuP"></div>
+        <p class="note">Premium sobre el total de nafta vendida, cada año. Cuando el bolsillo aprieta, la gente pasa a la súper y esta parte baja.</p></div>
+    </div>
+    <p class="note">Hasta junio de 2025 cada estación tenía que informar sus precios a la Secretaría de Energía (Resolución 314/2016). Esa obligación se derogó (Resolución 717/2025) y la base de precios por estación dejó de estar completa y al día, así que no la mostramos. Las ventas siguen siendo de informe obligatorio.</p>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
   </section>
 
   <!-- MERCADO -->
@@ -4147,90 +4126,40 @@ body.mporta .hbus{display:none}
       $('nCan').textContent = `Pesos por mes que necesita un hogar de dos adultos y dos chicos (6 y 8 años) para no ser pobre o indigente, en GBA. ${fmes(cl[0])}: $ ${nf(cl[1]*FT,0)}${a12?`, ${sg((cl[1]/a12[1]-1)*100,1)}% en un año`:''}. Fuente: INDEC.`; }
   }
 
-  // ---- SURTIDORES (surtidores.json + surtidores_est.json de scripts/surtidores.py: precios en surtidor de la Secretaría de Energía) ----
-  let sur = null, surLoading = false, surEst = null, suProd = 'super', suGeoPos = null, suN = 15;
-  const SU_P = [['super','Súper','--s1'],['premium','Premium','--s5'],['gasoil','Gasoil','--s2'],['gasoil3','Gasoil premium','--s4'],['gnc','GNC','--s3']];
-  const suNom = k => (SU_P.find(p=>p[0]===k)||[,k])[1];
+  // ---- SURTIDORES (surtidores.json de scripts/surtidores.py: ventas mensuales de combustible de la Secretaría de Energía).
+  // Los precios por estación (Res. 314/2016) se sacaron el 02/11/2026: la obligación de informarlos se derogó (Res. 717/2025).
+  let sur = null, surLoading = false;
   async function loadSur(){
     if(sur || surLoading) return; surLoading = true;
     try{ const r = await fetch('surtidores.json?t='+VER(), {cache:'no-store'}); if(r.ok) sur = await r.json(); }catch(e){}
     surLoading = false; if(tab==='surtidores'){ renderSurtidores(); mResumen(); }
   }
-  async function loadSurEst(){
-    if(surEst) return surEst;
-    try{ const r = await fetch('surtidores_est.json?t='+VER(), {cache:'no-store'}); if(r.ok) surEst = await r.json(); }catch(e){}
-    return surEst;
-  }
-  const suNorm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  const suKm = (a,b,c,d) => { const R=6371, r=x=>x*Math.PI/180, dl=r(c-a), dg=r(d-b), h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dg/2)**2; return 2*R*Math.asin(Math.sqrt(h)); };
-  function suSeg(el, cb){ const P = sur?.productos||{};
-    el.innerHTML = SU_P.filter(p=>P[p[0]]).map(([k,n])=>`<button type="button" data-su="${k}" aria-selected="${k===suProd}">${n}</button>`).join('');
-    el.querySelectorAll('[data-su]').forEach(b=>b.onclick = ()=>{ suProd = b.dataset.su; cb(); }); }
-  async function suEstPintar(){
-    const tb = $('tSuEst'); if(!tb) return;
-    const q = suNorm($('suQ').value.trim());
-    if(!q && !suGeoPos){ tb.innerHTML = '<tr><td colspan="7" class="note">Escribí tu localidad o tocá "Las más cercanas a mí".</td></tr>'; return; }
-    const E = await loadSurEst(); if(!E){ tb.innerHTML = '<tr><td colspan="7" class="note">No se pudo cargar la lista de estaciones.</td></tr>'; return; }
-    let L = E.e;
-    if(q){ const ws = q.split(/\s+/); L = L.filter(e=>{ const t = suNorm(e[0]+' '+e[1]+' '+e[2]+' '+e[3]+' '+e[4]+' '+e[5]); return ws.every(w=>t.includes(w)); }); }
-    if(suGeoPos) L = L.filter(e=>e[7]!=null).map(e=>[...e.slice(0,9), suKm(suGeoPos[0],suGeoPos[1],e[7],e[8])]).sort((a,b)=>a[9]-b[9]).slice(0,90);
-    const lim = new Date(Date.now()-45*864e5).toISOString().slice(0,10), ps = e => e[6][suProd];
-    if(!suGeoPos) L = L.slice().sort((a,b)=>(ps(a)&&ps(a)[1]>=lim ? ps(a)[0] : 1e9) - (ps(b)&&ps(b)[1]>=lim ? ps(b)[0] : 1e9));
-    const tot = L.length; L = L.slice(0, suN);
-    const cel = (e,k) => { const x = e[6][k]; if(!x) return `<td data-c="${k}" class="na${k===suProd?' sel':''}">—</td>`; const viejo = x[1] < lim;
-      return `<td data-c="${k}" class="${k===suProd?'sel ':''}${viejo?'viejo':''}"><b>$ ${nf(x[0],0)}</b><small>${fds(x[1])}${x[1].slice(0,4)!==String(new Date().getFullYear())?'/'+x[1].slice(2,4):''}</small></td>`; };
-    tb.innerHTML = L.length ? L.map(e=>`<tr><td><b>${esc(e[0]==='Otras'?e[1]||'Otra':e[0])}</b><small>${esc(e[2])}</small></td><td>${esc(e[3])}<small>${esc(e[4])}, ${esc(e[5])}${e[9]!=null?` · ${nf(e[9],e[9]<10?1:0)} km`:''}</small></td>${['super','premium','gasoil','gasoil3','gnc'].map(k=>cel(e,k)).join('')}</tr>`).join('')
-      : '<tr><td colspan="7" class="note">No encontramos estaciones con esa búsqueda.</td></tr>';
-    if(tot > L.length) tb.innerHTML += `<tr><td colspan="7"><button type="button" class="subtn" data-sumas>Ver ${Math.min(15, tot-L.length)} más (hay ${nf(tot,0)})</button></td></tr>`;
-    $('suEstS').textContent = tot ? (suGeoPos ? 'de la más cercana a la más lejana' : `${nf(tot,0)} estaciones · de la más barata a la más cara en ${suNom(suProd).toLowerCase()}`) : '';
-    document.querySelectorAll('.sutab th[data-c]').forEach(th=>th.classList.toggle('sel', th.dataset.c===suProd));
-  }
-  document.addEventListener('click', e=>{ if(e.target.closest('[data-sumas]')){ suN += 15; suEstPintar(); } });
-  let suQt; document.addEventListener('input', e=>{ if(e.target.id==='suQ'){ suGeoPos = null; suN = 15; $('suGeo').classList.remove('on'); clearTimeout(suQt); suQt = setTimeout(suEstPintar, 200); } });
-  document.addEventListener('click', e=>{ if(!e.target.closest('#suGeo')) return;
-    if(!navigator.geolocation){ $('suEstS').textContent = 'Tu navegador no deja usar la ubicación.'; return; }
-    $('suEstS').textContent = 'Buscando tu ubicación…';
-    navigator.geolocation.getCurrentPosition(p=>{ suGeoPos = [p.coords.latitude, p.coords.longitude]; suN = 15; $('suQ').value = ''; $('suGeo').classList.add('on'); suEstPintar(); gc('surtidores-cerca', true); },
-      ()=>{ $('suEstS').textContent = 'No pudimos saber tu ubicación: escribí tu localidad.'; }, {timeout:10000, maximumAge:600000}); });
+  const SU_V = [['super','Nafta súper','--s1'],['premium','Nafta premium','--s5'],['gasoil','Gasoil','--s2']];  // GNC: la serie no trae unidad confirmada, no se muestra
+  function suAnios(){ // totales por año de súper + premium (años con los 12 meses; el último, hasta el último mes con dato)
+    const V = sur.ventas||{}, sp = Object.fromEntries((V.super||[]).map(p=>[p[0],p[1]])), pr = Object.fromEntries((V.premium||[]).map(p=>[p[0],p[1]]));
+    const ms = Object.keys(sp).filter(m=>pr[m]!=null).sort(), A = {};
+    for(const m of ms){ const y = m.slice(0,4); (A[y] = A[y] || {n:0, t:0, p:0, ms:[]}); A[y].n++; A[y].t += sp[m]+pr[m]; A[y].p += pr[m]; A[y].ms.push(m.slice(5)); }
+    return {A, ms, sp, pr}; }
   function renderSurtidores(){
-    if(!sur){ loadSur(); $('kpisSu').innerHTML = '<div class="empty">Cargando precios de los surtidores…</div>'; return; }
-    const P = sur.productos || {}, L = a => a?.length ? a[a.length-1] : null, fe = sur.fecha;
-    const of = L(series('oficial')), t = [];
-    for(const [k,n] of SU_P){ const p = P[k]; if(!p) continue;
-      t.push(tileK(n, '$ '+nf(p.med,0), k==='gnc'?'/m³':'/litro', '', `mediana de ${nf(p.est,0)} estaciones · 8 de cada 10 cobran entre $ ${nf(p.p10,0)} y $ ${nf(p.p90,0)}`)); }
-    if(P.super && of) t.push(tileK('Nafta súper en dólares', 'US$ '+nf(P.super.med/of[1],2), '/litro', '', `al dólar oficial de ${fds(of[0])}`));
-    if(P.super && P.premium) t.push(tileK('La premium cuesta', pc(P.premium.med/P.super.med-1,0).replace('+',''), 'más', '', 'que la súper (mediana del país)'));
-    document.querySelectorAll('#vSu .supx').forEach(c=>c.hidden = !t.length);
-    if(!t.length){ $('kpisSu').innerHTML = '<div class="empty" style="grid-column:1/-1;text-align:left">Los precios de cada estación todavía no están disponibles: el sistema de la Secretaría de Energía no está respondiendo. Aparecen solos apenas vuelva. Mientras tanto, abajo están las ventas de combustible de cada mes.</div>'; }
-    else $('kpisSu').innerHTML = t.join('');
-    if(!P[suProd]) suProd = Object.keys(P)[0] || 'super';
-    const todo = ()=>{ renderSurtidores(); suEstPintar(); };
-    suSeg($('suProdE'), todo); suSeg($('suProdP'), todo);
-    const p = P[suProd];
-    if(p){
-      $('suPrS').textContent = `${suNom(suProd)} · ${fe ? 'precios informados hasta el '+fd(fe) : ''}`;
-      hBars($('chSuPr'), (p.prov||[]).map(([n,v,c])=>({n, v, c: n==='CABA'?'--s5':'--s1'})).sort((a,b)=>b.v-a.v), {aria:'Precio por provincia', rh:28, ref:p.med, refLabel:'país $ '+nf(p.med,0)+' ·', vfmt:v=>'$ '+nf(v,0)});
-      $('suBaS').textContent = suNom(suProd);
-      hBars($('chSuBa'), (p.band||[]).map(([n,v,c])=>({n:`${n} (${nf(c,0)})`, v, c: n==='YPF'?'--s1':n==='Shell'?'--s4':n==='Axion'?'--s5':'--s3'})).sort((a,b)=>b.v-a.v), {aria:'Precio por marca', vfmt:v=>'$ '+nf(v,0)});
-      $('suLoS').textContent = suNom(suProd);
-      const fila = (r,cls) => `<tr class="${cls}"><td>${esc(r[0])}<small>${esc(r[1])}</small></td><td>$ ${nf(r[2],0)}</td><td>${r[3]}</td></tr>`;
-      $('tSuLo').innerHTML = '<tr class="gt"><td colspan="3">Las más baratas</td></tr>' + (p.loc_bar||[]).slice(0,5).map(r=>fila(r,'')).join('') + '<tr class="gt"><td colspan="3">Las más caras</td></tr>' + (p.loc_car||[]).slice(0,5).map(r=>fila(r,'')).join('');
-    } else { ['chSuPr','chSuBa'].forEach(id=>$(id).innerHTML = '<div class="empty">Sin datos todavía.</div>'); $('tSuLo').innerHTML = ''; }
-    // historia propia (una mediana por día, desde que se empezó a guardar)
-    const H = sur.hist || {}, hd = Object.keys(H).sort();
-    const hs = SU_P.filter(([k])=>k!=='gnc').map(([k,n,c])=>({n, c, pts: hd.filter(d=>H[d][k]).map(d=>[d, H[d][k]])})).filter(s=>s.pts.length);
-    legend($('lgSuH'), hs.map(s=>({n:s.n, c:s.c})));
-    if(hd.length >= 2) lineChart($('chSuH'), hs, {aria:'Precio mediano por día', labW:96, l:58, yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v,0)});
-    else $('chSuH').innerHTML = `<div class="empty">Esta serie arranca ${hd[0] ? 'el '+fd(hd[0]) : 'con la primera actualización'}: se guarda un punto por día y el gráfico se arma solo.</div>`;
-    $('suHN').textContent = hd.length ? `Mediana de todo el país de cada día, desde el ${fd(hd[0])}. Fuente: Secretaría de Energía (precios en surtidor, Resolución 314/2016).` : '';
-    // ventas
-    const V = sur.ventas || {}, VS = [['super','Nafta súper','--s1'],['premium','Nafta premium','--s5'],['gasoil','Gasoil','--s2']].filter(([k])=>V[k]?.length > 12);
-    const c5 = String(new Date().getFullYear()-5);
+    if(!sur){ loadSur(); $('kpisSu').innerHTML = '<div class="empty">Cargando…</div>'; return; }
+    const V = sur.ventas || {}, L = a => a?.length ? a[a.length-1] : null, t = [];
+    for(const [k,n] of SU_V){ const s = V[k], u = L(s); if(!u) continue; const a = s.find(x=>x[0]===mAdd(u[0],-12));
+      t.push(tileK(n+' en '+MESL[+u[0].slice(5)-1].toLowerCase(), nf(u[1],0), k==='gnc'?'mill. m³':'mill. litros', '', a ? `${pc(u[1]/a[1]-1,1)} contra ${MESL[+u[0].slice(5)-1].toLowerCase()} de ${+u[0].slice(0,4)-1}` : '')); }
+    const {A, ms} = suAnios(), lm = L(ms);
+    if(lm){ const y = lm.slice(0,4), py = String(+y-1), k = A[y].ms, sum = ser => (ser||[]).filter(p=>p[0].slice(0,4)===py && k.includes(p[0].slice(5))).reduce((a,p)=>a+p[1],0), prev = sum(V.super) + sum(V.premium);
+      if(A[py] && prev) t.push(tileK('Nafta en lo que va de '+y, pc(A[y].t/prev-1,1), '', '', `súper + premium de enero a ${MESL[+lm.slice(5)-1].toLowerCase()}, contra el mismo período de ${py}`)); }
+    $('kpisSu').innerHTML = t.join('') || '<div class="empty">Sin datos todavía.</div>';
+    // mensual, últimos 5 años
+    const VS = SU_V.filter(([k])=>k!=='gnc' && V[k]?.length > 12), c5 = String(new Date().getFullYear()-5);
     legend($('lgSuV'), VS.map(([,n,c])=>({n, c})));
-    lineChart($('chSuV'), VS.map(([k,n,c])=>({n, c, pts: V[k].filter(p=>p[0]>=c5).map(p=>[p[0]+'-01', p[1]])})), {aria:'Ventas de combustible por mes', labW:96, l:52, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mil m³', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
-    const st = VS.map(([k,n])=>{ const s = V[k], u = L(s), a = s.find(x=>x[0]===mAdd(u[0],-12)); return stc(n+' en '+MESL[+u[0].slice(5)-1], nf(u[1],0)+' mill. L', a ? `${pc(u[1]/a[1]-1,1)} contra un año antes` : ''); });
-    $('suVSt').innerHTML = st.join('');
-    $('suVN').textContent = 'Miles de metros cúbicos vendidos al mercado interno cada mes (un metro cúbico = 1.000 litros). Fuente: Secretaría de Energía, vía datos.gob.ar.';
+    lineChart($('chSuV'), VS.map(([k,n,c])=>({n, c, pts: V[k].filter(p=>p[0]>=c5).map(p=>[p[0]+'-01', p[1]])})), {aria:'Ventas de combustible por mes', labW:96, l:52, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mill. L', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    $('suVN').textContent = `Millones de litros vendidos al mercado interno cada mes (un metro cúbico = 1.000 litros). El gasoil arranca en ${V.gasoil?.length ? fmes(V.gasoil[0][0]) : '—'}: la serie publicada es corta. Fuente: Secretaría de Energía, vía datos.gob.ar.`;
+    // por año
+    const ys = Object.keys(A).filter(y=>A[y].n===12 && y>='2010').sort();  // antes de ~2010 también se vendía nafta "común", que estas series no incluyen
+    barChart($('chSuA'), [{n:'Nafta', c:'--s1', pts: ys.map(y=>[y, A[y].t])}], {aria:'Nafta vendida por año', kfmt:k=>k, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mill. L'});
+    $('suAS').textContent = ys.length ? `${ys[0]}-${ys[ys.length-1]}` : '';
+    barChart($('chSuP'), [{n:'Premium', c:'--s5', pts: ys.map(y=>[y, A[y].p/A[y].t*100])}], {aria:'Parte premium de la nafta', kfmt:k=>k, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%'});
+    $('suPS').textContent = ys.length ? `${ys[ys.length-1]}: ${nf(A[ys[ys.length-1]].p/A[ys[ys.length-1]].t*100,1)} %` : '';
   }
   // ---- VINOS Y UVAS (vinos.json de scripts/vinos.py: datos abiertos del INV + precio del vino común del INDEC) ----
   let vin = null, vinLoading = false, viMoneda = 'ars';
@@ -4828,8 +4757,6 @@ body.mporta .hbus{display:none}
       return [['fecha',...G.flatMap(g=>[g.toLowerCase()+'_precio_promedio_kg_vivo', g.toLowerCase()+'_cabezas']),'total_precio_promedio','total_cabezas','definitivo'], ds.map(f=>{ const h=gan.hacienda[f]; return [f, ...G.flatMap(g=>[h.grupos[g]?.prom, h.grupos[g]?.cab]), h.total.prom, h.total.cab, h.def?1:0]; })]; },
     'ganaderia-mensual': ()=>{ const K=['c_asado','c_nalga','c_cuadril','c_paleta','c_picada','c_pollo','ipi_carne'], nm=gaMensual(), ms=[...new Set([...K.flatMap(k=>(act?.[k]||[]).map(p=>p[0])), ...Object.keys(nm)])].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
       return [['mes','asado_kg','nalga_kg','cuadril_kg','paleta_kg','carne_picada_kg','pollo_entero_kg','ipi_carne_vacuna','novillo_promedio_mes_kg_vivo','novillito_promedio_mes_kg_vivo'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m)), nm[m]?.NOVILLOS, nm[m]?.NOVILLITOS])]; },
-    'surtidores-provincias': ()=>{ const P = sur?.productos||{}, ks = SU_P.map(p=>p[0]).filter(k=>P[k]), pv = [...new Set(ks.flatMap(k=>P[k].prov.map(r=>r[0])))].sort();
-      return [['provincia',...ks.map(k=>k+'_mediana_pesos')], pv.map(p=>[p, ...ks.map(k=>(P[k].prov.find(r=>r[0]===p)||[])[1])])]; },
     'surtidores-ventas': ()=>{ const V = sur?.ventas||{}, ks = Object.keys(V), ms = [...new Set(ks.flatMap(k=>V[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(V[k])]));
       return [['mes',...ks.map(k=>k+'_miles_m3')], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m))])]; },
     'vinos': ()=>{ const c=vin?.cosecha||{}, s=vin?.superficie||{}, as=[...new Set([...(c.anios||[]), ...(s.anios||[])])].sort(), P=Object.keys(c.prov||{});
@@ -4913,7 +4840,7 @@ body.mporta .hbus{display:none}
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
     vinos:['Vinos y uvas','Precio del vino, cosecha de uva, viñedos, consumo y exportaciones'],
-    surtidores:['Surtidores','Nafta, gasoil y GNC: el precio en cada estación del país, por provincia y por marca'],
+    surtidores:['Surtidores','Nafta, gasoil y GNC: cuánto se vende cada mes y cada año'],
     mercado:['Bolsa y bonos','Merval, todas las acciones y bonos argentinos, mapa de calor y simulador de inversión'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','Simulador de inversión, inflación, viajes, sueldo, alquileres por IPC y plazo fijo'],
@@ -5132,8 +5059,8 @@ body.mporta .hbus{display:none}
       return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
     if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
       return `El MSCI Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
-    if(tab==='surtidores' && sur?.productos?.super){ const P = sur.productos;
-      return `El litro de nafta súper cuesta <strong>$ ${nf(P.super.med,0)}</strong> en la estación del medio del país${P.gasoil ? `, y el gasoil $ ${nf(P.gasoil.med,0)}` : ''}. Buscá tu localidad para ver cuánto cobra cada estación.`; }
+    if(tab==='surtidores' && sur?.ventas?.super?.length){ const V = sur.ventas, u = V.super[V.super.length-1], a = V.super.find(x=>x[0]===mAdd(u[0],-12)), g = V.gasoil?.length ? V.gasoil[V.gasoil.length-1] : null;
+      return `En ${MESL[+u[0].slice(5)-1].toLowerCase()} se vendieron <strong>${nf(u[1],0)} millones de litros de nafta súper</strong>${a ? ` (${pc(u[1]/a[1]-1,1)} contra un año antes)` : ''}${g && g[0]===u[0] ? ` y ${nf(g[1],0)} millones de gasoil` : ''}.`; }
     if(tab==='vinos' && vin){ const pr = vin.series?.precio||[], l = Lp(pr), a = l ? pr.find(p=>p[0]===mAdd(l[0],-12)) : null, co = vin.cosecha||{}, n = (co.total||[]).length-1;
       if(!l) return '';
       return `El litro de vino común costaba <strong>$ ${nf(l[1],0)}</strong> en el Gran Buenos Aires en ${mesN(l[0])}${a ? ` (${pc(l[1]/a[1]-1,0)} en un año)` : ''}.${n>0 ? ` La vendimia ${co.anios[n]} dio ${nf(co.total[n]/1e7,2)} millones de toneladas de uva, ${pc(co.total[n]/co.total[n-1]-1,0)} contra la del año anterior.` : ''}${vin.mercado?.por_hab ? ` En ${vin.mercado.anio} se vendieron ${nf(vin.mercado.por_hab,1)} litros de vino por habitante en el país.` : ''}`; }

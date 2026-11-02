@@ -176,18 +176,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   por habitante con `wb.pop.ARG` de paises_extra.json), exportaciones (países, variedades, fraccionado/granel) y bodegas/viñedos.
   Los informes mensuales del INV son PDF y robots.txt de argentina.gob.ar prohíbe `/*.pdf$`: NO usarlos. Lo abierto va atrasado
   (consumo de un año entero, exportaciones parciales): cada número muestra su período. La serie IPI vino viene vacía (sacada).
-- Surtidores (`#surtidores`, `vSu`, `renderSurtidores`, `loadSur`; pedido del dueño 01/11/2026): precios en surtidor de la
-  Secretaría de Energía (Resolución 314/2016, cada estación informa los suyos). datos.energia.gob.ar NO responde desde
-  GitHub Actions (timeout) y la copia de datos.gob.ar (`/archivo/`) está prohibida por su robots.txt: el Worker `pulso-vivo`
-  (`surtidores()` en worker/vivo.js, cada 6 h como mucho, con traba en `surtidores/estado.json`) baja el CSV tal cual a R2
-  `surtidores/vigentes.csv` y scripts/surtidores.py (workflow `surtidores.yml`, 9:37 y 17:37 ART) lo lee de
-  `datos.pulsomacro.com.ar/surtidores/vigentes.csv`. Solo precios de día informados en los últimos 45 días: mediana por
-  producto (súper, premium, gasoil, gasoil premium, GNC), provincia, bandera y localidad; la historia es propia (una mediana por
-  día en `hist`, desde que anda). `surtidores_est.json` = todas las estaciones (bandera, empresa, dirección, localidad,
-  provincia, precios con fecha, lat/lon) para el buscador y "Las más cercanas a mí" (geolocalización del navegador; en el
-  celular la tabla muestra solo el combustible elegido). Ventas mensuales al mercado interno (miles de m³) de la API de
-  series: `38.3_NS_1994_M_11` súper, `38.3_NU_1994_M_11` premium, `41.3_GO_0_A_7` gasoil (`364.3_GNCGNC__3` GNC, sin unidad
-  confirmada: no se muestra). No hay serie de precio de la nafta en la API de series (INDEC no la publica ahí).
+- Surtidores (`#surtidores`, `vSu`, `renderSurtidores`, `loadSur`; pedido del dueño 01/11/2026). Desde el 02/11/2026 SOLO ventas
+  (pedido del dueño): la Resolución 314/2016, que obligaba a cada estación a informar sus precios, se derogó en 06/2025 (Res.
+  717/2025), así que la base de precios por estación ya no está completa ni al día; además datos.energia.gob.ar no responde ni
+  desde Actions ni desde el Worker (522). Se sacaron buscador, provincias, marcas, localidades e historia de precios. Quedan:
+  casilleros del último mes (súper, premium, gasoil, con la variación contra un año) y "Nafta en lo que va del año", ventas
+  mensuales de los últimos 5 años, nafta vendida por año y parte premium (desde 2010: antes también había nafta común, que no
+  está en estas series) y la nota de la derogación. Series de la API de series (miles de m³ = millones de litros):
+  `38.3_NS_1994_M_11` súper, `38.3_NU_1994_M_11` premium, `41.3_GO_0_A_7` gasoil (solo desde 06/2025); `364.3_GNCGNC__3` GNC sin
+  unidad confirmada: no se muestra. scripts/surtidores.py (workflow `surtidores.yml`) y `surtidores()` del Worker siguen
+  intentando bajar los precios (cada 6 h, inofensivo); la página ya no los usa (`surtidores_est.json` quedó sin uso).
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas
