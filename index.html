@@ -730,18 +730,18 @@ header .brand{flex:1 1 420px}.hright{display:grid;justify-items:end;gap:8px;marg
 .mhb{display:flex;justify-content:center;align-items:center;gap:18px;margin:4px 0 6px}.mhb .manbtn{margin:0;padding:6px 2px}.mhb .temabtn{margin:0;font-size:13px}
 /* ---- Modo claro, beige (pedido del dueño 01/11/2026; el oscuro sigue siendo el de todos por defecto) ---- */
 html[data-tema="claro"]{color-scheme:light;
-  --bg:#f3ede2; --surface:#fbf7f0; --sunk:#ebe3d5;
-  --ink:#2a251f; --ink2:#5a5045; --muted:#857a6c; --line:#dcd1bf; --grid:#e6dccb;
-  --accent:#2c6a99; --accent-ink:#fbf7f0;
+  --bg:#e4d9c6; --surface:#eee5d5; --sunk:#d9ccb6;
+  --ink:#241e17; --ink2:#4d4337; --muted:#76695a; --line:#cbbca3; --grid:#d6c9b3;
+  --accent:#2a6290; --accent-ink:#f3ecdf;
   --s1:#2b69bd; --s2:#bf4b1b; --s3:#13805a; --s4:#a06a00; --s5:#b13c68;
-  --pos:#1d7d4c; --pos-bg:#dcecdf; --neg:#bb3a2c; --neg-bg:#f4dcd6; --neu-bg:#e8e0d2}
+  --pos:#1b7446; --pos-bg:#cfdfc9; --neg:#b0352a; --neg-bg:#ebcfc4; --neu-bg:#dccfba}
 html[data-tema="claro"] body{background:var(--bg)}
 html[data-tema="claro"] svg.lg path{stroke:#2a251f}html[data-tema="claro"] svg.lg circle{stroke:#2c6a99}
-html[data-tema="claro"] .mbar{background:#f3ede2}html[data-tema="claro"] .mnav{background:#ebe3d5}
-html[data-tema="claro"] .mtip,html[data-tema="claro"] .nove{background:#fbf7f0;color:var(--ink)}
-html[data-tema="claro"] .term{background:#ebe3d5}
-html[data-tema="claro"] .ar .dh .ic{background:#dfe7ef}html[data-tema="claro"] .gl .dh .ic{background:#dcece6}
-html[data-tema="claro"] .tile:hover,html[data-tema="claro"] .tile:focus-visible{background:#efe7d9}
+html[data-tema="claro"] .mbar{background:#e4d9c6}html[data-tema="claro"] .mnav{background:#d9ccb6}
+html[data-tema="claro"] .mtip,html[data-tema="claro"] .nove{background:#eee5d5;color:var(--ink)}
+html[data-tema="claro"] .term{background:#d9ccb6}
+html[data-tema="claro"] .ar .dh .ic{background:#cfd6d6}html[data-tema="claro"] .gl .dh .ic{background:#cdd9cc}
+html[data-tema="claro"] .tile:hover,html[data-tema="claro"] .tile:focus-visible{background:#e8dece}
 html[data-tema="claro"] .ms-g a.on,html[data-tema="claro"] .ms-l a.on{background:#2c6a9918}
 /* los recuadros de TradingView vienen en oscuro: en modo claro quedan como islas oscuras, legibles */
 html[data-tema="claro"] .tvbox{background:#1b2027!important;border-radius:8px}html[data-tema="claro"] .tvbox iframe{mix-blend-mode:normal!important}.manbtn svg{width:17px;height:17px}.vS .manbtn,#vS .manbtn{margin:0;padding:0;color:var(--accent)}
@@ -7374,7 +7374,7 @@ body.mporta .hbus{display:none}
     const temaPintar = () => { const cl = document.documentElement.dataset.tema === 'claro';
       document.querySelectorAll('button[data-tema]').forEach(b=>b.innerHTML = cl ? TEMA_LUNA+'<span>Modo oscuro</span>' : TEMA_SOL+'<span>Modo claro</span>');
       const mc = document.querySelector('meta[name="color-scheme"]'); if(mc) mc.content = cl ? 'light' : 'dark';
-      const tc = document.querySelector('meta[name="theme-color"]'); if(tc) tc.content = cl ? '#f3ede2' : '#0e1319'; };
+      const tc = document.querySelector('meta[name="theme-color"]'); if(tc) tc.content = cl ? '#e4d9c6' : '#0e1319'; };
     temaPintar();
     document.querySelectorAll('button[data-tema]').forEach(b=>b.addEventListener('click', ()=>{
       const cl = document.documentElement.dataset.tema !== 'claro';
