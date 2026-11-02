@@ -592,7 +592,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   hoy") sobre `his` (A vs B, subió en dólares, contra el Merval, "si ponías US$ 1.000 a principios de <mes>") y meses lejanos del dólar
   real y la inflación: ~4.800 por visita. Pedido del dueño 01/11/2026: que se puedan SABER: nada de fechas exactas ni datos de un día
   (el MEP del 14/03), y todas con diferencias grandes (acciones ≥25 pp entre sí, inflación entre países ≥1,5 pp, Big Mac ≥US$ 0,6,
-  dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Pedido del dueño 01/11/2026: preguntas de
+  dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Pedido del dueño 02/11/2026: SIN Big Mac (`FUERA_VF`: "nadie sabe cuánto
+  vale una hamburguesa en Malasia"), mayoría de conceptos y el orden por FORMATO, no por tema: `FMT` = [formato, regex del id,
+  peso] (con 58, ia 7, dol 7, infar 5, infu 3, ppa 3, acc 3, treal 2, crec 2, si 2, infpp 1,5, pp2 1). Se sortea el formato por
+  peso y dentro una pregunta al azar (colas mezcladas, sin `score`); nunca dos del mismo formato seguidas salvo conceptos (hasta 3)
+  y sin repetir país/acción en las últimas 8 (`key`). Reemplaza a `CUOTA`. Conceptos: ~477 en `conceptos.js` (tercera tanda del
+  02/11/2026 con cuentas rápidas, causa y efecto en Argentina, historia, mundo, finanzas personales, mercados, empresas, conducta).
+  Como las vistas no vuelven en 180 días, cuando se gastan los conceptos el resto pesa más: sumar conceptos seguido. Pedido del dueño 01/11/2026: preguntas de
   CONCEPTOS de primer año (`verdadero-o-falso/conceptos.js`, `CONCEPTOS` [afirmación, verdadera, explicación], ~290; categoría
   `con`, cuota 30 en `CUOTA`) y solo acciones conocidas (`FAMOSAS` en juego.js y la misma lista en scripts/verdadero.py). Sin
   puntos: la ficha `#pts` muestra solo la racha; al errar, el reel queda rojo (`.reel.perdio`). Pedido del dueño 02/11/2026: acciones

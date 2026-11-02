@@ -564,7 +564,7 @@ if (typeof CONCEPTOS !== 'undefined') for (const [t, ok, exp] of CONCEPTOS)
 // monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
 {
   const FUERA_M = new Set(['mon', 'cd', 'nw', 'bol', 'com']);  // (desde el 01/11/2026 queda SOLO verdadero o falso)
-  const FUERA_K = /^(rtas|rbon|rdes|rbol)/, FUERA_VF = /^vf-(bol|com|tas|des)-/;
+  const FUERA_K = /^(rtas|rbon|rdes|rbol)/, FUERA_VF = /^vf-(bol|com|tas|des|bm|bm2)-/;  // Big Mac afuera (pedido del dueño 02/11/2026: "nadie sabe cuánto vale una hamburguesa en Malasia")
   for (let i = R.length - 1; i >= 0; i--) {
     const r = R[i];
     if (r.mold !== 'vf' || FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
@@ -587,26 +587,40 @@ const guardarVistos = () => { try { localStorage.setItem(VISTOS_K, JSON.stringif
 const marcarVisto = r => { if (r && vistos[vk(r)] == null) { vistos[vk(r)] = DIA; guardarVistos(); } };
 try { localStorage.removeItem('pl-vistos'); } catch (e) {}
 const frescos = R.filter(r => vistos[vk(r)] == null);
-// cuánto de cada tema: así los cientos de "simulador" no tapan al resto
-const CUOTA = {con: 34, inf: 22, his: 16, dol: 12, acc: 8, bm: 6, tas: 4};  // pocas de acciones (pedido del dueño 02/11/2026)  // conceptos primero (pedido del dueño 01/11/2026), menos acciones
+// cuánto de cada FORMATO de pregunta (pedido del dueño 02/11/2026): mayoría de conceptos de economía (para rachas altas hay que
+// saber algo), pocas de lo que no se puede saber con precisión (acciones entre sí, países random entre sí, PBI entre países).
+// El orden es al azar de verdad: se sortea el formato según su peso y, dentro del formato, una pregunta al azar. Nunca dos del
+// mismo formato seguidas (conceptos, como mucho tres), ni el mismo país o acción cerca.
+const FMT = [  // [formato, id, peso]; el orden importa (el primero que coincide)
+  ['con', /^vf-con-/, 58],
+  ['ia', /^vf-(ia|p-ia)-/, 7],           // inflación de Argentina en meses o años que se recuerdan
+  ['dol', /^vf-(real|p-dr|bre)-/, 7],     // dólar a precios de hoy y brecha
+  ['infar', /^vf-inf-ar-/, 5],            // país contra Argentina
+  ['infu', /^vf-infu-/, 3],               // un país contra un número
+  ['treal', /^vf-treal-/, 2],             // tasa contra inflación
+  ['ppa', /^vf-ppa[01]-/, 3],             // Argentina contra un país, producción por habitante (pocas: "son arduas")
+  ['crec', /^vf-crec-/, 2],
+  ['si', /^vf-(p-si|si)-/, 2],                 // "si hubieras invertido…"
+  ['acc', /^vf-(acc|accd|mv|p|p-sub|p-mv)-/, 3],  // acciones (muy pocas: "es imposible saberlo con exactitud")
+  ['infpp', /^vf-inf-/, 1.5],             // país contra país (muy pocas)
+  ['pp2', /^vf-pp2-/, 1],
+];
+const fmtDe = r => { for (const [f, re] of FMT) if (re.test(r.id)) return f; return 'otro'; };
+const PESO = Object.fromEntries(FMT.map(([f, , w]) => [f, w])); PESO.otro = 1;
 const base = frescos;
 const colas = {};
-base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
+for (const r of base) { r.fmt = fmtDe(r); (colas[r.fmt] = colas[r.fmt] || []).push(r); }
+for (const q of Object.values(colas)) for (let i = q.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [q[i], q[j]] = [q[j], q[i]]; }
 const ORD = [], recientes = [];
-const sirve = (r, estricto) => {
-  const u = ORD.slice(-4);
-  if (u.length && r.mold === u[u.length - 1].mold && r.mold !== 'vf') return false;
-  if (estricto && r.mold !== 'vf' && u.some(x => x.mold === r.mold)) return false;
-  return !recientes.includes(r.key);
-};
 for (let total = base.length; ORD.length < total;) {
-  const ultCat = ORD.length ? ORD[ORD.length - 1].cat : null;
-  const cats = Object.keys(colas).filter(c => colas[c].length && c !== ultCat);
-  const usables = cats.length ? cats : Object.keys(colas).filter(c => colas[c].length);
-  let t = usables.reduce((s, c) => s + (CUOTA[c] || 5), 0) * rnd(), cat = usables[0];
-  for (const c of usables) { t -= CUOTA[c] || 5; if (t <= 0) { cat = c; break; } }
-  const q = colas[cat]; let i = q.findIndex(r => sirve(r, true)); if (i < 0) i = q.findIndex(r => sirve(r, false)); if (i < 0) i = 0;
-  const r = q.splice(i, 1)[0]; ORD.push(r); recientes.push(r.key); if (recientes.length > 12) recientes.shift();
+  const u = ORD.slice(-3).map(r => r.fmt), u1 = u[u.length - 1];
+  const vale = f => colas[f].length && (f !== u1 || (f === 'con' && !(u.length === 3 && u.every(x => x === 'con'))));
+  let usables = Object.keys(colas).filter(vale);
+  if (!usables.length) usables = Object.keys(colas).filter(f => colas[f].length);
+  let t = usables.reduce((s, f) => s + PESO[f], 0) * rnd(), fmt = usables[0];
+  for (const f of usables) { t -= PESO[f]; if (t <= 0) { fmt = f; break; } }
+  const q = colas[fmt]; let i = q.findIndex(r => !recientes.includes(r.key)); if (i < 0) i = 0;
+  const r = q.splice(i, 1)[0]; ORD.push(r); recientes.push(r.key); if (recientes.length > 8) recientes.shift();
 }
 
 // el primero siempre es de Argentina y del día (a eso viene la mayoría)
