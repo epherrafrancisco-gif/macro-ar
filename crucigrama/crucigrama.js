@@ -21,7 +21,12 @@ const BANCO = (V2 ? PALABRAS : PALABRAS.slice(0, 180)).filter(([p]) => /^[A-ZÑ]
 // N.º 3 (solo ordenar el banco: rápido aunque pasen años).
 const MANO_T = 50;
 const VIEJAS = {1: ['DIVIDENDO','PLAZOFIJO','INCENTIVO','INVERSION','FLOTACION','FRIEDMAN','BIGMAC','TARIFA','ZLOTY','EURO','YUAN','TASA','BCRA','FED','MEP'], 2: ['REAL','SOJA','LECAP','BOLSA','FUTURO','RIESGO','DEFAULT','ARANCEL','CORRIDA','AUSTRAL','FLOTACION','SUPERAVIT','DEFLACION','AGUINALDO','MONOTRIBUTO']};
-const MAZO = (() => { if (!V2) return null;
+// Desde el 02/11/2026 (pedido del dueño: "que no haya más de 3 palabras repetidas" entre dos crucigramas cualesquiera): las
+// palabras candidatas de cada día vienen armadas de antemano en plan.js (scripts/crucigrama_plan.js corre este mismo generador
+// y comprueba día por día: ninguna palabra repetida en 14 días y ningún par de crucigramas con más de 3 palabras en común).
+// Si un día no está en el plan, queda el sistema de abajo como respaldo.
+const PLAN = (() => { if (!V2) return null; try { const s = CRUCI_PLAN.d[N - CRUCI_PLAN.n0]; return s ? s.split('.').map(x => PALABRAS[parseInt(x, 36)]) : null; } catch (e) { return null; } })();
+const MAZO = PLAN || (() => { if (!V2) return null;
   const ult = new Map(); for (const d in VIEJAS) VIEJAS[d].forEach(w => ult.set(w, +d));
   let mano = null;
   for (let d = 3; d <= N; d++) {
