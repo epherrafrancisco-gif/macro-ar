@@ -189,7 +189,7 @@ def main():
         print("Todos los medios fallaron:", estado)
         raise SystemExit(1)
     salida = {"actualizado": ahora.isoformat(timespec="minutes"), "fuentes": estado, "items": final}
-    if [x["u"] for x in final] == [x["u"] for x in previo.get("items", [])] and previo.get("fuentes") == estado:
+    if final == previo.get("items", []) and previo.get("fuentes") == estado:
         print("Sin titulares nuevos.")
         return
     DATA.write_text(json.dumps(salida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
