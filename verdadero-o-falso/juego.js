@@ -727,6 +727,28 @@ const ptsPintar = (anim) => {
 };
 ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
+// premio: con 30 seguidas se desbloquea el modo Ciudad de Pulso Macro (pedido del dueño 02/11/2026). Marca pm-ciudad, la lee index.html.
+const CIU_META = 30;
+const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } catch (e) { return false; } };
+const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
+function lockPintar() {
+  const el = $('#lock'); if (!el) return;
+  el.classList.toggle('ok', ciuOk());
+  el.innerHTML = ciuOk() ? 'Modo Ciudad desbloqueado · <a href="/" data-ciu-ir>Probalo</a>' : CANDADO + CIU_META + ' seguidas desbloquean un modo secreto';
+  const a = el.querySelector('[data-ciu-ir]'); if (a) a.addEventListener('click', ciuIr);
+}
+function ciuIr() { try { localStorage.setItem('pm-tema', 'cyber'); } catch (e) {} }
+function ciuDesbloquear() {
+  if (ciuOk()) return;
+  try { localStorage.setItem('pm-ciudad', '1'); } catch (e) { return; }
+  lockPintar();
+  try { window.goatcounter && goatcounter.count({path: 'ciudad-desbloqueado', event: true}); } catch (e) {}
+  setTimeout(() => { const m = $('#ciu'); if (m) { m.hidden = false; $('#ciuIr').focus(); } }, 1300);
+}
+if (PT.max >= CIU_META) { try { localStorage.setItem('pm-ciudad', '1'); } catch (e) {} }   // quien ya la había logrado antes
+lockPintar();
+{ const m = $('#ciu'); if (m) { $('#ciuX').addEventListener('click', () => { m.hidden = true; }); $('#ciuIr').addEventListener('click', ciuIr);
+  m.addEventListener('click', e => { if (e.target === m) m.hidden = true; }); addEventListener('keydown', e => { if (e.key === 'Escape') m.hidden = true; }); } }
 const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
 let RECORD = null, TK = '';
@@ -752,6 +774,7 @@ function premio(ok, btn, reel) {
     grande(fN(PT.r), PT.r === 1 ? 'seguida' : 'seguidas');
     confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
     medidor();
+    if (PT.r === CIU_META) ciuDesbloquear();
     if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
     else if (mio && PT.r >= 3) cartel(reel, '¡Tu nuevo récord!<small>' + fN(PT.r) + ' seguidas</small>');
     try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
@@ -811,7 +834,7 @@ function medidor() {
   const hitos = [3, 5, 7, 10, 15, 20, 30, 50, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
   el.hidden = PT.r < 1;
   el.querySelector('i').style.width = Math.max(4, (PT.r - ant) / (sig - ant) * 100) + '%';
-  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` : '';
+  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` + (sig === CIU_META && !ciuOk() ? ' · modo secreto' : '') : '';
 }
 function flotar(el, txt, col) {
   const b = el.getBoundingClientRect(), d = document.createElement('div');

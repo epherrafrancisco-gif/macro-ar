@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="utf-8"><meta name="color-scheme" content="dark">
-<script>try{if(localStorage.getItem("pm-tema")==="claro"){document.documentElement.dataset.tema="claro";document.querySelector('meta[name="color-scheme"]').content="light"}}catch(e){}</script>
+<script>try{var t=localStorage.getItem("pm-tema");if(t==="claro"){document.documentElement.dataset.tema="claro";document.querySelector('meta[name="color-scheme"]').content="light"}else if(t==="cyber"&&localStorage.getItem("pm-ciudad")==="1"){document.documentElement.dataset.tema="cyber"}}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pulso Macro · Argentina y el mundo en una sola plataforma</title>
 <meta name="description" content="Plataforma de la economía de Argentina y del mundo: dólares, inflación, reservas, tasas, bolsas, monedas, commodities, bancos centrales y geopolítica. Gratis y actualizado solo, todos los días.">
@@ -169,7 +169,7 @@
 }
 </style>
 </head>
-<body>
+<body><div id="cyFx" aria-hidden="true"><div class="city"></div><div class="velo"></div><div class="scan"></div></div>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
@@ -763,6 +763,50 @@ html[data-tema="claro"] .term{background:#e8cf9c}
 html[data-tema="claro"] .ar .dh .ic{background:#efd49a}html[data-tema="claro"] .gl .dh .ic{background:#e4dbab}
 html[data-tema="claro"] .tile:hover,html[data-tema="claro"] .tile:focus-visible{background:#f6e6c2}
 html[data-tema="claro"] .ms-g a.on,html[data-tema="claro"] .ms-l a.on{background:#c98d1626}
+/* ---- Modo Ciudad (cyberpunk, ciudad tipo Chongqing de fondo). Premio secreto: se desbloquea con 30 seguidas en Verdadero o falso
+   (pedido del dueño 02/11/2026; marca pm-ciudad en localStorage). Nunca es el modo por defecto. ---- */
+#cyFx{display:none}
+html[data-tema="cyber"]{color-scheme:dark;
+  --bg:#04050c; --surface:rgba(8,10,26,.82); --sunk:#070a18;
+  --ink:#eaf8ff; --ink2:#a6dcf2; --muted:#7a92b8; --line:#1b2c5c; --grid:#121c3d;
+  --accent:#00f0ff; --accent-ink:#04050c;
+  --s1:#00e5ff; --s2:#ff2bd6; --s3:#39ff9e; --s4:#fcee0a; --s5:#a46bff;
+  --pos:#39ff9e; --pos-bg:rgba(57,255,158,.10); --neg:#ff3b6b; --neg-bg:rgba(255,59,107,.12); --neu-bg:rgba(0,240,255,.07)}
+html[data-tema="cyber"] body{background:#04050c}
+html[data-tema="cyber"] #cyFx{display:block;position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#cyFx .city{position:absolute;inset:0;background:url(/fondos/ciudad.svg) center bottom/cover no-repeat}
+#cyFx .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,12,.62) 0%,rgba(4,5,12,.42) 45%,rgba(4,5,12,.30) 100%)}
+#cyFx .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
+html[data-tema="cyber"] main,html[data-tema="cyber"] header,html[data-tema="cyber"] .wrap{position:relative;z-index:1}
+html[data-tema="cyber"] .card,html[data-tema="cyber"] .q,html[data-tema="cyber"] .tile,html[data-tema="cyber"] .bfake,html[data-tema="cyber"] .juegos a,html[data-tema="cyber"] .juegos button{
+  border-radius:0!important;border:1px solid rgba(0,240,255,.38)!important;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  box-shadow:inset 0 0 22px rgba(0,240,255,.07),inset 0 1px 0 rgba(255,43,214,.35)}
+html[data-tema="cyber"] .q:nth-child(even){border-color:rgba(255,43,214,.42)!important;box-shadow:inset 0 0 22px rgba(255,43,214,.08),inset 0 1px 0 rgba(0,240,255,.35)}
+html[data-tema="cyber"] .q .v{color:#eaffff;text-shadow:0 0 10px rgba(0,240,255,.75)}
+html[data-tema="cyber"] h1,html[data-tema="cyber"] h2{text-shadow:0 0 14px rgba(0,240,255,.45)}
+html[data-tema="cyber"] .hello h2,html[data-tema="cyber"] .mh4{font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+html[data-tema="cyber"] .hello h2:before{content:"> ";color:#ff2bd6}
+html[data-tema="cyber"] .hello p,html[data-tema="cyber"] .hello button,html[data-tema="cyber"] .mhb,html[data-tema="cyber"] .mh4,html[data-tema="cyber"] p.note,html[data-tema="cyber"] #crumb,html[data-tema="cyber"] #mHero p{text-shadow:0 1px 3px #000,0 0 8px #000}
+html[data-tema="cyber"] svg.lg circle{stroke:#ff2bd6;filter:drop-shadow(0 0 6px #ff2bd6)}
+html[data-tema="cyber"] svg.lg path{stroke:#00f0ff;filter:drop-shadow(0 0 5px #00f0ff)}
+html[data-tema="cyber"] #brandH span,html[data-tema="cyber"] .mlogo span{color:#ff2bd6;text-shadow:0 0 12px rgba(255,43,214,.8)}
+html[data-tema="cyber"] #modo{border-radius:0!important;background:rgba(4,5,12,.7)!important;border:1px solid rgba(255,43,214,.45)!important}
+html[data-tema="cyber"] #modo a,html[data-tema="cyber"] #modo button{border-radius:0!important;font-family:var(--mono);text-transform:uppercase;font-size:12px;letter-spacing:.08em}
+html[data-tema="cyber"] #modo button[aria-pressed="true"],html[data-tema="cyber"] #modo a[aria-current="true"]{background:#ff2bd6!important;color:#04050c!important;box-shadow:0 0 18px rgba(255,43,214,.7)}
+html[data-tema="cyber"] #mTg button{border-radius:0!important;font-family:var(--mono);text-transform:uppercase}
+html[data-tema="cyber"] #mTg button[aria-pressed="true"]{background:#00f0ff!important;color:#04050c!important;box-shadow:0 0 20px rgba(0,240,255,.6)}
+html[data-tema="cyber"] #tabsNav a,html[data-tema="cyber"] .seg,html[data-tema="cyber"] .seg button,html[data-tema="cyber"] #flHome,html[data-tema="cyber"] .hbus,html[data-tema="cyber"] .chip{border-radius:0!important}
+html[data-tema="cyber"] #tabsNav a{border:1px solid rgba(0,240,255,.28)!important;background:rgba(4,5,12,.6)!important;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+html[data-tema="cyber"] #tabsNav a[aria-selected="true"]{background:#00f0ff!important;color:#04050c!important;box-shadow:0 0 18px rgba(0,240,255,.55)}
+html[data-tema="cyber"] #flHome{background:#ff2bd6!important;color:#04050c!important;box-shadow:0 0 20px rgba(255,43,214,.6)}
+html[data-tema="cyber"] #here{border-radius:0!important;border-left:3px solid #ff2bd6!important}
+html[data-tema="cyber"] #tape,html[data-tema="cyber"] #tape2,html[data-tema="cyber"] #tChip{background:#020309!important;border-color:rgba(0,240,255,.35)!important}
+html[data-tema="cyber"] #tape{box-shadow:0 1px 0 rgba(255,43,214,.6),0 0 18px rgba(255,43,214,.25)}
+html[data-tema="cyber"] .mbar,html[data-tema="cyber"] .mnav{background:rgba(4,5,12,.94)!important;border-color:rgba(255,43,214,.5)!important}
+html[data-tema="cyber"] .tvbox{background:#060816!important}
+.ciudbtn{color:#ff2bd6!important}.temabtn svg{width:15px;height:15px}
+.mhb{flex-wrap:wrap}
 html[data-tema="claro"] .tvbox{background:#1b2027!important;border-radius:8px}html[data-tema="claro"] .tvbox iframe{mix-blend-mode:normal!important}.manbtn svg{width:17px;height:17px}.vS .manbtn,#vS .manbtn{margin:0;padding:0;color:var(--accent)}
 .mhero .manbtn{display:flex;margin:4px auto 6px;padding:6px}
 .manual{place-items:center}.manual .ii{max-width:560px;max-height:calc(100vh - 32px);overflow:auto}
@@ -896,7 +940,7 @@ body.mporta .hbus{display:none}
     </div>
   </header>
 
-  <div class="mhero" id="mHero"><h1 class="mlogo"><svg class="lg" viewBox="40 40 432 432" aria-hidden="true"><circle cx="256" cy="256" r="176" fill="none" stroke="#6aa8d8" stroke-width="22"/><path d="M97.6 270 H205.6 L230.8 216 L259.6 342 L288.4 171 L313.6 270 H414.4" fill="none" stroke="#e6edf3" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>Pulso<span>Macro</span></h1><p>Argentina y el mundo en una sola plataforma: dólares, tasas, bolsas, commodities y geopolítica, al día.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá: dólar blue, inflación, plazo fijo…</span></button><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Agregar a tu pantalla de inicio</span></button><div class="mhb"><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button><button type="button" class="manbtn temabtn" data-tema aria-label="Cambiar entre modo claro y oscuro"></button></div><p class="mh4">Dólares hoy</p></div>
+  <div class="mhero" id="mHero"><h1 class="mlogo"><svg class="lg" viewBox="40 40 432 432" aria-hidden="true"><circle cx="256" cy="256" r="176" fill="none" stroke="#6aa8d8" stroke-width="22"/><path d="M97.6 270 H205.6 L230.8 216 L259.6 342 L288.4 171 L313.6 270 H414.4" fill="none" stroke="#e6edf3" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>Pulso<span>Macro</span></h1><p>Argentina y el mundo en una sola plataforma: dólares, tasas, bolsas, commodities y geopolítica, al día.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá: dólar blue, inflación, plazo fijo…</span></button><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Agregar a tu pantalla de inicio</span></button><div class="mhb"><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button><button type="button" class="manbtn temabtn" data-tema aria-label="Cambiar entre modo claro y oscuro"></button><button type="button" class="manbtn temabtn" data-ciudad hidden aria-label="Cambiar de modo"></button></div><p class="mh4">Dólares hoy</p></div>
   <section class="dolhoy" id="dolHoy" aria-label="Dólar hoy">
     <div class="live" id="live" role="status" aria-live="polite"><i class="dot"></i><span id="liveTxt">Conectando cotizaciones en vivo…</span></div>
     <div class="quotes" id="quotes"></div>
@@ -988,7 +1032,7 @@ body.mporta .hbus{display:none}
       <a class="jg jc" href="/crucigrama/"><span class="ji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none" opacity=".9"/></svg></span><span class="jt"><b>Crucigrama</b><small>Uno nuevo cada día</small></span></a>
       <a class="jg jv" href="/verdadero-o-falso/"><span class="ji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l4 4 8-9"/><path d="M15 15l5 5M20 15l-5 5"/></svg></span><span class="jt"><b>Verdadero o falso</b><small>Sumá rachas</small></span></a>
     </div>
-    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá cualquier dato: dólar blue, inflación, plazo fijo, Polonia…</span></button><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button><button type="button" class="manbtn temabtn" data-tema aria-label="Cambiar entre modo claro y oscuro"></button></div></div>
+    <div class="hello"><h2>¿Qué querés ver?</h2><p>Elegí una sección. Los dólares de hoy quedan siempre arriba.</p><button type="button" class="bfake" data-bus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg><span>Buscá cualquier dato: dólar blue, inflación, plazo fijo, Polonia…</span></button><div class="hacts"><button type="button" class="inst" data-inst hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Instalar Pulso Macro</span></button><button type="button" class="manbtn" data-man><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span>¿Cómo se usa?</span></button><button type="button" class="manbtn temabtn" data-tema aria-label="Cambiar entre modo claro y oscuro"></button><button type="button" class="manbtn temabtn" data-ciudad hidden aria-label="Cambiar de modo"></button></div></div>
     <div class="mporta-m"><div class="mbig" id="mHoy" hidden></div><!-- "Los datos del día" sacado del celular (pedido del dueño, 26/10/2026) -->
       <p class="mh4">¿Qué querés ver?</p><div class="mtg" id="mTg" role="group" aria-label="Elegí"><button type="button" data-d="ar" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" fill="#74acdf"/><rect x="1" y="6.4" width="14" height="3.2" fill="#fff"/><circle cx="8" cy="8" r="1.1" fill="#e8b14a"/></svg>Argentina</button><button type="button" data-d="gl" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.3"/><path d="M1.8 8h12.4M8 1.7c2 2 2 10.6 0 12.6M8 1.7c-2 2-2 10.6 0 12.6"/></svg>El mundo</button></div></div>
     <div class="split">
@@ -7321,16 +7365,25 @@ body.mporta .hbus{display:none}
     // modo claro / oscuro: un solo botón que dice a qué modo pasa (pedido del dueño 01/11/2026)
     const TEMA_SOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>';
     const TEMA_LUNA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
-    const temaPintar = () => { const cl = document.documentElement.dataset.tema === 'claro';
-      document.querySelectorAll('button[data-tema]').forEach(b=>b.innerHTML = cl ? TEMA_LUNA+'<span>Modo oscuro</span>' : TEMA_SOL+'<span>Modo claro</span>');
-      const mc = document.querySelector('meta[name="color-scheme"]'); if(mc) mc.content = cl ? 'light' : 'dark';
-      const tc = document.querySelector('meta[name="theme-color"]'); if(tc) tc.content = cl ? '#e4d9c6' : '#0e1319'; };
+    // modo Ciudad (premio de Verdadero o falso: 30 seguidas, marca pm-ciudad). Desbloqueado, hay dos botones: los dos modos en los que NO estás.
+    const TEMA_CIU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10l4-2v13M9 21V4l6 3v14M15 21v-9l4 2v7"/><path d="M12 9v.01M12 12v.01M12 15v.01"/></svg>';
+    const ciuOk = () => { try{ return localStorage.getItem('pm-ciudad') === '1'; }catch(e){ return false; } };
+    const temaAct = () => document.documentElement.dataset.tema || 'oscuro';
+    const TEMA_TXT = {claro: [TEMA_SOL, 'Modo claro', 'Claro'], oscuro: [TEMA_LUNA, 'Modo oscuro', 'Oscuro'], cyber: [TEMA_CIU, 'Modo Ciudad', 'Ciudad']};
+    const temaEt = (b, to) => TEMA_TXT[to][0]+'<span>'+TEMA_TXT[to][ok3() && b.closest('.mhb') ? 2 : 1]+'</span>';   // en el celular, con 3 botones, nombres cortos para que entren en una línea
+    const ok3 = () => ciuOk();
+    const temaPintar = () => { const t = temaAct(), ok = ciuOk();
+      const aTo = t === 'claro' ? 'oscuro' : 'claro', bTo = t === 'cyber' ? 'oscuro' : 'cyber';
+      document.querySelectorAll('button[data-tema]').forEach(b=>{ b.dataset.to = aTo; b.innerHTML = temaEt(b, aTo); });
+      document.querySelectorAll('button[data-ciudad]').forEach(b=>{ b.hidden = !ok; b.dataset.to = bTo; b.classList.toggle('ciudbtn', bTo === 'cyber'); b.innerHTML = temaEt(b, bTo); });
+      const mc = document.querySelector('meta[name="color-scheme"]'); if(mc) mc.content = t === 'claro' ? 'light' : 'dark';
+      const tc = document.querySelector('meta[name="theme-color"]'); if(tc) tc.content = t === 'claro' ? '#f0dcb0' : t === 'cyber' ? '#04050c' : '#0e1319'; };
     temaPintar();
-    document.querySelectorAll('button[data-tema]').forEach(b=>b.addEventListener('click', ()=>{
-      const cl = document.documentElement.dataset.tema !== 'claro';
-      if(cl) document.documentElement.dataset.tema = 'claro'; else delete document.documentElement.dataset.tema;
-      try{ cl ? localStorage.setItem('pm-tema','claro') : localStorage.removeItem('pm-tema'); }catch(e){}
-      temaPintar(); gc('tema-'+(cl?'claro':'oscuro'), true); }));
+    const temaPoner = t => {
+      if(t === 'oscuro') delete document.documentElement.dataset.tema; else document.documentElement.dataset.tema = t;
+      try{ t === 'oscuro' ? localStorage.removeItem('pm-tema') : localStorage.setItem('pm-tema', t); }catch(e){}
+      temaPintar(); gc('tema-'+t, true); };
+    document.querySelectorAll('button[data-tema],button[data-ciudad]').forEach(b=>b.addEventListener('click', ()=>temaPoner(b.dataset.to)));
     $('manX').addEventListener('click', cerrar); m.addEventListener('click', e=>{ if(e.target===m) cerrar(); });
     addEventListener('keydown', e=>{ if(e.key==='Escape' && !m.hidden) cerrar(); }); }
   { const yaApp = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;

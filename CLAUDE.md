@@ -40,6 +40,15 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `html[data-tema="claro"]` (redefine las variables de `:root` + unos pocos fondos fijos) y lo guarda en localStorage `pm-tema`;
   un script en el `<head>` lo aplica antes de pintar. OJO: el selector del botón es `button[data-tema]` (el `<html>` también
   tiene `data-tema`). Los recuadros de TradingView quedan como islas oscuras; los globos (canvas) no cambian.
+- Modo Ciudad (cyberpunk con una ciudad de neón tipo Chongqing de fondo; pedido del dueño 02/11/2026): PREMIO SECRETO, nunca el
+  modo por defecto. Se desbloquea con 30 seguidas en Verdadero o falso (`CIU_META` en juego.js; también si `PT.max` ya era ≥30):
+  marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` ("Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
+  'cyber' y va al inicio), aviso al pie `#lock` ("30 seguidas desbloquean un modo secreto"; desbloqueado: "Probalo"), el medidor
+  dice "· modo secreto" camino a 30. Evento GoatCounter `ciudad-desbloqueado`. En index.html: `html[data-tema="cyber"]` (bloque
+  CSS "Modo Ciudad"), capa fija `#cyFx` (`/fondos/ciudad.svg`, dibujada por código, ~220 KB; solo se baja en ese modo) y botón
+  `button[data-ciudad]` al lado de `button[data-tema]`, oculto sin la marca. Con la marca, los dos botones muestran los dos modos
+  en los que NO estás (`temaPintar`/`temaPoner`, `dataset.to`); en `.mhb` del celular, nombres cortos (Claro/Oscuro/Ciudad). El
+  script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo (no hay cuentas).
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
 - Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
@@ -758,4 +767,4 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   dólar contra la banda cambiaria, curva de tasas en pesos, capas del globo con datos viejos (exportaciones por destino,
   deuda/PBI), rediseño "sala de situación", segundo monitor "Terminal Argentina" (tablero o globo de
   Argentina: el Monitor del mundo queda como único), pestaña "Vuelos" (horarios y aviones en vivo),
-  versión del sitio en inglés, estética ciberpunk / "modo neón".
+  versión del sitio en inglés, estética ciberpunk / "modo neón" como cara del sitio (existe solo como premio escondido: modo Ciudad).
