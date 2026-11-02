@@ -4988,7 +4988,8 @@ body.mporta .hbus{display:none}
       // pero si se vuelve para atrás, a la altura donde estaba (NAV.y, guardada en history.state al scrollear)
       try{ if(mobil()){ history.scrollRestoration = 'manual'; const y = NAV.volver ? (NAV.y || 0) : 0; NAV.volver = false; NAV.y = null; scrollTo(0,y); let toco = false; const f = ()=>{ toco = true; };
         addEventListener('touchstart', f, {once:true, passive:true}); addEventListener('wheel', f, {once:true, passive:true});
-        for(const ms of [60, 350, 700, 1300]) setTimeout(()=>{ if(!toco && !NAV.salto && Math.abs(scrollY - y) > 4) scrollTo(0,y); }, ms); } }catch(e){} }
+        for(const ms of [60, 350, 700, 1300]) setTimeout(()=>{ if(!toco && !NAV.salto && Math.abs(scrollY - y) > 4) scrollTo(0,y); }, ms); }
+        else if(!NAV.volver && !NAV.salto) scrollTo(0,0); else NAV.volver = false; }catch(e){} }  // compu: al cambiar de sección (p. ej. el link del pie a Sobre) también arriba de todo
     const view = TABS[tab][1];
     for(const [,[,v]] of Object.entries(TABS)) $(v).hidden = v!==view;
     const grp = tab==='global' || PAISES_T.includes(tab) ? 'glo' : ARG_T.includes(tab) ? 'arg' : null;
