@@ -39,7 +39,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   en `.hello` y en `#mHero` (`.mhb`), dice "Modo claro" u "Modo oscuro" según el que esté puesto (`temaPintar`). Pone
   `html[data-tema="claro"]` (redefine las variables de `:root` + unos pocos fondos fijos) y lo guarda en localStorage `pm-tema`;
   un script en el `<head>` lo aplica antes de pintar. OJO: el selector del botón es `button[data-tema]` (el `<html>` también
-  tiene `data-tema`). Los recuadros de TradingView quedan como islas oscuras; los globos (canvas) no cambian.
+  tiene `data-tema`). Los recuadros de TradingView quedan como islas oscuras. Globos de Mundo y portada (`gDraw`, `dgDraw`): en modo claro
+  se pintan claros (esfera crema/dorada, verde y rojo más oscuros, etiquetas con fondo crema; `esClaro()`, pedido del dueño
+  02/11/2026); el Monitor queda oscuro (es terminal).
 - Modo Ciudad (cyberpunk con una ciudad de neón tipo Chongqing de fondo; pedido del dueño 02/11/2026): PREMIO SECRETO, nunca el
   modo por defecto. Se desbloquea con 30 seguidas en Verdadero o falso (`CIU_META` en juego.js; también si `PT.max` ya era ≥30):
   marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` ("Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
