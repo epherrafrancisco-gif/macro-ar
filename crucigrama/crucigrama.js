@@ -12,12 +12,24 @@ function semilla(txt) { let h = 2166136261; for (const c of txt) { h ^= c.charCo
 function azar(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
 // ---------- generador ----------
-const BANCO = PALABRAS.filter(([p]) => /^[A-ZÑ]{3,11}$/.test(p));
 const V2 = HOY >= '2026-11-03';
-// v2: el banco se baraja por tandas de 4 días y cada día usa su porción: así casi no se repiten palabras entre días seguidos
-const MAZO = (() => { if (!V2) return null; const tam = Math.ceil(BANCO.length / 4), ep = Math.floor((N - 1) / 4), pos = (N - 1) % 4;
-  const m = BANCO.slice(), r = azar(semilla('pulso-mazo-' + ep)); for (let i = m.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [m[i], m[j]] = [m[j], m[i]]; }
-  return m.slice(pos * tam, pos * tam + tam); })();
+// los N.º 1 y 2 se arman con el banco original (las 180 primeras): si no, sumar palabras cambiaba esos crucigramas
+const BANCO = (V2 ? PALABRAS : PALABRAS.slice(0, 180)).filter(([p]) => /^[A-ZÑ]{3,11}$/.test(p));
+// Desde el N.º 3 (pedido del dueño 02/11/2026: "no se pueden repetir palabras"): cada día recibe una "mano" de MANO palabras
+// elegidas entre las que hace más tiempo que no salen (las de los N.º 1 y 2 cuentan como usadas esos días). Como el banco
+// tiene ~460 palabras, una palabra no puede volver a aparecer hasta que pasen unos 10 días. Se simula día por día desde el
+// N.º 3 (solo ordenar el banco: rápido aunque pasen años).
+const MANO_T = 50;
+const VIEJAS = {1: ['DIVIDENDO','PLAZOFIJO','INCENTIVO','INVERSION','FLOTACION','FRIEDMAN','BIGMAC','TARIFA','ZLOTY','EURO','YUAN','TASA','BCRA','FED','MEP'], 2: ['REAL','SOJA','LECAP','BOLSA','FUTURO','RIESGO','DEFAULT','ARANCEL','CORRIDA','AUSTRAL','FLOTACION','SUPERAVIT','DEFLACION','AGUINALDO','MONOTRIBUTO']};
+const MAZO = (() => { if (!V2) return null;
+  const ult = new Map(); for (const d in VIEJAS) VIEJAS[d].forEach(w => ult.set(w, +d));
+  let mano = null;
+  for (let d = 3; d <= N; d++) {
+    const r = azar(semilla('pulso-mano-' + d));
+    const orden = BANCO.map(e => [e, ult.has(e[0]) ? ult.get(e[0]) : -1, r()]).sort((a, b) => a[1] - b[1] || a[2] - b[2]);
+    mano = orden.slice(0, MANO_T).map(x => x[0]); mano.forEach(e => ult.set(e[0], d));
+  }
+  return mano; })();
 function armar(rnd) {
   const lista = (MAZO || BANCO).slice();
   for (let i = lista.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [lista[i], lista[j]] = [lista[j], lista[i]]; }
@@ -59,7 +71,7 @@ function armar(rnd) {
 }
 // varias pruebas con la semilla del día; se queda con la que tiene más palabras (y más cuadrada)
 let P = null;
-for (let t = 0; t < 30; t++) {
+for (let t = 0; t < (V2 ? 50 : 30); t++) {
   const r = armar(azar(semilla('pulso-cruci-' + HOY + '-' + t)));
   const sc = r.puestas.length * 100 - Math.abs(r.ancho - r.alto) * 3;
   if (!P || sc > P.sc) P = {...r, sc};

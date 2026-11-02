@@ -625,9 +625,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 - Revisión a fondo (02/11/2026), cambios desde el N.º 3 (03/11; `V2 = HOY >= '2026-11-03'`, así el del día no cambió a mitad de
   partida): el generador anota la dirección de cada letra (`D`) y un cruce tiene que ser con una palabra de la otra dirección
-  (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); el banco se baraja por tandas
-  de 4 días (`MAZO`) y cada día usa su cuarta parte (palabras repetidas con el día anterior: de 1,7 a 0,5 en promedio). Validado
-  con 365 días: todos con 15 palabras salvo 12 (14) y 1 (13), y ninguna fila o columna que no sea una palabra del listado.
+  (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); NO se repiten palabras (pedido del dueño: "es
+  nefasto que salga una igual al de hoy"): cada día recibe una mano de `MANO_T` = 50 palabras, las que hace más tiempo que no
+  salen (`MAZO`: simula día por día desde el N.º 3; los N.º 1 y 2 están en `VIEJAS` y se arman con las 180 palabras originales,
+  `PALABRAS.slice(0, 180)`, para no cambiarlos). Banco de ~460 palabras (282 sumadas el 02/11/2026, algunas un poco más difíciles):
+  una palabra no vuelve antes de 9 días. 50 pruebas por día en v2. Validado con 365 días: 12 a 15 palabras (casi todos 14-15),
+  ninguna repetida antes de 9 días y ninguna fila o columna que no sea una palabra del listado. Si se suman palabras al banco,
+  agregarlas AL FINAL (las 180 primeras no se tocan).
   Página: la pista actual (`#pAct`) va arriba de la grilla y queda pegada arriba (el teclado del celular la tapaba); en celular la
   grilla va de borde a borde (casilleros de ~24 a ~26 px); borrar usa `beforeinput` (en Android el teclado no manda keydown
   Backspace y no se podía volver al casillero anterior); Enter/Tab y terminar una palabra llevan a la próxima sin resolver
