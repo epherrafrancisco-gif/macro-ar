@@ -34,7 +34,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `anillo-maskable-512.png`, `anillo-apple-180.png`. Si se cambia el logo, usar nombres de archivo NUEVOS (así nadie queda con
   el viejo en caché). `<meta name="color-scheme" content="dark">` en todas las páginas: sin eso, el modo oscuro forzado de
   Samsung Internet/Chrome recolorea la página (aclaraba el logo y los colores). Archivos descargados: `pulso-macro_<...>`.
-- Tema oscuro por defecto para todos (`:root` con colores fijos y `color-scheme:dark`), también en /diario/. Modo claro beige
+- Tema oscuro por defecto para todos (`:root` con colores fijos y `color-scheme:dark`), también en /diario/. Modo claro beige whisky con detalles dorados (02/11/2026: "que no se vea apagado")
   opcional (pedido del dueño 01/11/2026), solo en index.html: botón `button[data-tema]` (`.temabtn`) al lado de "¿Cómo se usa?"
   en `.hello` y en `#mHero` (`.mhb`), dice "Modo claro" u "Modo oscuro" según el que esté puesto (`temaPintar`). Pone
   `html[data-tema="claro"]` (redefine las variables de `:root` + unos pocos fondos fijos) y lo guarda en localStorage `pm-tema`;
