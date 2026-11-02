@@ -59,6 +59,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   reducir movimiento. UN solo
   botón `button[data-tema]` que va pasando oscuro → claro → Ciudad (solo con la marca) → oscuro (`temaSig`, pedido del dueño
   02/11/2026) y dice a qué modo pasa. El script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo.
+- Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
+  `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
+  los colores del modo puesto, oscuro/claro/Ciudad), que se va con un fundido en DOMContentLoaded (tope 4 s).
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
 - Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
