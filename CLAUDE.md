@@ -212,7 +212,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   duración, de usa.json), en pb. Misma TIR que la página (validada idéntica). update.py los guarda SOLO en la corrida de la
   tarde de días hábiles (`propios_cierre`, ≥17 h) como `mep_pm`, `ccl_pm`, `riesgo_pm` en `diario`. Primero se comparan unos
   días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
-- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h).
+- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h). Pedido del dueño 02/11/2026: tarjetas
+  con foto como la portada de Edge (`.nwg`/`.nwc`, la primera de cada día grande en compu; 2 columnas en celular; sin foto,
+  las iniciales del medio). Solo en estas noticias generales: las de cada país siguen como lista. Foto `i`: la del feed
+  (media:content/thumbnail/enclosure/<img>), achicada a 560 px en el resizer de Arc (Infobae, La Nación; se prueba con una
+  antes de cambiarlas) y, si el feed no trae (Ámbito), og:image de la nota (con robots.txt, hasta 40 por corrida, se guardan).
+  Las fotos se ven directo desde el medio (`referrerpolicy=no-referrer`); el link lleva a la nota.
 - Ajuste por IPC (calculadora `alq`, `#cALQ`, `calcAlq`, pedido del dueño 26/10/2026: inmobiliarias que actualizan alquileres):
   monto inicial, mes de inicio, cada cuántos meses, duración y qué meses toma (`alL`: 2 = últimos publicados al ajustar,
   lo común; 1 = del período). Cociente de índices del IPC nacional nivel general (`act.ipc` desde dic-2016, de la tanda
