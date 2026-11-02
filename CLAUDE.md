@@ -34,7 +34,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `anillo-maskable-512.png`, `anillo-apple-180.png`. Si se cambia el logo, usar nombres de archivo NUEVOS (así nadie queda con
   el viejo en caché). `<meta name="color-scheme" content="dark">` en todas las páginas: sin eso, el modo oscuro forzado de
   Samsung Internet/Chrome recolorea la página (aclaraba el logo y los colores). Archivos descargados: `pulso-macro_<...>`.
-- Siempre tema oscuro (`:root` con colores fijos y `color-scheme:dark`), también en /diario/.
+- Tema oscuro por defecto para todos (`:root` con colores fijos y `color-scheme:dark`), también en /diario/. Modo claro beige
+  opcional (pedido del dueño 01/11/2026), solo en index.html: botón `button[data-tema]` (`.temabtn`) al lado de "¿Cómo se usa?"
+  en `.hello` y en `#mHero` (`.mhb`), dice "Modo claro" u "Modo oscuro" según el que esté puesto (`temaPintar`). Pone
+  `html[data-tema="claro"]` (redefine las variables de `:root` + unos pocos fondos fijos) y lo guarda en localStorage `pm-tema`;
+  un script en el `<head>` lo aplica antes de pintar. OJO: el selector del botón es `button[data-tema]` (el `<html>` también
+  tiene `data-tema`). Los recuadros de TradingView quedan como islas oscuras; los globos (canvas) no cambian.
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
 - Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
@@ -236,7 +241,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Términos y aviso legal: DENTRO de Sobre Pulso Macro (pedido del dueño: "que esté todo en Sobre"), debajo de Aclaraciones:
   `h3#legal` + `details.legal` desplegable. El link del pie (`[data-legal]`) abre Sobre, despliega y baja hasta ahí.
   `legal/index.html` solo redirige a `/#sobre` (noindex). Incluye cómo pedir corrección o retiro de un dato.
-- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Sin foto del dueño (la sacó el 01/11/2026; `foto.jpg` borrado). Contacto: arriba primero el mail
+- Sobre Pulso Macro: contenido estático en el HTML (`vS`). No cambiar su texto sin que lo pida el dueño. Sin foto del dueño (la sacó el 01/11/2026; `foto.jpg` borrado) ni la línea "Invierto en la bolsa desde los 17 años" (sacada el 02/11/2026). Contacto: arriba primero el mail
   y después LinkedIn; en "Aclaraciones" y el resto de los avisos, solo el mail y siempre en tercera persona (nunca "escribime").
 
 ### Apartados dentro de Mundo y Estados Unidos
@@ -571,7 +576,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   hoy") sobre `his` (A vs B, subió en dólares, contra el Merval, "si ponías US$ 1.000 a principios de <mes>") y meses lejanos del dólar
   real y la inflación: ~4.800 por visita. Pedido del dueño 01/11/2026: que se puedan SABER: nada de fechas exactas ni datos de un día
   (el MEP del 14/03), y todas con diferencias grandes (acciones ≥25 pp entre sí, inflación entre países ≥1,5 pp, Big Mac ≥US$ 0,6,
-  dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Compartir =
+  dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Pedido del dueño 01/11/2026: preguntas de
+  CONCEPTOS de primer año (`verdadero-o-falso/conceptos.js`, `CONCEPTOS` [afirmación, verdadera, explicación], ~290; categoría
+  `con`, cuota 30 en `CUOTA`) y solo acciones conocidas (`FAMOSAS` en juego.js y la misma lista en scripts/verdadero.py). Sin
+  puntos: la ficha `#pts` muestra solo la racha; al errar, el reel queda rojo (`.reel.perdio`). Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,

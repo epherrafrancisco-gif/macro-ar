@@ -27,12 +27,12 @@ const ISO = {}; for (const k in P.paises) ISO[P.paises[k].iso] = P.paises[k];
 ISO.ARG = {n: 'Argentina', fl: 'ar', k: 'argentina'};
 const NOM = {DEU:'Alemania',FRA:'Francia',ITA:'Italia',NLD:'Países Bajos',AUT:'Austria',BEL:'Bélgica',PRT:'Portugal',IRL:'Irlanda',GRC:'Grecia',FIN:'Finlandia',EA20:'Zona euro'};
 const pais = iso => ISO[iso] || {n: NOM[iso] || iso, fl: null};
-const CC = {acc: '#2ee59d', inf: '#ff5c8a', dol: '#5fb4ff', bm: '#ffc23d', tas: '#b57bff', vf: '#ff5c8a', sim: '#2ee59d', tri: '#b57bff', arg: '#5fb4ff', mer: '#ff8a3d', mun: '#2ad4c8', his: '#ffc23d'};
+const CC = {con: '#b57bff', acc: '#2ee59d', inf: '#ff5c8a', dol: '#5fb4ff', bm: '#ffc23d', tas: '#b57bff', vf: '#ff5c8a', sim: '#2ee59d', tri: '#b57bff', arg: '#5fb4ff', mer: '#ff8a3d', mun: '#2ad4c8', his: '#ffc23d'};
 // cada reel con su color (pedido del dueño: que cambien, que no parezca un tablero): pares de colores vivos, nunca dos iguales seguidos
 const PAL = [['#7b2ff7', '#f107a3'], ['#ff512f', '#f09819'], ['#00b09b', '#1d6fe0'], ['#e5266b', '#7a1fd1'], ['#f7971e', '#e8336d'],
   ['#11998e', '#38ef7d'], ['#3a1c71', '#d76d77'], ['#0061ff', '#60efff'], ['#c31432', '#240b36'], ['#8e2de2', '#4a00e0'],
   ['#fc466b', '#3f5efb'], ['#f12711', '#f5af19'], ['#00c6ff', '#0072ff'], ['#d4145a', '#fbb03b'], ['#1fa2ff', '#12d8fa']];
-const CATN = {acc:'Acciones', inf:'Inflación', his:'Países', dol:'Dólar', bm:'Big Mac', tas:'Tasas'};
+const CATN = {con:'Conceptos', acc:'Acciones', inf:'Inflación', his:'Países', dol:'Dólar', bm:'Big Mac', tas:'Tasas'};
 
 // ---------- series ----------
 const A = P.arg;
@@ -46,11 +46,18 @@ const usd = (tk, i) => { const c = P.his.acc[tk].c[i], m = HM[i]; return c && m 
 const PER = [['1m', 30, 'un mes', 'en el último mes'], ['3m', 91, 'tres meses', 'en los últimos tres meses'], ['6m', 182, 'seis meses', 'en los últimos seis meses'], ['1a', 365, 'un año', 'en el último año'], ['2a', 725, 'dos años', 'en los últimos dos años']];
 const retUsd = (tk, dias) => {
   const iN = HF.length - 1, i0 = idxF(restar(HF[iN], dias)); if (i0 < 0) return null;
-  const a = usd(tk, i0), b = usd(tk, iN); if (!a || !b) return null;
+  let iB = iN; while (iB > iN - 5 && !usd(tk, iB)) iB--;
+  const a = usd(tk, i0), b = usd(tk, iB); if (!a || !b) return null;
   const v = []; for (let i = i0; i <= iN; i++) { const x = usd(tk, i); if (x) v.push(x); }
   return {r: (b / a - 1) * 100, v, f0: HF[i0], f1: HF[iN]};
 };
 const NOMA = tk => P.his.acc[tk].n;
+// solo empresas conocidas (pedido del dueño 01/11/2026: "menos de acciones poco conocidas"): panel líder y los CEDEAR más populares
+const FAMOSAS = new Set(('GGAL YPFD PAMP BMA TXAR ALUA CEPU TGSU2 TGNO4 LOMA CRES BBAR SUPV TECO2 EDN COME MIRG VALO BYMA TRAN METR IRSA ' +
+  'AAPL MSFT GOOGL AMZN TSLA NVDA META KO MELI DIS NFLX MCD WMT JPM BA PFE XOM NKE SPY QQQ DIA BABA VIST BRKB INTC AMD V MA PEP SBUX ' +
+  'UBER PYPL GLOB TEN GOLD ORCL IBM PBR VALE GLD SLV IBIT EWZ ARKK MRNA JNJ PG T VZ CVX GE GM F TM SONY SNAP SPOT SHOP PLTR ABNB ' +
+  'COIN MSTR NU ADBE CRM CSCO QCOM AVGO TSM ASML LLY UNH HD COST TGT GS C BAC WFC AXP X CAT DE MMM HMC RACE MO PM ZM RBLX').split(' '));
+const famosa = tk => tk === 'MERVAL' || FAMOSAS.has(tk);
 
 // ---------- moldes: cada uno arma reels con datos reales ----------
 const R = [];   // todos los reels posibles hoy
@@ -424,7 +431,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
       `${fP(va, 0)} en un año: ahora US$ ${fN(v, v < 100 ? 2 : 0)} (${c.u}).`, `Fuente: ${c.f}.`, ['global', 'Ver commodities']);
   }
   // acciones: A rindió más que B en dólares
-  const tks = Object.keys(P.his.acc);
+  const tks = Object.keys(P.his.acc).filter(famosa);
   const MV = P.his.acc.MERVAL ? 'MERVAL' : null;
   for (const [pk, dias, pn, pfr] of PER) {
     const res = {}; tks.forEach(tk => { const r = retUsd(tk, dias); if (r) res[tk] = r.r; });
@@ -500,7 +507,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
 // la gente recuerda (un año calendario, un semestre, desde un mes hasta hoy) y diferencias grandes, que se deducen sabiendo
 // cómo le fue a cada empresa o a la economía.
 {
-  const tks = Object.keys(P.his.acc).filter(k => k !== 'MERVAL'), N = HF.length, MV = P.his.acc.MERVAL ? 'MERVAL' : null;
+  const tks = Object.keys(P.his.acc).filter(k => k !== 'MERVAL' && famosa(k)), N = HF.length, MV = P.his.acc.MERVAL ? 'MERVAL' : null;
   const fl = a => P.his.acc[a].t === 'ced' ? null : 'ar';
   const ok = (tk, i, paso) => { for (let k = 0; k < 6 && i >= 0 && i < N; k++, i += paso) if (usd(tk, i)) return i; return -1; };
   const rinde = (tk, i0, i1) => { const a = ok(tk, i0, 1), b = ok(tk, i1, -1); if (a < 0 || b <= a) return null; return {r: (usd(tk, b) / usd(tk, a) - 1) * 100}; };
@@ -551,6 +558,10 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
 }
 
+// ---------- conceptos de economía, nivel primer año (pedido del dueño 01/11/2026), de conceptos.js ----------
+if (typeof CONCEPTOS !== 'undefined') for (const [t, ok, exp] of CONCEPTOS)
+  vf('con-' + hash(t).toString(36), 'con-' + hash(t).toString(36), null, 'Conceptos', t, ok, exp, 'Conceptos de economía de primer año.', ['', 'Ir a Pulso Macro'], .6 + rnd() * .3);
+
 // ---------- afuera lo poco llamativo (pedido del dueño 01/11/2026) ----------
 // monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
 {
@@ -561,7 +572,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     if (r.mold !== 'vf' || FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
     else {  // grupo por tema, para que se mezclen y no sean todas de acciones
       const k = r.kick.replace('Verdadero o falso · ', '');
-      r.cat = /Acciones|Si hubieras/.test(k) ? 'acc' : /Inflación/.test(k) ? 'inf' : /Dólar/.test(k) ? 'dol' : /Big Mac/.test(k) ? 'bm' : /Tasas/.test(k) ? 'tas' : 'his';
+      r.cat = /Conceptos/.test(k) ? 'con' : /Acciones|Si hubieras/.test(k) ? 'acc' : /Inflación/.test(k) ? 'inf' : /Dólar/.test(k) ? 'dol' : /Big Mac/.test(k) ? 'bm' : /Tasas/.test(k) ? 'tas' : 'his';
     }
   }
 }
@@ -579,7 +590,7 @@ const marcarVisto = r => { if (r && vistos[vk(r)] == null) { vistos[vk(r)] = DIA
 try { localStorage.removeItem('pl-vistos'); } catch (e) {}
 const frescos = R.filter(r => vistos[vk(r)] == null);
 // cuánto de cada tema: así los cientos de "simulador" no tapan al resto
-const CUOTA = {acc: 34, inf: 22, his: 18, dol: 12, bm: 9, tas: 5};
+const CUOTA = {con: 30, acc: 20, inf: 20, his: 14, dol: 10, bm: 6, tas: 4};  // conceptos primero (pedido del dueño 01/11/2026), menos acciones
 const base = frescos;
 const colas = {};
 base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
@@ -707,10 +718,11 @@ feed.addEventListener('click', e => {
 // ---------- premios al responder (pedido del dueño 01/11/2026: dopamina tipo casino, sin exagerar) ----------
 let PT = {p: 0, r: 0, max: 0}; try { PT = {...PT, ...JSON.parse(localStorage.getItem('pl-pts') || '{}')}; } catch (e) {}
 const ptsEl = $('#pts');
-const ptsPintar = (anim) => {
-  ptsEl.hidden = !PT.p && !PT.r;
-  ptsEl.querySelector('b').textContent = fN(PT.p);
-  const ra = ptsEl.querySelector('.ra'); ra.hidden = PT.r < 2; ra.textContent = '×' + PT.r;
+const ptsPintar = (anim) => {   // pedido del dueño 01/11/2026: sin puntos, lo que importa es la racha
+  ptsEl.hidden = !PT.r;
+  ptsEl.querySelector('b').textContent = PT.r === 1 ? '1 seguida' : fN(PT.r) + ' seguidas';
+  ptsEl.title = 'Tu racha' + (PT.max ? ' · tu mejor: ' + fN(PT.max) : '');
+  const ra = ptsEl.querySelector('.ra'); ra.hidden = true;
   if (anim) { ptsEl.classList.remove(anim); void ptsEl.offsetWidth; ptsEl.classList.add(anim); }
 };
 ptsPintar(); setTimeout(medidor, 0);
@@ -732,10 +744,8 @@ function premio(ok, btn, reel) {
   if (ok) rachaServidor(reel); else TK = '';
   if (ok) {
     PT.r++; PT.max = Math.max(PT.max, PT.r);
-    const gana = 10 * Math.min(5, PT.r);           // la racha multiplica (tope ×5): da ganas de no cortarla
-    PT.p += gana;
     fx('bien'); onda(btn);
-    grande('+' + gana, PT.r >= 2 ? '×' + Math.min(5, PT.r) : '');
+    grande(fN(PT.r), PT.r === 1 ? 'seguida' : 'seguidas');
     confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
     if (PT.r >= 5) setTimeout(() => lluvia(PT.r >= 10 ? 160 : 90), 250);
     medidor();
@@ -746,7 +756,7 @@ function premio(ok, btn, reel) {
     const perdio = PT.r;
     PT.r = 0;
     btn.classList.remove('tiembla'); void btn.offsetWidth; btn.classList.add('tiembla');
-    fx('mal'); medidor();
+    fx('mal'); medidor(); reel.classList.add('perdio');   // la pantalla queda roja (pedido del dueño 01/11/2026)
     if (perdio >= 2) flotar(btn, 'Se cortó la racha de ' + perdio, '#ffd0d8');
     // "casi": si estaba cerca del récord de todos, decírselo (empuja a volver a intentar)
     if (RECORD && perdio >= 3 && RECORD - perdio <= 3 && RECORD - perdio >= 0) setTimeout(() => cartel(reel, `¡Casi!<small>te ${RECORD - perdio === 0 ? 'faltaba 1' : 'faltaban ' + (RECORD - perdio + 1)} para el récord de todos</small>`), 500);

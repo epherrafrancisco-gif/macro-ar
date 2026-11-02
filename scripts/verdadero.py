@@ -115,9 +115,15 @@ arg['fx'] = [[a, r4(b)] for a, b in arg['mayorista'][-400:]]
 
 # Acciones y CEDEARs: solo las que se operan seguido y sin saltos raros (un precio roto da un "si ponías…" falso)
 F = H['fechas']; pos = {f: i for i, f in enumerate(F)}; n = len(F)
-acc, fuera = {}, {'sin_nombre': 0, 'poco_operada': 0, 'saltos': 0}
+acc, fuera = {}, {'sin_nombre': 0, 'poco_operada': 0, 'saltos': 0, 'poco_conocida': 0}
+# solo empresas conocidas (pedido del dueño 01/11/2026); la misma lista que FAMOSAS en verdadero-o-falso/juego.js
+FAMOSAS = set(('GGAL YPFD PAMP BMA TXAR ALUA CEPU TGSU2 TGNO4 LOMA CRES BBAR SUPV TECO2 EDN COME MIRG VALO BYMA TRAN METR IRSA '
+    'AAPL MSFT GOOGL AMZN TSLA NVDA META KO MELI DIS NFLX MCD WMT JPM BA PFE XOM NKE SPY QQQ DIA BABA VIST BRKB INTC AMD V MA PEP SBUX '
+    'UBER PYPL GLOB TEN GOLD ORCL IBM PBR VALE GLD SLV IBIT EWZ ARKK MRNA JNJ PG T VZ CVX GE GM F TM SONY SNAP SPOT SHOP PLTR ABNB '
+    'COIN MSTR NU ADBE CRM CSCO QCOM AVGO TSM ASML LLY UNH HD COST TGT GS C BAC WFC AXP X CAT DE MMM HMC RACE MO PM ZM RBLX MERVAL').split())
 for tk, inf in H['info'].items():
     if inf['t'] == 'bon': continue
+    if tk not in FAMOSAS: fuera['poco_conocida'] += 1; continue
     if not inf.get('n'): fuera['sin_nombre'] += 1; continue
     p = R + 'historia/%s.json' % tk
     if not os.path.exists(p): continue
@@ -125,7 +131,7 @@ for tk, inf in H['info'].items():
     for d_, v in zip(a['d'], a['c']):
         if d_ in pos and v: c[pos[d_]] = sig(v)
     ult60 = c[-60:]
-    if sum(1 for v in ult60 if v) < 0.85 * len(ult60) or not c[-1] or not c[-2] or sum(1 for v in c if v) < 150:
+    if sum(1 for v in ult60 if v) < 0.85 * len(ult60) or not any(c[-3:]) or sum(1 for v in c if v) < 150:   # el último día puede faltar si la corrida de historia se cortó
         fuera['poco_operada'] += 1; continue
     prev, raro = None, False
     for v in c:
