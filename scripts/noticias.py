@@ -28,7 +28,9 @@ FUENTES = {
     "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/",
     "La Nación": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/",
     "iProfesional": "https://www.iprofesional.com/rss/economia",
-    "Perfil": "https://www.perfil.com/feed/economia",
+    # Perfil: desde 10/2026 /feed/economia da 404; se prueban otras direcciones (la primera que ande)
+    "Perfil": ["https://www.perfil.com/feed/economia/", "https://perfil.com/feed/economia", "https://www.perfil.com/feed/economia?format=rss",
+               "https://www.perfil.com/rss/economia.xml", "https://www.perfil.com/feed/reperfilar", "https://www.perfil.com/feed/empresas-y-protagonistas"],
 }
 
 # Temas para filtrar en la página (se buscan en el título, sin distinguir mayúsculas).
@@ -150,8 +152,12 @@ def main():
     nuevos_por_medio = {}
     for medio, url in FUENTES.items():
         try:
-            nuevos_por_medio[medio] = leer(medio, url)
-            estado[medio] = f"ok ({len(nuevos_por_medio[medio])}, {sum(1 for x in nuevos_por_medio[medio] if x.get('i'))} con foto)"
+            urls, err = (url if isinstance(url, list) else [url]), None
+            for u in urls:
+                try: nuevos_por_medio[medio] = leer(medio, u); estado_url = u; break
+                except Exception as e2: err = f"{u}: {e2}"
+            else: raise Exception(err)
+            estado[medio] = f"ok ({len(nuevos_por_medio[medio])}, {sum(1 for x in nuevos_por_medio[medio] if x.get('i'))} con foto)" + (f" {estado_url}" if isinstance(url, list) else "")
         except Exception as e:  # noqa: BLE001
             estado[medio] = f"error: {e}"
     # Se acumulan: los titulares anteriores quedan hasta cumplir 48 horas (algunos feeds,
