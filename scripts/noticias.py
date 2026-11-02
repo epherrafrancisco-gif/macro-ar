@@ -20,17 +20,27 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "noticias.json"
 TZ_AR = timezone(timedelta(hours=-3))
 UA = "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar; contacto@pulsomacro.com.ar)"
-HORAS = 48      # se muestran las últimas 48 horas
-MAXIMO = 300
+HORAS = 72      # se muestran las últimas 72 horas
+MAXIMO = 900
 
+# Cada medio: una lista de secciones; cada sección, una o varias direcciones (se usa la primera que ande). Pedido del dueño
+# 02/11/2026: muchas más noticias, de economía y alrededor (negocios, finanzas, política económica), sin irse por las ramas.
 FUENTES = {
-    "Ámbito": "https://www.ambito.com/rss/pages/economia.xml",
-    "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/category/economia/",
-    "La Nación": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/",
-    "iProfesional": "https://www.iprofesional.com/rss/economia",
-    # Perfil: desde 10/2026 /feed/economia da 404; se prueban otras direcciones (la primera que ande)
-    "Perfil": ["https://www.perfil.com/feed/economia/", "https://perfil.com/feed/economia", "https://www.perfil.com/feed/economia?format=rss",
-               "https://www.perfil.com/rss/economia.xml", "https://www.perfil.com/feed/reperfilar", "https://www.perfil.com/feed/empresas-y-protagonistas"],
+    "Ámbito": [["https://www.ambito.com/rss/pages/economia.xml"], ["https://www.ambito.com/rss/pages/finanzas.xml"],
+               ["https://www.ambito.com/rss/pages/negocios.xml"], ["https://www.ambito.com/rss/pages/politica.xml"]],
+    "Infobae": [["https://www.infobae.com/arc/outboundfeeds/rss/category/economia/"],
+                ["https://www.infobae.com/arc/outboundfeeds/rss/category/politica/"]],
+    "La Nación": [["https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/economia/"],
+                  ["https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/"]],
+    "iProfesional": [["https://www.iprofesional.com/rss/economia"], ["https://www.iprofesional.com/rss/finanzas"],
+                     ["https://www.iprofesional.com/rss/negocios"]],
+    # Perfil: desde 10/2026 /feed/economia da 404; Reperfilar es su sección de economía
+    "Perfil": [["https://www.perfil.com/feed/economia/", "https://www.perfil.com/feed/reperfilar"]],
+    "Clarín": [["https://www.clarin.com/rss/economia/"], ["https://www.clarin.com/rss/politica/"]],
+    "Página/12": [["https://www.pagina12.com.ar/rss/secciones/economia/notas"]],
+    "El Cronista": [["https://www.cronista.com/files/rss/economia.xml", "https://www.cronista.com/rss/economia/", "https://www.cronista.com/rss/"]],
+    "El Economista": [["https://eleconomista.com.ar/rss/", "https://eleconomista.com.ar/feed/"]],
+    "TN": [["https://tn.com.ar/rss/economia/", "https://tn.com.ar/rss.xml"]],
 }
 
 # Temas para filtrar en la página (se buscan en el título, sin distinguir mayúsculas).
@@ -40,6 +50,7 @@ TEMAS = {
     "inflacion": r"inflaci|\bipc\b|precios|canasta|tarifa|aumento",
     "mercados": r"merval|acciones|bonos|riesgo pa[ií]s|wall street|mercados?\b|bolsa|cedear|cripto|bitcoin|\bfed\b",
     "fiscal": r"fiscal|super[aá]vit|d[eé]ficit|recaudaci|impuest|tributari|retenciones|\barca\b|presupuesto|deuda|\bfmi\b|gasto|jubilaci",
+    "politica": r"milei|gobierno|congreso|diputados|senado|ministr|caputo|gobernador|elecci|ley\b|reforma|oposici|peronis|libertari|casa rosada",
     "actividad": r"actividad|industria|empleo|desempleo|salari|consumo|ventas|construcci|\bpbi\b|exportaci|importaci|vaca muerta|rigi|inversi|campo|cosecha|petr[oó]le|miner",
 }
 
@@ -121,6 +132,12 @@ def og_image(url):
         return None
 
 
+# fuera lo que no tiene que ver (las secciones de política y los feeds generales traen de todo)
+RUIDO = re.compile(r"f[uú]tbol|boca juniors|river plate|selecci[oó]n argentina|messi|mundial 20|partido de|gol\b|tenis|f[oó]rmula 1|"
+                   r"hor[oó]scopo|far[aá]ndula|novela|actriz|actor\b|cantante|gran hermano|asesin|homicid|femicid|polic[ií]a|choque|accidente|"
+                   r"clima|pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
+
+
 def leer(medio, url):
     raiz = ET.fromstring(get(url))
     items = []
@@ -134,7 +151,7 @@ def leer(medio, url):
         if "link" in hijos:
             link = (hijos["link"].text or hijos["link"].get("href") or "").strip()
         d = fecha(next((hijos[k].text for k in ("pubDate", "published", "updated", "date") if k in hijos), ""))
-        if titulo and link.startswith("http") and d:
+        if titulo and link.startswith("http") and d and not RUIDO.search(titulo):
             temas = [k for k, rx in TEMAS.items() if re.search(rx, titulo, re.I)]
             x = {"t": titulo, "u": link, "f": medio, "h": d.astimezone(TZ_AR).isoformat(timespec="minutes"), "k": temas}
             im = imagen(it)
@@ -150,16 +167,20 @@ def main():
     previo = json.loads(DATA.read_text(encoding="utf-8")) if DATA.exists() else {"items": []}
     todos, estado = {}, {}
     nuevos_por_medio = {}
-    for medio, url in FUENTES.items():
-        try:
-            urls, err = (url if isinstance(url, list) else [url]), None
-            for u in urls:
-                try: nuevos_por_medio[medio] = leer(medio, u); estado_url = u; break
-                except Exception as e2: err = f"{u}: {e2}"
-            else: raise Exception(err)
-            estado[medio] = f"ok ({len(nuevos_por_medio[medio])}, {sum(1 for x in nuevos_por_medio[medio] if x.get('i'))} con foto)" + (f" {estado_url}" if isinstance(url, list) else "")
-        except Exception as e:  # noqa: BLE001
-            estado[medio] = f"error: {e}"
+    for medio, secciones in FUENTES.items():
+        juntos, errs, n_ok = {}, [], 0
+        for alternativas in secciones:
+            for u in alternativas:
+                try:
+                    for x in leer(medio, u): juntos.setdefault(x["u"], x)
+                    n_ok += 1; break
+                except Exception as e:  # noqa: BLE001
+                    errs.append(f"{u.split('/')[2]}{u.split(u.split('/')[2])[1][:30]}: {e}")
+        if juntos:
+            nuevos_por_medio[medio] = list(juntos.values())
+            estado[medio] = f"ok ({len(juntos)}, {sum(1 for x in juntos.values() if x.get('i'))} con foto, {n_ok}/{len(secciones)} secciones)"
+        else:
+            estado[medio] = "error: " + " | ".join(errs)[:300]
     # Se acumulan: los titulares anteriores quedan hasta cumplir 48 horas (algunos feeds,
     # como el de Ámbito, traen solo los últimos 20) y los de un medio que falló, también.
     for it in previo.get("items", []):
