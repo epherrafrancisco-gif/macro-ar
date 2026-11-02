@@ -775,7 +775,7 @@ function rachaServidor(reel) {
   fetch('/api/racha', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})})
     .then(r => r.ok ? r.json() : null).then(d => {
       if (!d || !d.tk) return; TK = d.tk; RECORD = d.record; recPintar();
-      if (d.nuevo && d.n >= 3) { setTimeout(() => cartel(reel, '¡Nuevo récord!<small>la mejor racha de todo Pulso Macro</small>'), 1100); const el = $('#rec'); el.classList.remove('gana'); void el.offsetWidth; el.classList.add('gana'); }
+      if (d.nuevo && d.n >= 3) { cartel(reel, '¡Nuevo récord!<small>la mejor racha de todo Pulso Macro</small>', 4200); const el = $('#rec'); el.classList.remove('gana'); void el.offsetWidth; el.classList.add('gana'); }
     }).catch(() => {});
 }
 function premio(ok, btn, reel) {
@@ -857,10 +857,17 @@ function flotar(el, txt, col) {
   d.className = 'flota'; d.textContent = txt; d.style.cssText = `left:${Math.max(120, Math.min(innerWidth - 120, b.left + b.width / 2))}px;top:${b.top}px;color:${col}`;
   document.body.appendChild(d); setTimeout(() => d.remove(), 1100);
 }
-function cartel(reel, txt) {
-  reel.querySelectorAll('.cartel').forEach(x => x.remove());
+// carteles en fila: van dentro de la pregunta (antes del aviso del premio y la fuente) y esperan a que se vaya el número
+// grande, para no superponerse con nada (pedido del dueño 02/11/2026). Uno por vez; el del récord de todos dura más.
+const COLA = []; let colaOn = false;
+function cartel(reel, txt, ms = 2600) { COLA.push([reel, txt, ms]); if (!colaOn) { colaOn = true; setTimeout(sigCartel, 950); } }
+function sigCartel() {
+  const x = COLA.shift(); if (!x) { colaOn = false; return; }
+  const [reel, txt, ms] = x;
   const d = document.createElement('div'); d.className = 'cartel'; d.innerHTML = txt;
-  reel.appendChild(d); setTimeout(() => d.remove(), 1500);
+  const ref = reel.querySelector('.lockr') || reel.querySelector('.src');
+  if (ref) ref.before(d); else reel.querySelector('.rin').appendChild(d);
+  setTimeout(() => { d.classList.add('va'); setTimeout(() => { d.remove(); sigCartel(); }, 420); }, ms);
 }
 // monedas de oro que saltan del botón (tipo tragamonedas)
 function monedas(el, n) {

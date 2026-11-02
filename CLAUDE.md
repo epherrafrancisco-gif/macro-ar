@@ -630,6 +630,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   no puede saber si la respuesta era correcta (eso lo decide el navegador), solo frena trampas fáciles (mandar "999" o
   muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. En la página: `#rec` al pie
   ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
+- Carteles (`cartel(reel, txt, ms)`, pedido del dueño 02/11/2026: que no se superpongan): van EN la pregunta, en el flujo, antes de
+  `.lockr`/la fuente, uno por vez en fila (`COLA`, `sigCartel`), arrancan 950 ms después (cuando se fue el número grande) y se pliegan
+  al irse. Duración 2,6 s; "¡Nuevo récord!" de todos, 4,2 s.
 
 ## Crucigrama (`/crucigrama/`, pedido del dueño 01/11/2026: "uno por día, estilo crucigrama de La Nación pero de economía")
 - `crucigrama/index.html` + `crucigrama.js` + `palabras.js` (banco `PALABRAS` [palabra, pista], ~2.400 desde el 02/11/2026, 3-11 letras sin
