@@ -133,7 +133,7 @@ def og_image(url):
 # fuera lo que no tiene que ver (las secciones de política y los feeds generales traen de todo)
 RUIDO = re.compile(r"f[uú]tbol|boca juniors|river plate|selecci[oó]n argentina|messi|mundial 20|partido de|gol\b|tenis|f[oó]rmula 1|"
                    r"hor[oó]scopo|far[aá]ndula|novela|actriz|actor\b|cantante|gran hermano|asesin|homicid|femicid|polic[ií]a|accidente de tr|"
-                   r"colapinto|\\bgp de|primera nacional|masterchef|alerta amarilla|alerta naranja|pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
+                   r"colapinto|\bgp de|primera nacional|masterchef|alerta amarilla|alerta naranja|pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
 
 
 GENERALES = {"https://tn.com.ar/rss.xml"}   # feeds de todo: solo pasan los titulares de algún tema de economía o política
@@ -186,6 +186,7 @@ def main():
     # Se acumulan: los titulares anteriores quedan hasta cumplir 48 horas (algunos feeds,
     # como el de Ámbito, traen solo los últimos 20) y los de un medio que falló, también.
     for it in previo.get("items", []):
+        if RUIDO.search(it["t"]) or (it["f"] == "TN" and not it.get("k")): continue   # lo guardado también pasa el filtro
         todos[it["u"]] = it
     for items in nuevos_por_medio.values():
         for it in items:
