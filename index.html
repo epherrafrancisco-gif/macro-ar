@@ -169,7 +169,7 @@
 }
 </style>
 </head>
-<body><div id="cyFx" aria-hidden="true"><div class="city"></div><div class="velo"></div><div class="scan"></div></div>
+<body><div id="cyFx" aria-hidden="true"><div class="city"></div><div class="velo"></div><div class="avion a1"><svg viewBox="0 0 40 14" aria-hidden="true"><path d="M2 7.2 L30 6.2 C35 6 38 6.6 38 7.2 C38 7.8 35 8.4 30 8.2 L2 7.2Z" fill="#4a5070"/><path d="M15 6.8 L22 1 L25 1 L21 6.6Z M15 7.6 L22 13 L25 13 L21 7.8Z M3 7 L6 3.5 L8 3.5 L7 7Z" fill="#4a5070"/><circle class="lr" cx="23.5" cy="1.6" r="1.2" fill="#ff3b3b"/><circle class="lg" cx="23.5" cy="12.4" r="1.2" fill="#39ff6e"/><circle class="lw" cx="4" cy="4" r="1.1" fill="#fff"/><circle class="lw2" cx="20" cy="7" r=".9" fill="#fff"/></svg></div><div class="avion a2"><svg viewBox="0 0 40 14" aria-hidden="true"><path d="M2 7.2 L30 6.2 C35 6 38 6.6 38 7.2 C38 7.8 35 8.4 30 8.2 L2 7.2Z" fill="#4a5070"/><path d="M15 6.8 L22 1 L25 1 L21 6.6Z M15 7.6 L22 13 L25 13 L21 7.8Z M3 7 L6 3.5 L8 3.5 L7 7Z" fill="#4a5070"/><circle class="lr" cx="23.5" cy="1.6" r="1.2" fill="#ff3b3b"/><circle class="lg" cx="23.5" cy="12.4" r="1.2" fill="#39ff6e"/><circle class="lw" cx="4" cy="4" r="1.1" fill="#fff"/><circle class="lw2" cx="20" cy="7" r=".9" fill="#fff"/></svg></div><div class="scan"></div></div>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
@@ -775,8 +775,21 @@ html[data-tema="cyber"]{color-scheme:dark;
   --pos:#39ff9e; --pos-bg:rgba(57,255,158,.10); --neg:#ff3b6b; --neg-bg:rgba(255,59,107,.12); --neu-bg:rgba(0,240,255,.07)}
 html[data-tema="cyber"] body{background:#04050c}
 html[data-tema="cyber"] #cyFx{display:block;position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-#cyFx .city{position:absolute;inset:0;background:url(/fondos/ciudad.svg) center bottom/cover no-repeat}
-#cyFx .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,12,.62) 0%,rgba(4,5,12,.42) 45%,rgba(4,5,12,.30) 100%)}
+#cyFx .city{position:absolute;inset:0;background:url(/fondos/ciudad2.svg) center bottom/cover no-repeat}
+/* aviones (pedido del dueño 02/11/2026): chicos, lentos y de a uno cada tanto; quietos con "reducir movimiento" */
+#cyFx .avion{position:absolute;left:0;width:34px;opacity:.85;will-change:transform;transform:translateX(-60px)}
+#cyFx .avion svg{width:100%;display:block}
+#cyFx .a1{top:14%;animation:avIda 64s linear infinite 6s}
+#cyFx .a2{top:25%;width:24px;opacity:.6;animation:avVuelta 92s linear infinite 38s}
+#cyFx .a2 svg{transform:scaleX(-1)}
+@keyframes avIda{0%{transform:translateX(-60px)}48%{transform:translateX(calc(100vw + 60px))}100%{transform:translateX(calc(100vw + 60px))}}
+@keyframes avVuelta{0%{transform:translateX(calc(100vw + 60px))}40%{transform:translateX(-60px)}100%{transform:translateX(-60px)}}
+#cyFx .avion .lr,#cyFx .avion .lg{animation:avLuz 1.3s steps(1) infinite}
+#cyFx .avion .lw{animation:avLuz 1.1s steps(1) infinite .5s}
+@keyframes avLuz{0%,50%{opacity:1}51%,100%{opacity:.1}}
+@media (prefers-reduced-motion: reduce){#cyFx .city{background-image:url(/fondos/ciudad2-quieta.svg)}#cyFx .avion{display:none}}
+#cyFx .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,12,.6) 0%,rgba(4,5,12,.56) 40%,rgba(4,5,12,.5) 70%,rgba(4,5,12,.36) 100%)}
+#cyFx .city{filter:saturate(.9)}
 #cyFx .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
 html[data-tema="cyber"] main,html[data-tema="cyber"] header,html[data-tema="cyber"] .wrap{position:relative;z-index:1}
 html[data-tema="cyber"] .card,html[data-tema="cyber"] .q,html[data-tema="cyber"] .tile,html[data-tema="cyber"] .bfake,html[data-tema="cyber"] .juegos a,html[data-tema="cyber"] .juegos button{
