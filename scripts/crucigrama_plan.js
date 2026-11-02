@@ -1,7 +1,7 @@
 // Arma crucigrama/plan.js: las palabras candidatas de cada día del crucigrama (pedido del dueño 02/11/2026).
 // Reglas, comprobadas acá con el MISMO generador que usa la página (crucigrama.js):
-//  - ninguna palabra se repite antes de GAP días;
-//  - dos crucigramas cualesquiera (de todo el plan) comparten como mucho 3 palabras;
+//  - ninguna palabra se repite antes de GAP días (60, pedido del dueño);
+//  - dos crucigramas cualesquiera (de todo el plan) comparten como mucho MAXC palabras (4, pedido del dueño);
 //  - cada día tiene al menos 13 palabras (casi siempre 14-15).
 // Uso: node scripts/crucigrama_plan.js [días]   (por defecto 1100, unos 3 años desde el N.º 3 = 03/11/2026)
 // Si se agregan palabras a palabras.js (siempre al final), volver a correrlo: los días ya pasados no se tocan si se pasa
@@ -9,7 +9,7 @@
 const fs = require('fs'), path = require('path');
 const R = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
 const src = R('crucigrama/crucigrama.js'), pal = R('crucigrama/palabras.js');
-const DIAS = +(process.argv[2] || 1100), GAP = 14, MAXC = 3, K = 28;
+const DIAS = +(process.argv[2] || 1100), GAP = 60, MAXC = 4, K = 28;
 const PALABRAS = new Function(pal.replace('const PALABRAS', 'var PALABRAS') + '; return PALABRAS;')();
 const helpers = src.slice(src.indexOf('function semilla'), src.indexOf('// ---------- generador'));
 const body = src.slice(src.indexOf('// ---------- generador'), src.indexOf('const HOR'));

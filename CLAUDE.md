@@ -625,14 +625,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
 - Revisión a fondo (02/11/2026), cambios desde el N.º 3 (03/11; `V2 = HOY >= '2026-11-03'`, así el del día no cambió a mitad de
   partida): el generador anota la dirección de cada letra (`D`) y un cruce tiene que ser con una palabra de la otra dirección
-  (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); palabras sin repetir (pedido del dueño 02/11/2026: "no se pueden repetir" y "que no haya más de 3 palabras
-  repetidas" entre dos crucigramas cualesquiera): las candidatas de cada día vienen de `crucigrama/plan.js` (`CRUCI_PLAN`,
-  índices en base 36 de `PALABRAS`, desde el N.º 3 hasta el 06/11/2029), que arma `node scripts/crucigrama_plan.js [días]`
-  corriendo el MISMO generador de la página: ninguna palabra antes de 14 días, ningún par de crucigramas de todo el plan con más
-  de 3 palabras en común, 13 a 15 palabras por día (casi siempre 14-15). Lo ya publicado no se cambia (respeta el plan viejo hasta
-  `--desde`, por defecto mañana). Si un día no está en el plan, queda de respaldo el sistema anterior (`MAZO`: mano de 50 que
-  hace más tiempo que no salen). Banco de ~670 palabras (180 originales + 282 + 209 sumadas el 02/11/2026): agregar SIEMPRE AL
-  FINAL (las 180 primeras arman los N.º 1 y 2, `VIEJAS`) y volver a correr el script. PENDIENTE antes de 11/2029: extender el plan.
+  (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); palabras sin repetir (pedido del dueño 02/11/2026: ninguna palabra antes de 2 meses y dos crucigramas cualesquiera
+  con como mucho 4 palabras en común): las candidatas de cada día vienen de `crucigrama/plan.js` (`CRUCI_PLAN`, índices en base 36
+  de `PALABRAS`, desde el N.º 3 por ~3 años), que arma `node scripts/crucigrama_plan.js [días]` corriendo el MISMO generador de la
+  página (`GAP` = 60 días, `MAXC` = 4, 13 a 15 palabras por día). Lo ya publicado no se cambia (respeta el plan viejo hasta
+  `--desde`, por defecto mañana). Si un día no está en el plan, queda de respaldo el sistema anterior (`MAZO`). Banco de ~1.050
+  palabras (180 originales + tres tandas del 02/11/2026). Pedido del dueño: nada de economistas que nadie conoce (se sacaron 18;
+  quedan en `palabras.js` como `['', '']` para no correr los índices). Agregar SIEMPRE AL FINAL y, para sacar una, dejar `['', '']`;
+  después volver a correr el script. PENDIENTE: extender el plan antes de que se termine (ver la fecha final que imprime).
   Página: la pista actual (`#pAct`) va arriba de la grilla y queda pegada arriba (el teclado del celular la tapaba); en celular la
   grilla va de borde a borde (casilleros de ~24 a ~26 px); borrar usa `beforeinput` (en Android el teclado no manda keydown
   Backspace y no se podía volver al casillero anterior); Enter/Tab y terminar una palabra llevan a la próxima sin resolver
