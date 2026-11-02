@@ -637,7 +637,8 @@ const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } 
 // premio legendario (modo Bóveda, 60 seguidas; pedido del dueño 02/11/2026): SECRETO hasta ganar Ciudad. Marca pm-boveda.
 const BOV_META = 60;
 const bovOk = () => { try { return localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
-const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` : '';
+let BOV_N = null;   // cuántos tienen el modo Bóveda (se muestra recién después de ganar Ciudad, para que den ganas)
+const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` + (BOV_N ? ` · ${BOV_N === 1 ? 'lo tiene 1 persona' : 'lo tienen ' + fN(BOV_N) + ' personas'} en el mundo` : '') : '';
 const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 // ---------- dibujar ----------
 function svgLine(viz) {
@@ -763,6 +764,7 @@ function ciuDesbloquear() {
   try { localStorage.setItem('pm-ciudad', '1'); } catch (e) { return; }
   lockPintar();
   try { window.goatcounter && goatcounter.count({path: 'ciudad-desbloqueado', event: true}); } catch (e) {}
+  bovContar(false);   // el cartel cuenta cuántos tienen el modo legendario
   setTimeout(() => { const m = $('#ciu'); if (m) { m.hidden = false; $('#ciuIr').focus(); } }, 1300);
 }
 if (PT.max >= CIU_META) { try { localStorage.setItem('pm-ciudad', '1'); } catch (e) {} }   // quien ya la había logrado antes
@@ -779,8 +781,9 @@ const bovQuien = n => n === 1 ? 'Lo tiene <b>1 persona</b> en el mundo' : `Lo ti
 function bovContar(sumar) {
   const o = sumar ? {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})} : {};
   return fetch(sumar ? '/api/boveda' : '/api/boveda?t=' + VER(), o).then(r => r.ok ? r.json() : null).then(d => {
-    if (d && d.n != null) document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n); x.hidden = false; }); }).catch(() => {});
+    if (d && d.n != null) { BOV_N = d.n; lockPintar(); document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n); x.hidden = false; }); } }).catch(() => {});
 }
+if (ciuOk()) bovContar(false);
 function bovIr() { try { localStorage.setItem('pm-tema', 'oro'); } catch (e) {} }
 function bovDesbloquear() {
   if (bovOk()) return;
@@ -799,7 +802,7 @@ const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
 let RECORD = null, TK = '';
 function yoPintar() { const el = $('#recYo'); if (!el) return; el.hidden = !PT.max; el.querySelector('b').textContent = fN(PT.max); }
-const recPintar = () => { const el = $('#rec'); if (RECORD == null || !el) return; el.hidden = false; el.querySelector('b').textContent = fN(RECORD); };
+const recPintar = () => { const el = $('#rec'); if (RECORD == null || !el) return; el.hidden = false; el.querySelector('b').textContent = fN(Math.max(RECORD, PT.max)); };
 fetch('/api/racha?t=' + VER()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.n != null) { RECORD = d.n; recPintar(); } }).catch(() => {});
 function rachaServidor(reel) {
   fetch('/api/racha', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})})
