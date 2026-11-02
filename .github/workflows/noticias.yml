@@ -12,6 +12,7 @@ on:
     branches: [main]
     paths:
       - scripts/noticias_paises.py
+      - scripts/noticias.py
 
 permissions:
   contents: write

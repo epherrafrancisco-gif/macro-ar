@@ -67,6 +67,27 @@ def fecha(txt):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
+IMG_RX = re.compile(r"\.(jpe?g|png|webp|gif|avif)(\?|$)", re.I)
+
+
+def imagen(it):
+    """La foto de la nota que trae el propio feed (media:content, media:thumbnail, enclosure o la primera <img>)."""
+    for c in it.iter():
+        tag = c.tag.split("}")[-1]
+        u = c.get("url") or ""
+        if tag in ("content", "thumbnail") and u.startswith("http") and (c.get("medium") in (None, "image") or IMG_RX.search(u)):
+            if not (c.get("type") or "image").startswith(("image", "")) and not IMG_RX.search(u): continue
+            return u
+        if tag == "enclosure" and u.startswith("http") and ((c.get("type") or "").startswith("image") or IMG_RX.search(u)):
+            return u
+    for c in it.iter():
+        tag = c.tag.split("}")[-1]
+        if tag in ("description", "encoded", "content", "summary") and c.text:
+            m = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)', c.text)
+            if m: return html.unescape(m.group(1))
+    return None
+
+
 def leer(medio, url):
     raiz = ET.fromstring(get(url))
     items = []
@@ -82,7 +103,10 @@ def leer(medio, url):
         d = fecha(next((hijos[k].text for k in ("pubDate", "published", "updated", "date") if k in hijos), ""))
         if titulo and link.startswith("http") and d:
             temas = [k for k, rx in TEMAS.items() if re.search(rx, titulo, re.I)]
-            items.append({"t": titulo, "u": link, "f": medio, "h": d.astimezone(TZ_AR).isoformat(timespec="minutes"), "k": temas})
+            x = {"t": titulo, "u": link, "f": medio, "h": d.astimezone(TZ_AR).isoformat(timespec="minutes"), "k": temas}
+            im = imagen(it)
+            if im and im.startswith("https://"): x["i"] = im  # solo https (en la página se ve con http bloqueado)
+            items.append(x)
     if not items:
         raise ValueError("el feed no trajo titulares")
     return items
@@ -96,7 +120,7 @@ def main():
     for medio, url in FUENTES.items():
         try:
             nuevos_por_medio[medio] = leer(medio, url)
-            estado[medio] = f"ok ({len(nuevos_por_medio[medio])})"
+            estado[medio] = f"ok ({len(nuevos_por_medio[medio])}, {sum(1 for x in nuevos_por_medio[medio] if x.get('i'))} con foto)"
         except Exception as e:  # noqa: BLE001
             estado[medio] = f"error: {e}"
     # Se acumulan: los titulares anteriores quedan hasta cumplir 48 horas (algunos feeds,
