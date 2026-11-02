@@ -10,6 +10,7 @@ import html
 import json
 import re
 import urllib.request
+import urllib.robotparser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
@@ -88,6 +89,36 @@ def imagen(it):
     return None
 
 
+def achicar(u):
+    """Las fotos de Infobae y La Nación vienen a 2000 px: el resizer de Arc acepta otro ancho."""
+    if "/resizer/v2/" in u and "width=" in u:
+        return re.sub(r"&height=\d+", "", re.sub(r"width=\d+", "width=560", u))
+    return u
+
+
+def anda(u):
+    try:
+        req = urllib.request.Request(u, headers={"User-Agent": UA}, method="GET")
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return r.status == 200 and (r.headers.get("Content-Type") or "").startswith("image")
+    except Exception:
+        return False
+
+
+def og_image(url):
+    """Foto de la nota sacada de su página (og:image), para los medios cuyo feed no trae foto (Ámbito)."""
+    try:
+        rp = urllib.robotparser.RobotFileParser(); rp.set_url(re.match(r"https?://[^/]+", url).group(0) + "/robots.txt"); rp.read()
+        if not rp.can_fetch("PulsoMacro", url): return None
+        req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            h = r.read(200000).decode("utf-8", "replace")
+        m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', h) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image', h)
+        return html.unescape(m.group(1)) if m and m.group(1).startswith("https://") else None
+    except Exception:
+        return None
+
+
 def leer(medio, url):
     raiz = ET.fromstring(get(url))
     items = []
@@ -130,6 +161,20 @@ def main():
     for items in nuevos_por_medio.values():
         for it in items:
             todos[it["u"]] = it
+    # fotos: las del feed achicadas (si el medio lo acepta: se prueba con una), y las que faltan, de la página de la nota
+    for medio, items in nuevos_por_medio.items():
+        con = [x for x in items if x.get("i")]
+        if con and achicar(con[0]["i"]) != con[0]["i"] and anda(achicar(con[0]["i"])):
+            for x in con: x["i"] = achicar(x["i"])
+    previas = {it["u"]: it.get("i") for it in previo.get("items", []) if it.get("i")}
+    pedidas = 0
+    for items in nuevos_por_medio.values():
+        for x in items:
+            if x.get("i"): continue
+            if x["u"] in previas: x["i"] = previas[x["u"]]; continue
+            if pedidas < 40 and datetime.fromisoformat(x["h"]) >= ahora - timedelta(hours=HORAS):
+                pedidas += 1; im = og_image(x["u"])
+                if im: x["i"] = im
     limite = ahora - timedelta(hours=HORAS)
     lista = [it for it in todos.values() if datetime.fromisoformat(it["h"]) >= limite and datetime.fromisoformat(it["h"]) <= ahora + timedelta(minutes=10)]
     # Mismo título en dos links del mismo medio: quedarse con uno.
