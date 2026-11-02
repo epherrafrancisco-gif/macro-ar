@@ -46,7 +46,7 @@ PAL_VENT = [(255, 214, 150), (255, 236, 196), (170, 230, 255), (255, 170, 210), 
 NEON = [(0, 240, 255), (255, 43, 214), (252, 238, 10), (57, 255, 158), (164, 107, 255), (255, 90, 60)]
 PALABRAS = ['宏观脉搏', '宏观脉搏', '金融', '银行', '证券', '汇率', '股市', '夜市', '火锅', '面馆', '外汇', '贸易', '酒店', '茶馆', '数据', '科技']
 
-def edificio(d, gdr, x, top, w, piso, prof, col, niebla, dens, cerca):
+def edificio(d, gdr, x, top, w, piso, prof, col, niebla, dens, cerca, encendido=False):
     """Edificio en perspectiva desde arriba: cara frontal, cara lateral y terraza."""
     lado = int(w * random.uniform(.18, .32)) if cerca > .3 else int(w * .15)
     dir_ = 1 if x + w / 2 < W / 2 else -1        # lado visible según de qué lado del centro está
@@ -72,7 +72,7 @@ def edificio(d, gdr, x, top, w, piso, prof, col, niebla, dens, cerca):
         ex = x + random.randint(4, max(5, w - 20)); d.rectangle([ex, top - terraza + 2, ex + w * .18, top - 2], fill=mezcla(r, (0, 0, 0), .35))
     # ventanas
     vw = max(1, int(1 + 4 * cerca)); vh = max(1, int(1 + 4 * cerca)); sx = vw + max(1, int(1 + 2.5 * cerca)); sy = vh + max(1, int(2 + 3 * cerca))
-    pal = random.choice(PAL_VENT); apagado = random.random() < .15
+    pal = random.choice(PAL_VENT); apagado = random.random() < .15 and not encendido
     for wy in range(int(top) + 4, min(int(piso), H) - 2, sy):
         fila_on = random.random() < .85
         for wx in range(int(x) + 3, int(x + w) - vw - 1, sx):
@@ -180,9 +180,9 @@ fx, fy, paso = int(W * .66), int(H * .30), 74
 torre = Image.new('RGBA', (W, H), (0, 0, 0, 0)); td = ImageDraw.Draw(torre)
 tg = Image.new('RGB', (W, H), (0, 0, 0)); tgd = ImageDraw.Draw(tg)
 random.seed(99)
-edificio(td, tgd, fx - 70, fy - 120, 230, H + 10, .05, (26, 28, 52, 255), (40, 18, 58), .45, .9)
+edificio(td, tgd, fx - 70, fy - 120, 230, H + 10, .05, (26, 28, 52, 255), (40, 18, 58), .45, .9, encendido=True)
 lienzo = Image.alpha_composite(lienzo.convert('RGBA'), torre).convert('RGB'); cd = ImageDraw.Draw(lienzo)
-glow = ImageChops.lighter(glow, tg); gd = ImageDraw.Draw(glow)
+glow = Image.composite(tg, glow, torre.split()[3]); gd = ImageDraw.Draw(glow)   # la torre tapa el brillo de lo que queda atrás
 fnt = fuente(int(paso * .86)); pal = '宏观脉搏'
 cd.rectangle([fx - 10, fy - 10, fx + paso + 10, fy + paso * 4 + 10], fill=(8, 4, 18), outline=(255, 43, 214), width=4)
 gd.rectangle([fx - 10, fy - 10, fx + paso + 10, fy + paso * 4 + 10], outline=(255, 43, 214), width=10)
@@ -190,6 +190,26 @@ for i, ch in enumerate(pal):
     cy = fy + i * paso + paso / 2
     cd.text((fx + paso / 2, cy), ch, font=fnt, fill=(255, 225, 250), anchor='mm')
     gd.text((fx + paso / 2, cy), ch, font=fnt, fill=(255, 43, 214), anchor='mm')
+
+# ---------- cartel con el nombre del dueño: 弗朗西斯科 埃佩拉 = "Francisco Epherra" (pedido del dueño 02/11/2026) ----------
+nx, ny, np_ = int(W * .485), int(H * .44), 44
+lineas = ['弗朗西斯科', '埃佩拉']                      # en dos renglones para que entre también en el recorte del celular
+random.seed(7)
+torre = Image.new('RGBA', (W, H), (0, 0, 0, 0)); td = ImageDraw.Draw(torre)
+tg = Image.new('RGB', (W, H), (0, 0, 0)); tgd = ImageDraw.Draw(tg)
+ancho_n = int(np_ * 5 * 1.04 + np_ * .9); alto_n = int(np_ * 2.7)
+edificio(td, tgd, nx - 34, ny + alto_n + 14, ancho_n + 68, H + 10, .08, (24, 26, 48, 255), (40, 18, 58), .42, .8, encendido=True)
+lienzo = Image.alpha_composite(lienzo.convert('RGBA'), torre).convert('RGB'); cd = ImageDraw.Draw(lienzo)
+glow = Image.composite(tg, glow, torre.split()[3]); gd = ImageDraw.Draw(glow)   # la torre tapa el brillo de lo que queda atrás
+for sx in (nx + 18, nx + ancho_n - 24):              # soportes del cartel sobre la terraza
+    cd.rectangle([sx, ny + alto_n, sx + 6, ny + alto_n + 22], fill=(30, 30, 46))
+cd.rectangle([nx, ny, nx + ancho_n, ny + alto_n], fill=(6, 10, 20), outline=(0, 229, 255), width=3)
+gd.rectangle([nx, ny, nx + ancho_n, ny + alto_n], outline=(0, 229, 255), width=8)
+fnt = fuente(int(np_ * .9))
+for i, t in enumerate(lineas):
+    cy = ny + np_ * (.82 + i * 1.12)
+    cd.text((nx + ancho_n / 2, cy), t, font=fnt, fill=(220, 252, 255), anchor='mm')
+    gd.text((nx + ancho_n / 2, cy), t, font=fnt, fill=(0, 229, 255), anchor='mm')
 
 # ---------- bloom, grano y viñeta ----------
 im = np.asarray(lienzo, float)

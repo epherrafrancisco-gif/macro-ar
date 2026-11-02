@@ -49,9 +49,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   pidió algo realista y no le gustó ni la foto ni el dibujo SVG): `scripts/ciudad_render.py` (12 capas de edificios en perspectiva
   con terrazas, ventanas, neblina y desenfoque por distancia, calles con luces, bloom y grano; ~22 carteles de neón en chino y una
   torre protagonista con 宏观脉搏 = "Pulso Macro") → `fondos/ciudad3-2400.webp/.jpg` y `-1200` (≤900px, encuadre 66%); solo se baja
-  en ese modo. Quedaron sin uso `fondos/chongqing-*` (foto) y `fondos/ciudad2*.svg`. Dos autos voladores `.avion`: deportivo gris
-  genérico de perfil, con ruedas que brillan abajo (diseño propio; no se copian autos reales), arriba del velo, cruzan cada 64 y
-  92 s; ocultos con reducir movimiento. UN solo
+  en ese modo. Quedaron sin uso `fondos/chongqing-*` (foto) y `fondos/ciudad2*.svg`. Cartel cian con el nombre del dueño en chino (弗朗西斯科 / 埃佩拉 = "Francisco Epherra", en dos renglones para que entre en el
+  recorte del celular). Dos jets privados `.jet` (pedido del dueño 02/11/2026: realistas, de diseño propio sin marca, NO en
+  línea recta; reemplazan a los autos voladores, que no le gustaron): `jetVuelo` al final de index.html los mueve por una
+  curva de Bézier al azar en cada pasada, con inclinación según la dirección, balanceo leve y tamaño que cambia (se acerca o
+  se aleja); luces de navegación que titilan (`.jbl`, `.jst`); solo corre en modo Ciudad con la pestaña visible; ocultos con
+  reducir movimiento. UN solo
   botón `button[data-tema]` que va pasando oscuro → claro → Ciudad (solo con la marca) → oscuro (`temaSig`, pedido del dueño
   02/11/2026) y dice a qué modo pasa. El script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo.
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
