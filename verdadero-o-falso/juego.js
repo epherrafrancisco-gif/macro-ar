@@ -560,6 +560,10 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
 if (typeof CONCEPTOS !== 'undefined') for (const [t, ok, exp] of CONCEPTOS)
   vf('con-' + hash(t).toString(36), 'con-' + hash(t).toString(36), null, 'Conceptos', t, ok, exp, 'Conceptos de economía de primer año.', ['', 'Ir a Pulso Macro'], .6 + rnd() * .3);
 
+// ---------- tandas por tema (pedido del dueño 02/11/2026), de temas.js: cada tema es su propio formato en el orden ----------
+if (typeof TEMAS !== 'undefined') for (const T of TEMAS) for (const [t, ok, exp] of T.q)
+  vf('t-' + T.t + '-' + hash(t).toString(36), 't-' + T.t + '-' + hash(t).toString(36), null, T.k, t, ok, exp, 'Pulso Macro.', ['', 'Ir a Pulso Macro'], .6 + rnd() * .3);
+
 // ---------- afuera lo poco llamativo (pedido del dueño 01/11/2026) ----------
 // monedas en pesos, agenda/próximas publicaciones, noticias, bolsas y commodities mensuales, rankings de tasas/bonos/desempleo
 {
@@ -570,7 +574,7 @@ if (typeof CONCEPTOS !== 'undefined') for (const [t, ok, exp] of CONCEPTOS)
     if (r.mold !== 'vf' || FUERA_M.has(r.mold) || (r.mold === 'rmun' && FUERA_K.test(r.key)) || FUERA_VF.test(r.id)) R.splice(i, 1);
     else {  // grupo por tema, para que se mezclen y no sean todas de acciones
       const k = r.kick.replace('Verdadero o falso · ', '');
-      r.cat = /Conceptos/.test(k) ? 'con' : /Acciones|Si hubieras/.test(k) ? 'acc' : /Inflación/.test(k) ? 'inf' : /Dólar/.test(k) ? 'dol' : /Big Mac/.test(k) ? 'bm' : /Tasas/.test(k) ? 'tas' : 'his';
+      r.cat = /^vf-t-/.test(r.id) ? 'con' : /Conceptos/.test(k) ? 'con' : /Acciones|Si hubieras/.test(k) ? 'acc' : /Inflación/.test(k) ? 'inf' : /Dólar/.test(k) ? 'dol' : /Big Mac/.test(k) ? 'bm' : /Tasas/.test(k) ? 'tas' : 'his';
     }
   }
 }
@@ -592,7 +596,7 @@ const frescos = R.filter(r => vistos[vk(r)] == null);
 // El orden es al azar de verdad: se sortea el formato según su peso y, dentro del formato, una pregunta al azar. Nunca dos del
 // mismo formato seguidas (conceptos, como mucho tres), ni el mismo país o acción cerca.
 const FMT = [  // [formato, id, peso]; el orden importa (el primero que coincide)
-  ['con', /^vf-con-/, 58],
+  ['con', /^vf-con-/, 40],   // + los temas de temas.js (~28 en total): unos dos tercios son de saber economía
   ['ia', /^vf-(ia|p-ia)-/, 7],           // inflación de Argentina en meses o años que se recuerdan
   ['dol', /^vf-(real|p-dr|bre)-/, 7],     // dólar a precios de hoy y brecha
   ['infar', /^vf-inf-ar-/, 5],            // país contra Argentina
@@ -605,8 +609,9 @@ const FMT = [  // [formato, id, peso]; el orden importa (el primero que coincide
   ['infpp', /^vf-inf-/, 1.5],             // país contra país (muy pocas)
   ['pp2', /^vf-pp2-/, 1],
 ];
-const fmtDe = r => { for (const [f, re] of FMT) if (re.test(r.id)) return f; return 'otro'; };
+const fmtDe = r => { if (r.id.startsWith('vf-t-')) return 't-' + r.id.split('-')[2]; for (const [f, re] of FMT) if (re.test(r.id)) return f; return 'otro'; };
 const PESO = Object.fromEntries(FMT.map(([f, , w]) => [f, w])); PESO.otro = 1;
+if (typeof TEMAS !== 'undefined') for (const T of TEMAS) PESO['t-' + T.t] = T.w;   // temas de temas.js, cada uno con su peso
 const base = frescos;
 const colas = {};
 for (const r of base) { r.fmt = fmtDe(r); (colas[r.fmt] = colas[r.fmt] || []).push(r); }

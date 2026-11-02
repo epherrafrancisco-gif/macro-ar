@@ -598,7 +598,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   peso y dentro una pregunta al azar (colas mezcladas, sin `score`); nunca dos del mismo formato seguidas salvo conceptos (hasta 3)
   y sin repetir país/acción en las últimas 8 (`key`). Reemplaza a `CUOTA`. Conceptos: ~477 en `conceptos.js` (tercera tanda del
   02/11/2026 con cuentas rápidas, causa y efecto en Argentina, historia, mundo, finanzas personales, mercados, empresas, conducta).
-  Como las vistas no vuelven en 180 días, cuando se gastan los conceptos el resto pesa más: sumar conceptos seguido. Pedido del dueño 01/11/2026: preguntas de
+  Como las vistas no vuelven en 180 días, cuando se gastan los conceptos el resto pesa más: sumar conceptos seguido.
+  Temas (pedido del dueño 02/11/2026): `verdadero-o-falso/temas.js`, `TEMAS` = [{t, k, w, q}] (billetes, planes y ministros,
+  siglas, mitos, quién cobra cada impuesto, empresas, comercio exterior, Argentina en números, economistas, jerga del mercado,
+  cuentas rápidas; ~246). Ids `vf-t-<tema>-<hash>`, cada tema es su propio formato (`fmtDe`) con peso `w`; conceptos bajó a 40
+  para que conceptos + temas sean ~2/3. Kick = nombre del tema; cat `con`. Para sumar: filas al tema (t sin guiones). Pedido del dueño 01/11/2026: preguntas de
   CONCEPTOS de primer año (`verdadero-o-falso/conceptos.js`, `CONCEPTOS` [afirmación, verdadera, explicación], ~290; categoría
   `con`, cuota 30 en `CUOTA`) y solo acciones conocidas (`FAMOSAS` en juego.js y la misma lista en scripts/verdadero.py). Sin
   puntos: la ficha `#pts` muestra solo la racha; al errar, el reel queda rojo (`.reel.perdio`). Pedido del dueño 02/11/2026: acciones
