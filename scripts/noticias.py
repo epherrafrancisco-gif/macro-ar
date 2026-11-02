@@ -134,8 +134,8 @@ def og_image(url):
 
 # fuera lo que no tiene que ver (las secciones de política y los feeds generales traen de todo)
 RUIDO = re.compile(r"f[uú]tbol|boca juniors|river plate|selecci[oó]n argentina|messi|mundial 20|partido de|gol\b|tenis|f[oó]rmula 1|"
-                   r"hor[oó]scopo|far[aá]ndula|novela|actriz|actor\b|cantante|gran hermano|asesin|homicid|femicid|polic[ií]a|choque|accidente|"
-                   r"clima|pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
+                   r"hor[oó]scopo|far[aá]ndula|novela|actriz|actor\b|cantante|gran hermano|asesin|homicid|femicid|polic[ií]a|accidente de tr|"
+                   r"pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
 
 
 def leer(medio, url):

@@ -213,7 +213,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   duración, de usa.json), en pb. Misma TIR que la página (validada idéntica). update.py los guarda SOLO en la corrida de la
   tarde de días hábiles (`propios_cierre`, ≥17 h) como `mep_pm`, `ccl_pm`, `riesgo_pm` en `diario`. Primero se comparan unos
   días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
-- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h; Perfil: `/feed/economia` da 404 desde 10/2026, se usa la primera que ande de una lista, hoy `/feed/reperfilar`, su sección de economía). Pedido del dueño 02/11/2026: tarjetas
+- Noticias: `noticias.json` (scripts/noticias.py, 72 h, hasta 900). Pedido del dueño 02/11/2026: muchas más, de economía y alrededor
+  (negocios, finanzas, política). `FUENTES` = medio → secciones → direcciones alternativas (la primera que ande): Ámbito, Infobae,
+  La Nación, iProfesional, Perfil (`/feed/economia` da 404 desde 10/2026: Reperfilar), Clarín, Página/12, El Cronista, El
+  Economista y TN; `RUIDO` saca deportes, espectáculos y policiales; tema `politica` en el filtro (`NWT`). Pedido del dueño 02/11/2026: tarjetas
   con foto como la portada de Edge (`.nwg`/`.nwc`, la primera de cada día grande en compu; 2 columnas en celular; sin foto,
   las iniciales del medio). Solo en estas noticias generales: las de cada país siguen como lista. Foto `i`: la del feed
   (media:content/thumbnail/enclosure/<img>), achicada a 560 px en el resizer de Arc (Infobae, La Nación; se prueba con una
@@ -589,7 +592,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   solo súper conocidas (~25 en `FAMOSAS`, cuota 8), sin el total de preguntas ("sensación de infinito"), al pie "Tu récord"
   (`#recYo`, `PT.max`) y "Récord de todos"; la siguiente pregunta recién se dibuja al responder la actual (`pintar(1)` en `premio`)
   y si alguien recarga con una a la vista sin responder (`pl-pend`) la racha se corta; al acertar la pantalla queda verde
-  (`.reel.gano`), saltan monedas de oro (`monedas`), número dorado con rayos y, con racha ≥3, marco de luces de casino (`luces`). Compartir =
+  (`.reel.gano`), confeti que cae desde arriba en cada acierto (`lluvia`) más el del botón y número dorado con rayos. Las monedas
+  (`monedas`) y el marco de luces (`luces`) se probaron y el dueño los sacó el 02/11/2026 ("queda horrible"): no volver a ponerlos. Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,

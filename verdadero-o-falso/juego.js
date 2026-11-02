@@ -747,11 +747,10 @@ function premio(ok, btn, reel) {
   if (ok) rachaServidor(reel); else TK = '';
   if (ok) {
     PT.r++; const mio = PT.r > PT.max && PT.max >= 2; PT.max = Math.max(PT.max, PT.r);
-    fx('bien'); onda(btn); reel.classList.add('gano'); monedas(btn, PT.r >= 5 ? 70 : PT.r >= 3 ? 45 : 28);
-    if (PT.r >= 3) luces(PT.r >= 7 ? 2600 : 1600);
+    fx('bien'); onda(btn); reel.classList.add('gano');
+    lluvia(PT.r >= 10 ? 220 : PT.r >= 5 ? 160 : 110);   // confeti que cae desde arriba en cada acierto (pedido del dueño 02/11/2026)
     grande(fN(PT.r), PT.r === 1 ? 'seguida' : 'seguidas');
     confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
-    if (PT.r >= 5) setTimeout(() => lluvia(PT.r >= 10 ? 160 : 90), 250);
     medidor();
     if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
     else if (mio && PT.r >= 3) cartel(reel, '¡Tu nuevo récord!<small>' + fN(PT.r) + ' seguidas</small>');

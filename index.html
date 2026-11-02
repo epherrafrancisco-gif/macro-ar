@@ -3554,7 +3554,7 @@ body.mporta .hbus{display:none}
 
   // ---- NOTICIAS (noticias.json, lo arma scripts/noticias.py cada hora) ----
   let nw = null, nwAt = 0, nwTema = '', nwVisto = null;
-  const NWT = [['','Todas'],['dolar','Dólar'],['bcra','BCRA y tasas'],['inflacion','Inflación'],['mercados','Mercados'],['fiscal','Fiscal'],['actividad','Actividad']];
+  const NWT = [['','Todas'],['dolar','Dólar'],['bcra','BCRA y tasas'],['inflacion','Inflación'],['mercados','Mercados'],['fiscal','Fiscal'],['actividad','Actividad'],['politica','Política']];
   try{ nwVisto = localStorage.getItem('macro-nw-visto'); }catch(e){}
   async function cargarNoticias(){
     try{ const r = await fetch('noticias.json?t='+VER(), {cache:'no-store'}); if(r.ok){ nw = await r.json(); nwAt = Date.now(); } }catch(e){}
