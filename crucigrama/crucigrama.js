@@ -13,11 +13,16 @@ function azar(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>
 
 // ---------- generador ----------
 const BANCO = PALABRAS.filter(([p]) => /^[A-ZÑ]{3,11}$/.test(p));
+const V2 = HOY >= '2026-11-03';
+// v2: el banco se baraja por tandas de 4 días y cada día usa su porción: así casi no se repiten palabras entre días seguidos
+const MAZO = (() => { if (!V2) return null; const tam = Math.ceil(BANCO.length / 4), ep = Math.floor((N - 1) / 4), pos = (N - 1) % 4;
+  const m = BANCO.slice(), r = azar(semilla('pulso-mazo-' + ep)); for (let i = m.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [m[i], m[j]] = [m[j], m[i]]; }
+  return m.slice(pos * tam, pos * tam + tam); })();
 function armar(rnd) {
-  const lista = BANCO.slice();
+  const lista = (MAZO || BANCO).slice();
   for (let i = lista.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [lista[i], lista[j]] = [lista[j], lista[i]]; }
-  const cand = lista.slice(0, 40).sort((a, b) => b[0].length - a[0].length);
-  const G = new Map(), puestas = [], MAX = 13;
+  const cand = lista.slice(0, V2 ? 99 : 40).sort((a, b) => b[0].length - a[0].length);
+  const G = new Map(), D = new Map(), puestas = [], MAX = V2 ? 13 : 13;  // D: dirección de cada letra puesta
   const k = (x, y) => x + ',' + y, at = (x, y) => G.get(k(x, y));
   let minX = 0, maxX = 0, minY = 0, maxY = 0;
   function cabe(w, x, y, dx, dy) {
@@ -25,7 +30,7 @@ function armar(rnd) {
     if (at(x - dx, y - dy) || at(x + dx * w.length, y + dy * w.length)) return -1;
     for (let i = 0; i < w.length; i++) {
       const cx = x + dx * i, cy = y + dy * i, c = at(cx, cy);
-      if (c) { if (c !== w[i]) return -1; cruces++; continue; }
+      if (c) { if (c !== w[i]) return -1; if (V2 && D.get(k(cx, cy)) === (dx ? 'h' : 'v')) return -1; cruces++; continue; }  // v2: un cruce tiene que ser con una palabra en la otra dirección (si no, una palabra quedaba metida adentro de otra)
       if (at(cx + dy, cy + dx) || at(cx - dy, cy - dx)) return -1;      // no pegarse a otra palabra en paralelo
     }
     const nx0 = Math.min(minX, x), ny0 = Math.min(minY, y), nx1 = Math.max(maxX, x + dx * (w.length - 1)), ny1 = Math.max(maxY, y + dy * (w.length - 1));
@@ -33,7 +38,7 @@ function armar(rnd) {
     return cruces;
   }
   function poner(w, pista, x, y, dx, dy) {
-    for (let i = 0; i < w.length; i++) G.set(k(x + dx * i, y + dy * i), w[i]);
+    for (let i = 0; i < w.length; i++) { G.set(k(x + dx * i, y + dy * i), w[i]); D.set(k(x + dx * i, y + dy * i), dx ? 'h' : 'v'); }
     minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x + dx * (w.length - 1)); maxY = Math.max(maxY, y + dy * (w.length - 1));
     puestas.push({w, pista, x, y, dx, dy});
   }
@@ -115,9 +120,12 @@ grid.addEventListener('pointerdown', e => {
 document.querySelector('.pistas').addEventListener('click', e => {
   const li = e.target.closest('li'); if (!li) return;
   const p = P.puestas.find(q => q.n === +li.dataset.n && (li.dataset.d === 'h' ? q.dx : q.dy)); dir = li.dataset.d;
-  for (let i = 0; i < p.w.length; i++) { const x = p.x + p.dx * i, y = p.y + p.dy * i; if (!inp(x, y).value) return ir(x, y); }
-  ir(p.x, p.y);
+  irPalabra(p);
+  if (matchMedia('(max-width:879px)').matches) $('#pAct').scrollIntoView({block: 'start', behavior: 'smooth'});
 });
+function irPalabra(p) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); const c = cs.find(q => !inp(q.x, q.y).value) || cs.find(q => !fija(inp(q.x, q.y))) || cs[0]; ir(c.x, c.y); }
+// próxima palabra sin resolver (Enter, Tab o al terminar una)
+function siguiente(p) { const L = [...HOR, ...VER], j = L.indexOf(p); for (let k = 1; k <= L.length; k++) { const q = L[(j + k) % L.length]; if (!OKW.has(q.n + (q.dx ? 'h' : 'v'))) return q; } return null; }
 $('#pAct').addEventListener('click', () => { if (cur && palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus(); } });
 const fija = c => !!c && c.parentNode.classList.contains('okw');  // casillero de una palabra ya resuelta (no se puede cambiar)
 const paso = (d) => { const dx = dir === 'h' ? d : 0, dy = dir === 'v' ? d : 0; return {x: cur.x + dx, y: cur.y + dy}; };
@@ -138,16 +146,26 @@ grid.addEventListener('input', e => {
   i.value = v; E.l[cur.x + ',' + cur.y] = v; i.parentNode.classList.remove('mal');
   arrancarReloj(); guardar();
   verdes(true);
+  const pa = palabraDe(cur.x, cur.y, dir);
+  if (v && pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin) { const q = siguiente(pa); if (q) { irPalabra(q); revisarFin(); return; } }
   if (v) { const n = paso(1); if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }  // pasa a la siguiente aunque esté resuelta (no se saltea: si no, la letra que sigue cae en otro casillero)
   revisarFin();
 });
+let borroBI = 0;
+grid.addEventListener('beforeinput', e => {
+  if (!cur || e.inputType !== 'deleteContentBackward') return;
+  const t = e.target; borroBI = Date.now();
+  if (fija(t)) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) ir(n.x, n.y); return; }
+  if (!t.value) { e.preventDefault(); const n = paso(-1), c = inp(n.x, n.y); if (c) { ir(n.x, n.y); if (!fija(c)) { c.value = ''; E.l[n.x + ',' + n.y] = ''; guardar(); } } }
+});
 grid.addEventListener('keydown', e => {
   if (!cur) return;
+  if (e.key === 'Backspace' && 'onbeforeinput' in grid) return;  // lo maneja beforeinput (anda también en Android)
   const mov = {ArrowRight: [1, 0, 'h'], ArrowLeft: [-1, 0, 'h'], ArrowDown: [0, 1, 'v'], ArrowUp: [0, -1, 'v']}[e.key];
   if (mov) { e.preventDefault(); dir = mov[2]; let x = cur.x + mov[0], y = cur.y + mov[1]; while (x >= 0 && y >= 0 && x < W && y < H) { if (ir(x, y)) return; x += mov[0]; y += mov[1]; } marcar(); return; }
   if (e.key === 'Backspace' && fija(e.target)) { e.preventDefault(); const n = paso(-1); if (inp(n.x, n.y)) ir(n.x, n.y); return; }
   if (e.key === 'Backspace' && !e.target.value) { e.preventDefault(); const n = paso(-1), c = inp(n.x, n.y); if (c) { ir(n.x, n.y); if (!fija(c)) { c.value = ''; E.l[n.x + ',' + n.y] = ''; guardar(); } } }
-  if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); const lst = dir === 'h' ? HOR : VER, p = palabraDe(cur.x, cur.y, dir), j = lst.indexOf(p), q = lst[(j + 1) % lst.length]; ir(q.x, q.y); }
+  if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); const q = siguiente(palabraDe(cur.x, cur.y, dir)); if (q) irPalabra(q); }
 });
 
 // ---------- palabras bien = verde al instante (pedido del dueño: "para ir descartando") ----------
@@ -177,6 +195,10 @@ let tic = null, t0 = 0;
 function fmtT(s) { return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
 function arrancarReloj() { if (tic || E.fin) return; t0 = Date.now() - E.t * 1000; tic = setInterval(() => { E.t = Math.round((Date.now() - t0) / 1000); $('#reloj').textContent = fmtT(E.t); if (E.t % 5 === 0) guardar(); }, 1000); }
 $('#reloj').textContent = fmtT(E.t);
+document.addEventListener('visibilitychange', () => {  // con la pestaña oculta el reloj se frena (si no, al volver aparecían horas)
+  if (document.hidden) { if (tic) { clearInterval(tic); tic = null; E.t = Math.round((Date.now() - t0) / 1000); guardar(); arrancarReloj.pausado = true; } }
+  else if (arrancarReloj.pausado) { arrancarReloj.pausado = false; arrancarReloj(); }
+});
 // pista (pedido del dueño 01/11/2026): la letra va en el casillero donde estás parado; si ese ya está bien, en uno al azar
 $('#pista').onclick = () => {
   const mal = c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x];
@@ -212,7 +234,7 @@ function festejo(dias) {
   const txt = `Crucigrama de economía de Pulso Macro N.º ${N}: lo resolví en ${fmtT(E.t)} ${E.pistas ? 'con ' + E.pistas + ' pistas' : 'sin pistas'}. ¿Vos?\npulsomacro.com.ar/crucigrama/`;
   $('#finSh').onclick = () => { if (navigator.share) navigator.share({text: txt}).catch(() => {}); else { navigator.clipboard && navigator.clipboard.writeText(txt); aviso('Copiado para pegar donde quieras.'); } };
   const cd = () => { const fin = Date.parse(HOY + 'T00:00:00-03:00') + 864e5, s = Math.max(0, (fin - Date.now()) / 1000);
-    $('#finN').textContent = `${Math.floor(s / 3600)} h ${String(Math.floor(s % 3600 / 60)).padStart(2, '0')} min`; };
+    $('#finN').textContent = s > 0 ? `${Math.floor(s / 3600)} h ${String(Math.floor(s % 3600 / 60)).padStart(2, '0')} min` : 'unos segundos: ya salió, recargá la página'; };
   cd(); setInterval(cd, 30000);
 }
 $('#finX').onclick = () => $('#fin').hidden = true;

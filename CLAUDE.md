@@ -623,6 +623,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `.hecha`). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
+- Revisión a fondo (02/11/2026), cambios desde el N.º 3 (03/11; `V2 = HOY >= '2026-11-03'`, así el del día no cambió a mitad de
+  partida): el generador anota la dirección de cada letra (`D`) y un cruce tiene que ser con una palabra de la otra dirección
+  (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); el banco se baraja por tandas
+  de 4 días (`MAZO`) y cada día usa su cuarta parte (palabras repetidas con el día anterior: de 1,7 a 0,5 en promedio). Validado
+  con 365 días: todos con 15 palabras salvo 12 (14) y 1 (13), y ninguna fila o columna que no sea una palabra del listado.
+  Página: la pista actual (`#pAct`) va arriba de la grilla y queda pegada arriba (el teclado del celular la tapaba); en celular la
+  grilla va de borde a borde (casilleros de ~24 a ~26 px); borrar usa `beforeinput` (en Android el teclado no manda keydown
+  Backspace y no se podía volver al casillero anterior); Enter/Tab y terminar una palabra llevan a la próxima sin resolver
+  (`siguiente`, `irPalabra`); tocar una pista de la lista sube a la grilla en celular; el reloj se frena con la pestaña oculta;
+  después de medianoche el festejo dice que ya salió el nuevo.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):
