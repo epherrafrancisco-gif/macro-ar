@@ -74,9 +74,23 @@ function armar(rnd) {
   }
   return {puestas, minX, minY, ancho: maxX - minX + 1, alto: maxY - minY + 1};
 }
+// Desde el N.º 3 (pedido del dueño 02/11/2026: "como el de La Nación", 25 a 32 palabras y casilleros grandes): grilla de 11×11
+// con casilleros negros, armada de antemano en grillas.js por scripts/crucigrama_grillas.js (ninguna palabra de 5+ letras se
+// repite antes de 60 días; dos crucigramas cualesquiera comparten como mucho 4 palabras).
+const G3 = (() => { if (!V2) return null; try { return CRUCI_G.d[N - CRUCI_G.n0] || null; } catch (e) { return null; } })();
+function desdeGrilla(g) {
+  const PI = new Map(); for (const [w, p] of PALABRAS) if (w && !PI.has(w)) PI.set(w, p);
+  const S = 11, at = (x, y) => g[y * S + x], puestas = [];
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) for (const [dx, dy] of [[1, 0], [0, 1]]) {
+    if (at(x, y) === '#' || (x - dx >= 0 && y - dy >= 0 && at(x - dx, y - dy) !== '#')) continue;
+    let w = ''; for (let i = 0; x + dx * i < S && y + dy * i < S && at(x + dx * i, y + dy * i) !== '#'; i++) w += at(x + dx * i, y + dy * i);
+    if (w.length >= 3) puestas.push({w, pista: PI.get(w) || '', x, y, dx, dy});
+  }
+  return {puestas, minX: 0, minY: 0, ancho: S, alto: S, neg: true};
+}
 // varias pruebas con la semilla del día; se queda con la que tiene más palabras (y más cuadrada)
-let P = null;
-for (let t = 0; t < (V2 ? 50 : 30); t++) {
+let P = G3 ? desdeGrilla(G3) : null;
+for (let t = 0; !G3 && t < (V2 ? 50 : 30); t++) {
   const r = armar(azar(semilla('pulso-cruci-' + HOY + '-' + t)));
   const sc = r.puestas.length * 100 - Math.abs(r.ancho - r.alto) * 3;
   if (!P || sc > P.sc) P = {...r, sc};
@@ -98,7 +112,7 @@ const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(E)); } ca
 
 // ---------- dibujar ----------
 const grid = $('#grid');
-grid.style.setProperty('--w', W); grid.style.setProperty('--h', H);
+grid.style.setProperty('--w', W); grid.style.setProperty('--h', H); if (P.neg) grid.classList.add('neg');
 let html = '';
 for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
   const s = SOL[y][x];
@@ -269,7 +283,7 @@ function confeti(n) {
 }
 if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); let R = {n: 1}; try { R = JSON.parse(localStorage.getItem(RK) || '{"n":1}'); } catch (e) {} festejo(R.n); $('#fin').hidden = true; $('#yaFin').hidden = false; }
 $('#yaFin').onclick = () => $('#fin').hidden = false;
-$('#ayuda').textContent = `${P.puestas.length} palabras de economía. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
+$('#ayuda').textContent = `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
 verdes(false);
-window.__cruci = {W, H, palabras: P.puestas.map(p => p.w)};
+window.__cruci = {W, H, palabras: P.puestas.map(p => p.w), _p: P.puestas, _ir: (x, y, d) => { dir = d; ir(x, y); }};
 })();

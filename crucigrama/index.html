@@ -39,6 +39,8 @@ main{max-width:1100px;margin:0 auto;padding:0 16px 120px}
 .tablero{background:#0b0f15;border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;place-items:center;overflow:auto}
 #grid{--w:13;--h:13;--c:min(calc((100vw - 58px - (var(--w) - 1) * 2px) / var(--w)),40px);display:grid;grid-template-columns:repeat(var(--w),var(--c));grid-auto-rows:var(--c);gap:2px}
 .cv{background:transparent}
+/* grilla de 11×11 con casilleros negros (desde el N.º 3): casilleros grandes, como el de La Nación */
+#grid.neg{gap:1px;--c:min(calc((100vw - 68px) / 11),48px)}#grid.neg .cl{border-radius:1px}
 .cl{position:relative;background:var(--papel);border-radius:3px;box-shadow:0 0 0 1px #0004}
 .cl input{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;text-align:center;font:700 calc(var(--c) * .55)/1 var(--sans);color:var(--tinta);text-transform:uppercase;caret-color:transparent;outline:0;padding:calc(var(--c) * .12) 0 0;border-radius:3px}
 .cl .nm{position:absolute;left:2px;top:1px;font:600 calc(var(--c) * .26)/1 var(--mono);color:#555;pointer-events:none;z-index:1}
@@ -77,7 +79,7 @@ main{max-width:1100px;margin:0 auto;padding:0 16px 120px}
 .fin .acc .pri{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#1a1206;border:0}
 .fin .x{justify-self:center;background:none;border:0;color:var(--mut);font:14px var(--sans);cursor:pointer;margin-top:4px}
 .confeti{position:fixed;inset:0;width:100%;height:100%;z-index:45;pointer-events:none}
-@media (max-width:600px){main{padding:0 8px 120px}.tablero{padding:6px;border-radius:10px}#grid{--c:calc((100vw - 30px - (var(--w) - 1) * 2px) / var(--w))}.pact{font-size:14px;padding:8px 12px}}
+@media (max-width:600px){main{padding:0 8px 120px}.tablero{padding:6px;border-radius:10px}#grid{--c:calc((100vw - 30px - (var(--w) - 1) * 2px) / var(--w))}.tablero:has(#grid.neg){margin:0 -4px;padding:3px}#grid.neg{--c:calc((100vw - 26px) / 11)}.pact{font-size:14px;padding:8px 12px}}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -90,7 +92,7 @@ main{max-width:1100px;margin:0 auto;padding:0 16px 120px}
   <div class="cab">
     <div class="fe" id="fecha"></div>
     <h1>Crucigrama <span>del día</span></h1>
-    <p>Uno nuevo cada día, igual para todos, con palabras de economía. Mañana hay otro.</p>
+    <p>Uno nuevo cada día, igual para todos: economía, plata y palabras de todos los días. Mañana hay otro.</p>
   </div>
   <div class="zona">
     <div>
@@ -116,8 +118,9 @@ main{max-width:1100px;margin:0 auto;padding:0 16px 120px}
   <div class="acc"><button type="button" class="pri" id="finSh">Compartir mi tiempo</button><a href="/verdadero-o-falso/">Mientras tanto: Verdadero o falso</a></div>
   <button type="button" class="x" id="finX">Cerrar</button>
 </div></div>
-<script src="palabras.js?v=5"></script>
+<script src="palabras.js?v=6"></script>
 <script src="plan.js?v=2"></script>
-<script src="crucigrama.js?v=8"></script>
+<script src="grillas.js?v=1"></script>
+<script src="crucigrama.js?v=9"></script>
 </body>
 </html>

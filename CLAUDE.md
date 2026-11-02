@@ -613,7 +613,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
 
 ## Crucigrama (`/crucigrama/`, pedido del dueño 01/11/2026: "uno por día, estilo crucigrama de La Nación pero de economía")
-- `crucigrama/index.html` + `crucigrama.js` + `palabras.js` (banco `PALABRAS` [palabra, pista], ~180, 3-11 letras sin
+- `crucigrama/index.html` + `crucigrama.js` + `palabras.js` (banco `PALABRAS` [palabra, pista], ~2.400 desde el 02/11/2026, 3-11 letras sin
   tildes; para sumar, agregar ahí). Todo en el navegador, sin robot: semilla = fecha de Buenos Aires (UTC−3), 30 pruebas
   `armar()` con esa semilla y queda la de más palabras (~15), grilla máx. 13×13 de palabras cruzadas sin pegarse en
   paralelo; numeración clásica, Horizontales/Verticales. Igual para todos el mismo día; N.º 1 = 01/11/2026. Un casillero
@@ -638,6 +638,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Backspace y no se podía volver al casillero anterior); Enter/Tab y terminar una palabra llevan a la próxima sin resolver
   (`siguiente`, `irPalabra`); tocar una pista de la lista sube a la grilla en celular; el reloj se frena con la pestaña oculta;
   después de medianoche el festejo dice que ya salió el nuevo.
+- Formato La Nación desde el N.º 3 (pedido del dueño 02/11/2026: "25 a 32 palabras" y casilleros no más chicos que los de La
+  Nación en el celular, ~31 px): grilla de 11×11 con casilleros negros, simétrica (giro de 180°), estilo británico: filas y
+  columnas pares tienen palabras de 3, 5, 7 u 11 letras y en las impares una letra sí y una no (cada palabra se cruza cada dos
+  letras); todo conectado y el centro abierto. 26 palabras por día. Las grillas completas vienen hechas en `crucigrama/grillas.js`
+  (`CRUCI_G`, 121 caracteres por día, `#` = negro, desde el N.º 3 hasta 12/2028) que arma `node scripts/crucigrama_grillas.js
+  [días]` (búsqueda con vuelta atrás; prefiere las palabras que hace más que no salen). Reglas: ninguna palabra de 5+ letras
+  antes de 60 días; las de 3 letras (hay pocas en español) nunca antes de 18; dos días cualesquiera con máx. 4 en común; máx. 3
+  siglas/códigos por día. Lo ya publicado no cambia (`--desde`, por defecto mañana). En la página: `G3`, `desdeGrilla` arma
+  `P.puestas` con las pistas de `PALABRAS` y `#grid.neg` (gap 1 px; celular `(100vw − 26px)/11` = 30 px en 360 y 33 en 390;
+  compu 48 px). `plan.js`/`MAZO`/`armar` quedan de respaldo si un día no está en grillas.js. Banco de ~2.400 palabras
+  (tandas del 02/11/2026 de 3, 5 y 7 letras, cosas de todos los días: pedido del dueño, "no mega complejas"). Para sumar
+  palabras: al final de `palabras.js` y volver a correr el script. PENDIENTE: extender grillas.js antes de 12/2028.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):
