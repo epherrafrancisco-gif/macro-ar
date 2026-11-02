@@ -229,6 +229,8 @@ except Exception as e:
     diag['errores'].append(f'ventas: {e}'); diag['fuentes']['ventas'] = 'error'
     if viejo.get('ventas'): out['ventas'] = viejo['ventas']
 
+try: diag['estado_worker'] = json.loads(bajar('https://datos.pulsomacro.com.ar/surtidores/estado.json'))
+except Exception as e: diag['estado_worker'] = str(e)[:120]
 out['diag'] = diag
 out['actualizado'] = str(HOY)
 with open(R + 'surtidores.json', 'w', encoding='utf-8') as f:
