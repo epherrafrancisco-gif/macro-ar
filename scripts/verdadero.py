@@ -117,10 +117,7 @@ arg['fx'] = [[a, r4(b)] for a, b in arg['mayorista'][-400:]]
 F = H['fechas']; pos = {f: i for i, f in enumerate(F)}; n = len(F)
 acc, fuera = {}, {'sin_nombre': 0, 'poco_operada': 0, 'saltos': 0, 'poco_conocida': 0}
 # solo empresas conocidas (pedido del dueño 01/11/2026); la misma lista que FAMOSAS en verdadero-o-falso/juego.js
-FAMOSAS = set(('GGAL YPFD PAMP BMA TXAR ALUA CEPU TGSU2 TGNO4 LOMA CRES BBAR SUPV TECO2 EDN COME MIRG VALO BYMA TRAN METR IRSA '
-    'AAPL MSFT GOOGL AMZN TSLA NVDA META KO MELI DIS NFLX MCD WMT JPM BA PFE XOM NKE SPY QQQ DIA BABA VIST BRKB INTC AMD V MA PEP SBUX '
-    'UBER PYPL GLOB TEN GOLD ORCL IBM PBR VALE GLD SLV IBIT EWZ ARKK MRNA JNJ PG T VZ CVX GE GM F TM SONY SNAP SPOT SHOP PLTR ABNB '
-    'COIN MSTR NU ADBE CRM CSCO QCOM AVGO TSM ASML LLY UNH HD COST TGT GS C BAC WFC AXP X CAT DE MMM HMC RACE MO PM ZM RBLX MERVAL').split())
+FAMOSAS = set(('GGAL YPFD PAMP BMA TXAR ALUA MELI AAPL MSFT GOOGL AMZN TSLA NVDA META KO DIS NFLX MCD WMT NKE SPY BABA PFE XOM SBUX PEP MERVAL').split())
 for tk, inf in H['info'].items():
     if inf['t'] == 'bon': continue
     if tk not in FAMOSAS: fuera['poco_conocida'] += 1; continue

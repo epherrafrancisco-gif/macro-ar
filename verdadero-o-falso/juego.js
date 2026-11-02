@@ -53,10 +53,8 @@ const retUsd = (tk, dias) => {
 };
 const NOMA = tk => P.his.acc[tk].n;
 // solo empresas conocidas (pedido del dueño 01/11/2026: "menos de acciones poco conocidas"): panel líder y los CEDEAR más populares
-const FAMOSAS = new Set(('GGAL YPFD PAMP BMA TXAR ALUA CEPU TGSU2 TGNO4 LOMA CRES BBAR SUPV TECO2 EDN COME MIRG VALO BYMA TRAN METR IRSA ' +
-  'AAPL MSFT GOOGL AMZN TSLA NVDA META KO MELI DIS NFLX MCD WMT JPM BA PFE XOM NKE SPY QQQ DIA BABA VIST BRKB INTC AMD V MA PEP SBUX ' +
-  'UBER PYPL GLOB TEN GOLD ORCL IBM PBR VALE GLD SLV IBIT EWZ ARKK MRNA JNJ PG T VZ CVX GE GM F TM SONY SNAP SPOT SHOP PLTR ABNB ' +
-  'COIN MSTR NU ADBE CRM CSCO QCOM AVGO TSM ASML LLY UNH HD COST TGT GS C BAC WFC AXP X CAT DE MMM HMC RACE MO PM ZM RBLX').split(' '));
+const FAMOSAS = new Set(('GGAL YPFD PAMP BMA TXAR ALUA MELI ' +
+  'AAPL MSFT GOOGL AMZN TSLA NVDA META KO DIS NFLX MCD WMT NKE SPY BABA PFE XOM SBUX PEP').split(' '));
 const famosa = tk => tk === 'MERVAL' || FAMOSAS.has(tk);
 
 // ---------- moldes: cada uno arma reels con datos reales ----------
@@ -590,7 +588,7 @@ const marcarVisto = r => { if (r && vistos[vk(r)] == null) { vistos[vk(r)] = DIA
 try { localStorage.removeItem('pl-vistos'); } catch (e) {}
 const frescos = R.filter(r => vistos[vk(r)] == null);
 // cuánto de cada tema: así los cientos de "simulador" no tapan al resto
-const CUOTA = {con: 30, acc: 20, inf: 20, his: 14, dol: 10, bm: 6, tas: 4};  // conceptos primero (pedido del dueño 01/11/2026), menos acciones
+const CUOTA = {con: 34, inf: 22, his: 16, dol: 12, acc: 8, bm: 6, tas: 4};  // pocas de acciones (pedido del dueño 02/11/2026)  // conceptos primero (pedido del dueño 01/11/2026), menos acciones
 const base = frescos;
 const colas = {};
 base.map(r => ({r, w: r.score * .55 + rnd() * .45})).sort((a, b) => b.w - a.w).forEach(({r}) => (colas[r.cat] = colas[r.cat] || []).push(r));
@@ -669,7 +667,6 @@ const nCats = {}; R.forEach(r => nCats[r.cat] = (nCats[r.cat] || 0) + 1);
 const INTRO = `<section class="reel intro c-arg" data-i="-1"><div class="rin">
   <h1>Verdadero <span>o falso</span></h1>
   <p>La economía de Argentina y el mundo, con datos reales. ¿Cuántas acertás seguidas?</p>
-  <div class="n"><b>${fN(R.length)}</b> preguntas distintas hoy</div>
   <div class="swipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>Deslizá para arriba</div></div></section>`;
 let pintados = 0;
 function pintar(n) { let h = ''; for (let k = 0; k < n && pintados < ORD.length; k++, pintados++) h += reelHTML(ORD[pintados], pintados); feed.insertAdjacentHTML('beforeend', h); feed.querySelectorAll('.reel:not([data-o])').forEach(el => { el.dataset.o = 1; io.observe(el); }); }
@@ -685,9 +682,9 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   clearTimeout(tVisto);
   if (i >= 0) { tVisto = setTimeout(() => marcarVisto(ORD[i]), 1200); }
   else { try { localStorage.setItem('pl-intro', '1'); } catch (er) {} }
-  if (i >= pintados - 4) pintar(8);
-  const r = ORD[i]; $('#fCat').textContent = r ? CATN[r.cat] : 'Inicio'; $('#fBar').style.width = Math.min(100, (Math.max(0, i + 1) / ORD.length) * 100) + '%'; $('#fBar').style.background = r && r.pal ? `linear-gradient(90deg,${r.pal[0]},${r.pal[1]})` : '';
-  $('#fN').textContent = i >= 0 ? `${fN(i + 1)} de ${fN(ORD.length)}` : `${fN(ORD.length)} preguntas`;
+  if (i >= 0 && !el.dataset.resp) { try { localStorage.setItem('pl-pend', '1'); } catch (er) {} }  // vista sin responder
+  const r = ORD[i]; $('#fCat').textContent = r ? CATN[r.cat] : 'Inicio'; 
+
 }), {threshold: .6});
 function contar(el) {
   const v = +el.dataset.v, d = +el.dataset.d, pre = el.dataset.pre, suf = el.dataset.suf, t0 = performance.now(), dur = 900;
@@ -695,7 +692,7 @@ function contar(el) {
   requestAnimationFrame(paso);
 }
 if (primera) feed.insertAdjacentHTML('beforeend', INTRO);
-pintar(10); if (primera) io.observe(feed.querySelector('.intro'));
+pintar(1); if (primera) io.observe(feed.querySelector('.intro'));
 
 // cuentas regresivas (solo la que está a la vista)
 setInterval(() => { const el = document.querySelector(`.reel[data-i="${actual}"] .cd`); if (!el) return; let s = Math.max(0, (+el.dataset.when - Date.now()) / 1000);
@@ -717,8 +714,11 @@ feed.addEventListener('click', e => {
 });
 // ---------- premios al responder (pedido del dueño 01/11/2026: dopamina tipo casino, sin exagerar) ----------
 let PT = {p: 0, r: 0, max: 0}; try { PT = {...PT, ...JSON.parse(localStorage.getItem('pl-pts') || '{}')}; } catch (e) {}
+// si se fue (o recargó) con una pregunta a la vista sin responder, la racha se corta: así no se puede saltear las difíciles
+try { if (localStorage.getItem('pl-pend')) { PT.r = 0; localStorage.removeItem('pl-pend'); localStorage.setItem('pl-pts', JSON.stringify(PT)); } } catch (e) {}
 const ptsEl = $('#pts');
-const ptsPintar = (anim) => {   // pedido del dueño 01/11/2026: sin puntos, lo que importa es la racha
+const ptsPintar = (anim) => {
+  yoPintar();   // pedido del dueño 01/11/2026: sin puntos, lo que importa es la racha
   ptsEl.hidden = !PT.r;
   ptsEl.querySelector('b').textContent = PT.r === 1 ? '1 seguida' : fN(PT.r) + ' seguidas';
   ptsEl.title = 'Tu racha' + (PT.max ? ' · tu mejor: ' + fN(PT.max) : '');
@@ -730,6 +730,7 @@ const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!
 const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
 let RECORD = null, TK = '';
+function yoPintar() { const el = $('#recYo'); if (!el) return; el.hidden = !PT.max; el.querySelector('b').textContent = fN(PT.max); }
 const recPintar = () => { const el = $('#rec'); if (RECORD == null || !el) return; el.hidden = false; el.querySelector('b').textContent = fN(RECORD); };
 fetch('/api/racha?t=' + VER()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.n != null) { RECORD = d.n; recPintar(); } }).catch(() => {});
 function rachaServidor(reel) {
@@ -740,16 +741,20 @@ function rachaServidor(reel) {
     }).catch(() => {});
 }
 function premio(ok, btn, reel) {
+  reel.dataset.resp = 1; try { localStorage.removeItem('pl-pend'); } catch (e) {}
+  if (pintados === +reel.dataset.i + 1) pintar(1);   // recién ahora aparece la siguiente (pedido del dueño 02/11/2026)
   marcarVisto(ORD[+reel.dataset.i]);
   if (ok) rachaServidor(reel); else TK = '';
   if (ok) {
-    PT.r++; PT.max = Math.max(PT.max, PT.r);
-    fx('bien'); onda(btn);
+    PT.r++; const mio = PT.r > PT.max && PT.max >= 2; PT.max = Math.max(PT.max, PT.r);
+    fx('bien'); onda(btn); reel.classList.add('gano'); monedas(btn, PT.r >= 5 ? 70 : PT.r >= 3 ? 45 : 28);
+    if (PT.r >= 3) luces(PT.r >= 7 ? 2600 : 1600);
     grande(fN(PT.r), PT.r === 1 ? 'seguida' : 'seguidas');
     confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
     if (PT.r >= 5) setTimeout(() => lluvia(PT.r >= 10 ? 160 : 90), 250);
     medidor();
     if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
+    else if (mio && PT.r >= 3) cartel(reel, '¡Tu nuevo récord!<small>' + fN(PT.r) + ' seguidas</small>');
     try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
     ptsPintar('gana');
   } else {
@@ -818,6 +823,34 @@ function cartel(reel, txt) {
   reel.querySelectorAll('.cartel').forEach(x => x.remove());
   const d = document.createElement('div'); d.className = 'cartel'; d.innerHTML = txt;
   reel.appendChild(d); setTimeout(() => d.remove(), 1500);
+}
+// monedas de oro que saltan del botón (tipo tragamonedas)
+function monedas(el, n) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+  const cv = document.createElement('canvas'), dpr = Math.min(2, devicePixelRatio || 1);
+  cv.className = 'confeti'; cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.appendChild(cv);
+  const x = cv.getContext('2d'); x.scale(dpr, dpr);
+  const ps = Array.from({length: n}, () => { const a = -Math.PI / 2 + (rnd() - .5) * 1.9, v = 7 + rnd() * 9;
+    return {x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 7 + rnd() * 6, f: rnd() * 6, w: .15 + rnd() * .25}; });
+  const t0 = performance.now();
+  (function paso(t) {
+    const k = (t - t0) / 1000; x.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of ps) { p.vy += .38; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.f += p.w;
+      const sx = Math.abs(Math.cos(p.f)) * p.r + .8;  // la moneda gira
+      x.save(); x.globalAlpha = Math.max(0, 1 - k / 1.6); x.translate(p.x, p.y);
+      const g = x.createLinearGradient(-sx, -p.r, sx, p.r); g.addColorStop(0, '#fff3b0'); g.addColorStop(.45, '#ffcf3a'); g.addColorStop(1, '#c47a00');
+      x.fillStyle = g; x.beginPath(); x.ellipse(0, 0, sx, p.r, 0, 0, 7); x.fill();
+      x.strokeStyle = '#8a5200'; x.lineWidth = 1.2; x.stroke();
+      if (sx > p.r * .5) { x.fillStyle = '#8a5200aa'; x.font = `800 ${p.r * 1.1}px ui-monospace,monospace`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('$', 0, 1); }
+      x.restore(); }
+    if (k < 1.6) requestAnimationFrame(paso); else cv.remove();
+  })(t0);
+}
+// marco de luces que titilan, como el de una máquina de casino (rachas de 3 o más)
+function luces(ms) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const d = document.createElement('div'); d.className = 'luces'; document.body.appendChild(d); setTimeout(() => d.remove(), ms);
 }
 function confeti(el, n) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

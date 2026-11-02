@@ -183,7 +183,17 @@ a{color:inherit}
 @media (max-width:440px){.top{gap:8px}.top .pts{padding:4px 8px}.top .pts:not([hidden])~.live{font-size:0;gap:0;padding:7px}.top .pts:not([hidden])~.live i{margin:0}}
 .foot .rec{color:#ffe9a8;white-space:nowrap}.foot .rec b{color:#ffd23d;font-weight:700}
 .foot .rec.gana{animation:ptsG .6s cubic-bezier(.3,1.6,.5,1)}
-.foot .rec:not([hidden])~#fCat{display:none}
+.foot .rec:not([hidden])~#fCat{display:none}.foot .bar,#fN{display:none}.foot .row{justify-content:center;gap:16px}
+.foot .rec.yo{color:#c8f7dc}.foot .rec.yo b{color:#3ef0a0}
+/* acierto: la pantalla queda verde (pedido del dueño 02/11/2026) */
+.reel.gano{--c:#0fb86a!important;--c2:#22e58b!important;isolation:isolate}.reel.gano::after{content:"";position:absolute;inset:0;z-index:-1;background:#14d27a33;pointer-events:none;animation:ganoIn .6s ease-out}
+@keyframes ganoIn{from{background:#3effa6aa}to{background:#14d27a33}}
+/* marco de luces de casino */
+.luces{position:fixed;inset:6px;z-index:45;pointer-events:none;border-radius:18px;
+  background:radial-gradient(circle,#fff6b0 0 3px,transparent 4px) 0 0/22px 22px repeat-x,radial-gradient(circle,#fff6b0 0 3px,transparent 4px) 0 100%/22px 22px repeat-x,
+  radial-gradient(circle,#fff6b0 0 3px,transparent 4px) 0 0/22px 22px repeat-y,radial-gradient(circle,#fff6b0 0 3px,transparent 4px) 100% 0/22px 22px repeat-y;
+  filter:drop-shadow(0 0 6px #ffd23d) drop-shadow(0 0 14px #ffb300);animation:luces .18s steps(2) infinite}
+@keyframes luces{0%{opacity:1}50%{opacity:.25}}
 /* más dopamina (pedido del dueño 01/11/2026): destello, anillos, número gigante, lluvia, medidor; rojo al errar */
 .fx{position:fixed;inset:0;z-index:44;pointer-events:none}
 .fx.bien{background:radial-gradient(circle at 50% 60%,#3ef0a066,#16c47822 45%,transparent 75%);animation:fxB .7s ease-out forwards}
@@ -198,6 +208,10 @@ body.late .top{animation:late .45s}
 @keyframes onda{0%{transform:scale(1);opacity:1}100%{transform:scale(16);opacity:0}}
 .grande{position:fixed;left:50%;top:44%;z-index:47;transform:translate(-50%,-50%);font:800 clamp(64px,22vw,120px)/1 var(--mono);color:#fff;pointer-events:none;
   text-shadow:0 0 30px #3ef0a0aa,0 6px 30px #0009;animation:grande 1s cubic-bezier(.2,1.5,.4,1) forwards;text-align:center}
+.grande::before{content:"";position:absolute;left:50%;top:50%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;z-index:-1;
+  background:repeating-conic-gradient(#ffd23d26 0 8deg,transparent 8deg 20deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 32%);mask:radial-gradient(circle,#000 0,transparent 32%);animation:rayos 1s linear}
+@keyframes rayos{to{transform:rotate(60deg)}}
+.grande{background:linear-gradient(180deg,#fffbe0,#ffd23d 55%,#ff9d00);-webkit-background-clip:text;background-clip:text;color:transparent!important;filter:drop-shadow(0 0 22px #ffcf3acc) drop-shadow(0 6px 18px #000a)}
 .grande small{display:block;font-size:.32em;color:#ffd23d;margin-top:4px;text-shadow:0 2px 14px #000a}
 @keyframes grande{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}45%{transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-70%) scale(.9)}}
 .med{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(40px + env(safe-area-inset-bottom,0px));z-index:16;width:min(420px,calc(100% - 32px));height:20px;border-radius:99px;background:#0000005c;border:1px solid #ffffff33;overflow:hidden}
@@ -277,11 +291,11 @@ body.late .top{animation:late .45s}
 </header>
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
 <div class="med" id="med" hidden><i></i><span></span></div>
-<div class="foot"><div class="row"><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
+<div class="foot"><div class="row"><span class="rec yo" id="recYo" hidden title="Tu racha más larga">Tu récord: <b>0</b></span><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 
 <script src="conceptos.js?v=1"></script>
-<script src="juego.js?v=13"></script>
+<script src="juego.js?v=14"></script>
 </body>
 </html>

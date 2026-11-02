@@ -76,7 +76,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`#pVivo`, `pvStart`/`pvTick`, `PV`): cuenta regresiva al próximo dato oficial (`calendario.json`; sin hora = 16:00
   estimada) y los 3 siguientes, hora de Buenos Aires con BYMA, habitantes y PBI mientras mirás (Banco Mundial, `wb` ARG) y
   mini gráficos del último mes (MEP, riesgo, Merval, reservas) que se dibujan al aparecer. No va en celular ni ≤900px.
-- Encabezado: selector `#modo` (Inicio `#modoH` | Argentina | Terminal `#modoT` | El mundo | Sobre Pulso Macro `#modoS`; en celular el encabezado no se ve);
+- Encabezado: selector `#modo` (pedido del dueño 02/11/2026: Inicio `#modoH` | Argentina | Noticias `#modoN` | El mundo | Terminal `#modoT`; Sobre Pulso Macro
+  salió de ahí y queda en el pie y en la hoja del celular; en celular el encabezado no se ve). Sin la firma "Diseñado y operado por…" (`.by`/`.mby`, sacada el 02/11/2026);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
   solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 39 países
@@ -212,7 +213,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   duración, de usa.json), en pb. Misma TIR que la página (validada idéntica). update.py los guarda SOLO en la corrida de la
   tarde de días hábiles (`propios_cierre`, ≥17 h) como `mep_pm`, `ccl_pm`, `riesgo_pm` en `diario`. Primero se comparan unos
   días contra Ámbito/EMBI (26/10: MEP 1.564 vs 1.562; riesgo 648 vs EMBI ~707) y recién después se muestran en la página.
-- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h). Pedido del dueño 02/11/2026: tarjetas
+- Noticias: `noticias.json` (scripts/noticias.py, RSS de Ámbito, Infobae, La Nación, iProfesional y Perfil, 48 h; Perfil: `/feed/economia` da 404 desde 10/2026, se usa la primera que ande de una lista, hoy `/feed/reperfilar`, su sección de economía). Pedido del dueño 02/11/2026: tarjetas
   con foto como la portada de Edge (`.nwg`/`.nwc`, la primera de cada día grande en compu; 2 columnas en celular; sin foto,
   las iniciales del medio). Solo en estas noticias generales: las de cada país siguen como lista. Foto `i`: la del feed
   (media:content/thumbnail/enclosure/<img>), achicada a 560 px en el resizer de Arc (Infobae, La Nación; se prueba con una
@@ -584,7 +585,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   dólar real ≥25 %, etc.): se deducen sabiendo cómo vino la economía, no adivinando. Pedido del dueño 01/11/2026: preguntas de
   CONCEPTOS de primer año (`verdadero-o-falso/conceptos.js`, `CONCEPTOS` [afirmación, verdadera, explicación], ~290; categoría
   `con`, cuota 30 en `CUOTA`) y solo acciones conocidas (`FAMOSAS` en juego.js y la misma lista en scripts/verdadero.py). Sin
-  puntos: la ficha `#pts` muestra solo la racha; al errar, el reel queda rojo (`.reel.perdio`). Compartir =
+  puntos: la ficha `#pts` muestra solo la racha; al errar, el reel queda rojo (`.reel.perdio`). Pedido del dueño 02/11/2026: acciones
+  solo súper conocidas (~25 en `FAMOSAS`, cuota 8), sin el total de preguntas ("sensación de infinito"), al pie "Tu récord"
+  (`#recYo`, `PT.max`) y "Récord de todos"; la siguiente pregunta recién se dibuja al responder la actual (`pintar(1)` en `premio`)
+  y si alguien recarga con una a la vista sin responder (`pl-pend`) la racha se corta; al acertar la pantalla queda verde
+  (`.reel.gano`), saltan monedas de oro (`monedas`), número dorado con rayos y, con racha ≥3, marco de luces de casino (`luces`). Compartir =
   imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
