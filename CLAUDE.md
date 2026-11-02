@@ -92,7 +92,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia`, `#peru` y `#polonia`; `#sobre`.
 - Celular (≤640px, `body.insec` siempre y `body.mporta` en la portada; en la compu no cambia nada). Pedido del dueño:
   que el que entra por primera vez entienda qué es, dónde está y cómo moverse.
-  - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Calculadoras; `mNavMarcar`): Argentina y El mundo abren la
+  - Barra de abajo `#mNav` (Inicio · Argentina · El mundo · Noticias, pedido del dueño 02/11/2026; antes el cuarto era Calculadoras, que sigue en la hoja de Argentina; `mNavMarcar`): Argentina y El mundo abren la
     hoja `#mSheet` con la lista de esa parte y una línea por sección (`mSheetArmar(grp)`). Arriba, `#mbar` con flecha
     para volver (`#mLogo`) y dónde estás (`#mWhere`). Se ocultan header, `#tChip`, migas, pestañas y `#mBtn`. Arriba queda una cinta (pedido del dueño): `#tape` (dólares) en portada y Argentina, `#tape2` (mercados) en El mundo y países (`body.mglo`, en `mActualizar`). En la portada no va `#mbar`.
   - Portada: `#mHero` (logo Pulso Macro, la firma y una bajada corta; nada de eslogan, pedido del dueño) (antes: qué es Pulso Macro y la firma "Diseñado y operado por…", `.mby`, como `.by` en la compu), los dólares (pedido del dueño 26/10/2026: SIN "Los datos del día"; `#mHoy` queda oculto, como en la compu) y un selector Argentina / El mundo (`#mTg`, `body[data-door]`) con las secciones en grilla
@@ -621,7 +621,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   paralelo; numeración clásica, Horizontales/Verticales. Igual para todos el mismo día; N.º 1 = 01/11/2026. Un casillero
   = un `<input>` (anda con el teclado del celular); tocar de nuevo cambia la dirección; flechas, Enter (próxima palabra) y
   borrar. Pedido del dueño (como La Nación): la palabra que estás completando va en rojo (`.act`, la letra actual `.cur` más
-  fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; la pista se tacha
+  fuerte) y cada palabra que queda bien se pone verde al instante y se bloquea (`verdes()`, `.okw`, readonly; sus letras no se pueden cambiar ni borrar desde una palabra que la cruza: guarda en `input` y Backspace; las resueltas se guardan en `E.okw` y `reparar()` las repone al cargar; la pista se tacha
   `.hecha`; al escribir se saltean los casilleros ya resueltos). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
