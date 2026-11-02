@@ -255,10 +255,8 @@ body.late .top{animation:late .45s}
 .rb svg{width:21px;height:21px}
 .rb:hover i{border-color:#ffffff55}
 /* premio: modo Ciudad de Pulso Macro con 30 seguidas (pedido del dueño 02/11/2026) */
-.lock{position:fixed;left:0;right:0;bottom:calc(36px + env(safe-area-inset-bottom,0px));z-index:16;text-align:center;font-family:var(--mono);font-size:11px;color:#c9b6ff;pointer-events:none;padding:0 16px}
-.lock svg{width:12px;height:12px;vertical-align:-2px;margin-right:5px}
-.lock a{pointer-events:auto;color:#ff6be0;text-decoration:underline;text-underline-offset:2px}
-.lock.ok{color:#9ff4ff}
+.reel .lockr{margin:10px 0 6px;font-family:var(--mono);font-size:12.5px;color:#e6d6ff;opacity:.9}
+.reel .lockr svg{width:13px;height:13px;vertical-align:-2px;margin-right:6px}
 .ciu{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#04050cd9;padding:20px;animation:ciuIn .35s ease}
 .ciu .cbox{max-width:400px;width:100%;background:#080a1a;border:1px solid #00f0ff66;box-shadow:0 0 40px #ff2bd640,inset 0 1px 0 #ff2bd6aa;text-align:center;padding:0 0 22px;overflow:hidden;
   clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
@@ -310,12 +308,11 @@ body.late .top{animation:late .45s}
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
 <div class="med" id="med" hidden><i></i><span></span></div>
 <div class="foot"><div class="row"><span class="rec yo" id="recYo" hidden title="Tu racha más larga">Tu récord: <b>0</b></span><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
-<div class="lock" id="lock"></div>
 <div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Ya aparece al lado de "Modo claro" en el inicio, en este dispositivo.</p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 
 <script src="conceptos.js?v=18"></script><script src="temas.js?v=18"></script>
-<script src="juego.js?v=18"></script>
+<script src="juego.js?v=19"></script>
 </body>
 </html>

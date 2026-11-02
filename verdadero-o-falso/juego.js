@@ -631,6 +631,10 @@ for (let total = base.length; ORD.length < total;) {
 // el primero siempre es de Argentina y del día (a eso viene la mayoría)
 
 
+// premio (modo Ciudad): se declara antes de dibujar porque cada pregunta lleva el aviso
+const CIU_META = 30;
+const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } catch (e) { return false; } };
+const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 // ---------- dibujar ----------
 function svgLine(viz) {
   const all = viz.s.flatMap(s => s.v); let mn = Math.min(...all), mx = Math.max(...all);
@@ -676,7 +680,7 @@ function reelHTML(r, i) {
   return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
-    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}<div class="src">${esc(r.src)}</div></div>
+    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${ciuOk() ? '' : `<p class="lockr">${CANDADO}${CIU_META} seguidas desbloquean un modo secreto</p>`}<div class="src">${esc(r.src)}</div></div>
     <div class="rail"><button type="button" class="rb" data-share="${i}"><i>${ICO.share}</i>Compartir</button><a class="rb" href="${SITIO}#${r.go[0]}" title="${esc(r.go[1])}"><i>${ICO.go}</i>Ver más</a></div></section>`;
 }
 // intro (la primera vez) con cuántos reels hay hoy
@@ -747,15 +751,8 @@ const ptsPintar = (anim) => {
 ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 // premio: con 30 seguidas se desbloquea el modo Ciudad de Pulso Macro (pedido del dueño 02/11/2026). Marca pm-ciudad, la lee index.html.
-const CIU_META = 30;
-const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } catch (e) { return false; } };
-const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
-function lockPintar() {
-  const el = $('#lock'); if (!el) return;
-  el.classList.toggle('ok', ciuOk());
-  el.innerHTML = ciuOk() ? 'Modo Ciudad desbloqueado · <a href="/" data-ciu-ir>Probalo</a>' : CANDADO + CIU_META + ' seguidas desbloquean un modo secreto';
-  const a = el.querySelector('[data-ciu-ir]'); if (a) a.addEventListener('click', ciuIr);
-}
+// aviso del premio: va en cada pregunta, arriba de la fuente (pedido del dueño 02/11/2026); al ganarlo desaparece
+function lockPintar() { if (ciuOk()) document.querySelectorAll('.lockr').forEach(x => x.remove()); }
 function ciuIr() { try { localStorage.setItem('pm-tema', 'cyber'); } catch (e) {} }
 function ciuDesbloquear() {
   if (ciuOk()) return;
