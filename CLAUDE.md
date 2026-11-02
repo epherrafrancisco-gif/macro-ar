@@ -714,6 +714,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   sin desestacionalizar), Freddie Mac `PMMS_history.csv`, Nasdaq `api.nasdaq.com/api/calendar/earnings`, BEA (con clave).
 - Sin fuente gratuita: deuda del Tesoro en pesos (LECAP/BONCAP), historia por acción argentina, liquidación del agro.
 
+## Buscadores (pedido del dueño 02/11/2026: que Pulso Macro salga con logo y descripción, y que al buscar su nombre aparezca él)
+- index.html lleva JSON-LD `@graph` con WebSite, Organization (logo `icons/anillo-512.png`, `sameAs` la cuenta de X) y Person
+  (`#francisco`); favicon también en 192 px (Google pide múltiplos de 48). Página `/francisco-epherra/` (ProfilePage + Person,
+  en el sitemap); el nombre en Sobre lleva ahí. Solo datos que ya están en Sobre: nada de edad ni otros datos personales.
+  Los resúmenes de Copilot/Google y los paneles de "persona famosa" no se pueden forzar: dependen de que otros sitios hablen
+  del sitio. Bing Webmaster Tools se da de alta importando desde Google Search Console.
+
 ## Entorno de Claude
 - La terminal no tiene internet salvo GitHub: las fuentes se miran con WebFetch y la prueba real es correr el workflow
   (un push a los scripts dispara `global.yml`). `env -u GH_TOKEN gh api repos/...` sirve para leer (repo público).
