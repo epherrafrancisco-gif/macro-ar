@@ -45,11 +45,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` ("Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
   'cyber' y va al inicio), aviso `.lockr` en cada pregunta arriba de la fuente ("30 seguidas desbloquean un modo secreto"; desaparece al ganarlo), el medidor
   dice "· modo secreto" camino a 30. Evento GoatCounter `ciudad-desbloqueado`. En index.html: `html[data-tema="cyber"]` (bloque
-  CSS "Modo Ciudad") y capa fija `#cyFx` (`/fondos/ciudad2.svg`, ciudad tipo Chongqing dibujada por `scripts/ciudad.py`: montañas,
-  torres en capas, 3 rascacielos con corona, ~30 carteles de neón en chino SIN marcas, puente atirantado y río; ~400 KB, ~40 KB
-  comprimido; solo se baja en ese modo. Animaciones dentro del SVG: carteles que titilan, ventanas, antenas, reflejo del río;
-  `ciudad2-quieta.svg` para "reducir movimiento"). Dos autos voladores `.avion` (diseño propio, el dueño pidió "el Tesla volador":
-  no se dibujan diseños de marcas), arriba del velo, cruzan cada 64 y 92 s; ocultos con reducir movimiento. UN solo
+  CSS "Modo Ciudad") y capa fija `#cyFx`: foto real de Chongqing que mandó el dueño (02/11/2026), pasada a colores neón con
+  `scripts/ciudad_foto.py` (mapa de color magenta/cian, brillo en las luces, cielo agregado arriba para que las puntas no queden
+  bajo las cintas): `fondos/chongqing-2000.webp/.jpg` (compu) y `-1100` (≤900px, encuadre 76% para que se vea la torre alta);
+  solo se baja en ese modo. Si el dueño manda una foto mejor (desde altura), correr el script con esa foto. La ciudad dibujada
+  (`fondos/ciudad2*.svg`, `scripts/ciudad.py`) quedó sin uso (al dueño no le gustó). Dos autos voladores `.avion` de diseño
+  PROPIO (cuña baja con turbinas; el dueño pidió copiar un auto real: no se copian diseños de productos), arriba del velo,
+  cruzan cada 64 y 92 s; ocultos con reducir movimiento. UN solo
   botón `button[data-tema]` que va pasando oscuro → claro → Ciudad (solo con la marca) → oscuro (`temaSig`, pedido del dueño
   02/11/2026) y dice a qué modo pasa. El script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo.
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
