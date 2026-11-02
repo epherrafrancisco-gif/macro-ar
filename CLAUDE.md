@@ -50,7 +50,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   con terrazas, ventanas, neblina y desenfoque por distancia, calles con luces, bloom y grano; ~22 carteles de neón en chino y una
   torre protagonista con 宏观脉搏 = "Pulso Macro") → `fondos/ciudad3-2400.webp/.jpg` y `-1200` (≤900px, encuadre 66%); solo se baja
   en ese modo. Quedaron sin uso `fondos/chongqing-*` (foto) y `fondos/ciudad2*.svg`. Cartel cian con el nombre del dueño en chino (弗朗西斯科 / 埃佩拉 = "Francisco Epherra", en dos renglones para que entre en el
-  recorte del celular). Dos jets privados `.jet` (pedido del dueño 02/11/2026: realistas, de diseño propio sin marca, NO en
+  recorte del celular). Dos jets privados `.jet` (pedido del dueño 02/11/2026: realistas, de diseño propio, "como nuestra aerolínea": logo del anillo en la cola y franja celeste, sin texto porque a ese tamaño no se lee; NO en
   línea recta; reemplazan a los autos voladores, que no le gustaron): `jetVuelo` al final de index.html los mueve por una
   curva de Bézier al azar en cada pasada, con inclinación según la dirección, balanceo leve y tamaño que cambia (se acerca o
   se aleja); luces de navegación que titilan (`.jbl`, `.jst`); solo corre en modo Ciudad con la pestaña visible; ocultos con
