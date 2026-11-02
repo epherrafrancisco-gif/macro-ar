@@ -261,6 +261,25 @@ body.late .top{animation:late .45s}
 /* premio: modo Ciudad de Pulso Macro con 30 seguidas (pedido del dueño 02/11/2026) */
 .reel .lockr{margin:10px 0 6px;font-family:var(--mono);font-size:12.5px;color:#e6d6ff;opacity:.9}
 .reel .lockr svg{width:13px;height:13px;vertical-align:-2px;margin-right:6px}
+.reel .lockr.leg{color:#ffe2a0;text-shadow:0 0 10px rgba(227,176,75,.6)}
+/* modo Bóveda: cartel legendario (pedido del dueño 02/11/2026) */
+.bov{position:fixed;inset:0;z-index:61;display:grid;place-items:center;background:#0a0805e6;padding:20px;animation:ciuIn .45s ease}
+.bov .cbox{max-width:420px;width:100%;background:#120d07;border:1px solid #e3b04b88;box-shadow:0 0 60px #e3b04b40,inset 0 1px 0 #ffe2a0aa;text-align:center;padding:0 0 22px;overflow:hidden}
+.bov .cimg{height:190px;background:url(/fondos/boveda-1200.jpg) center 40%/cover;border-bottom:1px solid #e3b04b88;position:relative}
+.bov .cimg:after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,230,170,.35) 50%,transparent 65%);animation:bovBr 2.6s ease-in-out infinite}
+@keyframes bovBr{0%{transform:translateX(-70%)}100%{transform:translateX(70%)}}
+.bov .ck{margin:18px 0 4px;font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#e3b04b}
+.bov h2{margin:0 20px 10px;font:600 28px/1.15 Georgia,"Times New Roman",serif;color:#fff3d6}
+.bov h2 span{background:linear-gradient(180deg,#fff3d0,#f0c66a 55%,#b9822a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bov p{margin:0 24px;color:#dcc79c;font-size:14px;line-height:1.45}
+.bov .quien{margin-top:12px;color:#f4dc8a;font-size:15px}.bov .quien b{color:#fff3d6}
+.bov .cbt{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.bov .cbt a,.bov .cbt button{font:700 14px var(--sans,system-ui);padding:11px 18px;border:1px solid #e3b04b;cursor:pointer;text-decoration:none}
+.bov .cbt a{background:linear-gradient(180deg,#f4d48a,#c9952f);color:#140e05}
+.bov .cbt button{background:transparent;color:#e3b04b}
+.ciu .leg{margin-top:12px;padding:10px 12px;border:1px solid #e3b04b66;color:#ffe2a0!important;background:#e3b04b12}
+.ciu .leg b{color:#fff3d6}
+@media (prefers-reduced-motion: reduce){.bov .cimg:after{animation:none;opacity:0}}
 .ciu{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#04050cd9;padding:20px;animation:ciuIn .35s ease}
 .ciu .cbox{max-width:400px;width:100%;background:#080a1a;border:1px solid #00f0ff66;box-shadow:0 0 40px #ff2bd640,inset 0 1px 0 #ff2bd6aa;text-align:center;padding:0 0 22px;overflow:hidden;
   clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px))}
@@ -312,7 +331,7 @@ body.late .top{animation:late .45s}
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
 <div class="med" id="med" hidden><i></i><span></span></div>
 <div class="foot"><div class="row"><span class="rec yo" id="recYo" hidden title="Tu racha más larga">Tu récord: <b>0</b></span><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
-<div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Desde ahora, en el inicio vas a tener la opción de cambiar al modo Ciudad (en este dispositivo).</p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
+<div class="bov" id="bov" hidden role="dialog" aria-modal="true" aria-labelledby="bovT"><div class="cbox"><div class="cimg"></div><p class="ck">60 seguidas · legendario</p><h2 id="bovT">Desbloqueaste el <span>modo Bóveda</span></h2><p>Pulso Macro desde adentro de la bóveda de un banco central, entre lingotes de oro. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-bovn hidden></p><div class="cbt"><a href="/" id="bovIr">Entrar a la bóveda</a><button type="button" id="bovX">Seguir jugando</button></div></div></div><div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Desde ahora, en el inicio vas a tener la opción de cambiar al modo Ciudad (en este dispositivo).</p><p class="leg">Y hay algo que casi nadie sabe: existe un <b>modo legendario</b>. Se desbloquea con <b>60 seguidas</b>.</p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 

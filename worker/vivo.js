@@ -93,6 +93,24 @@ async function racha(req, env){
   return new Response(JSON.stringify({tk: base + '.' + await firmar(env, base), n, record: rec.n, nuevo}), {headers: H});
 }
 
+// ---------- Modo Bóveda: cuántas personas lo desbloquearon (pulsomacro.com.ar/api/boveda; pedido del dueño 02/11/2026) ----------
+// Arranca en 1 (el dueño). Solo suma con una ficha firmada por /api/racha de 60 o más seguidas, y cada ficha cuenta una vez.
+const BOV_META = 60, BOV_BASE = 1;
+async function bovCuenta(env){ try{ const o = await env.DATOS.get('boveda/cuenta.json'); if (o) return await o.json(); }catch(e){} return {n: BOV_BASE}; }
+async function boveda(req, env){
+  const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
+  if (req.method === 'GET') return new Response(JSON.stringify(await bovCuenta(env)), {headers: {...H, 'cache-control': 'public, max-age=30'}});
+  if (req.method !== 'POST') return new Response('{}', {status: 405, headers: H});
+  let tk = ''; try{ tk = String((await req.json()).tk || ''); }catch(e){}
+  const [nn, t, sig] = tk.split('.'); let c = await bovCuenta(env);
+  if (sig && +nn >= BOV_META && sig === await firmar(env, nn + '.' + t) && !(await env.DATOS.head('boveda/usadas/' + sig))){
+    await env.DATOS.put('boveda/usadas/' + sig, '1');
+    c = {n: c.n + 1, t: Date.now()};
+    await env.DATOS.put('boveda/cuenta.json', JSON.stringify(c), {httpMetadata: {contentType: 'application/json'}});
+  }
+  return new Response(JSON.stringify(c), {headers: H});
+}
+
 // ---------- Surtidores: copia del CSV de precios en surtidor (Secretaría de Energía, datos abiertos) ----------
 // datos.energia.gob.ar no responde desde GitHub Actions: el Worker baja el archivo tal cual y lo guarda en R2
 // (surtidores/vigentes.csv); el robot de GitHub lo procesa desde datos.pulsomacro.com.ar. Cada 6 horas como mucho.
@@ -129,6 +147,7 @@ export default {
   // Visitar la dirección del Worker muestra el estado (sin datos), para revisar que corre.
   async fetch(req, env){
     if (new URL(req.url).pathname === '/api/racha') return racha(req, env);
+    if (new URL(req.url).pathname === '/api/boveda') return boveda(req, env);
     let o = null; try{ const x = await env.DATOS.get('vivo.json'); if(x) o = await x.json(); }catch(e){}
     const s = o ? {t: new Date(o.t).toISOString(), dolar: new Date(o.tDol).toISOString(), mercado: o.tMkt ? new Date(o.tMkt).toISOString() : null,
                    fuente: o.fuente || 'data912 (versión vieja)', acciones: o.stocks ? o.stocks.length : 0, bonos: o.bonds ? o.bonds.length : 0, err: o.err} : {vacio: true};

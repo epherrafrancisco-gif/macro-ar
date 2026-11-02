@@ -634,6 +634,10 @@ for (let total = base.length; ORD.length < total;) {
 // premio (modo Ciudad): se declara antes de dibujar porque cada pregunta lleva el aviso
 const CIU_META = 30;
 const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } catch (e) { return false; } };
+// premio legendario (modo Bóveda, 60 seguidas; pedido del dueño 02/11/2026): SECRETO hasta ganar Ciudad. Marca pm-boveda.
+const BOV_META = 60;
+const bovOk = () => { try { return localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
+const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` : '';
 const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 // ---------- dibujar ----------
 function svgLine(viz) {
@@ -680,7 +684,7 @@ function reelHTML(r, i) {
   return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
-    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${ciuOk() ? '' : `<p class="lockr">${CANDADO}${CIU_META} seguidas desbloquean un modo secreto</p>`}<div class="src">${esc(r.src)}</div></div>
+    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div>
     <div class="rail"><button type="button" class="rb" data-share="${i}"><i>${ICO.share}</i>Compartir</button><a class="rb" href="${SITIO}#${r.go[0]}" title="${esc(r.go[1])}"><i>${ICO.go}</i>Ver más</a></div></section>`;
 }
 // intro (la primera vez) con cuántos reels hay hoy
@@ -752,7 +756,7 @@ ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 // premio: con 30 seguidas se desbloquea el modo Ciudad de Pulso Macro (pedido del dueño 02/11/2026). Marca pm-ciudad, la lee index.html.
 // aviso del premio: va en cada pregunta, arriba de la fuente (pedido del dueño 02/11/2026); al ganarlo desaparece
-function lockPintar() { if (ciuOk()) document.querySelectorAll('.lockr').forEach(x => x.remove()); }
+function lockPintar() { const t = lockTxt(); document.querySelectorAll('.lockr').forEach(x => { if (!t) x.remove(); else { x.innerHTML = CANDADO + t; x.classList.toggle('leg', ciuOk()); } }); }
 function ciuIr() { try { localStorage.setItem('pm-tema', 'cyber'); } catch (e) {} }
 function ciuDesbloquear() {
   if (ciuOk()) return;
@@ -762,10 +766,36 @@ function ciuDesbloquear() {
   setTimeout(() => { const m = $('#ciu'); if (m) { m.hidden = false; $('#ciuIr').focus(); } }, 1300);
 }
 if (PT.max >= CIU_META) { try { localStorage.setItem('pm-ciudad', '1'); } catch (e) {} }   // quien ya la había logrado antes
+if (PT.max >= BOV_META) { try { localStorage.setItem('pm-boveda', '1'); } catch (e) {} }
+// dispositivos del dueño (pedido 02/11/2026): con su link secreto quedan con récord 62 y los dos modos. Él es el 1 del contador.
+(async () => { const h = location.hash.slice(1); if (!h || !crypto.subtle) return;
+  const d = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(h)))).map(b => b.toString(16).padStart(2, '0')).join('');
+  if (d !== '2d76777e219b10c1f615d4e65b58f9b398be186181b0c86e611830dba6b8f2c2') return;
+  PT.max = Math.max(PT.max, 62); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-ciudad', '1'); localStorage.setItem('pm-boveda', '1'); } catch (e) {}
+  history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor();
+  const m = $('#bov'); if (m) { m.hidden = false; bovContar(false); } })();
+// modo Bóveda: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 60 seguidas)
+const bovQuien = n => n === 1 ? 'Lo tiene <b>1 persona</b> en el mundo' : `Lo tienen <b>${fN(n)} personas</b> en el mundo`;
+function bovContar(sumar) {
+  const o = sumar ? {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})} : {};
+  return fetch(sumar ? '/api/boveda' : '/api/boveda?t=' + VER(), o).then(r => r.ok ? r.json() : null).then(d => {
+    if (d && d.n != null) document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n); x.hidden = false; }); }).catch(() => {});
+}
+function bovIr() { try { localStorage.setItem('pm-tema', 'oro'); } catch (e) {} }
+function bovDesbloquear() {
+  if (bovOk()) return;
+  try { localStorage.setItem('pm-boveda', '1'); } catch (e) { return; }
+  lockPintar();
+  try { window.goatcounter && goatcounter.count({path: 'boveda-desbloqueado', event: true}); } catch (e) {}
+  setTimeout(() => bovContar(true), 1200);   // espera la ficha de las 60 que devuelve /api/racha
+  setTimeout(() => { const m = $('#bov'); if (m) { m.hidden = false; $('#bovIr').focus(); } }, 1500);
+}
+{ const m = $('#bov'); if (m) { $('#bovX').addEventListener('click', () => { m.hidden = true; }); $('#bovIr').addEventListener('click', bovIr);
+  m.addEventListener('click', e => { if (e.target === m) m.hidden = true; }); addEventListener('keydown', e => { if (e.key === 'Escape') m.hidden = true; }); } }
 lockPintar();
 { const m = $('#ciu'); if (m) { $('#ciuX').addEventListener('click', () => { m.hidden = true; }); $('#ciuIr').addEventListener('click', ciuIr);
   m.addEventListener('click', e => { if (e.target === m) m.hidden = true; }); addEventListener('keydown', e => { if (e.key === 'Escape') m.hidden = true; }); } }
-const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!'};
+const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!', 40: '¡40 seguidas!', 50: '¡50 seguidas!'};
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
 let RECORD = null, TK = '';
 function yoPintar() { const el = $('#recYo'); if (!el) return; el.hidden = !PT.max; el.querySelector('b').textContent = fN(PT.max); }
@@ -791,7 +821,9 @@ function premio(ok, btn, reel) {
     confeti(btn, PT.r >= 5 ? 110 : PT.r >= 3 ? 70 : 45);
     medidor();
     if (PT.r === CIU_META) ciuDesbloquear();
-    if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
+    if (PT.r === BOV_META) bovDesbloquear();
+    if (PT.r === BOV_META - 1 && ciuOk() && !bovOk()) cartel(reel, 'Una más…<small>y es tuyo el modo legendario</small>', 3200);
+    else if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
     else if (mio && PT.r >= 3) cartel(reel, '¡Tu nuevo récord!<small>' + fN(PT.r) + ' seguidas</small>');
     try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
     ptsPintar('gana');
@@ -847,10 +879,10 @@ function lluvia(n) {
 // medidor de racha: cuánto falta para el próximo cartel (3, 5, 7, 10, 15, 20...)
 function medidor() {
   const el = $('#med'); if (!el) return;
-  const hitos = [3, 5, 7, 10, 15, 20, 30, 50, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
+  const hitos = [3, 5, 7, 10, 15, 20, 30, 40, 50, 60, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
   el.hidden = PT.r < 1;
   el.querySelector('i').style.width = Math.max(4, (PT.r - ant) / (sig - ant) * 100) + '%';
-  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` + (sig === CIU_META && !ciuOk() ? ' · modo secreto' : '') : '';
+  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` + (sig === CIU_META && !ciuOk() ? ' · modo secreto' : sig === BOV_META && ciuOk() && !bovOk() ? ' · modo legendario' : '') : '';
 }
 function flotar(el, txt, col) {
   const b = el.getBoundingClientRect(), d = document.createElement('div');
