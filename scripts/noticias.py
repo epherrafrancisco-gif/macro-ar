@@ -133,7 +133,10 @@ def og_image(url):
 # fuera lo que no tiene que ver (las secciones de política y los feeds generales traen de todo)
 RUIDO = re.compile(r"f[uú]tbol|boca juniors|river plate|selecci[oó]n argentina|messi|mundial 20|partido de|gol\b|tenis|f[oó]rmula 1|"
                    r"hor[oó]scopo|far[aá]ndula|novela|actriz|actor\b|cantante|gran hermano|asesin|homicid|femicid|polic[ií]a|accidente de tr|"
-                   r"pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
+                   r"colapinto|\\bgp de|primera nacional|masterchef|alerta amarilla|alerta naranja|pron[oó]stico del tiempo|lluvias|tormenta|receta|celebridad|famos", re.I)
+
+
+GENERALES = {"https://tn.com.ar/rss.xml"}   # feeds de todo: solo pasan los titulares de algún tema de economía o política
 
 
 def leer(medio, url):
@@ -151,6 +154,7 @@ def leer(medio, url):
         d = fecha(next((hijos[k].text for k in ("pubDate", "published", "updated", "date") if k in hijos), ""))
         if titulo and link.startswith("http") and d and not RUIDO.search(titulo):
             temas = [k for k, rx in TEMAS.items() if re.search(rx, titulo, re.I)]
+            if url in GENERALES and not temas: continue
             x = {"t": titulo, "u": link, "f": medio, "h": d.astimezone(TZ_AR).isoformat(timespec="minutes"), "k": temas}
             im = imagen(it)
             if im and im.startswith("https://"): x["i"] = im  # solo https (en la página se ve con http bloqueado)
