@@ -59,18 +59,21 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   reducir movimiento. UN solo
   botón `button[data-tema]` que va pasando oscuro → claro → Ciudad (solo con la marca) → oscuro (`temaSig`, pedido del dueño
   02/11/2026) y dice a qué modo pasa. El script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo.
-- Modo Bóveda (bóveda de un banco central con lingotes; pedido del dueño 02/11/2026): premio LEGENDARIO, 60 seguidas en Verdadero o
-  falso (`BOV_META` en juego.js; también si `PT.max` ≥60), marca `pm-boveda`, `pm-tema` = 'oro'. SECRETO: nadie sabe que existe hasta
-  ganar Ciudad (el cartel `#ciu` lo cuenta en `.leg`; desde ahí `.lockr` y el medidor dicen "60 seguidas desbloquean el modo
-  legendario"; en la 59 aparece "Una más…"). Cartel `#bov` con "Lo tiene/n N persona/s en el mundo" (`bovContar`, `[data-bovn]`):
-  `/api/boveda` en el Worker (GET = cuenta, arranca en 1 = el dueño; POST {tk} suma solo con una ficha firmada de /api/racha de ≥60
-  y cada ficha una vez, `boveda/cuenta.json` y `boveda/usadas/<firma>` en R2). Evento GoatCounter `boveda-desbloqueado`. Fondo
-  renderizado por `scripts/boveda_render.py` (cajas de seguridad, puerta circular abierta con estantes de oro, pilas de lingotes con el
-  anillo grabado, piso pulido, haces de luz con polvo) → `fondos/boveda-2400.webp/.jpg` y `-1200` (≤900px). En index.html:
-  `html[data-tema="oro"]` (bloque "Modo Bóveda"), capa `#oroFx` (`.bov`, `.velo`, `.brillo` que recorre lento), números con degradé
-  de oro, títulos de la portada en Georgia; ciclo del botón oscuro → claro → Ciudad → Bóveda (`bovOk`, `TEMA_ORO`). Los dispositivos
-  del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo está su SHA-256): récord propio 62 y
-  los dos modos. El "Récord de todos" (`racha/record.json`) NO se tocó.
+- Modo Órbita (la Tierra desde la órbita sobre Argentina, con la nave de Pulso Macro cruzando; pedido del dueño 02/11/2026, reemplazó
+  a una "Bóveda" que no le gustó): premio LEGENDARIO, 60 seguidas en Verdadero o falso (`BOV_META` en juego.js; también si `PT.max`
+  ≥60), marca `pm-orbita` (se acepta la vieja `pm-boveda`), `pm-tema` = 'orbita' (la vieja 'oro' también entra). SECRETO hasta ganar
+  Ciudad: el cartel `#ciu` lo cuenta (`.leg`) con cuántos lo tienen; desde ahí `.lockr` dice "60 seguidas desbloquean el modo legendario
+  · lo tiene N persona(s) en el mundo" (`BOV_N`), el medidor "· modo legendario" y en la 59 "Una más…". Cartel `#bov` con la nave sobre la
+  Tierra. Contador: `/api/boveda` en el Worker (GET = cuenta, arranca en 1 = el dueño; POST {tk} suma solo con una ficha firmada de
+  /api/racha de ≥60, una vez por ficha). Evento GoatCounter `orbita-desbloqueado`. En el juego, "Récord de todos" muestra el mayor
+  entre el del servidor y el propio (si no, en los dispositivos del dueño no coincide). Imágenes 3D con Blender (`pip install bpy`,
+  Cycles en CPU): `scripts/espacio_blender.py` (texturas 8K de Solar System Scope, CC BY 4.0, basadas en la NASA: día y luces de noche;
+  nubes y océanos de la NASA vía three.js; no están en el repo, se bajan de GitHub) + `scripts/espacio_post.py` (estrellas, brillo,
+  grano) → `fondos/espacio-2400` y `-1200`; `scripts/nave_blender.py` + `scripts/nave_fuego.py` → `fondos/nave.webp/.png` (avión
+  espacial propio: blanco, panza negra, franja celeste, anillo del logo en las derivas, "PULSO MACRO" en el costado, fuego celeste).
+  En index.html: `html[data-tema="orbita"]` (bloque "Modo Órbita"), capa `#orFx` (`.tie`, `.velo`, `.nave`) y `naveVuelo` al final
+  (cruza de izquierda a derecha por una curva suave, 27-54 s, cada 22-50 s; nunca dada vuelta porque se leería el nombre al revés).
+  Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo el SHA-256): récord 62.
 - Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
   `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
   los colores del modo puesto, oscuro/claro/Ciudad), que se va con un fundido en DOMContentLoaded (tope 4 s).

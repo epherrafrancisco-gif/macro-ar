@@ -262,18 +262,19 @@ body.late .top{animation:late .45s}
 .reel .lockr{margin:10px 0 6px;font-family:var(--mono);font-size:12.5px;color:#e6d6ff;opacity:.9}
 .reel .lockr svg{width:13px;height:13px;vertical-align:-2px;margin-right:6px}
 .reel .lockr.leg{color:#f0d79a}
-/* modo Bóveda: cartel legendario, sobrio (pedido del dueño 02/11/2026) */
-.bov{position:fixed;inset:0;z-index:61;display:grid;place-items:center;background:#050403ee;padding:20px;animation:ciuIn .45s ease}
-.bov .cbox{max-width:420px;width:100%;background:#0b0907;border:1px solid #d6ae6055;text-align:center;padding:0 0 24px;overflow:hidden;border-radius:4px}
-.bov .cimg{height:200px;background:url(/fondos/boveda-1200.jpg) center 55%/cover;border-bottom:1px solid #d6ae6040}
-.bov .ck{margin:20px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#d6ae60}
-.bov h2{margin:0 20px 10px;font:700 26px/1.15 var(--sans,system-ui);color:#f5ecd8;letter-spacing:-.01em}
-.bov p{margin:0 26px;color:#bfae8c;font-size:14px;line-height:1.5}
-.bov .quien{margin-top:14px;color:#d6ae60;font-family:var(--mono);font-size:13px;letter-spacing:.04em}.bov .quien b{color:#f5ecd8;font-weight:600}
+/* modo Órbita: cartel legendario, sobrio (pedido del dueño 02/11/2026) */
+.bov{position:fixed;inset:0;z-index:61;display:grid;place-items:center;background:#010205f0;padding:20px;animation:ciuIn .45s ease}
+.bov .cbox{max-width:420px;width:100%;background:#05070d;border:1px solid #6aa8d855;text-align:center;padding:0 0 24px;overflow:hidden;border-radius:4px}
+.bov .cimg{height:210px;background:#020306 url(/fondos/espacio-1200.jpg) center 78%/cover;border-bottom:1px solid #6aa8d840;position:relative;overflow:hidden}
+.bov .cimg img{position:absolute;width:62%;left:19%;top:22%;filter:drop-shadow(0 6px 14px #000)}
+.bov .ck{margin:20px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#6aa8d8}
+.bov h2{margin:0 20px 10px;font:700 26px/1.15 var(--sans,system-ui);color:#eef3fa;letter-spacing:-.01em}
+.bov p{margin:0 26px;color:#b9c6d8;font-size:14px;line-height:1.5}
+.bov .quien{margin-top:14px;color:#6aa8d8;font-family:var(--mono);font-size:13px;letter-spacing:.04em}.bov .quien b{color:#eef3fa;font-weight:600}
 .bov .cbt{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.bov .cbt a,.bov .cbt button{font:600 14px var(--sans,system-ui);padding:11px 18px;border:1px solid #d6ae60;cursor:pointer;text-decoration:none;border-radius:3px}
-.bov .cbt a{background:#d6ae60;color:#120d06}
-.bov .cbt button{background:transparent;color:#d6ae60}
+.bov .cbt a,.bov .cbt button{font:600 14px var(--sans,system-ui);padding:11px 18px;border:1px solid #6aa8d8;cursor:pointer;text-decoration:none;border-radius:3px}
+.bov .cbt a{background:#6aa8d8;color:#03060b}
+.bov .cbt button{background:transparent;color:#6aa8d8}
 .ciu .leg{margin-top:12px;padding:10px 12px;border:1px solid #e3b04b66;color:#ffe2a0!important;background:#e3b04b12}
 .ciu .leg b{color:#fff3d6}
 .ciu .leg .quien{display:block;margin-top:6px;font-family:var(--mono);font-size:12.5px}
@@ -329,7 +330,7 @@ body.late .top{animation:late .45s}
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
 <div class="med" id="med" hidden><i></i><span></span></div>
 <div class="foot"><div class="row"><span class="rec yo" id="recYo" hidden title="Tu racha más larga">Tu récord: <b>0</b></span><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
-<div class="bov" id="bov" hidden role="dialog" aria-modal="true" aria-labelledby="bovT"><div class="cbox"><div class="cimg"></div><p class="ck">60 seguidas · legendario</p><h2 id="bovT">Desbloqueaste el modo Bóveda</h2><p>Pulso Macro desde adentro de la bóveda de un banco central, entre lingotes de oro. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-bovn hidden></p><div class="cbt"><a href="/" id="bovIr">Entrar a la bóveda</a><button type="button" id="bovX">Seguir jugando</button></div></div></div><div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Desde ahora, en el inicio vas a tener la opción de cambiar al modo Ciudad (en este dispositivo).</p><p class="leg">Y hay algo que casi nadie sabe: existe un <b>modo legendario</b>. Se desbloquea con <b>60 seguidas</b>.<span class="quien" data-bovn hidden></span></p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
+<div class="bov" id="bov" hidden role="dialog" aria-modal="true" aria-labelledby="bovT"><div class="cbox"><div class="cimg"><img src="/fondos/nave.webp" alt=""></div><p class="ck">60 seguidas · legendario</p><h2 id="bovT">Desbloqueaste el modo Órbita</h2><p>Pulso Macro desde la órbita, sobre Argentina, con la nave de Pulso Macro cruzando el cielo. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-bovn hidden></p><div class="cbt"><a href="/" id="bovIr">Despegar</a><button type="button" id="bovX">Seguir jugando</button></div></div></div><div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Desde ahora, en el inicio vas a tener la opción de cambiar al modo Ciudad (en este dispositivo).</p><p class="leg">Y hay algo que casi nadie sabe: existe un <b>modo legendario</b>. Se desbloquea con <b>60 seguidas</b>.<span class="quien" data-bovn hidden></span></p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 

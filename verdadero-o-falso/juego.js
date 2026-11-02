@@ -634,10 +634,10 @@ for (let total = base.length; ORD.length < total;) {
 // premio (modo Ciudad): se declara antes de dibujar porque cada pregunta lleva el aviso
 const CIU_META = 30;
 const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } catch (e) { return false; } };
-// premio legendario (modo Bóveda, 60 seguidas; pedido del dueño 02/11/2026): SECRETO hasta ganar Ciudad. Marca pm-boveda.
+// premio legendario (modo Órbita, 60 seguidas; pedido del dueño 02/11/2026): SECRETO hasta ganar Ciudad. Marca pm-orbita (pm-boveda = nombre viejo).
 const BOV_META = 60;
-const bovOk = () => { try { return localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
-let BOV_N = null;   // cuántos tienen el modo Bóveda (se muestra recién después de ganar Ciudad, para que den ganas)
+const bovOk = () => { try { return localStorage.getItem('pm-orbita') === '1' || localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
+let BOV_N = null;   // cuántos tienen el modo Órbita (se muestra recién después de ganar Ciudad, para que den ganas)
 const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` + (BOV_N ? ` · ${BOV_N === 1 ? 'lo tiene 1 persona' : 'lo tienen ' + fN(BOV_N) + ' personas'} en el mundo` : '') : '';
 const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 // ---------- dibujar ----------
@@ -768,15 +768,15 @@ function ciuDesbloquear() {
   setTimeout(() => { const m = $('#ciu'); if (m) { m.hidden = false; $('#ciuIr').focus(); } }, 1300);
 }
 if (PT.max >= CIU_META) { try { localStorage.setItem('pm-ciudad', '1'); } catch (e) {} }   // quien ya la había logrado antes
-if (PT.max >= BOV_META) { try { localStorage.setItem('pm-boveda', '1'); } catch (e) {} }
+if (PT.max >= BOV_META) { try { localStorage.setItem('pm-orbita', '1'); } catch (e) {} }
 // dispositivos del dueño (pedido 02/11/2026): con su link secreto quedan con récord 62 y los dos modos. Él es el 1 del contador.
 (async () => { const h = location.hash.slice(1); if (!h || !crypto.subtle) return;
   const d = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(h)))).map(b => b.toString(16).padStart(2, '0')).join('');
   if (d !== '2d76777e219b10c1f615d4e65b58f9b398be186181b0c86e611830dba6b8f2c2') return;
-  PT.max = Math.max(PT.max, 62); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-ciudad', '1'); localStorage.setItem('pm-boveda', '1'); } catch (e) {}
+  PT.max = Math.max(PT.max, 62); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-ciudad', '1'); localStorage.setItem('pm-orbita', '1'); } catch (e) {}
   history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor();
   const m = $('#bov'); if (m) { m.hidden = false; bovContar(false); } })();
-// modo Bóveda: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 60 seguidas)
+// modo Órbita: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 60 seguidas)
 const bovQuien = n => n === 1 ? 'Lo tiene <b>1 persona</b> en el mundo' : `Lo tienen <b>${fN(n)} personas</b> en el mundo`;
 function bovContar(sumar) {
   const o = sumar ? {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})} : {};
@@ -784,12 +784,12 @@ function bovContar(sumar) {
     if (d && d.n != null) { BOV_N = d.n; lockPintar(); document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n); x.hidden = false; }); } }).catch(() => {});
 }
 if (ciuOk()) bovContar(false);
-function bovIr() { try { localStorage.setItem('pm-tema', 'oro'); } catch (e) {} }
+function bovIr() { try { localStorage.setItem('pm-tema', 'orbita'); } catch (e) {} }
 function bovDesbloquear() {
   if (bovOk()) return;
-  try { localStorage.setItem('pm-boveda', '1'); } catch (e) { return; }
+  try { localStorage.setItem('pm-orbita', '1'); } catch (e) { return; }
   lockPintar();
-  try { window.goatcounter && goatcounter.count({path: 'boveda-desbloqueado', event: true}); } catch (e) {}
+  try { window.goatcounter && goatcounter.count({path: 'orbita-desbloqueado', event: true}); } catch (e) {}
   setTimeout(() => bovContar(true), 1200);   // espera la ficha de las 60 que devuelve /api/racha
   setTimeout(() => { const m = $('#bov'); if (m) { m.hidden = false; $('#bovIr').focus(); } }, 1500);
 }
