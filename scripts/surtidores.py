@@ -106,7 +106,7 @@ def abrir_alguno(r, timeout):
     errs = []
     for u in candidatos(r):
         try:
-            if not permitido(u): errs.append('robots ' + u); continue
+            if u != ESPEJO and not permitido(u): errs.append('robots ' + u); continue   # el espejo es nuestro
             x = abrir(u, timeout if u == ESPEJO else 20); diag.setdefault('url_ok', []).append([u, x.headers.get('Last-Modified'), x.headers.get('Content-Length')]); return x
         except Exception as e:
             errs.append(f'{u}: {e}')

@@ -1209,7 +1209,7 @@ body.mporta .hbus{display:none}
   </section>
   <section class="view" id="vSu" hidden>
     <div class="kpis" id="kpisSu"></div>
-    <div class="card">
+    <div class="card supx">
       <div class="head"><h2>Buscá tu estación</h2><span class="note" id="suEstS"></span></div>
       <div class="suctl">
         <input type="search" id="suQ" class="bq" placeholder="Localidad, provincia, calle o marca (ej.: Rosario, YPF, Av. Rivadavia)" aria-label="Buscar estación">
@@ -1219,19 +1219,19 @@ body.mporta .hbus{display:none}
       <div class="tablewrap"><table class="sutab"><thead><tr><th>Estación</th><th>Dónde</th><th data-c="super">Súper</th><th data-c="premium">Premium</th><th data-c="gasoil">Gasoil</th><th data-c="gasoil3">Gasoil premium</th><th data-c="gnc">GNC</th></tr></thead><tbody id="tSuEst"></tbody></table></div>
       <p class="note" id="suEstN">Pesos por litro (GNC: por m³), precio de día. Cada estación carga sus precios en el sistema de la Secretaría de Energía cuando los cambia: al lado de cada precio va la fecha en que lo informó. Un precio con más de 45 días puede no ser el de hoy.</p>
     </div>
-    <div class="card">
+    <div class="card supx">
       <div class="head"><h2>Precio en cada provincia</h2><span class="note" id="suPrS"></span></div>
       <div class="seg calcsel" role="tablist" aria-label="Combustible" id="suProdP"></div>
       <div class="chart" id="chSuPr"></div>
       <p class="note">Mediana de las estaciones de cada provincia que informaron su precio en los últimos 45 días (la mitad cobra menos y la otra mitad más). En buena parte de la Patagonia no se cobra el impuesto a los combustibles líquidos: por eso ahí el litro suele salir más barato.</p>
     </div>
-    <div class="grid2">
+    <div class="grid2 supx">
       <div class="card"><div class="head"><h2>Por marca</h2><span class="note" id="suBaS"></span></div><div class="chart" id="chSuBa"></div><p class="note">Mediana de cada bandera en todo el país. "Sin bandera": estaciones blancas, que compran el combustible a cualquier refinería.</p></div>
       <div class="card"><div class="head"><h2>Dónde está más barata y más cara</h2><span class="note" id="suLoS"></span></div>
         <div class="tablewrap"><table class="minit"><thead><tr><th>Localidad</th><th>Mediana</th><th>Estaciones</th></tr></thead><tbody id="tSuLo"></tbody></table></div>
         <p class="note">Localidades con al menos 4 estaciones que informaron precio en los últimos 45 días.</p></div>
     </div>
-    <div class="card">
+    <div class="card supx">
       <div class="head"><h2>Cómo se mueve el precio</h2><div class="legend" id="lgSuH"></div></div>
       <div class="chart" id="chSuH"></div>
       <p class="note" id="suHN"></p>
@@ -4158,7 +4158,8 @@ body.mporta .hbus{display:none}
       t.push(tileK(n, '$ '+nf(p.med,0), k==='gnc'?'/m³':'/litro', '', `mediana de ${nf(p.est,0)} estaciones · 8 de cada 10 cobran entre $ ${nf(p.p10,0)} y $ ${nf(p.p90,0)}`)); }
     if(P.super && of) t.push(tileK('Nafta súper en dólares', 'US$ '+nf(P.super.med/of[1],2), '/litro', '', `al dólar oficial de ${fds(of[0])}`));
     if(P.super && P.premium) t.push(tileK('La premium cuesta', pc(P.premium.med/P.super.med-1,0).replace('+',''), 'más', '', 'que la súper (mediana del país)'));
-    if(!t.length){ $('kpisSu').innerHTML = '<div class="empty">Todavía no hay precios de las estaciones: se cargan en la próxima actualización.</div>'; }
+    document.querySelectorAll('#vSu .supx').forEach(c=>c.hidden = !t.length);
+    if(!t.length){ $('kpisSu').innerHTML = '<div class="empty" style="grid-column:1/-1;text-align:left">Los precios de cada estación todavía no están disponibles: el sistema de la Secretaría de Energía no está respondiendo. Aparecen solos apenas vuelva. Mientras tanto, abajo están las ventas de combustible de cada mes.</div>'; }
     else $('kpisSu').innerHTML = t.join('');
     if(!P[suProd]) suProd = Object.keys(P)[0] || 'super';
     const todo = ()=>{ renderSurtidores(); suEstPintar(); };
