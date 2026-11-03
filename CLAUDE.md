@@ -585,6 +585,19 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   de la lista o uno nombrado en el título; claro = alcanzado), lista por nivel, índice diario e histórico con picos, por país,
   refugios (oro, DXY, franco), petróleo/gas/trigo, empresas de defensa y gasto militar.
 
+### Global › Mundo › Espacio (`data-sub="espacio"`, `renderEspacio`, `loadEsp`; datos `espacio.json` de scripts/espacio.py, workflow `espacio.yml` cada 6 h)
+- Pedido del dueño 03/11/2026: "no planetas, sino cosas como NASA, SpaceX": economía del espacio. Fuentes con uso comercial permitido:
+  Launch Library 2 de The Space Devs (`ll.thespacedevs.com/2.3.0/launches/{upcoming|previous}`; términos: "free to use the data in any
+  way"; sin clave 15 pedidos/hora → 2 por corrida, la página NUNCA llama a la API), GCAT de J. McDowell (CC BY 4.0, hay que citarlo:
+  `launch/launch.tsv` columna `LaunchCode` que empieza con O = orbital y S = éxito; `derived/currentcat.tsv` lo que está en órbita, Type
+  P = satélite; `cat/satcat.tsv` para los satélites con State AR; `tables/orgs.tsv` nombres) y USAspending (NASA = agencia 080,
+  `agency_total_obligated` por año fiscal; el último puede estar incompleto).
+- Página: próximo lanzamiento con cuenta regresiva por segundo (`espTick`, se corta fuera del apartado; tarjeta `.nofold` para que no
+  se pliegue en el celular), casilleros, próximos 15 (con su cuenta), lanzamientos por año desde 1957 (total, EE.UU., China, Rusia/URSS),
+  quién lanza más (las academias de CASC juntas, `ESP_CASC`), satélites por dueño (`ESP_DUE`) y por país (`ESP_PAIS`), empresas en
+  bolsa (TradingView `tvLista`), NASA, últimos 10 y los satélites argentinos. Nombres de empresas de LL2 acortados en `ESP_EMP`; las
+  descripciones de LL2 vienen en inglés: no se muestran.
+
 ### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦", objeto `XP`, `xpStart`/`xpDraw`)
 - Pedido del dueño: NO interactivo, para dejar prendido de ambiente (el Explorador interactivo se descartó: "no se entiende").
   Nunca escribir "escaneando" ni textos que finjan procesos. Solo computadora: `xpDesk()` = `(min-width:1024px) and
