@@ -44,7 +44,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   02/11/2026); el Monitor queda oscuro (es terminal).
 - Modo Ciudad (cyberpunk con una ciudad de neón tipo Chongqing de fondo; pedido del dueño 02/11/2026): PREMIO SECRETO, nunca el
   modo por defecto. Se desbloquea con 30 seguidas en Verdadero o falso (`CIU_META` en juego.js; también si `PT.max` ya era ≥30):
-  marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` ("Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
+  marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` (imagen = el render `fondos/ciudad3-1200`, encuadre en la torre de 宏观脉搏, desde el 02/11/2026; antes el dibujo `ciudad.svg`; "Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
   'cyber' y va al inicio), aviso `.lockr` en cada pregunta arriba de la fuente ("30 seguidas desbloquean un modo secreto"; desaparece al ganarlo), el medidor
   dice "· modo secreto" camino a 30. Evento GoatCounter `ciudad-desbloqueado`. En index.html: `html[data-tema="cyber"]` (bloque
   CSS "Modo Ciudad") y capa fija `#cyFx`: ciudad cyberpunk vista desde lo alto RENDERIZADA por código (02/11/2026, el dueño
