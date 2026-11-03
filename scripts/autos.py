@@ -21,6 +21,7 @@ PAQ = 'inscripciones-iniciales-de-autos'
 PAQ_HIST = 'estadistica-de-tramites-de-automotores'
 HOY = time.strftime('%Y-%m-%d')
 diag = {'errores': [], 'archivos': []}
+VERSION = 2   # subir si cambia la forma de contar (rehace autos_cache/)
 csv.field_size_limit(10 ** 8)
 
 
@@ -69,9 +70,24 @@ def mes_de(v):
     return None
 
 
+def categoria(t):
+    """Tipo de la DNRPA → auto, suv, pickup, util (livianos: lo que la gente llama "0km") o pesado / otro."""
+    t = t or ''
+    if re.search(r'CAMION|TRACTOR|CHASIS|REMOLQUE|ACOPLADO|TRAILER|CARRETON|VOLQUETE|BUS|PASAJEROS|UNIMOG|BOMBER|AMBULANCIA|'
+                 r'CASA RODANTE|COMPENSADOR|HORMIGON|GRUA|CISTERNA', t): return 'pesado'
+    if 'PICK' in t: return 'pickup'
+    if re.search(r'RURAL|TODO TERRENO|JEEP|SUV|STATION|CAMIONETA', t): return 'suv'
+    if re.search(r'FURGON|UTILITARIO|PANEL', t): return 'util'
+    if re.search(r'SEDAN|COUPE|COUPÉ|CONVERTIBLE|DESCAPOTABLE|CABRIOLET|ROADSTER|FAMILIAR|AUTOMOVIL|AUTOMÓVIL|HATCH|LIMUSINA', t): return 'auto'
+    return 'otro'
+
+
+LIVIANOS = ('auto', 'suv', 'pickup', 'util')
+ORIGEN = {'NACIONAL': 'Nacional', 'PROTOCOLO 21': 'Brasil', 'IMPORTADO': 'Importado'}   # Protocolo 21 = Mercosur con Brasil
+
 limpio = lambda s: re.sub(r'\s+', ' ', (s or '').strip().upper())
 nuevo_mes = lambda: {'tot': 0.0, 'org': Counter(), 'mar': Counter(), 'mod': Counter(), 'prov': Counter(), 'tip': Counter(),
-                     'per': Counter(), 'mo': Counter(), 'mt': Counter(), 'morg': Counter()}
+                     'per': Counter(), 'cat': Counter(), 'mo': Counter(), 'mt': Counter(), 'morg': Counter()}
 
 
 def resumir(txt, meses, nombre):
@@ -84,9 +100,10 @@ def resumir(txt, meses, nombre):
     c_prov = col(cab, 'registro', 'provincia', no=('id', 'cod')) or col(cab, 'provincia', no=('id', 'cod', 'titular'))
     c_per = col(cab, 'tipo_persona') or col(cab, 'persona')
     c_pct = col(cab, 'porcentaje')
+    c_anio = col(cab, 'anio_modelo') or col(cab, 'modelo', 'anio')
     diag['archivos'].append({'archivo': nombre, 'columnas': cab, 'usadas': {'fecha': c_fecha, 'marca': c_mar, 'modelo': c_mod,
-                             'tipo': c_tip, 'origen': c_org, 'provincia': c_prov, 'persona': c_per, 'porcentaje': c_pct}})
-    filas = 0; peso_tot = 0.0; ej = []
+                             'tipo': c_tip, 'origen': c_org, 'provincia': c_prov, 'persona': c_per, 'porcentaje': c_pct, 'anio_modelo': c_anio}})
+    filas = 0; peso_tot = 0.0; ej = []; usados = 0
     for f in rd:
         filas += 1
         m = mes_de(f.get(c_fecha))
@@ -97,24 +114,32 @@ def resumir(txt, meses, nombre):
                 p = float(str(f.get(c_pct) or '').replace(',', '.'))
                 if 0 < p <= 100: w = p / 100
             except ValueError: pass
-        peso_tot += w
+        # 0km: año de modelo igual al del patentamiento o el anterior (afuera los usados importados: camiones viejos, clásicos)
+        try:
+            if c_anio and int(str(f.get(c_anio) or '0')[:4]) < int(m[:4]) - 1: usados += w; continue
+        except ValueError: pass
         mar, mod = limpio(f.get(c_mar)), limpio(f.get(c_mod))
         tip, org, prov = limpio(f.get(c_tip)), limpio(f.get(c_org)), limpio(f.get(c_prov))
+        org = ORIGEN.get(org, org.title())
         per = limpio(f.get(c_per))[:1] if c_per else ''
+        cat = categoria(tip)
         x = meses[m]
+        x['cat'][cat] += w
+        if cat not in LIVIANOS: continue      # el resto de los conteos es solo de livianos
+        peso_tot += w
         x['tot'] += w; x['org'][org] += w; x['mar'][mar] += w; x['mod'][mar + '|' + mod] += w; x['prov'][prov] += w
         x['tip'][tip] += w
         if per: x['per'][per] += w
         x['mt'][mar + '|' + mod + '|' + tip] += w; x['morg'][mar + '|' + org] += w
         if len(ej) < 4:  # ejemplo para revisar, SIN ninguna columna del titular
             ej.append({k: v for k, v in f.items() if k and 'titular' not in k.lower()})
-    diag['archivos'][-1].update({'filas': filas, 'autos': round(peso_tot), 'ejemplo': ej})
+    diag['archivos'][-1].update({'filas': filas, 'livianos_0km': round(peso_tot), 'usados': round(usados), 'ejemplo': ej[:2]})
 
 
 def a_json(x):
     r2 = lambda c: {k: round(v, 1) for k, v in c.most_common() if v >= .5}
     return {'tot': round(x['tot']), 'org': r2(x['org']), 'mar': r2(x['mar']), 'mod': r2(x['mod']), 'prov': r2(x['prov']),
-            'tip': r2(x['tip']), 'per': r2(x['per']), 'mt': r2(x['mt']), 'morg': r2(x['morg'])}
+            'tip': r2(x['tip']), 'per': r2(x['per']), 'cat': r2(x['cat']), 'mt': r2(x['mt']), 'morg': r2(x['morg'])}
 
 
 def leer_zip(b, meses, nombre):
@@ -141,12 +166,13 @@ def principal():
         f = CACHE + f'{a}.json'
         cerrado = a < anio_hoy and a < max(anuales)
         if cerrado and os.path.exists(f):
-            todos.update(json.load(open(f, encoding='utf-8'))); continue
+            c = json.load(open(f, encoding='utf-8'))
+            if c.pop('_v', None) == VERSION: todos.update(c); continue
         meses = defaultdict(nuevo_mes)
         try: leer_zip(bajar(anuales[a]), meses, f'{a}.zip')
         except Exception as e: diag['errores'].append(f'{a}.zip: {e}'); continue
         res = {m: a_json(x) for m, x in sorted(meses.items()) if m.startswith(str(a))}
-        if cerrado: json.dump(res, open(f, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+        if cerrado: json.dump({'_v': VERSION, **res}, open(f, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
         todos.update(res)
     if mensual and mensual[0] not in todos:
         meses = defaultdict(nuevo_mes)
@@ -189,7 +215,7 @@ meses = sorted(todos)
 ult = meses[-1]
 # serie mensual liviana (todo el período) + detalle de los últimos 25 meses y por año
 serie = [{'m': m, 't': todos[m]['tot'], 'org': {k: round(v) for k, v in todos[m]['org'].items()},
-          'tip': {k: round(v) for k, v in todos[m]['tip'].items()}, 'per': {k: round(v) for k, v in todos[m]['per'].items()}}
+          'cat': {k: round(v) for k, v in todos[m].get('cat', {}).items()}, 'per': {k: round(v) for k, v in todos[m]['per'].items()}}
          for m in meses]
 det = {}
 for m in meses[-25:]:
