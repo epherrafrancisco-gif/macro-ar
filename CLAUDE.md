@@ -41,7 +41,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   un script en el `<head>` lo aplica antes de pintar. OJO: el selector del botón es `button[data-tema]` (el `<html>` también
   tiene `data-tema`). Los recuadros de TradingView quedan como islas oscuras. Globos de Mundo y portada (`gDraw`, `dgDraw`): en modo claro
   se pintan claros (esfera crema/dorada, verde y rojo más oscuros, etiquetas con fondo crema; `esClaro()`, pedido del dueño
-  02/11/2026); el Monitor queda oscuro (es terminal).
+  02/11/2026). El Monitor en modo claro es una terminal dorada whisky (pedido del dueño 03/11/2026): variables de `.xpw` redefinidas en el
+  bloque CSS "Monitor en modo claro" y colores del lienzo en el objeto `K` de `xpDraw` (según `esClaro()`).
 - Modo Ciudad (cyberpunk con una ciudad de neón tipo Chongqing de fondo; pedido del dueño 02/11/2026): PREMIO SECRETO, nunca el
   modo por defecto. Se desbloquea con 30 seguidas en Verdadero o falso (`CIU_META` en juego.js; también si `PT.max` ya era ≥30):
   marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` (imagen = el render `fondos/ciudad3-1200`, encuadre en la torre de 宏观脉搏, desde el 02/11/2026; antes el dibujo `ciudad.svg`; "Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =

@@ -569,7 +569,7 @@ body.mon .mnTop button{display:none}
 .xpw .mnGeo .gn{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:2px 0 6px}
 .xpw .mnGeo .gn span{border:1px solid var(--ln2);padding:3px 0 2px;text-align:center;font-size:8.5px;letter-spacing:.05em;color:var(--dim)}
 .xpw .mnGeo .gn b{display:block;font:600 16px var(--mono)}
-.xpw .mnGeo svg{width:100%;height:30px;display:block;margin:2px 0 4px}
+.xpw .mnGeo svg{width:100%;height:30px;display:block;margin:2px 0 4px}.xpw svg path.ln{fill:none}
 .xpw .mnGeo .cf{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:6px;align-items:baseline;padding:2px 0;border-top:1px solid #111a23;font-size:10.5px;color:var(--tx);animation:xpIn .5s ease}
 .xpw .mnGeo .cf i{width:7px;height:7px;display:inline-block}.xpw .mnGeo .cf span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.xpw .mnGeo .cf em{font:normal 10px var(--mono);color:var(--dim)}
 .xpw .mnFl{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -587,6 +587,16 @@ body.mon .mnTop button{display:none}
 .xpw .mnCall .n{font-family:var(--mono);font-size:13px;color:var(--am)}
 .xpw .up{color:var(--vd)!important}.xpw .dn{color:var(--rj)!important}
 @keyframes xpBlink{50%{opacity:0}}
+/* Monitor en modo claro: terminal dorada whisky (pedido del dueño 03/11/2026) */
+html[data-tema="claro"] .xpw{--am:#9a5b00;--cy:#0e7480;--rj:#b0352a;--ce:#2f6ea8;--vd:#1b7446;--tx:#2a1c0c;--dim:#7a5c33;--ln2:#d9b77a;--pn:#f8ecd2;--hd:#efd9aa;
+  background:radial-gradient(ellipse at 50% 50%,#fbf1dc 0%,#f1dfb7 60%,#e6cd98 100%);border-color:#c9a25a}
+html[data-tema="claro"] .xpw .mnTop{background:#ecd29e;border-bottom-color:var(--am)}
+html[data-tema="claro"] .xpw .mnLogo,html[data-tema="claro"] .xpw .mnLogo b,html[data-tema="claro"] .xpw .mnTop button{color:#fff8ea}
+html[data-tema="claro"] .xpw .mnDots i{background:#dcc08a}html[data-tema="claro"] .xpw .mnDots i.done{background:#b8873a}
+html[data-tema="claro"] .xpw #mnClk div,html[data-tema="claro"] .xpw #mnBc div,html[data-tema="claro"] .xpw .mnGeo .cf,html[data-tema="claro"] .xpw .mnRainIn div{border-color:#e3c793}
+html[data-tema="claro"] .xpw #mnClk div i.off,html[data-tema="claro"] .xpw #mnClk .st.off{color:#a88a5c}
+html[data-tema="claro"] .xpw .mnCall{background:#fbf1dc;box-shadow:0 6px 24px rgba(120,80,10,.18)}
+html[data-tema="claro"] .xpw #mnVix .g{background:linear-gradient(90deg,#8fbf8a,#e0c066 45%,#d98a74)}
 .globe{position:relative;width:100%;aspect-ratio:1/1;max-height:600px}
 .globe canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
 .globe canvas:active{cursor:grabbing}
@@ -9212,7 +9222,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
       const pg = Math.max(1, Math.ceil(lst.length/5)), off = (Math.floor(Date.now()/6000) % pg) * 5, ver = lst.length>5 ? [...lst, ...lst].slice(off, off+5) : lst;
       const sp = gd.slice(-180).map(d=>[d[0], d[2]]).filter(d=>d[1]!=null);
       xpSet('mnGeo', `<div class="gn">${GEO_NIV.map(([k,,,c],i)=>`<span><b style="color:${c}">${cnt[i]}</b>${LB[i]}</span>`).join('')}</div>`
-        + (gu && gu[2]!=null ? row('Riesgo geopolítico · 7 días', nf(gu[2],0), xpD(g7?.[2] ? (gu[2]/g7[2]-1)*100 : null, false, true)) : '') + (sp.length>3 ? xpSpark(sp, '#ff5a4f') : '')
+        + (gu && gu[2]!=null ? row('Riesgo geopolítico · 7 días', nf(gu[2],0), xpD(g7?.[2] ? (gu[2]/g7[2]-1)*100 : null, false, true)) : '') + (sp.length>3 ? xpSpark(sp, 'var(--rj)') : '')
         + ver.map(([c,m])=>`<div class="cf"><i style="background:${GEO_NIV.find(x=>x[0]===c.nivel)[3]}"></i><span>${esc(c.es||c.n)}</span><em>${m ? (m>=1000 ? nf(m/1000,1)+' mil' : nf(m,0)) : '—'}</em></div>`).join('')
         + `<div class="row"><span>guerras por muertes en ${g.aU} · ${off/5+1}/${pg}</span><span></span></div>`); }
     // próximas decisiones de tasas
@@ -9223,7 +9233,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
   }
   // mapa de calor de las bolsas (1 vez por minuto)
   function xpHeat(){ if(!glob) return; const B = Object.entries(glob.bolsas||{}).map(([c,b])=>{ const e = GEX.find(x=>x[0].split(' ')[0]===(c==='PSE_CZ'?'BCPP':c)); return [e ? e[1] : b.idx, bm(b)]; }).filter(x=>x[1]!=null).slice(0,30);
-    xpSet('mnHm', B.map(([n,p])=>{ const a = Math.min(1, Math.abs(p)/2), bg = Math.abs(p)<.005 ? '#1b2530' : p>0 ? `rgba(46,160,96,${(.22+.7*a).toFixed(2)})` : `rgba(214,64,56,${(.22+.7*a).toFixed(2)})`;
+    xpSet('mnHm', B.map(([n,p])=>{ const a = Math.min(1, Math.abs(p)/2), bg = Math.abs(p)<.005 ? (esClaro() ? '#b89a62' : '#1b2530') : p>0 ? `rgba(46,160,96,${(.22+.7*a).toFixed(2)})` : `rgba(214,64,56,${(.22+.7*a).toFixed(2)})`;
       return `<span style="background:${bg}" title="${esc(n)}">${esc(n.toUpperCase().slice(0,9))}<b>${sg(p,1)}%</b></span>`; }).join('')); }
   function xpRain(){ if(!glob) return; const it = [], k = t=>it.push(`<div class="k">${t}</div>`), r = (n, v, d) => it.push(`<div><span>${esc(n)}</span><span>${v} <span class="${d==null?'':d>0?'up':d<0?'dn':''}">${d==null?'':sg(d,2)+'%'}</span></span></div>`);
     k('BOLSAS · ÚLTIMO MES (OCDE)'); for(const [x,b] of Object.entries(glob.bolsas||{})) if(b.vm!=null) r(b.idx, b.m ? MESL[+b.m.slice(5,7)-1].slice(0,3) : '', b.vm);
@@ -9251,7 +9261,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
   }
   function xpCallout(){ const S = XP_SCN[XP.scn], x = XP.pick; if(!x) return;
     if(S[0]==='geo'){ const g = xpGeo(), t = g?.top[x.iso], pts = (geoD?.gpr?.diario||[]).slice(-365).map(d=>[d[0], d[2]]).filter(d=>d[1]!=null), el = $('mnCall');
-      el.innerHTML = `<div class="s">EL CONFLICTO MÁS GRAVE</div><div class="n">${esc(xpN(x.iso))}</div><div class="v" style="color:#ff5a4f">${nf(x.v,0)} muertes</div><div class="s">en ${g?.aU||''}${t ? ' · '+esc(t[0].es||t[0].n) : ''}</div>${pts.length>3 ? xpSpark(pts, '#ff5a4f') + '<div class="s">riesgo geopolítico mundial (promedio de 7 días), último año</div>' : ''}`;
+      el.innerHTML = `<div class="s">EL CONFLICTO MÁS GRAVE</div><div class="n">${esc(xpN(x.iso))}</div><div class="v" style="color:var(--rj)">${nf(x.v,0)} muertes</div><div class="s">en ${g?.aU||''}${t ? ' · '+esc(t[0].es||t[0].n) : ''}</div>${pts.length>3 ? xpSpark(pts, '#ff5a4f') + '<div class="s">riesgo geopolítico mundial (promedio de 7 días), último año</div>' : ''}`;
       el.style.left = (XP.cx + XP.R*.42) + 'px'; el.style.top = (XP.cy - 150) + 'px'; el.hidden = false; return; }
     const sk = S[9]?.(x.iso), pts = sk ? (gHist?.series?.[sk] || []).slice(-260) : null;
     const col = S[4]==='div' ? (x.v>=0 ? 'var(--pos)' : 'var(--neg)') : 'var(--s4)', el = $('mnCall');
@@ -9274,6 +9284,10 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     xpSize(); proj.rotate(XP.rot);
     const r = proj.scale(), cx = XP.cx, cy = XP.cy, c0 = proj.invert([cx,cy]);
     ctx.clearRect(0,0,W,H);
+    const K = esClaro() ? {atm:'201,141,22', o0:'#fff7e6', o1:'#e9cf98', grat:'rgba(138,86,0,.12)', nada:'#dcc394', brd:'rgba(120,80,20,.55)', ar:'rgba(47,110,168,.95)', pk:'#9a5b00',
+        noche:'60,36,6', rim:'#c9a25a', abierta:'#1b7446', cerr:'rgba(120,90,50,.45)', guer:'176,53,42', guer2:'190,100,30', carry:'154,91,0', col:'154,91,0', sube:'27,116,70', baja:'176,53,42', lab:'#fbf1dc'}
+      : {atm:'106,168,216', o0:'#0b1620', o1:'#04080d', grat:'rgba(60,196,207,.07)', nada:'#18232e', brd:'rgba(4,8,13,.95)', ar:'rgba(230,237,243,.85)', pk:'#ff9e1b',
+        noche:'2,6,12', rim:'#26333f', abierta:'#3fd17f', cerr:'rgba(150,150,150,.5)', guer:'255,90,79', guer2:'232,131,58', carry:'255,158,27', col:'232,177,74', sube:'76,195,138', baja:'240,122,112', lab:'#000'};
     // anillos de radar y miras
     const R0 = XP.R*1.06*Math.max(1, XP.zoom), rotA = -now*.00004;
     if(0){
@@ -9286,40 +9300,40 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){ ctx.beginPath(); ctx.moveTo(cx+sx*B, cy+sy*(B-18)); ctx.lineTo(cx+sx*B, cy+sy*B); ctx.lineTo(cx+sx*(B-18), cy+sy*B); ctx.stroke(); }
     }
     // atmósfera y océano
-    const ga = ctx.createRadialGradient(cx, cy, r*.95, cx, cy, r*1.2); ga.addColorStop(0,'rgba(106,168,216,.22)'); ga.addColorStop(1,'rgba(106,168,216,0)');
-    const g = ctx.createRadialGradient(cx-r*.35, cy-r*.4, r*.1, cx, cy, r); g.addColorStop(0,'#0b1620'); g.addColorStop(1,'#04080d');
+    const ga = ctx.createRadialGradient(cx, cy, r*.95, cx, cy, r*1.2); ga.addColorStop(0,`rgba(${K.atm},.22)`); ga.addColorStop(1,`rgba(${K.atm},0)`);
+    const g = ctx.createRadialGradient(cx-r*.35, cy-r*.4, r*.1, cx, cy, r); g.addColorStop(0,K.o0); g.addColorStop(1,K.o1);
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = 'rgba(60,196,207,.07)'; ctx.lineWidth = .5; ctx.stroke();
+    XP.grat = XP.grat || d3.geoGraticule().step([15,15])(); ctx.beginPath(); path(XP.grat); ctx.strokeStyle = K.grat; ctx.lineWidth = .5; ctx.stroke();
     // países (agrupados por color, solo la cara visible)
     if(!XP.fb) XP.fb = G.feats.map(f=>{ const c = d3.geoCentroid(f), b = d3.geoBounds(f); return [f, c, Math.max(d3.geoDistance(c, b[0]), d3.geoDistance(c, b[1]), d3.geoDistance(c, [b[0][0], b[1][1]]), d3.geoDistance(c, [b[1][0], b[0][1]]))]; });
-    if(!XP.fc || XP.fcK!==XP.scn || now-(XP.fcAt||0) > 5000){ XP.fcK = XP.scn; XP.fcAt = now; XP.fc = new Map(G.feats.map(f=>[f.id, (S[7]==='geo' ? xpGeoC(f.id) : xpFillC(S[7], S[7]==='no' ? null : gval(f.id, S[7]))) || '#18232e'])); }
+    if(!XP.fc || XP.fcK!==XP.scn+K.nada || now-(XP.fcAt||0) > 5000){ XP.fcK = XP.scn+K.nada; XP.fcAt = now; XP.fc = new Map(G.feats.map(f=>[f.id, (S[7]==='geo' ? xpGeoC(f.id) : xpFillC(S[7], S[7]==='no' ? null : gval(f.id, S[7]))) || K.nada])); }
     const grp = new Map(); for(const [f,cc,rad] of XP.fb){ if(d3.geoDistance(cc, c0) - rad > Math.PI/2) continue; const col = XP.fc.get(f.id); if(!grp.has(col)) grp.set(col, []); grp.get(col).push(f); }
     for(const [col, fs] of grp){ ctx.beginPath(); for(const f of fs) path(f); ctx.fillStyle = col; ctx.fill(); }
-    ctx.beginPath(); path(G.borders); ctx.strokeStyle = 'rgba(4,8,13,.95)'; ctx.lineWidth = .7; ctx.stroke();
-    if(G.byId.ARG){ ctx.beginPath(); path(G.byId.ARG); ctx.strokeStyle = 'rgba(230,237,243,.85)'; ctx.lineWidth = 1.3; ctx.stroke(); }
-    if(XP.pick && G.byId[XP.pick.iso] && st>4500 && st<15500){ ctx.beginPath(); path(G.byId[XP.pick.iso]); ctx.strokeStyle = '#ff9e1b'; ctx.lineWidth = 1.6; ctx.stroke(); }
+    ctx.beginPath(); path(G.borders); ctx.strokeStyle = K.brd; ctx.lineWidth = .7; ctx.stroke();
+    if(G.byId.ARG){ ctx.beginPath(); path(G.byId.ARG); ctx.strokeStyle = K.ar; ctx.lineWidth = 1.3; ctx.stroke(); }
+    if(XP.pick && G.byId[XP.pick.iso] && st>4500 && st<15500){ ctx.beginPath(); path(G.byId[XP.pick.iso]); ctx.strokeStyle = K.pk; ctx.lineWidth = 1.6; ctx.stroke(); }
     // noche
     if(!XP.nt || now-XP.ntAt > 30000){ XP.ntAt = now; const sn = xpSun(), an = [sn[0]+180, -sn[1]]; XP.nt = [[d3.geoCircle().center(an).radius(90)(), .3],[d3.geoCircle().center(an).radius(82)(), .16]]; }
-    for(const [geo, a] of XP.nt){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(2,6,12,${a})`; ctx.fill(); }
-    ctx.beginPath(); ctx.arc(cx, cy, r+.5, 0, 7); ctx.strokeStyle = '#26333f'; ctx.lineWidth = 1; ctx.stroke();
+    for(const [geo, a] of XP.nt){ ctx.beginPath(); path(geo); ctx.fillStyle = `rgba(${K.noche},${esClaro() ? a*.28 : a})`; ctx.fill(); }
+    ctx.beginPath(); ctx.arc(cx, cy, r+.5, 0, 7); ctx.strokeStyle = K.rim; ctx.lineWidth = 1; ctx.stroke();
     const vis = ll => d3.geoDistance(ll, c0) < Math.PI/2 - .03;
     // luces de las bolsas abiertas
     for(const e of GEX){ const o = gEx(e).open, ll = [e[3],e[4]]; if(!vis(ll)) continue; const p = proj(ll);
-      ctx.beginPath(); ctx.arc(p[0],p[1], o?2.6:1.8, 0, 7); ctx.fillStyle = o ? '#3fd17f' : 'rgba(150,150,150,.5)'; ctx.fill(); }
+      ctx.beginPath(); ctx.arc(p[0],p[1], o?2.6:1.8, 0, 7); ctx.fillStyle = o ? K.abierta : K.cerr; ctx.fill(); }
     // guerras en curso: cuadro fijo en el escenario principal (titila lento)
     { const g = xpGeo(); if(g) for(const [ll, r] of g.mk){ if(!vis(ll)) continue; const p = proj(ll), a = .55 + .45*Math.sin(now/700 + ll[0]);
-      ctx.strokeStyle = r===0 ? `rgba(255,90,79,${a})` : `rgba(232,131,58,${a*.9})`; ctx.lineWidth = 1.2; const z = r===0 ? 5 : 3.5; ctx.strokeRect(p[0]-z, p[1]-z, z*2, z*2); } }
+      ctx.strokeStyle = r===0 ? `rgba(${K.guer},${a})` : `rgba(${K.guer2},${a*.9})`; ctx.lineWidth = 1.2; const z = r===0 ? 5 : 3.5; ctx.strokeRect(p[0]-z, p[1]-z, z*2, z*2); } }
     // arcos del carry trade
     if(glob?.paises?.JPN?.tasa!=null){ const tj = glob.paises.JPN.tasa, a = G.cen('JPN');
       for(const [i,p] of Object.entries(glob.paises).filter(([i,p])=>p.tasa!=null && p.tasa-tj>=3 && G.byId[i] && i!=='JPN').sort((x,y)=>(y[1].tasa-tj)-(x[1].tasa-tj)).slice(0,8)){
         const b = G.cen(i); if(!a || !b) continue; const ip = d3.geoInterpolate(a,b), hmax = Math.min(.2, .05+d3.geoDistance(a,b)*.08), N = 40, pts = [];
         for(let k=0;k<=N;k++){ const t = k/N, ll = ip(t); pts.push(vis(ll) ? xpUp(proj(ll), Math.sin(Math.PI*t)*hmax) : null); }
-        ctx.strokeStyle = 'rgba(255,158,27,.3)'; ctx.lineWidth = .8; ctx.beginPath(); let on = false; for(const q of pts){ if(!q){ on = false; continue; } if(on) ctx.lineTo(q[0],q[1]); else { ctx.moveTo(q[0],q[1]); on = true; } } ctx.stroke();
-        const hd = ((now/1800) % 1) * N; for(let s=0;s<2;s++){ const q = pts[Math.floor((hd + s*N/2) % N)]; if(q){ ctx.beginPath(); ctx.arc(q[0],q[1], 1.6, 0, 7); ctx.fillStyle = '#ff9e1b'; ctx.fill(); } } } }
+        ctx.strokeStyle = `rgba(${K.carry},.35)`; ctx.lineWidth = .8; ctx.beginPath(); let on = false; for(const q of pts){ if(!q){ on = false; continue; } if(on) ctx.lineTo(q[0],q[1]); else { ctx.moveTo(q[0],q[1]); on = true; } } ctx.stroke();
+        const hd = ((now/1800) % 1) * N; for(let s=0;s<2;s++){ const q = pts[Math.floor((hd + s*N/2) % N)]; if(q){ ctx.beginPath(); ctx.arc(q[0],q[1], 1.6, 0, 7); ctx.fillStyle = `rgb(${K.carry})`; ctx.fill(); } } } }
     // columnas de la escena
     const items = xpItems(S), front = items.filter(x=>vis(x.ll)).sort((a,b)=>d3.geoDistance(b.ll,c0)-d3.geoDistance(a.ll,c0)), grow = Math.min(1, st/1800);
     for(const x of front){ const tgt = (Math.pow(Math.min(1, Math.abs(x.v)/S[5]), .6) * .3 + .012) * grow; let cur = XP.anim[x.iso] ?? 0; cur += (tgt-cur)*Math.min(1, dt/200); XP.anim[x.iso] = cur;
-      const p = proj(x.ll), top = xpUp(p, cur), col = S[4]==='div' ? (x.v>=0 ? '76,195,138' : '240,122,112') : S[4]==='geo' ? '255,90,79' : '232,177,74', hl = XP.pick?.iso===x.iso;
+      const p = proj(x.ll), top = xpUp(p, cur), col = S[4]==='div' ? (x.v>=0 ? K.sube : K.baja) : S[4]==='geo' ? K.guer : K.col, hl = XP.pick?.iso===x.iso;
       ctx.strokeStyle = `rgba(${col},.85)`; ctx.lineWidth = hl ? 3 : 1.6; ctx.lineCap = 'butt'; ctx.beginPath(); ctx.moveTo(p[0],p[1]); ctx.lineTo(top[0],top[1]); ctx.stroke();
       ctx.beginPath(); ctx.arc(top[0],top[1], hl?3.6:2.4, 0, 7); ctx.fillStyle = `rgb(${col})`; ctx.fill(); x.top = top; x.col = col; }
     // barrido de radar: detecta países a su paso y les muestra el dato un rato
@@ -9328,7 +9342,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     for(const x of front){ if(!x.top) continue; if(crossed(Math.atan2(x.top[1]-cy, x.top[0]-cx)) && !XP.lab.some(l=>l.iso===x.iso)) XP.lab.push({iso:x.iso, t:now}); }
     XP.lab = XP.lab.filter(l=>now-l.t < 2600);
     ctx.font = '600 10.5px "JetBrains Mono",monospace'; ctx.textBaseline = 'middle';
-    const showLab = (x, a) => { const t = `${xpN(x.iso).toUpperCase().slice(0,12)} ${S[6](x.v)}`, tw = ctx.measureText(t).width; ctx.globalAlpha = a; ctx.fillStyle = '#000'; ctx.fillRect(x.top[0]+6, x.top[1]-8, tw+8, 16); ctx.fillStyle = `rgb(${x.col})`; ctx.fillText(t, x.top[0]+10, x.top[1]); ctx.globalAlpha = 1; };
+    const showLab = (x, a) => { const t = `${xpN(x.iso).toUpperCase().slice(0,12)} ${S[6](x.v)}`, tw = ctx.measureText(t).width; ctx.globalAlpha = a; ctx.fillStyle = K.lab; ctx.fillRect(x.top[0]+6, x.top[1]-8, tw+8, 16); ctx.fillStyle = `rgb(${x.col})`; ctx.fillText(t, x.top[0]+10, x.top[1]); ctx.globalAlpha = 1; };
     for(const l of XP.lab){ const x = front.find(y=>y.iso===l.iso); if(x?.top) showLab(x, Math.min(1, (2600-(now-l.t))/600)); }
     if(XP.pick){ const x = front.find(y=>y.iso===XP.pick.iso); if(x?.top) showLab(x, 1); }
     // destellos de titulares
@@ -9336,8 +9350,8 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
       if(nn){ const ll = nn[0]==='BEL' ? [4.35,50.85] : nn[0]==='MUNDO' ? null : G.cen(nn[0]); if(ll) XP.ping.push({ll, t:now}); xpLogAdd(xpTag(nn[0]), nn[1]); } }
     XP.ping = XP.ping.filter(pg=>now-pg.t < 3200);
     for(const pg of XP.ping){ if(!vis(pg.ll)) continue; const q = (now-pg.t)/3200, p = proj(pg.ll);
-      ctx.strokeStyle = `rgba(255,158,27,${1-q})`; ctx.lineWidth = 1; ctx.strokeRect(p[0]-6, p[1]-6, 12, 12);
-      ctx.beginPath(); ctx.arc(p[0],p[1], 1.8, 0, 7); ctx.fillStyle = `rgba(255,158,27,${1-q})`; ctx.fill(); }
+      ctx.strokeStyle = `rgba(${K.carry},${1-q})`; ctx.lineWidth = 1; ctx.strokeRect(p[0]-6, p[1]-6, 12, 12);
+      ctx.beginPath(); ctx.arc(p[0],p[1], 1.8, 0, 7); ctx.fillStyle = `rgba(${K.carry},${1-q})`; ctx.fill(); }
     xpLogRender(now);
     if(now-(XP.pnAt||0) > 1000){ XP.pnAt = now; xpPanels(); if(now-(XP.rnAt||0) > 60000){ XP.rnAt = now; xpRain(); xpHeat(); } }
     requestAnimationFrame(xpDraw);
