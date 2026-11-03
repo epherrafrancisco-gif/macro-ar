@@ -807,7 +807,9 @@ const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 
 let RECORD = null, TK = '';
 function yoPintar() { const el = $('#recYo'); if (!el) return; el.hidden = !PT.max; el.querySelector('b').textContent = fN(PT.max); }
 const recPintar = () => { const el = $('#rec'); if (RECORD == null || !el) return; el.hidden = false; el.querySelector('b').textContent = fN(Math.max(RECORD, PT.max)); };
-fetch('/api/racha?t=' + VER()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.n != null) { RECORD = d.n; recPintar(); } }).catch(() => {});
+const recTraer = (k = 0) => fetch('/api/racha?t=' + VER()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.n != null) { RECORD = d.n; recPintar(); } else throw 0; })
+  .catch(() => { if (k < 3) setTimeout(() => recTraer(k + 1), 4000 * (k + 1)); });   // si falla (red lenta al abrir), reintenta 3 veces
+recTraer();
 function rachaServidor(reel) {
   fetch('/api/racha', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})})
     .then(r => r.ok ? r.json() : null).then(d => {

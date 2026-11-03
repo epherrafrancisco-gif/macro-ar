@@ -95,6 +95,7 @@ def svg_linea(serie, color, fmt, mensual_=False):
     lo, hi = min(vals), max(vals)
     pad = (hi - lo) * 0.08 or abs(hi) * 0.05 or 1
     lo, hi = lo - pad, hi + pad
+    L = max(L, 16 + 8 * max(len(fmt(lo + (hi - lo) * (k + .5) / 4)) for k in range(4)))   # que entren las etiquetas del eje
     x = lambda i: L + i * (W - L - R) / (len(serie) - 1)
     y = lambda v: T + (hi - v) / (hi - lo) * (H - T - B)
     pts = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, (_, v) in enumerate(serie))
@@ -148,7 +149,9 @@ td{font-family:"JetBrains Mono",monospace;font-size:14px}td:first-child{font-fam
 .rel{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.rel a{border:1px solid var(--ln);border-radius:999px;padding:6px 12px;font-size:14px;text-decoration:none;color:var(--ink2)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.grid a{display:block;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px;text-decoration:none;color:var(--ink)}
 .grid a span{display:block;font-size:13px;color:var(--mu)}.grid a b{font-family:"JetBrains Mono",monospace;font-weight:500}
-footer{border-top:1px solid var(--ln);margin-top:30px;padding-top:14px;font-size:13px;color:var(--mu)}"""
+footer{border-top:1px solid var(--ln);margin-top:30px;padding-top:14px;font-size:13px;color:var(--mu)}
+html[data-tema="claro"]{color-scheme:light;--bg:#f0dcb0;--sf:#faefd6;--ink:#2a1c0c;--ink2:#55401f;--mu:#6e5230;--ln:#dcb874;--ac:#8a5600;--up:#1b7446;--dn:#b0352a}
+html[data-tema="claro"] .ax line{stroke:#e3c793}html[data-tema="claro"] .btn{color:#fff8ea}"""
 
 ICON = "/icons/anillo.svg"
 
@@ -159,6 +162,7 @@ def pagina(slug, titulo_seo, desc, cuerpo, crumb, extra_head=""):
     url = f"{SITE}/{slug}/" if slug else f"{SITE}/indicadores/"
     return f"""<!doctype html>
 <html lang="es-AR"><head><meta charset="utf-8"><meta name="color-scheme" content="dark"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>try{{if(localStorage.getItem("pm-tema")==="claro"){{document.documentElement.dataset.tema="claro";document.querySelector('meta[name="color-scheme"]').content="light"}}}}catch(e){{}}</script>
 <title>{esc(titulo_seo)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}"><link rel="icon" href="{ICON}">
 <meta property="og:title" content="{esc(titulo_seo)}"><meta property="og:description" content="{esc(desc)}">
