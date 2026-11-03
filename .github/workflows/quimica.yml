@@ -1,0 +1,48 @@
+name: Quimica
+
+# Industria química: INDEC (IPI, producción física, capacidad instalada), Banco Mundial (fertilizantes) y Eurostat → quimica.json.
+# Datos mensuales: alcanza con dos veces por semana (martes y viernes 9:41 hora argentina).
+on:
+  schedule:
+    - cron: "41 12 * * 2,5"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/quimica.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quimica
+  cancel-in-progress: false
+
+jobs:
+  quimica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer datos de la industria química
+        run: |
+          pip install -q openpyxl
+          python scripts/quimica.py
+
+      - name: Guardar cambios
+        run: |
+          if git diff --quiet quimica.json 2>/dev/null && git ls-files --error-unmatch quimica.json >/dev/null 2>&1; then
+            echo "Sin cambios"
+            exit 0
+          fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quimica.json
+          git commit -m "Química $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
