@@ -776,11 +776,16 @@ if (PT.max >= BOV_META) { try { localStorage.setItem('pm-orbita', '1'); } catch 
   history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor();
   const m = $('#bov'); if (m) { m.hidden = false; bovContar(false); } })();
 // modo Órbita: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 60 seguidas)
-const bovQuien = n => n === 1 ? 'Lo tiene <b>1 persona</b> en el mundo' : `Lo tienen <b>${fN(n)} personas</b> en el mundo`;
+// Al desbloquearlo de verdad (pedido del dueño 02/11/2026): "Con vos, ya son N personas en el mundo", solo si el Worker sumó a esta
+// persona (la cuenta subió respecto de la que se conocía antes); si no, el texto común.
+const bovQuien = (n, conVos) => conVos && n >= 2 ? `Con vos, ya son <b>${fN(n)} personas</b> en el mundo`
+  : n === 1 ? 'Lo tiene <b>1 persona</b> en el mundo' : `Lo tienen <b>${fN(n)} personas</b> en el mundo`;
 function bovContar(sumar) {
+  const antes = BOV_N;
   const o = sumar ? {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})} : {};
   return fetch(sumar ? '/api/boveda' : '/api/boveda?t=' + VER(), o).then(r => r.ok ? r.json() : null).then(d => {
-    if (d && d.n != null) { BOV_N = d.n; lockPintar(); document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n); x.hidden = false; }); } }).catch(() => {});
+    if (d && d.n != null) { const conVos = sumar && antes != null && d.n > antes; BOV_N = d.n; lockPintar();
+      document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n, conVos); x.hidden = false; }); } }).catch(() => {});
 }
 if (ciuOk()) bovContar(false);
 function bovIr() { try { localStorage.setItem('pm-tema', 'orbita'); } catch (e) {} }
