@@ -564,8 +564,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Merval en Bolsa y bonos: parte de cierre como noticia (`#merParte` arriba de los indicadores: "El MSCI Merval cerró el ... Fuente: BYMA / MSCI").
 - Atribución de los widgets de TradingView: el texto original "Track all markets on TradingView" (sus términos piden no cambiarla).
 - Dos globos: países (`gInit/gDraw`, capas inflación/crecimiento/tasa/desempleo, ficha vs Argentina; mapa plano si
-  `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas hoy, monedas hoy, monedas en
-  el año, bonos a 10 años). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
+  `innerWidth<560`) y "Mundo hoy" de puntos (`dgStart/dgDraw/dgDots/dgItems`; capas bolsas en el mes (mensual de la OCDE: el botón ya no dice "hoy"), monedas hoy, monedas en
+  el año, bonos a 10 años; el texto de la capa `#dHud` va arriba del globo, no encima, y las etiquetas que se pisan no se escriben). d3 7.8.5 y topojson 3.0.2 copiados en `vendor/` (no dependen de cdnjs), solo al abrir la pestaña. Mapa `world.json`.
 - Reloj de mercados 24 h (`renderReloj`, `gEstado`, `gProx`, lista `GEX` sin feriados).
 - `gMundoExtra`: ¿Dónde está Argentina? (`DPA`, países `DPA_P`), agenda de bancos centrales (`BCAL`, fechas de anuncio
   cargadas a mano hasta dic-2027; Banxico y Colombia solo 2026, Turquía hasta jun-2027: completar cuando publiquen), bonos a 10 años vs EE.UU.
