@@ -597,6 +597,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   quién lanza más (las academias de CASC juntas, `ESP_CASC`), satélites por dueño (`ESP_DUE`) y por país (`ESP_PAIS`), empresas en
   bolsa (TradingView `tvLista`), NASA, últimos 10 y los satélites argentinos. Nombres de empresas de LL2 acortados en `ESP_EMP`; las
   descripciones de LL2 vienen en inglés: no se muestran.
+  Animación (pedido del dueño 03/11/2026, "algo pequeño que llame la atención"): en la tarjeta del próximo lanzamiento, lienzo
+  `#espOrb` con la Tierra, ~150 satélites en órbitas inclinadas (42 % celestes = Starlink) y un cohete que sale cada 4-8 s
+  (`espOrbita`/`espDibujar`/`eoCuadro`, objeto `EO`). UNA sola vuelta de animación (`EO.corre`) que busca el lienzo actual en cada
+  cuadro (renderEspacio lo recrea; con varias vueltas o un observador viejo se trababa en el celular); 30 cuadros/s en compu, 20 en
+  celular, se frena fuera del apartado, fuera de pantalla o con la pestaña oculta; con reducir movimiento queda un cuadro fijo.
+  Las tablas `.esptab` anulan el `min-width:640px` y el `nowrap` globales de `table`/`td`; en celular las filas se apilan.
 
 ### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦", objeto `XP`, `xpStart`/`xpDraw`)
 - Pedido del dueño: NO interactivo, para dejar prendido de ambiente (el Explorador interactivo se descartó: "no se entiende").
