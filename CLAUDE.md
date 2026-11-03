@@ -263,6 +263,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   capacidad, fertilizantes, gas y Europa. Descartado: producción física 41.3 de urea y caucho sintético (vacía en los últimos años,
   secreto estadístico), pinturas y jabones (unidad que no cierra con el IPI), caucho y plástico total y manufacturas de plástico (cortadas),
   IPIM químico (no está en la API), FRED (timeout desde Actions). Series de más de 7 meses no se publican.
+  Insumos (pedido del dueño 03/11/2026: un amigo que trabaja en una química quería precios de hipoclorito, sulfónico, conservantes,
+  soda cáustica y polietileno "por marca, proveedor y provincia": eso NO existe público (los proveedores cotizan por WhatsApp) y
+  bajar MercadoLibre viola sus términos: el dueño quería hacerlo igual y se le dijo que no, por el plan legal del 26/10). Se hizo el
+  precio de importación: scripts/insumos.py (mismo workflow `quimica.yml`) → `insumos.json` + `insumos_cache/AAAA.json` (años cerrados;
+  `VERSION`). Fuente: zips públicos `comex.indec.gob.ar/files/zips/imports_AAAA_M.zip` (impomAA.csv: Año;mes;NCM;Porg;Pnet(kg);FOB;
+  Flete;Seguro;CIF en US$), desde 2019; nombres oficiales de NCM y países de `comexbe.indec.gob.ar/public-api/search/{products,countries}`
+  (un código que no aparece se descarta, `diag.sin_codigo`). Las exportaciones por NCM vienen con secreto ("s") en la petroquímica:
+  no se usan. `PROD` = 19 insumos (limpieza, conservantes, plásticos). Precio = CIF total / kilos del mes; meses con < 10 t
+  (`QI_MIN`) = "poco volumen" (hipoclorito de sodio casi no se importa: se hace acá). En la página, arriba de todo en Industria
+  química: tabla "Cuánto cuesta traer cada insumo" (`renderInsumos`, filtro `qiGrupo`, en pesos al mayorista de hoy con `qiMay`)
+  y ficha al tocar uno (`qiSel`, `#quFicha` con `display:contents`): precio desde 2019, toneladas 3 años, orígenes con precio por país.
+  Agua blanda: no se compra (se hace en planta con resinas), la nota lo dice.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas

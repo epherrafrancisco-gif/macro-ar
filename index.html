@@ -218,6 +218,8 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 @media (max-width:480px){.tabs{gap:0}.tabs a{padding:8px 6px;font-size:13px;white-space:nowrap}}
 .tabs a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .seg{display:inline-flex;background:var(--sunk);border-radius:7px;padding:3px;gap:2px}
+.qit td:first-child,.qit td:last-child{white-space:normal;min-width:120px}
+#quFicha:not([hidden]){display:contents}
 .seg button{font:inherit;font-size:12.5px;font-weight:500;border:0;background:transparent;color:var(--ink2);padding:5px 10px;border-radius:5px;cursor:pointer}
 .seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 
@@ -1441,6 +1443,29 @@ body.mporta .hbus{display:none}
   <section class="view" id="vQu" hidden>
     <div class="kpis" id="kpisQu"></div>
     <div class="card">
+      <div class="head"><h2>Cuánto cuesta traer cada insumo</h2><span class="note" id="quIS"></span></div>
+      <div class="seg calcsel" role="tablist" aria-label="Grupo" id="quIG">
+        <button type="button" data-qig="" aria-selected="true">Todos</button>
+        <button type="button" data-qig="limpieza" aria-selected="false">Limpieza y detergentes</button>
+        <button type="button" data-qig="conservantes" aria-selected="false">Conservantes</button>
+        <button type="button" data-qig="plasticos" aria-selected="false">Plásticos y envases</button>
+      </div>
+      <div class="tablewrap"><table class="qit" style="min-width:720px"><thead><tr><th>Insumo</th><th>US$ por tonelada</th><th>En pesos por kilo</th><th>Contra el mes anterior</th><th>Contra un año antes</th><th>Se trajeron</th><th>De dónde viene más</th></tr></thead><tbody id="tQuI"></tbody></table></div>
+      <p class="note" id="quIN"></p>
+    </div>
+    <div id="quFicha" hidden>
+      <div class="card">
+        <div class="head"><h2 id="quFT"></h2><span class="note" id="quFS"></span></div>
+        <div class="kpis" id="kpisQuF"></div>
+        <p class="note" id="quFN"></p>
+      </div>
+      <div class="card"><div class="head"><h2 id="quFPh">Precio de cada mes</h2><span class="note">dólares por tonelada, CIF</span></div><div class="chart" id="chQuFP"></div></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Toneladas que se trajeron</h2><span class="note">cada mes, últimos 3 años</span></div><div class="chart" id="chQuFV"></div></div>
+        <div class="card"><div class="head"><h2>De dónde viene</h2><span class="note">últimos 12 meses · precio de cada país</span></div><div class="chart" id="chQuFO"></div></div>
+      </div>
+    </div>
+    <div class="card">
       <div class="head"><h2>La química contra toda la industria</h2><div class="legend" id="lgQuL"></div></div>
       <div class="chart" id="chQuL"></div>
       <p class="note" id="quLN"></p>
@@ -1474,7 +1499,7 @@ body.mporta .hbus{display:none}
       <div class="chart" id="chQuE"></div>
       <p class="note" id="quEN"></p>
     </div>
-    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="quimica"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Producción por rubro</button><button type="button" data-csv="quimica-mundo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Fertilizantes y gas</button></div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="quimica"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Producción por rubro</button><button type="button" data-csv="quimica-mundo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Fertilizantes y gas</button><button type="button" data-csv="quimica-insumos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Insumos importados por mes</button></div>
   </section>
 
 
@@ -4430,7 +4455,48 @@ body.mporta .hbus{display:none}
   function quProm(pts){ const out = []; for(let i=11; i<pts.length; i++){ let t = 0; for(let j=i-11; j<=i; j++) t += pts[j][1]; out.push([pts[i][0], t/12]); }
     const b = out.find(p=>p[0].slice(0,7)==='2016-12'); return b ? out.map(p=>[p[0]+'-01', p[1]/b[1]*100]) : out.map(p=>[p[0]+'-01', p[1]]); }
   $('quSel').addEventListener('click', e=>{ const b = e.target.closest('[data-qur]'); if(!b) return; quRub = b.dataset.qur; renderQuimica(); });
+  // ---- Insumos importados (insumos.json de scripts/insumos.py: INDEC, base de comercio exterior) ----
+  let qi = null, qiLoading = false, qiGrupo = '', qiSel = null;
+  const QI_MIN = 10000;  // kilos: con menos de 10 t en el mes el promedio no es representativo
+  const QI_PAIS = {'Emiratos Árabes Unidos':'Emiratos Árabes','República Federal de Alemania':'Alemania','Corea (Sur), Rep. de':'Corea del Sur','Colonia (Uruguay)':'Colonia (zona franca, Uruguay)','China (Rep. Popular)':'China','Reino Unido de Gran Bretaña e Irlanda del Norte':'Reino Unido'};
+  const qiPais = c => { const n = qi?.paises?.[c] || c; return QI_PAIS[n] || n.replace(/\s*\(Rep\. Popular\)/,''); };
+  async function loadQi(){
+    if(qi || qiLoading) return; qiLoading = true;
+    try{ const r = await fetch('insumos.json?t='+VER(), {cache:'no-store'}); if(r.ok) qi = await r.json(); }catch(e){}
+    qiLoading = false; if(tab==='quimica') renderInsumos();
+  }
+  const qiM = p => new Map(p.serie.map(r=>[r[0], r]));
+  const qiPx = r => r && r[1] >= QI_MIN ? r[3]/r[1]*1000 : null;  // CIF US$ por tonelada
+  const qiMay = () => { for(let i=days.length-1; i>=0; i--){ const v = get(days[i],'mayorista'); if(v) return v; } return null; };
+  $('quIG').addEventListener('click', e=>{ const b = e.target.closest('[data-qig]'); if(!b) return; qiGrupo = b.dataset.qig; renderInsumos(); });
+  $('tQuI').addEventListener('click', e=>{ const tr = e.target.closest('tr[data-qi]'); if(!tr) return; qiSel = tr.dataset.qi; renderInsumos(); $('quFicha').scrollIntoView({behavior:'smooth', block:'start'}); });
+  function renderInsumos(){
+    if(!qi){ loadQi(); $('tQuI').innerHTML = '<tr><td colspan="7" class="note">Cargando precios de importación…</td></tr>'; return; }
+    const u = qi.ultimo_mes, may = qiMay();
+    document.querySelectorAll('[data-qig]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.qig===qiGrupo)));
+    $('quIS').textContent = `${MESL[+u.slice(5)-1]} ${u.slice(0,4)} · INDEC`;
+    const ps = qi.productos.filter(p=>!qiGrupo || p.g===qiGrupo);
+    $('tQuI').innerHTML = ps.map(p=>{ const M = qiM(p), r = M.get(u), px = qiPx(r), pm = qiPx(M.get(mAdd(u,-1))), pa = qiPx(M.get(mAdd(u,-12))), o = p.orig[0], ot = p.orig.reduce((a,x)=>a+x[1],0);
+      return `<tr data-qi="${p.k}" style="cursor:pointer"${p.k===qiSel?' class="hl"':''}><td><b>${esc(p.n)}</b></td><td>${px ? 'US$ '+nf(px,0) : '<span class="note">poco volumen</span>'}</td><td>${px && may ? '$ '+nf(px/1000*may,0) : '—'}</td><td>${px && pm ? chip(px/pm-1,{d:1}) : '—'}</td><td>${px && pa ? chip(px/pa-1,{d:1}) : '—'}</td><td>${!r || r[1]<1000 ? (r && r[1]>0 ? 'menos de 1 t' : '—') : nf(r[1]/1000, r[1]<100000?1:0)+' t'}</td><td>${o ? esc(qiPais(o[0]))+` <span class="note">${nf(o[1]/ot*100,0)}%</span>` : '—'}</td></tr>`; }).join('');
+    $('quIN').textContent = `Precio promedio al que entró cada insumo al país en ${MESL[+u.slice(5)-1]}: valor CIF (mercadería + flete + seguro, puesto en puerto argentino) dividido los kilos, de todas las importaciones del mes. No incluye aranceles, tasa de estadística, IVA ni percepciones, ni el flete hasta la planta: sirve para comparar con lo que cobra un proveedor local y para ver hacia dónde va el precio. En pesos, al dólar mayorista de hoy${may ? ` ($ ${nf(may,2)})` : ''}. "Poco volumen": ese mes entraron menos de 10 toneladas. El agua blanda no figura porque no se compra: se hace en planta con ablandadores de resina. Tocá un insumo para ver su historia. Fuente: INDEC, comercio exterior.`;
+    const p = qi.productos.find(x=>x.k===qiSel); $('quFicha').hidden = !p; if(!p) return;
+    const M = qiM(p), px = qiPx(M.get(u)), y12 = p.serie.slice(-12), k12 = y12.reduce((a,r)=>a+r[1],0), c12 = y12.reduce((a,r)=>a+r[3],0), y24 = p.serie.slice(-24,-12), k24 = y24.reduce((a,r)=>a+r[1],0), c24 = y24.reduce((a,r)=>a+r[3],0);
+    $('quFT').textContent = p.n; $('quFPh').textContent = 'Precio de cada mes: '+p.n.toLowerCase(); $('quFS').textContent = 'NCM '+p.ncm.map(c=>c[0].replace(/(\d{4})(\d{2})(\d{2})/,'$1.$2.$3')).join(' + ');
+    const t = [];
+    t.push(tileK('Precio en '+MESL[+u.slice(5)-1], px ? 'US$ '+nf(px,0) : '—', px ? 'la tonelada' : '', '', px && qiMay() ? `≈ $ ${nf(px/1000*qiMay(),0)} el kilo, puesto en puerto` : 'poco volumen ese mes'));
+    if(k12) t.push(tileK('Promedio de 12 meses', 'US$ '+nf(c12/k12*1000,0), 'la tonelada', '', k24 ? `${pc((c12/k12)/(c24/k24)-1,1)} contra los 12 meses anteriores` : ''));
+    if(k12) t.push(tileK('Se trajeron en 12 meses', nf(k12/1000, k12<1e6?1:0), 'toneladas', '', k24 ? `${pc(k12/k24-1,1)} contra los 12 meses anteriores` : ''));
+    t.push(tileK('Países que lo venden', String(p.orig_n), '', '', p.orig[0] ? `el principal: ${qiPais(p.orig[0][0])}` : ''));
+    $('kpisQuF').innerHTML = t.join('');
+    const pts = p.serie.filter(r=>r[1]>=QI_MIN).map(r=>[r[0]+'-01', r[3]/r[1]*1000]);
+    lineChart($('chQuFP'), [{n:p.n, c:'--s1', pts}], {aria:'Precio de importación por mes', yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+'/t', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    barChart($('chQuFV'), [{n:'Toneladas', c:'--s3', pts: p.serie.slice(-36).map(r=>[r[0], r[1]/1000])}], {aria:'Toneladas importadas por mes', kfmt:k=>fmes(k), yfmt:v=>nf(v,0), vfmt:v=>nf(v, v<100?1:0)+' t', h:180});
+    const ot = p.orig.reduce((a,x)=>a+x[1],0);
+    hBars($('chQuFO'), p.orig.slice(0,8).map((o,i)=>({n: qiPais(o[0]), v: o[1]/ot*100, c: i ? '--s1' : '--s2', px: o[1]>=QI_MIN ? o[2]/o[1]*1000 : null})), {vfmt:(v,r)=>nf(v,1)+'%'+(r?.px ? ` · US$ ${nf(r.px,0)}/t` : '')});
+    $('quFN').textContent = `Nombre en el nomenclador: ${p.ncm.map(c=>c[1]).join(' / ')}. El precio de cada país es su promedio de los últimos 12 meses (CIF, sin impuestos); los meses con menos de 10 toneladas no se dibujan. Fuente: INDEC, comercio exterior.`;
+  }
   function renderQuimica(){
+    renderInsumos();
     if(!qu){ loadQu(); $('kpisQu').innerHTML = '<div class="empty">Cargando datos de la industria química…</div>'; return; }
     const I = qu.ipi||{}, U = qu.uci||{}, W = qu.mundo||{}, P = W.precios||{}, L = a => a?.length ? a[a.length-1] : null, t = [];
     const q = I.quimica, uq = L(q);
@@ -5197,6 +5263,7 @@ body.mporta .hbus{display:none}
       return [['mes','asado_kg','nalga_kg','cuadril_kg','paleta_kg','carne_picada_kg','pollo_entero_kg','ipi_carne_vacuna','novillo_promedio_mes_kg_vivo','novillito_promedio_mes_kg_vivo'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m)), nm[m]?.NOVILLOS, nm[m]?.NOVILLITOS])]; },
     'quimica': ()=>{ const I = qu?.ipi||{}, ks = QU_R.map(r=>r[0]).concat('general').filter(k=>I[k]), ms = [...new Set(ks.flatMap(k=>I[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(I[k])]));
       return [['mes', ...ks.map(k=>'ipi_'+k)], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m) ?? '')])]; },
+    'quimica-insumos': ()=>[['insumo','ncm','mes','toneladas','fob_usd','cif_usd','cif_usd_por_tonelada'], (qi?.productos||[]).flatMap(p=>p.serie.map(r=>[p.n, p.ncm.map(c=>c[0]).join('+'), r[0], (r[1]/1000).toFixed(3), r[2], r[3], r[1] ? Math.round(r[3]/r[1]*1000) : '']))],
     'quimica-mundo': ()=>{ const P = qu?.mundo?.precios||{}, ks = Object.keys(P), ms = [...new Set(ks.flatMap(k=>P[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(P[k])]));
       return [['mes', ...ks.map(k=>k+(k.startsWith('gas')?'_usd_mmbtu':k==='caucho'?'_usd_kg':'_usd_t'))], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m) ?? '')])]; },
     'surtidores-ventas': ()=>{ const V = sur?.ventas||{}, ks = Object.keys(V), ms = [...new Set(ks.flatMap(k=>V[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(V[k])]));
@@ -8756,6 +8823,7 @@ body.mporta .hbus{display:none}
     sueldo:['salario','salarios','sueldos'], sueldos:['salarios','sueldo'], salario:['sueldo','salarios'], salarios:['sueldo'],
     trabajo:['empleo','desocupacion','desempleo'], empleo:['desocupacion','desempleo'], desempleo:['desocupacion','empleo'], desocupacion:['desempleo'],
     pobreza:['canasta'], canasta:['pobreza'],
+    soda:['soda caustica'], caustica:['soda caustica','insumo'], hipoclorito:['insumo','lavandina'], lavandina:['hipoclorito'], sulfonico:['acido sulfonico','labsa'], labsa:['acido sulfonico'], polietileno:['insumo','plasticos'], polipropileno:['insumo'], pet:['insumo'], insumos:['cuanto cuesta traer cada insumo'], insumo:['cuanto cuesta traer cada insumo'], conservante:['conservantes'], conservantes:['benzoato','sorbato','formol'], formol:['insumo'], benzoato:['insumo'], sorbato:['insumo'], importacion:['insumo'], tensioactivos:['acido sulfonico','lauril'],
     quimica:['industria quimica'], quimicos:['industria quimica'], quimico:['industria quimica'], petroquimica:['industria quimica','plasticos'], fertilizante:['fertilizantes','urea'], fertilizantes:['urea','industria quimica'], urea:['fertilizantes'], agroquimicos:['industria quimica'], medicamentos:['industria quimica','farmaceutica'], farmaceutica:['medicamentos'], laboratorios:['medicamentos'], pinturas:['industria quimica'], detergentes:['industria quimica'], plasticos:['industria quimica'], basf:['quimica de europa'], potasio:['fertilizantes'],
     nafta:['surtidores','combustible'], naftas:['surtidores'], combustible:['surtidores','nafta'], combustibles:['surtidores'], gasoil:['surtidores','diesel'], diesel:['surtidores','gasoil'], gnc:['surtidores'], surtidor:['surtidores'], ypf:['surtidores'], estacion:['surtidores'], shell:['surtidores'], axion:['surtidores'], 'precio nafta':['surtidores'],
     auto:['autos','0km','patentamientos'], autos:['0km','patentamientos'], '0km':['autos','patentamientos'], okm:['0km','autos'], patentamientos:['0km','autos'], patentamiento:['0km','autos'], patentar:['0km'], patentados:['0km'], concesionaria:['0km','autos'], concesionarias:['0km'], camioneta:['0km','suv','pick-ups'], camionetas:['0km','suv'], pickup:['0km','pick-ups'], suv:['0km'], marcas:['0km','autos'], toyota:['0km','autos'], fiat:['0km'], volkswagen:['0km'], ford:['0km'], chevrolet:['0km'], renault:['0km'], peugeot:['0km'], byd:['0km','autos'], hilux:['0km','toyota'], importados:['0km','autos'],

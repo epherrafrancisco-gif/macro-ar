@@ -1,6 +1,6 @@
 name: Quimica
 
-# Industria química: INDEC (IPI, capacidad, y precios de importación de insumos por producto) (IPI, producción física, capacidad instalada), Banco Mundial (fertilizantes) y Eurostat → quimica.json.
+# Industria química: INDEC (IPI, capacidad instalada), Banco Mundial (fertilizantes), Eurostat → quimica.json; y precios de importación de insumos (INDEC, comercio exterior) → insumos.json.
 # Datos mensuales: alcanza con dos veces por semana (martes y viernes 9:41 hora argentina).
 on:
   schedule:
