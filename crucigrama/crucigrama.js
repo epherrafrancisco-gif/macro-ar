@@ -148,24 +148,52 @@ function verPista(li) {
   const b = box.getBoundingClientRect(), r = li.getBoundingClientRect(), arriba = Math.max(b.top, 0), abajo = Math.min(b.bottom, innerHeight);
   if (r.top < arriba + 30 || r.bottom > abajo - 8) box.scrollTo({top: box.scrollTop + (r.top - arriba) - (abajo - arriba) / 3, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
 }
-function ir(x, y) { const i = inp(x, y); if (!i) return false; cur = {x, y}; if (E.fin) { marcar(); return true; } i.focus({preventScroll: true}); i.select(); marcar(); return true; }
-grid.addEventListener('pointerdown', e => {
-  const c = e.target.closest('.cl'); if (!c) return;
-  const x = +c.dataset.x, y = +c.dataset.y;
+// Celular (pedido del dueño 03/11/2026: "es medio incómodo"): se elige un casillero con un toque, no al apoyar el dedo (así, al
+// deslizar para subir o bajar no se cambia la palabra); al elegir una palabra la página se acomoda para que se vea entera arriba
+// del teclado; al terminar una palabra se cierra el teclado y queda marcada la siguiente (tocás un casillero o la pista para seguir).
+const TACTIL = matchMedia('(pointer:coarse)').matches;
+function ir(x, y, teclado = true) { const i = inp(x, y); if (!i) return false; cur = {x, y}; if (E.fin || !teclado) { marcar(); verPalabra(); return true; } i.focus({preventScroll: true}); i.select(); marcar(); verPalabra(); return true; }
+// que la palabra elegida quede a la vista: debajo de la pista fija de arriba y arriba del teclado
+function verPalabra() {
+  if (!TACTIL || !cur) return;
+  const p = palabraDe(cur.x, cur.y, dir), cs = p ? [...Array(p.w.length).keys()].map(i => inp(p.x + p.dx * i, p.y + p.dy * i)) : [inp(cur.x, cur.y)];
+  const rs = cs.filter(Boolean).map(c => c.getBoundingClientRect()), arriba = Math.min(...rs.map(r => r.top)), abajo = Math.max(...rs.map(r => r.bottom));
+  const vv = window.visualViewport, vTop = vv ? vv.offsetTop : 0, vH = vv ? vv.height : innerHeight;
+  const barra = $('#pAct').getBoundingClientRect(), techo = vTop + barra.height + 14, piso = vTop + vH - 6;
+  let dy = 0;
+  if (abajo - arriba > piso - techo) { const r = inp(cur.x, cur.y).getBoundingClientRect(); if (r.top < techo || r.bottom > piso) dy = r.top - techo - 4; }
+  else if (arriba < techo) dy = arriba - techo; else if (abajo > piso) dy = abajo - piso;
+  if (Math.abs(dy) > 2) window.scrollBy({top: dy, behavior: 'instant'});
+}
+if (window.visualViewport) { let t = 0; visualViewport.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { if (grid.contains(document.activeElement)) verPalabra(); }, 120); }); }
+const tocar = (x, y) => {
   if (cur && cur.x === x && cur.y === y && palabraDe(x, y, dir === 'h' ? 'v' : 'h')) dir = dir === 'h' ? 'v' : 'h';
   else if (!palabraDe(x, y, dir)) dir = dir === 'h' ? 'v' : 'h';
-  e.preventDefault(); ir(x, y);
+  ir(x, y);
+};
+let tipoPuntero = '';
+grid.addEventListener('pointerdown', e => {
+  tipoPuntero = e.pointerType;
+  if (e.pointerType !== 'mouse') return;     // con el dedo se espera al toque (click), para poder deslizar
+  const c = e.target.closest('.cl'); if (!c) return;
+  e.preventDefault(); tocar(+c.dataset.x, +c.dataset.y);
+});
+grid.addEventListener('click', e => {
+  if (tipoPuntero === 'mouse') return;
+  const c = e.target.closest('.cl'); if (!c) return;
+  tocar(+c.dataset.x, +c.dataset.y);
 });
 document.querySelector('.pistas').addEventListener('click', e => {
   const li = e.target.closest('li'); if (!li) return;
   const p = P.puestas.find(q => q.n === +li.dataset.n && (li.dataset.d === 'h' ? q.dx : q.dy)); dir = li.dataset.d;
   irPalabra(p);
-  if (matchMedia('(max-width:879px)').matches) $('#pAct').scrollIntoView({block: 'start', behavior: 'smooth'});
 });
-function irPalabra(p) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); const c = cs.find(q => !inp(q.x, q.y).value) || cs.find(q => !fija(inp(q.x, q.y))) || cs[0]; ir(c.x, c.y); }
+function irPalabra(p, teclado = true) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); const c = cs.find(q => !inp(q.x, q.y).value) || cs.find(q => !fija(inp(q.x, q.y))) || cs[0]; ir(c.x, c.y, teclado); }
 // próxima palabra sin resolver (Enter, Tab o al terminar una)
 function siguiente(p) { const L = [...HOR, ...VER], j = L.indexOf(p); for (let k = 1; k <= L.length; k++) { const q = L[(j + k) % L.length]; if (!OKW.has(q.n + (q.dx ? 'h' : 'v'))) return q; } return null; }
-$('#pAct').addEventListener('click', () => { if (E.fin) return; if (cur && palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus(); } });
+$('#pAct').addEventListener('click', () => { if (E.fin || !cur) return;
+  if (TACTIL && !grid.contains(document.activeElement)) { ir(cur.x, cur.y); return; }   // con el teclado cerrado, tocar la pista lo abre
+  if (palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus({preventScroll: true}); verPalabra(); } });
 const fija = c => !!c && c.parentNode.classList.contains('okw');  // casillero de una palabra ya resuelta (no se puede cambiar)
 const paso = (d) => { const dx = dir === 'h' ? d : 0, dy = dir === 'v' ? d : 0; return {x: cur.x + dx, y: cur.y + dy}; };
 grid.addEventListener('input', e => {
@@ -186,7 +214,8 @@ grid.addEventListener('input', e => {
   arrancarReloj(); guardar();
   verdes(true);
   const pa = palabraDe(cur.x, cur.y, dir);
-  if (v && pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin) { const q = siguiente(pa); if (q) { irPalabra(q); revisarFin(); return; } }
+  if (v && pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin) { const q = siguiente(pa);
+    if (q) { if (TACTIL) { document.activeElement && document.activeElement.blur(); irPalabra(q, false); setTimeout(verPalabra, 400); } else irPalabra(q); revisarFin(); return; } }
   if (v) { const n = paso(1); if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }  // pasa a la siguiente aunque esté resuelta (no se saltea: si no, la letra que sigue cae en otro casillero)
   revisarFin();
 });
