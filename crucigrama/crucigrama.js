@@ -140,7 +140,7 @@ function marcar() {
   const li = document.querySelector(`.pistas li[data-n="${p.n}"][data-d="${dir}"]`); if (li) li.classList.add('act');
   $('#pAct').innerHTML = `<b>${p.n} ${dir === 'h' ? 'horizontal' : 'vertical'}</b> ${p.pista} <i>(${p.w.length})</i>`;
 }
-function ir(x, y) { const i = inp(x, y); if (!i) return false; cur = {x, y}; i.focus({preventScroll: true}); i.select(); marcar(); return true; }
+function ir(x, y) { const i = inp(x, y); if (!i) return false; cur = {x, y}; if (E.fin) { marcar(); return true; } i.focus({preventScroll: true}); i.select(); marcar(); return true; }
 grid.addEventListener('pointerdown', e => {
   const c = e.target.closest('.cl'); if (!c) return;
   const x = +c.dataset.x, y = +c.dataset.y;
@@ -157,11 +157,11 @@ document.querySelector('.pistas').addEventListener('click', e => {
 function irPalabra(p) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); const c = cs.find(q => !inp(q.x, q.y).value) || cs.find(q => !fija(inp(q.x, q.y))) || cs[0]; ir(c.x, c.y); }
 // próxima palabra sin resolver (Enter, Tab o al terminar una)
 function siguiente(p) { const L = [...HOR, ...VER], j = L.indexOf(p); for (let k = 1; k <= L.length; k++) { const q = L[(j + k) % L.length]; if (!OKW.has(q.n + (q.dx ? 'h' : 'v'))) return q; } return null; }
-$('#pAct').addEventListener('click', () => { if (cur && palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus(); } });
+$('#pAct').addEventListener('click', () => { if (E.fin) return; if (cur && palabraDe(cur.x, cur.y, dir === 'h' ? 'v' : 'h')) { dir = dir === 'h' ? 'v' : 'h'; marcar(); inp(cur.x, cur.y).focus(); } });
 const fija = c => !!c && c.parentNode.classList.contains('okw');  // casillero de una palabra ya resuelta (no se puede cambiar)
 const paso = (d) => { const dx = dir === 'h' ? d : 0, dy = dir === 'v' ? d : 0; return {x: cur.x + dx, y: cur.y + dy}; };
 grid.addEventListener('input', e => {
-  const i = e.target; if (!cur) return;
+  const i = e.target; if (E.fin) { const [x, y] = [+i.parentNode.dataset.x, +i.parentNode.dataset.y]; i.value = SOL[y][x]; return; } if (!cur) return;
   let v = i.value.toUpperCase().normalize('NFD').replace(/[̀-̂̄-ͯ]/g, '').normalize('NFC').replace(/[^A-ZÑ]/g, '');
   v = v.slice(-1);
   if (fija(i)) {  // letra de una palabra ya resuelta: queda fija. Si escribiste esa misma letra, pasa a la siguiente;
@@ -231,7 +231,7 @@ document.addEventListener('visibilitychange', () => {  // con la pestaña oculta
   else if (arrancarReloj.pausado) { arrancarReloj.pausado = false; arrancarReloj(); }
 });
 // pista (pedido del dueño 01/11/2026): la letra va en el casillero donde estás parado; si ese ya está bien, en uno al azar
-$('#pista').onclick = () => {
+$('#pista').onclick = () => { if (E.fin) return;
   const mal = c => c.querySelector('input').value !== SOL[+c.dataset.y][+c.dataset.x];
   let c = cur ? inp(cur.x, cur.y)?.parentNode : null, aqui = !!(c && mal(c));
   if (!aqui) { const vac = [...grid.querySelectorAll('.cl')].filter(mal); if (!vac.length) return; c = vac[Math.floor(Math.random() * vac.length)]; }
@@ -256,12 +256,18 @@ function revisarFin() {
   try { window.goatcounter && goatcounter.count({path: 'cruci-resuelto', event: true}); } catch (e) {}
   festejo(R.n);
 }
-function festejo(dias) {
-  grid.classList.add('ok');
+// Resuelto (pedido del dueño 02/11/2026): se puede mirar y tocar para ver la pista, pero sin abrir el teclado ni cambiar letras.
+function cerrar() {
+  grid.querySelectorAll('input').forEach(i => { i.readOnly = true; i.tabIndex = -1; i.setAttribute('inputmode', 'none'); });
+  if (document.activeElement && grid.contains(document.activeElement)) document.activeElement.blur();
+  cur = null; marcar(); $('#pAct').innerHTML = 'Resuelto. Tocá un casillero para ver su pista.'; $('#pista').hidden = true;
+}
+function festejo(dias, volver) {
+  grid.classList.add('ok'); cerrar();
   $('#finT').textContent = fmtT(E.t);
   $('#finP').textContent = E.pistas ? `con ${E.pistas} ${E.pistas === 1 ? 'pista' : 'pistas'}` : 'sin pistas';
   $('#finD').textContent = dias > 1 ? `${dias} días seguidos resolviéndolo` : 'Primer día de tu racha';
-  $('#fin').hidden = false; confeti(140);
+  $('#fin').hidden = false; if (!volver) confeti(140);   // al volver a entrar ya resuelto, sin confeti otra vez
   const txt = `Crucigrama de economía de Pulso Macro N.º ${N}: lo resolví en ${fmtT(E.t)} ${E.pistas ? 'con ' + E.pistas + ' pistas' : 'sin pistas'}. ¿Vos?\npulsomacro.com.ar/crucigrama/`;
   $('#finSh').onclick = () => { if (navigator.share) navigator.share({text: txt}).catch(() => {}); else { navigator.clipboard && navigator.clipboard.writeText(txt); aviso('Copiado para pegar donde quieras.'); } };
   const cd = () => { const fin = Date.parse(HOY + 'T00:00:00-03:00') + 864e5, s = Math.max(0, (fin - Date.now()) / 1000);
@@ -281,9 +287,9 @@ function confeti(n) {
     for (const q of ps) { q.y += q.vy; q.x += q.vx + Math.sin(q.g) * .6; q.g += .08; x.save(); x.globalAlpha = Math.max(0, Math.min(1, 3 - k)); x.translate(q.x, q.y); x.rotate(q.g); x.fillStyle = q.c; x.fillRect(-q.s, -q.s / 2, q.s * 2, q.s); x.restore(); }
     if (k < 3) requestAnimationFrame(p); else cv.remove(); })(t0);
 }
-if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); let R = {n: 1}; try { R = JSON.parse(localStorage.getItem(RK) || '{"n":1}'); } catch (e) {} festejo(R.n); $('#fin').hidden = true; $('#yaFin').hidden = false; }
+if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); let R = {n: 1}; try { R = JSON.parse(localStorage.getItem(RK) || '{"n":1}'); } catch (e) {} festejo(R.n, true); $('#fin').hidden = true; $('#yaFin').hidden = false; }
 $('#yaFin').onclick = () => $('#fin').hidden = false;
-$('#ayuda').textContent = `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
+$('#ayuda').textContent = E.fin ? `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Ya está resuelto: tocá un casillero para ver su pista.` : `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
 verdes(false);
 window.__cruci = {W, H, palabras: P.puestas.map(p => p.w), _p: P.puestas, _ir: (x, y, d) => { dir = d; ir(x, y); }};
 })();

@@ -686,6 +686,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `.hecha`). Reloj, "Una letra de ayuda" (cuenta pistas; va en el casillero donde estás parado y, si ese ya está bien, en uno al azar; "Comprobar" se sacó el 01/11/2026 porque las palabras ya se ponen verdes solas), progreso por día en localStorage
   `pm-cruci-AAAA-MM-DD`, racha de días `pm-cruci-racha`, festejo con tiempo, compartir y cuenta regresiva al próximo.
   Evento GoatCounter `cruci-resuelto`. En `sitemap.xml` y JSON-LD `Game`.
+  Resuelto (pedido del dueño 02/11/2026: al tocar sin querer se abría el teclado y cambiaba una letra): `cerrar()` deja todos los
+  casilleros de solo lectura (`readOnly`, `tabIndex -1`, `inputmode=none`), tocar uno solo muestra su pista (`ir` sin foco con
+  `E.fin`), sin "Una letra de ayuda"; al volver a entrar ya resuelto no tira confeti otra vez (`festejo(n, true)`).
 - Revisión a fondo (02/11/2026), cambios desde el N.º 3 (03/11; `V2 = HOY >= '2026-11-03'`, así el del día no cambió a mitad de
   partida): el generador anota la dirección de cada letra (`D`) y un cruce tiene que ser con una palabra de la otra dirección
   (antes una palabra podía quedar metida adentro de otra en la misma fila: pasaba en 1 de cada 365); palabras sin repetir (pedido del dueño 02/11/2026: ninguna palabra antes de 2 meses y dos crucigramas cualesquiera
