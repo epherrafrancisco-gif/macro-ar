@@ -187,7 +187,11 @@ document.querySelector('.pistas').addEventListener('click', e => {
   const p = P.puestas.find(q => q.n === +li.dataset.n && (li.dataset.d === 'h' ? q.dx : q.dy)); dir = li.dataset.d;
   irPalabra(p); verPalabra();   // solo desde la lista de pistas se mueve la página hasta la palabra
 });
-function irPalabra(p, teclado = true) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); const c = cs.find(q => !inp(q.x, q.y).value) || cs.find(q => !fija(inp(q.x, q.y))) || cs[0]; ir(c.x, c.y, teclado); }
+function irPalabra(p, teclado = true) { dir = p.dx ? 'h' : 'v'; const cs = [...Array(p.w.length).keys()].map(i => ({x: p.x + p.dx * i, y: p.y + p.dy * i})); ir(cs[0].x, cs[0].y, teclado); }  // siempre desde la primera letra (pedido del dueño 03/11/2026: la gente escribe la palabra entera, como en La Nación)
+// pasar a la próxima palabra sin resolver (en el celular, con el teclado cerrado)
+function pasarSiguiente(pa) { const q = siguiente(pa); if (!q) return false; if (TACTIL) { document.activeElement && document.activeElement.blur(); irPalabra(q, false); } else irPalabra(q); return true; }
+// casillero siguiente dentro de la palabra (null si es la última letra)
+const dentro = (pa, n) => pa && inp(n.x, n.y) && (pa.dx ? n.y === pa.y && n.x < pa.x + pa.w.length : n.x === pa.x && n.y < pa.y + pa.w.length) ? n : null;
 // próxima palabra sin resolver (Enter, Tab o al terminar una)
 function siguiente(p) { const L = [...HOR, ...VER], j = L.indexOf(p); for (let k = 1; k <= L.length; k++) { const q = L[(j + k) % L.length]; if (!OKW.has(q.n + (q.dx ? 'h' : 'v'))) return q; } return null; }
 $('#pAct').addEventListener('click', () => { if (E.fin || !cur) return;
@@ -199,22 +203,23 @@ grid.addEventListener('input', e => {
   const i = e.target; if (E.fin) { const [x, y] = [+i.parentNode.dataset.x, +i.parentNode.dataset.y]; i.value = SOL[y][x]; return; } if (!cur) return;
   let v = i.value.toUpperCase().normalize('NFD').replace(/[̀-̂̄-ͯ]/g, '').normalize('NFC').replace(/[^A-ZÑ]/g, '');
   v = v.slice(-1);
-  if (fija(i)) {  // letra de una palabra ya resuelta: queda fija. Si escribiste esa misma letra, pasa a la siguiente;
-    // si escribiste otra, va al próximo casillero libre de la palabra (así se puede escribir la palabra entera o solo lo que falta)
+  if (fija(i)) {  // letra de una palabra ya resuelta: queda como está y cualquier tecla pasa al casillero siguiente
+    // (pedido del dueño 03/11/2026: se escribe la palabra entera aunque tenga letras fijas; la letra nunca cae en otro casillero)
     const x = +i.parentNode.dataset.x, y = +i.parentNode.dataset.y; i.value = SOL[y][x]; E.l[x + ',' + y] = SOL[y][x];
     if (!v) return;
-    let n = paso(1);
-    if (v !== SOL[y][x]) { while (fija(inp(n.x, n.y))) { cur = n; n = paso(1); } const c = inp(n.x, n.y); if (!c) { marcar(); return; }
-      cur = n; c.value = v; E.l[n.x + ',' + n.y] = v; c.parentNode.classList.remove('mal'); arrancarReloj(); guardar(); verdes(true); n = paso(1); }
-    if (inp(n.x, n.y)) ir(n.x, n.y); else ir(cur.x, cur.y);
+    const pa = palabraDe(cur.x, cur.y, dir), n = dentro(pa, paso(1));
+    if (n) ir(n.x, n.y);
+    else if (!(pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin && pasarSiguiente(pa))) marcar();   // última letra: si la palabra está bien, a la próxima
     revisarFin(); return;
   }
   i.value = v; E.l[cur.x + ',' + cur.y] = v; i.parentNode.classList.remove('mal');
   arrancarReloj(); guardar();
   verdes(true);
   const pa = palabraDe(cur.x, cur.y, dir);
-  if (v && pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin) { const q = siguiente(pa);
-    if (q) { if (TACTIL) { document.activeElement && document.activeElement.blur(); irPalabra(q, false); } else irPalabra(q); revisarFin(); return; } }
+  if (v && pa && OKW.has(pa.n + (pa.dx ? 'h' : 'v')) && !E.fin) {
+    const n = dentro(pa, paso(1));   // si después quedan letras fijas, se sigue por ellas (el que escribe la palabra entera las tipea igual)
+    if (n) { ir(n.x, n.y); revisarFin(); return; }
+    if (pasarSiguiente(pa)) { revisarFin(); return; } }
   if (v) { const n = paso(1); if (inp(n.x, n.y)) ir(n.x, n.y); else marcar(); }  // pasa a la siguiente aunque esté resuelta (no se saltea: si no, la letra que sigue cae en otro casillero)
   revisarFin();
 });
