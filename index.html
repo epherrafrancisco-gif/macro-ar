@@ -258,7 +258,7 @@ section.view[hidden]{display:none}
   #tEspAr td:nth-child(2){white-space:nowrap}}
 .espnx{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}.espnx>div:first-child{flex:1 1 320px;min-width:0}
 .espm{font:700 22px var(--sans);margin-bottom:6px}.espd{color:var(--muted);font-size:14px;margin:3px 0}.espv{display:inline-block;margin-top:8px;color:var(--accent);font-weight:600}
-.espder{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}.esporb{width:300px;height:170px;display:block}@media (max-width:640px){.espder{width:100%}.esporb{width:100%;height:150px}}
+.espder{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}.esporb{width:440px;height:250px;max-width:100%;display:block}@media (max-width:640px){.espder{width:100%}.esporb{width:100%;height:190px}}
 .espcd{display:flex;gap:6px;align-items:baseline;font-family:var(--mono)}.espcd b{font-size:40px;font-weight:600;color:var(--ink)}.espcd i{font-style:normal;font-size:12px;color:var(--muted);margin-right:8px}
 @media (max-width:640px){.espcd b{font-size:28px}.espm{font-size:18px}}
 .okmas{display:block;width:100%;margin-top:10px;background:none;border:1px dashed var(--line);color:var(--accent);font:600 14px var(--sans);border-radius:10px;padding:9px;cursor:pointer}
@@ -8828,21 +8828,53 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     espTick(); if(!espTic) espTic = setInterval(espTick, 1000);
     espOrbita();
   }
-  // Animación del próximo lanzamiento: la Tierra con satélites en órbitas distintas (Starlink en celeste) y un cohete cada tanto.
-  // Liviana: 30 cuadros por segundo en compu, 20 en celular; se frena fuera de pantalla, con la pestaña oculta o fuera del apartado.
-  // Una sola animación para toda la página: cada cuadro busca el lienzo actual (renderEspacio lo vuelve a crear) y nunca hay dos vueltas a la vez.
-  const EO = {t0: performance.now(), ult: 0, vis: true, corre: false, cohete: null, prox: 2, sats: null, io: null, cvObs: null};
+  // Animación del próximo lanzamiento (pedido del dueño 03/11/2026; rediseño "más lindo y tecnológico"): la Tierra de puntos (los mismos
+  // continentes del globo "Mundo hoy", Argentina resaltada) girando, vista desde abajo como el modo Órbita; capas de órbitas reales
+  // (planos de Starlink a 53°, polar, GPS y el anillo geoestacionario, que gira con la Tierra), satélites con estela, la Estación Espacial,
+  // un enlace que baja a Buenos Aires con el pulso del logo y un cohete que sale cada tanto desde una base que esté a la vista.
+  // Una sola vuelta de animación (EO.corre) que busca el lienzo actual en cada cuadro (renderEspacio lo recrea). 30 cuadros/s en compu,
+  // 20 en celular (y la mitad de los puntos); se frena fuera del apartado, fuera de pantalla o con la pestaña oculta. Modo claro: whisky y dorado.
+  const EO = {t0: performance.now(), ult: 0, vis: true, corre: false, io: null, cvObs: null, tierra: null, pide: false, cohete: null, prox: 3, link: null, plink: 5};
   const eoQuieto = () => matchMedia('(prefers-reduced-motion: reduce)').matches, eoCel = () => matchMedia('(pointer:coarse)').matches;
   const eoActivo = () => tab==='global' && SUBS.M[2]==='espacio' && !document.hidden;
+  const EO_TAU = -0.32, EO_GIRO = 6.2832/70, EO_R0 = 64*Math.PI/180;    // cámara un poco por debajo del ecuador; una vuelta cada 70 s; arranca con Argentina de frente
+  const EO_BA = [-34.6, -58.4], EO_BASES = [[28.5,-80.6],[34.7,-120.6],[45.9,63.3],[19.6,110.9],[5.2,-52.8],[-39.3,177.9],[31.1,130.97]];
+  // órbitas: r en radios terrestres (escala comprimida para que entren), i inclinación, o nodo, w velocidad, n satélites, k tipo
+  const EO_ORB = [
+    ...[0, 45, 90, 135].map((o, j) => ({r:1.17, i:53, o, w:.42, n:9, k:'sl', f:j*.35})),
+    {r:1.25, i:97, o:25, w:.36, n:6, k:'ot', f:0}, {r:1.25, i:97, o:115, w:.36, n:5, k:'ot', f:1},
+    {r:1.62, i:55, o:20, w:.16, n:3, k:'ot', f:0}, {r:1.62, i:55, o:140, w:.16, n:3, k:'ot', f:2},
+    {r:2.05, i:0, o:0, w:0, n:9, k:'geo', f:0},
+    {r:1.11, i:51.6, o:200, w:.48, n:1, k:'iss', f:0}];
+  function eoCol(){
+    const t = document.documentElement.dataset.tema;
+    return t==='claro' ? {glow:'rgba(201,141,22,', e0:'#fff6e0', e1:'#ecd29a', e2:'#c49446', land:'rgba(118,72,12,.62)', ar:'#2f6ea8', grat:'rgba(138,86,0,.16)',
+        orb:'rgba(138,86,0,', sl:'#8a5600', ot:'#3b2608', geo:'#a0522d', iss:'#2a1c0c', txt:'rgba(85,64,31,.85)', rk:'184,100,15', rkh:'#5a2c00', lk:'47,110,168', puls:'#2f6ea8'}
+      : {glow:'rgba(106,168,216,', e0:'#1d4a73', e1:'#0f2a45', e2:'#07131f', land:'rgba(150,200,240,.55)', ar:'#8fd0ff', grat:'rgba(106,168,216,.13)',
+        orb:'rgba(150,190,230,', sl:'#6aa8d8', ot:'#e6edf5', geo:'#e0b25a', iss:'#ffffff', txt:'rgba(170,190,210,.8)', rk:'255,170,90', rkh:'#fff3d6', lk:'106,168,216', puls:'#8fd0ff'};
+  }
+  // vector de la Tierra (lat, lon) girado y visto por la cámara
+  function eoTierra(lat, lon, rot, rr = 1){
+    const f = lat*Math.PI/180, l = lon*Math.PI/180 + rot, x = Math.cos(f)*Math.sin(l), y = Math.sin(f), z = Math.cos(f)*Math.cos(l);
+    return [x*rr, (y*Math.cos(EO_TAU) - z*Math.sin(EO_TAU))*rr, (y*Math.sin(EO_TAU) + z*Math.cos(EO_TAU))*rr];
+  }
+  // punto de una órbita: ángulo u en el plano, inclinación i, nodo o (rot = giro de la Tierra, solo para el anillo geoestacionario)
+  function eoOrb(O, u, rot){
+    const i = O.i*Math.PI/180, o = O.o*Math.PI/180 + (O.k==='geo' ? rot : 0);
+    let x = Math.cos(u), y = 0, z = Math.sin(u);
+    [y, z] = [y*Math.cos(i) - z*Math.sin(i), y*Math.sin(i) + z*Math.cos(i)];
+    [x, z] = [x*Math.cos(o) + z*Math.sin(o), -x*Math.sin(o) + z*Math.cos(o)];
+    return [x*O.r, (y*Math.cos(EO_TAU) - z*Math.sin(EO_TAU))*O.r, (y*Math.sin(EO_TAU) + z*Math.cos(EO_TAU))*O.r];
+  }
   function espOrbita(){
     const cv = $('espOrb'); if(!cv) return;
-    if(!EO.sats){ const r = (s => () => (s = (s*16807) % 2147483647) / 2147483647)(7), n = eoCel() ? 90 : 150;
-      EO.sats = Array.from({length: n}, (_, i) => ({a: r()*6.283, w: (.18 + r()*.22) * (r() < .5 ? 1 : -1) * .6, rad: 1.12 + r()*.55,
-        inc: (r()-.5)*1.5, rot: (r()-.5)*.9, sl: i < n*.42})); }   // 42 % son de Starlink (celestes)
+    if(!EO.tierra && !EO.pide){ EO.pide = true;
+      fetch('vendor/dots.json').then(r => r.ok ? r.json() : []).then(d => { const paso = eoCel() ? 2 : 1;
+        EO.tierra = d.filter((p, i) => p[2]==='ARG' || i % paso === 0).map(p => [p[1], p[0], p[2]==='ARG']); if(!EO.corre) espOrbita(); }).catch(() => { EO.tierra = []; }); }
     if(EO.cvObs !== cv && 'IntersectionObserver' in window){
       if(EO.io) EO.io.disconnect(); EO.cvObs = cv; EO.vis = true;
       EO.io = new IntersectionObserver(e => { EO.vis = e[e.length-1].isIntersecting; if(EO.vis) eoArrancar(); }); EO.io.observe(cv); }
-    espDibujar(cv, eoQuieto() ? 3 : (performance.now() - EO.t0)/1000);
+    espDibujar(cv, eoQuieto() ? 8 : (performance.now() - EO.t0)/1000);
     eoArrancar();
   }
   function eoArrancar(){ if(!EO.corre && !eoQuieto()){ EO.corre = true; requestAnimationFrame(eoCuadro); } }
@@ -8856,29 +8888,75 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     const dpr = Math.min(devicePixelRatio || 1, 2), W = cv.clientWidth, H = cv.clientHeight; if(!W || !H) return;
     if(cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
     const x = cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,W,H);
-    const cx = W/2, cy = H/2, R = Math.min(H*.32, W*.2);
-    const pos = s => { const a = s.a + t*s.w, ox = Math.cos(a)*s.rad*R, oy = Math.sin(a)*s.rad*R*Math.cos(s.inc), z = Math.sin(a)*Math.sin(s.inc+.4);
-      return {x: cx + ox*Math.cos(s.rot) - oy*Math.sin(s.rot), y: cy + ox*Math.sin(s.rot) + oy*Math.cos(s.rot), z}; };
-    const P = EO.sats.map(s => ({s, ...pos(s)}));
-    const punto = p => { x.fillStyle = p.s.sl ? 'rgba(106,168,216,.95)' : 'rgba(235,240,247,.8)'; x.fillRect(p.x-1.1, p.y-1.1, 2.2, 2.2); };
-    P.filter(p => p.z < 0).forEach(punto);                       // los de atrás, tapados por la Tierra
-    const g = x.createRadialGradient(cx-R*.35, cy-R*.4, R*.1, cx, cy, R);
-    g.addColorStop(0, '#3d7fc2'); g.addColorStop(.6, '#1d4c80'); g.addColorStop(1, '#0b223d');
-    x.beginPath(); x.arc(cx, cy, R, 0, 6.283); x.fillStyle = g; x.fill();
-    x.beginPath(); x.arc(cx, cy, R+2, 0, 6.283); x.strokeStyle = 'rgba(120,180,240,.35)'; x.lineWidth = 3; x.stroke();
-    x.save(); x.beginPath(); x.arc(cx, cy, R, 0, 6.283); x.clip();     // lado de noche
-    x.beginPath(); x.arc(cx+R*.55, cy+R*.25, R*1.05, 0, 6.283); x.fillStyle = 'rgba(2,6,14,.45)'; x.fill(); x.restore();
-    P.filter(p => p.z >= 0).forEach(punto);
-    // cada tanto sale un cohete del borde de la Tierra y deja su estela
-    if(!EO.cohete && t > EO.prox) EO.cohete = {a: -1.2 - Math.random()*.7, t0: t};
-    if(EO.cohete){ const k = (t - EO.cohete.t0)/2.6;
-      if(k > 1 || k < 0){ EO.cohete = null; EO.prox = t + 4 + Math.random()*4; }
-      else { const pts = []; for(let i = 0; i <= 24; i++){ const u = i/24 * k, rr = R*(1 + u*1.15), an = EO.cohete.a + u*1.1;
-          pts.push([cx + Math.cos(an)*rr, cy + Math.sin(an)*rr]); }
-        x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]));
-        x.strokeStyle = `rgba(255,190,110,${.9*(1-k*.6)})`; x.lineWidth = 1.6; x.stroke();
-        const f = pts[pts.length-1]; x.beginPath(); x.arc(f[0], f[1], 2.6, 0, 6.283); x.fillStyle = '#fff3d6'; x.fill(); }
-    }
+    const C = eoCol(), R = Math.min(H*.33, W*.21), cx = W/2, cy = H/2 + H*.02, rot = EO_R0 + t*EO_GIRO, chico = W < 300;
+    const P = v => [cx + v[0]*R, cy - v[1]*R];
+    // halo detrás de la Tierra
+    let g = x.createRadialGradient(cx, cy, R*.9, cx, cy, R*1.9); g.addColorStop(0, C.glow+'.22)'); g.addColorStop(1, C.glow+'0)');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // órbitas: primero la mitad de atrás (la tapa la Tierra), al final la de adelante
+    const orbitas = atras => EO_ORB.forEach(O => { if(O.k==='iss') return;
+      x.beginPath(); let pen = false;
+      for(let s = 0; s <= 96; s++){ const v = eoOrb(O, s/96*6.2832, rot); if((v[2] < 0) !== atras){ pen = false; continue; }
+        const p = P(v); pen ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); pen = true; }
+      x.strokeStyle = C.orb + (O.k==='geo' ? (atras ? '.18)' : '.42)') : (atras ? '.08)' : '.2)'));
+      x.lineWidth = O.k==='geo' ? 1 : .8; x.setLineDash(O.k==='geo' ? [3, 4] : []); x.stroke(); x.setLineDash([]); });
+    // satélites con estela
+    const sats = atras => EO_ORB.forEach(O => { for(let j = 0; j < O.n; j++){
+      const u0 = O.f + j/O.n*6.2832 + t*O.w, v = eoOrb(O, u0, rot); if((v[2] < 0) !== atras) continue;
+      const col = C[O.k], p = P(v);
+      if(O.w){ x.beginPath(); for(let s = 0; s <= 6; s++){ const q = P(eoOrb(O, u0 - s*.045, rot)); s ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); }
+        x.strokeStyle = col; x.globalAlpha = atras ? .15 : .35; x.lineWidth = 1; x.stroke(); x.globalAlpha = 1; }
+      x.globalAlpha = atras ? .45 : 1; x.fillStyle = col;
+      if(O.k==='iss'){ x.fillRect(p[0]-3.5, p[1]-.6, 7, 1.2); x.fillRect(p[0]-1.2, p[1]-1.2, 2.4, 2.4);
+        if(!atras && !chico && !(p[1] < 46 && p[0] < 210)){ x.font = '600 8.5px "JetBrains Mono",monospace'; x.fillStyle = C.txt; x.fillText('ISS', p[0]+5, p[1]-4); } }
+      else if(O.k==='geo'){ x.fillRect(p[0]-1.4, p[1]-1.4, 2.8, 2.8); }
+      else { x.beginPath(); x.moveTo(p[0], p[1]-1.8); x.lineTo(p[0]+1.8, p[1]); x.lineTo(p[0], p[1]+1.8); x.lineTo(p[0]-1.8, p[1]); x.fill(); }
+      x.globalAlpha = 1; } });
+    orbitas(true); sats(true);
+    // la Tierra: esfera con degradé, grilla de meridianos y paralelos, continentes de puntos, borde de atmósfera
+    g = x.createRadialGradient(cx - R*.35, cy - R*.4, R*.05, cx, cy, R); g.addColorStop(0, C.e0); g.addColorStop(.65, C.e1); g.addColorStop(1, C.e2);
+    x.beginPath(); x.arc(cx, cy, R, 0, 6.2832); x.fillStyle = g; x.fill();
+    x.strokeStyle = C.grat; x.lineWidth = .7; x.beginPath();
+    for(let lon = 0; lon < 360; lon += 30){ let pen = false; for(let la = -90; la <= 90; la += 7.5){ const v = eoTierra(la, lon, rot); if(v[2] < 0){ pen = false; continue; } const p = P(v); pen ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); pen = true; } }
+    for(let la = -60; la <= 60; la += 30){ let pen = false; for(let lon = 0; lon <= 360; lon += 7.5){ const v = eoTierra(la, lon, rot); if(v[2] < 0){ pen = false; continue; } const p = P(v); pen ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); pen = true; } }
+    x.stroke();
+    if(EO.tierra && EO.tierra.length){ const ds = Math.max(1.1, R/52), arg = [];
+      x.fillStyle = C.land; x.beginPath();
+      for(const d of EO.tierra){ const v = eoTierra(d[0], d[1], rot); if(v[2] <= .02) continue; const p = P(v), s = ds*(.55 + .45*v[2]);
+        if(d[2]) arg.push([p, s]); else x.rect(p[0]-s/2, p[1]-s/2, s, s); }
+      x.fill(); x.fillStyle = C.ar; x.beginPath(); arg.forEach(([p, s]) => x.rect(p[0]-s/2, p[1]-s/2, s*1.05, s*1.05)); x.fill(); }
+    x.beginPath(); x.arc(cx, cy, R, 0, 6.2832); x.strokeStyle = C.glow+'.55)'; x.lineWidth = 1.2; x.stroke();
+    x.beginPath(); x.arc(cx, cy, R+3, 0, 6.2832); x.strokeStyle = C.glow+'.14)'; x.lineWidth = 5; x.stroke();
+    // el pulso en Buenos Aires (el anillo del logo)
+    const ba = eoTierra(EO_BA[0], EO_BA[1], rot);
+    if(ba[2] > .1){ const p = P(ba), k = (t % 2.4)/2.4;
+      x.beginPath(); x.arc(p[0], p[1], 2 + k*9, 0, 6.2832); x.strokeStyle = C.puls; x.globalAlpha = (1-k)*.8; x.lineWidth = 1.2; x.stroke(); x.globalAlpha = 1;
+      x.beginPath(); x.arc(p[0], p[1], 2, 0, 6.2832); x.fillStyle = C.puls; x.fill(); }
+    // enlace: cada tanto un Starlink de adelante le baja datos a Buenos Aires
+    if(!EO.link && t > EO.plink && ba[2] > .25){ const O = EO_ORB[(Math.random()*4)|0]; EO.link = {O, j: (Math.random()*O.n)|0, t0: t}; }
+    if(EO.link){ const L = EO.link, k = (t - L.t0)/2.2;
+      if(k > 1 || k < 0 || ba[2] < .1){ EO.link = null; EO.plink = t + 3 + Math.random()*4; }
+      else { const v = eoOrb(L.O, L.O.f + L.j/L.O.n*6.2832 + t*L.O.w, rot);
+        if(v[2] > 0){ const a = P(v), b = P(ba); x.setLineDash([2, 3]); x.lineDashOffset = -t*24; x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]);
+          x.strokeStyle = `rgba(${C.lk},${.75*Math.sin(k*Math.PI)})`; x.lineWidth = 1; x.stroke(); x.setLineDash([]); x.lineDashOffset = 0; } } }
+    orbitas(false); sats(false);
+    // cohete: sale de una base que se vea, sube curvándose hacia el este y entra en órbita
+    if(!EO.cohete && t > EO.prox){ const ok = EO_BASES.filter(b => eoTierra(b[0], b[1], rot)[2] > .35);
+      if(ok.length){ const b = ok[(Math.random()*ok.length)|0]; EO.cohete = {b, t0: t, rot}; } else EO.prox = t + 1; }
+    if(EO.cohete){ const c = EO.cohete, k = (t - c.t0)/3.2;
+      if(k > 1.25 || k < 0){ EO.cohete = null; EO.prox = t + 5 + Math.random()*5; }
+      else { const kk = Math.min(1, k), fade = k > 1 ? 1 - (k-1)/.25 : 1, pts = [];
+        for(let s = 0; s <= 30; s++){ const u = s/30*kk, e = 1 - Math.pow(1-u, 2);
+          pts.push(P(eoTierra(c.b[0] - e*8*Math.sign(c.b[0]||1), c.b[1] + e*55, rot, 1 + e*.2))); }
+        for(let s = 1; s < pts.length; s++){ x.beginPath(); x.moveTo(pts[s-1][0], pts[s-1][1]); x.lineTo(pts[s][0], pts[s][1]);
+          x.strokeStyle = `rgba(${C.rk},${(s/pts.length)*.95*fade})`; x.lineWidth = .6 + 1.6*s/pts.length; x.stroke(); }
+        const f = pts[pts.length-1]; g = x.createRadialGradient(f[0], f[1], 0, f[0], f[1], 7); g.addColorStop(0, `rgba(${C.rk},${.9*fade})`); g.addColorStop(1, `rgba(${C.rk},0)`);
+        x.fillStyle = g; x.beginPath(); x.arc(f[0], f[1], 7, 0, 6.2832); x.fill();
+        x.globalAlpha = fade; x.fillStyle = C.rkh; x.beginPath(); x.arc(f[0], f[1], 1.8, 0, 6.2832); x.fill(); x.globalAlpha = 1; } }
+    // rótulos técnicos (solo si hay lugar)
+    if(!chico){ x.font = '500 8.5px "JetBrains Mono",monospace'; x.fillStyle = C.txt;
+      [['sl', 'Starlink · 550 km'], ['ot', 'otros satélites'], ['geo', 'geoestacionarios · 35.786 km']].forEach(([k, l], i) => {
+        x.fillStyle = C[k]; x.fillRect(4, 8 + i*11, 5, 5); x.fillStyle = C.txt; x.fillText(l, 14, 13 + i*11); }); }
   }
   document.addEventListener('visibilitychange', () => { if(eoActivo()) espOrbita(); });
 
