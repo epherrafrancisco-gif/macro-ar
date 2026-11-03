@@ -249,6 +249,11 @@ section.view[hidden]{display:none}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink2)}
 .legend span{display:inline-flex;align-items:center}
+.esptab td,.esptab th{text-align:left!important;vertical-align:top}.esptab td:first-child{white-space:nowrap}.esptab .note{font-size:12.5px}
+.espnx{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}.espnx>div:first-child{flex:1 1 320px;min-width:0}
+.espm{font:700 22px var(--sans);margin-bottom:6px}.espd{color:var(--muted);font-size:14px;margin:3px 0}.espv{display:inline-block;margin-top:8px;color:var(--accent);font-weight:600}
+.espcd{display:flex;gap:6px;align-items:baseline;font-family:var(--mono)}.espcd b{font-size:40px;font-weight:600;color:var(--ink)}.espcd i{font-style:normal;font-size:12px;color:var(--muted);margin-right:8px}
+@media (max-width:640px){.espcd b{font-size:28px}.espm{font-size:18px}}
 .okmas{display:block;width:100%;margin-top:10px;background:none;border:1px dashed var(--line);color:var(--accent);font:600 14px var(--sans);border-radius:10px;padding:9px;cursor:pointer}
 #tOkMa tr:hover td{background:rgba(255,255,255,.03)}#tOkMa tr.hl td{background:rgba(106,168,216,.12)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -1478,7 +1483,7 @@ body.mporta .hbus{display:none}
         <p class="note" id="dHint"></p>
       </div>
     </div>
-    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="geo" aria-selected="false">Geopolítica</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Monitor ✦</button></div>
+    <div class="subtabs" id="gSubM" role="tablist" aria-label="Apartado"><button type="button" data-s="mercados" aria-selected="false">Bolsas y acciones</button><button type="button" data-s="economias" aria-selected="false">Economías y tasas</button><button type="button" data-s="materias" aria-selected="false">Commodities y monedas</button><button type="button" data-s="geo" aria-selected="false">Geopolítica</button><button type="button" data-s="espacio" aria-selected="false">Espacio</button><button type="button" data-s="noticias" aria-selected="false">Noticias</button><button type="button" data-s="explorar" aria-selected="false">Monitor ✦</button></div>
     <div class="gsub" data-sub="mercados">
     <div class="card">
       <div class="head"><h2>Reloj de mercados</h2><span class="note" id="rljNota"></span></div>
@@ -1550,6 +1555,34 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Commodities</h2></div><p class="sub">Granos, energía y metales: precio internacional, cómo vienen hoy y en el año. Tocá uno para ver su gráfico abajo.</p><div class="glist" id="gCom"></div></div>
       <div class="card"><div class="head"><h2>Monedas de la región contra el dólar</h2></div><p class="sub">Cuántas unidades hay que dar por un dólar, cómo se movieron hoy y en el año.</p><div class="glist" id="gMon"></div></div>
     </div>
+    </div>
+    <div class="gsub" data-sub="espacio" hidden>
+      <div class="card espprox nofold">
+        <div class="head"><h2>Próximo lanzamiento</h2><span class="note">hora de Buenos Aires</span></div>
+        <div id="espProx"><div class="empty">Cargando…</div></div>
+      </div>
+      <div class="kpis" id="espK"></div>
+      <div class="card">
+        <div class="head"><h2>Los próximos lanzamientos del mundo</h2><span class="note" id="espLS"></span></div>
+        <div class="tablewrap"><table class="esptab"><thead><tr><th>Cuándo</th><th>Falta</th><th>Misión</th><th>Desde</th></tr></thead><tbody id="tEspL"></tbody></table></div>
+        <p class="note">Fecha y hora previstas (pueden moverse por clima o problemas técnicos). "A confirmar": todavía sin día fijo. Fuente: The Space Devs (Launch Library 2).</p>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Lanzamientos al espacio de cada año</h2><div class="legend" id="lgEspA"></div></div><div class="chart" id="chEspA"></div><p class="note" id="espAN"></p></div>
+        <div class="card"><div class="head"><h2>Quién lanza más</h2><span class="note" id="espOS"></span></div><div class="chart" id="chEspO"></div><p class="note">Lanzamientos orbitales en el año por empresa o agencia (las academias del grupo estatal chino CASC van juntas). Fuente: GCAT (J. McDowell).</p></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Satélites en órbita, por dueño</h2><span class="note" id="espSS"></span></div><div class="chart" id="chEspS"></div><p class="note">Satélites que hoy están en órbita, funcionando o no. Starlink es la red de internet satelital de SpaceX. Fuente: GCAT (J. McDowell).</p></div>
+        <div class="card"><div class="head"><h2>Satélites en órbita, por país</h2></div><div class="chart" id="chEspP"></div><p class="note" id="espPN"></p></div>
+      </div>
+      <div class="card"><div class="head"><h2>Empresas del espacio en la bolsa</h2></div><div id="espTv"></div><p class="note">Cotizaciones en Nueva York, en dólares. SpaceX no cotiza en bolsa. Satellogic nació en Argentina.</p></div>
+      <div class="grid2">
+        <div class="card"><div class="head"><h2>Cuánto gasta la NASA</h2><span class="note">miles de millones de US$ por año fiscal</span></div><div class="chart" id="chEspN"></div><p class="note" id="espNN"></p></div>
+        <div class="card"><div class="head"><h2>Los últimos lanzamientos</h2></div><div class="tablewrap"><table class="esptab"><thead><tr><th>Cuándo</th><th>Misión</th><th>Resultado</th></tr></thead><tbody id="tEspU"></tbody></table></div></div>
+      </div>
+      <div class="card"><div class="head"><h2>Los satélites argentinos</h2><span class="note" id="espArS"></span></div>
+        <div class="tablewrap"><table style="min-width:520px"><thead><tr><th>Satélite</th><th>Lanzado</th><th>De quién</th><th>Hoy</th></tr></thead><tbody id="tEspAr"></tbody></table></div>
+        <p class="note">Satélites con bandera argentina según el catálogo GCAT (no incluye los de Satellogic registrados en otro país). Fuente: GCAT, J. McDowell, planet4589.org/space/gcat (CC BY 4.0).</p></div>
     </div>
     <div class="gsub" data-sub="geo" hidden>
       <div class="card">
@@ -5297,7 +5330,7 @@ body.mporta .hbus{display:none}
     if(!mobil() || MAC_NO.includes(tab)) return;
     view.classList.add('macc');
     const conSub = !!view.querySelector('.gsub');
-    const cards = [...view.querySelectorAll('.card')].filter(c=>c.querySelector(':scope > .head > h2') && !c.querySelector('canvas') && !(conSub && !c.closest('.gsub')));
+    const cards = [...view.querySelectorAll('.card')].filter(c=>c.querySelector(':scope > .head > h2') && !c.querySelector('canvas') && !c.classList.contains('nofold') && !(conSub && !c.closest('.gsub')));
     cards.forEach(c=>c.classList.add('mk'));
     const vis = cards.filter(c=>c.offsetParent!==null);
     for(const c of cards){ c.classList.toggle('mc', !mAb.has(mTit(c)));
@@ -8534,6 +8567,7 @@ body.mporta .hbus{display:none}
     if(k==='M' && sel==='explorar') xpStart();
     if(k==='M' && sel==='economias') renderComparador();
     if(k==='M' && sel==='geo') renderGeo();
+    if(k==='M' && sel==='espacio') renderEspacio();
     if(PX_ISO[k]) setTimeout(()=>pxRender(k), 0);
     if(VIVO[k]) vvMount(k); }
   // celular: al cambiar de apartado estando abajo, volver a la barra de apartados (si no, el apartado nuevo se ve desde el fondo)
@@ -8561,6 +8595,7 @@ body.mporta .hbus{display:none}
     pobreza:['canasta'], canasta:['pobreza'],
     nafta:['surtidores','combustible'], naftas:['surtidores'], combustible:['surtidores','nafta'], combustibles:['surtidores'], gasoil:['surtidores','diesel'], diesel:['surtidores','gasoil'], gnc:['surtidores'], surtidor:['surtidores'], ypf:['surtidores'], estacion:['surtidores'], shell:['surtidores'], axion:['surtidores'], 'precio nafta':['surtidores'],
     auto:['autos','0km','patentamientos'], autos:['0km','patentamientos'], '0km':['autos','patentamientos'], okm:['0km','autos'], patentamientos:['0km','autos'], patentamiento:['0km','autos'], patentar:['0km'], patentados:['0km'], concesionaria:['0km','autos'], concesionarias:['0km'], camioneta:['0km','suv','pick-ups'], camionetas:['0km','suv'], pickup:['0km','pick-ups'], suv:['0km'], marcas:['0km','autos'], toyota:['0km','autos'], fiat:['0km'], volkswagen:['0km'], ford:['0km'], chevrolet:['0km'], renault:['0km'], peugeot:['0km'], byd:['0km','autos'], hilux:['0km','toyota'], importados:['0km','autos'],
+    espacio:['lanzamientos','satelites','nasa'], nasa:['espacio'], spacex:['espacio','lanzamientos'], starlink:['espacio','satelites'], cohete:['lanzamientos','espacio'], cohetes:['lanzamientos'], lanzamiento:['espacio'], satelite:['satelites','espacio'], satelites:['espacio'], conae:['satelites argentinos'], arsat:['satelites argentinos'], satellogic:['espacio'],
     vino:['vinos','uva','bodega'], vinos:['vino','uvas'], uva:['vinos','vino','cosecha'], uvas:['vinos'], vendimia:['vinos','cosecha','uva'], bodega:['vinos'], bodegas:['vinos'], malbec:['vinos','variedad'], vinedo:['vinos','superficie'], vinedos:['vinos'], mosto:['vinos'], damajuana:['vino comun','vinos'], mendoza:['vinos','uva'],
     carne:['ganaderia','hacienda','novillo','asado'], vaca:['ganaderia','hacienda','vacas'], vacas:['ganaderia','hacienda','vaca'], hacienda:['ganaderia'], asado:['carne'], campo:['ganaderia','soja','maiz','trigo'], liniers:['canuelas','hacienda'],
     petroleo:['brent','wti','crudo'], crudo:['petroleo'], nafta:['petroleo'],
@@ -8705,6 +8740,86 @@ body.mporta .hbus{display:none}
 
   // ---- Mundo › Geopolítica (geopolitica.json: Wikipedia, índice de riesgo geopolítico, Banco Mundial) ----
   const GEO_NIV = [['mayor','Guerras mayores','10.000 muertes o más en el año','#d9483b','guerra mayor'],['menor','Guerras menores','entre 1.000 y 9.999','#e8833a','guerra menor'],['conflicto','Conflictos','entre 100 y 999','#c9a227','conflicto'],['choque','Enfrentamientos','menos de 100','#7b8794','enfrentamientos']];
+  // ---- ESPACIO (espacio.json de scripts/espacio.py: The Space Devs, GCAT de J. McDowell CC BY 4.0, USAspending) ----
+  let esp = null, espLoading = false, espTic = null;
+  async function loadEsp(){ if(esp || espLoading) return; espLoading = true;
+    try{ const r = await fetch('espacio.json?t='+VER(), {cache:'no-store'}); if(r.ok) esp = await r.json(); }catch(e){}
+    espLoading = false; if(tab==='global' && SUBS.M[2]==='espacio') renderEspacio(); }
+  const ESP_PAIS = {GF:'Guayana Francesa', KZ:'Kazajistán', NO:'Noruega', SE:'Suecia', AU:'Australia', US:'EE.UU.', CN:'China', RU:'Rusia', SU:'URSS', NZ:'Nueva Zelanda', IN:'India', F:'Francia', J:'Japón', I:'Italia', D:'Alemania', KR:'Corea del Sur', UK:'Reino Unido', GB:'Reino Unido', CA:'Canadá', L:'Luxemburgo', E:'España', 'I-ESA':'Agencia Espacial Europea', AR:'Argentina', IL:'Israel', IR:'Irán', KP:'Corea del Norte', BR:'Brasil', FR:'Francia', JP:'Japón', DE:'Alemania', ES:'España', IT:'Italia', 'F-ESA':'Agencia Espacial Europea'};
+  const ESP_ORG = {SPX:'SpaceX', RLABN:'Rocket Lab', RLAB:'Rocket Lab', FKA:'Roscosmos', ROSK:'Roscosmos', AE:'Arianespace', ULAL:'ULA', ISRO:'ISRO (India)', LANDSP:'LandSpace', XIDO:'Galactic Energy', ZKYT:'CAS Space', BO:'Blue Origin', BLUE:'Blue Origin', MHI:'Mitsubishi (Japón)', JAXA:'JAXA (Japón)', NASA:'NASA'};
+  const ESP_CASC = new Set(['CASC','SAST','CALT','CZHJ','ZHSH','CASIC']);
+  const ESP_DUE = {SPXS:'Starlink (SpaceX)', PLAN:'Planet', ONEWEBE:'OneWeb (Eutelsat)', KUIP:'Kuiper (Amazon)', SFSSC:'Fuerza Espacial de EE.UU.', NROC:'NRO (espionaje de EE.UU.)', JSC:'NASA', ZXW:'China SatNet (Guowang)', YUANX:'Qianfan (China)', ROSK:'Roscosmos', RKKE:'RKK Energía (Rusia)', VVKOV:'Fuerzas Aeroespaciales de Rusia', PVO:'Defensa aérea soviética', SPIR:'Spire', SWAR:'Swarm (SpaceX)', IRID:'Iridium'};
+  const ESP_EST = {Go:'Confirmado', TBD:'A confirmar', TBC:'Por confirmar', Hold:'En pausa', 'In Flight':'En vuelo', Success:'Exitoso', Failure:'Falló', 'Partial Failure':'Falla parcial'};
+  const ESP_EMP = {'China Aerospace Science and Technology Corporation':'CASC (China)', 'Russian Federal Space Agency (ROSCOSMOS)':'Roscosmos', 'United Launch Alliance':'ULA', 'Indian Space Research Organization':'ISRO (India)', 'Agency for Defense Development':'ADD (Corea del Sur)', 'Japan Aerospace Exploration Agency':'JAXA (Japón)', 'Mitsubishi Heavy Industries':'Mitsubishi (Japón)', 'China Academy of Launch Vehicle Technology':'CASC (China)', 'National Aeronautics and Space Administration':'NASA', 'Korea Aerospace Research Institute':'KARI (Corea del Sur)', 'Space Exploration Technologies Corp.':'SpaceX'};
+  const espEmp = n => ESP_EMP[n] || n || '';
+  const espMis = n => (n||'').replace(/^Unknown Payload$/,'Carga sin identificar').replace(/ TBD\?$/,'');
+  const espPais = c => ESP_PAIS[c] || c || '—';
+  const espOrg = k => ESP_CASC.has(k) ? 'CASC (estatal china)' : ESP_ORG[k] || esp?.orgs?.[k]?.n || k;
+  const espHora = t => new Date(t).toLocaleString('es-AR', {timeZone:'America/Argentina/Buenos_Aires', weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+  const espFalta = t => { let s = Math.round((Date.parse(t)-Date.now())/1000); if(s < 0) return 'despegó'; const d = Math.floor(s/86400); s%=86400;
+    const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60; return d ? `${d} d ${h} h` : `${h} h ${String(m).padStart(2,'0')} min${d||h ? '' : ` ${String(x).padStart(2,'0')} s`}`; };
+  const espFino = l => ['MIN','SEC','HR'].includes(l.prec);  // fecha con hora fija (si no, solo el mes o el día)
+  function espTick(){
+    if(!(tab==='global' && SUBS.M[2]==='espacio') || document.hidden){ clearInterval(espTic); espTic = null; return; }
+    document.querySelectorAll('[data-espt]').forEach(e=>{ e.textContent = espFalta(e.dataset.espt); });
+    const g = document.querySelector('[data-espg]'); if(g){ let s = Math.max(0, Math.round((Date.parse(g.dataset.espg)-Date.now())/1000));
+      const d = Math.floor(s/86400), h = Math.floor(s%86400/3600), m = Math.floor(s%3600/60), x = s%60, p = n=>String(n).padStart(2,'0');
+      g.innerHTML = `${d ? `<b>${d}</b><i>${d===1?'día':'días'}</i>` : ''}<b>${p(h)}</b><i>horas</i><b>${p(m)}</b><i>min</i><b>${p(x)}</b><i>seg</i>`; }
+  }
+  function renderEspacio(){
+    if(!esp){ loadEsp(); return; }
+    const ahora = Date.now(), P = (esp.proximos||[]).filter(l=>Date.parse(l.t) > ahora - 3*3600e3 && !['Success','Failure','Partial Failure'].includes(l.est));
+    // próximo lanzamiento con cuenta regresiva
+    const nx = P.find(l=>espFino(l) && Date.parse(l.t) > ahora) || P[0];
+    $('espProx').innerHTML = nx ? `<div class="espnx"><div><div class="espm">${esc(espMis(nx.mision || nx.n))}</div>
+        <div class="espd">${esc(espEmp(nx.emp))}${nx.pais ? ' · '+esc(espPais(nx.pais)) : ''} · ${esc(nx.cohete||'')}${nx.orbita ? ' · órbita '+esc(nx.orbita) : ''}</div>
+        <div class="espd">${esc(espHora(nx.t))} · ${esc(/sea launch/i.test(nx.base||'') ? 'desde el mar' : (nx.base||''))} · <span class="chip eq">${esc(ESP_EST[nx.est]||nx.estn||'')}</span></div>
+${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noopener">Ver la transmisión ↗</a>` : ''}</div>
+        <div class="espcd" data-espg="${esc(nx.t)}"></div></div>` : '<div class="empty">Sin lanzamientos cargados.</div>';
+    // casilleros
+    const A = esp.anios||{}, yr = String(new Date().getFullYear()), ay = A[yr], aa = A[String(+yr-1)], O = esp.orbita||{}, sp = (O.por_dueno||{}).SPXS||0;
+    const N = (esp.nasa||[]).filter(r=>r.obligado), nU = N[N.length-1];
+    const t = [];
+    if(ay) t.push(tileK(`Lanzamientos en ${yr}`, nf(ay.n,0), 'al espacio', aa ? `<span class="chip eq">${nf(aa.n,0)} en todo ${+yr-1}</span>` : '', `${nf(ay.ok/ay.n*100,0)}% exitosos · GCAT`));
+    if(ay?.org?.SPX) t.push(tileK('De SpaceX', nf(ay.org.SPX/ay.n*100,0)+'%', 'de los lanzamientos', '', `${nf(ay.org.SPX,0)} en ${yr}` + (ay.org.SPX > ay.n - (ay.pais?.US||0) ? ': más que todo el resto del mundo junto' : '')));
+    if(O.satelites) t.push(tileK('Satélites en órbita', nf(O.satelites,0), '', '', `${nf(sp/O.satelites*100,0)}% son Starlink · además ${nf(O.basura||0,0)} pedazos de cohetes y basura`));
+    if(nU) t.push(tileK(`NASA, año fiscal ${nU.fy}`, 'US$ '+nf(nU.obligado/1e9,1), 'miles de millones', '', 'comprometido en el año · USAspending'));
+    $('espK').innerHTML = t.join('');
+    // próximos
+    $('espLS').textContent = `${P.length} cargados`;
+    $('tEspL').innerHTML = P.slice(0,15).map(l=>`<tr><td>${espFino(l) ? esc(espHora(l.t)) : 'A confirmar ('+esc(new Date(l.t).toLocaleDateString('es-AR',{month:'long', year:'numeric', timeZone:'UTC'}))+')'}</td><td>${espFino(l) ? `<span data-espt="${esc(l.t)}">${espFalta(l.t)}</span>` : '—'}</td><td><b>${esc(espMis(l.mision||l.n))}</b><br><span class="note">${esc(espEmp(l.emp))} · ${esc(l.cohete||'')}</span></td><td>${esc(ESP_PAIS[l.pad_pais] ? espPais(l.pad_pais) : /sea/i.test(l.base||'') ? 'En el mar' : (l.base||'').split(',').slice(-1)[0].trim())}</td></tr>`).join('');
+    // por año
+    const as = Object.keys(A).filter(a=>+a>=1957).sort(), pt = f => as.map(a=>[a+'-07-01', f(A[a])]);
+    const SER = [{n:'Total', c:'--s1', pts:pt(x=>x.n)}, {n:'EE.UU.', c:'--s2', pts:pt(x=>x.pais?.US||0)}, {n:'China', c:'--s4', pts:pt(x=>x.pais?.CN||0)}, {n:'Rusia / URSS', c:'--s5', pts:pt(x=>(x.pais?.RU||0)+(x.pais?.SU||0))}];
+    lineChart($('chEspA'), SER, {aria:'Lanzamientos orbitales por año', l:40, yfmt:v=>nf(v,0), vfmt:v=>nf(v,0), xfmt:k=>k.slice(0,4), tfmt:k=>k.slice(0,4)});
+    legend($('lgEspA'), SER.map(s=>({n:s.n, c:s.c})));
+    if(as.length){ const mx = as.reduce((a,b)=>A[b].n>A[a].n?b:a, as[0]), u = as[as.length-1];
+      $('espAN').textContent = `Lanzamientos que llegaron o intentaron llegar a órbita, desde el Sputnik (1957). En los 60 y 70 dominaba la URSS; hoy EE.UU. lanza más que nunca por SpaceX. ${u} va hasta hoy.`; }
+    // quién lanza más (año en curso)
+    const og = {}; for(const [k,v] of Object.entries(ay?.org||{})){ const n = espOrg(k); og[n] = (og[n]||0)+v; }
+    hBars($('chEspO'), Object.entries(og).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v],i)=>({n:k, v, c:i?'--s1':'--s4'})), {aria:'Lanzamientos por empresa', vfmt:v=>nf(v,0)});
+    $('espOS').textContent = yr+' hasta hoy';
+    // satélites por dueño y por país
+    const du = {}; for(const [k,v] of Object.entries(O.por_dueno||{})){ const n = ESP_DUE[k.split('/')[0]] || O.nombres?.[k] || k; du[n] = (du[n]||0)+v; }
+    hBars($('chEspS'), Object.entries(du).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v],i)=>({n:k, v, c:i?'--s1':'--s4'})), {aria:'Satélites por dueño', vfmt:v=>nf(v,0)+' · '+nf(v/O.satelites*100,1)+'%'});
+    $('espSS').textContent = O.satelites ? `de ${nf(O.satelites,0)}` : '';
+    hBars($('chEspP'), Object.entries(O.por_pais||{}).slice(0,10).map(([k,v])=>({n:espPais(k), v, c:k==='US'?'--s2':k==='CN'?'--s4':'--s1'})), {aria:'Satélites por país', vfmt:v=>nf(v,0)});
+    const ar = (esp.argentina||[]).filter(s=>s.est==='O').length;
+    $('espPN').textContent = `Por país del dueño. La URSS cuenta los satélites soviéticos que siguen arriba. Argentina tiene ${ar} satélites propios en órbita. Fuente: GCAT.`;
+    // bolsa (TradingView)
+    tvLista('espTv', [{tv:'NASDAQ:RKLB', n:'Rocket Lab'}, {tv:'NASDAQ:ASTS', n:'AST SpaceMobile'}, {tv:'NYSE:PL', n:'Planet'}, {tv:'NASDAQ:LUNR', n:'Intuitive Machines'}, {tv:'NYSE:RDW', n:'Redwire'}, {tv:'NASDAQ:IRDM', n:'Iridium'}, {tv:'NASDAQ:SATL', n:'Satellogic'}, {tv:'NYSE:LMT', n:'Lockheed Martin'}, {tv:'NYSE:BA', n:'Boeing'}, {tv:'AMEX:UFO', n:'Fondo de empresas del espacio (UFO)'}], 'Espacio');
+    // NASA
+    barChart($('chEspN'), [{n:'NASA', c:'--s1', pts:N.map(r=>[String(r.fy), r.obligado/1e9])}], {aria:'Gasto de la NASA por año fiscal', l:40, kfmt:k=>"'"+k.slice(2), yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,1)+' mil mill.'});
+    if(nU) $('espNN').textContent = `Lo que la NASA comprometió gastar en cada año fiscal (de octubre a septiembre). El último (${nU.fy}) puede estar incompleto: el gobierno carga los datos con atraso. Fuente: USAspending, gobierno de EE.UU.`;
+    // últimos
+    $('tEspU').innerHTML = (esp.ultimos||[]).slice(0,10).map(l=>`<tr><td>${esc(espHora(l.t))}</td><td><b>${esc(espMis(l.mision||l.n))}</b><br><span class="note">${esc(espEmp(l.emp))} · ${esc(l.cohete||'')}</span></td><td><span class="chip ${l.est==='Success'?'up':/Fail/.test(l.est||'')?'dn':'eq'}">${esc(ESP_EST[l.est]||l.estn||'')}</span></td></tr>`).join('');
+    // Argentina
+    const AR = (esp.argentina||[]).slice().sort((a,b)=>(b.f||'').localeCompare(a.f||'')), ON = {AMLU:'AMSAT Argentina', CORD:'Instituto Universitario Aeronáutico', NAHU:'Nahuelsat', CONAE:'CONAE', MINCYT:'Ministerio de Ciencia', SATELOG:'Satellogic', ARSAT:'ARSAT', DIYS:'DIY Satellite', INNO:'Innova Space'};
+    $('espArS').textContent = `${AR.length} satélites · ${ar} en órbita`;
+    $('tEspAr').innerHTML = AR.map(s=>`<tr><td><b>${esc(s.n)}</b></td><td>${esc((s.f||'').slice(0,4))}</td><td>${esc(ON[s.dueno] || esp.argentina_orgs?.[s.dueno] || s.dueno || '')}</td><td>${s.est==='O' ? '<span class="chip up">En órbita</span>' : '<span class="chip eq">Ya no está</span>'}</td></tr>`).join('');
+    espTick(); if(!espTic) espTic = setInterval(espTick, 1000);
+  }
+
   let geoD = null, geoLoading = false, geoSelIso = null, milM = 'usd';
   const geoNom = (()=>{ let dn = null; try{ dn = new Intl.DisplayNames(['es'],{type:'region'}); }catch(e){} return (a2, def) => { try{ return (a2 && dn && dn.of(a2)) || def; }catch(e){ return def; } }; })();
   async function loadGeo(){ if(geoLoading) return; geoLoading = true;
