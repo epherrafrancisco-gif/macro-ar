@@ -1,0 +1,43 @@
+name: Autos 0km
+
+# Patentamientos de autos 0km (datos abiertos de la DNRPA, CC BY 4.0) → autos.json.
+# La DNRPA publica el mes a mes con ~1 mes de atraso: alcanza con lunes y jueves 8:20 hora argentina.
+on:
+  schedule:
+    - cron: "20 11 * * 1,4"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/autos.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autos
+  cancel-in-progress: false
+
+jobs:
+  autos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer patentamientos de la DNRPA
+        run: python scripts/autos.py
+
+      - name: Guardar cambios
+        run: |
+          git add autos.json autos_diag.json autos_cache 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Autos 0km $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
