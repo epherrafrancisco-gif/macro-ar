@@ -775,8 +775,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (sticky, alto = pantalla − 170 px) y al elegir una palabra la lista se mueve sola hasta su pista (`verPista`; la grilla no se
   mueve). Pista elegida más marcada (caramelo más oscuro y raya a la izquierda); resueltas en verde con fondo, tachado grueso y ✓.
 - Celular (pedido del dueño 03/11/2026, "es medio incómodo"; `TACTIL` = pointer:coarse): el casillero se elige con el toque (`click`), no al
-  apoyar el dedo (`pointerdown` solo con mouse), así deslizar para subir o bajar no cambia la palabra; elegir una palabra (casillero o
-  pista de la lista) acomoda la página para que se vea entera debajo de `#pAct` y arriba del teclado (`verPalabra`, usa
+  apoyar el dedo (`pointerdown` solo con mouse), así deslizar para subir o bajar no cambia la palabra; tocar un casillero NO mueve la página (la pista ya
+  aparece arriba, pedido del dueño); solo tocar una pista de la lista acomoda la página para que se vea entera debajo de `#pAct` y arriba del teclado (`verPalabra`, usa
   `visualViewport`); al completar una palabra se cierra el teclado y queda marcada la siguiente (`irPalabra(q, false)`); tocar `#pAct`
   con el teclado cerrado lo vuelve a abrir.
 
