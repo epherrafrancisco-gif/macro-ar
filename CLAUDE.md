@@ -766,6 +766,11 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el 30/06/2027: PENDIENTE sumar palabras de economía (sobre todo de 3, 5 y 7 letras) y volver a correr
   `node scripts/crucigrama_grillas.js 760` antes de esa fecha (y para volver a separar más las repeticiones).
   El N.º 3 se cambió a mitad del día: su progreso guardado usa la clave `pm-cruci-2026-11-03-eco`.
+- Arreglos del 03/11/2026 (pedido del dueño): la racha se cuenta mirando los días resueltos guardados en el dispositivo (`racha()`,
+  `resuelto(d)`, hacia atrás desde hoy) y el cartel dice cuáles son ("3 días seguidos resolviéndolo: 1, 2 y 3 de noviembre",
+  `rachaTxt`); `pm-cruci-racha` queda solo por compatibilidad. En la compu (≥880px) la lista de pistas tiene su propio scroll
+  (sticky, alto = pantalla − 170 px) y al elegir una palabra la lista se mueve sola hasta su pista (`verPista`; la grilla no se
+  mueve). Pista elegida más marcada (caramelo más oscuro y raya a la izquierda); resueltas en verde con fondo, tachado grueso y ✓.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):

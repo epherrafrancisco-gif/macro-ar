@@ -138,8 +138,15 @@ function marcar() {
   if (!p) return;
   for (let i = 0; i < p.w.length; i++) inp(p.x + p.dx * i, p.y + p.dy * i).parentNode.classList.add('act');
   inp(cur.x, cur.y).parentNode.classList.add('cur');
-  const li = document.querySelector(`.pistas li[data-n="${p.n}"][data-d="${dir}"]`); if (li) li.classList.add('act');
+  const li = document.querySelector(`.pistas li[data-n="${p.n}"][data-d="${dir}"]`); if (li) { li.classList.add('act'); verPista(li); }
   $('#pAct').innerHTML = `<b>${p.n} ${dir === 'h' ? 'horizontal' : 'vertical'}</b> ${p.pista} <i>(${p.w.length})</i>`;
+}
+// que la pista elegida se vea en la lista (pedido del dueño 03/11/2026). En la compu la lista tiene su propio scroll, así que se
+// mueve solo la lista, no la grilla. En el celular la pista ya está arriba de la grilla (#pAct).
+function verPista(li) {
+  const box = li.closest('.pistas'); if (!box || box.scrollHeight <= box.clientHeight + 2) return;
+  const b = box.getBoundingClientRect(), r = li.getBoundingClientRect(), arriba = Math.max(b.top, 0), abajo = Math.min(b.bottom, innerHeight);
+  if (r.top < arriba + 30 || r.bottom > abajo - 8) box.scrollTo({top: box.scrollTop + (r.top - arriba) - (abajo - arriba) / 3, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
 }
 function ir(x, y) { const i = inp(x, y); if (!i) return false; cur = {x, y}; if (E.fin) { marcar(); return true; } i.focus({preventScroll: true}); i.select(); marcar(); return true; }
 grid.addEventListener('pointerdown', e => {
@@ -247,6 +254,19 @@ function aviso(t) { const a = $('#aviso'); a.textContent = t; a.hidden = false; 
 
 // ---------- fin ----------
 const RK = 'pm-cruci-racha';
+// Racha (03/11/2026: el dueño no entendía de dónde salían sus "3 días"): se cuenta mirando qué días quedaron resueltos en este
+// dispositivo, hacia atrás desde hoy, y el cartel dice cuáles son.
+const resuelto = d => [d, d + '-eco'].some(k => { try { return JSON.parse(localStorage.getItem('pm-cruci-' + k) || '{}').fin; } catch (e) { return false; } });
+function racha() { const dias = []; let d = HOY; while (dias.length < 400 && resuelto(d)) { dias.push(d); d = new Date(Date.parse(d) - 864e5).toISOString().slice(0, 10); } return dias.reverse(); }
+const MES_ = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+function rachaTxt(dias) {
+  if (dias.length < 2) return 'Primer día de tu racha';
+  const f = d => +d.slice(8), m = d => MES_[+d.slice(5, 7) - 1];
+  if (dias.length > 5) return `${dias.length} días seguidos resolviéndolo (desde el ${f(dias[0])} de ${m(dias[0])})`;
+  const mismo = dias.every(d => d.slice(0, 7) === dias[0].slice(0, 7));
+  const ls = dias.map(d => mismo ? String(f(d)) : `${f(d)} de ${m(d)}`);
+  return `${dias.length} días seguidos resolviéndolo: ${ls.slice(0, -1).join(', ')} y ${ls[ls.length - 1]}${mismo ? ' de ' + m(dias[0]) : ''}`;
+}
 function revisarFin() {
   if (E.fin) return;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (SOL[y][x] && (E.l[x + ',' + y] || '') !== SOL[y][x]) return;
@@ -255,7 +275,7 @@ function revisarFin() {
   const ayer = new Date(Date.parse(HOY) - 864e5).toISOString().slice(0, 10);
   if (R.u !== HOY) { R.n = R.u === ayer ? R.n + 1 : 1; R.u = HOY; try { localStorage.setItem(RK, JSON.stringify(R)); } catch (e) {} }
   try { window.goatcounter && goatcounter.count({path: 'cruci-resuelto', event: true}); } catch (e) {}
-  festejo(R.n);
+  festejo(racha());
 }
 // Resuelto (pedido del dueño 02/11/2026): se puede mirar y tocar para ver la pista, pero sin abrir el teclado ni cambiar letras.
 function cerrar() {
@@ -267,7 +287,7 @@ function festejo(dias, volver) {
   grid.classList.add('ok'); cerrar();
   $('#finT').textContent = fmtT(E.t);
   $('#finP').textContent = E.pistas ? `con ${E.pistas} ${E.pistas === 1 ? 'pista' : 'pistas'}` : 'sin pistas';
-  $('#finD').textContent = dias > 1 ? `${dias} días seguidos resolviéndolo` : 'Primer día de tu racha';
+  $('#finD').textContent = rachaTxt(dias);
   $('#fin').hidden = false; if (!volver) confeti(140);   // al volver a entrar ya resuelto, sin confeti otra vez
   const txt = `Crucigrama de economía de Pulso Macro N.º ${N}: lo resolví en ${fmtT(E.t)} ${E.pistas ? 'con ' + E.pistas + ' pistas' : 'sin pistas'}. ¿Vos?\npulsomacro.com.ar/crucigrama/`;
   $('#finSh').onclick = () => { if (navigator.share) navigator.share({text: txt}).catch(() => {}); else { navigator.clipboard && navigator.clipboard.writeText(txt); aviso('Copiado para pegar donde quieras.'); } };
@@ -288,7 +308,7 @@ function confeti(n) {
     for (const q of ps) { q.y += q.vy; q.x += q.vx + Math.sin(q.g) * .6; q.g += .08; x.save(); x.globalAlpha = Math.max(0, Math.min(1, 3 - k)); x.translate(q.x, q.y); x.rotate(q.g); x.fillStyle = q.c; x.fillRect(-q.s, -q.s / 2, q.s * 2, q.s); x.restore(); }
     if (k < 3) requestAnimationFrame(p); else cv.remove(); })(t0);
 }
-if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); let R = {n: 1}; try { R = JSON.parse(localStorage.getItem(RK) || '{"n":1}'); } catch (e) {} festejo(R.n, true); $('#fin').hidden = true; $('#yaFin').hidden = false; }
+if (E.fin) { grid.classList.add('ok'); $('#reloj').textContent = fmtT(E.t); festejo(racha(), true); $('#fin').hidden = true; $('#yaFin').hidden = false; }
 $('#yaFin').onclick = () => $('#fin').hidden = false;
 $('#ayuda').textContent = E.fin ? `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Ya está resuelto: tocá un casillero para ver su pista.` : `${P.puestas.length} palabras${P.neg ? '' : ' de economía'}. Tocá un casillero para empezar; tocalo de nuevo para cambiar entre horizontal y vertical.`;
 verdes(false);
