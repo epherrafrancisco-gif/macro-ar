@@ -748,6 +748,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `google1d15c85ea7dfd326.html` en la raíz: NO borrarlo (se pierde la verificación).
 - Chequeo diario del sitio publicado (`chequeo-sitio.yml` + `scripts/chequeo.mjs`, L a V 19:43 ART): si hay problemas
   graves abre un issue (avisa por mail al dueño) y lo cierra solo cuando se arregla. Revisa también la portada.
+- Chequeo con Safari (`chequeo-apple.yml` + `scripts/chequeo_apple.mjs`, en una Mac de GitHub, a mano o al cambiar esos archivos):
+  WebKit de Playwright en iPhone 15, iPad Pro y Mac contra el sitio publicado (modos, Órbita, buscador, secciones, juego,
+  crucigrama; errores, desbordes y pedidos fallidos). Deja capturas e `informe.md` en la rama `chequeo-apple` (se pisa cada vez).
+  Acá no se puede bajar WebKit: leer el resultado con `git fetch origin chequeo-apple:refs/remotes/origin/chequeo-apple`.
 - Secretos del repo: `BEA_KEY` (clave gratis del BEA para el PBI de EE.UU.; si falta, la tarjeta de PBI no aparece) y
   `BANXICO_TOKEN` (opcional, SIE de Banxico; si falta, México no muestra remesas, reservas ni FIX).
 - `global.yml` tiene 20 min de límite: cuando se suman claves a `HIST`, global.py vuelve a bajar toda la historia (~6 min).

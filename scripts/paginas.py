@@ -230,9 +230,9 @@ def pag_diaria(slug, nombre, h1, serie, fmt, unidad, color, que_es, tab, fuente,
         else:
             frases.append(f"En {f[:4]}, el máximo fue {pref}{fmt(mx[1])} ({fecha_corta(mx[0])}) y el mínimo, {pref}{fmt(mn[1])} ({fecha_corta(mn[0])}).")
     k = [("Último dato", uu(v), ""), ("Día anterior", vtxt(dd) if dd is not None else "—", cls(dd, sube_bien))]
-    for etq, a in (("En una semana", sem), ("En un mes", mes), (f"En {f[:4]}", base_ano)):
+    for lapso, a in (("En una semana", sem), ("En un mes", mes), (f"En {f[:4]}", base_ano)):   # no usar `etq`: es el nombre del índice
         x = var(a) if a else None
-        k.append((etq, vtxt(x) if x is not None else "—", cls(x, sube_bien)))
+        k.append((lapso, vtxt(x) if x is not None else "—", cls(x, sube_bien)))
     ult = serie[-10:][::-1]
     filas = []
     for i, (d, val) in enumerate(ult):
