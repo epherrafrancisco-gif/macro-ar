@@ -16,16 +16,16 @@ def mat(n, c, metal=0.0, rough=.4, emis=None, fz=0.0, coat=0.0):
     if coat: b.inputs['Coat Weight'].default_value = coat
     if emis: b.inputs['Emission Color'].default_value = (*emis, 1); b.inputs['Emission Strength'].default_value = fz
     return m
-BLANCO = mat('blanco', (.86, .87, .88), 0, .32, coat=.4)
+BLANCO = mat('blanco', (.86, .87, .88), 0, .42, coat=.08)
 def paneles(m, esc, fuerza):
     nt = m.node_tree; N = nt.nodes; L = nt.links; b = N['Principled BSDF']
     tc = N.new('ShaderNodeTexCoord'); br = N.new('ShaderNodeTexBrick'); L.new(tc.outputs['Object'], br.inputs['Vector'])
     br.inputs['Scale'].default_value = esc; br.inputs['Mortar Size'].default_value = .004; br.inputs['Color1'].default_value = (1, 1, 1, 1); br.inputs['Color2'].default_value = (.92, .92, .93, 1)
     bu = N.new('ShaderNodeBump'); bu.inputs['Strength'].default_value = fuerza; L.new(br.outputs['Fac'], bu.inputs['Height']); L.new(bu.outputs['Normal'], b.inputs['Normal'])
-    mx = N.new('ShaderNodeMix'); mx.data_type = 'RGBA'; mx.inputs['Factor'].default_value = .22
+    mx = N.new('ShaderNodeMix'); mx.data_type = 'RGBA'; mx.inputs['Factor'].default_value = .1
     mx.inputs['A'].default_value = b.inputs['Base Color'].default_value[:]
     L.new(br.outputs['Color'], mx.inputs['B']); mx.blend_type = 'MULTIPLY'; L.new(mx.outputs['Result'], b.inputs['Base Color'])
-paneles(BLANCO, 1.6, .08)
+paneles(BLANCO, 1.1, .03)
 NEGRO = mat('escudo', (.025, .026, .03), 0, .7)
 paneles(NEGRO, 4.0, .4)
 GRAFITO = mat('grafito', (.09, .1, .115), .6, .35)
@@ -66,7 +66,31 @@ for i in range(N_A):
         a, b = anillos[i][k], anillos[i][(k + 1) % NS]; c, d = anillos[i + 1][(k + 1) % NS], anillos[i + 1][k]
         bm.faces.new((a, b, c, d))
 bm.faces.new(list(reversed(anillos[0])))
-fus = obj_de(bm, 'fuselaje', BLANCO)
+# ---------- nombre como calcomanía: se dibuja con Inter Bold y se proyecta de costado sobre la pintura ----------
+from PIL import Image as _I, ImageDraw as _D, ImageFont as _F
+import tempfile, os
+_f = _F.truetype('/usr/share/fonts/opentype/inter/Inter-Bold.otf', 220)
+_tx = 'PULSO  MACRO'; _bb = _f.getbbox(_tx); _w, _h = _bb[2] - _bb[0] + 80, _bb[3] - _bb[1] + 80
+_im = _I.new('RGBA', (_w, _h), (0, 0, 0, 0)); _D.Draw(_im).text((40 - _bb[0], 40 - _bb[1]), _tx, font=_f, fill=(255, 255, 255, 255))
+CALCO = os.path.join(tempfile.gettempdir(), 'pm_calco.png'); _im.save(CALCO); RATIO = _h / _w
+FUSE = BLANCO.copy(); FUSE.name = 'fuselaje'
+nt = FUSE.node_tree; N_ = nt.nodes; L_ = nt.links; b_ = N_['Principled BSDF']
+DX0, DW = -1.75, 2.7                         # dónde va el nombre (x) y su largo
+DZ0 = .13                                    # altura del centro
+tc_ = N_.new('ShaderNodeTexCoord'); sx = N_.new('ShaderNodeSeparateXYZ'); L_.new(tc_.outputs['Object'], sx.inputs[0])
+u_ = N_.new('ShaderNodeMapRange'); L_.new(sx.outputs['X'], u_.inputs['Value']); u_.inputs['From Min'].default_value = DX0; u_.inputs['From Max'].default_value = DX0 + DW; u_.clamp = False
+v_ = N_.new('ShaderNodeMapRange'); L_.new(sx.outputs['Z'], v_.inputs['Value']); v_.inputs['From Min'].default_value = DZ0 - DW * RATIO / 2; v_.inputs['From Max'].default_value = DZ0 + DW * RATIO / 2; v_.clamp = False
+cx_ = N_.new('ShaderNodeCombineXYZ'); L_.new(u_.outputs[0], cx_.inputs[0]); L_.new(v_.outputs[0], cx_.inputs[1])
+im_ = N_.new('ShaderNodeTexImage'); im_.image = bpy.data.images.load(CALCO); im_.extension = 'CLIP'; im_.interpolation = 'Cubic'; L_.new(cx_.outputs[0], im_.inputs[0])
+# solo del lado que mira la cámara (y negativo); del otro lado se leería al revés
+gn = N_.new('ShaderNodeNewGeometry'); sn = N_.new('ShaderNodeSeparateXYZ'); L_.new(gn.outputs['Normal'], sn.inputs[0])
+lado_ = N_.new('ShaderNodeMath'); lado_.operation = 'LESS_THAN'; L_.new(sn.outputs['Y'], lado_.inputs[0]); lado_.inputs[1].default_value = -.35
+fac_ = N_.new('ShaderNodeMath'); fac_.operation = 'MULTIPLY'; L_.new(im_.outputs['Alpha'], fac_.inputs[0]); L_.new(lado_.outputs[0], fac_.inputs[1])
+mixc = N_.new('ShaderNodeMix'); mixc.data_type = 'RGBA'; L_.new(fac_.outputs[0], mixc.inputs['Factor'])
+L_.new(b_.inputs['Base Color'].links[0].from_socket if b_.inputs['Base Color'].is_linked else None, mixc.inputs['A']) if b_.inputs['Base Color'].is_linked else None
+mixc.inputs['B'].default_value = (.025, .03, .04, 1)
+L_.new(mixc.outputs['Result'], b_.inputs['Base Color'])
+fus = obj_de(bm, 'fuselaje', FUSE)
 sub = fus.modifiers.new('s', 'SUBSURF'); sub.levels = 1; sub.render_levels = 2
 # panza negra: segundo material en las caras de abajo
 fus.data.materials.append(NEGRO)
@@ -111,16 +135,8 @@ for lado in (1, -1):
 for lado in (1, -1):
     bpy.ops.mesh.primitive_cube_add(size=1)
     fr = bpy.context.active_object; fr.data.materials.append(CELESTE)
-    fr.scale = (4.6, .02, .09); fr.location = (-.3, (ANCHO * .9) * lado, -.12)
+    fr.scale = (4.6, .02, .06); fr.location = (-.3, (ANCHO * .86) * lado, -.12)
 
-# ---------- nombre en el costado ----------
-for lado in (1, -1):
-    cu = bpy.data.curves.new('nombre', 'FONT'); cu.body = 'PULSO MACRO'; cu.size = .3; cu.extrude = .004; cu.align_x = 'CENTER'
-    try: cu.font = bpy.data.fonts.load('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf')
-    except Exception: pass
-    t = bpy.data.objects.new('nombre', cu); sc.collection.objects.link(t); t.data.materials.append(GRAFITO)
-    t.location = (-.35, (ANCHO * .93) * lado, .12); t.rotation_euler = (math.radians(90 if lado < 0 else -90), 0, 0 if lado < 0 else math.pi)
-    if lado > 0: t.scale = (1, 1, 1)
 # ---------- cabina ----------
 # ventanillas: cuatro paneles oscuros sobre el lomo, detrás de la nariz
 for i, (dx, ya) in enumerate([(0, .17), (.27, .15)]):

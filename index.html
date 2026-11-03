@@ -838,10 +838,11 @@ html[data-tema="orbita"] body{background:#020306}
 html[data-tema="orbita"] #orFx{display:block;position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 #orFx .tie{position:absolute;inset:0;background:#020306 url(/fondos/espacio-2400.jpg) center bottom/cover no-repeat;background-image:image-set(url(/fondos/espacio-2400.webp) type("image/webp"),url(/fondos/espacio-2400.jpg) type("image/jpeg"))}
 @media (max-width:900px){#orFx .tie{background-image:url(/fondos/espacio-1200.jpg);background-image:image-set(url(/fondos/espacio-1200.webp) type("image/webp"),url(/fondos/espacio-1200.jpg) type("image/jpeg"))}}
+#orFx canvas.tierra{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease}#orFx canvas.tierra.on{opacity:1}
 #orFx .velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,3,6,.35) 0%,rgba(2,3,6,.45) 55%,rgba(2,3,6,.55) 100%)}
-#orFx .nave{position:absolute;left:0;top:0;width:260px;opacity:0;will-change:transform,opacity}
+#orFx .nave{position:absolute;left:0;top:0;width:320px;opacity:0;will-change:transform,opacity}
 #orFx .nave img{width:100%;display:block}
-@media (max-width:640px){#orFx .nave{width:170px}}
+@media (max-width:640px){#orFx .nave{width:200px}}
 @media (prefers-reduced-motion: reduce){#orFx .nave{display:none}}
 html[data-tema="orbita"] main,html[data-tema="orbita"] header,html[data-tema="orbita"] .wrap{position:relative;z-index:1}
 html[data-tema="orbita"] .card,html[data-tema="orbita"] .q,html[data-tema="orbita"] .tile,html[data-tema="orbita"] .bfake,html[data-tema="orbita"] .pane,html[data-tema="orbita"] .juegos a,html[data-tema="orbita"] .juegos button{
@@ -3217,6 +3218,7 @@ body.mporta .hbus{display:none}
           <li><b>Riesgo geopolítico:</b> índice de Caldara e Iacoviello (2022), "Measuring Geopolitical Risk", American Economic Review; sus datos están bajo licencia Creative Commons BY.</li>
           <li><b>Índice Big Mac:</b> The Economist, datos bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener">CC BY 4.0</a>.</li>
           <li><b>Mapas, banderas y librerías:</b> Natural Earth (dominio público), flag-icons (MIT), d3 (ISC) y TopoJSON (BSD).</li>
+          <li><b>Imágenes de la Tierra:</b> texturas de Solar System Scope (solarsystemscope.com), bajo licencia CC BY 4.0, basadas en imágenes de la NASA (dominio público).</li>
           <li>Los datos y marcas de terceros pertenecen a sus titulares. Si sos titular de un dato y querés que se corrija o se retire, escribí a <a href="mailto:contacto@pulsomacro.com.ar?subject=Pedido%20de%20correcci%C3%B3n%20o%20retiro" data-contacto="mail">contacto@pulsomacro.com.ar</a>.</li>
         </ul>
       </details>
@@ -9276,5 +9278,6 @@ body.mporta .hbus{display:none}
   requestAnimationFrame(paso);
 })();
 </script>
+<script src="/fondos/tierra.js" defer></script>
 </body>
 </html>

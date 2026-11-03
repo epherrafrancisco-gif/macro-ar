@@ -71,6 +71,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   nubes y océanos de la NASA vía three.js; no están en el repo, se bajan de GitHub) + `scripts/espacio_post.py` (estrellas, brillo,
   grano) → `fondos/espacio-2400` y `-1200`; `scripts/nave_blender.py` + `scripts/nave_fuego.py` → `fondos/nave.webp/.png` (avión
   espacial propio: blanco, panza negra, franja celeste, anillo del logo en las derivas, "PULSO MACRO" en el costado, fuego celeste).
+  La Tierra GIRA (pedido del dueño 02/11/2026: "que esté girando y se vea más real"): `fondos/tierra.js`, shader propio de WebGL 2
+  (rayo por píxel contra la esfera; sin librerías): texturas `fondos/tierra/dia|noche|aux-{2048,4096}.webp` (aux: R = océanos para el
+  reflejo del sol, G = nubes reales de 8K de Solar System Scope), luces de las ciudades del lado de noche, atmósfera, estrellas; una
+  vuelta cada 15 min (`GIRO`), 30 cuadros por segundo, solo con el modo puesto y la pestaña visible; misma toma que el render de Blender
+  (cámara a 1.700 km sobre el Atlántico Sur). Sin WebGL 2 queda la imagen fija (`.tie`). El nombre de la nave es una calcomanía
+  (Inter Bold proyectada en el material del fuselaje, solo del lado que se ve). Crédito en Sobre → Licencias.
   En index.html: `html[data-tema="orbita"]` (bloque "Modo Órbita"), capa `#orFx` (`.tie`, `.velo`, `.nave`) y `naveVuelo` al final
   (cruza de izquierda a derecha por una curva suave, 27-54 s, cada 22-50 s; nunca dada vuelta porque se leería el nombre al revés).
   Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo el SHA-256): récord 62.
