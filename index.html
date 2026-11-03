@@ -1375,7 +1375,7 @@ body.mporta .hbus{display:none}
       <input class="bq" id="okQ" type="search" placeholder="Buscar una marca…" autocomplete="off" aria-label="Buscar una marca">
       <div class="tablewrap"><table style="min-width:520px"><thead><tr><th>#</th><th>Marca</th><th>Unidades</th><th>Del total</th><th>Contra un año antes</th></tr></thead><tbody id="tOkMa"></tbody></table></div>
       <button type="button" class="okmas" id="okMas" hidden>Ver todas las marcas</button>
-      <p class="note">Tocá una marca para ver todos sus modelos y versiones. "Nueva": no había patentado en el mismo período del año anterior.</p>
+      <p class="note">Tocá una marca para ver todos sus modelos y versiones. "Nueva": no había patentado en el mismo período del año anterior. "Sin ventas": vendió en el último año pero no en este período.</p>
     </div>
     <div class="card" id="okFicha" hidden>
       <div class="head"><h2 id="okFiT">Marca</h2><span class="note" id="okFiS"></span></div>
@@ -4390,12 +4390,14 @@ body.mporta .hbus{display:none}
     const mo = {}; for(const [k,v] of Object.entries(A.mod)){ const [ma,m2] = k.split('|'); if(okCatSel && okCat(ok.tipo_modelo[k])!==okCatSel) continue; const b = ma+'|'+okBase(m2); mo[b] = (mo[b]||0)+v; }
     const moR = Object.entries(mo).sort((a,b)=>b[1]-a[1]).slice(0,12);
     hBars($('chOkMo'), moR.map(([k,v],i)=>{ const [ma,m2] = k.split('|'); return {n:okNom(m2)+' · '+okNom(ma), v, c:i?'--s3':'--s4'}; }), {aria:'Modelos más vendidos', vfmt:v=>nf(v,0)+' · '+nf(v/A.tot*100,1)+'%'});
-    // tabla de todas las marcas
-    $('okTbS').textContent = `${mR.length} marcas · ${P.txt}`;
+    // tabla: TODAS las marcas que vendieron 0km en el país en los últimos 12 meses (con 0 si no vendieron en el período)
+    const ms12 = Object.keys(ok.det).sort().slice(-12), todasM = new Set(ms12.flatMap(m=>Object.keys(ok.det[m].mar)));
+    const mT = [...mR, ...[...todasM].filter(k=>!(k in A.mar)).sort().map(k=>[k,0])];
+    $('okTbS').textContent = `${todasM.size} marcas vendieron 0km en el país en los últimos 12 meses · ${P.txt}`;
     const q = okQ.trim().toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-    $('okMas').hidden = okTodas || !!q || mR.length<=20; $('okMas').textContent = `Ver las ${mR.length} marcas`;
-    $('tOkMa').innerHTML = mR.map(([k,v],i)=>{ if(q ? !k.normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q) : (!okTodas && i>=20 && k!==okMarca)) return ''; const b = B.mar[k];
-      return `<tr data-m="${esc(k)}" style="cursor:pointer"${k===okMarca?' class="hl"':''}><td>${i+1}</td><td><b>${esc(okNom(k))}</b></td><td>${nf(v,0)}</td><td>${nf(v/A.tot*100,2)}%</td><td>${b ? chip(v/b-1,{d:0}) : '<span class="chip eq">nueva</span>'}</td></tr>`; }).join('') || '<tr><td colspan="5" class="note">No hay ninguna marca con ese nombre.</td></tr>';
+    $('okMas').hidden = okTodas || !!q || mT.length<=20; $('okMas').textContent = `Ver las ${mT.length} marcas`;
+    $('tOkMa').innerHTML = mT.map(([k,v],i)=>{ if(q ? !k.normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q) : (!okTodas && i>=20 && k!==okMarca)) return ''; const b = B.mar[k];
+      return `<tr data-m="${esc(k)}" style="cursor:pointer"${k===okMarca?' class="hl"':''}><td>${v ? i+1 : '—'}</td><td><b>${esc(okNom(k))}</b></td><td>${nf(v,0)}</td><td>${v ? nf(v/A.tot*100,2)+'%' : '—'}</td><td>${!v ? '<span class="chip eq">sin ventas</span>' : b ? chip(v/b-1,{d:0}) : '<span class="chip eq">nueva</span>'}</td></tr>`; }).join('') || '<tr><td colspan="5" class="note">No hay ninguna marca con ese nombre.</td></tr>';
     // ficha de la marca elegida
     const fi = $('okFicha'); fi.hidden = !okMarca;
     if(okMarca){ const tot = A.mar[okMarca]||0, b = B.mar[okMarca], pos = mR.findIndex(r=>r[0]===okMarca)+1, og = ok.origen_marca?.[okMarca]||{}, ogt = Object.values(og).reduce((a,v)=>a+v,0);

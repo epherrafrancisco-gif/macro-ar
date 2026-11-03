@@ -113,7 +113,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
 - Orden de Argentina en la portada, la hoja y la grilla del celular (`ARG_T`, pedido del dueño): Dólares, Noticias, Bolsa y bonos,
-  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Ganadería, Vinos y uvas, Surtidores, Calculadoras.
+  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Autos 0km, Ganadería, Vinos y uvas, Surtidores, Calculadoras.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
@@ -136,7 +136,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
 - Hashes (no cambiarlos): Argentina = `#dolares`, `#macro` ("Inflación y reservas"), `#dinero` ("Tasas y pesos"),
-  `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#ganaderia`, `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
+  `#fiscal` ("Cuentas del Estado"), `#actividad` ("Actividad y empleo"), `#autos` ("Autos 0km"), `#ganaderia`, `#mercado` ("Bolsa y bonos"), `#noticias`, `#calculadoras`;
   El mundo = `#global` (Mundo), `#eeuu` (Estados Unidos; `setTab('eeuu')` pone `G.vista='usa'`), `#brasil`, `#europa`
   `#mexico`, `#chile`, `#japon`, `#reinounido`, `#canada`, `#colombia`, `#turquia`, `#peru` y `#polonia`; `#sobre`.
 - Celular (≤640px, `body.insec` siempre y `body.mporta` en la portada; en la compu no cambia nada). Pedido del dueño:
@@ -217,6 +217,22 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   hasta la tarde, `def`), ~400 días; pizarra de la CAC Rosario (UTF-8, solo el día: la historia se arma guardando, desde
   15/10/2026). Carne al consumidor (`c_*` GBA, `rp_*` picada por región), faena trimestral `faena_t` (la mensual 41.3_FCV
   viene vacía en la API) e IPI carne vacuna `ipi_carne` vienen de actividad.json. Novillo/maíz = novillo $/kg ÷ maíz $/kg.
+- Autos 0km (`#autos`, `vOk`, pestaña `tabOk`, `renderAutos`, `loadOk`; pedido del dueño 03/11/2026: "con todas las marcas que se
+  venden en el país"; datos `autos.json` de scripts/autos.py, workflow `autos.yml` lunes y jueves 8:20 ART): patentamientos de la DNRPA
+  (datos abiertos de datos.jus.gob.ar, "Inscripciones iniciales de autos", CC BY 4.0: ZIP por año desde 2018 + CSV del último mes,
+  ~1 mes de atraso). Cada fila trae datos del primer titular: el robot SOLO cuenta totales (nunca guarda nada de una persona) y pesa
+  cada fila por `titular_porcentaje_titularidad` (un auto con dos titulares suma 1). 0km = año de modelo ≥ año del patentamiento − 1
+  (el archivo trae usados importados: camiones viejos, clásicos). `categoria()`: livianos = auto/suv/pickup/util (lo que se muestra);
+  pesados (camiones, acoplados, colectivos) solo en `cat`. Origen: NACIONAL, PROTOCOLO 21 (= Brasil, acuerdo automotor del Mercosur)
+  e IMPORTADO (resto del mundo). Años cerrados resumidos en `autos_cache/AAAA.json` (`VERSION`: subirla si cambia la forma de contar
+  y se rehacen). `autos.json`: `serie` (mes a mes desde 2018: total, origen, categoría, persona física/jurídica), `det` (últimos 25
+  meses: marcas, 400 modelos con versión, provincias), `anios`, `tipo_modelo`, `origen_marca` y `hist` (serie desde 2000 de TODOS los
+  automotores, de "Estadística de trámites de automotores": viene un mes antes que el detalle → casillero "Adelanto de <mes>").
+  Página: casilleros, mes a mes, ranking de marcas y modelos (período mes/año/12 meses `okPer`, filtro por tipo `okCat`; los modelos
+  suman versiones con `okBase`: primer palabra + CROSS/TRACK/MINI/número), tabla de TODAS las marcas que vendieron en los últimos 12
+  meses ("sin ventas" si no vendieron en el período; 20 y botón `#okMas`), ficha de la marca al tocarla (modelos, versiones tal como
+  las registra la DNRPA, origen), origen y tipo en el tiempo, provincias e historia por año. Precios: PENDIENTE (la DNRPA solo publica
+  la tabla de valuación en PDF o formulario; ACARA tiene derechos: no usar).
 - Vinos y uvas (`#vinos`, `vVi`, `renderVinos`, `loadVin`; pedido del dueño 01/11/2026, "como MacroLibre pero mejor"; datos
   `vinos.json` de scripts/vinos.py, workflow `vinos.yml` los lunes 9:17 ART): precio del vino común $/litro GBA (INDEC, serie
   `105.1_I2VC_2016_M_19` de la API de series, en pesos o pesos de hoy con `act.ipc`) y datos abiertos del INV en datos.gob.ar
