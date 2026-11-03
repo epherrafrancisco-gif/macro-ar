@@ -83,23 +83,43 @@ void main(){
   function sh(tipo, src) { const s = gl.createShader(tipo); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
   function tex(unidad, url) {
     return new Promise((ok, mal) => { const im = new Image(); im.decoding = 'async';
-      im.onload = () => { const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unidad); gl.bindTexture(gl.TEXTURE_2D, t);
+      im.onload = () => { (im.decode ? im.decode().catch(() => {}) : Promise.resolve()).then(() => { const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unidad); gl.bindTexture(gl.TEXTURE_2D, t);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im); gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         const an = gl.getExtension('EXT_texture_filter_anisotropic'); if (an) gl.texParameterf(gl.TEXTURE_2D, an.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(8, gl.getParameter(an.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
-        ok(); };
+        ok(); }); };
       im.onerror = mal; im.src = url; });
   }
+  // Foto del último cuadro y punto del giro, por pestaña: al volver a la página se muestra al instante y la animación sigue
+  // desde ahí. Sin foto, la Tierra aparece desde el negro (la imagen fija de respaldo tiene otro encuadre y se veía "saltar").
+  const CLAVE = 'pm-tierra';
+  function tapar() {
+    const tie = CAPA.querySelector('.tie'); if (!tie) return;
+    let f = null; try { f = JSON.parse(sessionStorage.getItem(CLAVE) || 'null'); } catch (e) {}
+    if (f && f.img && Math.abs(f.w / f.h - innerWidth / innerHeight) < .1) { tie.style.background = `#020306 url(${f.img}) 0 0/100% 100% no-repeat`; rot0 = f.rot || 0; }
+    else { tie.style.background = '#020306'; if (f) rot0 = f.rot || 0; }
+  }
+  function guardar() {
+    if (!listo || !cv || RAIZ.dataset.tema !== 'orbita') return;
+    try {
+      const rot = corriendo ? rot0 + (performance.now() - t0) / 1000 * GIRO : rot0;
+      gl.uniform1f(U.uRot, rot * Math.PI / 180); gl.drawArrays(gl.TRIANGLES, 0, 3);   // el búfer se borra tras mostrarse: redibujar antes de copiar
+      sessionStorage.setItem(CLAVE, JSON.stringify({rot: rot % 360, w: innerWidth, h: innerHeight, img: cv.toDataURL('image/jpeg', .72)}));
+    } catch (e) { try { sessionStorage.removeItem(CLAVE); } catch (e2) {} }
+  }
+  addEventListener('pagehide', guardar);
   async function iniciar() {
     if (gl) return;
     cv = document.createElement('canvas'); cv.className = 'tierra'; cv.setAttribute('aria-hidden', 'true');
     gl = cv.getContext('webgl2', {antialias: false, alpha: false, powerPreference: 'low-power'});
     if (!gl) return;
+    const tie = CAPA.querySelector('.tie'), soltar = () => { if (tie) tie.style.background = ''; };   // sin WebGL: vuelve la imagen fija
+    tapar();
     try {
       prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
       if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
-    } catch (e) { gl = null; return; }
+    } catch (e) { gl = null; soltar(); return; }
     gl.useProgram(prog);
     const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
@@ -108,7 +128,7 @@ void main(){
     gl.uniform1i(U.uDia, 0); gl.uniform1i(U.uNoche, 1); gl.uniform1i(U.uAux, 2);
     const grande = Math.max(screen.width, screen.height) * (devicePixelRatio || 1) > 1600 ? '4096' : '2048';
     try { await Promise.all([tex(0, `/fondos/tierra/dia-${grande}.webp`), tex(1, `/fondos/tierra/noche-${grande}.webp`), tex(2, `/fondos/tierra/aux-${grande}.webp`)]); }
-    catch (e) { gl = null; return; }
+    catch (e) { gl = null; soltar(); return; }
     CAPA.insertBefore(cv, CAPA.firstChild.nextSibling);
     listo = true; t0 = performance.now(); arrancar();
   }
@@ -138,6 +158,6 @@ void main(){
     if (on) { if (!gl) iniciar(); else arrancar(); } else parar();
   }
   new MutationObserver(revisar).observe(RAIZ, {attributes: true, attributeFilter: ['data-tema']});
-  document.addEventListener('visibilitychange', () => { if (corriendo || RAIZ.dataset.tema === 'orbita') { if (document.hidden) { parar(); } else revisar(); } });
+  document.addEventListener('visibilitychange', () => { if (corriendo || RAIZ.dataset.tema === 'orbita') { if (document.hidden) { guardar(); parar(); } else revisar(); } });
   revisar();
 })();

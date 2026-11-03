@@ -79,6 +79,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (Inter Bold proyectada en el material del fuselaje, solo del lado que se ve). Crédito en Sobre → Licencias.
   En index.html: `html[data-tema="orbita"]` (bloque "Modo Órbita"), capa `#orFx` (`.tie`, `.velo`, `.nave`) y `naveVuelo` al final
   (cruza de izquierda a derecha por una curva suave, 27-54 s, cada 22-50 s; nunca dada vuelta porque se leería el nombre al revés).
+  La Tierra en vivo (`fondos/tierra.js`): la imagen fija `espacio-*` es SOLO respaldo sin WebGL y tiene otro encuadre; con WebGL se
+  tapa (negro, o la foto del último cuadro guardada en sessionStorage `pm-tierra` al salir, con el punto del giro) para que al volver
+  a la página la Tierra no "salte" de arriba hacia abajo (bug reportado 02/11/2026). Un script en línea tras `#orFx` la pone antes del
+  primer pintado.
   Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo el SHA-256): récord 62.
 - Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
   `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
