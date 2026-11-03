@@ -13,6 +13,9 @@
   // la misma toma que el render de Blender (scripts/espacio_blender.py)
   const CAM = sph(-40, -38, R + 1.7), MIRA = sph(-31, -64, R), SOL = nor(sph(-17, -122, 1));
   const F = nor(sub(MIRA, CAM)), DER = nor(cruz(F, nor(CAM))), ARR = cruz(DER, F);
+  // En celulares (pedido del dueño 02/11/2026) la Tierra queda quieta: se dibuja un solo cuadro y se redibuja solo si cambia el
+  // tamaño, para no cargar celulares lentos. Texturas de 2048 (más livianas de decodificar).
+  const QUIETO = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 820;
   const GIRO = 360 / 900;            // grados por segundo: una vuelta cada 15 minutos (se ve girar sin marear)
 
   const VS = `#version 300 es
@@ -126,7 +129,7 @@ void main(){
     for (const n of ['uRes', 'uCam', 'uF', 'uR', 'uU', 'uSol', 'uTan', 'uShift', 'uRot', 'uT', 'uDia', 'uNoche', 'uAux']) U[n] = gl.getUniformLocation(prog, n);
     gl.uniform3fv(U.uCam, CAM); gl.uniform3fv(U.uF, F); gl.uniform3fv(U.uR, DER); gl.uniform3fv(U.uU, ARR); gl.uniform3fv(U.uSol, SOL);
     gl.uniform1i(U.uDia, 0); gl.uniform1i(U.uNoche, 1); gl.uniform1i(U.uAux, 2);
-    const grande = Math.max(screen.width, screen.height) * (devicePixelRatio || 1) > 1600 ? '4096' : '2048';
+    const grande = Math.max(screen.width, screen.height) * (devicePixelRatio || 1) > 1600 && !QUIETO ? '4096' : '2048';
     try { await Promise.all([tex(0, `/fondos/tierra/dia-${grande}.webp`), tex(1, `/fondos/tierra/noche-${grande}.webp`), tex(2, `/fondos/tierra/aux-${grande}.webp`)]); }
     catch (e) { gl = null; soltar(); return; }
     CAPA.insertBefore(cv, CAPA.firstChild.nextSibling);
@@ -151,7 +154,13 @@ void main(){
     }
     requestAnimationFrame(cuadro);
   }
-  function arrancar() { if (!listo || corriendo) return; corriendo = true; ult = 0; t0 = performance.now(); requestAnimationFrame(cuadro); }
+  function fijo() {
+    if (!listo || RAIZ.dataset.tema !== 'orbita') return;
+    medir(); gl.uniform1f(U.uRot, rot0 * Math.PI / 180); gl.uniform1f(U.uT, 0); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!cv.classList.contains('on')) cv.classList.add('on');
+  }
+  if (QUIETO) { let tm = 0; addEventListener('resize', () => { clearTimeout(tm); tm = setTimeout(fijo, 250); }); }
+  function arrancar() { if (QUIETO) { fijo(); return; } if (!listo || corriendo) return; corriendo = true; ult = 0; t0 = performance.now(); requestAnimationFrame(cuadro); }
   function parar() { if (corriendo) rot0 += (performance.now() - t0) / 1000 * GIRO; corriendo = false; }
   function revisar() {
     const on = RAIZ.dataset.tema === 'orbita' && !document.hidden;

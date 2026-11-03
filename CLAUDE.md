@@ -83,6 +83,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   tapa (negro, o la foto del último cuadro guardada en sessionStorage `pm-tierra` al salir, con el punto del giro) para que al volver
   a la página la Tierra no "salte" de arriba hacia abajo (bug reportado 02/11/2026). Un script en línea tras `#orFx` la pone antes del
   primer pintado.
+  En celulares (`QUIETO`: puntero táctil y pantalla < 820 px de lado corto) la Tierra NO gira: un solo cuadro (`fijo()`), redibujado
+  solo al cambiar el tamaño, y texturas de 2048 (pedido del dueño 02/11/2026: no saturar celulares lentos).
   Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo el SHA-256): récord 62.
 - Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
   `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
@@ -649,8 +651,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   (`#recYo`, `PT.max`) y "Récord de todos"; la siguiente pregunta recién se dibuja al responder la actual (`pintar(1)` en `premio`)
   y si alguien recarga con una a la vista sin responder (`pl-pend`) la racha se corta; al acertar la pantalla queda verde
   (`.reel.gano`), confeti que cae desde arriba en cada acierto (`lluvia`) más el del botón y número dorado con rayos. Las monedas
-  (`monedas`) y el marco de luces (`luces`) se probaron y el dueño los sacó el 02/11/2026 ("queda horrible"): no volver a ponerlos. Compartir =
-  imagen 1080×1920 (descargar o `navigator.share`). "Ver más" lleva a la sección del sitio.
+  (`monedas`) y el marco de luces (`luces`) se probaron y el dueño los sacó el 02/11/2026 ("queda horrible"): no volver a ponerlos. Los botones
+  "Compartir" y "Ver más" de cada pregunta se sacaron el 02/11/2026 (nadie los usaba y llenaban la pantalla): no volver a ponerlos; `compartir()` queda sin uso.
 - URL `/verdadero-o-falso/` (pedido del dueño: que aparezca al googlear "verdadero o falso Pulso Macro"; título, descripción, JSON-LD `Quiz`, en `sitemap.xml` vía paginas.py). Datos: `verdadero-o-falso/datos.json` (~950 KB, ~290 KB comprimido) y `verdadero-o-falso/portada.json` de `scripts/verdadero.py` (solo lee los JSON del
   repo). Workflow `verdadero-o-falso.yml`: al terminar Actualizar datos, Global o Historia, y 00:50 ART. Acciones: solo con nombre,
   operadas ≥85 % de las últimas 60 ruedas y sin saltos >45 %/−40 % (un precio roto da un "si ponías…" falso).

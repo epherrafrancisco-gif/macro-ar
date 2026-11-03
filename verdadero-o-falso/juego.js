@@ -685,8 +685,7 @@ function reelHTML(r, i) {
   return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
-    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div>
-    <div class="rail"><button type="button" class="rb" data-share="${i}"><i>${ICO.share}</i>Compartir</button><a class="rb" href="${SITIO}#${r.go[0]}" title="${esc(r.go[1])}"><i>${ICO.go}</i>Ver más</a></div></section>`;
+    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div></section>`;
 }
 // intro (la primera vez) con cuántos reels hay hoy
 const feed = $('#feed'); feed.innerHTML = '';
