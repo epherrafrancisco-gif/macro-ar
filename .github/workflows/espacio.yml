@@ -1,0 +1,43 @@
+name: Espacio
+
+# Espacio: lanzamientos (The Space Devs), satélites (GCAT, CC BY 4.0) y NASA (USAspending) → espacio.json.
+# Cada 6 horas (Launch Library 2 sin clave permite 15 pedidos por hora; acá son 2 por corrida).
+on:
+  schedule:
+    - cron: "37 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/espacio.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: espacio
+  cancel-in-progress: false
+
+jobs:
+  espacio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Traer lanzamientos, satélites y NASA
+        run: python scripts/espacio.py
+
+      - name: Guardar cambios
+        run: |
+          git add espacio.json espacio_diag.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Sin cambios"; exit 0; fi
+          git config user.name "macro-ar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Espacio $(TZ=America/Argentina/Buenos_Aires date +'%d/%m %H:%M')"
+          git pull --rebase origin main
+          git push
