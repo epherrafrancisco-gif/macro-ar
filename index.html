@@ -5906,12 +5906,30 @@ body.mporta .hbus{display:none}
       showVolume:false, hideDateRanges:false, hideMarketStatus:false, hideSymbolLogo:false, autosize:false}, alto);
   }
   // casillero de arriba (cotización del día de un índice o fondo)
-  const kpiTv = (lbl, x, cls='k') => x?.tv ? `<div class="${cls} ktv" data-tvq="${esc(x.tv)}"><span class="lbl">${esc(lbl)}</span></div>` : '';
+  // Casillero de la bolsa arriba de cada país (pedido del dueño 03/11/2026: el recuadro de TradingView desentonaba): número propio,
+  // la bolsa del país en el último mes de la OCDE (promedio del mes); si la OCDE no la tiene, el PBI por habitante (Banco Mundial, `kpixFill`).
+  // Con cls 'st' (tarjetas de Mercados) sigue el widget de TradingView.
+  const KMES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const kpiTv = (lbl, x, cls='k') => {
+    if(cls !== 'k') return x?.tv ? `<div class="${cls} ktv" data-tvq="${esc(x.tv)}"><span class="lbl">${esc(lbl)}</span></div>` : '';
+    if(x && x.vm != null && x.m) return `<div class="k"><span class="lbl">${esc(x.idx || lbl)} en el mes</span><span class="v ${x.vm>=0?'up':'dn'}">${sg(x.vm,1)}%</span><span class="d">${KMES[+x.m.slice(5,7)-1]} ${x.m.slice(0,4)}${x.va!=null ? ` · ${sg(x.va,1)}% en el año` : ''} · OCDE</span></div>`;
+    return `<div class="k" data-kpix><span class="lbl">PBI por habitante</span><span class="v">—</span><span class="d">Banco Mundial</span></div>`;
+  };
+  function kpixFill(){ try{ kpixFill1(); }catch(e){ setTimeout(kpixFill, 300); } }
+  function kpixFill1(){
+    document.querySelectorAll('[data-kpix]:not([data-ok])').forEach(el=>{
+      let iso = null; for(let a = el; a && !iso; a = a.parentElement){ const k = a.id && Object.keys(PX_ISO).find(k => SUBS[k][1] === a.id); if(k) iso = PX_ISO[k]; }
+      if(!iso) return; if(!pxD){ loadPx(); return; }
+      const w = pxD.wb?.ppa || {}, u = (w[iso]||[]).at(-1), ar = (w.ARG||[]).at(-1); if(!u) return;
+      el.dataset.ok = 1;
+      el.innerHTML = `<span class="lbl">PBI por habitante</span><span class="v ${ar && u[1]>ar[1] ? 'up' : ''}">US$ ${nf(u[1],0)}</span><span class="d">${u[0]}, a poder de compra${ar ? ` · Argentina US$ ${nf(ar[1],0)}` : ''}</span>`;
+    });
+  }
   function tvMontar(raiz){
     (raiz && raiz.querySelectorAll ? raiz : document).querySelectorAll('[data-tvq]:not([data-tvm])').forEach(el=>{ el.dataset.tvm = 1;
       const box = document.createElement('div'); el.appendChild(box); tvw(box, 'single-quote', {symbol: el.dataset.tvq, width:'100%'}); });
   }
-  new MutationObserver(ms=>{ for(const m of ms) for(const n of m.addedNodes){ if(n.nodeType===1 && (n.matches('[data-tvq]') || n.querySelector('[data-tvq]'))){ tvMontar(n.parentNode || n); return; } } })
+  new MutationObserver(ms=>{ let kx = false; for(const m of ms) for(const n of m.addedNodes){ if(n.nodeType!==1) continue; if(!kx && (n.matches('[data-kpix]') || n.querySelector('[data-kpix]'))){ kx = true; setTimeout(kpixFill, 0); } if(n.matches('[data-tvq]') || n.querySelector('[data-tvq]')){ tvMontar(n.parentNode || n); return; } } })
     .observe(document.body, {childList:true, subtree:true});
   // acciones: antes un mapa de calor con precios de CNBC; ahora la lista del widget (los JSON solo traen el símbolo)
   function gHeat(elId, stId, lista){
@@ -8491,7 +8509,7 @@ body.mporta .hbus{display:none}
   async function loadPx(){
     if(pxLoading) return; pxLoading = true;
     try{ const r = await fetch('paises_extra.json?t='+VER(), {cache:'no-store'}); if(r.ok) pxD = await r.json(); }catch(e){}
-    pxLoading = false; for(const k in PX_ISO){ const v = $(SUBS[k][1]); if(v && v.offsetParent!==null) pxRender(k); }
+    pxLoading = false; kpixFill(); for(const k in PX_ISO){ const v = $(SUBS[k][1]); if(v && v.offsetParent!==null) pxRender(k); }
   }
   const pxY = a => (a||[]).map(p=>[p[0]+'-07-01', p[1]]);
   const pxQ = a => (a||[]).map(p=>[eTri(p[0])+'-01', p[1]]);

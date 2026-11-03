@@ -850,7 +850,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
     data la muestra TradingView desde sus servidores con sus licencias). Los JSON solo llevan el símbolo (`tv`, `tvn`).
     En la página: `tvw` (arma cualquier widget; `.tvbox`, `color-scheme:normal` en el iframe o sale fondo blanco),
     `tvLista` (market-quotes), `tvGrafico` (symbol-overview), `tvBolsa` (tarjeta de bolsa de cada país),
-    `kpiTv` + `data-tvq` (casillero con single-quote; lo monta un MutationObserver), `gHeat` (ahora lista), cinta `#tape2`
+    `kpiTv` (pedido del dueño 03/11/2026: el recuadro de TradingView arriba de cada país desentonaba: ahora el casillero de
+    arriba es propio, la bolsa del país en el último mes de la OCDE `bolsas[k].vm/va/m`, y si no está, PBI por habitante del Banco
+    Mundial con `kpixFill`/`[data-kpix]`; `data-tvq` single-quote queda solo con cls 'st' en Mercados), `gHeat` (ahora lista), cinta `#tape2`
     (ticker-tape; en el celular solo si `body.mglo`), cripto (`screener` crypto_mkt), S&P 500 (`stock-heatmap` SPX500).
   - TradingView NO deja mostrar en widgets: SP:SPX, DJ:DJI, NASDAQ:NDX, Nikkei, FTSE, VIX, el Merval (BCBA:IMV), futuros de
     CME/CBOT. Se usan CFD (FOREXCOM:SPXUSD, NSXUSD, DJI, UKXGBP, JPXJPY, AUXAUD; CAPITALCOM:EU50, IT40, SOYBEAN, COPPER) o el
