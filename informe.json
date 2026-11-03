@@ -1,0 +1,441 @@
+[
+ {
+  "eq": "iphone",
+  "nombre": "inicio-oscuro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "inicio-claro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "inicio-ciudad",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "inicio-orbita",
+  "ok": true,
+  "notas": [
+   "Tierra: 0 cuadros en 3 s (en celular tiene que ser 0)"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "orbita-volver",
+  "ok": true,
+  "notas": [
+   "foto guardada al salir: sí",
+   "fondo al volver: url(\"data:image/jpeg;base64,/9j/4AAQSkZJ"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "boton-modo",
+  "ok": true,
+  "notas": [
+   "oscuro → claro"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "buscador",
+  "ok": true,
+  "notas": [
+   "resultados: 15"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-dolares",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-mercado",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-noticias",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-calculadoras",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-mundo",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-eeuu",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-polonia",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "seccion-sobre",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "terminal",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "indicador-blue",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "indicadores",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "iphone",
+  "nombre": "verdadero-o-falso",
+  "ok": true,
+  "notas": [
+   "al responder: erró"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "mundo-espacio",
+  "ok": true,
+  "notas": [
+   "animación: {\"pintado\":16102,\"sale\":0}"
+  ]
+ },
+ {
+  "eq": "iphone",
+  "nombre": "crucigrama",
+  "ok": true,
+  "notas": [
+   "escribir una letra: anda"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "inicio-oscuro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "inicio-claro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "inicio-ciudad",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "inicio-orbita",
+  "ok": true,
+  "notas": [
+   "Tierra: 0 cuadros en 3 s"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "orbita-volver",
+  "ok": true,
+  "notas": [
+   "foto guardada al salir: sí",
+   "fondo al volver: url(\"data:image/jpeg;base64,/9j/4AAQSkZJ"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "boton-modo",
+  "ok": true,
+  "notas": [
+   "oscuro → claro"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "buscador",
+  "ok": true,
+  "notas": [
+   "resultados: 15"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-dolares",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-mercado",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-noticias",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-calculadoras",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-mundo",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-eeuu",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-polonia",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "seccion-sobre",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "terminal",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "indicador-blue",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "indicadores",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "ipad",
+  "nombre": "verdadero-o-falso",
+  "ok": true,
+  "notas": [
+   "al responder: acertó"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "mundo-espacio",
+  "ok": true,
+  "notas": [
+   "animación: {\"pintado\":27727,\"sale\":0}"
+  ]
+ },
+ {
+  "eq": "ipad",
+  "nombre": "crucigrama",
+  "ok": true,
+  "notas": [
+   "escribir una letra: anda"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "inicio-oscuro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "inicio-claro",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "inicio-ciudad",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "inicio-orbita",
+  "ok": true,
+  "notas": [
+   "Tierra: 64 cuadros en 3 s"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "orbita-volver",
+  "ok": true,
+  "notas": [
+   "foto guardada al salir: sí",
+   "fondo al volver: url(\"data:image/jpeg;base64,/9j/4AAQSkZJ"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "boton-modo",
+  "ok": true,
+  "notas": [
+   "oscuro → claro"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "buscador",
+  "ok": true,
+  "notas": [
+   "resultados: 15"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-dolares",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-mercado",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-noticias",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-calculadoras",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-mundo",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-eeuu",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-polonia",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "seccion-sobre",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "terminal",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "indicador-blue",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "indicadores",
+  "ok": true,
+  "notas": []
+ },
+ {
+  "eq": "mac",
+  "nombre": "verdadero-o-falso",
+  "ok": true,
+  "notas": [
+   "al responder: acertó"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "mundo-espacio",
+  "ok": true,
+  "notas": [
+   "animación: {\"pintado\":27727,\"sale\":0}"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "monitor-claro",
+  "ok": true,
+  "notas": [
+   "fondo: radial-gradient(rgb(251, 241, 220) 0%, rgb(241, 223, 183) 60"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "crucigrama-lista",
+  "ok": true,
+  "notas": [
+   "pista a la vista: true"
+  ]
+ },
+ {
+  "eq": "mac",
+  "nombre": "crucigrama",
+  "ok": true,
+  "notas": [
+   "escribir una letra: anda"
+  ]
+ }
+]
