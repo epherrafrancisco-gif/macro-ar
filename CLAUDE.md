@@ -761,10 +761,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   había salido con "Barco antiguo", "No linda"...). El generador usa solo las palabras de arriba de la marca "FIN DE ECONOMÍA" de
   `palabras.js` y las de abajo que tienen un 1 como tercer dato (`['MES', 'Período que mide el IPC', 1]`: palabra de todos los
   días con pista de economía, o palabra nueva de economía). Las palabras de todos los días sin el 1 NO salen nunca. Nunca volver a
-  meter pistas que no sean de economía. Con ~1.360 palabras, las reglas pasaron a: 5+ letras no antes de 21 días, 3 letras no antes
-  de 7, máx. 6 en común entre dos días, hasta 12 siglas/códigos por día (variables GAP, GAP3, MAXC, SIGLAS). `grillas.js` llega hasta
-  el 30/06/2027: PENDIENTE sumar palabras de economía (sobre todo de 3, 5 y 7 letras) y volver a correr
-  `node scripts/crucigrama_grillas.js 760` antes de esa fecha (y para volver a separar más las repeticiones).
+  meter pistas que no sean de economía. Pedido del dueño 03/11/2026: "no me gusta que haya tanto de siglas" → tope `SIGLAS` = 3
+  (se afloja hasta 5 si un día no sale; en la práctica 3-4 por día, antes ~11), `SIG3` = siglas de 3 letras cuya pista no lo dice,
+  palabras comunes de 3 letras con pista de economía (SIN, POR, UNO, OSO, VEZ...), patrón con más filas de 5+5 y centro abierto en
+  ≥2 líneas (antes 4). Banco ~1.480 palabras. Reglas: 5+ letras no antes de 21 días (se afloja; mínimo real 15), 3 letras no antes de
+  6, máx. 6 en común entre dos días (variables GAP, GAP3, MAXC, SIGLAS). `grillas.js` llega hasta 12/2028 (se armó con `--desde=2026-11-04`;
+  el N.º 3 quedó igual). Para separar más las repeticiones: sumar palabras de economía de 3, 5 y 7 letras y volver a correr
+  `node scripts/crucigrama_grillas.js 760` (tarda ~15 min).
   El N.º 3 se cambió a mitad del día: su progreso guardado usa la clave `pm-cruci-2026-11-03-eco`.
 - Arreglos del 03/11/2026 (pedido del dueño): la racha se cuenta mirando los días resueltos guardados en el dispositivo (`racha()`,
   `resuelto(d)`, hacia atrás desde hoy) y el cartel dice cuáles son ("3 días seguidos resolviéndolo: 1, 2 y 3 de noviembre",

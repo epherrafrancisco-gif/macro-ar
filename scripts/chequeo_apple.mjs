@@ -110,6 +110,25 @@ for (const eq of Object.keys(EQUIPOS)) {
     const est = await p.evaluate(() => document.querySelector('.reel.gano') ? 'acertó' : document.querySelector('.reel.perdio') ? 'erró' : 'nada');
     f.notas.push('al responder: ' + est); if (est === 'nada') throw new Error('al tocar Verdadero no pasó nada');
     const rail = await p.evaluate(() => document.querySelectorAll('.rail').length); if (rail) throw new Error('siguen los botones Compartir/Ver más'); });
+  // Mundo › Espacio: la animación dibuja y no hay nada fuera de las tarjetas
+  await paso('mundo-espacio', eq, async (p, f) => { await ir(p, '/#global'); await dormir(3000);
+    await p.evaluate(() => document.querySelector('#gSubM [data-s="espacio"]').click()); await dormir(2500);
+    await p.evaluate(() => document.getElementById('espOrb')?.scrollIntoView({block: 'center'})); await dormir(2500);
+    const r = await p.evaluate(() => { const c = document.getElementById('espOrb'); if (!c) return {err: 'no está la animación'};
+      const x = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < x.length; i += 40) if (x[i]) n++;
+      const sale = [...document.querySelectorAll('[data-sub="espacio"] .card *')].filter(e => { const card = e.closest('.card'), a = e.getBoundingClientRect(), b = card.getBoundingClientRect(); return a.width && (a.right > b.right + 1 || a.left < b.left - 1) && !e.closest('.tablewrap'); }).length;
+      return {pintado: n, sale}; });
+    f.notas.push('animación: ' + JSON.stringify(r)); if (r.err) throw new Error(r.err); if (!r.pintado) throw new Error('la animación de Espacio no dibuja'); if (r.sale) throw new Error(r.sale + ' cosas se salen de las tarjetas'); });
+  // Monitor en modo claro (solo compu)
+  if (eq === 'mac') await paso('monitor-claro', eq, async (p, f) => { await ir(p, '/#global'); await dormir(3000);
+    await p.evaluate(() => document.querySelector('#gSubM [data-s="explorar"]')?.click()); await dormir(6000);
+    const bg = await p.evaluate(() => getComputedStyle(document.getElementById('xpW')).backgroundImage.slice(0, 60)); f.notas.push('fondo: ' + bg);
+    if (!/251, 241, 220|fbf1dc/.test(bg)) throw new Error('el Monitor no quedó dorado en modo claro'); }, tema('claro'));
+  // Crucigrama en modo claro: la lista de pistas sigue a la palabra elegida (compu)
+  if (eq === 'mac') await paso('crucigrama-lista', eq, async (p, f) => { await ir(p, '/crucigrama/'); await dormir(2500);
+    await p.evaluate(() => { const c = window.__cruci._p.filter(q => q.dy).sort((a, b) => b.n - a.n)[0]; window.__cruci._ir(c.x, c.y, 'v'); }); await dormir(1200);
+    const v = await p.evaluate(() => { const li = document.querySelector('.pistas li.act'); if (!li) return false; const r = li.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; });
+    f.notas.push('pista a la vista: ' + v); if (!v) throw new Error('la lista no bajó hasta la pista elegida'); }, tema('claro'));
   // Crucigrama: escribir una letra
   await paso('crucigrama', eq, async (p, f) => { await ir(p, '/crucigrama/'); await dormir(2500);
     const c = p.locator('#grid input:not([readonly])').first(); await c.click(); await p.keyboard.type('A'); await dormir(400);
