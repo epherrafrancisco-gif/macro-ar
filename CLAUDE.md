@@ -275,6 +275,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   química: tabla "Cuánto cuesta traer cada insumo" (`renderInsumos`, filtro `qiGrupo`, en pesos al mayorista de hoy con `qiMay`)
   y ficha al tocar uno (`qiSel`, `#quFicha` con `display:contents`): precio desde 2019, toneladas 3 años, orígenes con precio por país.
   Agua blanda: no se compra (se hace en planta con resinas), la nota lo dice.
+  Que nada se salga de las tarjetas (pedido del dueño 03/11/2026): en el ranking de rubros nombres cortos (`QU_CORTO`; hBars corta las
+  etiquetas largas a la izquierda), "De dónde viene" es una lista propia `.qio` (no hBars: el texto de la barra más larga se salía a la
+  derecha), en ≤640px la tabla `.qit` muestra solo insumo, US$/t y contra un año (lo demás en la ficha), unidades cortas (/t, t) y el
+  interanual de "Un rubro" va en su propia tarjeta. Control: Playwright buscando elementos que pasen el borde de su `.card` en 360-1366 px.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas
