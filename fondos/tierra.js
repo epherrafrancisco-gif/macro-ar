@@ -15,7 +15,8 @@
   const F = nor(sub(MIRA, CAM)), DER = nor(cruz(F, nor(CAM))), ARR = cruz(DER, F);
   // En celulares (pedido del dueño 02/11/2026) la Tierra queda quieta: se dibuja un solo cuadro y se redibuja solo si cambia el
   // tamaño, para no cargar celulares lentos. Texturas de 2048 (más livianas de decodificar).
-  const QUIETO = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 820;
+  const QUIETO = (matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 820) ||
+    (navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent);
   const GIRO = 360 / 900;            // grados por segundo: una vuelta cada 15 minutos (se ve girar sin marear)
 
   const VS = `#version 300 es
