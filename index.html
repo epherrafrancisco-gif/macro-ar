@@ -1035,6 +1035,7 @@ body.mporta .hbus{display:none}
       <a href="#ganaderia" role="tab" id="tabGa" data-g="arg" aria-selected="false">Ganadería</a>
       <a href="#vinos" role="tab" id="tabVi" data-g="arg" aria-selected="false">Vinos</a>
       <a href="#surtidores" role="tab" id="tabSu" data-g="arg" aria-selected="false">Surtidores</a>
+      <a href="#quimica" role="tab" id="tabQu" data-g="arg" aria-selected="false">Química</a>
       <a href="#mercado" role="tab" id="tabK" data-g="arg" aria-selected="false">Mercado</a>
       <a href="#global" role="tab" id="tabG" data-g="glo" aria-selected="false">Mundo</a>
       <button type="button" class="pbtn" id="tabPaises" data-g="glo" aria-expanded="false" aria-controls="paisPanel">Países</button>
@@ -1437,6 +1438,45 @@ body.mporta .hbus{display:none}
     <p class="note">Hasta junio de 2025 cada estación tenía que informar sus precios a la Secretaría de Energía (Resolución 314/2016). Esa obligación se derogó (Resolución 717/2025) y la base de precios por estación dejó de estar completa y al día, así que no la mostramos. Las ventas siguen siendo de informe obligatorio.</p>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
   </section>
+  <section class="view" id="vQu" hidden>
+    <div class="kpis" id="kpisQu"></div>
+    <div class="card">
+      <div class="head"><h2>La química contra toda la industria</h2><div class="legend" id="lgQuL"></div></div>
+      <div class="chart" id="chQuL"></div>
+      <p class="note" id="quLN"></p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Cada rubro de la química en lo que va del año</h2><span class="note" id="quRS"></span></div>
+      <div class="chart" id="chQuR"></div>
+      <p class="note">Producción de enero hasta el último mes publicado, contra los mismos meses del año anterior. Medicamentos incluye los de uso veterinario; agroquímicos son fertilizantes, herbicidas e insecticidas; "plásticos y caucho en bruto" es la petroquímica que hace los pellets con los que se fabrican envases, caños y bolsas. Fuente: INDEC, IPI manufacturero.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Un rubro, mes a mes</h2><div class="legend" id="lgQuS"></div></div>
+      <div class="seg calcsel" role="tablist" aria-label="Rubro" id="quSel"></div>
+      <div class="chart" id="chQuS"></div>
+      <h3 class="sub" style="margin:14px 0 4px;font-size:14px">Contra el mismo mes del año anterior</h3>
+      <div class="chart" id="chQuI"></div>
+      <p class="note" id="quSN"></p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Cuánto de las fábricas químicas se usa</h2><div class="legend" id="lgQuU"></div></div>
+      <div class="chart" id="chQuU"></div>
+      <p class="note">Utilización de la capacidad instalada: de todo lo que las plantas podrían producir, cuánto producen. Por encima del promedio de la industria quiere decir que la química tiene menos máquinas paradas. Fuente: INDEC.</p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Fertilizantes en el mundo</h2><div class="legend" id="lgQuP"></div></div><div class="chart" id="chQuP"></div>
+        <p class="note" id="quPN"></p></div>
+      <div class="card"><div class="head"><h2>Gas natural, la materia prima</h2><div class="legend" id="lgQuG"></div></div><div class="chart" id="chQuG"></div>
+        <p class="note">Dólares por millón de BTU, promedio de cada mes. Con el gas se hace la urea y buena parte de la petroquímica: cuando el gas de Europa se dispara, las plantas europeas producen menos y gana el que tiene gas barato (Estados Unidos, Medio Oriente y, con Vaca Muerta, Argentina). Fuente: Banco Mundial.</p></div>
+    </div>
+    <div class="card">
+      <div class="head"><h2>La química de Europa</h2><div class="legend" id="lgQuE"></div></div>
+      <div class="chart" id="chQuE"></div>
+      <p class="note" id="quEN"></p>
+    </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="quimica"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Producción por rubro</button><button type="button" data-csv="quimica-mundo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Fertilizantes y gas</button></div>
+  </section>
+
 
   <!-- MERCADO -->
   <section class="view" id="vK" hidden>
@@ -4370,6 +4410,80 @@ body.mporta .hbus{display:none}
     barChart($('chSuP'), [{n:'Premium', c:'--s5', pts: ys.map(y=>[y, A[y].p/A[y].t*100])}], {aria:'Parte premium de la nafta', kfmt:k=>k, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%'});
     $('suPS').textContent = ys.length ? `${ys[ys.length-1]}: ${nf(A[ys[ys.length-1]].p/A[ys[ys.length-1]].t*100,1)} %` : '';
   }
+  // ---- INDUSTRIA QUÍMICA (quimica.json de scripts/quimica.py: IPI e UCI del INDEC, Pink Sheet del Banco Mundial, Eurostat) ----
+  let qu = null, quLoading = false, quRub = 'farma';
+  async function loadQu(){
+    if(qu || quLoading) return; quLoading = true;
+    try{ const r = await fetch('quimica.json?t='+VER(), {cache:'no-store'}); if(r.ok) qu = await r.json(); }catch(e){}
+    quLoading = false; if(tab==='quimica'){ renderQuimica(); mResumen(); }
+  }
+  const QU_R = [['quimica','Toda la química'],['farma','Medicamentos'],['agro','Agroquímicos'],['deterg','Detergentes, jabones y cosmética'],
+    ['gases','Gases industriales'],['basicos','Químicos básicos'],['mpp','Plásticos y caucho en bruto'],['pinturas','Pinturas'],['otrosq','Otros químicos']];
+  const QU_EU = [['EU27_2020','Unión Europea','--s1'],['DE','Alemania','--s2'],['FR','Francia','--s3'],['IT','Italia','--s4'],['ES','España','--s5']];
+  const quNom = k => (QU_R.find(r=>r[0]===k)||[,k])[1];
+  // acumulado enero → último mes contra el mismo período del año anterior
+  function quYtd(pts){ if(!pts?.length) return null; const u = pts[pts.length-1][0], y = u.slice(0,4), n = +u.slice(5,7), M = new Map(pts);
+    let a = 0, b = 0; for(let m=1; m<=n; m++){ const k = String(m).padStart(2,'0'), x = M.get(y+'-'+k), z = M.get((+y-1)+'-'+k); if(x==null || z==null) return null; a += x; b += z; }
+    return {v: a/b-1, u}; }
+  const quIa = (pts, m) => { const M = new Map(pts), a = M.get(m), b = M.get(mAdd(m,-12)); return a!=null && b ? a/b-1 : null; };
+  // promedio de 12 meses (saca la estacionalidad), con base 100 = promedio de 2016
+  function quProm(pts){ const out = []; for(let i=11; i<pts.length; i++){ let t = 0; for(let j=i-11; j<=i; j++) t += pts[j][1]; out.push([pts[i][0], t/12]); }
+    const b = out.find(p=>p[0].slice(0,7)==='2016-12'); return b ? out.map(p=>[p[0]+'-01', p[1]/b[1]*100]) : out.map(p=>[p[0]+'-01', p[1]]); }
+  $('quSel').addEventListener('click', e=>{ const b = e.target.closest('[data-qur]'); if(!b) return; quRub = b.dataset.qur; renderQuimica(); });
+  function renderQuimica(){
+    if(!qu){ loadQu(); $('kpisQu').innerHTML = '<div class="empty">Cargando datos de la industria química…</div>'; return; }
+    const I = qu.ipi||{}, U = qu.uci||{}, W = qu.mundo||{}, P = W.precios||{}, L = a => a?.length ? a[a.length-1] : null, t = [];
+    const q = I.quimica, uq = L(q);
+    if(uq){ const ia = quIa(q, uq[0]), ig = I.general ? quIa(I.general, uq[0]) : null;
+      t.push(tileK('Producción química en '+MESL[+uq[0].slice(5)-1], ia==null?'—':pc(ia,1), '', '', `contra ${MESL[+uq[0].slice(5)-1]} de ${+uq[0].slice(0,4)-1}${ig!=null ? ` · toda la industria: ${pc(ig,1)}` : ''}`)); }
+    const yq = quYtd(q), yg = quYtd(I.general);
+    if(yq) t.push(tileK('Química en lo que va de '+yq.u.slice(0,4), pc(yq.v,1), '', '', `enero a ${MESL[+yq.u.slice(5)-1]}${yg ? ` · toda la industria: ${pc(yg.v,1)}` : ''}`));
+    const uu = L(U.quimica), ugl = U.general?.find(p=>uu && p[0]===uu[0]);
+    if(uu) t.push(tileK('Fábricas químicas en uso', nf(uu[1],1), '%', '', `de su capacidad en ${MESL[+uu[0].slice(5)-1]}${ugl ? ` · industria: ${nf(ugl[1],1)} %` : ''}`));
+    const rk = QU_R.filter(([k])=>k!=='quimica' && I[k]).map(([k,n])=>({k, n, y: quYtd(I[k])})).filter(r=>r.y).sort((a,b)=>b.y.v-a.y.v);
+    if(rk.length){ const a = rk[0], z = rk[rk.length-1]; t.push(tileK('El que más crece en el año', a.n, '', '', `${pc(a.y.v,1)} · el que más cae: ${z.n.toLowerCase()} (${pc(z.y.v,1)})`)); }
+    const ur = L(P.urea), ura = ur && P.urea.find(p=>p[0]===mAdd(ur[0],-12));
+    if(ur) t.push(tileK('Urea en el mundo, '+MESL[+ur[0].slice(5)-1], 'US$ '+nf(ur[1],0), 'la tonelada', '', ura ? `${pc(ur[1]/ura[1]-1,1)} en un año` : ''));
+    const eu = L(W.eu_quim?.EU27_2020), eua = eu && W.eu_quim.EU27_2020.find(p=>p[0]===mAdd(eu[0],-12));
+    if(eu) t.push(tileK('Química europea, '+MESL[+eu[0].slice(5)-1], eua ? pc(eu[1]/eua[1]-1,1) : nf(eu[1],1), '', '', `contra un año antes · ${nf(100-eu[1],0)} % debajo de 2021`));
+    $('kpisQu').innerHTML = t.join('') || '<div class="empty">Sin datos todavía.</div>';
+    // química vs industria
+    const LS = [['quimica','Química','--s1'],['general','Toda la industria','--s2']].filter(([k])=>I[k]);
+    legend($('lgQuL'), LS.map(([,n,c])=>({n, c})));
+    lineChart($('chQuL'), LS.map(([k,n,c])=>({n, c, pts: quProm(I[k])})), {aria:'Producción química contra la industria', labW:110, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    $('quLN').textContent = `Promedio de los últimos 12 meses (así se borran los meses que siempre son flojos, como enero), con 100 = lo que se producía en 2016. Último dato: ${uq ? MESL[+uq[0].slice(5)-1]+' '+uq[0].slice(0,4) : '—'}; el INDEC lo publica unos 40 días después de terminado el mes. La química pesa cerca de un octavo de toda la industria. Fuente: INDEC, IPI manufacturero.`;
+    // ranking del año
+    const rows = QU_R.filter(([k])=>I[k]).map(([k,n])=>({k, n, y: quYtd(I[k])})).filter(r=>r.y).sort((a,b)=>b.y.v-a.y.v);
+    if(yg) rows.push({k:'general', n:'Toda la industria', y:yg});
+    hBars($('chQuR'), rows.map(r=>({n:r.n, v:r.y.v*100, c: r.k==='general' ? '--s2' : r.y.v>=0 ? '--pos' : '--neg', hl: r.k==='quimica', ref: r.k==='general'})), {vfmt:v=>sg(v,1)+'%'});
+    $('quRS').textContent = yq ? `enero a ${MESL[+yq.u.slice(5)-1]} ${yq.u.slice(0,4)}` : '';
+    // un rubro
+    $('quSel').innerHTML = QU_R.filter(([k])=>I[k]).map(([k,n])=>`<button type="button" data-qur="${k}" aria-selected="${k===quRub}">${esc(n)}</button>`).join('');
+    const sr = I[quRub] ? quRub : 'quimica', SS = [[sr, quNom(sr), '--s1'], ['general','Toda la industria','--s2']].filter(([k])=>I[k]);
+    legend($('lgQuS'), SS.map(([,n,c])=>({n, c})));
+    lineChart($('chQuS'), SS.map(([k,n,c])=>({n, c, pts: quProm(I[k])})), {aria:'Producción del rubro', labW:110, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    const ms = (I[sr]||[]).map(p=>p[0]).slice(-24), ias = ms.map(m=>[m, quIa(I[sr], m)]).filter(p=>p[1]!=null);
+    barChart($('chQuI'), [{n:quNom(sr), c:'--s1', pts: ias.map(([m,v])=>[m, v*100])}], {aria:'Variación contra un año antes', kfmt:k=>fmes(k), yfmt:v=>nf(v,0)+'%', vfmt:v=>sg(v,1)+'%', h:180});
+    $('quSN').textContent = `${quNom(sr)}: arriba, promedio de 12 meses con 100 = 2016, contra toda la industria; abajo, cada mes contra el mismo mes del año anterior (últimos 24 meses). Fuente: INDEC.`;
+    // capacidad
+    const UC = [['quimica','Química','--s1'],['general','Toda la industria','--s2']].filter(([k])=>U[k]);
+    legend($('lgQuU'), UC.map(([,n,c])=>({n, c})));
+    lineChart($('chQuU'), UC.map(([k,n,c])=>({n, c, pts: U[k].map(p=>[p[0]+'-01', p[1]])})), {aria:'Capacidad instalada en uso', labW:110, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+' %', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    // fertilizantes
+    const FE = [['urea','Urea','--s1'],['dap','Fosfato diamónico (DAP)','--s2'],['kcl','Cloruro de potasio','--s3']].filter(([k])=>P[k]), d19 = String(new Date().getFullYear()-6);
+    legend($('lgQuP'), FE.map(([,n,c])=>({n, c})));
+    lineChart($('chQuP'), FE.map(([k,n,c])=>({n, c, pts: P[k].filter(p=>p[0]>=d19).map(p=>[p[0]+'-01', p[1]])})), {aria:'Precio de los fertilizantes', labW:118, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,0)+'/t', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    $('quPN').textContent = `Dólares por tonelada, promedio de cada mes (último: ${ur ? MESL[+ur[0].slice(5)-1]+' '+ur[0].slice(0,4) : '—'}). La urea da nitrógeno, el DAP fósforo y el cloruro de potasio, potasio. Argentina produce urea (Bahía Blanca) e importa casi todo el fósforo y el potasio: estos precios pesan en el costo de sembrar trigo y maíz. Fuente: Banco Mundial (Pink Sheet).`;
+    const GA = [['gas_eu','Europa','--s2'],['gas_us','Estados Unidos','--s1']].filter(([k])=>P[k]);
+    legend($('lgQuG'), GA.map(([,n,c])=>({n, c})));
+    lineChart($('chQuG'), GA.map(([k,n,c])=>({n, c, pts: P[k].filter(p=>p[0]>=d19).map(p=>[p[0]+'-01', p[1]])})), {aria:'Precio del gas natural', labW:110, yfmt:v=>nf(v,0), vfmt:v=>'US$ '+nf(v,2), xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    // Europa
+    const EQ = W.eu_quim||{}, ES = QU_EU.filter(([k])=>EQ[k]);
+    legend($('lgQuE'), ES.map(([,n,c])=>({n, c})));
+    lineChart($('chQuE'), ES.map(([k,n,c])=>({n, c, pts: EQ[k].filter(p=>p[0]>=d19).map(p=>[p[0]+'-01', p[1]])})), {aria:'Producción química de Europa', labW:110, yfmt:v=>nf(v,0), vfmt:v=>nf(v,1), xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>fmes(k.slice(0,7))});
+    const de = L(EQ.DE), fa = L(W.eu_farma?.EU27_2020);
+    $('quEN').textContent = `Producción de la industria química (sin medicamentos), desestacionalizada, con 100 = promedio de 2021. ${de ? `Alemania, la casa de BASF y la mayor química de Europa, está en ${nf(de[1],1)}: produce ${nf(100-de[1],0)} % menos que en 2021, golpeada por el gas caro desde la guerra en Ucrania. ` : ''}${fa ? `Los medicamentos van por otro camino: en la Unión Europea están en ${nf(fa[1],1)}. ` : ''}Fuente: Eurostat.`;
+  }
   // ---- AUTOS 0KM (autos.json de scripts/autos.py: patentamientos de la DNRPA, datos abiertos CC BY 4.0) ----
   let ok = null, okLoading = false, okPer = 'mes', okCatSel = '', okMarca = null, okQ = '', okTodas = false;
   async function loadOk(){
@@ -5081,6 +5195,10 @@ body.mporta .hbus{display:none}
       return [['fecha',...G.flatMap(g=>[g.toLowerCase()+'_precio_promedio_kg_vivo', g.toLowerCase()+'_cabezas']),'total_precio_promedio','total_cabezas','definitivo'], ds.map(f=>{ const h=gan.hacienda[f]; return [f, ...G.flatMap(g=>[h.grupos[g]?.prom, h.grupos[g]?.cab]), h.total.prom, h.total.cab, h.def?1:0]; })]; },
     'ganaderia-mensual': ()=>{ const K=['c_asado','c_nalga','c_cuadril','c_paleta','c_picada','c_pollo','ipi_carne'], nm=gaMensual(), ms=[...new Set([...K.flatMap(k=>(act?.[k]||[]).map(p=>p[0])), ...Object.keys(nm)])].sort(), mp=Object.fromEntries(K.map(k=>[k,new Map(act?.[k]||[])]));
       return [['mes','asado_kg','nalga_kg','cuadril_kg','paleta_kg','carne_picada_kg','pollo_entero_kg','ipi_carne_vacuna','novillo_promedio_mes_kg_vivo','novillito_promedio_mes_kg_vivo'], ms.map(m=>[m, ...K.map(k=>mp[k].get(m)), nm[m]?.NOVILLOS, nm[m]?.NOVILLITOS])]; },
+    'quimica': ()=>{ const I = qu?.ipi||{}, ks = QU_R.map(r=>r[0]).concat('general').filter(k=>I[k]), ms = [...new Set(ks.flatMap(k=>I[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(I[k])]));
+      return [['mes', ...ks.map(k=>'ipi_'+k)], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m) ?? '')])]; },
+    'quimica-mundo': ()=>{ const P = qu?.mundo?.precios||{}, ks = Object.keys(P), ms = [...new Set(ks.flatMap(k=>P[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(P[k])]));
+      return [['mes', ...ks.map(k=>k+(k.startsWith('gas')?'_usd_mmbtu':k==='caucho'?'_usd_kg':'_usd_t'))], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m) ?? '')])]; },
     'surtidores-ventas': ()=>{ const V = sur?.ventas||{}, ks = Object.keys(V), ms = [...new Set(ks.flatMap(k=>V[k].map(p=>p[0])))].sort(), mp = Object.fromEntries(ks.map(k=>[k,new Map(V[k])]));
       return [['mes',...ks.map(k=>k+'_miles_m3')], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m))])]; },
     'vinos': ()=>{ const c=vin?.cosecha||{}, s=vin?.superficie||{}, as=[...new Set([...(c.anios||[]), ...(s.anios||[])])].sort(), P=Object.keys(c.prov||{});
@@ -5103,8 +5221,8 @@ body.mporta .hbus{display:none}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], autos:['tabOk','vOk',()=>renderAutos()], surtidores:['tabSu','vSu',()=>renderSurtidores()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
-  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','autos','ganaderia','vinos','surtidores','calculadoras'];  // orden pedido por el dueño
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], autos:['tabOk','vOk',()=>renderAutos()], surtidores:['tabSu','vSu',()=>renderSurtidores()], quimica:['tabQu','vQu',()=>renderQuimica()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
+  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','autos','ganaderia','vinos','surtidores','quimica','calculadoras'];  // orden pedido por el dueño
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
@@ -5116,6 +5234,7 @@ body.mporta .hbus{display:none}
     autos:'<path d="M5 16H3.5v-3.5l2-4.5A2 2 0 0 1 7.3 7h9.4a2 2 0 0 1 1.8 1l2 4.5V16H19"/><path d="M3.5 12.5h17M9 16h6"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/>',
     vinos:'<path d="M7 3h10l-.5 5.5a4.5 4.5 0 0 1-9 0z"/><path d="M7.3 7h9.4M12 13v7M8.5 21h7"/>',
     surtidores:'<path d="M5 20V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 14 5v15M3.5 20h12M7 7.5h5"/><path d="M14 10h1.5a1.5 1.5 0 0 1 1.5 1.5v4a1.3 1.3 0 0 0 2.6 0V8.5L17 6"/>',
+    quimica:'<path d="M9.5 3h5M10.5 3v5.5L5.2 18a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3l-5.3-9.5V3"/><path d="M7.6 15h8.8"/>',
     mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
     noticias:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 16h10"/>',
     calculadoras:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M13 12h3M8 16h2M13 16h3"/>',
@@ -5169,6 +5288,7 @@ body.mporta .hbus{display:none}
     autos:['Autos 0km','Patentamientos de cada mes: las marcas y modelos más vendidos, nacionales e importados'],
     vinos:['Vinos y uvas','Precio del vino, cosecha de uva, viñedos, consumo y exportaciones'],
     surtidores:['Surtidores','Nafta, gasoil y GNC: cuánto se vende cada mes y cada año'],
+    quimica:['Industria química','Medicamentos, agroquímicos, petroquímica y más: cuánto se produce, y los fertilizantes del mundo'],
     mercado:['Bolsa y bonos','Merval, todas las acciones y bonos argentinos, mapa de calor y simulador de inversión'],
     noticias:['Noticias','Los titulares de economía del día'],
     calculadoras:['Calculadoras','Simulador de inversión, inflación, viajes, sueldo, alquileres por IPC y plazo fijo'],
@@ -5272,7 +5392,7 @@ body.mporta .hbus{display:none}
     $('modoN').setAttribute('aria-current', String(tab==='noticias'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['ganaderia','autos','vinos','surtidores','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
+    $('segRange').hidden = ['ganaderia','autos','vinos','surtidores','quimica','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
@@ -5387,6 +5507,8 @@ body.mporta .hbus{display:none}
       return `Un plazo fijo a 30 días paga <strong>${nf(pf[1],1)}% anual</strong>: más o menos ${nf(pf[1]/12,2)}% por mes. Contra la última inflación (${nf(a.infl,1)}% en ${mesN(a.mes)}), ${real>=0 ? `<strong>le gana</strong> por ${nf(real,2)} puntos por mes` : `<strong>pierde</strong> ${nf(-real,2)} puntos por mes`}.`; }
     if(tab==='mercado'){ const mv = series('merval'), l = Lp(mv), p = Pp(mv), rp = Lp(series('riesgo')); if(!l) return '';
       return `El MSCI Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
+    if(tab==='quimica' && qu?.ipi?.quimica?.length){ const q = qu.ipi.quimica, u = q[q.length-1], ia = quIa(q, u[0]), ig = qu.ipi.general ? quIa(qu.ipi.general, u[0]) : null;
+      return `En ${MESL[+u[0].slice(5)-1]} la industria química produjo <strong>${ia==null?'—':pc(ia,1)} contra un año antes</strong>${ig!=null ? `, mientras toda la industria hizo ${pc(ig,1)}` : ''}.`; }
     if(tab==='surtidores' && sur?.ventas?.super?.length){ const V = sur.ventas, u = V.super[V.super.length-1], a = V.super.find(x=>x[0]===mAdd(u[0],-12)), g = V.gasoil?.length ? V.gasoil[V.gasoil.length-1] : null;
       return `En ${MESL[+u[0].slice(5)-1].toLowerCase()} se vendieron <strong>${nf(u[1],0)} millones de litros de nafta súper</strong>${a ? ` (${pc(u[1]/a[1]-1,1)} contra un año antes)` : ''}${g && g[0]===u[0] ? ` y ${nf(g[1],0)} millones de gasoil` : ''}.`; }
     if(tab==='autos' && ok?.serie?.length){ const S = ok.serie, L = S[S.length-1], a = S.find(s=>s.m===mAdd(L.m,-12)), d = ok.det[L.m], m = d ? Object.entries(d.mar).sort((x,y)=>y[1]-x[1])[0] : null;
@@ -8634,6 +8756,7 @@ body.mporta .hbus{display:none}
     sueldo:['salario','salarios','sueldos'], sueldos:['salarios','sueldo'], salario:['sueldo','salarios'], salarios:['sueldo'],
     trabajo:['empleo','desocupacion','desempleo'], empleo:['desocupacion','desempleo'], desempleo:['desocupacion','empleo'], desocupacion:['desempleo'],
     pobreza:['canasta'], canasta:['pobreza'],
+    quimica:['industria quimica'], quimicos:['industria quimica'], quimico:['industria quimica'], petroquimica:['industria quimica','plasticos'], fertilizante:['fertilizantes','urea'], fertilizantes:['urea','industria quimica'], urea:['fertilizantes'], agroquimicos:['industria quimica'], medicamentos:['industria quimica','farmaceutica'], farmaceutica:['medicamentos'], laboratorios:['medicamentos'], pinturas:['industria quimica'], detergentes:['industria quimica'], plasticos:['industria quimica'], basf:['quimica de europa'], potasio:['fertilizantes'],
     nafta:['surtidores','combustible'], naftas:['surtidores'], combustible:['surtidores','nafta'], combustibles:['surtidores'], gasoil:['surtidores','diesel'], diesel:['surtidores','gasoil'], gnc:['surtidores'], surtidor:['surtidores'], ypf:['surtidores'], estacion:['surtidores'], shell:['surtidores'], axion:['surtidores'], 'precio nafta':['surtidores'],
     auto:['autos','0km','patentamientos'], autos:['0km','patentamientos'], '0km':['autos','patentamientos'], okm:['0km','autos'], patentamientos:['0km','autos'], patentamiento:['0km','autos'], patentar:['0km'], patentados:['0km'], concesionaria:['0km','autos'], concesionarias:['0km'], camioneta:['0km','suv','pick-ups'], camionetas:['0km','suv'], pickup:['0km','pick-ups'], suv:['0km'], marcas:['0km','autos'], toyota:['0km','autos'], fiat:['0km'], volkswagen:['0km'], ford:['0km'], chevrolet:['0km'], renault:['0km'], peugeot:['0km'], byd:['0km','autos'], hilux:['0km','toyota'], importados:['0km','autos'],
     espacio:['lanzamientos','satelites','nasa'], nasa:['espacio'], spacex:['espacio','lanzamientos'], starlink:['espacio','satelites'], cohete:['lanzamientos','espacio'], cohetes:['lanzamientos'], lanzamiento:['espacio'], satelite:['satelites','espacio'], satelites:['espacio'], conae:['satelites argentinos'], arsat:['satelites argentinos'], satellogic:['espacio'],

@@ -2,8 +2,9 @@
 
 - INDEC, vía la API de Series de Tiempo de datos.gob.ar (uso libre citando la fuente):
   IPI manufacturero (dataset 453: divisiones y subclases de química y de caucho y plástico, más el nivel general),
-  producción física (dataset 41.3: urea, caucho sintético, detergentes, jabones, pinturas) y utilización de la capacidad
-  instalada del bloque químico (dataset 31.3).
+  y utilización de la capacidad instalada del bloque químico (dataset 31.3). La producción física de urea y caucho
+  sintético (41.3) viene vacía en los últimos años (pocas fábricas: secreto estadístico) y las de pinturas y jabones no
+  cierran con el IPI (unidad dudosa): no se usan. Caucho y plástico (453.2 total, manufacturas) vienen cortadas.
 - Banco Mundial, "Pink Sheet" (CC BY 4.0): fertilizantes (urea, DAP, TSP, cloruro de potasio, roca fosfórica), gas natural
   y caucho, precio promedio de cada mes en dólares.
 - Eurostat (uso libre citando la fuente): producción de la industria química (NACE C20) y farmacéutica (C21) de Europa.
@@ -30,20 +31,9 @@ IPI = {  # índice 2004 = 100 (INDEC); "general" es el nivel general de la indus
     'pinturas': '453.2_PINTURASRAS_0_0_8_67',
     'gases': '453.2_GASES_INDULES_0_0_18_56',
     'otrosq': '453.2_OTROS_PRODCOS_0_0_24_57',
-    'cyp': '453.2_PRODUCTOS_ICO_0_0_25_26',
-    'mpp': '453.2_MATERIAS_PICO_0_0_44_25',
-    'plast': '453.2_MANUFACTURICO_0_0_21_9',
-    'caucho': '453.2_OTROS_PRODCHO_0_0_22_35',
+    'mpp': '453.2_MATERIAS_PICO_0_0_44_25',     # materias primas plásticas y caucho sintético (petroquímica)
 }
-FIS = {  # producción física mensual
-    'urea': '41.3_U_0_A_4',          # miles de toneladas
-    'caucho_s': '41.3_CS_0_A_16',    # toneladas
-    'deterg': '41.3_DLIL_0_A_42',    # toneladas
-    'jabones': '41.3_JTL_0_A_21',    # toneladas
-    'pint_c': '41.3_PP_0_A_24',      # toneladas
-    'pint_o': '41.3_PPU_0_A_22',     # toneladas
-}
-UCI = {'quimica': '31.3_USPQ_2004_M_34', 'general': '31.3_UNG_2004_M_18', 'caucho': '31.3_UCP_2004_M_24'}
+UCI = {'quimica': '31.3_USPQ_2004_M_34', 'general': '31.3_UNG_2004_M_18'}
 PINK = {'urea': 'Urea', 'dap': 'DAP', 'tsp': 'TSP', 'kcl': 'Potassium chloride', 'fosfato': 'Phosphate rock',
         'gas_us': 'Natural gas, US', 'gas_eu': 'Natural gas, Europe', 'caucho': 'Rubber, TSR20'}
 EU_GEO = ['EU27_2020', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'PL']
@@ -134,7 +124,6 @@ def tramo(nombre, fn, out, clave):
 
 out = {'fuente': 'INDEC vía datos.gob.ar; Banco Mundial (Pink Sheet, CC BY 4.0); Eurostat'}
 out['ipi'] = grupo('ipi', IPI)
-out['fis'] = grupo('fis', FIS)
 out['uci'] = grupo('uci', UCI)
 mundo = {}
 tramo('Banco Mundial', pink, mundo, 'precios')
@@ -147,5 +136,5 @@ if not out['ipi'].get('quimica') and viejo.get('ipi'):
     print('sin IPI: queda lo anterior'); sys.exit(0)
 json.dump(out, open(R + 'quimica.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print(json.dumps(diag, ensure_ascii=False, indent=1))
-print({g: {k: (v[-1] if v else None) for k, v in d.items()} for g, d in [('ipi', out['ipi']), ('fis', out['fis']), ('uci', out['uci'])]})
+print({g: {k: (v[-1] if v else None) for k, v in d.items()} for g, d in [('ipi', out['ipi']), ('uci', out['uci'])]})
 print({k: {g: p[-1] for g, p in v.items()} for k, v in mundo.items()})

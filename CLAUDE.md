@@ -115,7 +115,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   así todos los que entran en el mismo minuto piden la misma dirección y el CDN la sirve de su copia. No volver a usar
   `Date.now()` en las direcciones de los fetch.
 - Orden de Argentina en la portada, la hoja y la grilla del celular (`ARG_T`, pedido del dueño): Dólares, Noticias, Bolsa y bonos,
-  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Autos 0km, Ganadería, Vinos y uvas, Surtidores, Calculadoras.
+  Inflación y reservas, Tasas y pesos, Cuentas del Estado, Actividad y empleo, Autos 0km, Ganadería, Vinos y uvas, Surtidores, Industria química, Calculadoras.
 - Sin hash: portada (`#vP`, `renderPortada()`): "¿Qué querés ver?" con dos puertas (Argentina / El mundo), tarjetas por
   sección (`SECC` + `ICO`: nombre claro, ícono y una línea). Los países usan bandera en vez de ícono (`FLAG` clave→código, `flag(k)`, `ico(k)`
   la devuelve sola; SVG de flag-icons 7.2.3, MIT, en `vendor/flags/`): fichas, panel Países, hoja del celular, `#mWhere`,
@@ -253,6 +253,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `38.3_NS_1994_M_11` súper, `38.3_NU_1994_M_11` premium, `41.3_GO_0_A_7` gasoil (solo desde 06/2025); `364.3_GNCGNC__3` GNC sin
   unidad confirmada: no se muestra. scripts/surtidores.py (workflow `surtidores.yml`) y `surtidores()` del Worker siguen
   intentando bajar los precios (cada 6 h, inofensivo); la página ya no los usa (`surtidores_est.json` quedó sin uso).
+- Industria química (`#quimica`, `vQu`, pestaña `tabQu`, `renderQuimica`, `loadQu`; pedido del dueño 03/11/2026, "es un gran rubro"; datos
+  `quimica.json` de scripts/quimica.py, workflow `quimica.yml` martes y viernes 9:41 ART): IPI manufacturero del INDEC por subclase
+  (`453.2_*`: sustancias y productos químicos, básicos, agroquímicos, farmacéuticos, detergentes/jabones/cosmética, pinturas, gases,
+  otros, materias primas plásticas y caucho sintético; nivel general `453.1_SERIE_ORIGNAL_0_0_14_46`), capacidad instalada química
+  `31.3_USPQ_2004_M_34` vs general `31.3_UNG_2004_M_18`, Pink Sheet del Banco Mundial (urea, DAP, TSP, KCl, roca fosfórica, gas de EE.UU.
+  y Europa, caucho) y Eurostat `sts_inpr_m` NACE C20 (química) y C21 (farma), 2021 = 100. Página: casilleros, química vs industria
+  (promedio de 12 meses, 100 = 2016), ranking de rubros en lo que va del año, un rubro elegido (`quRub`, `#quSel`) con su interanual,
+  capacidad, fertilizantes, gas y Europa. Descartado: producción física 41.3 de urea y caucho sintético (vacía en los últimos años,
+  secreto estadístico), pinturas y jabones (unidad que no cierra con el IPI), caucho y plástico total y manufacturas de plástico (cortadas),
+  IPIM químico (no está en la API), FRED (timeout desde Actions). Series de más de 7 meses no se publican.
 - Mercado: ranking "¿Qué le ganó a la inflación?", Merval en $ y US$ CCL. Pedido del dueño ("quiero todas", "2 bonos es
   improvisado"): mapa de calor con TODAS las acciones (`renderStocks`, orden variación / más operadas / A-Z `stkOrd`; monto =
   `v` (CANTIDAD) × `c`), los 11 soberanos en dólares con TIR (`SOB`, `BDEF` → `BFLUJO`, `bondCalc(px, settle, k)`; cronogramas
