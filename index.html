@@ -249,6 +249,8 @@ section.view[hidden]{display:none}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--ink2)}
 .legend span{display:inline-flex;align-items:center}
+.okmas{display:block;width:100%;margin-top:10px;background:none;border:1px dashed var(--line);color:var(--accent);font:600 14px var(--sans);border-radius:10px;padding:9px;cursor:pointer}
+#tOkMa tr:hover td{background:rgba(255,255,255,.03)}#tOkMa tr.hl td{background:rgba(106,168,216,.12)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .grid2.in{gap:8px 22px}.grid2.in>div{min-width:0}
 .suctl{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}.suctl .bq{flex:1 1 260px;min-width:0;max-width:none;margin:0}
@@ -1003,6 +1005,7 @@ body.mporta .hbus{display:none}
       <a href="#dinero" role="tab" id="tabN" data-g="arg" aria-selected="false">Dinero</a>
       <a href="#fiscal" role="tab" id="tabF" data-g="arg" aria-selected="false">Fiscal</a>
       <a href="#actividad" role="tab" id="tabA" data-g="arg" aria-selected="false">Actividad</a>
+      <a href="#autos" role="tab" id="tabOk" data-g="arg" aria-selected="false">0km</a>
       <a href="#ganaderia" role="tab" id="tabGa" data-g="arg" aria-selected="false">Ganadería</a>
       <a href="#vinos" role="tab" id="tabVi" data-g="arg" aria-selected="false">Vinos</a>
       <a href="#surtidores" role="tab" id="tabSu" data-g="arg" aria-selected="false">Surtidores</a>
@@ -1337,6 +1340,60 @@ body.mporta .hbus{display:none}
       <p class="note">Bodegas inscriptas y viñedos registrados en el Instituto Nacional de Vitivinicultura. Hectáreas: superficie implantada del último relevamiento.</p>
     </div>
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="vinos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cosecha y superficie por año</button><button type="button" data-csv="vinos-precio"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio del vino común</button></div>
+  </section>
+  <section class="view" id="vOk" hidden>
+    <div class="kpis" id="kpisOk"></div>
+    <div class="card">
+      <div class="head"><h2>Autos 0km patentados cada mes</h2><span class="note" id="okMeS"></span></div>
+      <div class="stats" id="okMeSt"></div>
+      <div class="chart" id="chOkMe"></div>
+      <p class="note">Autos, SUV, pick-ups y utilitarios livianos nuevos (año de modelo igual al del patentamiento o el anterior) inscriptos por primera vez en los registros del automotor. No incluye camiones, colectivos, acoplados ni motos. Fuente: DNRPA, datos abiertos.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Las marcas y los modelos que más se venden</h2><span class="note" id="okRkS"></span></div>
+      <div class="seg calcsel" role="tablist" aria-label="Período" id="okPer">
+        <button type="button" data-okp="mes" aria-selected="true">Último mes</button>
+        <button type="button" data-okp="anio" aria-selected="false">En el año</button>
+        <button type="button" data-okp="12m" aria-selected="false">Últimos 12 meses</button>
+      </div>
+      <div class="grid2 in">
+        <div><h3 class="h3s">Marcas</h3><div class="chart" id="chOkMa"></div></div>
+        <div><h3 class="h3s">Modelos</h3>
+          <div class="seg calcsel sm" role="tablist" aria-label="Tipo" id="okCat">
+            <button type="button" data-okc="" aria-selected="true">Todos</button>
+            <button type="button" data-okc="auto" aria-selected="false">Autos</button>
+            <button type="button" data-okc="suv" aria-selected="false">SUV</button>
+            <button type="button" data-okc="pickup" aria-selected="false">Pick-ups</button>
+            <button type="button" data-okc="util" aria-selected="false">Utilitarios</button>
+          </div>
+          <div class="chart" id="chOkMo"></div></div>
+      </div>
+      <p class="note">Unidades patentadas y porcentaje del total. Los modelos suman todas sus versiones (por ejemplo, todas las Hilux). Fuente: DNRPA.</p>
+    </div>
+    <div class="card">
+      <div class="head"><h2>Todas las marcas</h2><span class="note" id="okTbS"></span></div>
+      <input class="bq" id="okQ" type="search" placeholder="Buscar una marca…" autocomplete="off" aria-label="Buscar una marca">
+      <div class="tablewrap"><table style="min-width:520px"><thead><tr><th>#</th><th>Marca</th><th>Unidades</th><th>Del total</th><th>Contra un año antes</th></tr></thead><tbody id="tOkMa"></tbody></table></div>
+      <button type="button" class="okmas" id="okMas" hidden>Ver todas las marcas</button>
+      <p class="note">Tocá una marca para ver todos sus modelos y versiones. "Nueva": no había patentado en el mismo período del año anterior.</p>
+    </div>
+    <div class="card" id="okFicha" hidden>
+      <div class="head"><h2 id="okFiT">Marca</h2><span class="note" id="okFiS"></span></div>
+      <div class="stats" id="okFiSt"></div>
+      <div class="grid2 in">
+        <div><h3 class="h3s">Sus modelos</h3><div class="chart" id="chOkFi"></div></div>
+        <div><h3 class="h3s">Las versiones que más salen</h3><div class="tablewrap"><table class="minit"><thead><tr><th>Versión</th><th>Unidades</th></tr></thead><tbody id="tOkVe"></tbody></table></div></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Nacionales, de Brasil e importados</h2><div class="legend" id="lgOkOr"></div></div><div class="chart" id="chOkOr"></div><p class="note" id="okOrN"></p></div>
+      <div class="card"><div class="head"><h2>Qué tipo de auto se compra</h2><div class="legend" id="lgOkTi"></div></div><div class="chart" id="chOkTi"></div><p class="note" id="okTiN"></p></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="head"><h2>Dónde se patentan</h2><span class="note" id="okPrS"></span></div><div class="chart" id="chOkPr"></div><p class="note">Provincia del registro donde se inscribió el auto. Fuente: DNRPA.</p></div>
+      <div class="card"><div class="head"><h2>25 años de patentamientos</h2><span class="note">Todos los vehículos, miles por año</span></div><div class="chart" id="chOkHi"></div><p class="note" id="okHiN"></p></div>
+    </div>
+    <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="autos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>0km por mes</button><button type="button" data-csv="autos-marcas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Marcas por mes</button></div>
   </section>
   <section class="view" id="vSu" hidden>
     <div class="kpis" id="kpisSu"></div>
@@ -4259,6 +4316,119 @@ body.mporta .hbus{display:none}
     barChart($('chSuP'), [{n:'Premium', c:'--s5', pts: ys.map(y=>[y, A[y].p/A[y].t*100])}], {aria:'Parte premium de la nafta', kfmt:k=>k, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%'});
     $('suPS').textContent = ys.length ? `${ys[ys.length-1]}: ${nf(A[ys[ys.length-1]].p/A[ys[ys.length-1]].t*100,1)} %` : '';
   }
+  // ---- AUTOS 0KM (autos.json de scripts/autos.py: patentamientos de la DNRPA, datos abiertos CC BY 4.0) ----
+  let ok = null, okLoading = false, okPer = 'mes', okCatSel = '', okMarca = null, okQ = '', okTodas = false;
+  async function loadOk(){
+    if(ok || okLoading) return; okLoading = true;
+    try{ const r = await fetch('autos.json?t='+VER(), {cache:'no-store'}); if(r.ok) ok = await r.json(); }catch(e){}
+    okLoading = false; if(tab==='autos'){ renderAutos(); mResumen(); }
+  }
+  // tipo de la DNRPA → categoría (misma regla que scripts/autos.py)
+  const okCat = t => { t = t||''; if(/CAMION|TRACTOR|CHASIS|REMOLQUE|ACOPLADO|TRAILER|BUS|PASAJEROS/.test(t)) return 'pesado'; if(t.includes('PICK')) return 'pickup';
+    if(/RURAL|TODO TERRENO|JEEP|SUV|STATION|CAMIONETA/.test(t)) return 'suv'; if(/FURGON|UTILITARIO|PANEL/.test(t)) return 'util'; return 'auto'; };
+  const OK_CAT = {auto:'Autos', suv:'SUV', pickup:'Pick-ups', util:'Utilitarios'};
+  // "FORD|TERRITORY TREND 1.5L HIBRIDA AT" → "Territory"; suma todas las versiones de un modelo
+  const okBase = m => { const t = m.replace(/^(NUEVO|NUEVA|NEW|ALL NEW|THE NEW)\s+/,'').split(/\s+/); let b = t[0]||m;
+    if(t[1] && (/^(CROSS|TRACK|MINI|MAX|GRAND|CLASSIC|SPORT|SPORTBACK)$/.test(t[1]) || /^(GRAND|CLASE|SERIE)$/.test(t[0]) || (/^\d{1,2}$/.test(t[1]) && /^[A-Z]+$/.test(t[0])) || t[0].length<=2)) b += ' '+t[1];
+    return b; };
+  const OK_SIGLA = /^(BYD|BAIC|BMW|DS|RAM|MG|GWM|JAC|JMC|DFSK|JMEV|KYC|MAN|DAF|GAC|SWM|GMC|VW|ZX|KGM|ICH|DFM|BJ\w*|HF\w*)$/;
+  const okNom = s => (s||'').split(/\s+/).map(w => /\d/.test(w) || OK_SIGLA.test(w) || w.length<=2 ? w : w.charAt(0)+w.slice(1).toLowerCase()).join(' ').replace(/-(\w)/g,(a,c)=>'-'+c.toUpperCase());
+  const okProv = s => s==='CIUDAD AUTÓNOMA DE BUENOS AIRES' ? 'CABA' : (s||'').toLowerCase().replace(/(^|\s)(\S)/g,(a,b,c)=>b+c.toUpperCase()).replace(/ (De|Del|La|Las|Los|E) /g, m=>m.toLowerCase());
+  const okMesL = m => MESL[+m.slice(5,7)-1]+' '+m.slice(0,4);
+  // suma los meses pedidos del detalle (marcas, modelos, provincias)
+  function okSuma(meses){
+    const r = {tot:0, mar:{}, mod:{}, prov:{}, n:0};
+    for(const m of meses){ const d = ok.det[m]; if(!d) continue; r.n++; r.tot += (ok.serie.find(s=>s.m===m)||{}).t||0;
+      for(const k of ['mar','mod','prov']) for(const [a,v] of Object.entries(d[k]||{})) r[k][a] = (r[k][a]||0)+v; }
+    return r;
+  }
+  function okPeriodo(per){
+    const ms = Object.keys(ok.det).sort(), u = ok.ultimo_mes, i = ms.indexOf(u);
+    if(per==='mes') return {act:[u], ant:[mAdd(u,-12)], txt:okMesL(u), cmp:okMesL(mAdd(u,-12))};
+    if(per==='anio'){ const n = +u.slice(5,7), act = ms.slice(i-n+1, i+1); return {act, ant:act.map(m=>mAdd(m,-12)), txt:`enero a ${MESL[n-1]} ${u.slice(0,4)}`, cmp:`el mismo período de ${+u.slice(0,4)-1}`}; }
+    const act = ms.slice(Math.max(0,i-11), i+1); return {act, ant:act.map(m=>mAdd(m,-12)), txt:`${fmes(act[0])} a ${fmes(u)}`, cmp:'los 12 meses anteriores'};
+  }
+  document.querySelectorAll('[data-okp]').forEach(b=>b.addEventListener('click', ()=>{ okPer = b.dataset.okp; renderAutos(); }));
+  document.querySelectorAll('[data-okc]').forEach(b=>b.addEventListener('click', ()=>{ okCatSel = b.dataset.okc; renderAutos(); }));
+  $('okMas').addEventListener('click', ()=>{ okTodas = true; renderAutos(); });
+  $('okQ').addEventListener('input', e=>{ okQ = e.target.value; renderAutos(); });
+  $('tOkMa').addEventListener('click', e=>{ const tr = e.target.closest('tr[data-m]'); if(!tr) return; okMarca = tr.dataset.m; renderAutos(); $('okFicha').scrollIntoView({behavior:'smooth', block:'start'}); });
+  function renderAutos(){
+    if(!ok){ loadOk(); $('kpisOk').innerHTML = '<div class="empty">Cargando patentamientos…</div>'; return; }
+    const S = ok.serie, u = ok.ultimo_mes, L = S[S.length-1], pm = S.find(s=>s.m===mAdd(u,-1)), pa = S.find(s=>s.m===mAdd(u,-12));
+    const yr = u.slice(0,4), n = +u.slice(5,7), acu = S.filter(s=>s.m.slice(0,4)===yr).reduce((a,s)=>a+s.t,0);
+    const acuA = S.filter(s=>s.m.slice(0,4)===String(+yr-1) && +s.m.slice(5,7)<=n).reduce((a,s)=>a+s.t,0);
+    const dM = ok.det[u], mar = Object.entries(dM.mar).sort((a,b)=>b[1]-a[1]);
+    const mods = {}; for(const [k,v] of Object.entries(dM.mod)){ const [ma,mo] = k.split('|'), b = ma+'|'+okBase(mo); mods[b] = (mods[b]||0)+v; }
+    const top = Object.entries(mods).sort((a,b)=>b[1]-a[1])[0];
+    const org = L.org||{}, imp = (org.Brasil||0)+(org.Importado||0);
+    const H = ok.hist?.AUTOMOTORES||{}, hU = Object.keys(H).sort().pop();
+    const t = [];
+    t.push(tileK(`0km patentados en ${MESL[n-1]}`, nf(L.t,0), 'unidades', (pm ? chip(L.t/pm.t-1,{d:1})+'<span class="chip eq">en el mes</span>' : ''), pa ? `${pc(L.t/pa.t-1,1)} contra ${MESL[n-1]} ${+yr-1} · DNRPA` : 'DNRPA'));
+    t.push(tileK(`En lo que va de ${yr}`, nf(acu,0), 'unidades', acuA ? chip(acu/acuA-1,{d:1})+`<span class="chip eq">contra ${+yr-1}</span>` : '', `enero a ${MESL[n-1]}`));
+    if(mar[0]) t.push(tileK('Marca más vendida', okNom(mar[0][0]), '', '', `${nf(mar[0][1],0)} unidades en ${MESL[n-1]} · ${nf(mar[0][1]/L.t*100,1)}% del total`));
+    if(top) t.push(tileK('Modelo más vendido', okNom(top[0].split('|')[1]), '', '', `${okNom(top[0].split('|')[0])} · ${nf(top[1],0)} unidades en ${MESL[n-1]}`));
+    t.push(tileK('Importados', nf(imp/L.t*100,0)+'%', 'del total', '', `${nf((org.Brasil||0)/L.t*100,0)}% de Brasil y ${nf((org.Importado||0)/L.t*100,0)}% del resto del mundo · ${nf((org.Nacional||0)/L.t*100,0)}% nacionales`));
+    if(hU && hU > u) t.push(tileK(`Adelanto de ${MESL[+hU.slice(5,7)-1]}`, nf(H[hU],0), 'vehículos', H[mAdd(hU,-12)] ? chip(H[hU]/H[mAdd(hU,-12)]-1,{d:1})+`<span class="chip eq">contra ${+hU.slice(0,4)-1}</span>` : '', 'todos los vehículos (incluye camiones); el detalle por marca sale el mes que viene · DNRPA'));
+    $('kpisOk').innerHTML = t.join('');
+    // cada mes
+    const S25 = S.slice(-25);
+    barChart($('chOkMe'), [{n:'0km', c:'--s1', pts:S25.map(s=>[s.m, s.t/1000])}], {aria:'Autos 0km patentados por mes', l:40, kfmt:k=>fmes(k).replace(' ',"\n").split('\n')[0], yfmt:v=>nf(v,0), vfmt:v=>nf(v*1000,0)+' unidades', tfmt:k=>okMesL(k)});
+    $('okMeS').textContent = `miles de unidades · ${fmes(S25[0].m)} a ${fmes(u)}`;
+    const mx = S.reduce((a,s)=>s.t>a.t?s:a, S[0]), per = L.per||{}, pt = (per.F||0)+(per.J||0);
+    $('okMeSt').innerHTML = stc(okMesL(u), nf(L.t,0), pa ? `${pc(L.t/pa.t-1,1)} contra un año antes` : '', '', true)
+      + stc(`Promedio por día hábil`, nf(L.t/21,0), 'unidades, aproximado')
+      + stc('El mejor mes desde 2018', nf(mx.t,0), okMesL(mx.m))
+      + (pt ? stc('A nombre de empresas', nf((per.J||0)/pt*100,0)+'%', 'el resto, de particulares') : '');
+    // rankings del período
+    document.querySelectorAll('[data-okp]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.okp===okPer)));
+    document.querySelectorAll('[data-okc]').forEach(b=>b.setAttribute('aria-selected', String(b.dataset.okc===okCatSel)));
+    const P = okPeriodo(okPer), A = okSuma(P.act), B = okSuma(P.ant.filter(m=>ok.det[m]));
+    $('okRkS').textContent = P.txt;
+    const mR = Object.entries(A.mar).sort((a,b)=>b[1]-a[1]);
+    hBars($('chOkMa'), mR.slice(0,12).map(([k,v],i)=>({n:okNom(k), v, c:i?'--s1':'--s4'})), {aria:'Marcas más vendidas', vfmt:v=>nf(v,0)+' · '+nf(v/A.tot*100,1)+'%'});
+    const mo = {}; for(const [k,v] of Object.entries(A.mod)){ const [ma,m2] = k.split('|'); if(okCatSel && okCat(ok.tipo_modelo[k])!==okCatSel) continue; const b = ma+'|'+okBase(m2); mo[b] = (mo[b]||0)+v; }
+    const moR = Object.entries(mo).sort((a,b)=>b[1]-a[1]).slice(0,12);
+    hBars($('chOkMo'), moR.map(([k,v],i)=>{ const [ma,m2] = k.split('|'); return {n:okNom(m2)+' · '+okNom(ma), v, c:i?'--s3':'--s4'}; }), {aria:'Modelos más vendidos', vfmt:v=>nf(v,0)+' · '+nf(v/A.tot*100,1)+'%'});
+    // tabla de todas las marcas
+    $('okTbS').textContent = `${mR.length} marcas · ${P.txt}`;
+    const q = okQ.trim().toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    $('okMas').hidden = okTodas || !!q || mR.length<=20; $('okMas').textContent = `Ver las ${mR.length} marcas`;
+    $('tOkMa').innerHTML = mR.map(([k,v],i)=>{ if(q ? !k.normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q) : (!okTodas && i>=20 && k!==okMarca)) return ''; const b = B.mar[k];
+      return `<tr data-m="${esc(k)}" style="cursor:pointer"${k===okMarca?' class="hl"':''}><td>${i+1}</td><td><b>${esc(okNom(k))}</b></td><td>${nf(v,0)}</td><td>${nf(v/A.tot*100,2)}%</td><td>${b ? chip(v/b-1,{d:0}) : '<span class="chip eq">nueva</span>'}</td></tr>`; }).join('') || '<tr><td colspan="5" class="note">No hay ninguna marca con ese nombre.</td></tr>';
+    // ficha de la marca elegida
+    const fi = $('okFicha'); fi.hidden = !okMarca;
+    if(okMarca){ const tot = A.mar[okMarca]||0, b = B.mar[okMarca], pos = mR.findIndex(r=>r[0]===okMarca)+1, og = ok.origen_marca?.[okMarca]||{}, ogt = Object.values(og).reduce((a,v)=>a+v,0);
+      $('okFiT').textContent = okNom(okMarca); $('okFiS').textContent = P.txt;
+      $('okFiSt').innerHTML = stc('Unidades', nf(tot,0), b ? `${pc(tot/b-1,1)} contra ${P.cmp}` : '', '', true) + stc('Puesto', pos ? pos+'.º' : '—', `de ${mR.length} marcas`) + stc('Del total', nf(tot/(A.tot||1)*100,2)+'%', 'participación de mercado')
+        + (ogt ? stc('De dónde vienen', Object.entries(og).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${nf(v/ogt*100,0)}%`).join(' · '), 'últimos 12 meses') : '');
+      const fm = {}, ve = [];
+      for(const [k,v] of Object.entries(A.mod)){ const [ma,m2] = k.split('|'); if(ma!==okMarca) continue; fm[okBase(m2)] = (fm[okBase(m2)]||0)+v; ve.push([m2,v]); }
+      hBars($('chOkFi'), Object.entries(fm).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([k,v])=>({n:okNom(k), v, c:'--s1'})), {aria:'Modelos de la marca', vfmt:v=>nf(v,0)});
+      $('tOkVe').innerHTML = ve.sort((a,b)=>b[1]-a[1]).slice(0,15).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${nf(v,0)}</td></tr>`).join(''); }
+    // origen y tipo en el tiempo (porcentaje de cada mes)
+    const OC = {Nacional:'--s1', Brasil:'--s3', Importado:'--s2'};
+    lineChart($('chOkOr'), Object.keys(OC).map(k=>({n:k==='Importado'?'Resto del mundo':k, c:OC[k], pts:S.map(s=>[s.m+'-01', (s.org[k]||0)/s.t*100])})), {aria:'Origen de los 0km', l:40, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>okMesL(k.slice(0,7))});
+    legend($('lgOkOr'), Object.keys(OC).map(k=>({n:k==='Importado'?'Resto del mundo':k, c:OC[k]})));
+    const o0 = S.find(s=>s.m.slice(0,4)===String(+yr-1)) || S[0];
+    $('okOrN').textContent = `Porcentaje de los 0km de cada mes según de dónde vienen. "Brasil" son los que entran por el acuerdo automotor del Mercosur (Protocolo 21). En ${okMesL(u)}, ${nf((org.Nacional||0)/L.t*100,0)}% fueron fabricados en Argentina.`;
+    const TC = {suv:'--s1', auto:'--s2', pickup:'--s3', util:'--s4'};
+    lineChart($('chOkTi'), Object.keys(TC).map(k=>({n:OK_CAT[k], c:TC[k], pts:S.map(s=>{ const lv = ['auto','suv','pickup','util'].reduce((a,c)=>a+((s.cat||{})[c]||0),0); return [s.m+'-01', lv ? ((s.cat||{})[k]||0)/lv*100 : null]; }).filter(p=>p[1]!=null)})), {aria:'Tipo de vehículo', l:40, yfmt:v=>nf(v,0)+'%', vfmt:v=>nf(v,1)+'%', xfmt:k=>fmes(k.slice(0,7)), tfmt:k=>okMesL(k.slice(0,7))});
+    legend($('lgOkTi'), Object.keys(TC).map(k=>({n:OK_CAT[k], c:TC[k]})));
+    const c0 = S[0].cat||{}, c1 = L.cat||{}, lv = x => ['auto','suv','pickup','util'].reduce((a,c)=>a+(x[c]||0),0);
+    $('okTiN').textContent = `En ${S[0].m.slice(0,4)}, ${nf((c0.suv||0)/lv(c0)*100,0)}% de los 0km eran SUV o camionetas rurales; en ${okMesL(u)}, ${nf((c1.suv||0)/lv(c1)*100,0)}%. Porcentaje de cada mes.`;
+    // provincias del período
+    $('okPrS').textContent = P.txt;
+    const pr = Object.entries(A.prov).sort((a,b)=>b[1]-a[1]).slice(0,12);
+    hBars($('chOkPr'), pr.map(([k,v])=>({n:okProv(k), v, c:'--s1'})), {aria:'Patentamientos por provincia', vfmt:v=>nf(v,0)+' · '+nf(v/A.tot*100,1)+'%'});
+    // historia larga (todos los automotores) por año
+    const porA = {}; for(const [m,v] of Object.entries(H)){ porA[m.slice(0,4)] = (porA[m.slice(0,4)]||0)+v; }
+    const as = Object.keys(porA).sort(), uh = hU ? +hU.slice(5,7) : 12;
+    barChart($('chOkHi'), [{n:'Vehículos', c:'--s1', pts:as.map(a=>[a, porA[a]/1000])}], {aria:'Patentamientos por año desde 2000', l:40, kfmt:k=>"'"+k.slice(2), yfmt:v=>nf(v,0), vfmt:v=>nf(v,0)+' mil'});
+    if(as.length){ const ar = as.filter(a=>a!==hU?.slice(0,4)), rec = ar.reduce((a,b)=>porA[b]>porA[a]?b:a, ar[0]), min = ar.reduce((a,b)=>porA[b]<porA[a]?b:a, ar[0]);
+      $('okHiN').textContent = `El récord fue ${rec} (${nf(porA[rec]/1000,0)} mil) y el peor año, ${min} (${nf(porA[min]/1000,0)} mil). ${hU ? `${hU.slice(0,4)} va hasta ${MESL[uh-1]}.` : ''} Incluye camiones, colectivos y acoplados nuevos. Fuente: DNRPA, estadística de trámites.`; }
+  }
+
   // ---- VINOS Y UVAS (vinos.json de scripts/vinos.py: datos abiertos del INV + precio del vino común del INDEC) ----
   let vin = null, vinLoading = false, viMoneda = 'ars';
   async function loadVin(){
@@ -4859,6 +5029,8 @@ body.mporta .hbus{display:none}
       return [['mes',...ks.map(k=>k+'_miles_m3')], ms.map(m=>[m, ...ks.map(k=>mp[k].get(m))])]; },
     'vinos': ()=>{ const c=vin?.cosecha||{}, s=vin?.superficie||{}, as=[...new Set([...(c.anios||[]), ...(s.anios||[])])].sort(), P=Object.keys(c.prov||{});
       return [['anio','cosecha_uva_quintales',...P.map(p=>'cosecha_'+p.toLowerCase().replace(/[^a-z]+/g,'_')),'superficie_hectareas'], as.map(a=>{ const i=(c.anios||[]).indexOf(a), j=(s.anios||[]).indexOf(a); return [a, i>=0?c.total[i]:null, ...P.map(p=>i>=0?c.prov[p][i]:null), j>=0?s.total[j]:null]; })]; },
+    'autos': ()=>[['mes','autos_0km','nacionales','de_brasil','importados_resto','autos','suv','pickups','utilitarios'], (ok?.serie||[]).map(s=>[s.m, s.t, s.org.Nacional||0, s.org.Brasil||0, s.org.Importado||0, s.cat?.auto||0, s.cat?.suv||0, s.cat?.pickup||0, s.cat?.util||0])],
+    'autos-marcas': ()=>{ const ms = Object.keys(ok?.det||{}).sort(), M = [...new Set(ms.flatMap(m=>Object.keys(ok.det[m].mar)))].sort(); return [['marca', ...ms], M.map(k=>[k, ...ms.map(m=>ok.det[m].mar[k]||0)])]; },
     'vinos-precio': ()=>[['mes','vino_comun_pesos_por_litro_gba'], (vin?.series?.precio||[]).map(p=>[p[0], p[1]])],
     'mercado-diario': ()=>[['fecha','merval_puntos','ccl','merval_usd_ccl','riesgo_pais_pb'],
       days.filter(d=>d.merval!=null).map(d=>{ const c=get(d,'ccl'); return [d.fecha, d.merval, c, c?Math.round(d.merval/c*100)/100:null, d.riesgo]; })]
@@ -4875,8 +5047,8 @@ body.mporta .hbus{display:none}
   });
 
   // ---- shell ----
-  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], surtidores:['tabSu','vSu',()=>renderSurtidores()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
-  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','ganaderia','vinos','surtidores','calculadoras'];  // orden pedido por el dueño
+  const TABS = {dolares:['tabD','vD',()=>renderDolares()], macro:['tabM','vM',()=>renderMacro()], dinero:['tabN','vN',()=>renderDinero()], fiscal:['tabF','vF',()=>renderFiscal()], actividad:['tabA','vA',()=>renderActividad()], ganaderia:['tabGa','vGa',()=>renderGanaderia()], vinos:['tabVi','vVi',()=>renderVinos()], autos:['tabOk','vOk',()=>renderAutos()], surtidores:['tabSu','vSu',()=>renderSurtidores()], mercado:['tabK','vK',()=>renderMercado()], global:['tabG','vG',()=>renderGlobal()], calculadoras:['tabC','vC',()=>renderCalc()], noticias:['tabW','vW',()=>renderNoticias()], sobre:[null,'vS',()=>{}], portada:[null,'vP',()=>renderPortada()], brasil:['tabB','vB',()=>renderBrasil()], europa:['tabE','vE',()=>renderEuropa()], mexico:['tabX','vX',()=>renderMexico()], chile:['tabCl','vCl',()=>renderChile()], japon:['tabJp','vJp',()=>renderJapon()], reinounido:['tabUk','vUk',()=>renderReino()], canada:['tabCa','vCa',()=>renderCanada()], colombia:['tabCo','vCo',()=>renderColombia()], turquia:['tabTr','vTr',()=>renderTurquia()], peru:['tabPe','vPe',()=>renderPeru()], polonia:['tabPl','vPl',()=>renderPolonia()], india:['tabIn','vIn',()=>renderIndia()], arabia:['tabSa','vSa',()=>renderArabia()], suiza:['tabSz','vSz',()=>renderSuiza()], australia:['tabAu','vAu',()=>renderAustralia()], corea:['tabKr','vKr',()=>renderCorea()], sudafrica:['tabZa','vZa',()=>renderSudafrica()], zelanda:['tabNz','vNz',()=>renderZelanda()], indonesia:['tabId','vId',()=>renderIndonesia()], noruega:['tabNo','vNo',()=>renderNoruega()], suecia:['tabSe','vSe',()=>renderSuecia()], tailandia:['tabTh','vTh',()=>renderTailandia()], malasia:['tabMy','vMy',()=>renderMalasia()], filipinas:['tabPh','vPh',()=>renderFilipinas()], islandia:['tabIs','vIs',()=>renderIslandia()], hungria:['tabHu','vHu',()=>renderHungria()], hongkong:['tabHk','vHk',()=>renderHongkong()], chequia:['tabCz','vCz',()=>renderChequia()], dinamarca:['tabDk','vDk',()=>renderDinamarca()], rumania:['tabRo','vRo',()=>renderRumania()], israel:['tabIl','vIl',()=>renderIsrael()], serbia:['tabRs','vRs',()=>renderSerbia()], china:['tabCn','vCn',()=>renderChina()], rusia:['tabRu','vRu',()=>renderRusia()], espana:['tabEs','vEs',()=>renderEspana()], macedonia:['tabMk','vMk',()=>renderMacedonia()], singapur:['tabSg','vSg',()=>renderSingapur()], marruecos:['tabMa','vMa',()=>renderMarruecos()]};
+  const ARG_T = ['dolares','noticias','mercado','macro','dinero','fiscal','actividad','autos','ganaderia','vinos','surtidores','calculadoras'];  // orden pedido por el dueño
   // Nombres claros, ícono y una línea de qué hay en cada sección (los hashes no cambian)
   const ICO = {
     dolares:'<path d="M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3s-4.5-1.2-4.5-3.2"/>',
@@ -4885,6 +5057,7 @@ body.mporta .hbus{display:none}
     fiscal:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
     actividad:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18M11 13v2h2v-2"/>',
     ganaderia:'<path d="M5 9c-1.5 0-2.5-1-2.5-2.5M19 9c1.5 0 2.5-1 2.5-2.5"/><path d="M6 8.5h12v4.5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z"/><path d="M9 17v3M15 17v3M10 12.5h.01M14 12.5h.01"/>',
+    autos:'<path d="M5 16H3.5v-3.5l2-4.5A2 2 0 0 1 7.3 7h9.4a2 2 0 0 1 1.8 1l2 4.5V16H19"/><path d="M3.5 12.5h17M9 16h6"/><circle cx="7" cy="16.5" r="1.8"/><circle cx="17" cy="16.5" r="1.8"/>',
     vinos:'<path d="M7 3h10l-.5 5.5a4.5 4.5 0 0 1-9 0z"/><path d="M7.3 7h9.4M12 13v7M8.5 21h7"/>',
     surtidores:'<path d="M5 20V5a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 1 14 5v15M3.5 20h12M7 7.5h5"/><path d="M14 10h1.5a1.5 1.5 0 0 1 1.5 1.5v4a1.3 1.3 0 0 0 2.6 0V8.5L17 6"/>',
     mercado:'<path d="M7 4v16M17 4v16"/><rect x="5" y="8" width="4" height="7"/><rect x="15" y="6" width="4" height="9"/>',
@@ -4937,6 +5110,7 @@ body.mporta .hbus{display:none}
     fiscal:['Cuentas del Estado','Si el Estado gasta más o menos de lo que recauda, y el comercio exterior'],
     actividad:['Actividad y empleo','Cuánto crece la economía, salarios contra inflación, desocupación y canasta básica'],
     ganaderia:['Ganadería','Hacienda en Cañuelas (ex Liniers), carne en la carnicería, faena y relación con el maíz'],
+    autos:['Autos 0km','Patentamientos de cada mes: las marcas y modelos más vendidos, nacionales e importados'],
     vinos:['Vinos y uvas','Precio del vino, cosecha de uva, viñedos, consumo y exportaciones'],
     surtidores:['Surtidores','Nafta, gasoil y GNC: cuánto se vende cada mes y cada año'],
     mercado:['Bolsa y bonos','Merval, todas las acciones y bonos argentinos, mapa de calor y simulador de inversión'],
@@ -5042,7 +5216,7 @@ body.mporta .hbus{display:none}
     $('modoN').setAttribute('aria-current', String(tab==='noticias'));
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
-    $('segRange').hidden = ['ganaderia','vinos','surtidores','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
+    $('segRange').hidden = ['ganaderia','autos','vinos','surtidores','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
     try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
     render();
     mActualizar();
@@ -5159,6 +5333,8 @@ body.mporta .hbus{display:none}
       return `El MSCI Merval, el índice de las acciones argentinas más grandes, cerró el ${fds(l[0])} en <strong>${nf(l[1],0)} puntos</strong>${p ? `, ${pc(l[1]/p[1]-1,1)} en el día` : ''}.${rp ? ` El riesgo país está en ${nf(rp[1],0)} puntos.` : ''}`; }
     if(tab==='surtidores' && sur?.ventas?.super?.length){ const V = sur.ventas, u = V.super[V.super.length-1], a = V.super.find(x=>x[0]===mAdd(u[0],-12)), g = V.gasoil?.length ? V.gasoil[V.gasoil.length-1] : null;
       return `En ${MESL[+u[0].slice(5)-1].toLowerCase()} se vendieron <strong>${nf(u[1],0)} millones de litros de nafta súper</strong>${a ? ` (${pc(u[1]/a[1]-1,1)} contra un año antes)` : ''}${g && g[0]===u[0] ? ` y ${nf(g[1],0)} millones de gasoil` : ''}.`; }
+    if(tab==='autos' && ok?.serie?.length){ const S = ok.serie, L = S[S.length-1], a = S.find(s=>s.m===mAdd(L.m,-12)), d = ok.det[L.m], m = d ? Object.entries(d.mar).sort((x,y)=>y[1]-x[1])[0] : null;
+      return `En ${MESL[+L.m.slice(5)-1]} se patentaron <strong>${nf(L.t,0)} autos 0km</strong>${a ? ` (${pc(L.t/a.t-1,1)} contra un año antes)` : ''}.${m ? ` La marca más vendida fue ${okNom(m[0])}, con ${nf(m[1]/L.t*100,0)}% del total.` : ''} ${nf(((L.org.Brasil||0)+(L.org.Importado||0))/L.t*100,0)}% fueron importados.`; }
     if(tab==='vinos' && vin){ const pr = vin.series?.precio||[], l = Lp(pr), a = l ? pr.find(p=>p[0]===mAdd(l[0],-12)) : null, co = vin.cosecha||{}, n = (co.total||[]).length-1;
       if(!l) return '';
       return `El litro de vino común costaba <strong>$ ${nf(l[1],0)}</strong> en el Gran Buenos Aires en ${mesN(l[0])}${a ? ` (${pc(l[1]/a[1]-1,0)} en un año)` : ''}.${n>0 ? ` La vendimia ${co.anios[n]} dio ${nf(co.total[n]/1e7,2)} millones de toneladas de uva, ${pc(co.total[n]/co.total[n-1]-1,0)} contra la del año anterior.` : ''}${vin.mercado?.por_hab ? ` En ${vin.mercado.anio} se vendieron ${nf(vin.mercado.por_hab,1)} litros de vino por habitante en el país.` : ''}`; }
@@ -8382,6 +8558,7 @@ body.mporta .hbus{display:none}
     trabajo:['empleo','desocupacion','desempleo'], empleo:['desocupacion','desempleo'], desempleo:['desocupacion','empleo'], desocupacion:['desempleo'],
     pobreza:['canasta'], canasta:['pobreza'],
     nafta:['surtidores','combustible'], naftas:['surtidores'], combustible:['surtidores','nafta'], combustibles:['surtidores'], gasoil:['surtidores','diesel'], diesel:['surtidores','gasoil'], gnc:['surtidores'], surtidor:['surtidores'], ypf:['surtidores'], estacion:['surtidores'], shell:['surtidores'], axion:['surtidores'], 'precio nafta':['surtidores'],
+    auto:['autos','0km','patentamientos'], autos:['0km','patentamientos'], '0km':['autos','patentamientos'], okm:['0km','autos'], patentamientos:['0km','autos'], patentamiento:['0km','autos'], patentar:['0km'], patentados:['0km'], concesionaria:['0km','autos'], concesionarias:['0km'], camioneta:['0km','suv','pick-ups'], camionetas:['0km','suv'], pickup:['0km','pick-ups'], suv:['0km'], marcas:['0km','autos'], toyota:['0km','autos'], fiat:['0km'], volkswagen:['0km'], ford:['0km'], chevrolet:['0km'], renault:['0km'], peugeot:['0km'], byd:['0km','autos'], hilux:['0km','toyota'], importados:['0km','autos'],
     vino:['vinos','uva','bodega'], vinos:['vino','uvas'], uva:['vinos','vino','cosecha'], uvas:['vinos'], vendimia:['vinos','cosecha','uva'], bodega:['vinos'], bodegas:['vinos'], malbec:['vinos','variedad'], vinedo:['vinos','superficie'], vinedos:['vinos'], mosto:['vinos'], damajuana:['vino comun','vinos'], mendoza:['vinos','uva'],
     carne:['ganaderia','hacienda','novillo','asado'], vaca:['ganaderia','hacienda','vacas'], vacas:['ganaderia','hacienda','vaca'], hacienda:['ganaderia'], asado:['carne'], campo:['ganaderia','soja','maiz','trigo'], liniers:['canuelas','hacienda'],
     petroleo:['brent','wti','crudo'], crudo:['petroleo'], nafta:['petroleo'],
