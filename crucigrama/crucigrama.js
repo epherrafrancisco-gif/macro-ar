@@ -105,7 +105,8 @@ for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
 const HOR = P.puestas.filter(p => p.dx).sort((a, b) => a.n - b.n), VER = P.puestas.filter(p => p.dy).sort((a, b) => a.n - b.n);
 
 // ---------- estado guardado ----------
-const KEY = 'pm-cruci-' + HOY;
+// el N.º 3 (03/11/2026) se cambió a mitad del día por uno solo de economía: lo que alguien llenó del anterior no sirve
+const KEY = 'pm-cruci-' + HOY + (HOY === '2026-11-03' ? '-eco' : '');
 let E = {l: {}, t: 0, fin: false, pistas: 0};
 try { E = {...E, ...JSON.parse(localStorage.getItem(KEY) || '{}')}; } catch (e) {}
 const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(E)); } catch (e) {} };

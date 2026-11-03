@@ -756,7 +756,16 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   `P.puestas` con las pistas de `PALABRAS` y `#grid.neg` (gap 1 px; celular `(100vw − 26px)/11` = 30 px en 360 y 33 en 390;
   compu 48 px). `plan.js`/`MAZO`/`armar` quedan de respaldo si un día no está en grillas.js. Banco de ~2.400 palabras
   (tandas del 02/11/2026 de 3, 5 y 7 letras, cosas de todos los días: pedido del dueño, "no mega complejas"). Para sumar
-  palabras: al final de `palabras.js` y volver a correr el script. PENDIENTE: extender grillas.js antes de 12/2028.
+  palabras: al final de `palabras.js` y volver a correr el script.
+- SOLO ECONOMÍA desde el 03/11/2026 (el dueño, enojado: "se lo anuncié a todo el mundo como un crucigrama de economía"; el N.º 3
+  había salido con "Barco antiguo", "No linda"...). El generador usa solo las palabras de arriba de la marca "FIN DE ECONOMÍA" de
+  `palabras.js` y las de abajo que tienen un 1 como tercer dato (`['MES', 'Período que mide el IPC', 1]`: palabra de todos los
+  días con pista de economía, o palabra nueva de economía). Las palabras de todos los días sin el 1 NO salen nunca. Nunca volver a
+  meter pistas que no sean de economía. Con ~1.360 palabras, las reglas pasaron a: 5+ letras no antes de 21 días, 3 letras no antes
+  de 7, máx. 6 en común entre dos días, hasta 12 siglas/códigos por día (variables GAP, GAP3, MAXC, SIGLAS). `grillas.js` llega hasta
+  el 30/06/2027: PENDIENTE sumar palabras de economía (sobre todo de 3, 5 y 7 letras) y volver a correr
+  `node scripts/crucigrama_grillas.js 760` antes de esa fecha (y para volver a separar más las repeticiones).
+  El N.º 3 se cambió a mitad del día: su progreso guardado usa la clave `pm-cruci-2026-11-03-eco`.
 
 ## Datos y robots (GitHub Actions)
 - `data.json` (scripts/update.py, workflow `actualizar-datos.yml`, L a V 10:15, 11:30 y 18:47 ART + a mano):

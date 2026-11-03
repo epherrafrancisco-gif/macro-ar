@@ -2,7 +2,7 @@
 // 02/11/2026: 25 a 32 palabras, casilleros grandes). Grilla de 11×11 con casilleros negros, simétrica (giro de 180°):
 // filas y columnas pares tienen palabras (de 3, 5, 7 u 11 letras); en las impares, una letra sí y una no, de modo que cada
 // palabra se cruza con otras cada dos letras.
-// Reglas comprobadas día por día:
+// Reglas comprobadas día por día (desde el 03/11/2026, solo economía: con menos palabras, se repiten antes; ver CLAUDE.md):
 //  - ninguna palabra de 5 letras o más se repite antes de GAP días (60, pedido del dueño); las de 3 letras, GAP3 (en español
 //    hay pocas palabras de 3 letras: se repiten antes, pero nunca dentro de las 3 semanas);
 //  - dos crucigramas cualesquiera comparten como mucho MAXC palabras (4, pedido del dueño);
@@ -12,8 +12,14 @@
 //   Palabras nuevas: SIEMPRE al final de palabras.js; para sacar una, dejar ['', ''] y volver a correr esto.
 const fs = require('fs'), path = require('path');
 const R = p => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
-const PALABRAS = new Function(R('crucigrama/palabras.js').replace('const PALABRAS', 'var PALABRAS') + '; return PALABRAS;')();
-const DIAS = +(process.argv.find(a => /^\d+$/.test(a)) || 760), N0 = 3, GAP = 60, GAP3 = 18, MAXC = 4, SIGLAS = 3, SZ = 11;
+// SOLO ECONOMÍA (pedido del dueño 03/11/2026: "se lo anuncié a todo el mundo como un crucigrama de economía"): se usan las
+// palabras de palabras.js hasta la marca "FIN DE ECONOMÍA"; lo que está debajo (cosas de todos los días) queda afuera.
+const TXT = R('crucigrama/palabras.js'), CORTE = TXT.indexOf('FIN DE ECONOMÍA');
+// también entran las de abajo que tienen un 1 como tercer dato (palabras con pista de economía, sumadas el 03/11/2026)
+const N_ECO = CORTE > 0 ? (TXT.slice(0, CORTE).match(/^\s*\['/gm) || []).length : Infinity;
+const PALABRAS = new Function(TXT.replace('const PALABRAS', 'var PALABRAS') + '; return PALABRAS;')().filter((e, i) => i < N_ECO || e[2] === 1);
+const ENV = k => process.env[k] != null ? +process.env[k] : null;
+const DIAS = +(process.argv.find(a => /^\d+$/.test(a)) || 760), N0 = 3, GAP = ENV('GAP') ?? 21, GAP3 = ENV('GAP3') ?? 7, MAXC = ENV('MAXC') ?? 6, SIGLAS = ENV('SIGLAS') ?? 12, SZ = 11;
 const fecha = n => new Date(Date.parse('2026-11-01') + (n - 1) * 864e5).toISOString().slice(0, 10);
 const desde = (process.argv.find(a => a.startsWith('--desde=')) || '').slice(8) || fecha(Math.round((Date.now() - 3 * 3600e3 - Date.parse('2026-11-01')) / 864e5) + 2);
 
