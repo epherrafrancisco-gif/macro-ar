@@ -1,0 +1,41 @@
+name: Chequeo Apple (Safari)
+
+# Prueba el sitio publicado con el motor de Safari (WebKit) en iPhone, iPad y Mac, en una Mac de GitHub.
+# Deja capturas e informe en la rama `chequeo-apple` (no toca main). Se corre a mano o al cambiar este chequeo.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/chequeo-apple.yml", "scripts/chequeo_apple.mjs"]
+
+permissions:
+  contents: write
+
+jobs:
+  safari:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Instalar WebKit
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1 >/dev/null
+          npx playwright install webkit
+      - name: Probar
+        continue-on-error: true
+        run: node scripts/chequeo_apple.mjs
+      - name: Resumen
+        if: always()
+        run: cat apple/informe.md >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Guardar capturas en la rama chequeo-apple
+        if: always()
+        run: |
+          cd apple
+          git init -q -b chequeo-apple
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "Chequeo Apple $(date -u +%F\ %H:%M)"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" chequeo-apple
