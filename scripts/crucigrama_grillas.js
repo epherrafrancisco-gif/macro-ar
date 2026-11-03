@@ -19,7 +19,8 @@ const TXT = R('crucigrama/palabras.js'), CORTE = TXT.indexOf('FIN DE ECONOMÍA')
 const N_ECO = CORTE > 0 ? (TXT.slice(0, CORTE).match(/^\s*\['/gm) || []).length : Infinity;
 const PALABRAS = new Function(TXT.replace('const PALABRAS', 'var PALABRAS') + '; return PALABRAS;')().filter((e, i) => i < N_ECO || e[2] === 1);
 const ENV = k => process.env[k] != null ? +process.env[k] : null;
-const DIAS = +(process.argv.find(a => /^\d+$/.test(a)) || 760), N0 = 3, GAP = ENV('GAP') ?? 21, GAP3 = ENV('GAP3') ?? 7, MAXC = ENV('MAXC') ?? 6, SIGLAS = ENV('SIGLAS') ?? 12, SZ = 11;
+let sigMax = 0;   // tope de siglas del día que se está armando (se afloja si no sale)
+const DIAS = +(process.argv.find(a => /^\d+$/.test(a)) || 760), N0 = 3, GAP = ENV('GAP') ?? 21, GAP3 = ENV('GAP3') ?? 6, MAXC = ENV('MAXC') ?? 6, SIGLAS = ENV('SIGLAS') ?? 3, SZ = 11;
 const fecha = n => new Date(Date.parse('2026-11-01') + (n - 1) * 864e5).toISOString().slice(0, 10);
 const desde = (process.argv.find(a => a.startsWith('--desde=')) || '').slice(8) || fecha(Math.round((Date.now() - 3 * 3600e3 - Date.parse('2026-11-01')) / 864e5) + 2);
 
@@ -29,7 +30,9 @@ function azar(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>
 // ---------- banco ----------
 const PISTA = new Map(); for (const [w, p] of PALABRAS) if (w && /^[A-ZÑ]+$/.test(w) && !PISTA.has(w)) PISTA.set(w, p);
 const byLen = {}; for (const w of PISTA.keys()) if ([3, 5, 7, 11].includes(w.length)) (byLen[w.length] = byLen[w.length] || []).push(w);
-const esSigla = w => /sigla|código|abreviatura/i.test(PISTA.get(w));
+// siglas y códigos: por la pista, más las de 3 letras que son siglas aunque la pista no lo diga
+const SIG3 = new Set('FED FMI MEP IVA UVA YPF DAX CAC VIX DNI CGT ISO PIB PIN BCE BID OMC ONU CBU CNV SEC ETF FCI TIR CER IPC REM'.split(' '));
+const esSigla = w => /sigla|código|abreviatura/i.test(PISTA.get(w)) || SIG3.has(w);
 const M = {}, FULL = {};
 for (const L in byLen) {
   const n = byLen[L].length, Wd = (n + 31) >>> 5; FULL[L] = new Uint32Array(Wd); for (let i = 0; i < n; i++) FULL[L][i >>> 5] |= 1 << (i & 31);
@@ -42,7 +45,7 @@ const pc = a => { let c = 0; for (let v of a) { v = v - ((v >>> 1) & 0x55555555)
 function patron(rnd) {
   // un par con tres palabras de 3 (si no, no se llega a 26 palabras); el resto, 5 + 5 o 3 + 7. De vez en cuando una de 11
   // letras de punta a punta, compensada con otro par de tres palabras de 3 (pocas palabras de 3: se usan lo justo)
-  const pares = Array.from({length: 6}, () => { const x = rnd(); return x < .54 ? [5, 5] : x < .77 ? [3, 7] : [7, 3]; });
+  const pares = Array.from({length: 6}, () => { const x = rnd(); return x < .8 ? [5, 5] : x < .9 ? [3, 7] : [7, 3]; });   // menos palabras de 3 = menos siglas (pedido del dueño 03/11/2026)
   const orden = [0, 1, 2, 3, 4, 5].sort(() => rnd() - .5);
   pares[orden[0]] = [3, 3, 3];
   if (rnd() < .12) { pares[orden[1]] = [11]; pares[orden[2]] = [3, 3, 3]; }
@@ -66,7 +69,7 @@ function patron(rnd) {
   let blancas = 0; for (let y = 0; y < SZ; y++) for (let x = 0; x < SZ; x++) if (!g[y][x]) blancas++;
   if (vis.size !== blancas) return null;
   let pasan = 0; for (let k = 0; k < SZ; k += 2) { if (!g[5][k]) pasan++; if (!g[k][5]) pasan++; }
-  return pasan >= 4 ? g : null;
+  return pasan >= 2 ? g : null;   // antes 4: con 2 alcanza para que el centro no quede tapado y hay menos palabras de 3 (menos siglas)
 }
 
 // ---------- llenar con palabras (búsqueda con vuelta atrás; prefiere las que hace más que no salen) ----------
@@ -78,16 +81,16 @@ function llenar(g, permit, prio, rnd) {
   const L = new Array(SZ * SZ).fill(null), used = new Set(); let pasos = 0, sig = 0;
   const dom = s => { const n = s.c.length; let d = null; for (let p = 0; p < n; p++) { const ch = L[s.c[p]]; if (ch) { const m = M[n][p].get(ch); if (!m) return new Uint32Array(FULL[n].length); if (!d) d = m.slice(); else for (let i = 0; i < d.length; i++) d[i] &= m[i]; } } if (!d) return permit[n]; for (let i = 0; i < d.length; i++) d[i] &= permit[n][i]; return d; };
   function rec() {
-    if (++pasos > 60000) return false; let bs = null, bd = null, bc = 1e9;
+    if (++pasos > 20000) return false; let bs = null, bd = null, bc = 1e9;
     for (const s of S) { if (s.w) continue; const d = dom(s); const c = pc(d); if (c === 0) return false; if (c < bc) { bc = c; bs = s; bd = d; } }
     if (!bs) return true; const n = bs.c.length, ids = [];
     for (let i = 0; i < bd.length; i++) { let v = bd[i]; while (v) { const b = v & -v; ids.push(i * 32 + 31 - Math.clz32(b)); v ^= b; } }
     const or = ids.map(i => [i, prio(byLen[n][i]) + rnd() * 3]).sort((a, b) => a[1] - b[1]).slice(0, 12);
     for (const [i] of or) {
-      const w = byLen[n][i]; if (used.has(w)) continue; const sg = esSigla(w); if (sg && sig >= SIGLAS) continue;
+      const w = byLen[n][i]; if (used.has(w)) continue; const sg = esSigla(w); if (sg && sig >= sigMax) continue;
       const prev = bs.c.map(k => L[k]); bs.c.forEach((k, p) => L[k] = w[p]); bs.w = w; used.add(w); if (sg) sig++;
       if (rec()) return true;
-      used.delete(w); if (sg) sig--; bs.w = null; bs.c.forEach((k, p) => L[k] = prev[p]); if (pasos > 60000) return false;
+      used.delete(w); if (sg) sig--; bs.w = null; bs.c.forEach((k, p) => L[k] = prev[p]); if (pasos > 20000) return false;
     }
     return false;
   }
@@ -106,11 +109,13 @@ const t0 = Date.now(), cuantas = {}, tres = [], relaj = [];
 for (let n = N0; n < N0 + DIAS; n++) {
   const HOY = fecha(n); let res = null;
   if (viejo && HOY < desde && viejo.d[n - viejo.n0]) { const s = viejo.d[n - viejo.n0]; res = {s, words: palabrasDe(s)}; }
-  for (let a = 0, gap = GAP; !res; a++) {
-    if (a && a % 400 === 0) { gap -= 5; relaj.push(n); }               // si no sale, se afloja de a poco (avisa al final)
+  sigMax = SIGLAS;
+  for (let a = 0, gap = GAP, gap3 = GAP3; !res; a++) {
+    // si no sale, se afloja de a poco (avisa al final): primero una sigla más, después las repeticiones
+    if (a && a % 150 === 0) { relaj.push(n); if (a % 300 === 150 && sigMax < SIGLAS + 2) sigMax++; else { gap = Math.max(7, gap - 3); gap3 = Math.max(2, gap3 - 1); } }
     const rnd = azar(semilla('grilla-' + n + '-' + a));
     const permit = {};
-    for (const Lx in byLen) { const lim = +Lx === 3 ? GAP3 : gap; permit[Lx] = FULL[Lx].slice(); byLen[Lx].forEach((w, i) => { if (ult.has(w) && n - ult.get(w) < lim) permit[Lx][i >>> 5] &= ~(1 << (i & 31)); }); }
+    for (const Lx in byLen) { const lim = +Lx === 3 ? gap3 : gap; permit[Lx] = FULL[Lx].slice(); byLen[Lx].forEach((w, i) => { if (ult.has(w) && n - ult.get(w) < lim) permit[Lx][i >>> 5] &= ~(1 << (i & 31)); }); }
     const g = patron(rnd); if (!g) continue;
     const r = llenar(g, permit, w => (usos.get(w) || 0) * 4 + (ult.has(w) ? -Math.min(ult.get(w), n) / 400 : -1) + (esSigla(w) ? 2 : 0), rnd); if (!r) continue;
     // máx. MAXC palabras en común con cualquier día anterior
