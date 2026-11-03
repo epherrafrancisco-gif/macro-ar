@@ -1,0 +1,18 @@
+name: Sonda API (temporal)
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/sonda-api.yml"]
+permissions:
+  contents: write
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          mkdir out && cd out
+          for u in "https://pulsomacro.com.ar/api/racha" "https://pulsomacro.com.ar/api/racha?t=1" "https://pulsomacro.com.ar/api/boveda"; do
+            echo "== $u" >> r.txt; curl -s -i -A "Mozilla/5.0 (compatible; PulsoMacro/1.0; +https://pulsomacro.com.ar)" "$u" | head -c 1500 >> r.txt; echo >> r.txt; done
+          echo "== POST" >> r.txt; curl -s -i -X POST -H 'content-type: application/json' -d '{"tk":""}' https://pulsomacro.com.ar/api/racha | head -c 800 >> r.txt
+          git init -q -b sonda && git config user.name bot && git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm sonda && git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" sonda
