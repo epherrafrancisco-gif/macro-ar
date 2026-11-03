@@ -192,13 +192,21 @@ def historia():
         if not cand: diag['errores'].append('historia: no está el recurso'); return {}
         u = sorted(cand, key=lambda r: r.get('url'))[-1]['url']
         rd = lector(texto(bajar(u))); cab = rd.fieldnames or []
-        ca, cm, cc = col(cab, 'anio'), col(cab, 'mes'), col(cab, 'cantidad')
+        ca, cm, cc, ct = col(cab, 'anio'), col(cab, 'mes'), col(cab, 'cantidad'), col(cab, 'tipo_vehiculo')
+        cp = col(cab, 'provincia_inscripcion')
         diag['historia'] = {'url': u, 'columnas': cab}
-        h = Counter()
+        h = defaultdict(Counter); prov = defaultdict(Counter)
         for f in rd:
-            try: h[f'{int(f[ca])}-{int(f[cm]):02d}'] += int(float(f[cc]))
-            except (ValueError, TypeError, KeyError): pass
-        return dict(sorted(h.items()))
+            try:
+                m = f'{int(f[ca])}-{int(f[cm]):02d}'; t = limpio(f.get(ct)) if ct else 'TOTAL'; n = int(float(f[cc]))
+            except (ValueError, TypeError, KeyError): continue
+            h[t][m] += n
+            if cp: prov[t + '|' + m][limpio(f.get(cp))] += n
+        diag['historia']['tipos'] = {t: sum(c.values()) for t, c in h.items()}
+        out = {t: dict(sorted(c.items())) for t, c in h.items()}
+        # provincias del último mes de cada tipo (para tener un mes más fresco que el detalle)
+        out['_prov'] = {t: dict(prov[t + '|' + max(c)].most_common()) for t, c in h.items()}
+        return out
     except Exception as e:
         diag['errores'].append(f'historia: {e}'); return {}
 
