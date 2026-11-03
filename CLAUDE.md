@@ -663,7 +663,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   una ficha firmada con HMAC (clave al azar guardada en R2 `racha/clave`) con la racha +1; solo suma de a uno, con ≥2,5 s
   entre respuestas (si no, 429), se corta a los 10 min sin jugar, tope 1000. No guarda nada por jugador. Límite honesto:
   no puede saber si la respuesta era correcta (eso lo decide el navegador), solo frena trampas fáciles (mandar "999" o
-  muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. En la página: `#rec` al pie
+  muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. Piso `RACHA_PISO` = 62 (pedido del dueño 02/11/2026: el récord público arranca en su 62, coherente con el contador del modo Órbita): el GET nunca devuelve menos y solo se supera con 63. En la página: `#rec` al pie
   ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
 - Carteles (`cartel(reel, txt, ms)`, pedido del dueño 02/11/2026: que no se superpongan): van EN la pregunta, en el flujo, antes de
   `.lockr`/la fuente, uno por vez en fila (`COLA`, `sigCartel`), arrancan 950 ms después (cuando se fue el número grande) y se pliegan

@@ -73,7 +73,11 @@ async function rachaClave(env){
   return RACHA_KEY;
 }
 async function firmar(env, txt){ return b64(new Uint8Array(await crypto.subtle.sign('HMAC', await rachaClave(env), new TextEncoder().encode(txt)))).slice(0, 32); }
-async function rachaRecord(env){ try{ const o = await env.DATOS.get('racha/record.json'); if (o) return await o.json(); }catch(e){} return {n: 0, t: 0}; }
+// récord base de 62 (pedido del dueño 02/11/2026: es el suyo, el del único que tiene el modo legendario): el récord que se
+// muestra nunca es menor, y solo cambia cuando alguien hace 63 o más
+const RACHA_PISO = 62;
+async function rachaRecord(env){ let r = {n: 0, t: 0}; try{ const o = await env.DATOS.get('racha/record.json'); if (o) r = await o.json(); }catch(e){}
+  return r.n >= RACHA_PISO ? r : {n: RACHA_PISO, t: r.t || 0}; }
 async function racha(req, env){
   const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
   if (req.method === 'GET') return new Response(JSON.stringify(await rachaRecord(env)), {headers: {...H, 'cache-control': 'public, max-age=20'}});
