@@ -1,0 +1,52 @@
+== https://pulsomacro.com.ar/api/racha
+HTTP/2 200 
+date: Tue, 03 Nov 2026 05:38:24 GMT
+content-type: application/json
+content-length: 26
+cache-control: public, max-age=20
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=4mW6LeRYNxKJcSSs9ICk43k%2F%2BC6h4RB7wMnWA27Ur0NBVRfUsLVJJD1BEMmiNaXszCSAISLUkJfXu8TmBYzatQsEEG2oLIkOetD8zIIMApuZvEEYh3KqhzJIA6cQ9oBeVQj%2Fgg%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a5490857cb3c84da-DFW
+alt-svc: h3=":443"; ma=86400
+
+{"n":62,"t":1793654831029}
+== https://pulsomacro.com.ar/api/racha?t=1
+HTTP/2 200 
+date: Tue, 03 Nov 2026 05:38:25 GMT
+content-type: application/json
+content-length: 26
+cache-control: public, max-age=20
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=or5Hm88%2B9Em6wPwV5zdTWEVLVrR8G57nUlQG%2F1H4ZeT4DaJhW68arIiL6QgOHDVy1Z0RCg76XCzX87wGLwDZH5KW8YwC47%2BvCkRhqGCaMpi36jTs%2FNxF8h9FoId%2FS6vG7p%2BYmg%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a5490859dce16c37-DFW
+alt-svc: h3=":443"; ma=86400
+
+{"n":62,"t":1793654831029}
+== https://pulsomacro.com.ar/api/boveda
+HTTP/2 200 
+date: Tue, 03 Nov 2026 05:38:25 GMT
+content-type: application/json
+content-length: 7
+cache-control: public, max-age=30
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2%2FnkgONcuk8Ds9o4mdd%2F4cmIWUYFkeeUpbMZ9VNuyGY6Y5RFoIF2Q7uQYbSoVAvxlZLYxOg%2BFETHuzVOXHcD6GFySfi7D9XVlZ67vjb9%2FNK9ZTm%2FMgXYctrCldizRzI0giWwuw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a549085b3b32f2f0-DFW
+alt-svc: h3=":443"; ma=86400
+
+{"n":1}
+== POST
+HTTP/2 200 
+date: Tue, 03 Nov 2026 05:38:25 GMT
+content-type: application/json
+content-length: 89
+cache-control: no-store
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=NFQfAOfT%2B6Tp1uyNjgOYY4Ase1VQ9eScyNNia0gSxrdwqIlbTXr%2B%2F9sY8gCIRdOi7i%2FwP6TwdF4Ri27BNoCzy6gWnA%2BqC4LHgidJR1Oqrcs%2B5j%2BB3d4vwGPZMhLfTMIxQPZopw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a549085c98e69603-DFW
+alt-svc: h3=":443"; ma=86400
+
+{"tk":"1.1793684305405.jdPV264y3YIyfoIt4LEZO090jtfHK6Z3","n":1,"record":62,"nuevo":false}
