@@ -45,6 +45,13 @@ out = {'fuentes': 'The Space Devs (Launch Library 2); GCAT, J. McDowell, planet4
        'actualizado': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}
 
 
+def nombre_org(o, k):
+    for c in ('ShortEName', 'EName', 'ShortName', 'Name'):
+        v = (o or {}).get(c)
+        if v and v != '-': return v
+    return k
+
+
 def lanzamiento(l):
     g = lambda *ks: (lambda x: x)(_dig(l, ks))
     return {'n': l.get('name'), 't': l.get('net'), 'prec': (l.get('net_precision') or {}).get('abbrev'),
@@ -81,7 +88,7 @@ try:
     diag['ej_launch'] = L[-2:]
     anio = defaultdict(lambda: {'n': 0, 'ok': 0, 'pais': Counter(), 'org': Counter()})
     for f in L:
-        code = f.get('Launch_Code', '')
+        code = f.get('LaunchCode') or f.get('Launch_Code') or ''
         if not code.startswith('O'): continue          # solo lanzamientos orbitales (los suborbitales empiezan con otra letra)
         a = (f.get('Launch_Date') or '')[:4]
         if not a.isdigit(): continue
@@ -91,7 +98,7 @@ try:
         x['pais'][pais] += 1; x['org'][ag] += 1
     out['anios'] = {a: {'n': v['n'], 'ok': v['ok'], 'pais': dict(v['pais'].most_common(12)), 'org': dict(v['org'].most_common(12))}
                     for a, v in sorted(anio.items())}
-    out['orgs'] = {k: {'n': (orgs.get(k) or {}).get('ShortEName') or (orgs.get(k) or {}).get('Name') or k, 'p': (orgs.get(k) or {}).get('StateCode')}
+    out['orgs'] = {k: {'n': nombre_org(orgs.get(k), k), 'p': (orgs.get(k) or {}).get('StateCode')}
                    for v in anio.values() for k in v['org']}
 except Exception as e:
     diag['errores'].append(f'GCAT lanzamientos: {e}')
@@ -108,14 +115,14 @@ try:
                      'basura': sum(1 for f in C if (f.get('Type') or '').startswith(('D', 'R')))}
     try: orgs
     except NameError: orgs = {}
-    out['orbita']['nombres'] = {k: (orgs.get(k) or {}).get('ShortEName') or (orgs.get(k) or {}).get('Name') or k
+    out['orbita']['nombres'] = {k: nombre_org(orgs.get(k.split('/')[0]), k)
                                 for k in list(out['orbita']['por_dueno']) + list(out['orbita']['por_pais'])}
     # Argentina: todos sus satélites (activos o no) del catálogo completo
     S = tsv('cat/satcat.tsv')
     ar = [f for f in S if f.get('State') == 'AR' and (f.get('Type') or '').startswith('P')]
     out['argentina'] = [{'n': f.get('Name'), 'f': f.get('LDate'), 'est': f.get('Status'), 'dueno': f.get('Owner'),
                          'fab': f.get('Manufacturer'), 'kg': f.get('Mass')} for f in ar]
-    out['argentina_orgs'] = {f.get('Owner'): (orgs.get(f.get('Owner')) or {}).get('ShortEName') or f.get('Owner') for f in ar}
+    out['argentina_orgs'] = {f.get('Owner'): nombre_org(orgs.get(f.get('Owner')), f.get('Owner')) for f in ar}
 except Exception as e:
     diag['errores'].append(f'GCAT órbita: {e}')
     for k in ('orbita', 'argentina', 'argentina_orgs'): out[k] = viejo.get(k, {})
