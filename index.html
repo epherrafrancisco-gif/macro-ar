@@ -5877,7 +5877,8 @@ body.mporta .hbus{display:none}
     if(typeof mResumen==='function') mResumen();
     if(loaded.d) renderTape();
   }
-  let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,120); });
+  // celular: al scrollear, la barra del navegador aparece y desaparece y dispara 'resize' solo de alto; redibujar todo ahí trababa el teléfono (04/11/2026). Solo se redibuja si cambia el ancho.
+  let rt, rtW = innerWidth; window.addEventListener('resize', ()=>{ if(innerWidth === rtW) return; clearTimeout(rt); rt=setTimeout(()=>{ rtW = innerWidth; render(); },120); });
 
 
   // ---- cinta de cotizaciones (arriba de todo) ----
