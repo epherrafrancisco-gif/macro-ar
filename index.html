@@ -4440,22 +4440,25 @@ body.mporta .hbus{display:none}
     return {A, ms, sp, pr}; }
 
   // Animaciones de cabecera de Ganadería, Vinos, Surtidores y Química (pedido del dueño 04/11/2026: "algo llamativo y tecnológico" como Espacio)
-  const FX = {corre:false, t0:performance.now(), ult:0};
+  const FX = {corre:false, t0:performance.now(), ult:0, cel:matchMedia('(pointer:coarse)').matches, vis:new Set(), io:null};
   function fxCol(){ return document.documentElement.dataset.tema==='claro'
     ? {a:'138,86,0', b:'47,110,168', c:'160,82,45', w:'110,20,40', txt:'rgba(85,64,31,.85)'}
     : {a:'106,168,216', b:'143,208,255', c:'224,178,90', w:'200,40,70', txt:'rgba(170,190,210,.8)'}; }
-  function fxVivos(){ return ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth); }
+  function fxVivos(){
+    if(!FX.io && 'IntersectionObserver' in window){ FX.io = new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting ? FX.vis.add(e.target) : FX.vis.delete(e.target)); if(FX.vis.size) fxIni(); });
+      ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].forEach(k=>{ const cv = $('fx'+k); if(cv) FX.io.observe(cv); }); }
+    return ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth && (!FX.io || FX.vis.has(cv))); }
   function fxIni(){ const q = matchMedia('(prefers-reduced-motion: reduce)').matches;
     fxVivos().forEach(cv=>fxDib(cv, q ? 6 : (performance.now()-FX.t0)/1000));
     if(!q && !FX.corre){ FX.corre = true; requestAnimationFrame(fxCuadro); } }
   function fxCuadro(ahora){ const v = fxVivos();
     if(!v.length || document.hidden){ FX.corre = false; return; }
-    if(ahora - FX.ult > 33){ FX.ult = ahora; v.forEach(cv=>fxDib(cv, (ahora-FX.t0)/1000)); }
+    if(ahora - FX.ult > (FX.cel ? 50 : 33)){ FX.ult = ahora; v.forEach(cv=>fxDib(cv, (ahora-FX.t0)/1000)); }
     requestAnimationFrame(fxCuadro); }
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) setTimeout(fxIni, 50); });
   const fxR = n => { const x = Math.sin(n*127.1)*43758.5453; return x - Math.floor(x); };
   function fxDib(cv, t){
-    const dpr = Math.min(devicePixelRatio||1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    const dpr = FX.cel ? Math.min(devicePixelRatio||1, 1.5) : Math.min(devicePixelRatio||1, 2), W = cv.clientWidth, H = cv.clientHeight, N = W < 560;
     if(cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
     const x = cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,W,H);
     const C = fxCol(), k = cv.id.slice(2), rgba = (c,a) => `rgba(${c},${a})`;
@@ -4468,13 +4471,13 @@ body.mporta .hbus{display:none}
       const g = x.createLinearGradient(sx-90,0,sx,0); g.addColorStop(0,rgba(C.b,0)); g.addColorStop(1,rgba(C.b,.22)); x.fillStyle = g; x.fillRect(sx-90,hz,90,H-hz);
       x.strokeStyle = rgba(C.b,.8); x.beginPath(); x.moveTo(sx,hz); x.lineTo(sx,H); x.stroke();
       let vis = 0;
-      for(let i=0;i<70;i++){ const z = .15 + fxR(i)*.85, px = (((fxR(i+9)*1.4 - t*.012*(1+fxR(i+3))) % 1.4) + 1.4) % 1.4 - .2;
+      for(let i=0;i<(N ? 40 : 70);i++){ const z = .15 + fxR(i)*.85, px = (((fxR(i+9)*1.4 - t*.012*(1+fxR(i+3))) % 1.4) + 1.4) % 1.4 - .2;
         const y = hz + (H-hz)*z*z, X = cx + (px-.5)*W*(.25+z*1.1), sz = 1.2 + z*3.2; if(X < 0 || X > W) continue;
         const cerca = Math.abs(X - sx) < 60 && X <= sx + 2; if(X < sx) vis++;
         x.fillStyle = cerca ? rgba(C.c,.95) : rgba(C.a,.45+.4*z);
         x.beginPath(); x.ellipse(X, y, sz*1.6, sz, 0, 0, 7); x.fill(); x.beginPath(); x.arc(X - sz*1.7, y - sz*.6, sz*.6, 0, 7); x.fill();
         if(cerca && z > .55){ x.strokeStyle = rgba(C.c,.7); x.strokeRect(X-sz*3, y-sz*2.4, sz*5.6, sz*4); } }
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`CABEZAS RELEVADAS ${String(vis).padStart(3,'0')}`, W-14, 20); x.textAlign = 'left';
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText(`CABEZAS RELEVADAS ${String(vis).padStart(3,'0')}`, W-14, 20); x.textAlign = 'left';
     } else if(k==='Vi'){ // copa de alambre girando con el vino moviéndose, Andes atrás
       x.strokeStyle = rgba(C.a,.35); x.beginPath();
       for(let X=0; X<=W; X+=6){ const y = H*.62 - Math.abs(Math.sin(X*.011))*H*.22 - Math.abs(Math.sin(X*.031+1))*H*.1; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke();
@@ -4490,14 +4493,14 @@ body.mporta .hbus{display:none}
       [[30,42],[20,56],[4,66]].forEach(([r,y])=>x.lineTo(cx + r*s*1.25, top+y*s)); [[4,66],[20,56],[30,42]].forEach(([r,y])=>x.lineTo(cx - r*s*1.25, top+y*s)); x.closePath();
       const gv = x.createLinearGradient(0,nivel,0,top+66*s); gv.addColorStop(0,rgba(C.w,.75)); gv.addColorStop(1,rgba(C.w,.35)); x.fillStyle = gv; x.fill(); x.restore();
       for(let i=0;i<8;i++){ const f = (t*.25 + fxR(i)) % 1, y = top+62*s - f*(top+62*s - nivel), X = cx + (fxR(i+5)-.5)*20*s*(1-f*.3); x.fillStyle = rgba(C.c, .6*(1-f)); x.beginPath(); x.arc(X, y, 1.2, 0, 7); x.fill(); }
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`ROTACIÓN ${String(Math.round(ang*57.3)%360).padStart(3,'0')}°`, W-14, 20); x.fillText('MALBEC · MENDOZA · SAN JUAN', W-14, H-12); x.textAlign = 'left';
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText(`ROTACIÓN ${String(Math.round(ang*57.3)%360).padStart(3,'0')}°`, W-14, 20); if(!N) x.fillText('MALBEC · MENDOZA · SAN JUAN', W-14, H-12); x.textAlign = 'left';
     } else if(k==='Su'){ // caño con flujo, medidor y contador de litros
       const y0 = H*.56, ch = H*.16;
       x.strokeStyle = rgba(C.a,.5); x.strokeRect(-2, y0-ch/2, W+4, ch);
       for(let i=0;i<W;i+=40){ x.fillStyle = rgba(C.a,.25); x.fillRect(i, y0-ch/2-4, 4, ch+8); }
-      for(let i=0;i<120;i++){ const v = .5 + fxR(i)*.9, X = ((fxR(i+2)*W + t*120*v) % (W+40)) - 20, Y = y0 + (fxR(i+7)-.5)*ch*.8, l = 6 + v*10;
-        const g = x.createLinearGradient(X-l,0,X,0); g.addColorStop(0, rgba(i%3 ? C.c : C.b, 0)); g.addColorStop(1, rgba(i%3 ? C.c : C.b, .85)); x.strokeStyle = g; x.beginPath(); x.moveTo(X-l, Y); x.lineTo(X, Y); x.stroke(); }
-      const gx = W*.78, gy = H*.36, gr = Math.min(H*.26, 48);
+      for(let i=0;i<(N ? 45 : 110);i++){ const v = .5 + fxR(i)*.9, X = ((fxR(i+2)*W + t*120*v) % (W+40)) - 20, Y = y0 + (fxR(i+7)-.5)*ch*.8, l = 6 + v*10;
+        x.strokeStyle = rgba(i%3 ? C.c : C.b, .75); x.beginPath(); x.moveTo(X-l, Y); x.lineTo(X, Y); x.stroke(); }
+      const gx = W*.78, gy = N ? H*.62 : H*.36, gr = Math.min(H*.26, 48);
       x.fillStyle = document.documentElement.dataset.tema==='claro' ? 'rgba(255,248,232,.92)' : 'rgba(8,18,30,.9)'; x.beginPath(); x.arc(gx, gy, gr+6, 0, 7); x.fill();
       x.strokeStyle = rgba(C.a,.5); x.beginPath(); x.arc(gx, gy, gr, Math.PI*.8, Math.PI*2.2); x.stroke();
       for(let i=0;i<=10;i++){ const a = Math.PI*.8 + i*Math.PI*.14; x.strokeStyle = rgba(i>7 ? C.c : C.a, .8); x.beginPath(); x.moveTo(gx+Math.cos(a)*(gr-7), gy+Math.sin(a)*(gr-7)); x.lineTo(gx+Math.cos(a)*gr, gy+Math.sin(a)*gr); x.stroke(); }
@@ -4507,7 +4510,7 @@ body.mporta .hbus{display:none}
       const lt = (t*7.3) % 10000;
       x.font = '700 22px ui-monospace,monospace'; x.fillStyle = rgba(C.b,.95); x.fillText(lt.toFixed(2).padStart(7,'0'), 14, H*.34);
       x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.fillText('LITROS DESPACHADOS', 14, H*.34 + 14); x.textAlign = 'center'; x.fillText('CAUDAL', gx, gy + gr*.55); x.textAlign = 'left';
-      x.fillText('NAFTA · GASOIL · GNC', 14, H-12);
+      if(!N) x.fillText('NAFTA · GASOIL · GNC', 14, H-12);
     } else if(k==='D'){ // moneda 3D girando sobre un gráfico de velas que avanza
       for(let i=0;i<60;i++){ const X = W - ((t*28 + i*18) % (W+20)), b = fxR(Math.floor((t*28 + i*18)/(W+20))*60 + i), y = H*.5 + Math.sin(i*.4 + b*3)*H*.15, h = 6 + b*18, up = b > .45;
         x.strokeStyle = rgba(up ? C.b : C.c, .35); x.beginPath(); x.moveTo(X, y-h); x.lineTo(X, y+h); x.stroke(); x.fillStyle = rgba(up ? C.b : C.c, .22); x.fillRect(X-4, y-h*.5, 8, h); }
@@ -4517,26 +4520,26 @@ body.mporta .hbus{display:none}
       x.fillStyle = g; x.beginPath(); x.ellipse(cx, cy, rx, r, 0, 0, 7); x.fill(); x.strokeStyle = rgba(C.c,1); x.beginPath(); x.ellipse(cx, cy, rx*.82, r*.82, 0, 0, 7); x.stroke();
       if(Math.abs(sp) > .25){ x.save(); x.translate(cx, cy); x.scale(sp, 1); x.font = `700 ${Math.round(r*1.1)}px ui-monospace,monospace`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = rgba(C.w === '110,20,40' ? '90,55,0' : '20,30,45', .85); x.fillText('$', 0, 2); x.restore(); }
       const oa = t*1.1; x.fillStyle = rgba(C.b,.95); x.beginPath(); x.arc(cx + Math.cos(oa)*r*1.9, cy + Math.sin(oa)*r*.38, 2.5, 0, 7); x.fill();
-      x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText('OFICIAL · MEP · CCL · BLUE · CRIPTO', W-14, H-12); x.textAlign = 'left';
+      x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText('OFICIAL · MEP · CCL · BLUE · CRIPTO', W-14, H-12); x.textAlign = 'left';
     } else if(k==='M'){ // osciloscopio con tres señales y punto de barrido
       for(let X=0; X<W; X+=W/16){ x.strokeStyle = rgba(C.a,.08); x.beginPath(); x.moveTo(X,0); x.lineTo(X,H); x.stroke(); }
       for(let Y=0; Y<H; Y+=H/6){ x.strokeStyle = rgba(C.a,.08); x.beginPath(); x.moveTo(0,Y); x.lineTo(W,Y); x.stroke(); }
       const ss = [[C.b,.018,1.1,.2,'INFLACIÓN'],[C.c,.011,.7,.15,'TASAS'],[C.a,.027,1.7,.1,'ACTIVIDAD']], bx = (t*160) % W;
-      ss.forEach(([c,f,v,am,n],j)=>{ x.strokeStyle = rgba(c,.85); x.lineWidth = 1.5; x.shadowColor = rgba(c,1); x.shadowBlur = 6; x.beginPath();
-        for(let X=0; X<=W; X+=3){ const y = H*(.35 + j*.17) + Math.sin(X*f + t*v)*H*am + Math.sin(X*f*3.1 - t*v*.7)*H*am*.3; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke(); x.shadowBlur = 0; x.lineWidth = 1;
+      ss.forEach(([c,f,v,am,n],j)=>{ x.strokeStyle = rgba(c,.85); x.lineWidth = 1.5; x.shadowColor = rgba(c,1); x.shadowBlur = FX.cel ? 0 : 6; x.beginPath();
+        for(let X=0; X<=W; X+=3){ const y = H*(.35 + j*.17) + Math.sin(X*f + t*v)*H*am + Math.sin(X*f*3.1 - t*v*.7)*H*am*.3; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke(); x.shadowBlur = FX.cel ? 0 : 0; x.lineWidth = 1;
         const y = H*(.35 + j*.17) + Math.sin(bx*f + t*v)*H*am + Math.sin(bx*f*3.1 - t*v*.7)*H*am*.3; x.fillStyle = rgba(c,1); x.beginPath(); x.arc(bx, y, 3, 0, 7); x.fill();
         x.fillStyle = rgba(c,.9); x.fillText(n, W-14-x.measureText(n).width, 20 + j*13); });
       x.strokeStyle = rgba(C.b,.35); x.beginPath(); x.moveTo(bx,0); x.lineTo(bx,H); x.stroke();
     } else if(k==='N'){ // red BCRA → bancos → gente con pulsos de dinero
       const n = W < 500 ? 3 : 5, B = {x:W*.12, y:H*.55, l:'BCRA'}, bs = [], ps = [];
-      for(let i=0;i<n;i++){ bs.push({x:W*.45, y:H*(.22 + .66*i/(n-1)), l:'BANCO'}); }
-      for(let i=0;i<n+2;i++){ ps.push({x:W*.82 + (i%2)*W*.06, y:H*(.18 + .72*i/(n+1)), l:''}); }
+      for(let i=0;i<n;i++){ bs.push({x:W*.45, y:H*(.24 + .54*i/(n-1)), l:'BANCO'}); }
+      for(let i=0;i<n+2;i++){ ps.push({x:W*.82 + (i%2)*W*.06, y:H*(.2 + .6*i/(n+1)), l:''}); }
       const ed = []; bs.forEach((b,i)=>{ ed.push([B,b]); ps.forEach((q,j)=>{ if(Math.abs(j - i*(n+1)/(n-1)) < 1.6) ed.push([b,q]); }); });
       ed.forEach(([a,b],i)=>{ x.strokeStyle = rgba(C.a,.22); x.beginPath(); x.moveTo(a.x,a.y); x.lineTo(b.x,b.y); x.stroke();
         for(let m=0;m<2;m++){ const f = (t*.35 + fxR(i) + m*.5) % 1, X = a.x + (b.x-a.x)*f, Y = a.y + (b.y-a.y)*f; x.fillStyle = rgba(m ? C.c : C.b, .95); x.beginPath(); x.arc(X, Y, 2.2, 0, 7); x.fill(); } });
       const nodo = (q,r,c) => { x.fillStyle = rgba(c,.18); x.beginPath(); x.arc(q.x,q.y,r+4+Math.sin(t*3)*1.5,0,7); x.fill(); x.fillStyle = rgba(c,.9); x.beginPath(); x.arc(q.x,q.y,r,0,7); x.fill(); };
       nodo(B, 9, C.c); bs.forEach(b=>nodo(b, 5, C.b)); ps.forEach(q=>nodo(q, 3, C.a));
-      x.fillStyle = C.txt; x.fillText('BCRA', B.x-12, B.y+24); x.fillText('BANCOS', W*.45-20, H-8); x.fillText('PERSONAS Y EMPRESAS', Math.min(W*.74, W-130), H-8);
+      x.fillStyle = C.txt; x.fillText('BCRA', B.x-12, B.y+24); x.textAlign = 'center'; x.fillText('BANCOS', W*.45, H-6); x.fillText(N ? 'PERSONAS' : 'PERSONAS Y EMPRESAS', W*.85, H-6); x.textAlign = 'left';
     } else if(k==='F'){ // balanza de ingresos y gastos que oscila, con monedas cayendo
       const cx = W/2, cy = H*.3, a = Math.sin(t*.8)*.12, L2 = Math.min(W*.3, 170), p1 = [cx - Math.cos(a)*L2, cy - Math.sin(a)*L2], p2 = [cx + Math.cos(a)*L2, cy + Math.sin(a)*L2];
       x.strokeStyle = rgba(C.a,.7); x.lineWidth = 2; x.beginPath(); x.moveTo(cx, cy); x.lineTo(cx, H-10); x.moveTo(cx-30, H-10); x.lineTo(cx+30, H-10); x.moveTo(...p1); x.lineTo(...p2); x.stroke(); x.lineWidth = 1;
@@ -4544,9 +4547,9 @@ body.mporta .hbus{display:none}
       [[p1,'INGRESOS',C.b],[p2,'GASTOS',C.c]].forEach(([q,l,c],j)=>{ const py = q[1] + H*.32;
         x.strokeStyle = rgba(c,.6); x.beginPath(); x.moveTo(...q); x.lineTo(q[0]-34, py); x.moveTo(...q); x.lineTo(q[0]+34, py); x.stroke();
         x.strokeStyle = rgba(c,.9); x.lineWidth = 2; x.beginPath(); x.ellipse(q[0], py, 38, 7, 0, 0, Math.PI); x.stroke(); x.lineWidth = 1;
-        for(let i=0;i<5;i++){ const f = (t*.5 + i/5 + j*.1) % 1, X = q[0] + (fxR(i+j*7)-.5)*40, Y = 8 + f*(py - 12); x.fillStyle = rgba(c, .9*(1-f*.4)); x.beginPath(); x.ellipse(X, Y, 4, 1.6, 0, 0, 7); x.fill(); }
+        for(let i=0;i<5;i++){ const f = (t*.5 + i/5 + j*.1) % 1, X = q[0] + (fxR(i+j*7)-.5)*40, Y = 28 + f*(py - 32); x.fillStyle = rgba(c, .9*(1-f*.4)); x.beginPath(); x.ellipse(X, Y, 4, 1.6, 0, 0, 7); x.fill(); }
         x.fillStyle = rgba(c,.95); x.textAlign = 'center'; x.fillText(l, q[0], py + 22); x.textAlign = 'left'; });
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`EQUILIBRIO ${a >= 0 ? '+' : '−'}${Math.abs(a*100).toFixed(1).padStart(4,'0')}`, W-14, 20); x.textAlign = 'left';
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText(`EQUILIBRIO ${a >= 0 ? '+' : '−'}${Math.abs(a*100).toFixed(1).padStart(4,'0')}`, W-14, 20); x.textAlign = 'left';
     } else if(k==='A'){ // fábricas con engranajes y humo
       const base = H*.86; x.strokeStyle = rgba(C.a,.45); x.beginPath(); x.moveTo(0, base); x.lineTo(W, base); x.stroke();
       const n = Math.ceil(W/140);
@@ -4564,9 +4567,9 @@ body.mporta .hbus{display:none}
       x.strokeStyle = rgba(C.a,.4); x.beginPath(); x.moveTo(cx-8, hz); x.lineTo(cx-W*.55, H); x.moveTo(cx+8, hz); x.lineTo(cx+W*.55, H); x.stroke();
       for(let j=0;j<10;j++){ const f = ((j/10 + t*.6) % 1), z = f*f, y = hz + (H-hz)*z; x.strokeStyle = rgba(C.a, .2 + .6*z); x.lineWidth = 1 + z*3; x.beginPath(); x.moveTo(cx, y); x.lineTo(cx, y + 2 + z*14); x.stroke(); } x.lineWidth = 1;
       for(let i=0;i<14;i++){ const ida = i%2, f = ((fxR(i)*1 + t*(.25 + fxR(i+3)*.25)) % 1), z = ida ? f*f : (1-f)*(1-f), y = hz + (H-hz)*z, lane = ida ? .18 + fxR(i+5)*.22 : -(.18 + fxR(i+5)*.22), X = cx + lane*W*z*1.1, r = .8 + z*3.5;
-        const c = ida ? C.w : C.c, a = ida ? .95 : 1; x.fillStyle = rgba(c, a); x.shadowColor = rgba(c,1); x.shadowBlur = 8*z;
-        x.beginPath(); x.arc(X - r*2, y, r, 0, 7); x.arc(X + r*2, y, r, 0, 7); x.fill(); x.shadowBlur = 0; }
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`KM/H ${String(Math.round(108 + Math.sin(t*.7)*12)).padStart(3,'0')}`, W-14, 20); x.fillText('AUTOS · PICKUPS · UTILITARIOS', W-14, H-12); x.textAlign = 'left';
+        const c = ida ? C.w : C.c, a = ida ? .95 : 1; x.fillStyle = rgba(c, a); x.shadowColor = rgba(c,1); x.shadowBlur = FX.cel ? 0 : 8*z;
+        x.beginPath(); x.arc(X - r*2, y, r, 0, 7); x.arc(X + r*2, y, r, 0, 7); x.fill(); x.shadowBlur = FX.cel ? 0 : 0; }
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText(`KM/H ${String(Math.round(108 + Math.sin(t*.7)*12)).padStart(3,'0')}`, W-14, 20); if(!N) x.fillText('AUTOS · PICKUPS · UTILITARIOS', W-14, H-12); x.textAlign = 'left';
     } else if(k==='K'){ // velas y libro de órdenes en movimiento (ilustrativo)
       const n = Math.ceil(W/12)+2, off = (t*14) % 12, i0 = Math.floor(t*14/12); let v = 0; const y0 = H*.55;
       for(let i=0;i<n;i++){ const id = i0 + i, d = (fxR(id)-.48)*16, o = Math.sin(id*.13)*H*.18 + Math.sin(id*.041)*H*.12, hi = 4 + fxR(id+1)*10, X = W - i*12 + off - 12, up = d > 0, yc = y0 - o;
@@ -4574,12 +4577,12 @@ body.mporta .hbus{display:none}
         x.fillStyle = rgba(up ? C.b : C.c, up ? .55 : .75); x.fillRect(X-4, yc - Math.max(Math.abs(d),1.5), 8, Math.max(Math.abs(d),1.5)*2);
         const vv = 3 + fxR(id+4)*16; x.fillStyle = rgba(C.a,.25); x.fillRect(X-4, H-vv, 8, vv); }
       x.strokeStyle = rgba(C.b,.5); x.setLineDash([3,4]); x.beginPath(); x.moveTo(0, y0 - Math.sin(i0*.13)*H*.18 - Math.sin(i0*.041)*H*.12); x.lineTo(W, y0 - Math.sin(i0*.13)*H*.18 - Math.sin(i0*.041)*H*.12); x.stroke(); x.setLineDash([]);
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText('ACCIONES · BONOS · CEDEARS · CAUCIONES', W-14, H-12); x.textAlign = 'left';
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText('ACCIONES · BONOS · CEDEARS · CAUCIONES', W-14, H-12); x.textAlign = 'left';
     } else { // molécula de benceno 3D girando, con electrones en órbita
       const cx = W/2, cy = H/2 + 6, R = Math.min(H*.26, 44), ay = t*.6, ax = .9 + Math.sin(t*.3)*.25;
       const pr = (X,Y,Z) => { let x1 = X*Math.cos(ay) + Z*Math.sin(ay), z1 = -X*Math.sin(ay) + Z*Math.cos(ay); const y1 = Y*Math.cos(ax) - z1*Math.sin(ax); z1 = Y*Math.sin(ax) + z1*Math.cos(ax);
         const f = 3/(3 + z1/R*.6); return [cx + x1*f, cy + y1*f, z1, f]; };
-      for(let i=0;i<40;i++){ const X = (fxR(i)*W + t*6*(fxR(i+1)+.2)) % W, Y = fxR(i+4)*H; x.fillStyle = rgba(C.a, .15 + .2*fxR(i+8)); x.fillRect(X, Y, 1.5, 1.5); }
+      for(let i=0;i<(N ? 15 : 40);i++){ const X = (fxR(i)*W + t*6*(fxR(i+1)+.2)) % W, Y = fxR(i+4)*H; x.fillStyle = rgba(C.a, .15 + .2*fxR(i+8)); x.fillRect(X, Y, 1.5, 1.5); }
       const at = [];
       for(let i=0;i<6;i++){ const a = i*Math.PI/3; at.push({p:pr(Math.cos(a)*R, 0, Math.sin(a)*R), c:1}); at.push({p:pr(Math.cos(a)*R*1.75, 0, Math.sin(a)*R*1.75), c:0}); }
       const ln = (a,b,d,o=0) => { x.strokeStyle = rgba(C.a, .35 + .4*(1 - (a.p[2]+b.p[2])/(4*R*1.75) - .5)); x.lineWidth = 1.5;
@@ -4588,9 +4591,9 @@ body.mporta .hbus{display:none}
       [...at].sort((a,b)=>b.p[2]-a.p[2]).forEach(o=>{ const r = (o.c ? 7 : 4)*o.p[3], g = x.createRadialGradient(o.p[0]-r*.3, o.p[1]-r*.3, 0, o.p[0], o.p[1], r);
         g.addColorStop(0, o.c ? rgba(C.b,1) : rgba(C.c,1)); g.addColorStop(1, o.c ? rgba(C.a,.6) : rgba(C.c,.35)); x.fillStyle = g; x.beginPath(); x.arc(o.p[0], o.p[1], r, 0, 7); x.fill(); });
       for(let e=0;e<3;e++){ const a = t*2.2 + e*2.09; const p = pr(Math.cos(a)*R*.55, Math.sin(a*1.3)*R*.25, Math.sin(a)*R*.55);
-        x.fillStyle = rgba(C.c,.95); x.shadowColor = rgba(C.c,1); x.shadowBlur = 8; x.beginPath(); x.arc(p[0], p[1], 2.2, 0, 7); x.fill(); x.shadowBlur = 0; }
-      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`AY ${String(Math.round(ay*57.3)%360).padStart(3,'0')}° · AX ${String(Math.round(ax*57.3)).padStart(3,'0')}°`, W-14, 20);
-      x.fillText('BENCENO · BASE DE LA PETROQUÍMICA', W-14, H-12); x.textAlign = 'left';
+        x.fillStyle = rgba(C.c,.95); x.shadowColor = rgba(C.c,1); x.shadowBlur = FX.cel ? 0 : 8; x.beginPath(); x.arc(p[0], p[1], 2.2, 0, 7); x.fill(); x.shadowBlur = FX.cel ? 0 : 0; }
+      x.fillStyle = C.txt; x.textAlign = 'right'; if(!N) x.fillText(`AY ${String(Math.round(ay*57.3)%360).padStart(3,'0')}° · AX ${String(Math.round(ax*57.3)).padStart(3,'0')}°`, W-14, 20);
+      if(!N) x.fillText('BENCENO · BASE DE LA PETROQUÍMICA', W-14, H-12); x.textAlign = 'left';
     }
   }
   function renderSurtidores(){
@@ -6033,7 +6036,7 @@ body.mporta .hbus{display:none}
     const cl = esClaro();
     if(!G.flat){ const r = G.proj.scale(), g = ctx.createRadialGradient(G.W/2-r*.3, G.H/2-r*.35, r*.1, G.W/2, G.H/2, r*1.05); g.addColorStop(0, cl?'#fdf6e6':'#13304b'); g.addColorStop(1, cl?'#ecd3a0':'#0a1622');
       ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-      ctx.save(); if(!pesado(G)){ ctx.shadowColor = cl?'rgba(201,141,22,.45)':'rgba(106,168,216,.45)'; ctx.shadowBlur = 30; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = cl?'rgba(201,141,22,.6)':'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
+      ctx.save(); if(!pesado(G)){ ctx.shadowColor = cl?'rgba(201,141,22,.45)':'rgba(106,168,216,.45)'; ctx.shadowBlur = FX.cel ? 0 : 30; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = cl?'rgba(201,141,22,.6)':'rgba(106,168,216,.35)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore(); }
     else { ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = cl?'#f6e6c2':'#0a1622'; ctx.fill(); }
     ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = cl?'rgba(138,86,0,.12)':'rgba(106,168,216,.08)'; ctx.lineWidth = .6; ctx.stroke();
     for(const f of G.feats){ ctx.beginPath(); path(f); ctx.fillStyle = gcol(gval(f.id)) || (cl?'#d8bd86':'#1d2733'); ctx.fill(); }
@@ -6169,7 +6172,7 @@ body.mporta .hbus{display:none}
     const cl = esClaro(), POS = cl?'27,116,70':'76,195,138', NEG = cl?'176,53,42':'240,122,112';
     const g = ctx.createRadialGradient(W/2, H/2, r*.2, W/2, H/2, r*1.05); g.addColorStop(0, cl?'#fdf6e6':'#06221f'); g.addColorStop(1, cl?'#ecd3a0':'#030d0c');
     ctx.beginPath(); path({type:'Sphere'}); ctx.fillStyle = g; ctx.fill();
-    ctx.save(); if(!pesado(S)){ ctx.shadowColor = cl?'rgba(201,141,22,.45)':'rgba(63,208,192,.5)'; ctx.shadowBlur = 26; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = cl?'rgba(201,141,22,.6)':'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+    ctx.save(); if(!pesado(S)){ ctx.shadowColor = cl?'rgba(201,141,22,.45)':'rgba(63,208,192,.5)'; ctx.shadowBlur = FX.cel ? 0 : 26; } ctx.beginPath(); path({type:'Sphere'}); ctx.strokeStyle = cl?'rgba(201,141,22,.6)':'rgba(63,208,192,.45)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
     ctx.beginPath(); path(d3.geoGraticule().step([20,20])()); ctx.strokeStyle = cl?'rgba(138,86,0,.1)':'rgba(63,208,192,.07)'; ctx.lineWidth = .6; ctx.stroke();
     const c0 = proj.invert([W/2,H/2]), cache = {};
     for(const [lo,la,iso] of G.dots){ if(d3.geoDistance([lo,la], c0) > Math.PI/2-.02) continue; const p = proj([lo,la]);
