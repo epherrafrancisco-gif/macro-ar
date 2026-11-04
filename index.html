@@ -1141,6 +1141,7 @@ body.mporta .hbus{display:none}
 
   <!-- DÓLARES -->
   <section class="view" id="vD" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxD"></canvas><div class="fxl"><b>●</b> Mesa de cambios</div></div>
     <div class="card">
       <div class="head"><h2>Cotizaciones (venta)</h2><div class="legend" id="lgDol"></div></div>
       <div class="chart" id="chDol"></div>
@@ -1184,6 +1185,7 @@ body.mporta .hbus{display:none}
 
   <!-- MACRO -->
   <section class="view" id="vM" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxM"></canvas><div class="fxl"><b>●</b> Osciloscopio macro</div></div>
     <div class="kpis" id="kpis"></div>
 
     <div class="card">
@@ -1237,6 +1239,7 @@ body.mporta .hbus{display:none}
 
   <!-- DINERO -->
   <section class="view" id="vN" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxN"></canvas><div class="fxl"><b>●</b> Circulación del dinero</div></div>
     <div class="kpis" id="kpisN"></div>
     <div class="grid2">
       <div class="card"><div class="head"><h2>Agregados en pesos de hoy</h2><div class="legend" id="lgReal2"></div></div><div class="chart" id="chAggReal"></div><p class="note">Promedio mensual, en billones de pesos de hoy (ajustado por CER). Si la línea sube, hay más pesos en términos reales.</p></div>
@@ -1249,6 +1252,7 @@ body.mporta .hbus{display:none}
 
   <!-- FISCAL -->
   <section class="view" id="vF" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxF"></canvas><div class="fxl"><b>●</b> Cuentas públicas</div></div>
     <div class="kpis" id="kpisF"></div>
     <div class="card"><div class="head"><h2>Resultado fiscal mensual</h2><div class="legend" id="lgFis"></div></div><div class="chart" id="chFis"></div><p class="note">Sector Público Nacional, billones de pesos de cada mes. Primario = ingresos − gastos sin contar intereses de la deuda. Financiero = primario − intereses. Fuente: Secretaría de Hacienda (datos.gob.ar).</p></div>
     <div class="card"><div class="head"><h2>Resultado fiscal por año</h2><span class="note">% del PBI</span></div><div class="tablewrap"><table style="min-width:420px"><thead><tr><th>Año</th><th>Primario</th><th>Financiero</th><th>Meses</th></tr></thead><tbody id="tFis"></tbody></table></div><p class="note" id="noteFis"></p></div>
@@ -1261,6 +1265,7 @@ body.mporta .hbus{display:none}
 
   <!-- ACTIVIDAD Y EMPLEO -->
   <section class="view" id="vA" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxA"></canvas><div class="fxl"><b>●</b> Pulso industrial</div></div>
     <div class="kpis" id="kpisA"></div>
     <div class="grid2">
       <div class="card"><div class="head"><h2>Actividad económica (EMAE)</h2><span class="note">Índice sin estacionalidad · 2004 = 100</span></div><div class="chart" id="chEmae"></div><p class="note" id="nEmae"></p></div>
@@ -1379,6 +1384,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="vinos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cosecha y superficie por año</button><button type="button" data-csv="vinos-precio"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio del vino común</button></div>
   </section>
   <section class="view" id="vOk" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxOk"></canvas><div class="fxl"><b>●</b> Ruta · patentamientos</div></div>
     <div class="kpis" id="kpisOk"></div>
     <div class="card">
       <div class="head"><h2>Autos 0km patentados cada mes</h2><span class="note" id="okMeS"></span></div>
@@ -1517,6 +1523,7 @@ body.mporta .hbus{display:none}
 
   <!-- MERCADO -->
   <section class="view" id="vK" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxK"></canvas><div class="fxl"><b>●</b> Pulso bursátil</div></div>
     <p class="merparte" id="merParte" hidden></p>
     <div class="kpis" id="kpisK"></div>
     <div class="card">
@@ -3705,6 +3712,7 @@ body.mporta .hbus{display:none}
     flash = {};
   }
   function renderDolares(){
+    setTimeout(fxIni, 0);
     const main = DOL.filter(q=>q.c);
     legend($('lgDol'), main);
     lineChart($('chDol'), main.map(q=>({n:q.n, c:q.c, pts:inRange(series(q.k))})), {aria:'Cotizaciones del dólar', yfmt:v=>nf(v,0), vfmt:v=>'$ '+nf(v)});
@@ -4176,6 +4184,7 @@ body.mporta .hbus{display:none}
     const t = cs.find(x=>x.k==='soja')?.t; $('expoN').textContent = t ? 'Granos: promedio de '+MESL[+String(t).slice(5,7)-1]+' de '+String(t).slice(0,4) : '';
   }
   function renderMacro(){
+    setTimeout(fxIni, 0);
     const riesgo=series('riesgo'), res=series('reservas'), base=series('base'), dep=series('depusd'),
           badlar=series('badlar'), tamar=series('tamar'), pf=series('pf');
     const inf=monthly('infl'), yoy=monthly('inflYoY'), exp=monthly('expect');
@@ -4266,6 +4275,7 @@ body.mporta .hbus{display:none}
 
   // ---- DINERO ----
   function renderDinero(){
+    setTimeout(fxIni, 0);
     const cer = cerInfo(), AGG=[{k:'base',n:'Base monetaria',c:'--s5'},{k:'m2',n:'M2',c:'--s1'},{k:'m2t',n:'M2 transaccional privado',c:'--s3'}];
     const real = k => months.filter(m=>m[k]!=null && m.cer).map(m=>[m.mes, Math.max(0,m[k])/m.cer*cer.last/1e6]);
     const pbiP = k => months.filter(m=>m[k]!=null).map(m=>{ const p=pibAt(m.mes,cer); return p?[m.mes, m[k]/p.v*100]:null; }).filter(Boolean);
@@ -4295,6 +4305,7 @@ body.mporta .hbus{display:none}
 
   // ---- FISCAL ----
   function renderFiscal(){
+    setTimeout(fxIni, 0);
     const cer = cerInfo(), fis = months.filter(m=>m.prim!=null), com = months.filter(m=>m.expo!=null);
     const bn = v => sg(v/1e6,2), t=[];
     let yrRows='';
@@ -4361,6 +4372,7 @@ body.mporta .hbus{display:none}
     decorar();
   }
   function renderActividad(){
+    setTimeout(fxIni, 0);
     if(!act){ loadAct(); $('kpisA').innerHTML = '<div class="empty">Cargando datos de actividad y empleo…</div>'; return; }
     const L = a => a?.length ? a[a.length-1] : null, A = act, t = [];
     const ed = A.emae_d || [], eo = A.emae || [], eom = new Map(eo);
@@ -4432,7 +4444,7 @@ body.mporta .hbus{display:none}
   function fxCol(){ return document.documentElement.dataset.tema==='claro'
     ? {a:'138,86,0', b:'47,110,168', c:'160,82,45', w:'110,20,40', txt:'rgba(85,64,31,.85)'}
     : {a:'106,168,216', b:'143,208,255', c:'224,178,90', w:'200,40,70', txt:'rgba(170,190,210,.8)'}; }
-  function fxVivos(){ return ['Ga','Vi','Su','Qu'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth); }
+  function fxVivos(){ return ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth); }
   function fxIni(){ const q = matchMedia('(prefers-reduced-motion: reduce)').matches;
     fxVivos().forEach(cv=>fxDib(cv, q ? 6 : (performance.now()-FX.t0)/1000));
     if(!q && !FX.corre){ FX.corre = true; requestAnimationFrame(fxCuadro); } }
@@ -4496,6 +4508,73 @@ body.mporta .hbus{display:none}
       x.font = '700 22px ui-monospace,monospace'; x.fillStyle = rgba(C.b,.95); x.fillText(lt.toFixed(2).padStart(7,'0'), 14, H*.34);
       x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.fillText('LITROS DESPACHADOS', 14, H*.34 + 14); x.textAlign = 'center'; x.fillText('CAUDAL', gx, gy + gr*.55); x.textAlign = 'left';
       x.fillText('NAFTA · GASOIL · GNC', 14, H-12);
+    } else if(k==='D'){ // moneda 3D girando sobre un gráfico de velas que avanza
+      for(let i=0;i<60;i++){ const X = W - ((t*28 + i*18) % (W+20)), b = fxR(Math.floor((t*28 + i*18)/(W+20))*60 + i), y = H*.5 + Math.sin(i*.4 + b*3)*H*.15, h = 6 + b*18, up = b > .45;
+        x.strokeStyle = rgba(up ? C.b : C.c, .35); x.beginPath(); x.moveTo(X, y-h); x.lineTo(X, y+h); x.stroke(); x.fillStyle = rgba(up ? C.b : C.c, .22); x.fillRect(X-4, y-h*.5, 8, h); }
+      const cx = W/2, cy = H/2+6, r = Math.min(H*.32, 52), sp = Math.cos(t*1.6), rx = Math.max(Math.abs(sp), .06)*r;
+      x.strokeStyle = rgba(C.a,.35); x.beginPath(); x.ellipse(cx, cy, r*1.9, r*.38, 0, 0, 7); x.stroke();
+      const g = x.createLinearGradient(cx-rx,0,cx+rx,0); g.addColorStop(0, rgba(C.c,.5)); g.addColorStop(.5, rgba(C.c,.95)); g.addColorStop(1, rgba(C.c,.45));
+      x.fillStyle = g; x.beginPath(); x.ellipse(cx, cy, rx, r, 0, 0, 7); x.fill(); x.strokeStyle = rgba(C.c,1); x.beginPath(); x.ellipse(cx, cy, rx*.82, r*.82, 0, 0, 7); x.stroke();
+      if(Math.abs(sp) > .25){ x.save(); x.translate(cx, cy); x.scale(sp, 1); x.font = `700 ${Math.round(r*1.1)}px ui-monospace,monospace`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = rgba(C.w === '110,20,40' ? '90,55,0' : '20,30,45', .85); x.fillText('$', 0, 2); x.restore(); }
+      const oa = t*1.1; x.fillStyle = rgba(C.b,.95); x.beginPath(); x.arc(cx + Math.cos(oa)*r*1.9, cy + Math.sin(oa)*r*.38, 2.5, 0, 7); x.fill();
+      x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText('OFICIAL · MEP · CCL · BLUE · CRIPTO', W-14, H-12); x.textAlign = 'left';
+    } else if(k==='M'){ // osciloscopio con tres señales y punto de barrido
+      for(let X=0; X<W; X+=W/16){ x.strokeStyle = rgba(C.a,.08); x.beginPath(); x.moveTo(X,0); x.lineTo(X,H); x.stroke(); }
+      for(let Y=0; Y<H; Y+=H/6){ x.strokeStyle = rgba(C.a,.08); x.beginPath(); x.moveTo(0,Y); x.lineTo(W,Y); x.stroke(); }
+      const ss = [[C.b,.018,1.1,.2,'INFLACIÓN'],[C.c,.011,.7,.15,'TASAS'],[C.a,.027,1.7,.1,'ACTIVIDAD']], bx = (t*160) % W;
+      ss.forEach(([c,f,v,am,n],j)=>{ x.strokeStyle = rgba(c,.85); x.lineWidth = 1.5; x.shadowColor = rgba(c,1); x.shadowBlur = 6; x.beginPath();
+        for(let X=0; X<=W; X+=3){ const y = H*(.35 + j*.17) + Math.sin(X*f + t*v)*H*am + Math.sin(X*f*3.1 - t*v*.7)*H*am*.3; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke(); x.shadowBlur = 0; x.lineWidth = 1;
+        const y = H*(.35 + j*.17) + Math.sin(bx*f + t*v)*H*am + Math.sin(bx*f*3.1 - t*v*.7)*H*am*.3; x.fillStyle = rgba(c,1); x.beginPath(); x.arc(bx, y, 3, 0, 7); x.fill();
+        x.fillStyle = rgba(c,.9); x.fillText(n, W-14-x.measureText(n).width, 20 + j*13); });
+      x.strokeStyle = rgba(C.b,.35); x.beginPath(); x.moveTo(bx,0); x.lineTo(bx,H); x.stroke();
+    } else if(k==='N'){ // red BCRA → bancos → gente con pulsos de dinero
+      const n = W < 500 ? 3 : 5, B = {x:W*.12, y:H*.55, l:'BCRA'}, bs = [], ps = [];
+      for(let i=0;i<n;i++){ bs.push({x:W*.45, y:H*(.22 + .66*i/(n-1)), l:'BANCO'}); }
+      for(let i=0;i<n+2;i++){ ps.push({x:W*.82 + (i%2)*W*.06, y:H*(.18 + .72*i/(n+1)), l:''}); }
+      const ed = []; bs.forEach((b,i)=>{ ed.push([B,b]); ps.forEach((q,j)=>{ if(Math.abs(j - i*(n+1)/(n-1)) < 1.6) ed.push([b,q]); }); });
+      ed.forEach(([a,b],i)=>{ x.strokeStyle = rgba(C.a,.22); x.beginPath(); x.moveTo(a.x,a.y); x.lineTo(b.x,b.y); x.stroke();
+        for(let m=0;m<2;m++){ const f = (t*.35 + fxR(i) + m*.5) % 1, X = a.x + (b.x-a.x)*f, Y = a.y + (b.y-a.y)*f; x.fillStyle = rgba(m ? C.c : C.b, .95); x.beginPath(); x.arc(X, Y, 2.2, 0, 7); x.fill(); } });
+      const nodo = (q,r,c) => { x.fillStyle = rgba(c,.18); x.beginPath(); x.arc(q.x,q.y,r+4+Math.sin(t*3)*1.5,0,7); x.fill(); x.fillStyle = rgba(c,.9); x.beginPath(); x.arc(q.x,q.y,r,0,7); x.fill(); };
+      nodo(B, 9, C.c); bs.forEach(b=>nodo(b, 5, C.b)); ps.forEach(q=>nodo(q, 3, C.a));
+      x.fillStyle = C.txt; x.fillText('BCRA', B.x-12, B.y+24); x.fillText('BANCOS', W*.45-20, H-8); x.fillText('PERSONAS Y EMPRESAS', Math.min(W*.74, W-130), H-8);
+    } else if(k==='F'){ // balanza de ingresos y gastos que oscila, con monedas cayendo
+      const cx = W/2, cy = H*.3, a = Math.sin(t*.8)*.12, L2 = Math.min(W*.3, 170), p1 = [cx - Math.cos(a)*L2, cy - Math.sin(a)*L2], p2 = [cx + Math.cos(a)*L2, cy + Math.sin(a)*L2];
+      x.strokeStyle = rgba(C.a,.7); x.lineWidth = 2; x.beginPath(); x.moveTo(cx, cy); x.lineTo(cx, H-10); x.moveTo(cx-30, H-10); x.lineTo(cx+30, H-10); x.moveTo(...p1); x.lineTo(...p2); x.stroke(); x.lineWidth = 1;
+      x.fillStyle = rgba(C.c,1); x.beginPath(); x.moveTo(cx, cy-8); x.lineTo(cx-7, cy+4); x.lineTo(cx+7, cy+4); x.fill();
+      [[p1,'INGRESOS',C.b],[p2,'GASTOS',C.c]].forEach(([q,l,c],j)=>{ const py = q[1] + H*.32;
+        x.strokeStyle = rgba(c,.6); x.beginPath(); x.moveTo(...q); x.lineTo(q[0]-34, py); x.moveTo(...q); x.lineTo(q[0]+34, py); x.stroke();
+        x.strokeStyle = rgba(c,.9); x.lineWidth = 2; x.beginPath(); x.ellipse(q[0], py, 38, 7, 0, 0, Math.PI); x.stroke(); x.lineWidth = 1;
+        for(let i=0;i<5;i++){ const f = (t*.5 + i/5 + j*.1) % 1, X = q[0] + (fxR(i+j*7)-.5)*40, Y = 8 + f*(py - 12); x.fillStyle = rgba(c, .9*(1-f*.4)); x.beginPath(); x.ellipse(X, Y, 4, 1.6, 0, 0, 7); x.fill(); }
+        x.fillStyle = rgba(c,.95); x.textAlign = 'center'; x.fillText(l, q[0], py + 22); x.textAlign = 'left'; });
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`EQUILIBRIO ${a >= 0 ? '+' : '−'}${Math.abs(a*100).toFixed(1).padStart(4,'0')}`, W-14, 20); x.textAlign = 'left';
+    } else if(k==='A'){ // fábricas con engranajes y humo
+      const base = H*.86; x.strokeStyle = rgba(C.a,.45); x.beginPath(); x.moveTo(0, base); x.lineTo(W, base); x.stroke();
+      const n = Math.ceil(W/140);
+      for(let i=0;i<n;i++){ const X = i*140 + 10, h = 30 + fxR(i)*30;
+        x.strokeStyle = rgba(C.a,.5); x.beginPath(); x.moveTo(X, base); x.lineTo(X, base-h); for(let d=0; d<3; d++){ x.lineTo(X + d*30 + 15, base-h-14); x.lineTo(X + d*30 + 30, base-h); } x.lineTo(X+90, base); x.stroke();
+        for(let w=0; w<3; w++){ x.fillStyle = rgba(C.c, .25 + .5*((Math.sin(t*2 + i + w) + 1)/2)); x.fillRect(X + 10 + w*26, base - h*.5, 12, 8); }
+        const ch = X + 105; x.strokeRect(ch, base-h-38, 10, h+38);
+        for(let m=0;m<6;m++){ const f = (t*.3 + m/6 + fxR(i+2)) % 1; x.fillStyle = rgba(C.a, .3*(1-f)); x.beginPath(); x.arc(ch + 5 + f*28 + Math.sin(f*6+t)*4, base-h-42 - f*60, 3 + f*10, 0, 7); x.fill(); } }
+      const eng = (gx,gy,r,dir) => { x.strokeStyle = rgba(C.b,.85); x.beginPath(); for(let j=0;j<=48;j++){ const a = j/48*Math.PI*2 + t*dir, rr = r + (Math.floor(j/2)%2 ? 4 : 0); j ? x.lineTo(gx+Math.cos(a)*rr, gy+Math.sin(a)*rr) : x.moveTo(gx+Math.cos(a)*rr, gy+Math.sin(a)*rr); } x.stroke();
+        x.beginPath(); x.arc(gx, gy, r*.35, 0, 7); x.stroke(); };
+      eng(W-70, 50, 22, .8); eng(W-70-40, 66, 14, -1.26);
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText('INDUSTRIA · CONSTRUCCIÓN · SERVICIOS', W-14, H-5); x.textAlign = 'left';
+    } else if(k==='Ok'){ // autopista de noche con luces que pasan
+      const hz = H*.3, cx = W/2;
+      x.strokeStyle = rgba(C.a,.4); x.beginPath(); x.moveTo(cx-8, hz); x.lineTo(cx-W*.55, H); x.moveTo(cx+8, hz); x.lineTo(cx+W*.55, H); x.stroke();
+      for(let j=0;j<10;j++){ const f = ((j/10 + t*.6) % 1), z = f*f, y = hz + (H-hz)*z; x.strokeStyle = rgba(C.a, .2 + .6*z); x.lineWidth = 1 + z*3; x.beginPath(); x.moveTo(cx, y); x.lineTo(cx, y + 2 + z*14); x.stroke(); } x.lineWidth = 1;
+      for(let i=0;i<14;i++){ const ida = i%2, f = ((fxR(i)*1 + t*(.25 + fxR(i+3)*.25)) % 1), z = ida ? f*f : (1-f)*(1-f), y = hz + (H-hz)*z, lane = ida ? .18 + fxR(i+5)*.22 : -(.18 + fxR(i+5)*.22), X = cx + lane*W*z*1.1, r = .8 + z*3.5;
+        const c = ida ? C.w : C.c, a = ida ? .95 : 1; x.fillStyle = rgba(c, a); x.shadowColor = rgba(c,1); x.shadowBlur = 8*z;
+        x.beginPath(); x.arc(X - r*2, y, r, 0, 7); x.arc(X + r*2, y, r, 0, 7); x.fill(); x.shadowBlur = 0; }
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`KM/H ${String(Math.round(108 + Math.sin(t*.7)*12)).padStart(3,'0')}`, W-14, 20); x.fillText('AUTOS · PICKUPS · UTILITARIOS', W-14, H-12); x.textAlign = 'left';
+    } else if(k==='K'){ // velas y libro de órdenes en movimiento (ilustrativo)
+      const n = Math.ceil(W/12)+2, off = (t*14) % 12, i0 = Math.floor(t*14/12); let v = 0; const y0 = H*.55;
+      for(let i=0;i<n;i++){ const id = i0 + i, d = (fxR(id)-.48)*16, o = Math.sin(id*.13)*H*.18 + Math.sin(id*.041)*H*.12, hi = 4 + fxR(id+1)*10, X = W - i*12 + off - 12, up = d > 0, yc = y0 - o;
+        x.strokeStyle = rgba(up ? C.b : C.c, .7); x.beginPath(); x.moveTo(X, yc - Math.abs(d) - hi); x.lineTo(X, yc + Math.abs(d) + hi*.6); x.stroke();
+        x.fillStyle = rgba(up ? C.b : C.c, up ? .55 : .75); x.fillRect(X-4, yc - Math.max(Math.abs(d),1.5), 8, Math.max(Math.abs(d),1.5)*2);
+        const vv = 3 + fxR(id+4)*16; x.fillStyle = rgba(C.a,.25); x.fillRect(X-4, H-vv, 8, vv); }
+      x.strokeStyle = rgba(C.b,.5); x.setLineDash([3,4]); x.beginPath(); x.moveTo(0, y0 - Math.sin(i0*.13)*H*.18 - Math.sin(i0*.041)*H*.12); x.lineTo(W, y0 - Math.sin(i0*.13)*H*.18 - Math.sin(i0*.041)*H*.12); x.stroke(); x.setLineDash([]);
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText('ACCIONES · BONOS · CEDEARS · CAUCIONES', W-14, H-12); x.textAlign = 'left';
     } else { // molécula de benceno 3D girando, con electrones en órbita
       const cx = W/2, cy = H/2 + 6, R = Math.min(H*.26, 44), ay = t*.6, ax = .9 + Math.sin(t*.3)*.25;
       const pr = (X,Y,Z) => { let x1 = X*Math.cos(ay) + Z*Math.sin(ay), z1 = -X*Math.sin(ay) + Z*Math.cos(ay); const y1 = Y*Math.cos(ax) - z1*Math.sin(ax); z1 = Y*Math.sin(ax) + z1*Math.cos(ax);
@@ -4692,6 +4771,7 @@ body.mporta .hbus{display:none}
   $('okQ').addEventListener('input', e=>{ okQ = e.target.value; renderAutos(); });
   $('tOkMa').addEventListener('click', e=>{ const tr = e.target.closest('tr[data-m]'); if(!tr) return; okMarca = tr.dataset.m; renderAutos(); $('okFicha').scrollIntoView({behavior:'smooth', block:'start'}); });
   function renderAutos(){
+    setTimeout(fxIni, 0);
     if(!ok){ loadOk(); $('kpisOk').innerHTML = '<div class="empty">Cargando patentamientos…</div>'; return; }
     const S = ok.serie, u = ok.ultimo_mes, L = S[S.length-1], pm = S.find(s=>s.m===mAdd(u,-1)), pa = S.find(s=>s.m===mAdd(u,-12));
     const yr = u.slice(0,4), n = +u.slice(5,7), acu = S.filter(s=>s.m.slice(0,4)===yr).reduce((a,s)=>a+s.t,0);
@@ -5060,6 +5140,7 @@ body.mporta .hbus{display:none}
       || `<tr><td colspan="5" style="color:var(--muted)">Ninguna especie coincide con "${esc(q)}".</td></tr>`;
   }
   function renderMercado(){
+    setTimeout(fxIni, 0);
     renderRanking(); if(!$('kSIM')?.dataset.ok) simRender('k');  // el simulador no se recalcula con cada precio en vivo
     if(!mkt.at && !mkt.err && !mktBusy) pollMkt();
     const mer = series('merval'), merU = series(null, d=>{ const m=d.merval, c=get(d,'ccl'); return (m&&c)?m/c:null; }), rp = series('riesgo');
