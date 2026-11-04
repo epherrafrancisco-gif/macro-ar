@@ -264,9 +264,13 @@ section.view[hidden]{display:none}
   #tEspAr td:nth-child(2){white-space:nowrap}}
 .espnx{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}.espnx>div:first-child{flex:1 1 320px;min-width:0}
 .espm{font:700 22px var(--sans);margin-bottom:6px}.espd{color:var(--muted);font-size:14px;margin:3px 0}.espv{display:inline-block;margin-top:8px;color:var(--accent);font-weight:600}
-.fxb{position:relative;height:170px;margin-bottom:14px;border:1px solid var(--line,rgba(127,127,127,.2));border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(127,127,127,.06),transparent)}.fxb canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.fxl{position:absolute;left:14px;top:10px;font:600 11px var(--mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);pointer-events:none}.fxl b{color:var(--accent);font-weight:700}
-@media (max-width:640px){.fxb{height:130px}}
+.fxb{display:flex;align-items:stretch;margin-bottom:14px;border:1px solid var(--line,rgba(127,127,127,.2));border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(127,127,127,.06),transparent)}
+.fxi{flex:1 1 0;min-width:0;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.fxb canvas{flex:0 0 56%;width:56%;height:190px;display:block}
+.fxl{font:600 11px var(--mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}.fxl b{color:var(--accent);font-weight:700}
+.fxn{font-size:13px;color:var(--muted)}.fxbig{font:700 34px var(--mono,ui-monospace,monospace);color:var(--ink);line-height:1.1}.fxbig small{font-size:14px;color:var(--muted);margin-left:5px;font-weight:500}
+.fxs{font-size:13px;color:var(--muted)}.fxi .espcd b{font-size:30px}.fxsep{height:1px;background:var(--line,rgba(127,127,127,.2));margin:4px 0}
+@media (max-width:640px){.fxb{flex-direction:column}.fxb canvas{flex:none;width:100%;height:120px}.fxi{padding:12px 14px 4px}.fxbig{font-size:26px}.fxi .espcd b{font-size:22px}}
 .espder{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}.esporb{width:440px;height:250px;max-width:100%;display:block}@media (max-width:640px){.espder{width:100%}.esporb{width:100%;height:190px}}
 .espcd{display:flex;gap:6px;align-items:baseline;font-family:var(--mono)}.espcd b{font-size:40px;font-weight:600;color:var(--ink)}.espcd i{font-style:normal;font-size:12px;color:var(--muted);margin-right:8px}
 @media (max-width:640px){.espcd b{font-size:28px}.espm{font-size:18px}}
@@ -1141,7 +1145,7 @@ body.mporta .hbus{display:none}
 
   <!-- DÓLARES -->
   <section class="view" id="vD" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxD"></canvas><div class="fxl"><b>●</b> Mesa de cambios</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Mesa de cambios</div><div id="fxvD"></div></div><canvas id="fxD" aria-hidden="true"></canvas></div>
     <div class="card">
       <div class="head"><h2>Cotizaciones (venta)</h2><div class="legend" id="lgDol"></div></div>
       <div class="chart" id="chDol"></div>
@@ -1185,7 +1189,7 @@ body.mporta .hbus{display:none}
 
   <!-- MACRO -->
   <section class="view" id="vM" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxM"></canvas><div class="fxl"><b>●</b> Osciloscopio macro</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Osciloscopio macro</div><div id="fxvM"></div></div><canvas id="fxM" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpis"></div>
 
     <div class="card">
@@ -1239,7 +1243,7 @@ body.mporta .hbus{display:none}
 
   <!-- DINERO -->
   <section class="view" id="vN" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxN"></canvas><div class="fxl"><b>●</b> Circulación del dinero</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Circulación del dinero</div><div id="fxvN"></div></div><canvas id="fxN" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisN"></div>
     <div class="grid2">
       <div class="card"><div class="head"><h2>Agregados en pesos de hoy</h2><div class="legend" id="lgReal2"></div></div><div class="chart" id="chAggReal"></div><p class="note">Promedio mensual, en billones de pesos de hoy (ajustado por CER). Si la línea sube, hay más pesos en términos reales.</p></div>
@@ -1252,7 +1256,7 @@ body.mporta .hbus{display:none}
 
   <!-- FISCAL -->
   <section class="view" id="vF" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxF"></canvas><div class="fxl"><b>●</b> Cuentas públicas</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Cuentas públicas</div><div id="fxvF"></div></div><canvas id="fxF" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisF"></div>
     <div class="card"><div class="head"><h2>Resultado fiscal mensual</h2><div class="legend" id="lgFis"></div></div><div class="chart" id="chFis"></div><p class="note">Sector Público Nacional, billones de pesos de cada mes. Primario = ingresos − gastos sin contar intereses de la deuda. Financiero = primario − intereses. Fuente: Secretaría de Hacienda (datos.gob.ar).</p></div>
     <div class="card"><div class="head"><h2>Resultado fiscal por año</h2><span class="note">% del PBI</span></div><div class="tablewrap"><table style="min-width:420px"><thead><tr><th>Año</th><th>Primario</th><th>Financiero</th><th>Meses</th></tr></thead><tbody id="tFis"></tbody></table></div><p class="note" id="noteFis"></p></div>
@@ -1265,7 +1269,7 @@ body.mporta .hbus{display:none}
 
   <!-- ACTIVIDAD Y EMPLEO -->
   <section class="view" id="vA" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxA"></canvas><div class="fxl"><b>●</b> Pulso industrial</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Pulso industrial</div><div id="fxvA"></div></div><canvas id="fxA" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisA"></div>
     <div class="grid2">
       <div class="card"><div class="head"><h2>Actividad económica (EMAE)</h2><span class="note">Índice sin estacionalidad · 2004 = 100</span></div><div class="chart" id="chEmae"></div><p class="note" id="nEmae"></p></div>
@@ -1282,7 +1286,7 @@ body.mporta .hbus{display:none}
 
   <!-- GANADERÍA -->
   <section class="view" id="vGa" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxGa"></canvas><div class="fxl"><b>●</b> Hacienda en vivo · Cañuelas</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Hacienda en vivo · Cañuelas</div><div id="fxvGa"></div></div><canvas id="fxGa" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisGa"></div>
     <div class="card">
       <div class="head"><h2>Precios de hoy en Cañuelas (ex Liniers)</h2><div class="gaday"><label for="gaFecha" class="note">Día</label><select id="gaFecha"></select></div></div>
@@ -1327,7 +1331,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="ganaderia-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Hacienda por día</button><button type="button" data-csv="ganaderia-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Carne, faena y novillo por mes</button></div>
   </section>
   <section class="view" id="vVi" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxVi"></canvas><div class="fxl"><b>●</b> Viñedos · Cuyo</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Viñedos · Cuyo</div><div id="fxvVi"></div></div><canvas id="fxVi" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisVi"></div>
     <div class="card">
       <div class="head"><h2>Precio del vino común</h2><span class="note" id="viPrS"></span></div>
@@ -1384,7 +1388,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="vinos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Cosecha y superficie por año</button><button type="button" data-csv="vinos-precio"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Precio del vino común</button></div>
   </section>
   <section class="view" id="vOk" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxOk"></canvas><div class="fxl"><b>●</b> Ruta · patentamientos</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Ruta · patentamientos</div><div id="fxvOk"></div></div><canvas id="fxOk" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisOk"></div>
     <div class="card">
       <div class="head"><h2>Autos 0km patentados cada mes</h2><span class="note" id="okMeS"></span></div>
@@ -1439,7 +1443,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="autos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>0km por mes</button><button type="button" data-csv="autos-marcas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Marcas por mes</button></div>
   </section>
   <section class="view" id="vSu" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxSu"></canvas><div class="fxl"><b>●</b> Flujo de combustible · surtidores</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Flujo de combustible · surtidores</div><div id="fxvSu"></div></div><canvas id="fxSu" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisSu"></div>
     <div class="card">
       <div class="head"><h2>Cuánto combustible se vende cada mes</h2><div class="legend" id="lgSuV"></div></div>
@@ -1456,7 +1460,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
   </section>
   <section class="view" id="vQu" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxQu"></canvas><div class="fxl"><b>●</b> Laboratorio · C₆H₆</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Laboratorio · C₆H₆</div><div id="fxvQu"></div></div><canvas id="fxQu" aria-hidden="true"></canvas></div>
     <div class="kpis" id="kpisQu"></div>
     <div class="card">
       <div class="head"><h2>Cuánto cuesta traer cada insumo</h2><span class="note" id="quIS"></span></div>
@@ -1523,7 +1527,7 @@ body.mporta .hbus{display:none}
 
   <!-- MERCADO -->
   <section class="view" id="vK" hidden>
-    <div class="fxb" aria-hidden="true"><canvas id="fxK"></canvas><div class="fxl"><b>●</b> Pulso bursátil</div></div>
+    <div class="fxb"><div class="fxi"><div class="fxl"><b>●</b> Pulso bursátil</div><div id="fxvK"></div></div><canvas id="fxK" aria-hidden="true"></canvas></div>
     <p class="merparte" id="merParte" hidden></p>
     <div class="kpis" id="kpisK"></div>
     <div class="card">
@@ -4448,7 +4452,42 @@ body.mporta .hbus{display:none}
     if(!FX.io && 'IntersectionObserver' in window){ FX.io = new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting ? FX.vis.add(e.target) : FX.vis.delete(e.target)); if(FX.vis.size) fxIni(); });
       ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].forEach(k=>{ const cv = $('fx'+k); if(cv) FX.io.observe(cv); }); }
     return ['Ga','Vi','Su','Qu','D','M','N','F','A','Ok','K'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth && (!FX.io || FX.vis.has(cv))); }
-  function fxIni(){ const q = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Panel de dato / cuenta regresiva al lado de cada animación (pedido del dueño 04/11/2026: "un buen dato o una cuenta regresiva, como en Espacio")
+  const FX_KP = {M:'kpis', N:'kpisN', F:'kpisF', A:'kpisA', Ga:'kpisGa', Vi:'kpisVi', Su:'kpisSu', Qu:'kpisQu', Ok:'kpisOk', K:'kpisK'};
+  const FX_CAL = {M:'macro', F:'fiscal', N:'dinero'};
+  function fxHabil(ab, ci, ahora = Date.now()){ // horario de lunes a viernes (hora argentina): devuelve [abierto, momento del próximo cambio]
+    const ar = new Date(ahora - 3*3600e3); let d = new Date(Date.UTC(ar.getUTCFullYear(), ar.getUTCMonth(), ar.getUTCDate()));
+    const en = (dd, h) => dd.getTime() + (h + 3)*3600e3, hab = dd => dd.getUTCDay() > 0 && dd.getUTCDay() < 6;
+    if(hab(d) && ahora < en(d, ab)) return [false, en(d, ab)];
+    if(hab(d) && ahora < en(d, ci)) return [true, en(d, ci)];
+    do d = new Date(d.getTime() + 864e5); while(!hab(d)); return [false, en(d, ab)];
+  }
+  function fxCd(t, txt){ return `<div class="fxsep"></div><div class="fxs">${txt}</div><div class="espcd" data-fxg="${t}"></div>`; }
+  function fxDato(k){
+    try{
+      let h = '';
+      if(k==='D'){ const u = q => { const p = cardSeries(q).pts; return p.length ? p[p.length-1][1] : null; }, b = u('blue'), o = u('oficial'), m = u('mep');
+        if(b) h = `<div class="fxn">Dólar blue, venta</div><div class="fxbig">$ ${nf(b,0)}</div><div class="fxs">${o ? 'Oficial $ '+nf(o,0) : ''}${m ? ' · MEP $ '+nf(m,0) : ''}</div>`;
+        const [ab, t] = fxHabil(10, 15); h += fxCd(t, ab ? 'Cierra el mercado de cambios (15 hs) en' : 'Abre el mercado de cambios (10 hs) en'); return h; }
+      const el = FX_KP[k] && $(FX_KP[k]), c = el && el.querySelector('.k');
+      if(c && c.querySelector('.v')){ const lb = c.querySelector('.lbl'), d = c.querySelector('.d');
+        h = `<div class="fxn">${lb ? lb.innerHTML : ''}</div><div class="fxbig">${c.querySelector('.v').innerHTML}</div><div class="fxs">${d ? d.innerHTML : ''}</div>`; }
+      if(k==='K'){ const [ab, t] = fxHabil(11, 17); h += fxCd(t, ab ? 'Cierra la bolsa porteña (17 hs) en' : 'Abre la bolsa porteña (11 hs) en'); }
+      else if(FX_CAL[k] && cal){ const now = Date.now(), e = cal.eventos.filter(e=>e.tab===FX_CAL[k] && e.h && evT(e) > now).sort((a,b)=>evT(a)-evT(b))[0];
+        if(e) h += fxCd(evT(e), `Próximo dato: ${esc(e.n)}${e.p ? ' de '+esc(e.p.toLowerCase()) : ''} (${esc(e.org)}), en`); }
+      return h;
+    }catch(e){ return ''; }
+  }
+  function fxTick(){
+    document.querySelectorAll('[data-fxg]').forEach(g=>{ if(!g.offsetParent) return; let s = Math.max(0, Math.round((+g.dataset.fxg - Date.now())/1000));
+      const d = Math.floor(s/86400), h = Math.floor(s%86400/3600), m = Math.floor(s%3600/60), x = s%60, p = n=>String(n).padStart(2,'0');
+      if(!s){ g.removeAttribute('data-fxg'); setTimeout(fxPanel, 1500); }
+      g.innerHTML = `${d ? `<b>${d}</b><i>${d===1?'día':'días'}</i>` : ''}<b>${p(h)}</b><i>h</i><b>${p(m)}</b><i>min</i><b>${p(x)}</b><i>s</i>`; });
+  }
+  function fxPanel(){ Object.keys(FX_KP).concat('D').forEach(k=>{ const v = $('fxv'+k); if(v && v.offsetParent){ const h = fxDato(k); if(v.dataset.h !== h){ v.dataset.h = h; v.innerHTML = h; } } }); fxTick(); }
+  setInterval(()=>{ if(!document.hidden) fxTick(); }, 1000);
+  function fxIni(){ fxPanel(); const q = matchMedia('(prefers-reduced-motion: reduce)').matches;
     fxVivos().forEach(cv=>fxDib(cv, q ? 6 : (performance.now()-FX.t0)/1000));
     if(!q && !FX.corre){ FX.corre = true; requestAnimationFrame(fxCuadro); } }
   function fxCuadro(ahora){ const v = fxVivos();
