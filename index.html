@@ -5666,7 +5666,13 @@ body.mporta .hbus{display:none}
       try{ for(const k in SUBS) SUBS[k][2] = SUBS_DEF[k]; mAb.clear(); calc = 'sim'; }catch(e){}
       // pedido del dueño (celular): al entrar a una sección, arriba de todo, aunque la última vez haya quedado abajo
       // pero si se vuelve para atrás, a la altura donde estaba (NAV.y, guardada en history.state al scrollear)
-      try{ if(mobil()){ history.scrollRestoration = 'manual'; const y = NAV.volver ? (NAV.y || 0) : 0; NAV.volver = false; NAV.y = null; scrollTo(0,y); let toco = false; const f = ()=>{ toco = true; };
+      // pedido del dueño (04/11/2026): si cambia de sección con la barra de secciones, la pantalla se queda quieta donde estaba
+      if(NAV.quieto != null){ const y0 = NAV.quieto; NAV.quieto = null; NAV.volver = false; try{ history.scrollRestoration = 'manual'; scrollTo(0,y0);
+        // si estaba más abajo que el comienzo de la sección nueva, queda justo en su comienzo (no en la punta de la página)
+        const ajusta = ()=>{ try{ if(toco) return; const v = $(TABS[tab][1]), mb = $('mbar'), h = mb && mb.offsetParent!==null ? mb.getBoundingClientRect().height : 0, top = v.getBoundingClientRect().top + scrollY - h - 8, y = Math.max(0, Math.min(y0, top)); if(Math.abs(scrollY - y) > 4) scrollTo(0, y); }catch(e){} };
+        let toco = false; const f = ()=>{ toco = true; }; addEventListener('touchstart', f, {once:true, passive:true}); addEventListener('wheel', f, {once:true, passive:true});
+        requestAnimationFrame(ajusta); for(const ms of [120, 400, 900]) setTimeout(ajusta, ms); }catch(e){} }
+      else try{ if(mobil()){ history.scrollRestoration = 'manual'; const y = NAV.volver ? (NAV.y || 0) : 0; NAV.volver = false; NAV.y = null; scrollTo(0,y); let toco = false; const f = ()=>{ toco = true; };
         addEventListener('touchstart', f, {once:true, passive:true}); addEventListener('wheel', f, {once:true, passive:true});
         for(const ms of [60, 350, 700, 1300]) setTimeout(()=>{ if(!toco && !NAV.salto && Math.abs(scrollY - y) > 4) scrollTo(0,y); }, ms); }
         else if(!NAV.volver && !NAV.salto) scrollTo(0,0); else NAV.volver = false; }catch(e){} }  // compu: al cambiar de sección (p. ej. el link del pie a Sobre) también arriba de todo
@@ -5689,7 +5695,7 @@ body.mporta .hbus{display:none}
     $('modoH').setAttribute('aria-current', String(tab==='portada'));
     $('flHome').hidden = tab==='portada';
     $('segRange').hidden = ['ganaderia','autos','vinos','surtidores','quimica','actividad','calculadoras','noticias','sobre','global','portada','brasil','europa','mexico','chile','japon','reinounido','canada','colombia','turquia','peru','polonia','india','arabia','suiza','australia','corea','sudafrica','zelanda','indonesia','noruega','suecia','tailandia','malasia','filipinas','islandia','hungria','hongkong','chequia','dinamarca','rumania','israel','serbia','china','rusia','espana','macedonia','singapur','marruecos'].includes(tab);
-    try{ if(selA && !mobil()) selA.scrollIntoView({block:'nearest', inline:'nearest'}); }catch(e){}
+    try{ if(selA && !mobil()){ const y = scrollY; selA.scrollIntoView({block:'nearest', inline:'nearest'}); if(scrollY !== y) scrollTo(0,y); } }catch(e){}
     render();
     mActualizar();
   }
@@ -5706,7 +5712,7 @@ body.mporta .hbus{display:none}
       + `<h4>Pulso Macro</h4><div class="ms-l">${sob}</div>`;
     $('msX').addEventListener('click', ()=>mSheet(false));
     $('msIn').querySelectorAll('a[data-k]').forEach(a=>a.addEventListener('click', e=>{
-      e.preventDefault(); mSheet(false); const k = a.dataset.k; navPush('#'+k); setTab(k); scrollTo({top:0}); gcUna('menu-celular-'+grp);
+      e.preventDefault(); mSheet(false); const k = a.dataset.k; navPush('#'+k); NAV.quieto = scrollY; setTab(k); gcUna('menu-celular-'+grp);
     }));
   }
   function mSheetViejo(){
@@ -5848,7 +5854,7 @@ body.mporta .hbus{display:none}
   addEventListener('scroll', ()=>{ if(!mobil()) return; const as = [...$('mIdx').querySelectorAll('a')]; if(!as.length) return;
     let cur = null; for(const a of as){ const c = document.querySelector(`[data-mid="${a.dataset.to}"]`); if(c && c.getBoundingClientRect().top < 140) cur = a; }
     as.forEach(a=>a.classList.toggle('on', a===cur)); if(cur && !cur._v){ as.forEach(x=>x._v=false); cur._v=true; cur.scrollIntoView({block:'nearest', inline:'center'}); } }, {passive:true});
-  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ if(a.getAttribute('href')[0]!=='#') return; e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); setTab(k); }));
+  document.querySelectorAll('#tabsNav a, #paisPanel a').forEach(a=>a.addEventListener('click', e=>{ if(a.getAttribute('href')[0]!=='#') return; e.preventDefault(); const k = a.getAttribute('href').slice(1); history.replaceState(null,'','#'+k); NAV.quieto = scrollY; setTab(k); }));
   window.addEventListener('hashchange', ()=>{ setTab(location.hash.slice(1)); NAV.volver = false; });
   // "Términos y aviso legal" (pie): abre Sobre Pulso Macro en los términos, desplegados
   const irLegal = () => setTimeout(()=>{ const d = document.querySelector('details.legal'); if(d) d.open = true; const h = $('legal'); if(!h) return; const mb = mobil() && $('mbar').offsetParent!==null ? $('mbar').getBoundingClientRect().height : 0; scrollTo({top:Math.max(0, h.getBoundingClientRect().top + scrollY - mb - 16), behavior:'smooth'}); }, 200);
