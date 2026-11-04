@@ -264,6 +264,9 @@ section.view[hidden]{display:none}
   #tEspAr td:nth-child(2){white-space:nowrap}}
 .espnx{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}.espnx>div:first-child{flex:1 1 320px;min-width:0}
 .espm{font:700 22px var(--sans);margin-bottom:6px}.espd{color:var(--muted);font-size:14px;margin:3px 0}.espv{display:inline-block;margin-top:8px;color:var(--accent);font-weight:600}
+.fxb{position:relative;height:170px;margin-bottom:14px;border:1px solid var(--line,rgba(127,127,127,.2));border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(127,127,127,.06),transparent)}.fxb canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fxl{position:absolute;left:14px;top:10px;font:600 11px var(--mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);pointer-events:none}.fxl b{color:var(--accent);font-weight:700}
+@media (max-width:640px){.fxb{height:130px}}
 .espder{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}.esporb{width:440px;height:250px;max-width:100%;display:block}@media (max-width:640px){.espder{width:100%}.esporb{width:100%;height:190px}}
 .espcd{display:flex;gap:6px;align-items:baseline;font-family:var(--mono)}.espcd b{font-size:40px;font-weight:600;color:var(--ink)}.espcd i{font-style:normal;font-size:12px;color:var(--muted);margin-right:8px}
 @media (max-width:640px){.espcd b{font-size:28px}.espm{font-size:18px}}
@@ -1274,6 +1277,7 @@ body.mporta .hbus{display:none}
 
   <!-- GANADERÍA -->
   <section class="view" id="vGa" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxGa"></canvas><div class="fxl"><b>●</b> Hacienda en vivo · Cañuelas</div></div>
     <div class="kpis" id="kpisGa"></div>
     <div class="card">
       <div class="head"><h2>Precios de hoy en Cañuelas (ex Liniers)</h2><div class="gaday"><label for="gaFecha" class="note">Día</label><select id="gaFecha"></select></div></div>
@@ -1318,6 +1322,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="ganaderia-diario"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Hacienda por día</button><button type="button" data-csv="ganaderia-mensual"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Carne, faena y novillo por mes</button></div>
   </section>
   <section class="view" id="vVi" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxVi"></canvas><div class="fxl"><b>●</b> Viñedos · Cuyo</div></div>
     <div class="kpis" id="kpisVi"></div>
     <div class="card">
       <div class="head"><h2>Precio del vino común</h2><span class="note" id="viPrS"></span></div>
@@ -1428,6 +1433,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="autos"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>0km por mes</button><button type="button" data-csv="autos-marcas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Marcas por mes</button></div>
   </section>
   <section class="view" id="vSu" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxSu"></canvas><div class="fxl"><b>●</b> Flujo de combustible · surtidores</div></div>
     <div class="kpis" id="kpisSu"></div>
     <div class="card">
       <div class="head"><h2>Cuánto combustible se vende cada mes</h2><div class="legend" id="lgSuV"></div></div>
@@ -1444,6 +1450,7 @@ body.mporta .hbus{display:none}
     <div class="dl"><span class="note">Datos de esta pestaña en CSV (se abre en Excel)</span><button type="button" data-csv="surtidores-ventas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventas por mes</button></div>
   </section>
   <section class="view" id="vQu" hidden>
+    <div class="fxb" aria-hidden="true"><canvas id="fxQu"></canvas><div class="fxl"><b>●</b> Laboratorio · C₆H₆</div></div>
     <div class="kpis" id="kpisQu"></div>
     <div class="card">
       <div class="head"><h2>Cuánto cuesta traer cada insumo</h2><span class="note" id="quIS"></span></div>
@@ -4419,7 +4426,96 @@ body.mporta .hbus{display:none}
     const ms = Object.keys(sp).filter(m=>pr[m]!=null).sort(), A = {};
     for(const m of ms){ const y = m.slice(0,4); (A[y] = A[y] || {n:0, t:0, p:0, ms:[]}); A[y].n++; A[y].t += sp[m]+pr[m]; A[y].p += pr[m]; A[y].ms.push(m.slice(5)); }
     return {A, ms, sp, pr}; }
+
+  // Animaciones de cabecera de Ganadería, Vinos, Surtidores y Química (pedido del dueño 04/11/2026: "algo llamativo y tecnológico" como Espacio)
+  const FX = {corre:false, t0:performance.now(), ult:0};
+  function fxCol(){ return document.documentElement.dataset.tema==='claro'
+    ? {a:'138,86,0', b:'47,110,168', c:'160,82,45', w:'110,20,40', txt:'rgba(85,64,31,.85)'}
+    : {a:'106,168,216', b:'143,208,255', c:'224,178,90', w:'200,40,70', txt:'rgba(170,190,210,.8)'}; }
+  function fxVivos(){ return ['Ga','Vi','Su','Qu'].map(k=>$('fx'+k)).filter(cv=>cv && cv.offsetParent && cv.clientWidth); }
+  function fxIni(){ const q = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    fxVivos().forEach(cv=>fxDib(cv, q ? 6 : (performance.now()-FX.t0)/1000));
+    if(!q && !FX.corre){ FX.corre = true; requestAnimationFrame(fxCuadro); } }
+  function fxCuadro(ahora){ const v = fxVivos();
+    if(!v.length || document.hidden){ FX.corre = false; return; }
+    if(ahora - FX.ult > 33){ FX.ult = ahora; v.forEach(cv=>fxDib(cv, (ahora-FX.t0)/1000)); }
+    requestAnimationFrame(fxCuadro); }
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) setTimeout(fxIni, 50); });
+  const fxR = n => { const x = Math.sin(n*127.1)*43758.5453; return x - Math.floor(x); };
+  function fxDib(cv, t){
+    const dpr = Math.min(devicePixelRatio||1, 2), W = cv.clientWidth, H = cv.clientHeight;
+    if(cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+    const x = cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,W,H);
+    const C = fxCol(), k = cv.id.slice(2), rgba = (c,a) => `rgba(${c},${a})`;
+    x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt;
+    if(k==='Ga'){ // campo en perspectiva, rodeo en movimiento y radar que lo barre
+      const hz = H*.32, cx = W/2;
+      for(let i=-14;i<=14;i++){ x.strokeStyle = rgba(C.a,.16); x.beginPath(); x.moveTo(cx+i*W*.02, hz); x.lineTo(cx+i*W*.16, H); x.stroke(); }
+      for(let j=0;j<9;j++){ const f = ((j + t*.35) % 9)/9, y = hz + (H-hz)*f*f; x.strokeStyle = rgba(C.a,.05+.18*f); x.beginPath(); x.moveTo(0,y); x.lineTo(W,y); x.stroke(); }
+      const sw = ((t*.18) % 1.3) - .15, sx = sw*W;
+      const g = x.createLinearGradient(sx-90,0,sx,0); g.addColorStop(0,rgba(C.b,0)); g.addColorStop(1,rgba(C.b,.22)); x.fillStyle = g; x.fillRect(sx-90,hz,90,H-hz);
+      x.strokeStyle = rgba(C.b,.8); x.beginPath(); x.moveTo(sx,hz); x.lineTo(sx,H); x.stroke();
+      let vis = 0;
+      for(let i=0;i<70;i++){ const z = .15 + fxR(i)*.85, px = (((fxR(i+9)*1.4 - t*.012*(1+fxR(i+3))) % 1.4) + 1.4) % 1.4 - .2;
+        const y = hz + (H-hz)*z*z, X = cx + (px-.5)*W*(.25+z*1.1), sz = 1.2 + z*3.2; if(X < 0 || X > W) continue;
+        const cerca = Math.abs(X - sx) < 60 && X <= sx + 2; if(X < sx) vis++;
+        x.fillStyle = cerca ? rgba(C.c,.95) : rgba(C.a,.45+.4*z);
+        x.beginPath(); x.ellipse(X, y, sz*1.6, sz, 0, 0, 7); x.fill(); x.beginPath(); x.arc(X - sz*1.7, y - sz*.6, sz*.6, 0, 7); x.fill();
+        if(cerca && z > .55){ x.strokeStyle = rgba(C.c,.7); x.strokeRect(X-sz*3, y-sz*2.4, sz*5.6, sz*4); } }
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`CABEZAS RELEVADAS ${String(vis).padStart(3,'0')}`, W-14, 20); x.textAlign = 'left';
+    } else if(k==='Vi'){ // copa de alambre girando con el vino moviéndose, Andes atrás
+      x.strokeStyle = rgba(C.a,.35); x.beginPath();
+      for(let X=0; X<=W; X+=6){ const y = H*.62 - Math.abs(Math.sin(X*.011))*H*.22 - Math.abs(Math.sin(X*.031+1))*H*.1; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke();
+      for(let f=0; f<5; f++){ x.strokeStyle = rgba(C.a,.10); x.beginPath(); for(let X=0; X<=W; X+=8){ const y = H*.74 + f*9 + Math.sin(X*.02 + f + t*.3)*2; X ? x.lineTo(X,y) : x.moveTo(X,y); } x.stroke(); }
+      const cx = W/2, top = H*.14, s = H/170, prof = [[0,0],[30,6],[34,22],[30,42],[20,56],[4,66],[3,100],[3,118],[26,124]].map(([r,y])=>[r*s*1.25, top + y*s]);
+      const fil = 46*s + top, nivel = top + 34*s + Math.sin(t*1.3)*2, ang = t*.7;
+      for(let r=0;r<prof.length;r++){ const [rr,yy] = prof[r]; x.strokeStyle = rgba(C.b,.35); x.beginPath(); x.ellipse(cx, yy, rr, rr*.22, 0, 0, 7); x.stroke(); }
+      for(let m=0;m<10;m++){ const a = ang + m*Math.PI/5, c = Math.cos(a); x.strokeStyle = rgba(C.b, .15 + .35*(Math.sin(a)+1)/2); x.beginPath();
+        prof.forEach(([rr,yy],i)=>{ i ? x.lineTo(cx + rr*c, yy) : x.moveTo(cx + rr*c, yy); }); x.stroke(); }
+      // vino: superficie con ola y relleno hasta el fondo de la copa
+      x.save(); x.beginPath(); const rN = 33*s*1.25; x.moveTo(cx - rN, nivel);
+      for(let i=0;i<=20;i++){ const X = cx - rN + i*rN/10; x.lineTo(X, nivel + Math.sin(i*.6 + t*2.4)*1.8*s); }
+      [[30,42],[20,56],[4,66]].forEach(([r,y])=>x.lineTo(cx + r*s*1.25, top+y*s)); [[4,66],[20,56],[30,42]].forEach(([r,y])=>x.lineTo(cx - r*s*1.25, top+y*s)); x.closePath();
+      const gv = x.createLinearGradient(0,nivel,0,top+66*s); gv.addColorStop(0,rgba(C.w,.75)); gv.addColorStop(1,rgba(C.w,.35)); x.fillStyle = gv; x.fill(); x.restore();
+      for(let i=0;i<8;i++){ const f = (t*.25 + fxR(i)) % 1, y = top+62*s - f*(top+62*s - nivel), X = cx + (fxR(i+5)-.5)*20*s*(1-f*.3); x.fillStyle = rgba(C.c, .6*(1-f)); x.beginPath(); x.arc(X, y, 1.2, 0, 7); x.fill(); }
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`ROTACIÓN ${String(Math.round(ang*57.3)%360).padStart(3,'0')}°`, W-14, 20); x.fillText('MALBEC · MENDOZA · SAN JUAN', W-14, H-12); x.textAlign = 'left';
+    } else if(k==='Su'){ // caño con flujo, medidor y contador de litros
+      const y0 = H*.56, ch = H*.16;
+      x.strokeStyle = rgba(C.a,.5); x.strokeRect(-2, y0-ch/2, W+4, ch);
+      for(let i=0;i<W;i+=40){ x.fillStyle = rgba(C.a,.25); x.fillRect(i, y0-ch/2-4, 4, ch+8); }
+      for(let i=0;i<120;i++){ const v = .5 + fxR(i)*.9, X = ((fxR(i+2)*W + t*120*v) % (W+40)) - 20, Y = y0 + (fxR(i+7)-.5)*ch*.8, l = 6 + v*10;
+        const g = x.createLinearGradient(X-l,0,X,0); g.addColorStop(0, rgba(i%3 ? C.c : C.b, 0)); g.addColorStop(1, rgba(i%3 ? C.c : C.b, .85)); x.strokeStyle = g; x.beginPath(); x.moveTo(X-l, Y); x.lineTo(X, Y); x.stroke(); }
+      const gx = W*.78, gy = H*.36, gr = Math.min(H*.26, 48);
+      x.fillStyle = document.documentElement.dataset.tema==='claro' ? 'rgba(255,248,232,.92)' : 'rgba(8,18,30,.9)'; x.beginPath(); x.arc(gx, gy, gr+6, 0, 7); x.fill();
+      x.strokeStyle = rgba(C.a,.5); x.beginPath(); x.arc(gx, gy, gr, Math.PI*.8, Math.PI*2.2); x.stroke();
+      for(let i=0;i<=10;i++){ const a = Math.PI*.8 + i*Math.PI*.14; x.strokeStyle = rgba(i>7 ? C.c : C.a, .8); x.beginPath(); x.moveTo(gx+Math.cos(a)*(gr-7), gy+Math.sin(a)*(gr-7)); x.lineTo(gx+Math.cos(a)*gr, gy+Math.sin(a)*gr); x.stroke(); }
+      const na = Math.PI*.8 + Math.PI*1.4*(.55 + .2*Math.sin(t*.9) + .05*Math.sin(t*3.7));
+      x.strokeStyle = rgba(C.c,1); x.lineWidth = 2; x.beginPath(); x.moveTo(gx, gy); x.lineTo(gx+Math.cos(na)*(gr-10), gy+Math.sin(na)*(gr-10)); x.stroke(); x.lineWidth = 1;
+      x.fillStyle = rgba(C.c,1); x.beginPath(); x.arc(gx, gy, 3, 0, 7); x.fill();
+      const lt = (t*7.3) % 10000;
+      x.font = '700 22px ui-monospace,monospace'; x.fillStyle = rgba(C.b,.95); x.fillText(lt.toFixed(2).padStart(7,'0'), 14, H*.34);
+      x.font = '600 10px ui-monospace,monospace'; x.fillStyle = C.txt; x.fillText('LITROS DESPACHADOS', 14, H*.34 + 14); x.textAlign = 'center'; x.fillText('CAUDAL', gx, gy + gr*.55); x.textAlign = 'left';
+      x.fillText('NAFTA · GASOIL · GNC', 14, H-12);
+    } else { // molécula de benceno 3D girando, con electrones en órbita
+      const cx = W/2, cy = H/2 + 6, R = Math.min(H*.26, 44), ay = t*.6, ax = .9 + Math.sin(t*.3)*.25;
+      const pr = (X,Y,Z) => { let x1 = X*Math.cos(ay) + Z*Math.sin(ay), z1 = -X*Math.sin(ay) + Z*Math.cos(ay); const y1 = Y*Math.cos(ax) - z1*Math.sin(ax); z1 = Y*Math.sin(ax) + z1*Math.cos(ax);
+        const f = 3/(3 + z1/R*.6); return [cx + x1*f, cy + y1*f, z1, f]; };
+      for(let i=0;i<40;i++){ const X = (fxR(i)*W + t*6*(fxR(i+1)+.2)) % W, Y = fxR(i+4)*H; x.fillStyle = rgba(C.a, .15 + .2*fxR(i+8)); x.fillRect(X, Y, 1.5, 1.5); }
+      const at = [];
+      for(let i=0;i<6;i++){ const a = i*Math.PI/3; at.push({p:pr(Math.cos(a)*R, 0, Math.sin(a)*R), c:1}); at.push({p:pr(Math.cos(a)*R*1.75, 0, Math.sin(a)*R*1.75), c:0}); }
+      const ln = (a,b,d,o=0) => { x.strokeStyle = rgba(C.a, .35 + .4*(1 - (a.p[2]+b.p[2])/(4*R*1.75) - .5)); x.lineWidth = 1.5;
+        x.beginPath(); x.moveTo(a.p[0]+o, a.p[1]+o); x.lineTo(b.p[0]+o, b.p[1]+o); x.stroke(); if(d){ x.beginPath(); x.moveTo(a.p[0]-3, a.p[1]-3); x.lineTo(b.p[0]-3, b.p[1]-3); x.stroke(); } x.lineWidth = 1; };
+      for(let i=0;i<6;i++){ ln(at[i*2], at[((i+1)%6)*2], i%2===0); ln(at[i*2], at[i*2+1]); }
+      [...at].sort((a,b)=>b.p[2]-a.p[2]).forEach(o=>{ const r = (o.c ? 7 : 4)*o.p[3], g = x.createRadialGradient(o.p[0]-r*.3, o.p[1]-r*.3, 0, o.p[0], o.p[1], r);
+        g.addColorStop(0, o.c ? rgba(C.b,1) : rgba(C.c,1)); g.addColorStop(1, o.c ? rgba(C.a,.6) : rgba(C.c,.35)); x.fillStyle = g; x.beginPath(); x.arc(o.p[0], o.p[1], r, 0, 7); x.fill(); });
+      for(let e=0;e<3;e++){ const a = t*2.2 + e*2.09; const p = pr(Math.cos(a)*R*.55, Math.sin(a*1.3)*R*.25, Math.sin(a)*R*.55);
+        x.fillStyle = rgba(C.c,.95); x.shadowColor = rgba(C.c,1); x.shadowBlur = 8; x.beginPath(); x.arc(p[0], p[1], 2.2, 0, 7); x.fill(); x.shadowBlur = 0; }
+      x.fillStyle = C.txt; x.textAlign = 'right'; x.fillText(`AY ${String(Math.round(ay*57.3)%360).padStart(3,'0')}° · AX ${String(Math.round(ax*57.3)).padStart(3,'0')}°`, W-14, 20);
+      x.fillText('BENCENO · BASE DE LA PETROQUÍMICA', W-14, H-12); x.textAlign = 'left';
+    }
+  }
   function renderSurtidores(){
+    setTimeout(fxIni, 0);
     if(!sur){ loadSur(); $('kpisSu').innerHTML = '<div class="empty">Cargando…</div>'; return; }
     const V = sur.ventas || {}, L = a => a?.length ? a[a.length-1] : null, t = [];
     for(const [k,n] of SU_V){ const s = V[k], u = L(s); if(!u) continue; const a = s.find(x=>x[0]===mAdd(u[0],-12));
@@ -4503,6 +4599,7 @@ body.mporta .hbus{display:none}
     $('quFN').textContent = `Nombre en el nomenclador: ${p.ncm.map(c=>c[1]).join(' / ')}. El precio de cada país es su promedio de los últimos 12 meses (CIF, sin impuestos); los meses con menos de 10 toneladas no se dibujan. Fuente: INDEC, comercio exterior.`;
   }
   function renderQuimica(){
+    setTimeout(fxIni, 0);
     renderInsumos();
     if(!qu){ loadQu(); $('kpisQu').innerHTML = '<div class="empty">Cargando datos de la industria química…</div>'; return; }
     const I = qu.ipi||{}, U = qu.uci||{}, W = qu.mundo||{}, P = W.precios||{}, L = a => a?.length ? a[a.length-1] : null, t = [];
@@ -4684,6 +4781,7 @@ body.mporta .hbus{display:none}
   const viPct = (v, t) => nf(v/t*100, 1)+'%';
   const viCap = s => s.charAt(0).toUpperCase() + s.slice(1);
   function renderVinos(){
+    setTimeout(fxIni, 0);
     if(!vin){ loadVin(); $('kpisVi').innerHTML = '<div class="empty">Cargando datos del vino…</div>'; return; }
     if(!act) loadAct();
     const L = a => a?.length ? a[a.length-1] : null, V = vin, co = V.cosecha||{}, su = V.superficie||{}, el = V.elaboracion||{}, me = V.mercado||{}, ex = V.exportaciones||{}, es = V.establecimientos||{};
@@ -4781,6 +4879,7 @@ body.mporta .hbus{display:none}
     for(const [m,gs] of Object.entries(acc)){ out[m] = {}; for(const [g,a] of Object.entries(gs)) out[m][g] = a.imp/a.kg; }
     return out; }
   function renderGanaderia(){
+    setTimeout(fxIni, 0);
     if(!gan){ loadGan(); $('kpisGa').innerHTML = '<div class="empty">Cargando datos de hacienda…</div>'; return; }
     if(!act) loadAct(); if(!glob) loadGlobal();
     const H = gan.hacienda || {}, fechas = Object.keys(H).sort(), L = a => a?.length ? a[a.length-1] : null;
