@@ -8991,7 +8991,7 @@ body.mporta .hbus{display:none}
   const ESP_EST = {Go:'Confirmado', TBD:'A confirmar', TBC:'Por confirmar', Hold:'En pausa', 'In Flight':'En vuelo', Success:'Exitoso', Failure:'Falló', 'Partial Failure':'Falla parcial'};
   const ESP_EMP = {'China Aerospace Science and Technology Corporation':'CASC (China)', 'Russian Federal Space Agency (ROSCOSMOS)':'Roscosmos', 'United Launch Alliance':'ULA', 'Indian Space Research Organization':'ISRO (India)', 'Agency for Defense Development':'ADD (Corea del Sur)', 'Japan Aerospace Exploration Agency':'JAXA (Japón)', 'Mitsubishi Heavy Industries':'Mitsubishi (Japón)', 'China Academy of Launch Vehicle Technology':'CASC (China)', 'National Aeronautics and Space Administration':'NASA', 'Korea Aerospace Research Institute':'KARI (Corea del Sur)', 'Space Exploration Technologies Corp.':'SpaceX'};
   const espEmp = n => ESP_EMP[n] || n || '';
-  const espMis = n => (n||'').replace(/^Unknown Payload$/,'Carga sin identificar').replace(/ TBD\?$/,'');
+  const espMis = n => (n||'').replace(/^Unknown Payload$/,'Carga no revelada').replace(/ TBD\?$/,'');
   const espPais = c => ESP_PAIS[c] || c || '—';
   const espOrg = k => ESP_CASC.has(k) ? 'CASC (estatal china)' : ESP_ORG[k] || esp?.orgs?.[k]?.n || k;
   const espHora = t => new Date(t).toLocaleString('es-AR', {timeZone:'America/Argentina/Buenos_Aires', weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
@@ -9013,6 +9013,7 @@ body.mporta .hbus{display:none}
     $('espProx').innerHTML = nx ? `<div class="espnx"><div><div class="espm">${esc(espMis(nx.mision || nx.n))}</div>
         <div class="espd">${esc(espEmp(nx.emp))}${nx.pais ? ' · '+esc(espPais(nx.pais)) : ''} · ${esc(nx.cohete||'')}${nx.orbita ? ' · órbita '+esc(nx.orbita) : ''}</div>
         <div class="espd">${esc(espHora(nx.t))} · ${esc(/sea launch/i.test(nx.base||'') ? 'desde el mar' : (nx.base||''))} · <span class="chip eq">${esc(ESP_EST[nx.est]||nx.estn||'')}</span></div>
+${/^Unknown Payload$/.test(nx.mision||'') ? `<div class="espd">${nx.pais==='CN' ? 'China no anuncia qué lleva el cohete: se sabe recién después del despegue.' : 'El operador no anunció qué lleva el cohete: se sabe recién después del despegue.'}</div>` : ''}
 ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noopener">Ver la transmisión ↗</a>` : ''}</div>
         <div class="espder"><canvas class="esporb" id="espOrb" aria-hidden="true"></canvas><div class="espcd" data-espg="${esc(nx.t)}"></div></div></div>` : '<div class="empty">Sin lanzamientos cargados.</div>';
     // casilleros
