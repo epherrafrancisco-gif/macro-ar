@@ -1,14 +1,14 @@
-Dólar hoy · 04/11/2026
+Dólar hoy · 05/11/2026
 
-Oficial: $1.571,40 (−0,1%)
-MEP: $1.584,76 (+0,7%)
-CCL: $1.717,59 (+2,6%)
-Blue: $1.565,00 (0,0%)
+Oficial: $1.571,84 (+0,0%)
+MEP: $1.575,68 (−0,6%)
+CCL: $1.683,44 (+0,5%)
+Blue: $1.550,00 (−1,0%)
 
-Brecha CCL: 9,3%
-Riesgo país: 852 pb (+21)
-Reservas: US$ 50.439 M (02/11)
-Compras del BCRA: +96 M (30/10); en 2026: +15.977 M
+Brecha CCL: 7,1%
+Riesgo país: 927 pb (+75)
+Reservas: US$ 50.298 M (03/11)
+Compras del BCRA: 0 M (02/11); en 2026: +15.977 M
 
 Toda la plataforma: pulsomacro.com.ar
 #dolar #economia #Argentina #riesgopais
