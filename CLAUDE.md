@@ -45,17 +45,17 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   tienen su bloque `html[data-tema="claro"]` (pedido del dueño 03/11/2026); Terminal y Verdadero o falso quedan oscuros a propósito. El Monitor en modo claro es una terminal dorada whisky (pedido del dueño 03/11/2026): variables de `.xpw` redefinidas en el
   bloque CSS "Monitor en modo claro" y colores del lienzo en el objeto `K` de `xpDraw` (según `esClaro()`).
 - Modos secretos: desde el 08/11/2026 queda UNO solo, Órbita (pedido del dueño: "elimina los modos, deja solamente el de órbita y que
-  se desbloquee en 80"). Ciudad (cyberpunk, 30 seguidas) y Coder (código y cables, 80 seguidas) se SACARON con sus imágenes, scripts
+  se desbloquee en 80"; enseguida "mejor que sean 40 seguidas"). Ciudad (cyberpunk, 30 seguidas) y Coder (código y cables, 80 seguidas) se SACARON con sus imágenes, scripts
   de render (`ciudad*.py`, `fondos/ciudad*`, `fondos/chongqing-*`, `fondos/coder.js`) y la ruta `/api/coder`: no volver a ponerlos. Quien
   tenía `pm-tema` = 'cyber' o 'coder' vuelve solo al oscuro (el script del `<head>` ya no los reconoce). Botón: oscuro → claro → Órbita.
 - Modo Órbita (la Tierra desde la órbita sobre Argentina, con la nave de Pulso Macro cruzando; pedido del dueño 02/11/2026, reemplazó
-  a una "Bóveda" que no le gustó): el ÚNICO modo secreto, 80 seguidas en Verdadero o falso desde el 08/11/2026 (antes 60; `BOV_META` en
-  juego.js y en worker/vivo.js; también si `PT.max` ≥80; quien ya lo tenía de antes lo conserva), marca `pm-orbita` (se acepta la vieja
+  a una "Bóveda" que no le gustó): el ÚNICO modo secreto, 40 seguidas en Verdadero o falso desde el 08/11/2026 (antes 60; `BOV_META` en
+  juego.js y en worker/vivo.js; también si `PT.max` ≥40; quien ya lo tenía de antes lo conserva), marca `pm-orbita` (se acepta la vieja
   `pm-boveda`), `pm-tema` = 'orbita' (la vieja 'oro' también entra). Se anuncia como secreto sin decir cuál es: `.lockr` en cada pregunta
-  "80 seguidas desbloquean un modo secreto · lo tiene N persona(s) en el mundo" (`BOV_N`, `enMundo`), el medidor "· modo secreto" y en la
-  79 "Una más… y es tuyo el modo secreto". Recién al ganarlo, el cartel `#bov` ("80 seguidas · modo secreto", la nave sobre la Tierra)
+  "40 seguidas desbloquean un modo secreto · lo tiene N persona(s) en el mundo" (`BOV_N`, `enMundo`), el medidor "· modo secreto" y en la
+  39 "Una más… y es tuyo el modo secreto". Recién al ganarlo, el cartel `#bov` ("40 seguidas · modo secreto", la nave sobre la Tierra)
   dice que es Órbita. Contador: `/api/boveda` en el Worker (GET = cuenta, arranca en 1 = el dueño; POST {tk} suma solo con una ficha
-  firmada de /api/racha de ≥80, una vez por ficha). Evento GoatCounter `orbita-desbloqueado`. En el juego, "Récord de todos" muestra el mayor
+  firmada de /api/racha de ≥40, una vez por ficha). Evento GoatCounter `orbita-desbloqueado`. En el juego, "Récord de todos" muestra el mayor
   entre el del servidor y el propio (si no, en los dispositivos del dueño no coincide). Imágenes 3D con Blender (`pip install bpy`,
   Cycles en CPU): `scripts/espacio_blender.py` (texturas 8K de Solar System Scope, CC BY 4.0, basadas en la NASA: día y luces de noche;
   nubes y océanos de la NASA vía three.js; no están en el repo, se bajan de GitHub) + `scripts/espacio_post.py` (estrellas, brillo,

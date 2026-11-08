@@ -632,8 +632,8 @@ for (let total = base.length; ORD.length < total;) {
 
 
 // premio (modo Órbita): se declara antes de dibujar porque cada pregunta lleva el aviso. Pedido del dueño 08/11/2026: es el ÚNICO modo
-// (Ciudad y Coder se sacaron), secreto, con 80 seguidas. Marca pm-orbita (pm-boveda = nombre viejo).
-const BOV_META = 80;
+// (Ciudad y Coder se sacaron), secreto, con 40 seguidas (primero se pensó en 80). Marca pm-orbita (pm-boveda = nombre viejo).
+const BOV_META = 40;
 const bovOk = () => { try { return localStorage.getItem('pm-orbita') === '1' || localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
 let BOV_N = null;   // cuántos lo tienen (Worker /api/boveda)
 const enMundo = n => n === 1 ? 'lo tiene 1 persona en el mundo' : 'lo tienen ' + fN(n) + ' personas en el mundo';   // cuántos tienen el modo Órbita (se muestra recién después de ganar Ciudad, para que den ganas)
@@ -763,7 +763,7 @@ if (PT.max >= BOV_META) { try { localStorage.setItem('pm-orbita', '1'); } catch 
   PT.max = Math.max(PT.max, 81); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-orbita', '1'); } catch (e) {}
   history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor(); yoPintar(); recPintar();
   const m = $('#bov'); if (m) { m.hidden = false; bovContar(false); } })();
-// modo Órbita: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 80 seguidas)
+// modo Órbita: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 40 seguidas)
 // Al desbloquearlo de verdad (pedido del dueño 02/11/2026): "Con vos, ya son N personas en el mundo", solo si el Worker sumó a esta
 // persona (la cuenta subió respecto de la que se conocía antes); si no, el texto común.
 const bovQuien = (n, conVos) => conVos && n >= 2 ? `Con vos, ya son <b>${fN(n)} personas</b> en el mundo`
@@ -782,7 +782,7 @@ function bovDesbloquear() {
   try { localStorage.setItem('pm-orbita', '1'); } catch (e) { return; }
   lockPintar();
   try { window.goatcounter && goatcounter.count({path: 'orbita-desbloqueado', event: true}); } catch (e) {}
-  setTimeout(() => bovContar(true), 1200);   // espera la ficha de las 80 que devuelve /api/racha
+  setTimeout(() => bovContar(true), 1200);   // espera la ficha de las 40 que devuelve /api/racha
   setTimeout(() => { const m = $('#bov'); if (m) { m.hidden = false; $('#bovIr').focus(); } }, 1500);
 }
 { const m = $('#bov'); if (m) { $('#bovX').addEventListener('click', () => { m.hidden = true; }); $('#bovIr').addEventListener('click', bovIr);

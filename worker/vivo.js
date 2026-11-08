@@ -99,8 +99,8 @@ async function racha(req, env){
 
 // ---------- Modo Bóveda: cuántas personas lo desbloquearon (pulsomacro.com.ar/api/boveda; pedido del dueño 02/11/2026) ----------
 // Arranca en 1 (el dueño). Solo suma con una ficha firmada por /api/racha de 60 o más seguidas, y cada ficha cuenta una vez.
-// Desde el 08/11/2026 es el modo Órbita, el ÚNICO modo secreto, con 80 seguidas (antes 60; Ciudad y Coder se sacaron).
-const BOV_META = 80, BOV_BASE = 1;
+// Desde el 08/11/2026 es el modo Órbita, el ÚNICO modo secreto, con 40 seguidas (antes 60; Ciudad y Coder se sacaron).
+const BOV_META = 40, BOV_BASE = 1;
 async function bovCuenta(env){ try{ const o = await env.DATOS.get('boveda/cuenta.json'); if (o) return await o.json(); }catch(e){} return {n: BOV_BASE}; }
 async function boveda(req, env){
   const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
