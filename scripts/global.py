@@ -203,7 +203,7 @@ BOLSAS = {"NYSE": (".SPX", "S&P 500"), "BYMA": (".MERV", "S&P Merval"), "B3": ("
           "BMV": (".MXX", "IPC México"), "TSX": (".GSPTSE", "S&P/TSX"), "LSE": (".FTSE", "FTSE 100"),
           "Xetra": (".GDAXI", "DAX"), "Euronext": (".FCHI", "CAC 40"), "JSE": ((".JALSH", ".JTOPI", ".J203"), "JSE"),
           "Tadawul": ((".TASI", "TASI", ".TASI.SE", ".TASIX"), "Tadawul"), "NSE": (".NSEI", "Nifty 50"), "SIX": (".SSMI", "SMI"), "SSE": (".SSEC", "Shanghái"),
-          "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200"), "KRX": (".KS11", "KOSPI"), "NZX": (".NZ50", "NZX 50"), "IDX": (".JKSE", "Jakarta Composite"), "OSE": ((".OSEBX", ".OSEAX",), "OSEBX"), "OMX": ((".OMXS30",), "OMX Stockholm 30"), "SET": ((".SETI",), "SET"), "KLSE": ((".KLSE",), "FTSE Bursa Malaysia KLCI"), "PSE": ((".PSI",), "PSEi"), "ICEX": ((".OMXI15", ".OMXIPI",), "OMX Iceland 15"), "BUX": ((".BUX",), "BUX"), "PSE_CZ": ((".PX",), "PX"), "CPH": ((".OMXC25", ".OMXC20",), "OMX Copenhagen 25"), "BVB": ((".BETI", ".BET",), "BET"), "TASE": ((".TA35", ".TA125",), "TA-35"), "BELEX": ((".BELEX15", ".BELEXLINE",), "BELEX15"), "MOEX": ((".IMOEX", ".MOEX", ".IRTS"), "MOEX Russia"), "BME": ((".IBEX",), "IBEX 35"), "SGX": ((".STI", ".FTSTI"), "STI"), "CSE": ((".MASI", ".MADEX"), "MASI"), "MSE": ((".MBI10",), "MBI10"),
+          "HKEX": (".HSI", "Hang Seng"), "TSE": (".N225", "Nikkei 225"), "ASX": (".AXJO", "S&P/ASX 200"), "KRX": (".KS11", "KOSPI"), "NZX": (".NZ50", "NZX 50"), "IDX": (".JKSE", "Jakarta Composite"), "OSE": ((".OSEBX", ".OSEAX",), "OSEBX"), "OMX": ((".OMXS30",), "OMX Stockholm 30"), "SET": ((".SETI",), "SET"), "KLSE": ((".KLSE",), "FTSE Bursa Malaysia KLCI"), "PSE": ((".PSI",), "PSEi"), "ICEX": ((".OMXI15", ".OMXIPI",), "OMX Iceland 15"), "BUX": ((".BUX",), "BUX"), "PSE_CZ": ((".PX",), "PX"), "CPH": ((".OMXC25", ".OMXC20",), "OMX Copenhagen 25"), "BVB": ((".BETI", ".BET",), "BET"), "TASE": ((".TA35", ".TA125",), "TA-35"), "BELEX": ((".BELEX15", ".BELEXLINE",), "BELEX15"), "MOEX": ((".IMOEX", ".MOEX", ".IRTS"), "MOEX Russia"), "BME": ((".IBEX",), "IBEX 35"), "BIT": ((".FTMIB",), "FTSE MIB"), "AEX": ((".AEX",), "AEX"), "ATHEX": ((".ATG",), "Athens General"), "SGX": ((".STI", ".FTSTI"), "STI"), "CSE": ((".MASI", ".MADEX"), "MASI"), "MSE": ((".MBI10",), "MBI10"),
           "GPW": ((".WIG20", "WIG20", ".WIG20.WA"), "WIG20")}
 # Acciones por grupo (todas cotizan en Wall Street, en US$)
 ACCIONES = {
@@ -229,7 +229,7 @@ ACCIONES = {
 }
 # Bono del gobierno a 10 años de cada país (ISO3 → símbolo CNBC). Argentina va con el riesgo país (data.json).
 BONOS = {"USA": "US10Y", "DEU": "DE10Y-DE", "GBR": "GB10Y-GB", "JPN": "JP10Y-JP", "FRA": "FR10Y-FR", "ITA": "IT10Y-IT",
-         "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR", "NZL": "NZ10Y", "IDN": "ID10Y", "NOR": "NO10Y-NO", "SWE": "SE10Y-SE", "THA": "TH10Y", "MYS": "MY10Y", "PHL": "PH10Y", "ISL": "IS10Y", "HUN": "HU10Y", "HKG": "HK10Y", "CZE": "CZ10Y", "DNK": "DK10Y", "ROU": "RO10Y", "ISR": "IL10Y", "SRB": "RS10Y", "RUS": "RU10Y", "SGP": "SG10Y", "MAR": "MA10Y",
+         "ESP": "ES10Y-ES", "CHE": "CH10Y-CH", "CAN": "CA10Y", "AUS": "AU10Y", "CHN": "CN10Y", "IND": "IN10Y", "KOR": "KR10Y-KR", "NZL": "NZ10Y", "IDN": "ID10Y", "NOR": "NO10Y-NO", "SWE": "SE10Y-SE", "THA": "TH10Y", "MYS": "MY10Y", "PHL": "PH10Y", "ISL": "IS10Y", "HUN": "HU10Y", "HKG": "HK10Y", "CZE": "CZ10Y", "DNK": "DK10Y", "ROU": "RO10Y", "ISR": "IL10Y", "SRB": "RS10Y", "RUS": "RU10Y", "SGP": "SG10Y", "MAR": "MA10Y", "NLD": "NL10Y", "GRC": "GR10Y",
          "BRA": "BR10Y", "COL": "CO10Y", "MEX": "MX10Y", "CHL": "CL10Y-CL", "ZAF": "ZA10Y-ZA", "TUR": "TR10Y-TR"}
 # Commodities (clave, nombre, símbolo CNBC, conversión a la unidad mostrada, unidad)
 COMS = [("soja", "Soja", "@S.1", 0.3674371, "US$/t"), ("maiz", "Maíz", "@C.1", 0.3936825, "US$/t"),
@@ -286,6 +286,12 @@ ESPANA = {"eur": ("EUR=", "España"), "ewp": ("EWP", "iShares MSCI Spain"), "san
 SINGAPUR = {"sgd": ("SGD=", "Singapur"), "ews": ("EWS", "iShares MSCI Singapore"), "se": ("SE", "SE"), "grab": ("GRAB", "GRAB")}
 MARRUECOS = {"mad": ("MAD=", "Marruecos")}
 MACEDONIA = {"mkd": ("MKD=", "Macedonia del Norte")}
+# Alemania, Francia, Italia, Países Bajos y Grecia (11/2026): euro + fondo del país en Nueva York + empresas con ADR
+ALEMANIA = {"eur": ("EUR=", "Alemania"), "ewg": ("EWG", "iShares MSCI Germany"), "sap": ("SAP", "SAP"), "db": ("DB", "DB")}
+FRANCIA = {"eur": ("EUR=", "Francia"), "ewq": ("EWQ", "iShares MSCI France"), "tte": ("TTE", "TTE"), "sny": ("SNY", "SNY")}
+ITALIA = {"eur": ("EUR=", "Italia"), "ewi": ("EWI", "iShares MSCI Italy"), "race": ("RACE", "RACE"), "stla": ("STLA", "STLA")}
+PAISESBAJOS = {"eur": ("EUR=", "Países Bajos"), "ewn": ("EWN", "iShares MSCI Netherlands"), "asml": ("ASML", "ASML"), "ing": ("ING", "ING"), "phg": ("PHG", "PHG")}
+GRECIA = {"eur": ("EUR=", "Grecia"), "grek": ("GREK", "Global X MSCI Greece")}
 DEFENSA = {"ita": ("ITA", "iShares U.S. Aerospace & Defense"), "lmt": ("LMT", "Lockheed Martin"), "noc": ("NOC", "Northrop Grumman"), "rtx": ("RTX", "RTX (Raytheon)"), "gd": ("GD", "General Dynamics"), "lhx": ("LHX", "L3Harris"), "rhm": ("RHM-DE", "Rheinmetall"), "ba_": ("BA.-GB", "BAE Systems")}
 NORUEGA = {"nok": ("NOK=", "Noruega"), "norw": ("NORW", "Global X MSCI Norway"), "eqnr": ("EQNR", "EQNR")}
 SUECIA = {"sek": ("SEK=", "Suecia"), "ewd": ("EWD", "iShares MSCI Sweden"), "eric": ("ERIC", "ERIC"), "spot": ("SPOT", "SPOT")}
@@ -308,12 +314,12 @@ EUROPA = {"sx5e": (".STOXX50E", "Euro Stoxx 50"), "stoxx600": (".STOXX", "Stoxx 
 BOLSA_ISO = {"NYSE": "USA", "B3": "BRA", "BMV": "MEX", "TSX": "CAN", "LSE": "GBR", "Xetra": "DEU", "Euronext": "FRA",
              "JSE": "ZAF", "NSE": "IND", "SIX": "CHE", "SSE": "CHN", "TSE": "JPN", "ASX": "AUS", "KRX": "KOR", "NZX": "NZL",
              "IDX": "IDN", "OSE": "NOR", "OMX": "SWE", "ICEX": "ISL", "BUX": "HUN", "PSE_CZ": "CZE", "CPH": "DNK", "BVB": "ROU",
-             "TASE": "ISR", "MOEX": "RUS", "BME": "ESP", "GPW": "POL"}
+             "TASE": "ISR", "MOEX": "RUS", "BME": "ESP", "GPW": "POL", "BIT": "ITA", "AEX": "NLD", "ATHEX": "GRC"}
 # Bono a 10 años: ISO → clave de la historia (global_hist.json). Los que no tienen fuente diaria salen de la OCDE (mensual).
 BONO_HIST = {"USA": "t10", "DEU": "de10", "GBR": "gb10", "JPN": "jp10", "FRA": "fr10", "ITA": "it10", "ESP": "es10", "CHE": "ch10",
              "CAN": "ca10", "AUS": "au10", "CHN": "cn10", "IND": "in10", "KOR": "kr10", "NZL": "nz10", "NOR": "no10", "SWE": "se10",
              "HUN": "hu10", "CZE": "cz10", "DNK": "dk10", "ROU": "ro10", "ISR": "il10", "MEX": "mx10", "CHL": "cl10", "ZAF": "za10",
-             "BRA": "br10", "COL": "co10", "POL": "pl10"}
+             "BRA": "br10", "COL": "co10", "POL": "pl10", "NLD": "nl10", "GRC": "gr10"}
 OCDE = {"SHARE": {}, "IRLT": {}}   # se llena en main
 COMM = {}                          # materias primas del Banco Mundial (mensual), se llena en main
 NOM_COM = {k: (n, u) for k, n, _, _, u in COMS}
@@ -374,6 +380,7 @@ def extras():
                      ("hungria", HUNGRIA), ("hongkong", HONGKONG), ("chequia", CHEQUIA), ("dinamarca", DINAMARCA),
                      ("rumania", RUMANIA), ("israel", ISRAEL), ("serbia", SERBIA), ("china", CHINA), ("rusia", RUSIA),
                      ("espana", ESPANA), ("singapur", SINGAPUR), ("marruecos", MARRUECOS), ("macedonia", MACEDONIA),
+                     ("alemania", ALEMANIA), ("francia", FRANCIA), ("italia", ITALIA), ("paisesbajos", PAISESBAJOS), ("grecia", GRECIA),
                      ("defensa", DEFENSA)):
         out[clave] = dicc(D)
     return out

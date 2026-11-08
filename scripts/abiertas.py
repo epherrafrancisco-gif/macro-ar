@@ -444,7 +444,7 @@ TV = {
     ".HSI": ("HSI:HSI", "Hang Seng"), ".N225": ("FOREXCOM:JPXJPY", "Nikkei 225"), ".AXJO": ("FOREXCOM:AUXAUD", "S&P/ASX 200"),
     ".JKSE": ("IDX:COMPOSITE", "Jakarta Composite"), ".OSEBX": ("OSL:OSEBX", "OSEBX"), ".OMXS30": ("OMXSTO:OMXS30", "OMX Stockholm 30"),
     ".OMXI15": ("OMXICE:OMXI15", "OMX Iceland 15"), ".BUX": ("BET:BUX", "BUX"), ".PX": ("PSECZ:PX", "PX"),
-    ".OMXC25": ("OMXCOP:OMXC25", "OMX Copenhagen 25"), ".BETI": ("BVB:BET", "BET"), ".IBEX": ("BME:IBC", "IBEX 35"),
+    ".OMXC25": ("OMXCOP:OMXC25", "OMX Copenhagen 25"), ".BETI": ("BVB:BET", "BET"), ".IBEX": ("BME:IBC", "IBEX 35"), ".AEX": ("EURONEXT:AEX", "AEX"),
     ".WIG20": ("GPW:WIG20", "WIG20"), ".STOXX50E": ("CAPITALCOM:EU50", "Euro Stoxx 50"), ".FTMIB": ("CAPITALCOM:IT40", "FTSE MIB"),
     ".VIX": ("CAPITALCOM:VIX", "VIX"), "IPSA": ("BCS:SP_IPSA", "S&P IPSA"),
     # índices sin widget: fondo de acciones del país que cotiza en Nueva York
@@ -461,7 +461,8 @@ TV = {
     "EZA": ("AMEX:EZA", None), "ENZL": ("NASDAQ:ENZL", None), "EIDO": ("AMEX:EIDO", None), "NORW": ("AMEX:NORW", None),
     "EWD": ("AMEX:EWD", None), "THD": ("AMEX:THD", None), "EWM": ("AMEX:EWM", None), "EPHE": ("AMEX:EPHE", None),
     "EWH": ("AMEX:EWH", None), "EDEN": ("CBOE:EDEN", None), "EIS": ("AMEX:EIS", None), "FXI": ("AMEX:FXI", None),
-    "EWS": ("AMEX:EWS", None), "EWP": ("AMEX:EWP", None), "TUR": ("NASDAQ:TUR", None), "ITA": ("CBOE:ITA", None),
+    "EWS": ("AMEX:EWS", None), "EWP": ("AMEX:EWP", None), "EWG": ("AMEX:EWG", None), "EWQ": ("AMEX:EWQ", None),
+    "EWI": ("AMEX:EWI", None), "EWN": ("AMEX:EWN", None), "GREK": ("AMEX:GREK", None), "TUR": ("NASDAQ:TUR", None), "ITA": ("CBOE:ITA", None),
     "RHM-DE": ("XETR:RHM", None), "BA.-GB": ("OTC:BAESY", "BAE Systems (ADR)"),
 }
 # Bolsa de Nueva York o Nasdaq de cada acción (para el widget). Las que no están acá van a NYSE.

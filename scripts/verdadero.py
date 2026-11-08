@@ -32,6 +32,7 @@ PA = [
  ('china','China','cn','CHN','fx_cny','un yuan',1,0), ('rusia','Rusia','ru','RUS','fx_rub','cien rublos',100,0),
  ('espana','España','es','ESP',None,None,1,0), ('macedonia','Macedonia del Norte','mk','MKD','fx_mkd','cien denares',100,0),
  ('singapur','Singapur','sg','SGP','fx_sgd','un dólar de Singapur',1,0), ('marruecos','Marruecos','ma','MAR','fx_mad','un dirham',1,0),
+ ('alemania','Alemania','de','DEU',None,None,1,0), ('francia','Francia','fr','FRA',None,None,1,0), ('italia','Italia','it','ITA',None,None,1,0), ('paisesbajos','Países Bajos','nl','NLD',None,None,1,0), ('grecia','Grecia','gr','GRC',None,None,1,0),
 ]
 HOY = D['actualizado'][:10]
 

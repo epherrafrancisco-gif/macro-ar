@@ -131,9 +131,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   salió de ahí y queda en el pie y en la hoja del celular; en celular el encabezado no se ve). Sin la firma "Diseñado y operado por…" (`.by`/`.mby`, sacada el 02/11/2026);
   el logo (`#brandH`) vuelve a la portada. Botón flotante "Volver al inicio" (`#flHome`) en todas las vistas menos la portada.
 - Adentro: migas (`#crumb`), pestañas como píldoras (`#tabsNav a[data-g]`, en celular grilla de 2 columnas). En El mundo
-  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 39 países
+  solo Mundo y el botón "Países" (`#tabPaises`), que abre el panel `#paisPanel` con Estados Unidos y los 44 países
   (`data-g="pais"`; orden pedido por el dueño, igual en el panel, la hoja del celular y la portada: EE.UU., Polonia, Japón, China,
-  Turquía, Zona euro, Suiza, Reino Unido, Brasil, Hong Kong, Arabia Saudita, Israel, Corea del Sur y después el resto).
+  Turquía, Zona euro, Suiza, Reino Unido, Brasil, Hong Kong, Arabia Saudita, Israel, Corea del Sur, después Alemania, Francia, Italia, Países Bajos y Grecia (sumados el 08/11/2026) y el resto).
   `PAISES_T` son las pestañas de país; `PAISES_M` = `['eeuu', ...PAISES_T]` es el orden del menú (EE.UU. sigue siendo la
   vista `usa` de la pestaña global). Un país nuevo se agrega en el panel y en `PAISES_T`. Recuadro
   `#here` con qué es cada sección, y selector de período `#segRange` (1M/3M/6M/1A/Todo; los mensuales no lo usan).
@@ -562,6 +562,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   cotización viene vacía, sale de la historia `masi`). `BCAL` MAR 15/12/2026 (aproximada). Macedonia: denar atado al euro, MBI10
   (historia `mbi10`), `BCAL` MKD 3/11 y 22/12/2026 (aproximadas). PENDIENTE 2027 de MAR, MKD y SGP.
 
+### Alemania, Francia, Italia, Países Bajos y Grecia (`#alemania` `vDe` `SUBS.DE`; `#francia` `vFr` `SUBS.FR`; `#italia` `vIt` `SUBS.IT`; `#paisesbajos` `vNl` `SUBS.NL`; `#grecia` `vGr` `SUBS.GR`)
+- Sumados el 08/11/2026 (el dueño pidió "los 5 que mejor vayan a quedar"; se eligieron países del euro porque son los que tienen
+  todo al día gratis: BIS, OCDE, bonos y bolsa de la OCDE). Clonados de España: robots `scripts/{alemania,francia,italia,paisesbajos,grecia}.py`
+  (base `pais_bis.py`, tasa del BCE con BIS `XM`), `render{Alemania,Francia,Italia,PaisesBajos,Grecia}` con el mismo armado que
+  `renderEspana` (dólares por euro, un euro en pesos, cuenta regresiva con `BCAL` DEU). Cada uno con su texto de entrada propio.
+- global.json: `alemania` (EWG, SAP, DB), `francia` (EWQ, TTE, SNY), `italia` (EWI, RACE, STLA), `paisesbajos` (EWN, ASML, ING, PHG),
+  `grecia` (GREK). Bolsas nuevas en `BOLSAS`/`BOLSA_ISO`/`GEX`: `BIT` (Milán, FTSE MIB con CAPITALCOM:IT40), `AEX` (Ámsterdam,
+  EURONEXT:AEX) y `ATHEX` (Atenas, sin símbolo de TradingView: la tarjeta del índice no aparece, el casillero sale de la OCDE).
+  Alemania y Francia usan `Xetra` y `Euronext` (DAX, CAC 40). Bonos NLD y GRC de la OCDE (`nl10`, `gr10`).
+- Símbolos de TradingView sin probar desde acá (EWG, EWQ, EWI, EWN, GREK, EURONEXT:AEX): si alguno muestra "!", buscar el correcto.
+- Noticias: medios en español con regla "pais" + en inglés The Local (de, fr, it), NL Times, DutchNews y Kathimerini (sin probar).
+
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
   (fecha de `BCAL` + hora del anuncio en la zona del banco; las marcadas 1 son aproximadas), hora del país con el estado de
@@ -571,7 +583,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En EE.UU. no va la cuenta regresiva (ya está la de la Fed arriba); Perú no tiene calendario fijo del BCRP.
 
 ### Datos que se suman a todos los países (`paises_extra.json` de scripts/paises_extra.py en `global.yml`; `pxRender`, `PX_ISO`)
-- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 39 países + Argentina; `pxRender(k)` se
+- Pedido del dueño ("los países se ven vagos al lado de Argentina"). Un solo robot para los 44 países + Argentina; `pxRender(k)` se
   llama desde `aplicarSub` y agrega tarjetas en un `.pxw` al final del apartado (sin tocar el HTML de cada país).
 - Economía: "{país} y Argentina desde 1990" y "Crecimiento de cada año" (Banco Mundial, `wb.ppa`/`wb.crec`; Polonia ya
   tiene las suyas), inflación por rubro (OCDE `DF_PRICES_ALL`: CP01 alimentos, CP045_0722 energía, _TXCP01_NRG núcleo;
