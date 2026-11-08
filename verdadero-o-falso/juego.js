@@ -637,8 +637,14 @@ const ciuOk = () => { try { return localStorage.getItem('pm-ciudad') === '1'; } 
 // premio legendario (modo Órbita, 60 seguidas; pedido del dueño 02/11/2026): SECRETO hasta ganar Ciudad. Marca pm-orbita (pm-boveda = nombre viejo).
 const BOV_META = 60;
 const bovOk = () => { try { return localStorage.getItem('pm-orbita') === '1' || localStorage.getItem('pm-boveda') === '1'; } catch (e) { return false; } };
-let BOV_N = null;   // cuántos tienen el modo Órbita (se muestra recién después de ganar Ciudad, para que den ganas)
-const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` + (BOV_N ? ` · ${BOV_N === 1 ? 'lo tiene 1 persona' : 'lo tienen ' + fN(BOV_N) + ' personas'} en el mundo` : '') : '';
+let BOV_N = null;
+// premio secreto (modo Coder, 80 seguidas; pedido del dueño 08/11/2026): nadie sabe que existe hasta ganar Órbita. Marca pm-coder.
+const COD_META = 80;
+const codOk = () => { try { return localStorage.getItem('pm-coder') === '1'; } catch (e) { return false; } };
+let COD_N = null;
+const enMundo = n => n === 1 ? 'lo tiene 1 persona en el mundo' : 'lo tienen ' + fN(n) + ' personas en el mundo';   // cuántos tienen el modo Órbita (se muestra recién después de ganar Ciudad, para que den ganas)
+const lockTxt = () => !ciuOk() ? `${CIU_META} seguidas desbloquean un modo secreto` : !bovOk() ? `${BOV_META} seguidas desbloquean el modo legendario` + (BOV_N ? ` · ${enMundo(BOV_N)}` : '')
+  : !codOk() ? `${COD_META} seguidas desbloquean el modo Coder` + (COD_N ? ` · ${enMundo(COD_N)}` : '') : '';
 const CANDADO = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>';
 // ---------- dibujar ----------
 function svgLine(viz) {
@@ -685,7 +691,7 @@ function reelHTML(r, i) {
   return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
-    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div></section>`;
+    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${bovOk() ? ' cod' : ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div></section>`;
 }
 // intro (la primera vez) con cuántos reels hay hoy
 const feed = $('#feed'); feed.innerHTML = '';
@@ -756,7 +762,7 @@ ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 // premio: con 30 seguidas se desbloquea el modo Ciudad de Pulso Macro (pedido del dueño 02/11/2026). Marca pm-ciudad, la lee index.html.
 // aviso del premio: va en cada pregunta, arriba de la fuente (pedido del dueño 02/11/2026); al ganarlo desaparece
-function lockPintar() { const t = lockTxt(); document.querySelectorAll('.lockr').forEach(x => { if (!t) x.remove(); else { x.innerHTML = CANDADO + t; x.classList.toggle('leg', ciuOk()); } }); }
+function lockPintar() { const t = lockTxt(); document.querySelectorAll('.lockr').forEach(x => { if (!t) x.remove(); else { x.innerHTML = CANDADO + t; x.classList.toggle('leg', ciuOk() && !bovOk()); x.classList.toggle('cod', bovOk()); } }); }
 function ciuIr() { try { localStorage.setItem('pm-tema', 'cyber'); } catch (e) {} }
 function ciuDesbloquear() {
   if (ciuOk()) return;
@@ -768,13 +774,14 @@ function ciuDesbloquear() {
 }
 if (PT.max >= CIU_META) { try { localStorage.setItem('pm-ciudad', '1'); } catch (e) {} }   // quien ya la había logrado antes
 if (PT.max >= BOV_META) { try { localStorage.setItem('pm-orbita', '1'); } catch (e) {} }
-// dispositivos del dueño (pedido 02/11/2026): con su link secreto quedan con récord 62 y los dos modos. Él es el 1 del contador.
+if (PT.max >= COD_META) { try { localStorage.setItem('pm-coder', '1'); } catch (e) {} }
+// dispositivos del dueño (pedido 02/11/2026; desde el 08/11/2026 récord 81 y los tres modos, con el link viejo o el nuevo). Él es el 1 de los contadores.
 (async () => { const h = location.hash.slice(1); if (!h || !crypto.subtle) return;
   const d = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(h)))).map(b => b.toString(16).padStart(2, '0')).join('');
-  if (d !== '2d76777e219b10c1f615d4e65b58f9b398be186181b0c86e611830dba6b8f2c2') return;
-  PT.max = Math.max(PT.max, 62); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-ciudad', '1'); localStorage.setItem('pm-orbita', '1'); } catch (e) {}
-  history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor();
-  const m = $('#bov'); if (m) { m.hidden = false; bovContar(false); } })();
+  if (d !== '2d76777e219b10c1f615d4e65b58f9b398be186181b0c86e611830dba6b8f2c2' && d !== 'cf6ccda31f31601547b197ab723f0df52907d960a8a2404db55c42eee5fb2ecb') return;
+  PT.max = Math.max(PT.max, 81); try { localStorage.setItem('pl-pts', JSON.stringify(PT)); localStorage.setItem('pm-ciudad', '1'); localStorage.setItem('pm-orbita', '1'); localStorage.setItem('pm-coder', '1'); } catch (e) {}
+  history.replaceState(null, '', location.pathname); ptsPintar(); lockPintar(); medidor(); yoPintar(); recPintar();
+  bovContar(false); codMostrar(); })();
 // modo Órbita: cuántos lo tienen en el mundo (Worker /api/boveda; el Worker solo suma con una ficha firmada de 60 seguidas)
 // Al desbloquearlo de verdad (pedido del dueño 02/11/2026): "Con vos, ya son N personas en el mundo", solo si el Worker sumó a esta
 // persona (la cuenta subió respecto de la que se conocía antes); si no, el texto común.
@@ -788,6 +795,29 @@ function bovContar(sumar) {
       document.querySelectorAll('[data-bovn]').forEach(x => { x.innerHTML = bovQuien(d.n, conVos); x.hidden = false; }); } }).catch(() => {});
 }
 if (ciuOk()) bovContar(false);
+// modo Coder: cuántos lo tienen (Worker /api/coder; solo suma con una ficha firmada de 80 seguidas, cada ficha una vez)
+function codContar(sumar) {
+  const antes = COD_N;
+  const o = sumar ? {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({tk: TK})} : {};
+  return fetch(sumar ? '/api/coder' : '/api/coder?t=' + VER(), o).then(r => r.ok ? r.json() : null).then(d => {
+    if (d && d.n != null) { const conVos = sumar && antes != null && d.n > antes; COD_N = d.n; lockPintar();
+      document.querySelectorAll('[data-codn]').forEach(x => { x.innerHTML = bovQuien(d.n, conVos); x.hidden = false; }); } }).catch(() => {});
+}
+if (bovOk()) codContar(false);
+let codFx = null;
+function codMostrar() { const m = $('#cod'); if (!m) return; m.hidden = false; $('#codIr').focus();
+  const cv = m.querySelector('canvas'); if (window.CoderFx && cv && !codFx) codFx = CoderFx.start(cv, {lite: true}); }
+function codCerrar() { const m = $('#cod'); if (m) m.hidden = true; if (codFx) { codFx.stop(); codFx = null; } }
+function codDesbloquear() {
+  if (codOk()) return;
+  try { localStorage.setItem('pm-coder', '1'); } catch (e) { return; }
+  lockPintar();
+  try { window.goatcounter && goatcounter.count({path: 'coder-desbloqueado', event: true}); } catch (e) {}
+  setTimeout(() => codContar(true), 1200);   // espera la ficha de las 80 que devuelve /api/racha
+  setTimeout(codMostrar, 1500);
+}
+{ const m = $('#cod'); if (m) { $('#codX').addEventListener('click', codCerrar); $('#codIr').addEventListener('click', () => { try { localStorage.setItem('pm-tema', 'coder'); } catch (e) {} });
+  m.addEventListener('click', e => { if (e.target === m) codCerrar(); }); addEventListener('keydown', e => { if (e.key === 'Escape' && !m.hidden) codCerrar(); }); } }
 function bovIr() { try { localStorage.setItem('pm-tema', 'orbita'); } catch (e) {} }
 function bovDesbloquear() {
   if (bovOk()) return;
@@ -795,6 +825,7 @@ function bovDesbloquear() {
   lockPintar();
   try { window.goatcounter && goatcounter.count({path: 'orbita-desbloqueado', event: true}); } catch (e) {}
   setTimeout(() => bovContar(true), 1200);   // espera la ficha de las 60 que devuelve /api/racha
+  codContar(false);   // el cartel cuenta cuántos tienen el modo Coder
   setTimeout(() => { const m = $('#bov'); if (m) { m.hidden = false; $('#bovIr').focus(); } }, 1500);
 }
 { const m = $('#bov'); if (m) { $('#bovX').addEventListener('click', () => { m.hidden = true; }); $('#bovIr').addEventListener('click', bovIr);
@@ -802,7 +833,7 @@ function bovDesbloquear() {
 lockPintar();
 { const m = $('#ciu'); if (m) { $('#ciuX').addEventListener('click', () => { m.hidden = true; }); $('#ciuIr').addEventListener('click', ciuIr);
   m.addEventListener('click', e => { if (e.target === m) m.hidden = true; }); addEventListener('keydown', e => { if (e.key === 'Escape') m.hidden = true; }); } }
-const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!', 40: '¡40 seguidas!', 50: '¡50 seguidas!'};
+const FRASE_RACHA = {3: '¡Racha de 3!', 5: '¡5 seguidas!', 7: '¡Imparable!', 10: '¡10 seguidas!', 15: '¡Leyenda!', 40: '¡40 seguidas!', 50: '¡50 seguidas!', 70: '¡70 seguidas!'};
 // récord de racha entre todos los jugadores (Worker en /api/racha; si no responde, no se muestra nada)
 let RECORD = null, TK = '';
 function yoPintar() { const el = $('#recYo'); if (!el) return; el.hidden = !PT.max; el.querySelector('b').textContent = fN(PT.max); }
@@ -831,7 +862,9 @@ function premio(ok, btn, reel) {
     medidor();
     if (PT.r === CIU_META) ciuDesbloquear();
     if (PT.r === BOV_META) bovDesbloquear();
+    if (PT.r === COD_META) codDesbloquear();
     if (PT.r === BOV_META - 1 && ciuOk() && !bovOk()) cartel(reel, 'Una más…<small>y es tuyo el modo legendario</small>', 3200);
+    else if (PT.r === COD_META - 1 && bovOk() && !codOk()) cartel(reel, 'Una más…<small>y es tuyo el modo Coder</small>', 3200);
     else if (FRASE_RACHA[PT.r]) cartel(reel, FRASE_RACHA[PT.r]);
     else if (mio && PT.r >= 3) cartel(reel, '¡Tu nuevo récord!<small>' + fN(PT.r) + ' seguidas</small>');
     try { navigator.vibrate && navigator.vibrate(18); } catch (e) {}
@@ -888,10 +921,10 @@ function lluvia(n) {
 // medidor de racha: cuánto falta para el próximo cartel (3, 5, 7, 10, 15, 20...)
 function medidor() {
   const el = $('#med'); if (!el) return;
-  const hitos = [3, 5, 7, 10, 15, 20, 30, 40, 50, 60, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
+  const hitos = [3, 5, 7, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100], sig = hitos.find(h => h > PT.r) || PT.r + 10, ant = [0, ...hitos].filter(h => h <= PT.r).pop() || 0;
   el.hidden = PT.r < 1;
   el.querySelector('i').style.width = Math.max(4, (PT.r - ant) / (sig - ant) * 100) + '%';
-  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` + (sig === CIU_META && !ciuOk() ? ' · modo secreto' : sig === BOV_META && ciuOk() && !bovOk() ? ' · modo legendario' : '') : '';
+  el.querySelector('span').textContent = PT.r ? `Racha ${PT.r} · faltan ${sig - PT.r} para ${sig}` + (sig === CIU_META && !ciuOk() ? ' · modo secreto' : sig === BOV_META && ciuOk() && !bovOk() ? ' · modo legendario' : sig === COD_META && bovOk() && !codOk() ? ' · modo Coder' : '') : '';
 }
 function flotar(el, txt, col) {
   const b = el.getBoundingClientRect(), d = document.createElement('div');

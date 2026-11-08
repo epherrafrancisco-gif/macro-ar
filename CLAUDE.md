@@ -87,7 +87,25 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   primer pintado.
   En celulares (`QUIETO`: puntero táctil y pantalla < 820 px de lado corto) la Tierra NO gira: un solo cuadro (`fijo()`), redibujado
   solo al cambiar el tamaño, y texturas de 2048 (pedido del dueño 02/11/2026: no saturar celulares lentos).
-  Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo el SHA-256): récord 62.
+  Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo los SHA-256 del link
+  viejo y del nuevo del 08/11/2026): récord 81 y los tres modos (Ciudad, Órbita, Coder); abre el cartel `#cod`.
+- Modo Coder (pedido del dueño 08/11/2026: "códigos y cables coloridos llevando y trayendo data todo el tiempo en toda la pantalla,
+  como si estuvieras viendo el software de una potente IA en tiempo real"): premio SECRETO de 80 seguidas en Verdadero o falso
+  (`COD_META` en juego.js; también si `PT.max` ≥80), marca `pm-coder`, `pm-tema` = 'coder'. Nadie sabe que existe hasta ganar Órbita:
+  el cartel `#bov` lo cuenta (`.sig`), desde ahí `.lockr` (clase `cod`, verde) dice "80 seguidas desbloquean el modo Coder · lo tiene N
+  persona(s) en el mundo" (`COD_N`, `enMundo`), el medidor "· modo Coder" y en la 79 "Una más…". Cartel `#cod` con la animación en vivo
+  en chico (`CoderFx.start(canvas, {lite:true})`, se frena al cerrar). Contador `/api/coder` en el Worker (igual que `/api/boveda`:
+  arranca en 1 = el dueño, suma solo con ficha firmada de ≥80, `coder/cuenta.json` y `coder/usadas/<firma>` en R2). Piso del récord
+  de todos `RACHA_PISO` = 81. Evento GoatCounter `coder-desbloqueado`.
+  Animación: `fondos/coder.js` (lienzo 2D propio, sin librerías; en index.html se prende sola con `html[data-tema="coder"]` por un
+  MutationObserver, capa `#cdFx` con `canvas` y `.velo`). Capas: fondo fijo con grilla de puntos → columnas de código coloreado que
+  suben (pre-dibujadas en lienzos aparte; código propio en `CODE`) → editor abajo a la izquierda donde el código se escribe letra
+  por letra → cables como tubos (pre-dibujados: Bézier con caída, muestreados cada 4 px) → paquetes con estela y punto de luz
+  (`lighter`, ida y vuelta, alguno rápido y largo) → chips (`NOMBRES`, leds y medidores; se iluminan al llegarles un paquete) y en el
+  medio el anillo de Pulso Macro latiendo con ondas. Cada chip va al núcleo y a 1-2 vecinos; unos cables entran desde afuera.
+  30 cuadros/s en compu (DPR máx. 1,25, tope 190 paquetes); celular (`pointer:coarse` o pantalla < 600) 24 cuadros, DPR 1, 70
+  paquetes; se frena con la pestaña oculta; con reducir movimiento un cuadro fijo. Bloque CSS "Modo Coder" en index.html (cian
+  #22d3ee, verde #a3e635, títulos de tarjeta en mono). Ciclo del botón: oscuro → claro → Ciudad → Órbita → Coder.
 - Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
   `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
   los colores del modo puesto, oscuro/claro/Ciudad), que se va con un fundido en DOMContentLoaded (tope 4 s).
