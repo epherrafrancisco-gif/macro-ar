@@ -92,7 +92,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Modo Coder (pedido del dueño 08/11/2026: "códigos y cables coloridos llevando y trayendo data todo el tiempo en toda la pantalla,
   como si estuvieras viendo el software de una potente IA en tiempo real"): premio SECRETO de 80 seguidas en Verdadero o falso
   (`COD_META` en juego.js; también si `PT.max` ≥80), marca `pm-coder`, `pm-tema` = 'coder'. Nadie sabe que existe hasta ganar Órbita:
-  el cartel `#bov` lo cuenta (`.sig`), desde ahí `.lockr` (clase `cod`, verde) dice "80 seguidas desbloquean el modo Coder · lo tiene N
+  el cartel `#bov` lo cuenta (`.sig`), desde ahí `.lockr` (clase `lcod`, verde; el cartel es `.codm`: no usar la clase `cod` para otra cosa) dice "80 seguidas desbloquean el modo Coder · lo tiene N
   persona(s) en el mundo" (`COD_N`, `enMundo`), el medidor "· modo Coder" y en la 79 "Una más…". Cartel `#cod` con la animación en vivo
   en chico (`CoderFx.start(canvas, {lite:true})`, se frena al cerrar). Contador `/api/coder` en el Worker (igual que `/api/boveda`:
   arranca en 1 = el dueño, suma solo con ficha firmada de ≥80, `coder/cuenta.json` y `coder/usadas/<firma>` en R2). Piso del récord

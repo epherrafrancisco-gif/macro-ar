@@ -261,21 +261,21 @@ body.late .top{animation:late .45s}
 .reel .lockr{margin:10px 0 6px;font-family:var(--mono);font-size:12.5px;color:#e6d6ff;opacity:.9}
 .reel .lockr svg{width:13px;height:13px;vertical-align:-2px;margin-right:6px}
 .reel .lockr.leg{color:#f0d79a}
-.reel .lockr.cod{color:#c6f27a;text-shadow:0 0 10px rgba(163,230,53,.45)}
+.reel .lockr.lcod{color:#c6f27a;text-shadow:0 0 10px rgba(163,230,53,.45)}
 /* modo Coder: cartel con la animación en vivo (fondos/coder.js) */
-.cod{position:fixed;inset:0;z-index:62;display:grid;place-items:center;background:#02040af2;padding:20px;animation:ciuIn .45s ease}
-.cod .cbox{max-width:420px;width:100%;background:#04070d;border:1px solid #22d3ee55;box-shadow:0 0 40px #a3e63522;text-align:center;padding:0 0 24px;overflow:hidden;border-radius:6px}
-.cod .cimg{height:220px;position:relative;border-bottom:1px solid #22d3ee40;background:#03050a}
-.cod .cimg canvas{position:absolute;inset:0;width:100%;height:100%}
-.cod .ck{margin:20px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#a3e635}
-.cod h2{margin:0 20px 10px;font:700 26px/1.15 var(--mono,ui-monospace);color:#e8f1fb;letter-spacing:-.02em}
-.cod h2 span{color:#22d3ee}
-.cod p{margin:0 26px;color:#b4c4d8;font-size:14px;line-height:1.5}
-.cod .quien{margin-top:14px;color:#22d3ee;font-family:var(--mono);font-size:13px;letter-spacing:.04em}.cod .quien b{color:#e8f1fb;font-weight:600}
-.cod .cbt{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.cod .cbt a,.cod .cbt button{font:600 14px var(--sans,system-ui);padding:11px 18px;border:1px solid #22d3ee;cursor:pointer;text-decoration:none;border-radius:3px}
-.cod .cbt a{background:#22d3ee;color:#021014}
-.cod .cbt button{background:transparent;color:#22d3ee}
+.codm{position:fixed;inset:0;z-index:62;display:grid;place-items:center;background:#02040af2;padding:20px;animation:ciuIn .45s ease}
+.codm .cbox{max-width:420px;width:100%;background:#04070d;border:1px solid #22d3ee55;box-shadow:0 0 40px #a3e63522;text-align:center;padding:0 0 24px;overflow:hidden;border-radius:6px}
+.codm .cimg{height:220px;position:relative;border-bottom:1px solid #22d3ee40;background:#03050a}
+.codm .cimg canvas{position:absolute;inset:0;width:100%;height:100%}
+.codm .ck{margin:20px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#a3e635}
+.codm h2{margin:0 20px 10px;font:700 26px/1.15 var(--mono,ui-monospace);color:#e8f1fb;letter-spacing:-.02em}
+.codm h2 span{color:#22d3ee}
+.codm p{margin:0 26px;color:#b4c4d8;font-size:14px;line-height:1.5}
+.codm .quien{margin-top:14px;color:#22d3ee;font-family:var(--mono);font-size:13px;letter-spacing:.04em}.cod .quien b{color:#e8f1fb;font-weight:600}
+.codm .cbt{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.codm .cbt a,.codm .cbt button{font:600 14px var(--sans,system-ui);padding:11px 18px;border:1px solid #22d3ee;cursor:pointer;text-decoration:none;border-radius:3px}
+.codm .cbt a{background:#22d3ee;color:#021014}
+.codm .cbt button{background:transparent;color:#22d3ee}
 .bov .sig{margin-top:14px;padding:10px 12px;border:1px solid #a3e63555;color:#d4f59c;background:#a3e63510;font-family:var(--mono);font-size:12.5px;line-height:1.5}
 .bov .sig b{color:#f2ffdc}.bov .sig .quien{display:block;margin-top:4px;color:#c6f27a;font-size:12.5px}
 /* modo Órbita: cartel legendario, sobrio (pedido del dueño 02/11/2026) */
@@ -346,13 +346,13 @@ body.late .top{animation:late .45s}
 <main id="feed" aria-label="Verdadero o falso de Pulso Macro"><section class="reel intro c-arg cargando"><div class="rin"><h1>Verdadero <span>o falso</span></h1><p id="estado">Cargando las preguntas de hoy…</p></div></section></main>
 <div class="med" id="med" hidden><i></i><span></span></div>
 <div class="foot"><div class="row"><span class="rec yo" id="recYo" hidden title="Tu racha más larga">Tu récord: <b>0</b></span><span class="rec" id="rec" hidden title="La racha más larga entre todos los que juegan en Pulso Macro">Récord de todos: <b>0</b></span><span id="fCat">—</span><div class="bar"><i id="fBar"></i></div><span id="fN"></span></div></div>
-<div class="cod" id="cod" hidden role="dialog" aria-modal="true" aria-labelledby="codT"><div class="cbox"><div class="cimg"><canvas aria-hidden="true"></canvas></div><p class="ck">80 seguidas · secreto</p><h2 id="codT">Desbloqueaste el modo <span>Coder</span></h2><p>Pulso Macro por dentro: código que corre y cables de colores llevando y trayendo datos por toda la pantalla, en vivo. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-codn hidden></p><div class="cbt"><a href="/" id="codIr">Entrar</a><button type="button" id="codX">Seguir jugando</button></div></div></div>
+<div class="codm" id="cod" hidden role="dialog" aria-modal="true" aria-labelledby="codT"><div class="cbox"><div class="cimg"><canvas aria-hidden="true"></canvas></div><p class="ck">80 seguidas · secreto</p><h2 id="codT">Desbloqueaste el modo <span>Coder</span></h2><p>Pulso Macro por dentro: código que corre y cables de colores llevando y trayendo datos por toda la pantalla, en vivo. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-codn hidden></p><div class="cbt"><a href="/" id="codIr">Entrar</a><button type="button" id="codX">Seguir jugando</button></div></div></div>
 <div class="bov" id="bov" hidden role="dialog" aria-modal="true" aria-labelledby="bovT"><div class="cbox"><div class="cimg"><img src="/fondos/nave.webp" alt=""></div><p class="ck">60 seguidas · legendario</p><h2 id="bovT">Desbloqueaste el modo Órbita</h2><p>Pulso Macro desde la órbita, sobre Argentina, con la nave de Pulso Macro cruzando el cielo. Desde ahora lo tenés en el inicio (en este dispositivo).</p><p class="quien" data-bovn hidden></p><p class="sig">Y queda uno más: <b>80 seguidas</b> desbloquean el modo Coder.<span class="quien" data-codn hidden></span></p><div class="cbt"><a href="/" id="bovIr">Despegar</a><button type="button" id="bovX">Seguir jugando</button></div></div></div><div class="ciu" id="ciu" hidden role="dialog" aria-modal="true" aria-labelledby="ciuT"><div class="cbox"><div class="cimg"></div><p class="ck">30 seguidas</p><h2 id="ciuT">Desbloqueaste el <span>modo Ciudad</span></h2><p>Pulso Macro de noche, con neón y una ciudad de fondo. Desde ahora, en el inicio vas a tener la opción de cambiar al modo Ciudad (en este dispositivo).</p><p class="leg">Y hay algo que casi nadie sabe: existe un <b>modo legendario</b>. Se desbloquea con <b>60 seguidas</b>.<span class="quien" data-bovn hidden></span></p><div class="cbt"><a href="/" id="ciuIr">Probarlo ahora</a><button type="button" id="ciuX">Seguir jugando</button></div></div></div>
 <div class="nav"><button type="button" id="up" aria-label="Reel anterior"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 10l4-4 4 4"/></svg></button><button type="button" id="down" aria-label="Reel siguiente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg></button></div>
 <div class="modal" id="modal" hidden><div class="box"><img id="mImg" alt="Placa para compartir"><p>Imagen para historias de Instagram, WhatsApp o X (1080 × 1920).</p><div class="mbt"><a id="mDl" download="pulso-macro_reel.png">Descargar</a><button type="button" id="mSh" hidden>Compartir</button><button type="button" id="mX">Cerrar</button></div></div></div>
 
 <script src="conceptos.js?v=18"></script><script src="temas.js?v=18"></script>
 <script src="/fondos/coder.js?v=1"></script>
-<script src="juego.js?v=23"></script>
+<script src="juego.js?v=24"></script>
 </body>
 </html>

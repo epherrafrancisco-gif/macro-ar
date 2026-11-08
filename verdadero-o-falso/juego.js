@@ -691,7 +691,7 @@ function reelHTML(r, i) {
   return `<section class="reel c-${r.cat}" data-i="${i}" style="--c:${r.pal[0]};--c2:${r.pal[1]}">
     <div class="rin"><div class="kick">${flag(r.fl)}<span>${esc(r.kick)}</span></div>
     ${r.title ? `<h2 class="tit">${esc(r.title)}</h2>` : ''}${big}${chips}
-    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${bovOk() ? ' cod' : ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div></section>`;
+    <div class="viz">${vizHTML(r)}</div>${r.nota ? `<p class="nota">${esc(r.nota)}</p>` : ''}${lockTxt() ? `<p class="lockr${bovOk() ? ' lcod' : ciuOk() ? ' leg' : ''}">${CANDADO}${lockTxt()}</p>` : ''}<div class="src">${esc(r.src)}</div></div></section>`;
 }
 // intro (la primera vez) con cuántos reels hay hoy
 const feed = $('#feed'); feed.innerHTML = '';
@@ -762,7 +762,7 @@ ptsPintar(); setTimeout(medidor, 0);
 const FRASE_OK = ['¡Bien!', '¡Bien ahí!', '¡Sabés!', '¡Crack!', '¡Exacto!'];
 // premio: con 30 seguidas se desbloquea el modo Ciudad de Pulso Macro (pedido del dueño 02/11/2026). Marca pm-ciudad, la lee index.html.
 // aviso del premio: va en cada pregunta, arriba de la fuente (pedido del dueño 02/11/2026); al ganarlo desaparece
-function lockPintar() { const t = lockTxt(); document.querySelectorAll('.lockr').forEach(x => { if (!t) x.remove(); else { x.innerHTML = CANDADO + t; x.classList.toggle('leg', ciuOk() && !bovOk()); x.classList.toggle('cod', bovOk()); } }); }
+function lockPintar() { const t = lockTxt(); document.querySelectorAll('.lockr').forEach(x => { if (!t) x.remove(); else { x.innerHTML = CANDADO + t; x.classList.toggle('leg', ciuOk() && !bovOk()); x.classList.toggle('lcod', bovOk()); } }); }
 function ciuIr() { try { localStorage.setItem('pm-tema', 'cyber'); } catch (e) {} }
 function ciuDesbloquear() {
   if (ciuOk()) return;
