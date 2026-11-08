@@ -267,14 +267,14 @@ def oecd_kei(data):
 def banco_mundial(data):
     prev = data.get("wb") or {}
     al = prev.get("al", "2000-01-01")
-    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and "MAR" in prev.get("ppa", {}):
+    if (date.today() - date.fromisoformat(al)).days < 7 and prev.get("ppa") and prev.get("pop") and all(k in prev.get("ppa", {}) for k in ("MAR", "GRC")):
         return
     paises = ";".join(P[k][2] for k in P)
     res = {"al": hoy_iso()}
     for k, ind in (("ppa", "NY.GDP.PCAP.PP.KD"), ("crec", "NY.GDP.MKTP.KD.ZG"), ("cc", "BN.CAB.XOKA.GD.ZS"),
                    ("pop", "SP.POP.TOTL"), ("popc", "SP.POP.GROW"), ("pbiusd", "NY.GDP.MKTP.CD")):
         try:
-            j = json.loads(get(f"https://api.worldbank.org/v2/country/{paises}/indicator/{ind}?format=json&per_page=2000&date=1990:{date.today().year}", "application/json"))
+            j = json.loads(get(f"https://api.worldbank.org/v2/country/{paises}/indicator/{ind}?format=json&per_page=5000&date=1990:{date.today().year}", "application/json"))
             out = defaultdict(list)
             for r in (j[1] if isinstance(j, list) and len(j) > 1 else []) or []:
                 pag = POR[2].get(r.get("countryiso3code"))
