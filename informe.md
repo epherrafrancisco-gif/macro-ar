@@ -1,0 +1,94 @@
+# Chequeo con Safari (WebKit) · 2026-11-08T21:12 UTC
+
+Sitio: https://pulsomacro.com.ar
+
+**62 de 62 bien**
+
+- ✅ **iphone** inicio-oscuro
+- ✅ **iphone** inicio-claro
+- ✅ **iphone** inicio-orbita
+  - Tierra: 0 cuadros en 3 s (en celular tiene que ser 0)
+- ✅ **iphone** orbita-volver
+  - foto guardada al salir: sí
+  - fondo al volver: url("data:image/jpeg;base64,/9j/4AAQSkZJ
+- ✅ **iphone** boton-modo
+  - oscuro → claro
+- ✅ **iphone** buscador
+  - resultados: 15
+- ✅ **iphone** seccion-dolares
+- ✅ **iphone** seccion-mercado
+- ✅ **iphone** seccion-noticias
+- ✅ **iphone** seccion-calculadoras
+- ✅ **iphone** seccion-mundo
+- ✅ **iphone** seccion-eeuu
+- ✅ **iphone** seccion-polonia
+- ✅ **iphone** seccion-sobre
+- ✅ **iphone** terminal
+- ✅ **iphone** indicador-blue
+- ✅ **iphone** indicadores
+- ✅ **iphone** verdadero-o-falso
+  - al responder: erró
+- ✅ **iphone** mundo-espacio
+  - animación: {"pintado":16107,"sale":0}
+- ✅ **iphone** crucigrama
+  - escribir una letra: anda
+- ✅ **ipad** inicio-oscuro
+- ✅ **ipad** inicio-claro
+- ✅ **ipad** inicio-orbita
+  - Tierra: 0 cuadros en 3 s
+- ✅ **ipad** orbita-volver
+  - foto guardada al salir: sí
+  - fondo al volver: url("data:image/jpeg;base64,/9j/4AAQSkZJ
+- ✅ **ipad** boton-modo
+  - oscuro → claro
+- ✅ **ipad** buscador
+  - resultados: 15
+- ✅ **ipad** seccion-dolares
+- ✅ **ipad** seccion-mercado
+- ✅ **ipad** seccion-noticias
+- ✅ **ipad** seccion-calculadoras
+- ✅ **ipad** seccion-mundo
+- ✅ **ipad** seccion-eeuu
+- ✅ **ipad** seccion-polonia
+- ✅ **ipad** seccion-sobre
+- ✅ **ipad** terminal
+- ✅ **ipad** indicador-blue
+- ✅ **ipad** indicadores
+- ✅ **ipad** verdadero-o-falso
+  - al responder: acertó
+- ✅ **ipad** mundo-espacio
+  - animación: {"pintado":27728,"sale":0}
+- ✅ **ipad** crucigrama
+  - escribir una letra: anda
+- ✅ **mac** inicio-oscuro
+- ✅ **mac** inicio-claro
+- ✅ **mac** inicio-orbita
+  - Tierra: 63 cuadros en 3 s
+- ✅ **mac** orbita-volver
+  - foto guardada al salir: sí
+  - fondo al volver: url("data:image/jpeg;base64,/9j/4AAQSkZJ
+- ✅ **mac** boton-modo
+  - oscuro → claro
+- ✅ **mac** buscador
+  - resultados: 15
+- ✅ **mac** seccion-dolares
+- ✅ **mac** seccion-mercado
+- ✅ **mac** seccion-noticias
+- ✅ **mac** seccion-calculadoras
+- ✅ **mac** seccion-mundo
+- ✅ **mac** seccion-eeuu
+- ✅ **mac** seccion-polonia
+- ✅ **mac** seccion-sobre
+- ✅ **mac** terminal
+- ✅ **mac** indicador-blue
+- ✅ **mac** indicadores
+- ✅ **mac** verdadero-o-falso
+  - al responder: acertó
+- ✅ **mac** mundo-espacio
+  - animación: {"pintado":27717,"sale":0}
+- ✅ **mac** monitor-claro
+  - fondo: radial-gradient(rgb(251, 241, 220) 0%, rgb(241, 223, 183) 60
+- ✅ **mac** crucigrama-lista
+  - pista a la vista: true
+- ✅ **mac** crucigrama
+  - escribir una letra: anda
