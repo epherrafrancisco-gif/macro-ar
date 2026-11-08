@@ -572,7 +572,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   EURONEXT:AEX) y `ATHEX` (Atenas, sin símbolo de TradingView: la tarjeta del índice no aparece, el casillero sale de la OCDE).
   Alemania y Francia usan `Xetra` y `Euronext` (DAX, CAC 40). Bonos NLD y GRC de la OCDE (`nl10`, `gr10`).
 - Símbolos de TradingView sin probar desde acá (EWG, EWQ, EWI, EWN, GREK, EURONEXT:AEX): si alguno muestra "!", buscar el correcto.
-- Noticias: medios en español con regla "pais" + en inglés The Local (de, fr, it), NL Times, DutchNews y Kathimerini (sin probar).
+- Noticias: medios en español con regla "pais" + en inglés The Local (de, fr, it), NL Times, DutchNews, Greek Reporter y Euronews por país (tag). Kathimerini da 403 desde Actions.
 
 ### "En vivo" en todas las secciones de país (`VIVO`, `vvMount`, `vvTick`; pedido del dueño)
 - Franja `.vivo` arriba de los apartados (la arma `aplicarSub`): cuenta regresiva a la próxima decisión del banco central
