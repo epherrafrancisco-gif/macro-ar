@@ -44,30 +44,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   02/11/2026). Crucigrama y páginas de indicadores (paginas.py) también leen `pm-tema` = 'claro' con un script en el `<head>` y
   tienen su bloque `html[data-tema="claro"]` (pedido del dueño 03/11/2026); Terminal y Verdadero o falso quedan oscuros a propósito. El Monitor en modo claro es una terminal dorada whisky (pedido del dueño 03/11/2026): variables de `.xpw` redefinidas en el
   bloque CSS "Monitor en modo claro" y colores del lienzo en el objeto `K` de `xpDraw` (según `esClaro()`).
-- Modo Ciudad (cyberpunk con una ciudad de neón tipo Chongqing de fondo; pedido del dueño 02/11/2026): PREMIO SECRETO, nunca el
-  modo por defecto. Se desbloquea con 30 seguidas en Verdadero o falso (`CIU_META` en juego.js; también si `PT.max` ya era ≥30):
-  marca `pm-ciudad` = '1' en localStorage, cartel `#ciu` (imagen = el render `fondos/ciudad3-1200`, encuadre en la torre de 宏观脉搏, desde el 02/11/2026; antes el dibujo `ciudad.svg`; "Desbloqueaste el modo Ciudad", "Probarlo ahora" pone `pm-tema` =
-  'cyber' y va al inicio), aviso `.lockr` en cada pregunta arriba de la fuente ("30 seguidas desbloquean un modo secreto"; desaparece al ganarlo), el medidor
-  dice "· modo secreto" camino a 30. Evento GoatCounter `ciudad-desbloqueado`. En index.html: `html[data-tema="cyber"]` (bloque
-  CSS "Modo Ciudad") y capa fija `#cyFx`: ciudad cyberpunk vista desde lo alto RENDERIZADA por código (02/11/2026, el dueño
-  pidió algo realista y no le gustó ni la foto ni el dibujo SVG): `scripts/ciudad_render.py` (12 capas de edificios en perspectiva
-  con terrazas, ventanas, neblina y desenfoque por distancia, calles con luces, bloom y grano; ~22 carteles de neón en chino y una
-  torre protagonista con 宏观脉搏 = "Pulso Macro") → `fondos/ciudad3-2400.webp/.jpg` y `-1200` (≤900px, encuadre 66%); solo se baja
-  en ese modo. Quedaron sin uso `fondos/chongqing-*` (foto) y `fondos/ciudad2*.svg`. Cartel cian con el nombre del dueño en chino (弗朗西斯科 / 埃佩拉 = "Francisco Epherra", en dos renglones para que entre en el
-  recorte del celular). Dos jets privados `.jet` (pedido del dueño 02/11/2026: realistas, de diseño propio, "como nuestra aerolínea": logo del anillo en la cola y franja celeste, sin texto porque a ese tamaño no se lee; NO en
-  línea recta; reemplazan a los autos voladores, que no le gustaron): `jetVuelo` al final de index.html los mueve por una
-  curva de Bézier al azar en cada pasada, con inclinación según la dirección, balanceo leve y tamaño que cambia (se acerca o
-  se aleja); luces de navegación que titilan (`.jbl`, `.jst`); solo corre en modo Ciudad con la pestaña visible; ocultos con
-  reducir movimiento. UN solo
-  botón `button[data-tema]` que va pasando oscuro → claro → Ciudad (solo con la marca) → oscuro (`temaSig`, pedido del dueño
-  02/11/2026) y dice a qué modo pasa. El script del `<head>` solo aplica 'cyber' si está `pm-ciudad`. Es por dispositivo.
+- Modos secretos: desde el 08/11/2026 queda UNO solo, Órbita (pedido del dueño: "elimina los modos, deja solamente el de órbita y que
+  se desbloquee en 80"). Ciudad (cyberpunk, 30 seguidas) y Coder (código y cables, 80 seguidas) se SACARON con sus imágenes, scripts
+  de render (`ciudad*.py`, `fondos/ciudad*`, `fondos/chongqing-*`, `fondos/coder.js`) y la ruta `/api/coder`: no volver a ponerlos. Quien
+  tenía `pm-tema` = 'cyber' o 'coder' vuelve solo al oscuro (el script del `<head>` ya no los reconoce). Botón: oscuro → claro → Órbita.
 - Modo Órbita (la Tierra desde la órbita sobre Argentina, con la nave de Pulso Macro cruzando; pedido del dueño 02/11/2026, reemplazó
-  a una "Bóveda" que no le gustó): premio LEGENDARIO, 60 seguidas en Verdadero o falso (`BOV_META` en juego.js; también si `PT.max`
-  ≥60), marca `pm-orbita` (se acepta la vieja `pm-boveda`), `pm-tema` = 'orbita' (la vieja 'oro' también entra). SECRETO hasta ganar
-  Ciudad: el cartel `#ciu` lo cuenta (`.leg`) con cuántos lo tienen; desde ahí `.lockr` dice "60 seguidas desbloquean el modo legendario
-  · lo tiene N persona(s) en el mundo" (`BOV_N`), el medidor "· modo legendario" y en la 59 "Una más…". Cartel `#bov` con la nave sobre la
-  Tierra. Contador: `/api/boveda` en el Worker (GET = cuenta, arranca en 1 = el dueño; POST {tk} suma solo con una ficha firmada de
-  /api/racha de ≥60, una vez por ficha). Evento GoatCounter `orbita-desbloqueado`. En el juego, "Récord de todos" muestra el mayor
+  a una "Bóveda" que no le gustó): el ÚNICO modo secreto, 80 seguidas en Verdadero o falso desde el 08/11/2026 (antes 60; `BOV_META` en
+  juego.js y en worker/vivo.js; también si `PT.max` ≥80; quien ya lo tenía de antes lo conserva), marca `pm-orbita` (se acepta la vieja
+  `pm-boveda`), `pm-tema` = 'orbita' (la vieja 'oro' también entra). Se anuncia como secreto sin decir cuál es: `.lockr` en cada pregunta
+  "80 seguidas desbloquean un modo secreto · lo tiene N persona(s) en el mundo" (`BOV_N`, `enMundo`), el medidor "· modo secreto" y en la
+  79 "Una más… y es tuyo el modo secreto". Recién al ganarlo, el cartel `#bov` ("80 seguidas · modo secreto", la nave sobre la Tierra)
+  dice que es Órbita. Contador: `/api/boveda` en el Worker (GET = cuenta, arranca en 1 = el dueño; POST {tk} suma solo con una ficha
+  firmada de /api/racha de ≥80, una vez por ficha). Evento GoatCounter `orbita-desbloqueado`. En el juego, "Récord de todos" muestra el mayor
   entre el del servidor y el propio (si no, en los dispositivos del dueño no coincide). Imágenes 3D con Blender (`pip install bpy`,
   Cycles en CPU): `scripts/espacio_blender.py` (texturas 8K de Solar System Scope, CC BY 4.0, basadas en la NASA: día y luces de noche;
   nubes y océanos de la NASA vía three.js; no están en el repo, se bajan de GitHub) + `scripts/espacio_post.py` (estrellas, brillo,
@@ -88,27 +76,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   En celulares (`QUIETO`: puntero táctil y pantalla < 820 px de lado corto) la Tierra NO gira: un solo cuadro (`fijo()`), redibujado
   solo al cambiar el tamaño, y texturas de 2048 (pedido del dueño 02/11/2026: no saturar celulares lentos).
   Los dispositivos del dueño se marcan con un link secreto (`#<clave>` en /verdadero-o-falso/; en el código solo los SHA-256 del link
-  viejo y del nuevo del 08/11/2026): récord 81 y los tres modos (Ciudad, Órbita, Coder); abre el cartel `#cod`.
-- Modo Coder (pedido del dueño 08/11/2026: "códigos y cables coloridos llevando y trayendo data todo el tiempo en toda la pantalla,
-  como si estuvieras viendo el software de una potente IA en tiempo real"): premio SECRETO de 80 seguidas en Verdadero o falso
-  (`COD_META` en juego.js; también si `PT.max` ≥80), marca `pm-coder`, `pm-tema` = 'coder'. Nadie sabe que existe hasta ganar Órbita:
-  el cartel `#bov` lo cuenta (`.sig`), desde ahí `.lockr` (clase `lcod`, verde; el cartel es `.codm`: no usar la clase `cod` para otra cosa) dice "80 seguidas desbloquean el modo Coder · lo tiene N
-  persona(s) en el mundo" (`COD_N`, `enMundo`), el medidor "· modo Coder" y en la 79 "Una más…". Cartel `#cod` con la animación en vivo
-  en chico (`CoderFx.start(canvas, {lite:true})`, se frena al cerrar). Contador `/api/coder` en el Worker (igual que `/api/boveda`:
-  arranca en 1 = el dueño, suma solo con ficha firmada de ≥80, `coder/cuenta.json` y `coder/usadas/<firma>` en R2). Piso del récord
-  de todos `RACHA_PISO` = 81. Evento GoatCounter `coder-desbloqueado`.
-  Animación: `fondos/coder.js` (lienzo 2D propio, sin librerías; en index.html se prende sola con `html[data-tema="coder"]` por un
-  MutationObserver, capa `#cdFx` con `canvas` y `.velo`). Capas: fondo fijo con grilla de puntos → columnas de código coloreado que
-  suben (pre-dibujadas en lienzos aparte; código propio en `CODE`) → editor abajo a la izquierda donde el código se escribe letra
-  por letra → cables como tubos (pre-dibujados: Bézier con caída, muestreados cada 4 px) → paquetes con estela y punto de luz
-  (`lighter`, ida y vuelta, alguno rápido y largo) → chips (`NOMBRES`, leds y medidores; se iluminan al llegarles un paquete) y en el
-  medio el anillo de Pulso Macro latiendo con ondas. Cada chip va al núcleo y a 1-2 vecinos; unos cables entran desde afuera.
-  30 cuadros/s en compu (DPR máx. 1,25, tope 190 paquetes); celular (`pointer:coarse` o pantalla < 600) 24 cuadros, DPR 1, 70
-  paquetes; se frena con la pestaña oculta; con reducir movimiento un cuadro fijo. Bloque CSS "Modo Coder" en index.html (cian
-  #22d3ee, verde #a3e635, títulos de tarjeta en mono). Ciclo del botón: oscuro → claro → Ciudad → Órbita → Coder.
-- Pantalla de carga (pedido del dueño 02/11/2026: al cargar se veía un instante el jet del modo Ciudad, porque `#cyFx` va antes del
-  `<style>` grande): en el `<style>` del `<head>` van `#cyFx{display:none}` y `#pmCarga` (primer elemento del body: el anillo con
-  los colores del modo puesto, oscuro/claro/Ciudad), que se va con un fundido en DOMContentLoaded (tope 4 s).
+  viejo y del nuevo del 08/11/2026): récord 81 y el modo Órbita; abre el cartel `#bov`. Piso del récord de todos `RACHA_PISO` = 81.
+- Pantalla de carga (pedido del dueño 02/11/2026): en el `<style>` del `<head>` van `#orFx{display:none}` y `#pmCarga` (primer elemento
+  del body: el anillo con los colores del modo puesto, oscuro/claro/Órbita), que se va con un fundido en DOMContentLoaded (tope 4 s).
 - Fuentes: Instrument Sans + JetBrains Mono. Series: s1 azul #3987e5, s2 naranja #d95926, s3 aqua #199e70,
   s4 amarillo #c98500, s5 magenta #d55181. Oficial s1, MEP s2, CCL s3, Blue s4, Mayorista s5.
 - Contador de visitas: GoatCounter (cuenta interna `macroar`), función `gc()` en index.html; no cuenta navegadores
@@ -766,7 +736,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   una ficha firmada con HMAC (clave al azar guardada en R2 `racha/clave`) con la racha +1; solo suma de a uno, con ≥2,5 s
   entre respuestas (si no, 429), se corta a los 10 min sin jugar, tope 1000. No guarda nada por jugador. Límite honesto:
   no puede saber si la respuesta era correcta (eso lo decide el navegador), solo frena trampas fáciles (mandar "999" o
-  muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. Piso `RACHA_PISO` = 62 (pedido del dueño 02/11/2026: el récord público arranca en su 62, coherente con el contador del modo Órbita): el GET nunca devuelve menos y solo se supera con 63. En la página: `#rec` al pie
+  muchas seguidas al toque). Para borrar el récord: borrar `racha/record.json` del bucket. Piso `RACHA_PISO` = 81 (pedido del dueño 08/11/2026, antes 62: el récord público arranca en su 81): el GET nunca devuelve menos y solo se supera con 82. En la página: `#rec` al pie
   ("Récord de todos: N"), cartel "¡Nuevo récord!" con racha ≥3. Si la ruta no responde, no se muestra nada.
 - Carteles (`cartel(reel, txt, ms)`, pedido del dueño 02/11/2026: que no se superpongan): van EN la pregunta, en el flujo, antes de
   `.lockr`/la fuente, uno por vez en fila (`COLA`, `sigCartel`), arrancan 950 ms después (cuando se fue el número grande) y se pliegan
@@ -949,4 +919,4 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   dólar contra la banda cambiaria, curva de tasas en pesos, capas del globo con datos viejos (exportaciones por destino,
   deuda/PBI), rediseño "sala de situación", segundo monitor "Terminal Argentina" (tablero o globo de
   Argentina: el Monitor del mundo queda como único), pestaña "Vuelos" (horarios y aviones en vivo),
-  versión del sitio en inglés, estética ciberpunk / "modo neón" como cara del sitio (existe solo como premio escondido: modo Ciudad).
+  versión del sitio en inglés, estética ciberpunk / "modo neón" (fue el modo Ciudad, sacado el 08/11/2026), modo Coder.

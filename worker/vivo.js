@@ -73,7 +73,7 @@ async function rachaClave(env){
   return RACHA_KEY;
 }
 async function firmar(env, txt){ return b64(new Uint8Array(await crypto.subtle.sign('HMAC', await rachaClave(env), new TextEncoder().encode(txt)))).slice(0, 32); }
-// récord base de 81 (pedido del dueño 08/11/2026, antes 62: es el suyo, el del único que tiene el modo Coder): el récord que se
+// récord base de 81 (pedido del dueño 08/11/2026, antes 62: es el suyo, el del único que tiene el modo secreto): el récord que se
 // muestra nunca es menor, y solo cambia cuando alguien hace 82 o más
 const RACHA_PISO = 81;
 async function rachaRecord(env){ let r = {n: 0, t: 0}; try{ const o = await env.DATOS.get('racha/record.json'); if (o) r = await o.json(); }catch(e){}
@@ -99,7 +99,8 @@ async function racha(req, env){
 
 // ---------- Modo Bóveda: cuántas personas lo desbloquearon (pulsomacro.com.ar/api/boveda; pedido del dueño 02/11/2026) ----------
 // Arranca en 1 (el dueño). Solo suma con una ficha firmada por /api/racha de 60 o más seguidas, y cada ficha cuenta una vez.
-const BOV_META = 60, BOV_BASE = 1;
+// Desde el 08/11/2026 es el modo Órbita, el ÚNICO modo secreto, con 80 seguidas (antes 60; Ciudad y Coder se sacaron).
+const BOV_META = 80, BOV_BASE = 1;
 async function bovCuenta(env){ try{ const o = await env.DATOS.get('boveda/cuenta.json'); if (o) return await o.json(); }catch(e){} return {n: BOV_BASE}; }
 async function boveda(req, env){
   const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
@@ -111,24 +112,6 @@ async function boveda(req, env){
     await env.DATOS.put('boveda/usadas/' + sig, '1');
     c = {n: c.n + 1, t: Date.now()};
     await env.DATOS.put('boveda/cuenta.json', JSON.stringify(c), {httpMetadata: {contentType: 'application/json'}});
-  }
-  return new Response(JSON.stringify(c), {headers: H});
-}
-
-// ---------- Modo Coder: cuántas personas lo desbloquearon (pulsomacro.com.ar/api/coder; pedido del dueño 08/11/2026) ----------
-// Igual que Órbita: arranca en 1 (el dueño) y solo suma con una ficha firmada por /api/racha de 80 o más seguidas, una vez por ficha.
-const COD_META = 80, COD_BASE = 1;
-async function codCuenta(env){ try{ const o = await env.DATOS.get('coder/cuenta.json'); if (o) return await o.json(); }catch(e){} return {n: COD_BASE}; }
-async function coder(req, env){
-  const H = {'content-type': 'application/json', 'cache-control': 'no-store'};
-  if (req.method === 'GET') return new Response(JSON.stringify(await codCuenta(env)), {headers: {...H, 'cache-control': 'public, max-age=30'}});
-  if (req.method !== 'POST') return new Response('{}', {status: 405, headers: H});
-  let tk = ''; try{ tk = String((await req.json()).tk || ''); }catch(e){}
-  const [nn, t, sig] = tk.split('.'); let c = await codCuenta(env);
-  if (sig && +nn >= COD_META && sig === await firmar(env, nn + '.' + t) && !(await env.DATOS.head('coder/usadas/' + sig))){
-    await env.DATOS.put('coder/usadas/' + sig, '1');
-    c = {n: c.n + 1, t: Date.now()};
-    await env.DATOS.put('coder/cuenta.json', JSON.stringify(c), {httpMetadata: {contentType: 'application/json'}});
   }
   return new Response(JSON.stringify(c), {headers: H});
 }
@@ -170,7 +153,6 @@ export default {
   async fetch(req, env){
     if (new URL(req.url).pathname === '/api/racha') return racha(req, env);
     if (new URL(req.url).pathname === '/api/boveda') return boveda(req, env);
-    if (new URL(req.url).pathname === '/api/coder') return coder(req, env);
     let o = null; try{ const x = await env.DATOS.get('vivo.json'); if(x) o = await x.json(); }catch(e){}
     const s = o ? {t: new Date(o.t).toISOString(), dolar: new Date(o.tDol).toISOString(), mercado: o.tMkt ? new Date(o.tMkt).toISOString() : null,
                    fuente: o.fuente || 'data912 (versión vieja)', acciones: o.stocks ? o.stocks.length : 0, bonos: o.bonds ? o.bonds.length : 0, err: o.err} : {vacio: true};

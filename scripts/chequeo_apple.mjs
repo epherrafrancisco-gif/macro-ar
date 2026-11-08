@@ -60,12 +60,9 @@ const ir = (p, ruta) => p.goto(BASE + ruta, { waitUntil: 'load', timeout: 60000 
 const tema = (t, extra) => new Function(`try{localStorage.setItem('pm-tema','${t}');${extra || ''}}catch(e){}`);
 
 for (const eq of Object.keys(EQUIPOS)) {
-  // portada en los cuatro modos
+  // portada en los tres modos
   await paso('inicio-oscuro', eq, async p => { await ir(p, '/'); await dormir(3500); });
   await paso('inicio-claro', eq, async p => { await ir(p, '/'); await dormir(3000); }, tema('claro'));
-  await paso('inicio-ciudad', eq, async p => { await ir(p, '/'); await dormir(3000);
-    if (await p.evaluate(() => document.documentElement.dataset.tema) !== 'cyber') throw new Error('no quedó en modo Ciudad'); },
-    tema('cyber', "localStorage.setItem('pm-ciudad','1');"));
   await paso('inicio-orbita', eq, async (p, f) => { await ir(p, '/');
     if (await p.evaluate(() => document.documentElement.dataset.tema) !== 'orbita') throw new Error('no quedó en modo Órbita');
     await p.waitForSelector('#orFx canvas.tierra.on', { state: 'attached', timeout: 25000 });
