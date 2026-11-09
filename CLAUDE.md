@@ -709,7 +709,14 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Como las vistas no vuelven en 180 días, cuando se gastan los conceptos el resto pesa más: sumar conceptos seguido.
   Temas (pedido del dueño 02/11/2026): `verdadero-o-falso/temas.js`, `TEMAS` = [{t, k, w, q}] (billetes, planes y ministros,
   siglas, mitos, quién cobra cada impuesto, empresas, comercio exterior, Argentina en números, economistas, jerga del mercado,
-  cuentas rápidas; ~246). Ids `vf-t-<tema>-<hash>`, cada tema es su propio formato (`fmtDe`) con peso `w`; conceptos bajó a 40
+  cuentas rápidas; ~246). 08/11/2026 (pedido del dueño: "son muy parecidas, no hay variedad" y "las difíciles son casi todas verdaderas";
+  se midió: conceptos 81% verdaderas, temas 66-88%, y "país contra Argentina" y "crecimiento" 0%): 12 temas nuevos (historia
+  económica, crisis del mundo, monedas, empresas del mundo, campo y energía, bolsas, trabajo y sueldos, plata de todos los días, el
+  mundo en datos, bancos centrales, tecnología y dinero, bloques y organismos), falsas agregadas a los temas viejos (23 temas, ~514
+  preguntas, 60% verdaderas), `con` bajó de 40 a 22, la mitad de `infar`/`crec`/`infu`/`ppa` se escribe al revés (`rev`, con `rnd`),
+  y al armar el orden se sortea si toca verdadera o falsa (`esV`, `quiero`: probabilidad inclinada hacia la que falta en las últimas
+  12, entre 20% y 80%, y nunca 5 iguales seguidas). Medido: 48-52% verdaderas por partida y "decir lo contrario de la anterior"
+  acierta 57%. NO volver a una regla fija (alternar siempre se puede adivinar). Al sumar preguntas: que cada tema quede parejo. Ids `vf-t-<tema>-<hash>`, cada tema es su propio formato (`fmtDe`) con peso `w`; conceptos bajó a 40
   para que conceptos + temas sean ~2/3. Kick = nombre del tema; cat `con`. Para sumar: filas al tema (t sin guiones). Pedido del dueño 01/11/2026: preguntas de
   CONCEPTOS de primer año (`verdadero-o-falso/conceptos.js`, `CONCEPTOS` [afirmación, verdadera, explicación], ~290; categoría
   `con`, cuota 30 en `CUOTA`) y solo acciones conocidas (`FAMOSAS` en juego.js y la misma lista en scripts/verdadero.py). Sin

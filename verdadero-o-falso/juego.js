@@ -360,8 +360,8 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   // inflación: país contra Argentina y país contra país
   const conI = Object.values(P.paises).filter(o => o.infl);
   for (const o of conI) {
-    const mas = o.infl[1] > AI[2];
-    vf('inf-ar-' + o.k, o.k, o.fl, 'Inflación', `${o.n} tiene más inflación que Argentina`, mas,
+    const mas = o.infl[1] > AI[2], rev = rnd() < .5;   // la mitad dicha al revés: si no, casi siempre era falsa (pedido del dueño 08/11/2026)
+    vf('inf-ar-' + o.k, o.k, o.fl, 'Inflación', rev ? `Argentina tiene más inflación que ${o.n}` : `${o.n} tiene más inflación que Argentina`, rev ? !mas : mas,
       `${o.n}: ${fN(o.infl[1], 1)}% en 12 meses. Argentina: ${fN(AI[2], 1)}%.`, 'Fuentes: BIS / bancos centrales e INDEC.', [o.k, 'Ver ' + o.n]);
   }
   for (let n = 0; n < 400; n++) {
@@ -400,9 +400,9 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     if (iso === 'ARG' || !ISO[iso]) continue; const o = ISO[iso], s2 = PPA[iso];
     const a0 = ARP.find(z => z[0] === s2[0][0]); if (!a0) continue;
     const y0 = s2[0][0], ar0 = a0[1], ot0 = s2[0][1], aN = ult(ARP), oN = s2.find(z => z[0] === aN[0]);
-    if (Math.abs(ar0 / ot0 - 1) > .15) vf('ppa0-' + iso, o.k, o.fl, 'Historia', `En ${y0}, Argentina producía más por habitante que ${o.n}`, ar0 > ot0,
+    if (Math.abs(ar0 / ot0 - 1) > .15) vf('ppa0-' + iso, o.k, o.fl, 'Historia', ...(rnd() < .5 ? [`En ${y0}, ${o.n} producía más por habitante que Argentina`, ot0 > ar0] : [`En ${y0}, Argentina producía más por habitante que ${o.n}`, ar0 > ot0]),
       `Argentina: US$ ${fN(ar0)} por habitante. ${o.n}: US$ ${fN(ot0)} (a paridad de poder de compra, en dólares de hoy).`, 'Fuente: Banco Mundial.', [o.k, 'Ver ' + o.n]);
-    if (oN && Math.abs(aN[1] / oN[1] - 1) > .15) vf('ppa1-' + iso, o.k, o.fl, 'Hoy', `Hoy, Argentina produce más por habitante que ${o.n}`, aN[1] > oN[1],
+    if (oN && Math.abs(aN[1] / oN[1] - 1) > .15) vf('ppa1-' + iso, o.k, o.fl, 'Hoy', ...(rnd() < .5 ? [`Hoy, ${o.n} produce más por habitante que Argentina`, oN[1] > aN[1]] : [`Hoy, Argentina produce más por habitante que ${o.n}`, aN[1] > oN[1]]),
       `${aN[0]}: Argentina US$ ${fN(aN[1])} por habitante, ${o.n} US$ ${fN(oN[1])} (a paridad de poder de compra).`, 'Fuente: Banco Mundial.', [o.k, 'Ver ' + o.n]);
   }
   // crecimiento en la última década
@@ -411,7 +411,8 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
     const yrs = CR[iso].map(x => x[0]).filter(y => ARC.find(z => z[0] === y)).slice(-10); if (yrs.length < 10) continue;
     const nb = yrs.filter(y => CR[iso].find(z => z[0] === y)[1] > 0).length, na = yrs.filter(y => ARC.find(z => z[0] === y)[1] > 0).length;
     if (nb === na) continue;
-    vf('crec-' + iso, o.k, o.fl, 'Crecimiento', `En los últimos 10 años, Argentina tuvo más años de crecimiento que ${o.n}`, na > nb,
+    const rev = rnd() < .5;   // la mitad dicha al revés (si no, siempre era falsa)
+    vf('crec-' + iso, o.k, o.fl, 'Crecimiento', rev ? `En los últimos 10 años, ${o.n} tuvo más años de crecimiento que Argentina` : `En los últimos 10 años, Argentina tuvo más años de crecimiento que ${o.n}`, rev ? nb > na : na > nb,
       `Argentina creció ${na} de 10 años (${yrs[0]}–${yrs[9]}); ${o.n}, ${nb}.`, 'Fuente: Banco Mundial.', [o.k, 'Ver ' + o.n]);
   }
   // bolsas del mundo en el año
@@ -458,7 +459,7 @@ const vf = (id, key, fl, kick, claim, ok, exp, src, go, score) => add({id: 'vf-'
   }
   // inflación de un país contra un número
   for (const o of conI) for (const u of [2, 3, 5, 10, 20]) if (Math.abs(o.infl[1] - u) >= Math.max(1, u * .3))
-    vf(`infu-${o.k}-${u}`, o.k, o.fl, 'Inflación', `En ${o.n}, los precios subieron más del ${u}% en el último año`, o.infl[1] > u,
+    vf(`infu-${o.k}-${u}`, o.k, o.fl, 'Inflación', ...(rnd() < .5 ? [`En ${o.n}, los precios subieron menos del ${u}% en el último año`, o.infl[1] < u] : [`En ${o.n}, los precios subieron más del ${u}% en el último año`, o.infl[1] > u]),
       `${o.n}: ${fN(o.infl[1], 1)}% en 12 meses, a ${fMes(o.infl[0])}.`, 'Fuentes: BIS y bancos centrales.', [o.k, 'Ver ' + o.n]);
   // Big Mac entre países
   const bmK = Object.keys(BM).filter(i => ISO[i] && i !== 'ARG');
@@ -596,7 +597,7 @@ const frescos = R.filter(r => vistos[vk(r)] == null);
 // El orden es al azar de verdad: se sortea el formato según su peso y, dentro del formato, una pregunta al azar. Nunca dos del
 // mismo formato seguidas (conceptos, como mucho tres), ni el mismo país o acción cerca.
 const FMT = [  // [formato, id, peso]; el orden importa (el primero que coincide)
-  ['con', /^vf-con-/, 40],   // + los temas de temas.js (~28 en total): unos dos tercios son de saber economía
+  ['con', /^vf-con-/, 22],   // + los 23 temas de temas.js (~51 en total). Bajó de 40 a 22 el 08/11/2026 (pedido del dueño: "no hay variedad")
   ['ia', /^vf-(ia|p-ia)-/, 7],           // inflación de Argentina en meses o años que se recuerdan
   ['dol', /^vf-(real|p-dr|bre)-/, 7],     // dólar a precios de hoy y brecha
   ['infar', /^vf-inf-ar-/, 5],            // país contra Argentina
@@ -616,15 +617,29 @@ const base = frescos;
 const colas = {};
 for (const r of base) { r.fmt = fmtDe(r); (colas[r.fmt] = colas[r.fmt] || []).push(r); }
 for (const q of Object.values(colas)) for (let i = q.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [q[i], q[j]] = [q[j], q[i]]; }
+// verdaderas y falsas parejas (pedido del dueño 08/11/2026: "las difíciles son casi literalmente todas verdaderas"): antes de cada
+// pregunta se sortea si toca verdadera o falsa, con una probabilidad que se inclina hacia la que viene atrás en las últimas 12
+// (nunca una regla fija: si siempre tocara la contraria, se podría adivinar), y nunca más de 4 iguales seguidas. Después se elige
+// entre los formatos que tienen una de ese tipo. Solo cambia el ORDEN: no se pierde ninguna pregunta.
+const esV = r => r.viz && r.viz.vf ? !!r.viz.opts[0].ok : null;
 const ORD = [], recientes = [];
 for (let total = base.length; ORD.length < total;) {
   const u = ORD.slice(-3).map(r => r.fmt), u1 = u[u.length - 1];
   const vale = f => colas[f].length && (f !== u1 || (f === 'con' && !(u.length === 3 && u.every(x => x === 'con'))));
   let usables = Object.keys(colas).filter(vale);
   if (!usables.length) usables = Object.keys(colas).filter(f => colas[f].length);
+  const ult = ORD.slice(-12).map(esV), ult4 = ult.slice(-4);
+  const dif = ult.filter(x => x === true).length - ult.filter(x => x === false).length;
+  const quiero = ult4.length === 4 && ult4.every(x => x === ult4[0]) && ult4[0] != null ? !ult4[0] : rnd() < Math.min(.8, Math.max(.2, .5 - dif * .1));
+  const conTipo = usables.filter(f => colas[f].some(r => esV(r) === quiero));
+  if (conTipo.length) usables = conTipo;
   let t = usables.reduce((s, f) => s + PESO[f], 0) * rnd(), fmt = usables[0];
   for (const f of usables) { t -= PESO[f]; if (t <= 0) { fmt = f; break; } }
-  const q = colas[fmt]; let i = q.findIndex(r => !recientes.includes(r.key)); if (i < 0) i = 0;
+  const q = colas[fmt];
+  let i = q.findIndex(r => esV(r) === quiero && !recientes.includes(r.key));
+  if (i < 0) i = q.findIndex(r => esV(r) === quiero);
+  if (i < 0) i = q.findIndex(r => !recientes.includes(r.key));
+  if (i < 0) i = 0;
   const r = q.splice(i, 1)[0]; ORD.push(r); recientes.push(r.key); if (recientes.length > 8) recientes.shift();
 }
 
