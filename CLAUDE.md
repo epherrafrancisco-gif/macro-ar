@@ -712,7 +712,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   cuentas rápidas; ~246). 08/11/2026 (pedido del dueño: "son muy parecidas, no hay variedad" y "las difíciles son casi todas verdaderas";
   se midió: conceptos 81% verdaderas, temas 66-88%, y "país contra Argentina" y "crecimiento" 0%): 12 temas nuevos (historia
   económica, crisis del mundo, monedas, empresas del mundo, campo y energía, bolsas, trabajo y sueldos, plata de todos los días, el
-  mundo en datos, bancos centrales, tecnología y dinero, bloques y organismos), falsas agregadas a los temas viejos (23 temas, ~514
+  mundo en datos, bancos centrales, tecnología y dinero, bloques y organismos; después geopolítica con dificultad media, peso 3), falsas agregadas a los temas viejos (23 temas, ~514
   preguntas, 60% verdaderas), `con` bajó de 40 a 22, la mitad de `infar`/`crec`/`infu`/`ppa` se escribe al revés (`rev`, con `rnd`),
   y al armar el orden se sortea si toca verdadera o falsa (`esV`, `quiero`: probabilidad inclinada hacia la que falta en las últimas
   12, entre 20% y 80%, y nunca 5 iguales seguidas). Medido: 48-52% verdaderas por partida y "decir lo contrario de la anterior"
