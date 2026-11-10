@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-09",
+ "actualizado": "2026-11-10",
  "ok": [
   "Ámbito blue: 202 días",
   "Ámbito oficial: 230 días",
@@ -27,7 +27,7 @@
   "BCRA leliq mensual: 47 meses",
   "BCRA pases mensual: 47 meses",
   "BCRA lefi mensual: 13 meses",
-  "DolarApi: cripto ['2026-11-09'], tarjeta ['2026-11-05']",
+  "DolarApi: cripto ['2026-11-10'], tarjeta ['2026-11-05']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
   "Historia ofi: 26 días en 1 tramos",
@@ -36,9 +36,10 @@
   "Historia ccl: 28 días en 1 tramos",
   "Historia may: 25 días en 1 tramos",
   "Historia cer: 41 días en 1 tramos",
-  "CPI EE.UU. (FRED): 117 meses"
+  "CPI EE.UU. (FRED): 118 meses"
  ],
  "errores": [
+  "Propios: Open BYMADATA devolvió 0 bonos",
   "BYMA merval: no vino el MSCI Merval (MMSCI)"
  ]
 }
