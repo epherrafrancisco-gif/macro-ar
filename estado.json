@@ -10,13 +10,13 @@
   "Rava merval: 10 días (último 2026-11-06)",
   "BCRA compras: 223 días desde 2025-12-01",
   "BCRA bopreal: 225 días desde 2025-12-01",
-  "BCRA reservas: 3 días",
+  "BCRA reservas: 2 días",
   "BCRA mayorista: 226 días",
-  "BCRA base: 3 días",
-  "BCRA badlar: 4 días",
-  "BCRA tamar: 4 días",
+  "BCRA base: 2 días",
+  "BCRA badlar: 3 días",
+  "BCRA tamar: 3 días",
   "BCRA pf: 225 días",
-  "BCRA depusd: 2 días",
+  "BCRA depusd: 1 días",
   "BCRA infl: 3 meses",
   "BCRA inflYoY: 3 meses",
   "BCRA expect: 4 meses",
@@ -35,11 +35,10 @@
   "Historia mep: 28 días en 1 tramos",
   "Historia ccl: 28 días en 1 tramos",
   "Historia may: 25 días en 1 tramos",
-  "Historia cer: 40 días en 1 tramos",
+  "Historia cer: 41 días en 1 tramos",
   "CPI EE.UU. (FRED): 117 meses"
  ],
  "errores": [
-  "Propios: Open BYMADATA devolvió 0 bonos",
   "BYMA merval: no vino el MSCI Merval (MMSCI)"
  ]
 }
