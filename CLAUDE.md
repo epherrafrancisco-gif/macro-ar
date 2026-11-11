@@ -643,13 +643,13 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   sobrecargarlo"): se restauró y los datos en vivo quedaron como CAPAS EXTRA (`xpVivo`): petroleros por AIS (puntos ámbar que
   titilan al llegar su reporte, `XP.ships`, `xpBarcos` cada 60 s), combates de GDELT (puntos rojos; en `#xpLog` se alternan con
   los titulares: "[COMBATES · PAÍS] ... reportado hace X", `xpGdelt`) y focos de calor de FIRMS (`xpGv` cada 5 min), recuadro
-  "PETROLEROS · AIS EN VIVO" (`#mnAis`, `xpAisLinea`) y casillero "PETROLEROS (AIS)". Botón "▣ Geopolítica en vivo" (`#xpGeo`) en
-  la barra de arriba. NO volver a convertirlo en un monitor de un solo tema.
+  "PETROLEROS · AIS EN VIVO" (`#mnAis`, `xpAisLinea`) y casillero "PETROLEROS (AIS)". Desde el Monitor NO hay botón a Geopolítica en vivo
+  (pedido del dueño: la única entrada es `#geoMonB` en Geopolítica). NO volver a convertirlo en un monitor de un solo tema.
 - `/monitor/` (`monitor/index.html` + `monitor/monitor.js`, costas en `monitor/costas.json`) es SOLO "Geopolítica en vivo" (mapa
   Mercator de guerras, focos de calor de 24 h, reportes de prensa de 2 h, mira que recorre las guerras mayores con su ficha,
   petroleros en zona de guerra, mercados). La vista de petroleros que tiene adentro quedó sin uso (`ABRIO_GEO = true`). Salir:
   dentro del iframe manda `postMessage({pm:'monitor-cerrar'})`; suelta vuelve a `/#global`.
-- Geopolítica: botón chico `#geoMonB` ("MONITOR EN VIVO", punto rojo) en la tarjeta "Guerras y conflictos armados en curso" (pedido
+- Geopolítica: botón chico `#geoMonB` ("MONITOR EN VIVO", punto rojo; fondo rojizo con borde y ↗ para que se note que es un botón) en la tarjeta "Guerras y conflictos armados en curso" (pedido
   del dueño: "sutilmente"): `geoMonitor(true)` abre `#geoMonO` (iframe `/monitor/#geo` a pantalla completa); "Salir"/Esc dentro
   del iframe manda `postMessage({pm:'monitor-cerrar'})` y el padre lo cierra. Solo computadora.
 - NADA simulado (el dueño preguntó "¿es todo real?"): si un dato falta, el panel lo dice. Los reportes AIS que llegan cada minuto se

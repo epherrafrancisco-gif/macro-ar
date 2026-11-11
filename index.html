@@ -502,10 +502,12 @@ details.lic{margin-top:14px;font-size:13px;color:var(--ink2)}details.lic summary
 .glay button[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
 .glay button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .xpw iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
-.geomonb{margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);color:var(--muted);font:500 11px var(--mono);letter-spacing:.06em;padding:4px 9px;border-radius:6px;cursor:pointer;transition:border-color .2s,color .2s}
+.geomonb{margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:rgba(255,77,66,.13);border:1px solid rgba(255,77,66,.6);color:var(--ink);font:600 11px var(--mono);letter-spacing:.06em;padding:5px 11px;border-radius:6px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);transition:background .2s,border-color .2s,transform .1s}
+.geomonb::after{content:'↗';font-weight:400;opacity:.8}
+.geomonb:active{transform:translateY(1px)}
 .geomonb i{width:6px;height:6px;border-radius:50%;background:#ff4d42;animation:gmb 1.6s steps(2) infinite}
 @keyframes gmb{50%{opacity:.2}}
-.geomonb:hover{border-color:#ff4d42;color:var(--ink)}
+.geomonb:hover{background:rgba(255,77,66,.24);border-color:#ff4d42}
 .geomonb[hidden]{display:none}
 #geoMonO{position:fixed;inset:0;z-index:300;background:#050304}
 #geoMonO iframe{width:100%;height:100%;border:0;display:block}
@@ -1703,7 +1705,7 @@ body.mporta .hbus{display:none}
       <p class="xpmob">El monitor está pensado para computadora: abrilo desde una pantalla grande.</p>
       <div class="xpw" id="xpW">
         <canvas id="xpCv" aria-label="Monitor del mundo: globo terráqueo animado con datos"></canvas>
-        <div class="mnTop"><span class="mnLogo">PULSO<b>MACRO</b> · MONITOR GLOBAL</span><span class="mnScn" id="mnScn"></span><span class="mnUtc" id="mnUtc"></span><span class="mnDots" id="mnDots"></span><button type="button" id="xpGeo" title="Mapa de guerras en vivo a pantalla completa">▣ Geopolítica en vivo</button><button type="button" id="xpFs">⛶ Modo monitor</button></div>
+        <div class="mnTop"><span class="mnLogo">PULSO<b>MACRO</b> · MONITOR GLOBAL</span><span class="mnScn" id="mnScn"></span><span class="mnUtc" id="mnUtc"></span><span class="mnDots" id="mnDots"></span><button type="button" id="xpFs">⛶ Modo monitor</button></div>
         <div class="mnKpi" id="mnKpi"></div>
         <div class="mnTitle" id="mnTitle"></div>
         <div class="mnL">
@@ -10321,7 +10323,6 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
       document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && document.body.classList.contains('mon')) xpModo(false); });
       document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('mon')) xpModo(false); });
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden){ loadNP(); cargarNoticias(); XP.rnAt = 0; } }, 15*60000);
-      $('xpGeo').onclick = e=>{ e.stopPropagation(); geoMonitor(true); };
       xpBarcos(true); xpGv();
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden) xpBarcos(false); }, 60000);
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden) xpGv(); }, 5*60000);
