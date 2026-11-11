@@ -637,16 +637,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   Las tablas `.esptab` anulan el `min-width:640px` y el `nowrap` globales de `table`/`td`; en celular las filas se apilan.
 
 ### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦") y Geopolítica en vivo — página `/monitor/`
-- Desde el 11/11/2026 (pedido del dueño: "más como Bloomberg", "buques en tiempo real llevando petróleo", "una verdadera locura de
-  ver" y no "un video que se repite") el Monitor es una página aparte: `monitor/index.html` + `monitor/monitor.js` (d3/topojson de
-  `vendor/`, `world.json`, costas de alta resolución de los zooms en `monitor/costas.json`, recortadas de Natural Earth 10m vía
-  world-atlas). En index.html el apartado tiene solo `<iframe id="xpIf">` dentro de `.xpw` (se carga recién al abrir el apartado:
-  `xpStart`); el monitor viejo (objeto `XP`, `xpDraw`, escenas) se borró. Solo computadora (`xpDesk()`); en celular avisa.
-- Dos vistas: Monitor global (globo con petroleros por AIS, rutas habituales aproximadas solo de referencia, pasos clave con
-  petroleros por día, zoom rotativo a Ormuz / Bab el-Mandeb / Malaca / Suez con flechas de rumbo — solo los que tienen ≥2 barcos —,
-  lista de reportes AIS, reportes de prensa de combates, focos de calor, precios) y `#geo` "Geopolítica en vivo" (mapa Mercator de
-  guerras, focos de calor de 24 h, reportes de prensa de 2 h con uno destacado por vez con su antigüedad, mira que recorre las
-  guerras mayores con su ficha). Botón "▣ Geopolítica en vivo" arriba; ⛶ = pantalla completa + Wake Lock.
+- El Monitor es el de siempre, en index.html (objeto `XP`, `xpDraw`, escenas bolsas/monedas/tasas/inflación/bonos/conflictos,
+  relojes, termómetro, Argentina, mapa de bolsas, bancos centrales, titulares). El 11/11/2026 se lo reemplazó por un monitor solo
+  de petroleros y el dueño se enojó ("yo te dije que lo quería más pro, no que sea solo petrolero; los buques eran para
+  sobrecargarlo"): se restauró y los datos en vivo quedaron como CAPAS EXTRA (`xpVivo`): petroleros por AIS (puntos ámbar que
+  titilan al llegar su reporte, `XP.ships`, `xpBarcos` cada 60 s), combates de GDELT (puntos rojos; en `#xpLog` se alternan con
+  los titulares: "[COMBATES · PAÍS] ... reportado hace X", `xpGdelt`) y focos de calor de FIRMS (`xpGv` cada 5 min), recuadro
+  "PETROLEROS · AIS EN VIVO" (`#mnAis`, `xpAisLinea`) y casillero "PETROLEROS (AIS)". Botón "▣ Geopolítica en vivo" (`#xpGeo`) en
+  la barra de arriba. NO volver a convertirlo en un monitor de un solo tema.
+- `/monitor/` (`monitor/index.html` + `monitor/monitor.js`, costas en `monitor/costas.json`) es SOLO "Geopolítica en vivo" (mapa
+  Mercator de guerras, focos de calor de 24 h, reportes de prensa de 2 h, mira que recorre las guerras mayores con su ficha,
+  petroleros en zona de guerra, mercados). La vista de petroleros que tiene adentro quedó sin uso (`ABRIO_GEO = true`). Salir:
+  dentro del iframe manda `postMessage({pm:'monitor-cerrar'})`; suelta vuelve a `/#global`.
 - Geopolítica: botón chico `#geoMonB` ("MONITOR EN VIVO", punto rojo) en la tarjeta "Guerras y conflictos armados en curso" (pedido
   del dueño: "sutilmente"): `geoMonitor(true)` abre `#geoMonO` (iframe `/monitor/#geo` a pantalla completa); "Salir"/Esc dentro
   del iframe manda `postMessage({pm:'monitor-cerrar'})` y el padre lo cierra. Solo computadora.
@@ -660,7 +662,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final). Medido el 11/11/2026 en 20 s por zona: Mar del Norte y Báltico 832
   mensajes, Mediterráneo 89, Golfo de México 45, China 35, Atlántico sur 27, Malaca 15, Mar Negro 10 y Golfo Pérsico / Mar Rojo /
   Arábigo 1: AISStream (antenas en tierra de colaboradores) casi no ve los estrechos del petróleo; NO es un bloqueo a Cloudflare.
-  Por eso los zooms del Monitor (`ZOOMS`/`ZBOX`) incluyen también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
+  Por eso los zooms de la vista sin uso de /monitor/ (`ZOOMS`/`ZBOX`) incluían también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
   solo se muestran los que tienen ≥2 petroleros; los pasos del FMI siguen en el globo y en el panel. Ver otros estrechos de verdad
   requiere AIS satelital (pago). Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el
   registro (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los

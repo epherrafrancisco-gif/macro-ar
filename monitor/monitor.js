@@ -346,9 +346,10 @@ function callout(){
 }
 
 // ---------------------------------------------------------------- vistas y arranque
-const ABRIO_GEO = location.hash === '#geo';
+// Desde el 11/11/2026 esta página es solo "Geopolítica en vivo" (el Monitor completo volvió a index.html, Mundo › Monitor).
+const ABRIO_GEO = true;
 function ver(v){ vista = v; $('v2').classList.toggle('on', v === 2); if(v === 2){ init2(); callout(); panelZonaGuerra(); } else init1(); }
-function salirGeo(){ if(EMBEBIDO && ABRIO_GEO){ parent.postMessage({pm: 'monitor-cerrar'}, location.origin); return; } ver(1); try{ history.replaceState(null, '', location.pathname); }catch(e){} }
+function salirGeo(){ if(EMBEBIDO){ parent.postMessage({pm: 'monitor-cerrar'}, location.origin); return; } location.href = '/#global'; }
 $('aGeo').onclick = () => ver(2); $('cGeo').onclick = salirGeo;
 async function pantalla(){ try{ if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }catch(e){}
   try{ if(!window.__wl) window.__wl = await navigator.wakeLock.request('screen'); }catch(e){} }
