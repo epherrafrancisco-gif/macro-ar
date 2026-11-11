@@ -123,7 +123,7 @@ def gdelt(prev):
             if len(row) < 61:
                 continue
             code, root = row[26], row[28]
-            if not (root in ("19", "20") or code == "183"):
+            if not (root in ("19", "20") or code == "183") or row[25] != "1":   # solo el hecho principal de cada nota
                 continue
             iso = FIPS.get(row[53])
             if iso not in ok or row[51] not in ("3", "4", "2"):   # ciudad o provincia (no "todo el país")
@@ -143,32 +143,30 @@ def gdelt(prev):
             when = int(datetime.strptime(row[59], "%Y%m%d%H%M%S").replace(tzinfo=timezone.utc).timestamp())
             e = ev.get(clave)
             if e:
-                e[7] += 1
+                e[8] += 1
                 if when > e[0]:
                     e[0] = when
                 continue
-            ev[clave] = [when, tipo, round(lat, 3), round(lon, 3), lugar, iso, dom, 1]
+            ev[clave] = [when, tipo, round(lat, 3), round(lon, 3), lugar, iso, NOMBRE.get(iso, iso), dom, 1]
     if not bajados:
         raise RuntimeError("no bajó ningún archivo")
     lista = sorted(ev.values(), key=lambda e: -e[0])[:400]
-    for e in lista:
-        e[5] = NOMBRE.get(e[5], e[5])
+    # [cuándo (unix), tipo, lat, lon, lugar, ISO3, país, medio, cuántas notas]
     return {"t": int(t0.timestamp()), "archivos": bajados, "ev": lista,
             "fuente": "GDELT Project (gdeltproject.org)"}
 
 
 # ---------------------------------------------------------------- NASA FIRMS
 FIRMS = "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_Global_24h.csv"
-# [clave, nombre, [oeste, sur, este, norte]]
+# [clave, nombre, [[oeste, sur, este, norte], ...]]. Solo frentes donde un foco de calor suele ser combate o bombardeo:
+# en noviembre-abril el Sahel, Sudán rural, el Congo y Somalia arden por quemas de pastizales y los números se dispararían
+# sin decir nada de la guerra (probado 11/11/2026: Sudán entero daba 8.298 focos y el frente ucraniano 1). Por eso en Sudán
+# solo las ciudades sitiadas o en disputa.
 ZONAS = [
-    ["ucr", "Frente Rusia-Ucrania", [31.0, 46.0, 40.5, 51.5]],
-    ["sdn", "Sudán (Darfur y Kordofán)", [22.0, 9.0, 33.0, 16.5]],
-    ["mmr", "Myanmar", [92.0, 16.0, 101.0, 28.0]],
-    ["sah", "Sahel central (Malí, Burkina, Níger)", [-6.0, 11.0, 4.0, 17.0]],
-    ["cod", "Este del Congo", [27.5, -4.0, 30.5, 1.5]],
-    ["gaz", "Gaza y sur del Líbano", [34.2, 31.2, 35.9, 33.5]],
-    ["yem", "Yemen", [42.5, 12.5, 53.0, 19.0]],
-    ["som", "Somalia", [41.0, -1.5, 51.5, 11.5]],
+    ["ucr", "Frente Rusia-Ucrania", [[31.0, 46.0, 40.5, 51.5]]],
+    ["gaz", "Gaza y sur del Líbano", [[34.2, 31.2, 34.6, 31.65], [35.1, 33.0, 35.9, 33.5]]],
+    ["sdn", "Sudán: El Fasher, Jartum y El Obeid", [[25.15, 13.5, 25.55, 13.8], [32.35, 15.4, 32.75, 15.8], [30.05, 13.05, 30.35, 13.3]]],
+    ["mmr", "Myanmar", [[92.0, 16.0, 101.0, 28.0]]],
 ]
 
 
@@ -184,8 +182,8 @@ def firms():
             la, lo = float(r["latitude"]), float(r["longitude"])
         except (KeyError, ValueError):
             continue
-        for i, (_, _, (w, s, e, n)) in enumerate(ZONAS):
-            if w <= lo <= e and s <= la <= n:
+        for i, (_, _, cajas) in enumerate(ZONAS):
+            if any(w <= lo <= e and s <= la <= n for (w, s, e, n) in cajas):
                 if r.get("confidence", "n").lower() in ("l", "low"):
                     break
                 cnt[i] += 1

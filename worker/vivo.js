@@ -4,7 +4,7 @@
 // Acciones y bonos: Open BYMADATA, el acceso gratuito y público de BYMA (dueña del dato), que ya viene con 20 minutos de
 // demora. Desde el 26/10/2026 no se usa data912 (API anónima sin licencia). Se publican los mismos precios que BYMA
 // muestra gratis al público, citando a BYMA. Plazo 24 hs (T1), como se opera normalmente.
-// Bindings: R2 bucket "DATOS". Cron: "* * * * *".
+// Bindings: R2 bucket "DATOS". Cron: "* * * * *". Secreto opcional AISSTREAM_KEY (barcos en vivo, ver ais()).
 
 const DOLAR = 'https://dolarapi.com/v1/dolares';
 const BYMA = 'https://open.bymadata.com.ar/vanoms-be-core/rest/api/bymadata/free/';
@@ -147,8 +147,93 @@ async function surtidores(env){
   }catch(e){ try{ await env.DATOS.put('surtidores/estado.json', JSON.stringify({t: Date.now(), err: String(e.message || e)})); }catch(e2){} }
 }
 
+
+// ---------- Barcos en vivo: petroleros por AIS (AISStream.io, clave en el secreto AISSTREAM_KEY) ----------
+// Cada minuto, DESPUÉS de guardar vivo.json (así, si esto falla o se corta, el dólar no se entera), se escucha AIS_SEG
+// milisegundos una región (van rotando) y se guardan las posiciones de los petroleros (tipo AIS 80-89). El tipo de barco
+// viene en otro mensaje (ShipStaticData, cada ~6 min por barco): el registro de petroleros se va llenando solo en las primeras
+// horas. Para gastar poco, los reportes de posición se miran sin abrir el JSON y solo se abren los de petroleros conocidos.
+// Las antenas de AISStream están en la costa: en alta mar casi no hay datos. Publica barcos.json (cache 60 s) en R2.
+const AIS_SEG = 7000;
+const AIS_REG = [   // [nombre, cajas [[lat sur, lon oeste], [lat norte, lon este]]]
+  ['Golfo Pérsico y Ormuz', [[[22, 47], [30.5, 60]]]],
+  ['Mar Rojo, Bab el-Mandeb y Suez', [[[11, 32], [31.8, 46]]]],
+  ['Malaca y Singapur', [[[-1.5, 95], [7, 106]]]],
+  ['Mediterráneo y Gibraltar', [[[30, -7], [42, 30]]]],
+  ['Mar Negro y Bósforo', [[[40, 26], [47.5, 42]]]],
+  ['Mar del Norte y Báltico', [[[48, -6], [61, 30]]]],
+  ['Golfo de México, Caribe y Panamá', [[[7, -98], [31, -60]]]],
+  ['Mar de China y Japón', [[[7, 106], [38, 142]]]],
+  ['Mar Arábigo e India', [[[5, 55], [25, 78]]]],
+  ['Atlántico sur y Cabo', [[[-38, -50], [-18, -35]], [[-38, 10], [-25, 35]]]],
+];
+const AIS_VIVO = 45 * 60000, AIS_QUIETO = 3 * 3600000;   // cuánto se muestra un barco sin reporte nuevo (navegando / fondeado)
+
+async function ais(env, ahora){
+  if(!env.AISSTREAM_KEY) return;
+  let E = {i: 0, reg: {}, pos: {}, rep: [], vis: {}};
+  try{ const o = await env.DATOS.get('barcos/estado.json'); if(o) E = Object.assign(E, await o.json()); }catch(e){}
+  const k = (E.i || 0) % AIS_REG.length; E.i = k + 1;
+  const diag = {region: AIS_REG[k][0], msgs: 0, pos: 0, estat: 0, err: null, ms: 0};
+  const t0 = Date.now(), nuevos = [];
+  try{
+    const r = await fetch('https://stream.aisstream.io/v0/stream', {headers: {Upgrade: 'websocket', 'user-agent': UA}});
+    const ws = r.webSocket; if(!ws) throw new Error('sin websocket (' + r.status + ')');
+    ws.accept();
+    ws.send(JSON.stringify({APIKey: env.AISSTREAM_KEY, BoundingBoxes: AIS_REG[k][1], FilterMessageTypes: ['PositionReport', 'ShipStaticData']}));
+    const dec = new TextDecoder();
+    await new Promise(res => {
+      let listo = false;
+      const fin = () => { if(listo) return; listo = true; try{ ws.close(1000, 'fin'); }catch(e){} res(); };
+      const timer = setTimeout(fin, AIS_SEG);
+      ws.addEventListener('close', () => { clearTimeout(timer); fin(); });
+      ws.addEventListener('error', () => { clearTimeout(timer); fin(); });
+      ws.addEventListener('message', ev => {
+        try{
+          diag.msgs++;
+          const s = typeof ev.data === 'string' ? ev.data : dec.decode(ev.data);
+          const iM = s.indexOf('"MMSI":');
+          if(iM < 0){ if(s.length < 400) diag.err = s.slice(0, 200); return; }
+          const mmsi = parseInt(s.slice(iM + 7, iM + 20), 10);
+          if(s.indexOf('"ShipStaticData"') >= 0){
+            diag.estat++;
+            const m = JSON.parse(s).Message.ShipStaticData, ty = m.Type | 0;
+            if(ty >= 80 && ty <= 89){ const d = m.Dimension || {}; E.reg[mmsi] = [(d.A | 0) + (d.B | 0), ty - 80, String(m.Name || '').trim().slice(0, 24)]; }
+            else if(E.reg[mmsi]) delete E.reg[mmsi];
+            return;
+          }
+          if(!E.reg[mmsi]) return;
+          const j = JSON.parse(s), p = j.Message && j.Message.PositionReport; if(!p) return;
+          const la = p.Latitude, lo = p.Longitude;
+          if(!(Math.abs(la) <= 90 && Math.abs(lo) <= 180) || (la === 0 && lo === 0)) return;   // 91/181 = sin dato
+          const sog = p.Sog >= 102.2 ? null : Math.round(p.Sog * 10) / 10, cog = p.Cog >= 360 ? null : Math.round(p.Cog);
+          const tu = String((j.MetaData || {}).time_utc || '').slice(0, 19);
+          const t = Date.parse(tu.replace(' ', 'T') + 'Z') || Date.now();
+          const x = [Math.round(la * 1e4) / 1e4, Math.round(lo * 1e4) / 1e4, sog, cog, t];
+          E.pos[mmsi] = x; nuevos.push([t, mmsi, x[0], x[1], sog, cog]); diag.pos++;
+        }catch(e){}
+      });
+    });
+  }catch(e){ diag.err = String(e.message || e).slice(0, 200); }
+  diag.ms = Date.now() - t0;
+  E.vis[k] = ahora;
+  for(const m in E.pos){ const p = E.pos[m], q = p[2] != null && p[2] < 1; if(ahora - p[4] > (q ? AIS_QUIETO : AIS_VIVO) || !E.reg[m]) delete E.pos[m]; }
+  const regs = Object.keys(E.reg); if(regs.length > 25000) for(const m of regs.slice(0, regs.length - 25000)) delete E.reg[m];
+  nuevos.sort((a, b) => a[0] - b[0]);
+  E.rep = E.rep.concat(nuevos).filter(r => ahora - r[0] < 20 * 60000).slice(-600);
+  await env.DATOS.put('barcos/estado.json', JSON.stringify(E));
+  const b = Object.entries(E.pos).map(([m, p]) => { const g = E.reg[m]; return [+m, p[0], p[1], p[2], p[3], p[4], g[0], g[1], g[2]]; });
+  const nombre = {}; for(const r of E.rep) if(E.reg[r[1]]) nombre[r[1]] = [E.reg[r[1]][0], E.reg[r[1]][2]];
+  await env.DATOS.put('barcos.json', JSON.stringify({t: ahora, b, rep: E.rep.slice(-300), nombre, petroleros: regs.length,
+    regiones: AIS_REG.map((r, i) => [r[0], E.vis[i] || 0]), diag, fuente: 'AISStream.io (AIS de antenas costeras)'}), JSON_META);
+}
+
 export default {
-  async scheduled(ev, env, ctx){ ctx.waitUntil(actualizar(env, ev.scheduledTime || Date.now())); ctx.waitUntil(surtidores(env)); },
+  async scheduled(ev, env, ctx){
+    const t = ev.scheduledTime || Date.now();
+    ctx.waitUntil((async () => { await actualizar(env, t); try{ await ais(env, Date.now()); }catch(e){} })());
+    ctx.waitUntil(surtidores(env));
+  },
   // Visitar la dirección del Worker muestra el estado (sin datos), para revisar que corre.
   async fetch(req, env){
     if (new URL(req.url).pathname === '/api/racha') return racha(req, env);

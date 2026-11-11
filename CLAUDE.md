@@ -20,7 +20,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   1000 pedidos / 10 s por IP (bloqueo 10 s); Web Analytics automático. Para forzar un cambio ya: Caching → Configuration
   → Purge Everything (después de que termine el deploy de Pages, no antes).
 - Datos en vivo (worker/vivo.js, Worker `pulso-vivo`, cron cada minuto, binding R2 `DATOS` = bucket `pulso-datos`):
-  trae DolarApi y Open BYMADATA (acciones y bonos, acceso gratuito de BYMA) cada minuto y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
+  trae DolarApi y Open BYMADATA (acciones y bonos, acceso gratuito de BYMA) cada minuto (y después, si tiene el secreto `AISSTREAM_KEY`, los petroleros: ver Monitor) y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
   `https://datos.pulsomacro.com.ar/vivo.json` (dominio propio del bucket, CORS solo pulsomacro.com.ar). Cache Rule
   "Datos en vivo: ignorar query" en ese host: ignora la query para que nadie fuerce lecturas de R2 con URLs inventadas.
   La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 10 min (mercado); si no, va directo a
@@ -636,28 +636,44 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   celular, se frena fuera del apartado, fuera de pantalla o con la pestaña oculta; con reducir movimiento queda un cuadro fijo.
   Las tablas `.esptab` anulan el `min-width:640px` y el `nowrap` globales de `table`/`td`; en celular las filas se apilan.
 
-### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦", objeto `XP`, `xpStart`/`xpDraw`)
-- Pedido del dueño: NO interactivo, para dejar prendido de ambiente (el Explorador interactivo se descartó: "no se entiende").
-  Nunca escribir "escaneando" ni textos que finjan procesos. Solo computadora: `xpDesk()` = `(min-width:1024px) and
-  (pointer:fine)`; en celular/tablet el botón se oculta. Se arranca desde `aplicarSub('M')`.
-- Globo gigante en canvas (d3 orthographic) con anillos de radar, barrido que muestra el dato de cada país al pasar, noche
-  real (`xpSun`), luces de `GEX`, arcos del carry trade y destellos de titulares (`xpNews`). Escenas automáticas
-  `XP_SCN` cada `XP_DUR` (22 s): bolsas, monedas, tasas, inflación (se acerca a Argentina) y bonos; vuela al destacado y
-  muestra un recuadro con su serie de global_hist (`XP_BK`, `XP_MK`, `XP_BO`). Sexta escena "Conflictos armados" (`xpGeo`,
-  `xpGeoC`: color por nivel de `GEO_NIV`, columnas = muertes del último año completo, recuadro con el riesgo geopolítico) y
-  cuadros fijos en las guerras mayores/menores en todas las escenas. Pedido del dueño: cargado tipo terminal. Paneles: franja
-  `#mnKpi` (mercados, VIX, riesgo geopolítico, riesgo país, Merval), reloj UTC `#mnUtc`, relojes `XP_CLK` (10), termómetro,
-  Argentina, geopolítica `#mnGeo` (conflictos por nivel, GPR 7 días, guerras que rotan cada 6 s), flujo de datos (`xpRain`),
-  abajo consola (`xpLog`), mapa de calor de bolsas (`xpHeat`) y próximas decisiones de tasas (`#mnBc`, de `BCAL`). `xpSet` solo
-  reescribe si cambió.
-- Estética (pedido del dueño, "que parezca una terminal de banco, no un jueguito"): piel de terminal tipo Bloomberg,
-  bloque CSS "Monitor: piel de terminal" (fondo azul petróleo muy oscuro, ámbar `--am` y acento por panel `--ac`: cian
-  mercados/tasas, rojo geopolítica, celeste Argentina; el dueño no quiere todo negro igual ni el azul "aniñado" de antes; antes: negro plano, ámbar `--am` #ff9e1b, encabezados como barras ámbar, sin bordes
-  redondeados). En el canvas NO hay halo, anillo con grados, barrido de radar dibujado (el ángulo sigue moviendo las
-  etiquetas), miras ni resplandores; títulos sin efecto de máquina de escribir. No volver a agregar adornos de "película".
-- "Modo monitor" (`xpModo`): clase `body.mon` (deja visibles las cintas y fija el monitor debajo con `--monTop`),
-  pantalla completa, Wake Lock para que no se apague; Esc o clic para salir. Rendimiento: DPR máx. 1,25, 30 cuadros por
-  segundo, países agrupados por color y solo la cara visible; los globos de arriba se pausan si no están en pantalla.
+### Global › Mundo › Monitor (`data-sub="explorar"`, botón "Monitor ✦") y Geopolítica en vivo — página `/monitor/`
+- Desde el 11/11/2026 (pedido del dueño: "más como Bloomberg", "buques en tiempo real llevando petróleo", "una verdadera locura de
+  ver" y no "un video que se repite") el Monitor es una página aparte: `monitor/index.html` + `monitor/monitor.js` (d3/topojson de
+  `vendor/`, `world.json`, costas de alta resolución de los zooms en `monitor/costas.json`, recortadas de Natural Earth 10m vía
+  world-atlas). En index.html el apartado tiene solo `<iframe id="xpIf">` dentro de `.xpw` (se carga recién al abrir el apartado:
+  `xpStart`); el monitor viejo (objeto `XP`, `xpDraw`, escenas) se borró. Solo computadora (`xpDesk()`); en celular avisa.
+- Dos vistas: Monitor global (globo con petroleros por AIS, rutas habituales aproximadas solo de referencia, pasos clave con
+  petroleros por día, zoom rotativo a Ormuz / Bab el-Mandeb / Malaca / Suez con flechas de rumbo — solo los que tienen ≥2 barcos —,
+  lista de reportes AIS, reportes de prensa de combates, focos de calor, precios) y `#geo` "Geopolítica en vivo" (mapa Mercator de
+  guerras, focos de calor de 24 h, reportes de prensa de 2 h con uno destacado por vez con su antigüedad, mira que recorre las
+  guerras mayores con su ficha). Botón "▣ Geopolítica en vivo" arriba; ⛶ = pantalla completa + Wake Lock.
+- Geopolítica: botón chico `#geoMonB` ("MONITOR EN VIVO", punto rojo) en la tarjeta "Guerras y conflictos armados en curso" (pedido
+  del dueño: "sutilmente"): `geoMonitor(true)` abre `#geoMonO` (iframe `/monitor/#geo` a pantalla completa); "Salir"/Esc dentro
+  del iframe manda `postMessage({pm:'monitor-cerrar'})` y el padre lo cierra. Solo computadora.
+- NADA simulado (el dueño preguntó "¿es todo real?"): si un dato falta, el panel lo dice. Los reportes AIS que llegan cada minuto se
+  muestran repartidos a lo largo del minuto siguiente, con su hora real (UTC). Un petrolero real va a ~25 km/h: en el globo casi no se
+  mueve; lo "vivo" es que titila al llegar su reporte. Modo claro: variables de `html[data-tema="claro"]` y objeto `K` de monitor.js.
+- Datos: `https://datos.pulsomacro.com.ar/barcos.json` (Worker, cada 60 s), `/geovivo.json` (cada 5 min), `/global.json` (10 min),
+  `/geopolitica.json`. GoatCounter solo si no está dentro de un iframe; evento `geo-monitor` al abrirlo desde Geopolítica.
+- Barcos (`ais()` en worker/vivo.js, secreto `AISSTREAM_KEY` del Worker, clave gratis de aisstream.io a nombre del dueño): cada
+  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (7 s) una región de `AIS_REG` (10, rotan: cada una cada ~10 min) por
+  WebSocket. Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el registro
+  (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los
+  PositionReport se miran sin JSON.parse salvo los de petroleros conocidos (para gastar poca CPU). Posición válida 45 min (quietos,
+  3 h). `barcos.json`: `b` [mmsi, lat, lon, nudos, rumbo, t, largo, subtipo, nombre], `rep` (últimos 20 min), `regiones`, `diag`
+  (mensajes, ms, error). AISStream: gratis, en beta, sin garantía; antenas en la costa (en alta mar casi no hay datos); su
+  documentación pide consumirlo desde un servidor propio (así se hace). Si el plan gratis de Workers corta por CPU, se ve en `diag`;
+  la salida sería Workers Paid (US$ 5/mes).
+- `geovivo.json` (scripts/geovivo.py, paso del workflow `noticias.yml`, así no suma builds de Pages):
+  - `gdelt`: GDELT 2.0 (uso comercial libre citando gdeltproject.org), últimos 8 archivos de 15 min, solo hechos principales
+    (IsRootEvent) de combates (CAMEO 19x), violencia masiva (20x) y atentados con bomba (183), en países con guerra según
+    geopolitica.json (`teatros()`, menos `NO_TEATRO`), ubicados a nivel ciudad/provincia. `ev` = [unix, tipo, lat, lon, lugar, ISO3,
+    país, medio, notas]. Codificado por máquina: tiene errores (la página dice "reportes de prensa").
+  - `firms`: NASA FIRMS NOAA-20 VIIRS 24 h (archivo público sin clave), solo en `ZONAS` = frentes donde un foco suele ser combate:
+    frente Rusia-Ucrania, Gaza y sur del Líbano, ciudades de Sudán (El Fasher, Jartum, El Obeid) y Myanmar. NO poner Sahel, Sudán
+    rural, Congo ni Somalia: en temporada seca arden por quemas de pastizales (11/11/2026: Sudán entero 8.298 focos vs Ucrania 1).
+  - `pasos`: FMI PortWatch (ArcGIS `Daily_Chokepoints_Data`, `n_tanker`), 8 pasos, promedio de 2025 y últimos 90 días; sale con
+    ~3-5 días de atraso (se muestra la fecha); se renueva cada 6 h. Al 08/11/2026 Ormuz daba 1 petrolero/día vs 48 en 2025 (real).
 
 ### Global › Estados Unidos (`renderUsa`, `usaExtra`)
 - Mapa de desempleo por estado (sin animación decorativa), reloj de la deuda (base = Debt to the Penny del Tesoro, 1 día
