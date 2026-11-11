@@ -404,6 +404,8 @@ TEMAS_M = {"mercados": r"bolsa|wall street|acciones|[ií]ndice|mercado|nasdaq|s&
 
 
 def noticias_mundo(prev):
+    from noticias import imagen as nimagen  # noqa: PLC0415  misma lectura de fotos que noticias.py
+    from noticias_paises import og_image as nog_image  # noqa: PLC0415
     def limpiar(t):
         return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", t or "")).strip())
     def fecha(txt):
@@ -433,8 +435,12 @@ def noticias_mundo(prev):
                     continue
                 if filtrar and not re.search(ECON, t, re.I):
                     continue
-                items.append({"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes"),
-                              "k": [k for k, rx in TEMAS_M.items() if re.search(rx, t, re.I)]})
+                x = {"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes"),
+                     "k": [k for k, rx in TEMAS_M.items() if re.search(rx, t, re.I)]}
+                im = nimagen(it)  # foto del feed (pedido del dueño 11/11/2026: tarjetas con foto como las de Argentina)
+                if im and im.startswith("https://"):
+                    x["i"] = im
+                items.append(x)
                 n += 1
             fuentes[medio] = f"ok ({n})"
         except Exception as e:  # noqa: BLE001
@@ -448,7 +454,21 @@ def noticias_mundo(prev):
         if clave not in vistos:
             vistos.add(clave)
             unicos.append(x)
-    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "fuentes": fuentes, "items": unicos[:60]}
+    unicos = unicos[:60]
+    # las que el feed trae sin foto: la de la corrida anterior o la og:image de la nota (con robots.txt; tope 30 y 90 s)
+    previas = {x["u"]: x["i"] for x in (prev.get("noticias") or {}).get("items", []) if x.get("i")}
+    pedidas, t0 = 0, time.time()
+    for x in unicos:
+        if x.get("i"):
+            continue
+        if x["u"] in previas:
+            x["i"] = previas[x["u"]]
+        elif pedidas < 30 and time.time() - t0 < 90:
+            pedidas += 1
+            im = nog_image(x["u"])
+            if im:
+                x["i"] = im
+    return {"actualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "fuentes": fuentes, "items": unicos}
 
 
 def historia(prev_h):

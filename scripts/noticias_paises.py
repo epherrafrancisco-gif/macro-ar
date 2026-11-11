@@ -16,8 +16,10 @@ Uso: python scripts/noticias_paises.py
 import html
 import json
 import re
+import sys
 import time
 import urllib.request
+import urllib.robotparser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
@@ -329,8 +331,46 @@ def fecha(txt):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from noticias import achicar, imagen  # noqa: E402  misma lectura de fotos que las noticias de Argentina
+
+def chica(u):
+    """Achica las fotos de Infobae y La Nación (resizer de Arc, probado en noticias.py); las de otros medios quedan como vienen."""
+    return achicar(u) if re.search(r"infobae\.com|lanacion\.com\.ar", u) else u
+
+
+FOTOS_OG = 120      # como mucho, notas por corrida a las que se les busca la foto en su página (og:image)
+FOTOS_SEG = 150     # y no más de 2,5 minutos en eso (el workflow tiene tiempo limitado)
+_robots = {}
+
+
+def og_image(url):
+    """Foto de la nota sacada de su página (og:image), para los medios cuyo feed no trae foto. Respeta robots.txt."""
+    try:
+        base = re.match(r"https?://[^/]+", url).group(0)
+        if base not in _robots:
+            rp = urllib.robotparser.RobotFileParser(); rp.set_url(base + "/robots.txt")
+            try:
+                req = urllib.request.Request(base + "/robots.txt", headers={"User-Agent": UA})
+                with urllib.request.urlopen(req, timeout=8) as r:
+                    rp.parse(r.read().decode("utf-8", "replace").splitlines())
+            except Exception:  # noqa: BLE001  sin robots.txt legible: no se pide nada a ese sitio
+                rp = None
+            _robots[base] = rp
+        rp = _robots[base]
+        if rp is None or not rp.can_fetch("PulsoMacro", url):
+            return None
+        req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html"})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            h = r.read(250000).decode("utf-8", "replace")
+        m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', h) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image', h)
+        return html.unescape(m.group(1)) if m and m.group(1).startswith("https://") else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def entradas(url):
-    """(título, link, fecha, es de la sección economía) de un RSS/Atom o del JSON de NHK World."""
+    """(título, link, fecha, es de la sección economía, foto) de un RSS/Atom o del JSON de NHK World."""
     raw = get(url)
     if url.endswith(".json"):  # NHK World en español: {"data": [{title, page_url, public_at (ms), categories{name}}]}
         for x in json.loads(raw.decode("utf-8", "replace")).get("data") or []:
@@ -339,7 +379,10 @@ def entradas(url):
             except (TypeError, ValueError):
                 continue
             cat = str((x.get("categories") or {}).get("name") or "").upper()
-            yield limpiar(x.get("title")), "https://www3.nhk.or.jp" + str(x.get("page_url") or ""), d, cat == "BUSINESS"
+            th = x.get("thumbnails") or {}
+            im = next((str(v) for v in (th.values() if isinstance(th, dict) else []) if str(v).startswith(("https://", "/"))), None)
+            if im and im.startswith("/"): im = "https://www3.nhk.or.jp" + im
+            yield limpiar(x.get("title")), "https://www3.nhk.or.jp" + str(x.get("page_url") or ""), d, cat == "BUSINESS", im
         return
     for it in ET.fromstring(raw.lstrip()).iter():  # Business Review trae espacios antes del <?xml
         if it.tag.split("}")[-1] not in ("item", "entry"):
@@ -347,7 +390,8 @@ def entradas(url):
         h = {c.tag.split("}")[-1]: c for c in it}
         t = limpiar(h["title"].text if "title" in h else "")
         link = ((h["link"].text or h["link"].get("href") or "").strip()) if "link" in h else ""
-        yield t, link, fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), "")), False
+        im = imagen(it)
+        yield t, link, fecha(next((h[k].text for k in ("pubDate", "published", "updated", "date") if k in h), "")), False, (chica(im) if im and im.startswith("https://") else None)
 
 
 def main():
@@ -367,7 +411,7 @@ def main():
         clave_f = f"{medio} · {url.split('/')[2]}"
         try:
             n = 0
-            for t, link, d, cat_econ in entradas(url):
+            for t, link, d, cat_econ, foto in entradas(url):
                 if not t or BASURA.match(t) or (RUIDO_EN if en else RUIDO).search(t) or len(t) < 25 or not link.startswith("http") or not d or d < (corte_en if en else corte) or d > ahora + timedelta(hours=1):
                     continue
                 es_econ = cat_econ or bool(re.search(ECON_EN if en else ECON, t, re.I))
@@ -376,6 +420,8 @@ def main():
                     otro = not nombra and bool(re.search(OTROS_EN if en else OTROS, t, re.I))
                     if (regla == "todo" and not otro) or (regla == "econ" and es_econ and not otro) or (regla == "pais" and nombra and es_econ):
                         x = {"t": t, "u": link, "f": medio, "h": d.isoformat(timespec="minutes")}
+                        if foto:
+                            x["i"] = foto
                         if en:
                             x["l"] = "en"
                         (por_pais_en if en else por_pais)[pais].append(x)
@@ -402,6 +448,24 @@ def main():
         if not unicos:  # si todo falló, quedan las anteriores que sigan dentro de las 48 horas
             unicos = [x for x in (prev.get(pais) or []) if x.get("h", "") >= corte.isoformat(timespec="minutes")]
         data[pais] = unicos[:40]
+    # Fotos (pedido del dueño 11/11/2026: tarjetas con foto como las noticias de Argentina). Las del feed ya vienen; a las
+    # que no traen se les reusa la de la corrida anterior o se busca la og:image de la nota (con tope de cantidad y tiempo).
+    previas = {x["u"]: x["i"] for p in PAIS for x in (prev.get(p) or []) if x.get("i")}
+    halladas, pedidas, t0 = {}, 0, time.time()
+    for p in PAIS:
+        for x in data[p]:
+            if x.get("i"):
+                continue
+            u = x["u"]
+            if u in previas:
+                x["i"] = previas[u]
+            elif u in halladas:
+                if halladas[u]: x["i"] = halladas[u]
+            elif pedidas < FOTOS_OG and time.time() - t0 < FOTOS_SEG:
+                pedidas += 1
+                halladas[u] = og_image(u)
+                if halladas[u]: x["i"] = halladas[u]
+    print("fotos:", sum(1 for p in PAIS for x in data[p] if x.get("i")), "de", sum(len(data[p]) for p in PAIS), f"({pedidas} buscadas en la nota)")
     OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print({p: len(data[p]) for p in PAIS})
     for p in PAIS:

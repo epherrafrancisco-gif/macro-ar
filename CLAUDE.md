@@ -298,7 +298,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   el RSS de El Cronista viene roto: sacados); `RUIDO` saca deportes, espectáculos y policiales; tema `politica` en el filtro (`NWT`). Pedido del dueño 02/11/2026: tarjetas
   con foto como la portada de Edge (`.nwg`/`.nwc`, `grid-auto-flow:dense`; `nwTam`: la primera de cada día grande y, desde la 4.ª,
   ~13% grandes 2×2 y ~17% anchas `.wide` (2 columnas, foto al costado), al azar fijo por link; 2 columnas en celular; sin foto,
-  las iniciales del medio). Solo en estas noticias generales: las de cada país siguen como lista. Foto `i`: la del feed
+  las iniciales del medio). Desde el 11/11/2026 (pedido del dueño) las noticias de Mundo y de cada país usan las mismas tarjetas: función común `nwGrid(items, nuevaSi)` (agrupa por día, `nwTam`, etiqueta EN); contenedores `div.nwm.nwfo` (`#gNw`, `#np<k>`). Fotos: `noticias_paises.py` y `noticias_mundo` de global.py toman la del feed (`imagen` de noticias.py; achicada solo en Infobae/La Nación, `chica`) y, si no trae, reusan la de la corrida anterior o buscan la og:image de la nota (`og_image` de noticias_paises.py, robots.txt cacheado por sitio; tope 120 notas / 150 s en países y 30 / 90 s en Mundo). `noticias.yml` pasó a 12 min. Foto `i`: la del feed
   (media:content/thumbnail/enclosure/<img>), achicada a 560 px en el resizer de Arc (Infobae, La Nación; se prueba con una
   antes de cambiarlas) y, si el feed no trae (Ámbito), og:image de la nota (con robots.txt, hasta 40 por corrida, se guardan).
   Las fotos se ven directo desde el medio (`referrerpolicy=no-referrer`); el link lleva a la nota.

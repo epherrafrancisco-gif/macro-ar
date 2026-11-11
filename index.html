@@ -654,7 +654,7 @@ html[data-tema="claro"] .xpw #mnVix .g{background:linear-gradient(90deg,#8fbf8a,
 .gtbl td:first-child{font-family:var(--sans)}.gtbl td small{display:block;color:var(--muted);font-size:11.5px;font-family:var(--sans)}.gtbl .up{color:var(--pos)}.gtbl .dn{color:var(--neg)}.gtbl tr.hl td{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 .agenda{display:flex;flex-direction:column}.agenda>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-bottom:1px solid var(--grid);align-items:center}
 .agenda b{font-weight:600}.agenda small{color:var(--muted);font-size:12px;display:block}.agenda .cd{font-family:var(--mono);text-align:right;font-size:13px}.agenda .cd.pr{color:var(--warn,#e8b14a)}
-.nwm{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}.nwm li{padding:9px 0;border-bottom:1px solid var(--grid)}.nwm a{color:var(--ink);text-decoration:none;font-weight:500}.nwm a:hover{color:var(--accent)}.nwm small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.nwm .en{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.06em;color:var(--muted);border:1px solid var(--grid);border-radius:3px;padding:2px 4px;vertical-align:2px}
+.nwm{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}.nwm li{padding:9px 0;border-bottom:1px solid var(--grid)}.nwm a{color:var(--ink);text-decoration:none;font-weight:500}.nwm a:hover{color:var(--accent)}.nwm small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.nwfo{display:block}.nwfo .nwday:first-child{margin-top:4px}.nwc .en{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.06em;color:var(--muted);border:1px solid var(--grid);border-radius:3px;padding:2px 4px;margin-right:2px}.nwm .en{display:inline-block;font:600 10px/1 var(--mono);letter-spacing:.06em;color:var(--muted);border:1px solid var(--grid);border-radius:3px;padding:2px 4px;vertical-align:2px}
 .gview{display:grid;gap:18px}.gview>*{min-width:0}
 #gVista{justify-self:start}#gVista button{font-size:13.5px;padding:6px 16px}
 .uhero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px}.uside{display:grid;gap:18px;align-content:start}
@@ -1684,7 +1684,7 @@ body.mporta .hbus{display:none}
       <div class="head"><h2>Noticias del mundo</h2><span class="note" id="gNwN"></span></div>
       <p class="sub">Titulares de economía internacional en español, de las últimas 48 horas. Tocá uno para leerlo en el medio.</p>
       <div class="glay" id="gNwSel" role="group" aria-label="Tema"></div>
-      <ul class="nwm" id="gNw"></ul>
+      <div class="nwm nwfo" id="gNw"></div>
     </div>
     </div>
     <div class="gsub" data-sub="explorar">
@@ -1782,7 +1782,7 @@ body.mporta .hbus{display:none}
     </div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Estados Unidos</h2><span class="note" id="npUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre EE.UU., de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npU"></ul><p class="note" id="npUF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Estados Unidos</h2><span class="note" id="npUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre EE.UU., de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npU"></div><p class="note" id="npUF"></p></div>
     </div>
       <p class="note" id="uFuente"></p>
     </div>
@@ -1815,7 +1815,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas brasileñas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="bAccSt"></div><div class="heat" id="bAccH"></div><div class="stats det" id="bAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Brasil</h2><span class="note" id="npBN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Brasil, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npB"></ul><p class="note" id="npBF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Brasil</h2><span class="note" id="npBN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Brasil, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npB"></div><p class="note" id="npBF"></p></div>
     </div>
     <p class="note" id="bFuente"></p>
   </section>
@@ -1850,7 +1850,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas europeas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="eAccSt"></div><div class="heat" id="eAccH"></div><div class="stats det" id="eAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Europa</h2><span class="note" id="npEN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Europa, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npE"></ul><p class="note" id="npEF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Europa</h2><span class="note" id="npEN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Europa, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npE"></div><p class="note" id="npEF"></p></div>
     </div>
     <p class="note" id="eFuente"></p>
   </section>
@@ -1889,7 +1889,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas mexicanas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="xAccSt"></div><div class="heat" id="xAccH"></div><div class="stats det" id="xAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: México</h2><span class="note" id="npXN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre México, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npX"></ul><p class="note" id="npXF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: México</h2><span class="note" id="npXN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre México, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npX"></div><p class="note" id="npXF"></p></div>
     </div>
     <p class="note" id="xFuente"></p>
   </section>
@@ -1925,7 +1925,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas chilenas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="clAccSt"></div><div class="heat" id="clAccH"></div><div class="stats det" id="clAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Chile</h2><span class="note" id="npCN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Chile, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npC"></ul><p class="note" id="npCF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Chile</h2><span class="note" id="npCN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Chile, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npC"></div><p class="note" id="npCF"></p></div>
     </div>
     <p class="note" id="clFuente"></p>
   </section>
@@ -1961,7 +1961,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas japonesas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="jpAccSt"></div><div class="heat" id="jpAccH"></div><div class="stats det" id="jpAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Japón</h2><span class="note" id="npJN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Japón, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npJ"></ul><p class="note" id="npJF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Japón</h2><span class="note" id="npJN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Japón, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npJ"></div><p class="note" id="npJF"></p></div>
     </div>
     <p class="note" id="jpFuente"></p>
   </section>
@@ -1997,7 +1997,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas británicas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="ukAccSt"></div><div class="heat" id="ukAccH"></div><div class="stats det" id="ukAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Reino Unido</h2><span class="note" id="npRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre el Reino Unido, de varios medios. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npR"></ul><p class="note" id="npRF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Reino Unido</h2><span class="note" id="npRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre el Reino Unido, de varios medios. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npR"></div><p class="note" id="npRF"></p></div>
     </div>
     <p class="note" id="ukFuente"></p>
   </section>
@@ -2033,7 +2033,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas canadienses en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="caAccSt"></div><div class="heat" id="caAccH"></div><div class="stats det" id="caAccDet" hidden></div><p class="note">Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Canadá</h2><span class="note" id="npKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Canadá, de varios medios. En español se publica poco sobre Canadá: algunos días puede haber pocas o ninguna.</p><ul class="nwm" id="npK"></ul><p class="note" id="npKF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Canadá</h2><span class="note" id="npKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Canadá, de varios medios. En español se publica poco sobre Canadá: algunos días puede haber pocas o ninguna.</p><div class="nwm nwfo" id="npK"></div><p class="note" id="npKF"></p></div>
     </div>
     <p class="note" id="caFuente"></p>
   </section>
@@ -2067,7 +2067,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas colombianas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="coAccSt"></div><div class="heat" id="coAccH"></div><div class="stats det" id="coAccDet" hidden></div><p class="note">Ecopetrol, Grupo Cibest (Bancolombia), Grupo Aval y Tecnoglass. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Colombia</h2><span class="note" id="npON"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Colombia, de medios colombianos (El Tiempo, Portafolio, La República, Semana, Valora Analitik) y de otros. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npO"></ul><p class="note" id="npOF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Colombia</h2><span class="note" id="npON"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Colombia, de medios colombianos (El Tiempo, Portafolio, La República, Semana, Valora Analitik) y de otros. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npO"></div><p class="note" id="npOF"></p></div>
     </div>
     <p class="note" id="coFuente"></p>
   </section>
@@ -2106,7 +2106,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Turquía en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="trWs"></div><p class="note">El fondo de acciones turcas que cotiza en Nueva York y Turkcell, la principal telefónica. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Turquía</h2><span class="note" id="npTN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Turquía. En español se publica poco: algunos días puede haber pocas o ninguna.</p><ul class="nwm" id="npT"></ul><p class="note" id="npTF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Turquía</h2><span class="note" id="npTN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Turquía. En español se publica poco: algunos días puede haber pocas o ninguna.</p><div class="nwm nwfo" id="npT"></div><p class="note" id="npTF"></p></div>
     </div>
     <p class="note" id="trFuente"></p>
   </section>
@@ -2141,7 +2141,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas peruanas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="peAccSt"></div><div class="heat" id="peAccH"></div><div class="stats det" id="peAccDet" hidden></div><p class="note">Credicorp (BCP), Southern Copper, Buenaventura e Intercorp. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Perú</h2><span class="note" id="npPN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Perú, de medios peruanos (Gestión, El Comercio, La República, Andina, RPP) y de otros. Tocá uno para leerlo en el medio.</p><ul class="nwm" id="npP"></ul><p class="note" id="npPF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Perú</h2><span class="note" id="npPN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Perú, de medios peruanos (Gestión, El Comercio, La República, Andina, RPP) y de otros. Tocá uno para leerlo en el medio.</p><div class="nwm nwfo" id="npP"></div><p class="note" id="npPF"></p></div>
     </div>
     <p class="note" id="peFuente"></p>
   </section>
@@ -2183,7 +2183,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Polonia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="plWs"></div><p class="note">El fondo de acciones polacas que cotiza en Nueva York (bancos, energía, comercio y videojuegos, entre otros). Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Polonia</h2><span class="note" id="npLN"></span></div><p class="sub">Titulares de economía sobre Polonia: en español, de las últimas 48 horas. Como en español se publica poco, se suman medios en inglés de la última semana (marcados EN).</p><ul class="nwm" id="npL"></ul><p class="note" id="npLF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Polonia</h2><span class="note" id="npLN"></span></div><p class="sub">Titulares de economía sobre Polonia: en español, de las últimas 48 horas. Como en español se publica poco, se suman medios en inglés de la última semana (marcados EN).</p><div class="nwm nwfo" id="npL"></div><p class="note" id="npLF"></p></div>
     </div>
     <p class="note" id="plFuente"></p>
   </section>
@@ -2220,7 +2220,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas indias en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="inAccSt"></div><div class="heat" id="inAccH"></div><div class="stats det" id="inAccDet" hidden></div><div class="stats" id="inWs"></div><p class="note">Infosys y Wipro (software), HDFC e ICICI (bancos), Dr. Reddy's (remedios) y MakeMyTrip (viajes), más el fondo iShares MSCI India. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: India</h2><span class="note" id="npIN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre India. En español se publica poco, así que se suman medios indios en inglés (The Economic Times, Mint, Business Standard, The Hindu BusinessLine), marcados EN.</p><ul class="nwm" id="npI"></ul><p class="note" id="npIF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: India</h2><span class="note" id="npIN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre India. En español se publica poco, así que se suman medios indios en inglés (The Economic Times, Mint, Business Standard, The Hindu BusinessLine), marcados EN.</p><div class="nwm nwfo" id="npI"></div><p class="note" id="npIF"></p></div>
     </div>
     <p class="note" id="inFuente"></p>
   </section>
@@ -2257,7 +2257,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Arabia Saudita en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="saWs"></div><p class="note">El fondo iShares MSCI Saudi Arabia (KSA), que reúne a las principales empresas saudíes (bancos, Aramco, petroquímicas y telefónicas), y el petróleo. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Arabia Saudita</h2><span class="note" id="npAN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Arabia Saudita y la OPEP. En español se publica poco, así que se suman medios en inglés (Saudi Gazette, Argaam, Al Jazeera), marcados EN.</p><ul class="nwm" id="npA"></ul><p class="note" id="npAF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Arabia Saudita</h2><span class="note" id="npAN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Arabia Saudita y la OPEP. En español se publica poco, así que se suman medios en inglés (Saudi Gazette, Argaam, Al Jazeera), marcados EN.</p><div class="nwm nwfo" id="npA"></div><p class="note" id="npAF"></p></div>
     </div>
     <p class="note" id="saFuente"></p>
   </section>
@@ -2294,7 +2294,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas suizas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="szAccSt"></div><div class="heat" id="szAccH"></div><div class="stats det" id="szAccDet" hidden></div><div class="stats" id="szWs"></div><p class="note">Novartis, Roche, Nestlé, UBS, ABB, Alcon, Logitech y Garmin, más el fondo iShares MSCI Switzerland. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Suiza</h2><span class="note" id="npZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suiza. En español se publica poco, así que se suman medios en inglés (The Local, Le News y finews.ch), marcados EN.</p><ul class="nwm" id="npZ"></ul><p class="note" id="npZF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Suiza</h2><span class="note" id="npZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suiza. En español se publica poco, así que se suman medios en inglés (The Local, Le News y finews.ch), marcados EN.</p><div class="nwm nwfo" id="npZ"></div><p class="note" id="npZF"></p></div>
     </div>
     <p class="note" id="szFuente"></p>
   </section>
@@ -2331,7 +2331,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas australianas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="auAccSt"></div><div class="heat" id="auAccH"></div><div class="stats det" id="auAccDet" hidden></div><div class="stats" id="auWs"></div><p class="note">BHP y Rio Tinto (minería), Woodside (gas), James Hardie (materiales) y Atlassian (software, nacida en Sídney), más el fondo iShares MSCI Australia. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Australia</h2><span class="note" id="npWN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Australia. En español se publica poco, así que se suman medios australianos en inglés (ABC, The Guardian Australia y The Conversation), marcados EN.</p><ul class="nwm" id="npW"></ul><p class="note" id="npWF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Australia</h2><span class="note" id="npWN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Australia. En español se publica poco, así que se suman medios australianos en inglés (ABC, The Guardian Australia y The Conversation), marcados EN.</p><div class="nwm nwfo" id="npW"></div><p class="note" id="npWF"></p></div>
     </div>
     <p class="note" id="auFuente"></p>
   </section>
@@ -2368,7 +2368,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas coreanas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="krAccSt"></div><div class="heat" id="krAccH"></div><div class="stats det" id="krAccDet" hidden></div><div class="stats" id="krWs"></div><p class="note">Bancos (KB, Shinhan, Woori), acero (POSCO), electricidad (KEPCO), telefonía (SK Telecom) y pantallas (LG Display), más el fondo iShares MSCI South Korea, donde Samsung pesa mucho. Samsung y Hyundai no cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Corea del Sur</h2><span class="note" id="npQN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Corea del Sur. En español se publica poco, así que se suman medios coreanos en inglés (The Korea Herald y The Korea Times), marcados EN.</p><ul class="nwm" id="npQ"></ul><p class="note" id="npQF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Corea del Sur</h2><span class="note" id="npQN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Corea del Sur. En español se publica poco, así que se suman medios coreanos en inglés (The Korea Herald y The Korea Times), marcados EN.</p><div class="nwm nwfo" id="npQ"></div><p class="note" id="npQF"></p></div>
     </div>
     <p class="note" id="krFuente"></p>
   </section>
@@ -2405,7 +2405,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Empresas sudafricanas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="zaAccSt"></div><div class="heat" id="zaAccH"></div><div class="stats det" id="zaAccDet" hidden></div><div class="stats" id="zaWs"></div><p class="note">Mineras de oro y platino (Gold Fields, AngloGold Ashanti, Sibanye-Stillwater, Harmony, DRDGold) y Sasol (combustibles y química), más el fondo iShares MSCI South Africa. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Sudáfrica</h2><span class="note" id="npSN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Sudáfrica. En español se publica poco, así que se suman medios sudafricanos en inglés (Moneyweb, Daily Maverick e IOL), marcados EN.</p><ul class="nwm" id="npS"></ul><p class="note" id="npSF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Sudáfrica</h2><span class="note" id="npSN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Sudáfrica. En español se publica poco, así que se suman medios sudafricanos en inglés (Moneyweb, Daily Maverick e IOL), marcados EN.</p><div class="nwm nwfo" id="npS"></div><p class="note" id="npSF"></p></div>
     </div>
     <p class="note" id="zaFuente"></p>
   </section>
@@ -2442,7 +2442,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Nueva Zelanda en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="nzWs"></div><p class="note">El fondo iShares MSCI New Zealand (ENZL), que reúne a las principales empresas neozelandesas. Las grandes de allá no cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Nueva Zelanda</h2><span class="note" id="npNN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Nueva Zelanda. En español casi no hay, así que se suman medios neozelandeses en inglés (RNZ y NZ Herald), marcados EN.</p><ul class="nwm" id="npN"></ul><p class="note" id="npNF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Nueva Zelanda</h2><span class="note" id="npNN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Nueva Zelanda. En español casi no hay, así que se suman medios neozelandeses en inglés (RNZ y NZ Herald), marcados EN.</p><div class="nwm nwfo" id="npN"></div><p class="note" id="npNF"></p></div>
     </div>
     <p class="note" id="nzFuente"></p>
   </section>
@@ -2479,7 +2479,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Indonesia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="ioWs"></div><p class="note">El fondo iShares MSCI Indonesia (EIDO), con mucho peso de los grandes bancos indonesios, y Telkom Indonesia, la telefónica estatal. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Indonesia</h2><span class="note" id="npYN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Indonesia. En español casi no hay, así que se suman medios indonesios en inglés (sobre todo Antara, la agencia de noticias de Indonesia), marcados EN.</p><ul class="nwm" id="npY"></ul><p class="note" id="npYF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Indonesia</h2><span class="note" id="npYN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Indonesia. En español casi no hay, así que se suman medios indonesios en inglés (sobre todo Antara, la agencia de noticias de Indonesia), marcados EN.</p><div class="nwm nwfo" id="npY"></div><p class="note" id="npYF"></p></div>
     </div>
     <p class="note" id="ioFuente"></p>
   </section>
@@ -2516,7 +2516,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Noruega en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="noWs"></div><p class="note">El fondo de acciones noruegas y Equinor, la petrolera estatal, que cotiza en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Noruega</h2><span class="note" id="npGN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Noruega. En español casi no hay, así que se suman medios en inglés (News in English y The Local Noruega), marcados EN.</p><ul class="nwm" id="npG"></ul><p class="note" id="npGF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Noruega</h2><span class="note" id="npGN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Noruega. En español casi no hay, así que se suman medios en inglés (News in English y The Local Noruega), marcados EN.</p><div class="nwm nwfo" id="npG"></div><p class="note" id="npGF"></p></div>
     </div>
     <p class="note" id="noFuente"></p>
   </section>
@@ -2553,7 +2553,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Suecia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="seWs"></div><p class="note">El fondo de acciones suecas, Ericsson (telecomunicaciones) y Spotify (nacida en Estocolmo), que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Suecia</h2><span class="note" id="npVN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suecia. En español casi no hay, así que se suman medios en inglés (Radio Sweden y The Local Suecia), marcados EN.</p><ul class="nwm" id="npV"></ul><p class="note" id="npVF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Suecia</h2><span class="note" id="npVN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Suecia. En español casi no hay, así que se suman medios en inglés (Radio Sweden y The Local Suecia), marcados EN.</p><div class="nwm nwfo" id="npV"></div><p class="note" id="npVF"></p></div>
     </div>
     <p class="note" id="seFuente"></p>
   </section>
@@ -2590,7 +2590,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Tailandia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="thWs"></div><p class="note">El fondo de acciones tailandesas que cotiza en Nueva York (energía, bancos, comercio y turismo). Las grandes tailandesas no cotizan en Wall Street. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Tailandia</h2><span class="note" id="npHN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Tailandia. En español casi no hay, así que se suman medios en inglés (Bangkok Post y Khaosod English), marcados EN.</p><ul class="nwm" id="npH"></ul><p class="note" id="npHF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Tailandia</h2><span class="note" id="npHN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Tailandia. En español casi no hay, así que se suman medios en inglés (Bangkok Post y Khaosod English), marcados EN.</p><div class="nwm nwfo" id="npH"></div><p class="note" id="npHF"></p></div>
     </div>
     <p class="note" id="thFuente"></p>
   </section>
@@ -2627,7 +2627,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Malasia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="myWs"></div><p class="note">El fondo de acciones malasias que cotiza en Nueva York (bancos, energía y servicios). Las grandes malasias no cotizan en Wall Street. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Malasia</h2><span class="note" id="npFN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Malasia. En español casi no hay, así que se suman medios en inglés (Free Malaysia Today y Malay Mail), marcados EN.</p><ul class="nwm" id="npF"></ul><p class="note" id="npFF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Malasia</h2><span class="note" id="npFN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Malasia. En español casi no hay, así que se suman medios en inglés (Free Malaysia Today y Malay Mail), marcados EN.</p><div class="nwm nwfo" id="npF"></div><p class="note" id="npFF"></p></div>
     </div>
     <p class="note" id="myFuente"></p>
   </section>
@@ -2664,7 +2664,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Filipinas en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="phWs"></div><p class="note">El fondo de acciones filipinas y PLDT, la principal telefónica, que cotiza en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Filipinas</h2><span class="note" id="npDN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Filipinas. En español casi no hay, así que se suman medios en inglés (Inquirer, BusinessWorld y Philstar), marcados EN.</p><ul class="nwm" id="npD"></ul><p class="note" id="npDF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Filipinas</h2><span class="note" id="npDN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Filipinas. En español casi no hay, así que se suman medios en inglés (Inquirer, BusinessWorld y Philstar), marcados EN.</p><div class="nwm nwfo" id="npD"></div><p class="note" id="npDF"></p></div>
     </div>
     <p class="note" id="phFuente"></p>
   </section>
@@ -2700,7 +2700,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Reikiavik</h2><span class="note" id="isIdxN"></span></div><div class="chart" id="chIsIdx"></div><p class="note" id="isIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Islandia</h2><span class="note" id="npISN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Islandia. En español casi no hay, así que se suman medios en inglés (Iceland Review e Iceland Monitor), marcados EN.</p><ul class="nwm" id="npIS"></ul><p class="note" id="npISF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Islandia</h2><span class="note" id="npISN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Islandia. En español casi no hay, así que se suman medios en inglés (Iceland Review e Iceland Monitor), marcados EN.</p><div class="nwm nwfo" id="npIS"></div><p class="note" id="npISF"></p></div>
     </div>
     <p class="note" id="isFuente"></p>
   </section>
@@ -2736,7 +2736,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Budapest</h2><span class="note" id="huIdxN"></span></div><div class="chart" id="chHuIdx"></div><p class="note" id="huIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Hungría</h2><span class="note" id="npHUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Hungría. En español casi no hay, así que se suman medios en inglés (Hungary Today y Budapest Business Journal), marcados EN.</p><ul class="nwm" id="npHU"></ul><p class="note" id="npHUF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Hungría</h2><span class="note" id="npHUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Hungría. En español casi no hay, así que se suman medios en inglés (Hungary Today y Budapest Business Journal), marcados EN.</p><div class="nwm nwfo" id="npHU"></div><p class="note" id="npHUF"></p></div>
     </div>
     <p class="note" id="huFuente"></p>
   </section>
@@ -2773,7 +2773,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Hong Kong en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="hkWs"></div><p class="note">El fondo de acciones de Hong Kong que cotiza en Nueva York (bancos, inmobiliarias, seguros y servicios). Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Hong Kong</h2><span class="note" id="npHKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Hong Kong. En español casi no hay, así que se suman medios en inglés (Hong Kong Free Press y The Standard), marcados EN.</p><ul class="nwm" id="npHK"></ul><p class="note" id="npHKF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Hong Kong</h2><span class="note" id="npHKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Hong Kong. En español casi no hay, así que se suman medios en inglés (Hong Kong Free Press y The Standard), marcados EN.</p><div class="nwm nwfo" id="npHK"></div><p class="note" id="npHKF"></p></div>
     </div>
     <p class="note" id="hkFuente"></p>
   </section>
@@ -2809,7 +2809,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Praga</h2><span class="note" id="czIdxN"></span></div><div class="chart" id="chCzIdx"></div><p class="note" id="czIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Chequia</h2><span class="note" id="npCZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Chequia. En español casi no hay, así que se suman medios en inglés (Radio Prague International y Expats.cz), marcados EN.</p><ul class="nwm" id="npCZ"></ul><p class="note" id="npCZF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Chequia</h2><span class="note" id="npCZN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Chequia. En español casi no hay, así que se suman medios en inglés (Radio Prague International y Expats.cz), marcados EN.</p><div class="nwm nwfo" id="npCZ"></div><p class="note" id="npCZF"></p></div>
     </div>
     <p class="note" id="czFuente"></p>
   </section>
@@ -2846,7 +2846,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Dinamarca en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="dkWs"></div><p class="note">El fondo de acciones danesas y Novo Nordisk, que cotiza en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Dinamarca</h2><span class="note" id="npDKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Dinamarca. En español casi no hay, así que se suman medios en inglés (The Local Dinamarca y The Copenhagen Post), marcados EN.</p><ul class="nwm" id="npDK"></ul><p class="note" id="npDKF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Dinamarca</h2><span class="note" id="npDKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Dinamarca. En español casi no hay, así que se suman medios en inglés (The Local Dinamarca y The Copenhagen Post), marcados EN.</p><div class="nwm nwfo" id="npDK"></div><p class="note" id="npDKF"></p></div>
     </div>
     <p class="note" id="dkFuente"></p>
   </section>
@@ -2882,7 +2882,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Bucarest</h2><span class="note" id="roIdxN"></span></div><div class="chart" id="chRoIdx"></div><p class="note" id="roIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Rumania</h2><span class="note" id="npRON"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Rumania. En español casi no hay, así que se suman medios en inglés (Romania Insider y Business Review), marcados EN.</p><ul class="nwm" id="npRO"></ul><p class="note" id="npROF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Rumania</h2><span class="note" id="npRON"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Rumania. En español casi no hay, así que se suman medios en inglés (Romania Insider y Business Review), marcados EN.</p><div class="nwm nwfo" id="npRO"></div><p class="note" id="npROF"></p></div>
     </div>
     <p class="note" id="roFuente"></p>
   </section>
@@ -2919,7 +2919,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Israel en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="ilWs"></div><p class="note">El fondo de acciones israelíes y dos empresas israelíes que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Israel</h2><span class="note" id="npILN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Israel. En español casi no hay, así que se suman medios en inglés (Globes y The Times of Israel), marcados EN.</p><ul class="nwm" id="npIL"></ul><p class="note" id="npILF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Israel</h2><span class="note" id="npILN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Israel. En español casi no hay, así que se suman medios en inglés (Globes y The Times of Israel), marcados EN.</p><div class="nwm nwfo" id="npIL"></div><p class="note" id="npILF"></p></div>
     </div>
     <p class="note" id="ilFuente"></p>
   </section>
@@ -2955,7 +2955,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Belgrado</h2><span class="note" id="rsIdxN"></span></div><div class="chart" id="chRsIdx"></div><p class="note" id="rsIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Serbia</h2><span class="note" id="npRSN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Serbia. En español casi no hay, así que se suman medios en inglés (Serbian Monitor y N1), marcados EN.</p><ul class="nwm" id="npRS"></ul><p class="note" id="npRSF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Serbia</h2><span class="note" id="npRSN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Serbia. En español casi no hay, así que se suman medios en inglés (Serbian Monitor y N1), marcados EN.</p><div class="nwm nwfo" id="npRS"></div><p class="note" id="npRSF"></p></div>
     </div>
     <p class="note" id="rsFuente"></p>
   </section>
@@ -2992,7 +2992,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>China en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="cnWs"></div><p class="note">El fondo de las grandes empresas chinas y tres empresas chinas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: China</h2><span class="note" id="npCNN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre China. En español casi no hay, así que se suman medios en inglés (South China Morning Post y CGTN), marcados EN.</p><ul class="nwm" id="npCN"></ul><p class="note" id="npCNF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: China</h2><span class="note" id="npCNN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre China. En español casi no hay, así que se suman medios en inglés (South China Morning Post y CGTN), marcados EN.</p><div class="nwm nwfo" id="npCN"></div><p class="note" id="npCNF"></p></div>
     </div>
     <p class="note" id="cnFuente"></p>
   </section>
@@ -3028,7 +3028,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Moscú</h2><span class="note" id="ruIdxN"></span></div><div class="chart" id="chRuIdx"></div><p class="note" id="ruIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Rusia</h2><span class="note" id="npRUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Rusia. En español casi no hay, así que se suman medios en inglés (The Moscow Times), marcados EN.</p><ul class="nwm" id="npRU"></ul><p class="note" id="npRUF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Rusia</h2><span class="note" id="npRUN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Rusia. En español casi no hay, así que se suman medios en inglés (The Moscow Times), marcados EN.</p><div class="nwm nwfo" id="npRU"></div><p class="note" id="npRUF"></p></div>
     </div>
     <p class="note" id="ruFuente"></p>
   </section>
@@ -3065,7 +3065,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>España en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="esWs"></div><p class="note">El fondo de acciones españolas y tres empresas españolas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: España</h2><span class="note" id="npESN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre España, de medios españoles y de otros países en español.</p><ul class="nwm" id="npES"></ul><p class="note" id="npESF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: España</h2><span class="note" id="npESN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre España, de medios españoles y de otros países en español.</p><div class="nwm nwfo" id="npES"></div><p class="note" id="npESF"></p></div>
     </div>
     <p class="note" id="esFuente"></p>
   </section>
@@ -3102,7 +3102,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Alemania en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="deWs"></div><p class="note">El fondo de acciones alemanas y dos empresas alemanas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Alemania</h2><span class="note" id="npDEN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Alemania, de medios en español y, si hay pocos, en inglés.</p><ul class="nwm" id="npDE"></ul><p class="note" id="npDEF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Alemania</h2><span class="note" id="npDEN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Alemania, de medios en español y, si hay pocos, en inglés.</p><div class="nwm nwfo" id="npDE"></div><p class="note" id="npDEF"></p></div>
     </div>
     <p class="note" id="deFuente"></p>
   </section>
@@ -3139,7 +3139,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Francia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="frWs"></div><p class="note">El fondo de acciones francesas y dos empresas francesas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Francia</h2><span class="note" id="npFRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Francia, de medios en español y, si hay pocos, en inglés.</p><ul class="nwm" id="npFR"></ul><p class="note" id="npFRF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Francia</h2><span class="note" id="npFRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Francia, de medios en español y, si hay pocos, en inglés.</p><div class="nwm nwfo" id="npFR"></div><p class="note" id="npFRF"></p></div>
     </div>
     <p class="note" id="frFuente"></p>
   </section>
@@ -3176,7 +3176,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Italia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="itWs"></div><p class="note">El fondo de acciones italianas y dos empresas italianas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Italia</h2><span class="note" id="npITN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Italia, de medios en español y, si hay pocos, en inglés.</p><ul class="nwm" id="npIT"></ul><p class="note" id="npITF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Italia</h2><span class="note" id="npITN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Italia, de medios en español y, si hay pocos, en inglés.</p><div class="nwm nwfo" id="npIT"></div><p class="note" id="npITF"></p></div>
     </div>
     <p class="note" id="itFuente"></p>
   </section>
@@ -3213,7 +3213,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Países Bajos en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="nlWs"></div><p class="note">El fondo de acciones neerlandesas y tres empresas neerlandesas que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Países Bajos</h2><span class="note" id="npNLN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Países Bajos, de medios en español y, si hay pocos, en inglés.</p><ul class="nwm" id="npNL"></ul><p class="note" id="npNLF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Países Bajos</h2><span class="note" id="npNLN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Países Bajos, de medios en español y, si hay pocos, en inglés.</p><div class="nwm nwfo" id="npNL"></div><p class="note" id="npNLF"></p></div>
     </div>
     <p class="note" id="nlFuente"></p>
   </section>
@@ -3250,7 +3250,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Grecia en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="grWs"></div><p class="note">El fondo de acciones griegas que cotiza en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Grecia</h2><span class="note" id="npGRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Grecia, de medios en español y, si hay pocos, en inglés.</p><ul class="nwm" id="npGR"></ul><p class="note" id="npGRF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Grecia</h2><span class="note" id="npGRN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Grecia, de medios en español y, si hay pocos, en inglés.</p><div class="nwm nwfo" id="npGR"></div><p class="note" id="npGRF"></p></div>
     </div>
     <p class="note" id="grFuente"></p>
   </section>
@@ -3286,7 +3286,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Skopie</h2><span class="note" id="mkIdxN"></span></div><div class="chart" id="chMkIdx"></div><p class="note" id="mkIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Macedonia del Norte</h2><span class="note" id="npMKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Macedonia del Norte. En español casi no hay, así que se suman medios en inglés , marcados EN.</p><ul class="nwm" id="npMK"></ul><p class="note" id="npMKF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Macedonia del Norte</h2><span class="note" id="npMKN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Macedonia del Norte. En español casi no hay, así que se suman medios en inglés , marcados EN.</p><div class="nwm nwfo" id="npMK"></div><p class="note" id="npMKF"></p></div>
     </div>
     <p class="note" id="mkFuente"></p>
   </section>
@@ -3323,7 +3323,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>Singapur en Wall Street</h2><span class="note">En dólares</span></div><div class="stats" id="sgWs"></div><p class="note">El fondo de acciones de Singapur y dos empresas de allá que cotizan en Nueva York. Con demora (TradingView).</p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Singapur</h2><span class="note" id="npSGN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Singapur. En español casi no hay, así que se suman medios en inglés (CNA, The Straits Times y The Business Times), marcados EN.</p><ul class="nwm" id="npSG"></ul><p class="note" id="npSGF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Singapur</h2><span class="note" id="npSGN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Singapur. En español casi no hay, así que se suman medios en inglés (CNA, The Straits Times y The Business Times), marcados EN.</p><div class="nwm nwfo" id="npSG"></div><p class="note" id="npSGF"></p></div>
     </div>
     <p class="note" id="sgFuente"></p>
   </section>
@@ -3359,7 +3359,7 @@ body.mporta .hbus{display:none}
       <div class="card"><div class="head"><h2>La bolsa de Rabat</h2><span class="note" id="maIdxN"></span></div><div class="chart" id="chMaIdx"></div><p class="note" id="maIdxT"></p></div>
     </div>
     <div class="gsub" data-sub="noticias">
-      <div class="card"><div class="head"><h2>Noticias de economía: Marruecos</h2><span class="note" id="npMAN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Marruecos. En español casi no hay, así que se suman medios en inglés (Morocco World News y Hespress), marcados EN.</p><ul class="nwm" id="npMA"></ul><p class="note" id="npMAF"></p></div>
+      <div class="card"><div class="head"><h2>Noticias de economía: Marruecos</h2><span class="note" id="npMAN"></span></div><p class="sub">Los titulares de las últimas 48 horas sobre Marruecos. En español casi no hay, así que se suman medios en inglés (Morocco World News y Hespress), marcados EN.</p><div class="nwm nwfo" id="npMA"></div><p class="note" id="npMAF"></p></div>
     </div>
     <p class="note" id="maFuente"></p>
   </section>
@@ -3976,6 +3976,17 @@ body.mporta .hbus{display:none}
   const nwTam = (i, n, foto) => { if(!foto) return n === 0 ? ' big' : ''; if(n === 0) return ' big';
     let h = 0; for(const ch of i.u) h = (h * 31 + ch.charCodeAt(0)) >>> 0; h %= 100;
     return n >= 3 && h < 13 ? ' big' : h < 30 ? ' wide' : ''; };
+  // grilla de tarjetas con foto agrupadas por día; la usan Noticias de Argentina, Mundo y cada país (pedido del dueño 11/11/2026)
+  const nwInic = m => esc(String(m).split(/\s+/).map(w=>w[0]).join('').slice(0,2));
+  function nwGrid(its, nuevaSi){
+    const hoy = fechaAR(Date.now()), ayer = fechaAR(Date.now()-864e5);
+    let html = '', dia = '', n = 0;
+    its.forEach(i=>{ const d = fechaAR(Date.parse(i.h));
+      if(d!==dia){ if(dia) html += '</div>'; dia = d; n = 0; html += `<div class="nwday">${d===hoy?'Hoy':d===ayer?'Ayer':fd(d)}</div><div class="nwg">`; }
+      const nueva = nuevaSi && nuevaSi(i), foto = i.i ? `<img src="${esc(i.i)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('sin');this.remove()">` : '';
+      html += `<a class="nwc${nwTam(i, n++, foto)}" href="${esc(i.u)}" target="_blank" rel="noopener" data-f="${esc(i.f)}"><div class="ph${foto?'':' sin'}" data-m="${nwInic(i.f)}">${foto}</div><div class="tx"><span class="m">${i.l==='en'?'<span class="en" title="En inglés">EN</span> ':''}${esc(i.f)} · ${horaAR(Date.parse(i.h))}${nueva?' <span class="nv">NUEVA</span>':''}</span><b>${esc(i.t)}</b></div></a>`; });
+    return its.length ? html+'</div>' : '';
+  }
   const NWT = [['','Todas'],['dolar','Dólar'],['bcra','BCRA y tasas'],['inflacion','Inflación'],['mercados','Mercados'],['fiscal','Fiscal'],['actividad','Actividad'],['politica','Política']];
   try{ nwVisto = localStorage.getItem('macro-nw-visto'); }catch(e){}
   async function cargarNoticias(){
@@ -4003,13 +4014,8 @@ body.mporta .hbus{display:none}
     $('nwStamp').textContent = `Actualizado ${min<60 ? `hace ${Math.max(1,min)} min` : `a las ${horaAR(Date.parse(nw.actualizado))}`} · ${nw.items.length} titulares`;
     $('nwNuevas').textContent = nuevas ? `${nuevas} nueva${nuevas>1?'s':''} desde tu última visita` : '';
     // tarjetas con foto, como la portada de noticias de Edge (pedido del dueño 02/11/2026); la primera de cada día, grande
-    let html = '', dia = '', n = 0;
-    const inic = m => esc(m.split(/\s+/).map(w=>w[0]).join('').slice(0,2));
-    its.forEach(i=>{ const d = i.h.slice(0,10);
-      if(d!==dia){ if(dia) html += '</div>'; dia = d; n = 0; html += `<div class="nwday">${d===hoy?'Hoy':d===ayer?'Ayer':fd(d)}</div><div class="nwg">`; }
-      const nueva = nwVisto && i.h>nwVisto, foto = i.i ? `<img src="${esc(i.i)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('sin');this.remove()">` : '';
-      html += `<a class="nwc${nwTam(i, n++, foto)}" href="${esc(i.u)}" target="_blank" rel="noopener" data-f="${esc(i.f)}"><div class="ph${foto?'':' sin'}" data-m="${inic(i.f)}">${foto}</div><div class="tx"><span class="m">${esc(i.f)} · ${i.h.slice(11,16)}${nueva?' <span class="nv">NUEVA</span>':''}</span><b>${esc(i.t)}</b></div></a>`; })
-    $('nwList').innerHTML = its.length ? html+'</div>' : '<div class="empty">No hay titulares con ese filtro.</div>';
+    const html = nwGrid(its, i=>nwVisto && i.h>nwVisto);
+    $('nwList').innerHTML = html || '<div class="empty">No hay titulares con ese filtro.</div>';
     // la próxima visita marca como nuevas las que salgan después de ahora
     try{ localStorage.setItem('macro-nw-visto', nw.items.length ? nw.items[0].h : ''); }catch(e){}
   }
@@ -6678,8 +6684,8 @@ body.mporta .hbus{display:none}
     $('gNwSel').innerHTML = [['','Todas'], ...Object.entries(TM).filter(([k])=>N.some(x=>x.k.includes(k)))].map(([k,n])=>`<button type="button" data-k="${k}" aria-pressed="${k===gNwSel}">${n}</button>`).join('');
     $('gNwSel').querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{ gNwSel = b.dataset.k; gMundoExtra(); }));
     const ls = N.filter(x=>!gNwSel || x.k.includes(gNwSel)).slice(0,25);
-    $('gNw').innerHTML = ls.map(x=>`<li><a href="${esc(x.u)}" target="_blank" rel="noopener" data-medio="${esc(x.f)}">${esc(x.t)}</a><small>${esc(x.f)} · ${new Date(x.h).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})} h</small></li>`).join('') || '<li>Sin titulares todavía.</li>';
-    $('gNw').querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>gc('noticia-mundo-'+a.dataset.medio, true)));
+    $('gNw').innerHTML = nwGrid(ls) || '<div class="empty">Sin titulares todavía.</div>';
+    $('gNw').querySelectorAll('a[data-f]').forEach(a=>a.addEventListener('click', ()=>gc('noticia-mundo-'+a.dataset.f, true)));
     $('gNwN').textContent = N.length ? `${N.length} titulares · ${[...new Set(N.map(x=>x.f))].join(', ')}` : '';
   }
   function gExtras(){
@@ -9353,12 +9359,12 @@ body.mporta .hbus{display:none}
     npLoading = false; if(k && SUBS[k][2]==='noticias') renderNP(k);
   }
   function renderNP(k){
-    if(!npData || Date.now()-npAt > 15*60e3){ if(!npData) $('np'+k).innerHTML = '<li>Cargando titulares…</li>'; loadNP(k); if(!npData) return; }
+    if(!npData || Date.now()-npAt > 15*60e3){ if(!npData) $('np'+k).innerHTML = '<div class="empty">Cargando titulares…</div>'; loadNP(k); if(!npData) return; }
     const corte = new Date(Date.now()-48*36e5).toISOString(), corteEn = new Date(Date.now()-7*864e5).toISOString(), N = (npData[NP_PAIS[k]] || []).filter(x=>new Date(x.h).toISOString() >= (x.l==='en' ? corteEn : corte));
-    $('np'+k).innerHTML = N.slice(0,30).map(x=>`<li><a href="${esc(x.u)}" target="_blank" rel="noopener" data-medio="${esc(x.f)}">${x.l==='en'?'<span class="en" title="En inglés">EN</span> ':''}${esc(x.t)}</a><small>${esc(x.f)} · ${new Date(x.h).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false})} h</small></li>`).join('') || '<li>No hay titulares de las últimas 48 horas.</li>';
-    $('np'+k).querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>gc('noticia-'+NP_PAIS[k]+'-'+a.dataset.medio, true)));
+    $('np'+k).innerHTML = nwGrid(N.slice(0,30)) || '<div class="empty">No hay titulares de las últimas 48 horas.</div>';
+    $('np'+k).querySelectorAll('a[data-f]').forEach(a=>a.addEventListener('click', ()=>gc('noticia-'+NP_PAIS[k]+'-'+a.dataset.f, true)));
     $('np'+k+'N').textContent = N.length ? `${N.length} titulares` : '';
-    $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Solo el título y el link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés de la última semana, marcados EN.' : ''}` : '';
+    $('np'+k+'F').textContent = N.length ? `Medios: ${[...new Set(N.map(x=>x.f))].join(', ')}. Título, foto y link: la nota se lee en cada medio.${N.some(x=>x.l==='en') ? ' Cuando hay pocos titulares en español se suman medios en inglés de la última semana, marcados EN.' : ''}` : '';
   }
   // ---- apartados dentro de Mundo y Estados Unidos ----
   const SUBS = {M:['gSubM','gMundo','mercados'], U:['gSubU','gUsa','economia'], B:['gSubB','vB','economia'], E:['gSubE','vE','economia'], X:['gSubX','vX','economia'], C:['gSubC','vCl','economia'], J:['gSubJ','vJp','economia'], R:['gSubR','vUk','economia'], K:['gSubK','vCa','economia'], O:['gSubO','vCo','economia'], T:['gSubT','vTr','economia'], P:['gSubP','vPe','economia'], L:['gSubL','vPl','economia'], I:['gSubI','vIn','economia'], A:['gSubA','vSa','economia'], Z:['gSubZ','vSz','economia'], W:['gSubW','vAu','economia'], Q:['gSubQ','vKr','economia'], S:['gSubS','vZa','economia'], N:['gSubN','vNz','economia'], Y:['gSubY','vId','economia'], G:['gSubG','vNo','economia'], V:['gSubV','vSe','economia'], H:['gSubH','vTh','economia'], F:['gSubF','vMy','economia'], D:['gSubD','vPh','economia'], IS:['gSubIS','vIs','economia'], HU:['gSubHU','vHu','economia'], HK:['gSubHK','vHk','economia'], CZ:['gSubCZ','vCz','economia'], DK:['gSubDK','vDk','economia'], RO:['gSubRO','vRo','economia'], IL:['gSubIL','vIl','economia'], RS:['gSubRS','vRs','economia'], CN:['gSubCN','vCn','economia'], RU:['gSubRU','vRu','economia'], ES:['gSubES','vEs','economia'], DE:['gSubDE','vDe','economia'], FR:['gSubFR','vFr','economia'], IT:['gSubIT','vIt','economia'], NL:['gSubNL','vNl','economia'], GR:['gSubGR','vGr','economia'], MK:['gSubMK','vMk','economia'], SG:['gSubSG','vSg','economia'], MA:['gSubMA','vMa','economia']};
