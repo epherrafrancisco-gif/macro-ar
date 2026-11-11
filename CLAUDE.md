@@ -656,7 +656,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Datos: `https://datos.pulsomacro.com.ar/barcos.json` (Worker, cada 60 s), `/geovivo.json` (cada 5 min), `/global.json` (10 min),
   `/geopolitica.json`. GoatCounter solo si no está dentro de un iframe; evento `geo-monitor` al abrirlo desde Geopolítica.
 - Barcos (`ais()` en worker/vivo.js, secreto `AISSTREAM_KEY` del Worker, clave gratis de aisstream.io a nombre del dueño): cada
-  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (7 s) una región de `AIS_REG` (10, rotan: cada una cada ~10 min) por
+  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (20 s: AISStream tarda en arrancar; `diag.primero` = ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final) una región de `AIS_REG` (10, rotan: cada una cada ~10 min) por
   WebSocket. Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el registro
   (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los
   PositionReport se miran sin JSON.parse salvo los de petroleros conocidos (para gastar poca CPU). Posición válida 45 min (quietos,

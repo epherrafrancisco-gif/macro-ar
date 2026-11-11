@@ -154,7 +154,7 @@ async function surtidores(env){
 // viene en otro mensaje (ShipStaticData, cada ~6 min por barco): el registro de petroleros se va llenando solo en las primeras
 // horas. Para gastar poco, los reportes de posición se miran sin abrir el JSON y solo se abren los de petroleros conocidos.
 // Las antenas de AISStream están en la costa: en alta mar casi no hay datos. Publica barcos.json (cache 60 s) en R2.
-const AIS_SEG = 7000;
+const AIS_SEG = 20000;   // AISStream tarda varios segundos en empezar a mandar (11/11/2026: con 7 s llegaban 12 mensajes del Mar de China)
 const AIS_REG = [   // [nombre, cajas [[lat sur, lon oeste], [lat norte, lon este]]]
   ['Golfo Pérsico y Ormuz', [[[22, 47], [30.5, 60]]]],
   ['Mar Rojo, Bab el-Mandeb y Suez', [[[11, 32], [31.8, 46]]]],
@@ -174,7 +174,7 @@ async function ais(env, ahora){
   let E = {i: 0, reg: {}, pos: {}, rep: [], vis: {}};
   try{ const o = await env.DATOS.get('barcos/estado.json'); if(o) E = Object.assign(E, await o.json()); }catch(e){}
   const k = (E.i || 0) % AIS_REG.length; E.i = k + 1;
-  const diag = {region: AIS_REG[k][0], msgs: 0, pos: 0, estat: 0, err: null, ms: 0};
+  const diag = {region: AIS_REG[k][0], msgs: 0, pos: 0, estat: 0, err: null, ms: 0, primero: null, ultimos5s: 0};
   const t0 = Date.now(), nuevos = [];
   try{
     const r = await fetch('https://stream.aisstream.io/v0/stream', {headers: {Upgrade: 'websocket', 'user-agent': UA}});
@@ -191,6 +191,7 @@ async function ais(env, ahora){
       ws.addEventListener('message', ev => {
         try{
           diag.msgs++;
+          const dt = Date.now() - t0; if(diag.primero == null) diag.primero = dt; if(dt > AIS_SEG - 5000) diag.ultimos5s++;
           const s = typeof ev.data === 'string' ? ev.data : dec.decode(ev.data);
           const iM = s.indexOf('"MMSI":');
           if(iM < 0){ if(s.length < 400) diag.err = s.slice(0, 200); return; }
