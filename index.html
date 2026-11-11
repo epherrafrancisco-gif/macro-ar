@@ -10269,12 +10269,12 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     requestAnimationFrame(xpDraw);
   }
   // modo monitor: pantalla completa, solo cintas + monitor, pantalla siempre prendida
-  async function xpModo(on){
-    if(on){ scrollTo(0,0); document.body.classList.add('mon'); document.body.style.setProperty('--monTop', cintasAbajo()+'px');
+  async function xpModo(on, desdeAtras){
+    if(on){ scrollTo(0,0); document.body.classList.add('mon'); capaAbrir(()=>xpModo(false, true)); document.body.style.setProperty('--monTop', cintasAbajo()+'px');
       try{ await document.documentElement.requestFullscreen(); }catch(e){}
       try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){}
       setTimeout(()=>document.body.style.setProperty('--monTop', cintasAbajo()+'px'), 400); gc('monitor-pantalla-completa', true); }
-    else { document.body.classList.remove('mon'); try{ XP.wl?.release(); }catch(e){} XP.wl = null; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
+    else { if(!document.body.classList.contains('mon')) return; document.body.classList.remove('mon'); if(!desdeAtras) capaCerrada(); try{ XP.wl?.release(); }catch(e){} XP.wl = null; if(document.fullscreenElement) document.exitFullscreen().catch(()=>{}); }
   }
 
   // ---- Capas en vivo del Monitor (pedido del dueño 11/11/2026: "más pro, como Bloomberg", "sobrecargarlo" con barcos en ruta) ----
@@ -10333,12 +10333,19 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
   document.addEventListener('visibilitychange', async ()=>{ if(!document.hidden && tab==='global' && SUBS.M[2]==='explorar'){ xpStart(); if(document.body.classList.contains('mon') && !XP.wl){ try{ XP.wl = await navigator.wakeLock?.request('screen'); }catch(e){} } } });
   // Geopolítica › "Monitor en vivo" (pedido del dueño 11/11/2026): /monitor/ (vista de guerras en vivo) a pantalla completa encima de
   // todo. "Salir"/Esc dentro del iframe manda postMessage y se cierra. También se abre desde el botón del Monitor.
-  function geoMonitor(on){
+  // Pantallas encima de todo (Geopolítica en vivo y "Modo monitor"): abrirlas agrega una entrada al historial, así la flecha de
+  // "atrás" del navegador las CIERRA en vez de navegar por detrás de ellas (bug reportado por el dueño 11/11/2026).
+  const CAPA = {cerrar:null};
+  function capaAbrir(cerrar){ CAPA.cerrar = cerrar; try{ if(!history.state?.capa){ const id = navId(); history.pushState({...(history.state||{}), id, capa:1}, ''); NAV.cur = id; NAV.prof++; } }catch(e){} }
+  // al cerrar con el botón o Esc: saca la entrada que se agregó (el popstate que dispara no hace nada porque CAPA.cerrar ya es null)
+  function capaCerrada(){ CAPA.cerrar = null; try{ if(history.state?.capa) history.back(); }catch(e){} }
+  addEventListener('popstate', e=>{ if(e.state?.capa) return; NAV.volver = false; NAV.y = null; if(CAPA.cerrar){ const f = CAPA.cerrar; CAPA.cerrar = null; f(); } });
+  function geoMonitor(on, desdeAtras){
     let o = $('geoMonO');
     if(on){
       if(!o){ o = document.createElement('div'); o.id = 'geoMonO'; o.innerHTML = '<iframe title="Geopolítica en vivo" allow="fullscreen; screen-wake-lock" allowfullscreen src="/monitor/#geo"></iframe>'; document.body.appendChild(o); }
-      document.body.classList.add('geomon'); gc('geo-monitor', true); setTimeout(()=>{ try{ o.querySelector('iframe').focus(); }catch(e){} }, 400);
-    } else if(o){ o.remove(); document.body.classList.remove('geomon'); }
+      document.body.classList.add('geomon'); capaAbrir(()=>geoMonitor(false, true)); gc('geo-monitor', true); setTimeout(()=>{ try{ o.querySelector('iframe').focus(); }catch(e){} }, 400);
+    } else if(o){ o.remove(); document.body.classList.remove('geomon'); if(!desdeAtras) capaCerrada(); }
   }
   { const gb = $('geoMonB'); if(gb){ gb.hidden = !xpDesk(); gb.addEventListener('click', e=>{ e.stopPropagation(); geoMonitor(true); }); } }
   addEventListener('message', e=>{ if(e.origin===location.origin && e.data && e.data.pm==='monitor-cerrar') geoMonitor(false); });

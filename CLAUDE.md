@@ -652,6 +652,10 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Geopolítica: botón chico `#geoMonB` ("MONITOR EN VIVO", punto rojo; fondo rojizo con borde y ↗ para que se note que es un botón) en la tarjeta "Guerras y conflictos armados en curso" (pedido
   del dueño: "sutilmente"): `geoMonitor(true)` abre `#geoMonO` (iframe `/monitor/#geo` a pantalla completa); "Salir"/Esc dentro
   del iframe manda `postMessage({pm:'monitor-cerrar'})` y el padre lo cierra. Solo computadora.
+- Flecha "atrás" del navegador (bug reportado por el dueño 11/11/2026: no salía y después lo tiraba para atrás en el sitio): abrir
+  Geopolítica en vivo o "Modo monitor" agrega una entrada al historial (`capaAbrir`, estado `capa:1`); "atrás" las CIERRA (popstate
+  → `CAPA.cerrar`) y al cerrarlas con Salir/Esc se saca esa entrada (`capaCerrada` → `history.back()`). Cualquier pantalla nueva
+  encima de todo tiene que usar lo mismo.
 - NADA simulado (el dueño preguntó "¿es todo real?"): si un dato falta, el panel lo dice. Los reportes AIS que llegan cada minuto se
   muestran repartidos a lo largo del minuto siguiente, con su hora real (UTC). Un petrolero real va a ~25 km/h: en el globo casi no se
   mueve; lo "vivo" es que titila al llegar su reporte. Modo claro: variables de `html[data-tema="claro"]` y objeto `K` de monitor.js.
