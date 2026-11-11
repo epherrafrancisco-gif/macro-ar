@@ -656,14 +656,18 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - Datos: `https://datos.pulsomacro.com.ar/barcos.json` (Worker, cada 60 s), `/geovivo.json` (cada 5 min), `/global.json` (10 min),
   `/geopolitica.json`. GoatCounter solo si no está dentro de un iframe; evento `geo-monitor` al abrirlo desde Geopolítica.
 - Barcos (`ais()` en worker/vivo.js, secreto `AISSTREAM_KEY` del Worker, clave gratis de aisstream.io a nombre del dueño): cada
-  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (20 s: AISStream tarda en arrancar; `diag.primero` = ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final) una región de `AIS_REG` (10, rotan: cada una cada ~10 min) por
-  WebSocket. Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el registro
-  (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los
+  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (20 s) TODAS las cajas de `AIS_REG` juntas por WebSocket (`diag.primero` =
+  ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final). Medido el 11/11/2026 en 20 s por zona: Mar del Norte y Báltico 832
+  mensajes, Mediterráneo 89, Golfo de México 45, China 35, Atlántico sur 27, Malaca 15, Mar Negro 10 y Golfo Pérsico / Mar Rojo /
+  Arábigo 1: AISStream (antenas en tierra de colaboradores) casi no ve los estrechos del petróleo; NO es un bloqueo a Cloudflare.
+  Por eso los zooms del Monitor (`ZOOMS`/`ZBOX`) incluyen también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
+  solo se muestran los que tienen ≥2 petroleros; los pasos del FMI siguen en el globo y en el panel. Ver otros estrechos de verdad
+  requiere AIS satelital (pago). Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el
+  registro (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los
   PositionReport se miran sin JSON.parse salvo los de petroleros conocidos (para gastar poca CPU). Posición válida 45 min (quietos,
-  3 h). `barcos.json`: `b` [mmsi, lat, lon, nudos, rumbo, t, largo, subtipo, nombre], `rep` (últimos 20 min), `regiones`, `diag`
-  (mensajes, ms, error). AISStream: gratis, en beta, sin garantía; antenas en la costa (en alta mar casi no hay datos); su
-  documentación pide consumirlo desde un servidor propio (así se hace). Si el plan gratis de Workers corta por CPU, se ve en `diag`;
-  la salida sería Workers Paid (US$ 5/mes).
+  3 h). `barcos.json`: `b` [mmsi, lat, lon, nudos, rumbo, t, largo, subtipo, nombre], `rep` (últimos 20 min), `diag`. AISStream:
+  gratis, en beta, sin garantía; su documentación pide consumirlo desde un servidor propio (así se hace). Si el plan gratis de
+  Workers corta por CPU, se ve en `diag`; la salida sería Workers Paid (US$ 5/mes).
 - `geovivo.json` (scripts/geovivo.py, paso del workflow `noticias.yml`, así no suma builds de Pages):
   - `gdelt`: GDELT 2.0 (uso comercial libre citando gdeltproject.org), últimos 8 archivos de 15 min, solo hechos principales
     (IsRootEvent) de combates (CAMEO 19x), violencia masiva (20x) y atentados con bomba (183), en países con guerra según

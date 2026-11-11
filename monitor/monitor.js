@@ -60,9 +60,13 @@ const PASOS = {ormuz: {n: 'Estrecho de Ormuz', c: [56.4, 26.5], box: [[54.6, 24.
   bab: {n: 'Bab el-Mandeb', c: [43.4, 12.6], box: [[41.6, 11.2], [45.4, 14.4]]},
   suez: {n: 'Canal de Suez', c: [32.55, 30.2], box: [[31.4, 28.6], [33.8, 31.6]]},
   malaca: {n: 'Estrecho de Malaca', c: [101, 2.6], box: [[98.8, 0.6], [104.6, 4.8]]},
-  panama: {n: 'Canal de Panamá', c: [-79.7, 9.1]}, bosforo: {n: 'Bósforo', c: [29.05, 41.1]},
-  cabo: {n: 'Cabo de Buena Esperanza', c: [18.5, -34.6]}, gib: {n: 'Gibraltar', c: [-5.6, 35.95]}};
-const ZOOMS = ['ormuz', 'bab', 'malaca', 'suez'];
+  panama: {n: 'Canal de Panamá', c: [-79.7, 9.1]}, bosforo: {n: 'Bósforo', c: [29.05, 41.1], box: [[27.6, 39.9], [30.4, 42.0]]},
+  cabo: {n: 'Cabo de Buena Esperanza', c: [18.5, -34.6]}, gib: {n: 'Gibraltar', c: [-5.6, 35.95], box: [[-7.6, 34.6], [-3.4, 37.4]]}};
+// Zooms que no son pasos del FMI (no tienen recuadro en el globo): donde AISStream sí tiene antenas.
+const ZEXTRA = {mancha: {n: 'Canal de la Mancha y Róterdam', box: [[-6, 48.6], [5.5, 53.4]]}, houston: {n: 'Golfo de México · Houston', box: [[-96.2, 27.3], [-92.8, 30.1]]}};
+const ZBOX = Object.assign({}, PASOS, ZEXTRA);
+// Se muestran solo los que tienen ≥2 petroleros: AISStream casi no tiene antenas en Ormuz, Bab el-Mandeb ni Malaca (medido 11/11/2026).
+const ZOOMS = ['ormuz', 'bab', 'malaca', 'suez', 'gib', 'bosforo', 'mancha', 'houston'];
 const ZONA = [[56, 59, 22, 28, 'Golfo de Omán'], [47, 56, 24, 30.5, 'Golfo Pérsico'], [41, 46, 11, 16, 'Bab el-Mandeb'], [32, 44, 15, 30, 'Mar Rojo'],
   [32, 33, 29.8, 31.6, 'Canal de Suez'], [44, 60, 8, 22, 'Mar Arábigo'], [95, 105, 0, 7, 'Estrecho de Malaca'], [103.5, 104.6, 1, 1.6, 'Singapur'],
   [105, 123, 5, 30, 'Mar de China Meridional'], [118, 142, 28, 40, 'Mar de China Oriental y Japón'], [-6, 36, 30, 46, 'Mediterráneo'],
@@ -145,13 +149,13 @@ function panelBarcos(){
   } else {
     let g = 0, m = 0, c = 0, sl = 0;
     for(const s of SHIPS.values()){ if(!s.len) sl++; else if(s.len >= 300) g++; else if(s.len >= 150) m++; else c++; }
-    const d = BAR.diag || {}, rg = (BAR.regiones || []).filter(r => r[1]).length;
+    const d = BAR.diag || {};
     el.innerHTML = `<div class="big">${fmt(SHIPS.size)}<small>petroleros con posición</small></div>
       <div class="row"><span>Gigantes (VLCC, +300 m)</span><b>${fmt(g)}</b></div><div class="row"><span>Medianos (150-300 m)</span><b>${fmt(m)}</b></div>
       <div class="row"><span>Chicos (menos de 150 m)</span><b>${fmt(c)}</b></div>${sl ? `<div class="row"><span>Sin largo informado</span><b>${fmt(sl)}</b></div>` : ''}
       <div class="row"><span>Petroleros identificados</span><b>${fmt(BAR.petroleros)}</b></div>
-      <div class="row"><span>Escuchando ahora</span><b>${esc(d.region || '—')}</b></div>
-      <div class="row nota">Antenas en la costa: en alta mar casi no hay señal. Se escucha una zona por minuto (${rg} de ${(BAR.regiones || []).length} ya escuchadas).${barcosFrescos() ? '' : ' Sin datos nuevos desde las ' + new Date(BAR.t).toLocaleTimeString('es-AR', {hour: '2-digit', minute: '2-digit'}) + '.'}</div>`;
+      <div class="row"><span>Mensajes AIS en el último minuto</span><b>${fmt(d.msgs)}</b></div>
+      <div class="row nota">Antenas en la costa (AISStream): se ve bien Europa y parte de EE.UU.; en el Golfo Pérsico, el Mar Rojo y Asia casi no hay señal, así que ahí aparecen pocos aunque haya muchos.${barcosFrescos() ? '' : ' Sin datos nuevos desde las ' + new Date(BAR.t).toLocaleTimeString('es-AR', {hour: '2-digit', minute: '2-digit'}) + '.'}</div>`;
   }
   kpis();
 }
@@ -235,14 +239,14 @@ function relojes(){
 let G1, Z1, proj1, path1, rot = [-40, -18, 0];
 function init1(){ G1 = fitCv($('cv1')); Z1 = fitCv($('cvZ')); const R = Math.min(G1.w * 0.42, G1.h * 0.47);
   proj1 = d3.geoOrthographic().scale(R).translate([G1.w * 0.42, G1.h * 0.53]).clipAngle(90).precision(.5); path1 = d3.geoPath(proj1, G1.c); }
-function zoomsConBarcos(){ return ZOOMS.filter(k => cuenta(PASOS[k].box) >= 2); }
+function zoomsConBarcos(){ return ZOOMS.filter(k => cuenta(ZBOX[k].box) >= 2); }
 function draw1(now){
   const {c, w, h} = G1; c.clearRect(0, 0, w, h);
   const zs = zoomsConBarcos(); $('zoom').hidden = !zs.length;
   if(zs.length && Z1.w < 50) Z1 = fitCv($('cvZ'));   // estaba oculto al medir
   if(zs.length && now - focoZT > 16000){ focoZT = now; focoZ = (focoZ + 1) % zs.length; }
-  const kz = zs.length ? zs[focoZ % zs.length] : 'ormuz', P = PASOS[kz];
-  const tgt = [-P.c[0] + 28, -P.c[1] * 0.6];
+  const kz = zs.length ? zs[focoZ % zs.length] : 'ormuz', P = ZBOX[kz], cz = P.c || [(P.box[0][0] + P.box[1][0]) / 2, (P.box[0][1] + P.box[1][1]) / 2];
+  const tgt = [-cz[0] + 28, -cz[1] * 0.6];
   rot[0] += (tgt[0] - rot[0]) * 0.012; rot[1] += (tgt[1] - rot[1]) * 0.012; proj1.rotate(rot);
   c.beginPath(); path1({type: 'Sphere'}); c.fillStyle = K.sph; c.fill(); c.strokeStyle = K.sphL; c.lineWidth = 1; c.stroke();
   c.beginPath(); path1(d3.geoGraticule10()); c.strokeStyle = K.grat; c.stroke();
@@ -266,7 +270,7 @@ function draw1(now){
   if(zs.length) drawZoom(now, kz);
 }
 function drawZoom(now, kz){
-  const {c, w, h} = Z1, P = PASOS[kz]; c.clearRect(0, 0, w, h);
+  const {c, w, h} = Z1, P = ZBOX[kz]; c.clearRect(0, 0, w, h);
   const pr = d3.geoIdentity().reflectY(true).fitExtent([[0, 18], [w, h]], {type: 'MultiPoint', coordinates: P.box}), pa = d3.geoPath(pr, c);
   c.fillStyle = K.zSea; c.fillRect(0, 18, w, h);
   c.strokeStyle = K.zGrid; c.lineWidth = 1; c.beginPath();

@@ -173,14 +173,17 @@ async function ais(env, ahora){
   if(!env.AISSTREAM_KEY) return;
   let E = {i: 0, reg: {}, pos: {}, rep: [], vis: {}, cnt: {}};
   try{ const o = await env.DATOS.get('barcos/estado.json'); if(o) E = Object.assign(E, await o.json()); }catch(e){}
-  const k = (E.i || 0) % AIS_REG.length; E.i = k + 1;
-  const diag = {region: AIS_REG[k][0], msgs: 0, pos: 0, estat: 0, err: null, ms: 0, primero: null, ultimos5s: 0};
+  // Desde el 11/11/2026 se escuchan TODAS las zonas juntas cada minuto: medido en 20 s, Mar del Norte 832 mensajes, Mediterráneo 89,
+  // Golfo de México 45, China 35, Malaca 15 y Golfo Pérsico / Mar Rojo / Arábigo 1 (AISStream casi no tiene antenas ahí). Con tan
+  // poco volumen no hace falta rotar, y el registro de petroleros se llena 10 veces más rápido.
+  const k = 0; E.i = 0;
+  const diag = {region: 'todas las zonas', msgs: 0, pos: 0, estat: 0, err: null, ms: 0, primero: null, ultimos5s: 0};
   const t0 = Date.now(), nuevos = [];
   try{
     const r = await fetch('https://stream.aisstream.io/v0/stream', {headers: {Upgrade: 'websocket', 'user-agent': UA}});
     const ws = r.webSocket; if(!ws) throw new Error('sin websocket (' + r.status + ')');
     ws.accept();
-    ws.send(JSON.stringify({APIKey: env.AISSTREAM_KEY, BoundingBoxes: AIS_REG[k][1], FilterMessageTypes: ['PositionReport', 'ShipStaticData']}));
+    ws.send(JSON.stringify({APIKey: env.AISSTREAM_KEY, BoundingBoxes: AIS_REG.flatMap(r => r[1]), FilterMessageTypes: ['PositionReport', 'ShipStaticData']}));
     const dec = new TextDecoder();
     await new Promise(res => {
       let listo = false;
@@ -217,7 +220,7 @@ async function ais(env, ahora){
     });
   }catch(e){ diag.err = String(e.message || e).slice(0, 200); }
   diag.ms = Date.now() - t0;
-  E.vis[k] = ahora; E.cnt = E.cnt || {}; E.cnt[k] = diag.msgs;   // regiones de barcos.json: [nombre, última escucha, mensajes]
+  for(let i = 0; i < AIS_REG.length; i++) E.vis[i] = ahora; E.cnt = {};
   for(const m in E.pos){ const p = E.pos[m], q = p[2] != null && p[2] < 1; if(ahora - p[4] > (q ? AIS_QUIETO : AIS_VIVO) || !E.reg[m]) delete E.pos[m]; }
   const regs = Object.keys(E.reg); if(regs.length > 25000) for(const m of regs.slice(0, regs.length - 25000)) delete E.reg[m];
   nuevos.sort((a, b) => a[0] - b[0]);
@@ -226,7 +229,7 @@ async function ais(env, ahora){
   const b = Object.entries(E.pos).map(([m, p]) => { const g = E.reg[m]; return [+m, p[0], p[1], p[2], p[3], p[4], g[0], g[1], g[2]]; });
   const nombre = {}; for(const r of E.rep) if(E.reg[r[1]]) nombre[r[1]] = [E.reg[r[1]][0], E.reg[r[1]][2]];
   await env.DATOS.put('barcos.json', JSON.stringify({t: ahora, b, rep: E.rep.slice(-300), nombre, petroleros: regs.length,
-    regiones: AIS_REG.map((r, i) => [r[0], E.vis[i] || 0, (E.cnt || {})[i] ?? null]), diag, fuente: 'AISStream.io (AIS de antenas costeras)'}), JSON_META);
+    regiones: AIS_REG.map((r, i) => [r[0], E.vis[i] || 0]), diag, fuente: 'AISStream.io (AIS de antenas costeras)'}), JSON_META);
 }
 
 export default {
