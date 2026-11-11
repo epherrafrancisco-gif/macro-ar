@@ -1,13 +1,15 @@
 {
- "actualizado": "2026-11-10",
+ "actualizado": "2026-11-11",
  "ok": [
   "Ámbito blue: 202 días",
-  "Ámbito oficial: 230 días",
-  "Ámbito mep: 247 días",
-  "Ámbito ccl: 247 días",
-  "Ámbito riesgo: 247 días",
+  "Ámbito oficial: 231 días",
+  "Ámbito mep: 248 días",
+  "Ámbito ccl: 248 días",
+  "Ámbito riesgo: 248 días",
   "Ámbito merval: 218 días",
   "Rava merval: 10 días (último 2026-11-06)",
+  "Propios: {'mep_pm': 1575.53, 'ccl_pm': 1669.41, 'riesgo_pm': 760}",
+  "BYMA merval: {'2026-11-10': 84093.11, '2026-11-11': 84091.0}",
   "BCRA compras: 223 días desde 2025-12-01",
   "BCRA bopreal: 225 días desde 2025-12-01",
   "BCRA reservas: 2 días",
@@ -27,19 +29,16 @@
   "BCRA leliq mensual: 47 meses",
   "BCRA pases mensual: 47 meses",
   "BCRA lefi mensual: 13 meses",
-  "DolarApi: cripto ['2026-11-10'], tarjeta ['2026-11-05']",
+  "DolarApi: cripto ['2026-11-11'], tarjeta ['2026-11-11']",
   "datos.gob.ar fiscal y comercio: 44 meses",
   "datos.gob.ar PBI: 16 trimestres",
-  "Historia ofi: 26 días en 1 tramos",
+  "Historia ofi: 27 días en 1 tramos",
   "Historia blue: 24 días en 1 tramos",
-  "Historia mep: 29 días en 1 tramos",
-  "Historia ccl: 29 días en 1 tramos",
+  "Historia mep: 30 días en 1 tramos",
+  "Historia ccl: 30 días en 1 tramos",
   "Historia may: 25 días en 1 tramos",
-  "Historia cer: 41 días en 1 tramos",
+  "Historia cer: 42 días en 1 tramos",
   "CPI EE.UU. (FRED): 118 meses"
  ],
- "errores": [
-  "Propios: Open BYMADATA devolvió 0 bonos",
-  "BYMA merval: no vino el MSCI Merval (MMSCI)"
- ]
+ "errores": []
 }
