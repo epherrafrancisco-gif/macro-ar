@@ -1,0 +1,18 @@
+ahora 15:41:03 t 15:40:28 b 0 rep 0 petroleros 0 diag {"region": "todas las zonas", "msgs": 995, "pos": 0, "estat": 0, "err": null, "ms": 20480, "primero": 752, "ultimos5s": 284}
+ahora 15:42:13 t 15:41:28 b 0 rep 0 petroleros 0 diag {"region": "todas las zonas", "msgs": 1015, "pos": 0, "estat": 0, "err": null, "ms": 20901, "primero": 1404, "ultimos5s": 307}
+ahora 15:43:23 t 15:42:28 b 0 rep 0 petroleros 0 diag {"region": "todas las zonas", "msgs": 1097, "pos": 0, "estat": 0, "err": null, "ms": 20388, "primero": 636, "ultimos5s": 337}
+HTTP/2 200 
+date: Thu, 12 Nov 2026 15:41:03 GMT
+content-type: application/json; charset=utf-8
+content-length: 666
+etag: "5deeb0f648fe78657733337da0d8e33c"
+last-modified: Thu, 12 Nov 2026 15:40:49 GMT
+vary: Origin
+accept-ranges: bytes
+cache-control: public, max-age=60
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-cache-status: EXPIRED
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=4OzZaD%2Bmfu3V7X7HuQTBsv34W4%2B02b8uB2%2FnNn5ZBCJEa%2Bwl7HrcTpZKl%2Fg4vv3aifvA52HcwfIHw5JcdiKukEbkMpLdGbo8RyLNn72AdLN%2BWOkatN0mRafKFYUqIaUiQcC2gaBN0DvIBw%3D%3D"}]}
+cf-ray: a596a37da82a5086-STL
+
