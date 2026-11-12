@@ -9,7 +9,6 @@
   "Ámbito merval: 218 días",
   "Rava merval: 10 días (último 2026-11-11)",
   "Propios: {'mep_pm': 1573.95, 'ccl_pm': 1666.19, 'riesgo_pm': 729}",
-  "BYMA merval: {'2026-11-11': 83440.03, '2026-11-12': 83469.28}",
   "BCRA compras: 224 días desde 2025-12-01",
   "BCRA bopreal: 226 días desde 2025-12-01",
   "BCRA reservas: 3 días",
@@ -40,5 +39,7 @@
   "Historia cer: 43 días en 1 tramos",
   "CPI EE.UU. (FRED): 118 meses"
  ],
- "errores": []
+ "errores": [
+  "BYMA merval: HTTP Error 400: "
+ ]
 }
