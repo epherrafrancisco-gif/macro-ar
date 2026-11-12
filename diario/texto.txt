@@ -1,12 +1,12 @@
-Dólar hoy · 11/11/2026
+Dólar hoy · 12/11/2026
 
-Oficial: $1.572,92 (+0,1%)
-MEP: $1.578,42 (−0,3%)
-CCL: $1.666,44 (−0,4%)
+Oficial: $1.571,79 (−0,1%)
+MEP: $1.573,95 (−0,3%)
+CCL: $1.693,52 (+1,6%)
 Blue: $1.565,00 (+0,6%)
 
-Brecha CCL: 5,9%
-Riesgo país: 852 pb (−1)
+Brecha CCL: 7,7%
+Riesgo país: 822 pb (−30)
 Reservas: US$ 50.437 M (04/11)
 Compras del BCRA: 0 M (03/11); en 2026: +15.977 M
 
