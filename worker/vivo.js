@@ -244,7 +244,7 @@ async function ais(env, ahora){
 export default {
   async scheduled(ev, env, ctx){
     const t = ev.scheduledTime || Date.now();
-    ctx.waitUntil((async () => { await actualizar(env, t); try{ await ais(env, Date.now()); }catch(e){} })());
+    ctx.waitUntil(actualizar(env, t));   // barcos por AIS (ais()) sacados el 12/11/2026 por pedido del dueño
     ctx.waitUntil(surtidores(env));
   },
   // Visitar la dirección del Worker muestra el estado (sin datos), para revisar que corre.

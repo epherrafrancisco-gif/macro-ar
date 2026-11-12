@@ -20,7 +20,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   1000 pedidos / 10 s por IP (bloqueo 10 s); Web Analytics automático. Para forzar un cambio ya: Caching → Configuration
   → Purge Everything (después de que termine el deploy de Pages, no antes).
 - Datos en vivo (worker/vivo.js, Worker `pulso-vivo`, cron cada minuto, binding R2 `DATOS` = bucket `pulso-datos`):
-  trae DolarApi y Open BYMADATA (acciones y bonos, acceso gratuito de BYMA) cada minuto (y después, si tiene el secreto `AISSTREAM_KEY`, los petroleros: ver Monitor) y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
+  trae DolarApi y Open BYMADATA (acciones y bonos, acceso gratuito de BYMA) cada minuto y guarda `vivo.json` (cache-control 60 s) en R2, publicado en
   `https://datos.pulsomacro.com.ar/vivo.json` (dominio propio del bucket, CORS solo pulsomacro.com.ar). Cache Rule
   "Datos en vivo: ignorar query" en ese host: ignora la query para que nadie fuerce lecturas de R2 con URLs inventadas.
   La página (`vivo()` en index.html) lo usa si tiene menos de 5 min (dólar) / 10 min (mercado); si no, va directo a
@@ -640,10 +640,8 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - El Monitor es el de siempre, en index.html (objeto `XP`, `xpDraw`, escenas bolsas/monedas/tasas/inflación/bonos/conflictos,
   relojes, termómetro, Argentina, mapa de bolsas, bancos centrales, titulares). El 11/11/2026 se lo reemplazó por un monitor solo
   de petroleros y el dueño se enojó ("yo te dije que lo quería más pro, no que sea solo petrolero; los buques eran para
-  sobrecargarlo"): se restauró y los datos en vivo quedaron como CAPAS EXTRA (`xpVivo`): petroleros por AIS (puntos ámbar que
-  titilan al llegar su reporte, `XP.ships`, `xpBarcos` cada 60 s), combates de GDELT (puntos rojos; en `#xpLog` se alternan con
-  los titulares: "[COMBATES · PAÍS] ... reportado hace X", `xpGdelt`) y focos de calor de FIRMS (`xpGv` cada 5 min), recuadro
-  "PETROLEROS · AIS EN VIVO" (`#mnAis`, `xpAisLinea`) y casillero "PETROLEROS (AIS)". Desde el Monitor NO hay botón a Geopolítica en vivo
+  sobrecargarlo"): se restauró y los datos en vivo quedaron como CAPAS EXTRA (`xpVivo`): combates de GDELT (puntos rojos; en `#xpLog` se alternan con
+  los titulares: "[COMBATES · PAÍS] ... reportado hace X", `xpGdelt`) y focos de calor de FIRMS (`xpGv` cada 5 min). Desde el Monitor NO hay botón a Geopolítica en vivo
   (pedido del dueño: la única entrada es `#geoMonB` en Geopolítica). NO volver a convertirlo en un monitor de un solo tema.
 - `/monitor/` (`monitor/index.html` + `monitor/monitor.js`, costas en `monitor/costas.json`) es SOLO "Geopolítica en vivo" (mapa
   Mercator de guerras, focos de calor de 24 h, reportes de prensa de 2 h, mira que recorre las guerras mayores con su ficha,
@@ -659,24 +657,12 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
 - NADA simulado (el dueño preguntó "¿es todo real?"): si un dato falta, el panel lo dice. Los reportes AIS que llegan cada minuto se
   muestran repartidos a lo largo del minuto siguiente, con su hora real (UTC). Un petrolero real va a ~25 km/h: en el globo casi no se
   mueve; lo "vivo" es que titila al llegar su reporte. Modo claro: variables de `html[data-tema="claro"]` y objeto `K` de monitor.js.
-- Datos: `https://datos.pulsomacro.com.ar/barcos.json` (Worker, cada 60 s), `/geovivo.json` (cada 5 min), `/global.json` (10 min),
+- Datos: `/geovivo.json` (cada 5 min), `/global.json` (10 min),
   `/geopolitica.json`. GoatCounter solo si no está dentro de un iframe; evento `geo-monitor` al abrirlo desde Geopolítica.
-- Barcos (`ais()` en worker/vivo.js, secreto `AISSTREAM_KEY` del Worker, clave gratis de aisstream.io a nombre del dueño): cada
-  minuto, DESPUÉS de guardar vivo.json, escucha `AIS_SEG` (20 s) TODAS las cajas de `AIS_REG` juntas por WebSocket (`diag.primero` =
-  ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final). Medido el 11/11/2026 en 20 s por zona: Mar del Norte y Báltico 832
-  mensajes, Mediterráneo 89, Golfo de México 45, China 35, Atlántico sur 27, Malaca 15, Mar Negro 10 y Golfo Pérsico / Mar Rojo /
-  Arábigo 1: AISStream (antenas en tierra de colaboradores) casi no ve los estrechos del petróleo; NO es un bloqueo a Cloudflare.
-  OJO (12/11/2026): AISStream manda el JSON con espacios (`"MMSI": 123`): buscar `'"MMSI":'` con indexOf no encontraba nada y
-  el registro quedaba vacío (msgs ~1000, pos y estat 0). Se usa `RE_MMSI`/`RE_STAT` (aceptan espacios); `diag.muestra` = primer mensaje, `diag.tipo` = cómo llega (texto, ArrayBuffer o Blob: se leen los tres), `diag.version` = `AIS_VER` (para saber qué código está pegado en Cloudflare), `diag.falla` = primer error.
-  Para mirar barcos.json desde acá: `.github/workflows/diag-barcos.yml` (se dispara al tocar el archivo) deja `resumen.txt` en la rama `diag-barcos`.
-  Por eso los zooms de la vista sin uso de /monitor/ (`ZOOMS`/`ZBOX`) incluían también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
-  solo se muestran los que tienen ≥2 petroleros; los pasos del FMI siguen en el globo y en el panel. Ver otros estrechos de verdad
-  requiere AIS satelital (pago). Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el
-  registro (`barcos/estado.json` en R2: `reg` mmsi → [largo, subtipo, nombre], `pos`, `rep`) se llena solo en las primeras horas. Los
-  PositionReport se miran sin JSON.parse salvo los de petroleros conocidos (para gastar poca CPU). Posición válida 45 min (quietos,
-  3 h). `barcos.json`: `b` [mmsi, lat, lon, nudos, rumbo, t, largo, subtipo, nombre], `rep` (últimos 20 min), `diag`. AISStream:
-  gratis, en beta, sin garantía; su documentación pide consumirlo desde un servidor propio (así se hace). Si el plan gratis de
-  Workers corta por CPU, se ve en `diag`; la salida sería Workers Paid (US$ 5/mes).
+- Barcos por AIS: SACADOS el 12/11/2026 (pedido del dueño, cansado de que no anduvieran: "sacalo y listo"). No volver a ponerlos.
+  Ya no se piden en el Monitor ni en Geopolítica en vivo (ahí el recuadro pasó a "Petroleros por día en pasos clave" del FMI, `#cps2`).
+  El Worker no llama más a `ais()` (la función y el código de la vista vieja de petroleros de /monitor/ quedan sin uso). Si se
+  retoma: AISStream manda el JSON con espacios (`"MMSI": 123`) y puede mandar binario; nunca se llegó a confirmar que anduviera.
 - `geovivo.json` (scripts/geovivo.py, paso del workflow `noticias.yml`, así no suma builds de Pages):
   - `gdelt`: GDELT 2.0 (uso comercial libre citando gdeltproject.org), últimos 8 archivos de 15 min, solo hechos principales
     (IsRootEvent) de combates (CAMEO 19x), violencia masiva (20x) y atentados con bomba (183), en países con guerra según

@@ -183,7 +183,7 @@ function kpis(){
 function panelesFijos(){
   // pasos clave (FMI PortWatch)
   const P = GV && GV.pasos && GV.pasos.p;
-  $('cps').innerHTML = P && P.length ? P.map(p => { const mx = Math.max(p.v, p.p || 0) * 1.25 || 1, al = p.p && p.v < p.p * 0.8;
+  $('cps').innerHTML = $('cps2').innerHTML = P && P.length ? P.map(p => { const mx = Math.max(p.v, p.p || 0) * 1.25 || 1, al = p.p && p.v < p.p * 0.8;
       return `<div class="cp${al ? ' alerta' : ''}" title="${esc(p.n)}: ${p.v} petroleros el ${ddmm(p.f + 'T12:00')} (promedio 2025: ${fmt(p.p, 1)})"><span>${esc(p.n)}</span><b>${p.v}</b><span class="bar"><i style="width:${p.v / mx * 100}%"></i>${p.p ? `<u style="left:${p.p / mx * 100}%"></u>` : ''}</span></div>`; }).join('') +
       `<div class="row nota">Raya = promedio de 2025. Dato del ${ddmm(GV.pasos.ult + 'T12:00')}: el FMI (PortWatch) lo publica con unos días de atraso.</div>`
     : '<div class="vacio">Sin datos de PortWatch todavía.</div>';
@@ -208,11 +208,6 @@ function panelesFijos(){
     $('gpr').innerHTML = `<div class="big" style="color:var(--rj)">${fmt(u[1], 1)}<small>al ${u[0].split('-').reverse().join('/')}</small></div><svg class="spk" viewBox="0 0 ${Wd} ${H}" preserveAspectRatio="none"><line x1="0" x2="${Wd}" y1="${y(100)}" y2="${y(100)}" stroke="currentColor" opacity=".3" stroke-dasharray="3 3"/><path d="${d3.line((d, i) => x(i), d => y(d[1]))(S)}" fill="none" stroke="var(--rj)" stroke-width="1.3"/></svg><div class="row nota">Últimos 4 meses. Caldara e Iacoviello (Reserva Federal): cuántas noticias de guerras, amenazas y atentados publican los grandes diarios.</div>`; }
   else $('gpr').innerHTML = '<div class="vacio">Sin datos.</div>';
   kpis(); feeds(true);
-}
-function panelZonaGuerra(){
-  $('bz').innerHTML = SHIPS.size && barcosFrescos() ? ZGUERRA.map(([n, b]) => `<div class="row"><span>${n}</span><b>${fmt(cuenta([[b[0], b[1]], [b[2], b[3]]]))} petroleros</b></div>`).join('') +
-    '<div class="row nota">Con posición en los últimos 45 minutos (fondeados: 3 horas). Solo donde llegan las antenas de la costa.</div>'
-    : '<div class="vacio">Todavía sin datos de barcos.</div>';
 }
 let evVistos = new Set();
 function feeds(todo){
@@ -348,7 +343,7 @@ function callout(){
 // ---------------------------------------------------------------- vistas y arranque
 // Desde el 11/11/2026 esta página es solo "Geopolítica en vivo" (el Monitor completo volvió a index.html, Mundo › Monitor).
 const ABRIO_GEO = true;
-function ver(v){ vista = v; $('v2').classList.toggle('on', v === 2); if(v === 2){ init2(); callout(); panelZonaGuerra(); } else init1(); }
+function ver(v){ vista = v; $('v2').classList.toggle('on', v === 2); if(v === 2){ init2(); callout(); } else init1(); }
 function salirGeo(){ if(EMBEBIDO){ parent.postMessage({pm: 'monitor-cerrar'}, location.origin); return; } location.href = '/#global'; }
 $('aGeo').onclick = () => ver(2); $('cGeo').onclick = salirGeo;
 async function pantalla(){ try{ if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }catch(e){}
@@ -357,8 +352,6 @@ $('fs1').onclick = pantalla; $('fs2').onclick = pantalla;
 addEventListener('keydown', e => { if(e.key === 'Escape' && vista === 2 && !document.fullscreenElement) salirGeo(); });
 addEventListener('resize', () => { init1(); if(vista === 2) init2(); });
 
-async function cargarBarcos(primera){ try{ aplicarBarcos(await bajar('https://datos.pulsomacro.com.ar/barcos.json?t=' + VER()), primera); }catch(e){ if(primera) panelBarcos(); }
-  if(vista === 2) panelZonaGuerra(); }
 async function cargarGeo(){ try{ GV = await bajar('/geovivo.json?t=' + VER()); }catch(e){} }
 async function cargarGlobal(){ try{ GL = await bajar('/global.json?t=' + VER()); }catch(e){} }
 
@@ -368,9 +361,8 @@ async function arrancar(){
   COST = cst; armarGuerras(geo);
   await Promise.all([cargarGeo(), cargarGlobal()]);
   panelesFijos(); relojes(); setInterval(relojes, 1000);
-  await cargarBarcos(true);
+  // Barcos por AIS sacados el 12/11/2026 (pedido del dueño): no se piden más.
   ver(ABRIO_GEO ? 2 : 1);
-  setInterval(() => { if(!document.hidden) cargarBarcos(false); }, 60000);
   setInterval(async () => { if(document.hidden) return; await cargarGeo(); panelesFijos(); if(vista === 2) callout(); }, 5 * 60000);
   setInterval(async () => { if(document.hidden) return; await cargarGlobal(); panelesFijos(); }, 10 * 60000);
   setInterval(() => { if(!document.hidden) feeds(false); }, 60000);

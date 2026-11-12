@@ -597,7 +597,6 @@ body.mon .mnTop button{display:none}
 .xpw .mnGeo .cf{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:6px;align-items:baseline;padding:2px 0;border-top:1px solid #111a23;font-size:10.5px;color:var(--tx);animation:xpIn .5s ease}
 .xpw .mnGeo .cf i{width:7px;height:7px;display:inline-block}.xpw .mnGeo .cf span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.xpw .mnGeo .cf em{font:normal 10px var(--mono);color:var(--dim)}
 .xpw .mnFl{flex:1;min-height:0;display:flex;flex-direction:column}
-.xpw #mnAis{padding:0 8px;max-height:128px;overflow:hidden}.xpw #mnAis div{display:grid;grid-template-columns:52px minmax(0,1fr);gap:5px;font-size:9.5px;line-height:15px;border-bottom:1px solid #0e161e;white-space:nowrap;animation:xpIn .4s ease}.xpw #mnAis span{overflow:hidden;text-overflow:ellipsis}.xpw #mnAis em{font-style:normal;color:var(--dim)}.xpw #mnAis .t{color:var(--dim)}.xpw #mnAis .nw{color:var(--cy)}
 .xpw .mnFl .mnRain{position:relative;flex:1;padding:0;margin:0 0 -4px;background:transparent;border:0;border-radius:0;-webkit-mask-image:none;mask-image:none}
 .xpw .mnRainIn div{color:var(--tx);border-bottom:1px solid #0e161e;padding:2px 8px;font-size:10.5px}
 .xpw .mnRainIn .k{color:var(--cy);background:var(--hd);border-left:3px solid var(--cy);padding:2px 8px;margin-top:6px;border-radius:0}
@@ -1715,7 +1714,6 @@ body.mporta .hbus{display:none}
         </div>
         <div class="mnR">
           <div class="mnBox mnGeo"><div class="mnH">GEOPOLÍTICA · CONFLICTOS ARMADOS</div><div id="mnGeo"></div></div>
-          <div class="mnBox mnCy mnAisB"><div class="mnH">PETROLEROS · AIS EN VIVO</div><div id="mnAis"></div></div>
           <div class="mnBox mnFl"><div class="mnH">FLUJO DE DATOS</div><div class="mnRain"><div class="mnRainIn" id="mnRain"></div></div></div>
         </div>
         <div class="mnCall" id="mnCall" hidden></div>
@@ -1725,7 +1723,7 @@ body.mporta .hbus{display:none}
           <div class="mnBox mnCy"><div class="mnH">PRÓXIMAS DECISIONES DE TASAS</div><div id="mnBc"></div></div>
         </div>
       </div>
-      <p class="note">Va cambiando solo de tema cada unos 20 segundos (bolsas, monedas, tasas, inflación, bonos y conflictos armados), vuela hacia el país más destacado de cada uno y escribe abajo los titulares de cada país y los combates reportados por la prensa (GDELT, con su antigüedad). Capas en vivo: puntos ámbar = petroleros que mandaron su posición por AIS (AISStream; antenas en la costa, casi sin señal en el Golfo Pérsico, el Mar Rojo y Asia), titilan al llegar un reporte; puntos rojos = combates reportados en las últimas 2 horas; puntitos naranjas = focos de calor por satélite en frentes de guerra (NASA FIRMS, 24 h). La sombra es la noche real; los puntos verdes, las bolsas abiertas; los arcos, el carry trade desde Japón; los cuadros rojos y naranjas, las guerras en curso. Datos: OCDE (bolsas, promedio mensual), BCE y BIS (monedas), Tesoro y bancos centrales (bonos), OFR (estrés financiero), BIS (tasas), FMI o Banco Mundial (inflación anual; Argentina con el dato del INDEC), Wikipedia (conflictos), Caldara e Iacoviello (riesgo geopolítico), BCRA, Ámbito y DolarApi.</p>
+      <p class="note">Va cambiando solo de tema cada unos 20 segundos (bolsas, monedas, tasas, inflación, bonos y conflictos armados), vuela hacia el país más destacado de cada uno y escribe abajo los titulares de cada país y los combates reportados por la prensa (GDELT, con su antigüedad). Capas en vivo: puntos rojos = combates reportados en las últimas 2 horas; puntitos naranjas = focos de calor por satélite en frentes de guerra (NASA FIRMS, 24 h). La sombra es la noche real; los puntos verdes, las bolsas abiertas; los arcos, el carry trade desde Japón; los cuadros rojos y naranjas, las guerras en curso. Datos: OCDE (bolsas, promedio mensual), BCE y BIS (monedas), Tesoro y bancos centrales (bonos), OFR (estrés financiero), BIS (tasas), FMI o Banco Mundial (inflación anual; Argentina con el dato del INDEC), Wikipedia (conflictos), Caldara e Iacoviello (riesgo geopolítico), BCRA, Ámbito y DolarApi.</p>
     </div>
     </div>
     <p class="note" id="gFuente"></p>
@@ -10108,7 +10106,6 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
     const rp = series('riesgo'), mv = series('merval'), L = a => a.length ? a[a.length-1] : null, P = a => a.length>1 ? a[a.length-2] : null;
     if(rp.length>1) kh += kp('RIESGO PAÍS', nf(L(rp)[1],0), xpD(L(rp)[1]-P(rp)[1], true, true), 'a');
     if(mv.length>1) kh += kp('MERVAL', nf(L(mv)[1],0), xpD((L(mv)[1]/P(mv)[1]-1)*100), 'a');
-    if(XP.ships?.size && XP.bar && Date.now()-XP.bar.t < 10*60000) kh += kp('PETROLEROS (AIS)', nf(XP.ships.size,0), '', 'a');
     xpSet('mnKpi', kh);
     // termómetro
     const t = glob?.termo || {}, row = (n, v, d='') => `<div class="row"><span>${n}</span><span><b>${v}</b> ${d}</span></div>`;
@@ -10278,7 +10275,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
   }
 
   // ---- Capas en vivo del Monitor (pedido del dueño 11/11/2026: "más pro, como Bloomberg", "sobrecargarlo" con barcos en ruta) ----
-  // barcos.json del Worker (petroleros por AIS, cada minuto) y geovivo.json (GDELT, NASA FIRMS) de scripts/geovivo.py. Nada simulado:
+  // geovivo.json (GDELT, NASA FIRMS) de scripts/geovivo.py. Nada simulado:
   // los reportes AIS que llegan cada minuto se muestran a lo largo del minuto siguiente con su hora real.
   const XP_ZONA = [[56,59,22,28,'Golfo de Omán'],[47,56,24,30.5,'Golfo Pérsico'],[41,46,11,16,'Bab el-Mandeb'],[32,44,15,30,'Mar Rojo'],[44,60,8,22,'Mar Arábigo'],[95,105,0,7,'Malaca'],[105,123,5,30,'Mar de China'],[118,142,28,40,'China Oriental y Japón'],[-6,36,30,46,'Mediterráneo'],[27,42,40,47.5,'Mar Negro'],[-98,-80,18,31,'Golfo de México'],[-85,-60,7,20,'Caribe'],[10,30,53,61,'Báltico'],[-12,10,43,61,'Mar del Norte'],[55,80,5,25,'Mar Arábigo'],[-50,-35,-38,-18,'Costa de Brasil'],[10,35,-38,-25,'Sudáfrica']];
   const xpZona = (la, lo) => { const z = XP_ZONA.find(z=>lo>=z[0] && lo<=z[1] && la>=z[2] && la<=z[3]); return z ? z[4] : 'mar abierto'; };
@@ -10286,31 +10283,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
   function xpGdelt(){ const ev = XP.gv?.gdelt?.ev || []; if(!ev.length) return null; XP.gi = ((XP.gi ?? -1) + 1) % Math.min(ev.length, 40); return ev[XP.gi]; }
   function xpVivo(ctx, proj, vis, now, K){
     for(const p of XP.gv?.firms?.p || []){ const ll = [p[1],p[0]]; if(!vis(ll)) continue; const q = proj(ll); ctx.fillStyle = `rgba(${K.fuego},.8)`; ctx.fillRect(q[0]-.9, q[1]-.9, 1.8, 1.8); }
-    for(const s of XP.ships?.values() || []){ const ll = [s.lo, s.la]; if(!vis(ll)) continue; const q = proj(ll), age = now - s.ping;
-      if(age < 1600){ const k = age/1600; ctx.beginPath(); ctx.arc(q[0], q[1], 2+k*10, 0, 7); ctx.strokeStyle = `rgba(${K.pingc},${1-k})`; ctx.lineWidth = 1; ctx.stroke(); }
-      ctx.fillStyle = age < 1600 ? `rgb(${K.pingc})` : `rgba(${K.carry},.9)`; const z = s.len >= 300 ? 2.6 : 2; ctx.fillRect(q[0]-z/2, q[1]-z/2, z, z); }
     for(const e of XP.gv?.gdelt?.ev || []){ const ll = [e[3], e[2]]; if(!vis(ll)) continue; const q = proj(ll); ctx.fillStyle = `rgba(${K.guer},.9)`; ctx.fillRect(q[0]-1.3, q[1]-1.3, 2.6, 2.6); }
-  }
-  function xpAisLinea(r, nuevo){
-    const el = $('mnAis'); if(!el) return; const s = XP.ships.get(r[1]) || {}, nm = XP.bar?.nombre?.[r[1]], len = s.len || nm?.[0] || 0, name = s.name || nm?.[1] || 'MMSI '+r[1];
-    const cl = len >= 300 ? 'VLCC' : len >= 250 ? 'SUEZMAX' : len >= 200 ? 'AFRAMAX' : 'PETROLERO', quieto = r[4] != null && r[4] < 1;
-    if(el.firstElementChild?.classList.contains('vac')) el.innerHTML = '';
-    const d = document.createElement('div'); if(nuevo) d.className = 'nw';
-    d.innerHTML = `<span class="t">${new Date(r[0]).toISOString().substr(11,8)}</span><span>${esc(name)} <em>${cl}${len ? ' '+len+'m' : ''} · ${r[4]==null ? '—' : nf(r[4],1)+' kn'}${quieto ? ' quieto' : ''} · ${xpZona(r[2], r[3])}</em></span>`;
-    el.prepend(d); if(nuevo) setTimeout(()=>d.classList.remove('nw'), 2500); while(el.children.length > 12) el.lastChild.remove();
-  }
-  async function xpBarcos(primera){
-    try{ const r = await fetch('https://datos.pulsomacro.com.ar/barcos.json?t='+VER()); if(!r.ok) throw 0; const B = await r.json(); XP.bar = B;
-      XP.ships = XP.ships || new Map(); const vivos = new Set(), reps = (B.rep||[]).filter(x=>x[0] > (XP.repT||0)), cola = new Set(primera ? [] : reps.map(x=>x[1]));
-      for(const b of B.b||[]){ vivos.add(b[0]); const s = XP.ships.get(b[0]); if(s && cola.has(b[0])){ s.len = b[6]; s.name = b[8]; continue; }
-        XP.ships.set(b[0], Object.assign(s || {ping:-1e9}, {la:b[1], lo:b[2], sog:b[3], t:b[5], len:b[6], name:b[8]})); }
-      for(const m of [...XP.ships.keys()]) if(!vivos.has(m) && !cola.has(m)) XP.ships.delete(m);
-      if(primera) reps.slice(-12).forEach(x=>xpAisLinea(x, false));
-      else if(reps.length){ const t0 = reps[0][0], sp = Math.max(1, reps[reps.length-1][0]-t0);
-        reps.forEach(x=>setTimeout(()=>{ const s = XP.ships.get(x[1]) || {}; XP.ships.set(x[1], Object.assign(s, {la:x[2], lo:x[3], sog:x[4], t:x[0], ping:performance.now()})); xpAisLinea(x, true); }, reps.length>1 ? (x[0]-t0)/sp*55000 : 0)); }
-      if(reps.length) XP.repT = Math.max(...reps.map(x=>x[0]));
-    }catch(e){}
-    const el = $('mnAis'); if(el && !el.children.length) el.innerHTML = '<div class="vac"><span></span><span><em>Sin señal de petroleros todavía (AISStream: antenas en la costa).</em></span></div>';
   }
   async function xpGv(){ try{ const r = await fetch('/geovivo.json?t='+VER()); if(r.ok) XP.gv = await r.json(); }catch(e){} }
   async function xpStart(){
@@ -10323,8 +10296,7 @@ ${nx.video ? `<a class="espv" href="${esc(nx.video)}" target="_blank" rel="noope
       document.addEventListener('fullscreenchange', ()=>{ if(!document.fullscreenElement && document.body.classList.contains('mon')) xpModo(false); });
       document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('mon')) xpModo(false); });
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden){ loadNP(); cargarNoticias(); XP.rnAt = 0; } }, 15*60000);
-      xpBarcos(true); xpGv();
-      setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden) xpBarcos(false); }, 60000);
+      xpGv();
       setInterval(()=>{ if(tab==='global' && SUBS.M[2]==='explorar' && !document.hidden) xpGv(); }, 5*60000);
     }
     xpPanels(); xpRain(); xpHeat();
