@@ -169,6 +169,7 @@ const AIS_REG = [   // [nombre, cajas [[lat sur, lon oeste], [lat norte, lon est
 ];
 const AIS_VIVO = 45 * 60000, AIS_QUIETO = 3 * 3600000;   // cuánto se muestra un barco sin reporte nuevo (navegando / fondeado)
 
+const RE_MMSI = /"(?:MMSI|UserID)"\s*:\s*(\d+)/, RE_STAT = /"MessageType"\s*:\s*"ShipStaticData"/;
 async function ais(env, ahora){
   if(!env.AISSTREAM_KEY) return;
   let E = {i: 0, reg: {}, pos: {}, rep: [], vis: {}, cnt: {}};
@@ -196,10 +197,13 @@ async function ais(env, ahora){
           diag.msgs++;
           const dt = Date.now() - t0; if(diag.primero == null) diag.primero = dt; if(dt > AIS_SEG - 5000) diag.ultimos5s++;
           const s = typeof ev.data === 'string' ? ev.data : dec.decode(ev.data);
-          const iM = s.indexOf('"MMSI":');
-          if(iM < 0){ if(s.length < 400) diag.err = s.slice(0, 200); return; }
-          const mmsi = parseInt(s.slice(iM + 7, iM + 20), 10);
-          if(s.indexOf('"ShipStaticData"') >= 0){
+          if(diag.muestra == null) diag.muestra = s.slice(0, 300);
+          // 12/11/2026: AISStream manda el JSON con espacios ("MMSI": 123): buscar con indexOf '"MMSI":' no encontraba nada y no se
+          // registraba ningún barco (msgs ~1000, pos y estat 0). Ahora se busca con una expresión que acepta espacios.
+          const mM = RE_MMSI.exec(s);
+          if(!mM){ diag.sinMmsi = (diag.sinMmsi || 0) + 1; if(s.length < 400) diag.err = s.slice(0, 200); return; }
+          const mmsi = parseInt(mM[1], 10);
+          if(RE_STAT.test(s)){
             diag.estat++;
             const m = JSON.parse(s).Message.ShipStaticData, ty = m.Type | 0;
             if(ty >= 80 && ty <= 89){ const d = m.Dimension || {}; E.reg[mmsi] = [(d.A | 0) + (d.B | 0), ty - 80, String(m.Name || '').trim().slice(0, 24)]; }

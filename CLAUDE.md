@@ -666,6 +666,9 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   ms hasta el primer mensaje, `diag.ultimos5s` = ritmo al final). Medido el 11/11/2026 en 20 s por zona: Mar del Norte y Báltico 832
   mensajes, Mediterráneo 89, Golfo de México 45, China 35, Atlántico sur 27, Malaca 15, Mar Negro 10 y Golfo Pérsico / Mar Rojo /
   Arábigo 1: AISStream (antenas en tierra de colaboradores) casi no ve los estrechos del petróleo; NO es un bloqueo a Cloudflare.
+  OJO (12/11/2026): AISStream manda el JSON con espacios (`"MMSI": 123`): buscar `'"MMSI":'` con indexOf no encontraba nada y
+  el registro quedaba vacío (msgs ~1000, pos y estat 0). Se usa `RE_MMSI`/`RE_STAT` (aceptan espacios); `diag.muestra` = primer mensaje.
+  Para mirar barcos.json desde acá: `.github/workflows/diag-barcos.yml` (se dispara al tocar el archivo) deja `resumen.txt` en la rama `diag-barcos`.
   Por eso los zooms de la vista sin uso de /monitor/ (`ZOOMS`/`ZBOX`) incluían también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
   solo se muestran los que tienen ≥2 petroleros; los pasos del FMI siguen en el globo y en el panel. Ver otros estrechos de verdad
   requiere AIS satelital (pago). Solo petroleros (tipo AIS 80-89): el tipo llega en ShipStaticData (~cada 6 min por barco), así que el
