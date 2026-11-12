@@ -1,0 +1,29 @@
+name: Diagnóstico barcos (temporal)
+on:
+  push:
+    paths: ['.github/workflows/diag-barcos.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - run: |
+          mkdir out; cd out
+          for i in 1 2 3; do
+            curl -sS -m 30 -D h$i.txt "https://datos.pulsomacro.com.ar/barcos.json?t=$(date +%s)" -o b$i.json || true
+            python3 - b$i.json >> resumen.txt <<'PY'
+          import json,sys,time
+          try:
+              d=json.load(open(sys.argv[1]))
+              print('ahora',time.strftime('%H:%M:%S',time.gmtime()),'t',time.strftime('%H:%M:%S',time.gmtime(d.get('t',0)/1000)),'b',len(d.get('b',[])),'rep',len(d.get('rep',[])),'petroleros',d.get('petroleros'),'diag',json.dumps(d.get('diag')))
+          except Exception as e:
+              print('ERR',e,open(sys.argv[1],'rb').read()[:500])
+          PY
+            sleep 70
+          done
+          cat h1.txt >> resumen.txt
+          git init -q . && git checkout -q -b diag-barcos && git add resumen.txt h1.txt && git -c user.name=diag -c user.email=diag@x commit -qm diag
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" diag-barcos
