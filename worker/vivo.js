@@ -169,6 +169,7 @@ const AIS_REG = [   // [nombre, cajas [[lat sur, lon oeste], [lat norte, lon est
 ];
 const AIS_VIVO = 45 * 60000, AIS_QUIETO = 3 * 3600000;   // cuánto se muestra un barco sin reporte nuevo (navegando / fondeado)
 
+const AIS_VER = '2026-11-12c';   // para confirmar desde barcos.json qué código está publicado en Cloudflare
 const RE_MMSI = /"(?:MMSI|UserID)"\s*:\s*(\d+)/, RE_STAT = /"MessageType"\s*:\s*"ShipStaticData"/;
 async function ais(env, ahora){
   if(!env.AISSTREAM_KEY) return;
@@ -178,7 +179,7 @@ async function ais(env, ahora){
   // Golfo de México 45, China 35, Malaca 15 y Golfo Pérsico / Mar Rojo / Arábigo 1 (AISStream casi no tiene antenas ahí). Con tan
   // poco volumen no hace falta rotar, y el registro de petroleros se llena 10 veces más rápido.
   const k = 0; E.i = 0;
-  const diag = {region: 'todas las zonas', msgs: 0, pos: 0, estat: 0, err: null, ms: 0, primero: null, ultimos5s: 0};
+  const diag = {version: AIS_VER, region: 'todas las zonas', msgs: 0, pos: 0, estat: 0, err: null, ms: 0, primero: null, ultimos5s: 0};
   const t0 = Date.now(), nuevos = [];
   try{
     const r = await fetch('https://stream.aisstream.io/v0/stream', {headers: {Upgrade: 'websocket', 'user-agent': UA}});
@@ -192,11 +193,15 @@ async function ais(env, ahora){
       const timer = setTimeout(fin, AIS_SEG);
       ws.addEventListener('close', () => { clearTimeout(timer); fin(); });
       ws.addEventListener('error', () => { clearTimeout(timer); fin(); });
-      ws.addEventListener('message', ev => {
+      ws.addEventListener('message', async ev => {
         try{
           diag.msgs++;
           const dt = Date.now() - t0; if(diag.primero == null) diag.primero = dt; if(dt > AIS_SEG - 5000) diag.ultimos5s++;
-          const s = typeof ev.data === 'string' ? ev.data : dec.decode(ev.data);
+          const d0 = ev.data;
+          if(diag.tipo == null) diag.tipo = typeof d0 === 'string' ? 'texto' : Object.prototype.toString.call(d0);
+          // El mensaje puede llegar como texto, ArrayBuffer, vista de bytes o Blob: se lee siempre como texto.
+          const s = typeof d0 === 'string' ? d0 : (d0 instanceof ArrayBuffer || ArrayBuffer.isView(d0)) ? dec.decode(d0)
+                  : (d0 && typeof d0.text === 'function') ? await d0.text() : String(d0);
           if(diag.muestra == null) diag.muestra = s.slice(0, 300);
           // 12/11/2026: AISStream manda el JSON con espacios ("MMSI": 123): buscar con indexOf '"MMSI":' no encontraba nada y no se
           // registraba ningún barco (msgs ~1000, pos y estat 0). Ahora se busca con una expresión que acepta espacios.
@@ -219,7 +224,7 @@ async function ais(env, ahora){
           const t = Date.parse(tu.replace(' ', 'T') + 'Z') || Date.now();
           const x = [Math.round(la * 1e4) / 1e4, Math.round(lo * 1e4) / 1e4, sog, cog, t];
           E.pos[mmsi] = x; nuevos.push([t, mmsi, x[0], x[1], sog, cog]); diag.pos++;
-        }catch(e){}
+        }catch(e){ diag.fallas = (diag.fallas || 0) + 1; if(!diag.falla) diag.falla = String(e && e.message || e).slice(0, 160); }
       });
     });
   }catch(e){ diag.err = String(e.message || e).slice(0, 200); }

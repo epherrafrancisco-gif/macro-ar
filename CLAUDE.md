@@ -667,7 +667,7 @@ Nada de datos personales, trámites, claves, mails ni preferencias privadas del 
   mensajes, Mediterráneo 89, Golfo de México 45, China 35, Atlántico sur 27, Malaca 15, Mar Negro 10 y Golfo Pérsico / Mar Rojo /
   Arábigo 1: AISStream (antenas en tierra de colaboradores) casi no ve los estrechos del petróleo; NO es un bloqueo a Cloudflare.
   OJO (12/11/2026): AISStream manda el JSON con espacios (`"MMSI": 123`): buscar `'"MMSI":'` con indexOf no encontraba nada y
-  el registro quedaba vacío (msgs ~1000, pos y estat 0). Se usa `RE_MMSI`/`RE_STAT` (aceptan espacios); `diag.muestra` = primer mensaje.
+  el registro quedaba vacío (msgs ~1000, pos y estat 0). Se usa `RE_MMSI`/`RE_STAT` (aceptan espacios); `diag.muestra` = primer mensaje, `diag.tipo` = cómo llega (texto, ArrayBuffer o Blob: se leen los tres), `diag.version` = `AIS_VER` (para saber qué código está pegado en Cloudflare), `diag.falla` = primer error.
   Para mirar barcos.json desde acá: `.github/workflows/diag-barcos.yml` (se dispara al tocar el archivo) deja `resumen.txt` en la rama `diag-barcos`.
   Por eso los zooms de la vista sin uso de /monitor/ (`ZOOMS`/`ZBOX`) incluían también Gibraltar, Bósforo, Canal de la Mancha y Róterdam y Houston, y
   solo se muestran los que tienen ≥2 petroleros; los pasos del FMI siguen en el globo y en el panel. Ver otros estrechos de verdad
