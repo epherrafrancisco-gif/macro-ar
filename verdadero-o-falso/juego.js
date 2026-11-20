@@ -42,7 +42,7 @@ const restar = (f, dias) => { const d = new Date(f + 'T12:00:00Z'); d.setUTCDate
 const ARSD = Object.fromEntries(A.fx);
 const HF = P.his.f, HM = P.his.mep;
 const idxF = f => { let i = -1; for (let j = 0; j < HF.length; j++) { if (HF[j] <= f) i = j; else break; } return i; };
-const usd = (tk, i) => { const c = P.his.acc[tk].c[i], m = HM[i]; return c && m ? c / m : null; };
+const usd = (tk, i) => { const s = P.his.acc[tk]; if (!s) return null; const c = s.c[i], m = HM[i]; return c && m ? c / m : null; };  // sin acciones (BYMA no responde) no se cuelga
 const PER = [['1m', 30, 'un mes', 'en el último mes'], ['3m', 91, 'tres meses', 'en los últimos tres meses'], ['6m', 182, 'seis meses', 'en los últimos seis meses'], ['1a', 365, 'un año', 'en el último año'], ['2a', 725, 'dos años', 'en los últimos dos años']];
 const retUsd = (tk, dias) => {
   const iN = HF.length - 1, i0 = idxF(restar(HF[iN], dias)); if (i0 < 0) return null;
