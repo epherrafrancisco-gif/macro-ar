@@ -10,13 +10,13 @@
   "Rava merval: 10 días (último 2026-11-20)",
   "BCRA compras: 231 días desde 2025-12-01",
   "BCRA bopreal: 233 días desde 2025-12-01",
-  "BCRA reservas: 4 días",
+  "BCRA reservas: 3 días",
   "BCRA mayorista: 234 días",
-  "BCRA base: 4 días",
-  "BCRA badlar: 5 días",
-  "BCRA tamar: 5 días",
+  "BCRA base: 3 días",
+  "BCRA badlar: 4 días",
+  "BCRA tamar: 4 días",
   "BCRA pf: 233 días",
-  "BCRA depusd: 3 días",
+  "BCRA depusd: 2 días",
   "BCRA infl: 4 meses",
   "BCRA inflYoY: 4 meses",
   "BCRA expect: 4 meses",
@@ -35,11 +35,10 @@
   "Historia mep: 38 días en 1 tramos",
   "Historia ccl: 38 días en 1 tramos",
   "Historia may: 33 días en 1 tramos",
-  "Historia cer: 54 días en 1 tramos",
+  "Historia cer: 55 días en 1 tramos",
   "CPI EE.UU. (FRED): 118 meses"
  ],
  "errores": [
-  "Propios: <urlopen error timed out>",
   "BYMA merval: <urlopen error timed out>"
  ]
 }
