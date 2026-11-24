@@ -3,10 +3,10 @@ Dólar hoy · 20/11/2026
 Oficial: $1.601,32 (+0,9%)
 MEP: $1.701,05 (+3,5%)
 CCL: $1.799,14 (+3,2%)
-Blue: $1.675,00 (+2,8%)
+Blue: $1.675,00 (+2,1%)
 
 Brecha CCL: 12,4%
-Riesgo país: 1.070 pb (+139)
+Riesgo país: 1.035 pb (−35)
 Reservas: US$ 49.553 M (18/11)
 Compras del BCRA: +74 M (17/11); en 2026: +16.308 M
 
