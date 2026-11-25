@@ -1,15 +1,14 @@
 {
  "actualizado": "2026-11-25",
  "ok": [
-  "Ámbito blue: 208 días",
-  "Ámbito oficial: 239 días",
-  "Ámbito mep: 257 días",
-  "Ámbito ccl: 257 días",
-  "Ámbito riesgo: 257 días",
+  "Ámbito blue: 209 días",
+  "Ámbito oficial: 240 días",
+  "Ámbito mep: 258 días",
+  "Ámbito ccl: 258 días",
+  "Ámbito riesgo: 258 días",
   "Ámbito merval: 218 días",
   "Rava merval: 10 días (último 2026-11-24)",
   "Propios: {'mep_pm': 1669.39, 'ccl_pm': 1772.1, 'riesgo_pm': 902}",
-  "BYMA merval: {'2026-11-24': 81126.03, '2026-11-25': 81643.14}",
   "BCRA compras: 233 días desde 2025-12-01",
   "BCRA bopreal: 235 días desde 2025-12-01",
   "BCRA reservas: 5 días",
@@ -32,13 +31,15 @@
   "DolarApi: cripto ['2026-11-25'], tarjeta ['2026-11-25']",
   "datos.gob.ar fiscal y comercio: 45 meses",
   "datos.gob.ar PBI: 16 trimestres",
-  "Historia ofi: 35 días en 1 tramos",
-  "Historia blue: 30 días en 1 tramos",
-  "Historia mep: 39 días en 1 tramos",
-  "Historia ccl: 39 días en 1 tramos",
+  "Historia ofi: 36 días en 1 tramos",
+  "Historia blue: 31 días en 1 tramos",
+  "Historia mep: 40 días en 1 tramos",
+  "Historia ccl: 40 días en 1 tramos",
   "Historia may: 35 días en 1 tramos",
   "Historia cer: 56 días en 1 tramos",
   "CPI EE.UU. (FRED): 118 meses"
  ],
- "errores": []
+ "errores": [
+  "BYMA merval: HTTP Error 400: "
+ ]
 }
