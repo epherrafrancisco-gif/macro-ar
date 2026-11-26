@@ -205,8 +205,8 @@
     "porcentaje": "titular_porcentaje_titularidad",
     "anio_modelo": "automotor_anio_modelo"
    },
-   "filas": 49591,
-   "livianos_0km": 44305,
+   "filas": 49592,
+   "livianos_0km": 44306,
    "usados": 440,
    "ejemplo": [
     {
@@ -697,8 +697,8 @@
     "porcentaje": "titular_porcentaje_titularidad",
     "anio_modelo": "automotor_anio_modelo"
    },
-   "filas": 50521,
-   "livianos_0km": 44977,
+   "filas": 50547,
+   "livianos_0km": 44999,
    "usados": 370,
    "ejemplo": [
     {
@@ -738,6 +738,88 @@
      "automotor_uso_descripcion": "Privado"
     }
    ]
+  },
+  {
+   "archivo": "2026.zip:dnrpa-inscripciones-iniciales-autos-202610.csv",
+   "columnas": [
+    "tramite_tipo",
+    "tramite_fecha",
+    "fecha_inscripcion_inicial",
+    "registro_seccional_codigo",
+    "registro_seccional_descripcion",
+    "registro_seccional_provincia",
+    "automotor_origen",
+    "automotor_anio_modelo",
+    "automotor_tipo_codigo",
+    "automotor_tipo_descripcion",
+    "automotor_marca_codigo",
+    "automotor_marca_descripcion",
+    "automotor_modelo_codigo",
+    "automotor_modelo_descripcion",
+    "automotor_uso_codigo",
+    "automotor_uso_descripcion",
+    "titular_tipo_persona",
+    "titular_domicilio_localidad",
+    "titular_domicilio_provincia",
+    "titular_genero",
+    "titular_anio_nacimiento",
+    "titular_pais_nacimiento",
+    "titular_porcentaje_titularidad",
+    "titular_domicilio_provincia_id",
+    "titular_pais_nacimiento_id"
+   ],
+   "usadas": {
+    "fecha": "fecha_inscripcion_inicial",
+    "marca": "automotor_marca_descripcion",
+    "modelo": "automotor_modelo_descripcion",
+    "tipo": "automotor_tipo_descripcion",
+    "origen": "automotor_origen",
+    "provincia": "registro_seccional_provincia",
+    "persona": "titular_tipo_persona",
+    "porcentaje": "titular_porcentaje_titularidad",
+    "anio_modelo": "automotor_anio_modelo"
+   },
+   "filas": 46391,
+   "livianos_0km": 41061,
+   "usados": 386,
+   "ejemplo": [
+    {
+     "tramite_tipo": "INSCRIPCION INICIAL IMPORTADO",
+     "tramite_fecha": "2026-10-01",
+     "fecha_inscripcion_inicial": "2026-10-01",
+     "registro_seccional_codigo": "1288",
+     "registro_seccional_descripcion": "MORENO Nº 5",
+     "registro_seccional_provincia": "Buenos Aires",
+     "automotor_origen": "Protocolo 21",
+     "automotor_anio_modelo": "2026",
+     "automotor_tipo_codigo": "05",
+     "automotor_tipo_descripcion": "SEDAN 5 PUERTAS",
+     "automotor_marca_codigo": "136",
+     "automotor_marca_descripcion": "VOLKSWAGEN",
+     "automotor_modelo_codigo": "817",
+     "automotor_modelo_descripcion": "POLO TRACK MSI MT G1",
+     "automotor_uso_codigo": "1",
+     "automotor_uso_descripcion": "Privado"
+    },
+    {
+     "tramite_tipo": "INSCRIPCION INICIAL IMPORTADO",
+     "tramite_fecha": "2026-10-01",
+     "fecha_inscripcion_inicial": "2026-10-01",
+     "registro_seccional_codigo": "1289",
+     "registro_seccional_descripcion": "QUILMES Nº 9",
+     "registro_seccional_provincia": "Buenos Aires",
+     "automotor_origen": "Importado",
+     "automotor_anio_modelo": "2026",
+     "automotor_tipo_codigo": "04",
+     "automotor_tipo_descripcion": "RURAL 5 PUERTAS",
+     "automotor_marca_codigo": "072",
+     "automotor_marca_descripcion": "KIA",
+     "automotor_modelo_codigo": "358",
+     "automotor_modelo_descripcion": "SELTOS LX 1.5 A/T",
+     "automotor_uso_codigo": "1",
+     "automotor_uso_descripcion": "Privado"
+    }
+   ]
   }
  ],
  "recursos": {
@@ -752,7 +834,7 @@
    2025,
    2026
   ],
-  "mensual": "2026-09"
+  "mensual": "2026-10"
  },
  "historia": {
   "url": "https://datos.jus.gob.ar/dataset/1ab0cc03-ab9b-4520-975c-5757d87d1061/resource/4358c995-bb04-4ad9-be4a-a9076dc3e42c/download/estadistica-inscripciones-iniciales-automotores-2000-01-2026-10.csv",
