@@ -7,8 +7,8 @@
   "Ámbito ccl: 258 días",
   "Ámbito riesgo: 258 días",
   "Ámbito merval: 218 días",
-  "Rava merval: 10 días (último 2026-11-24)",
-  "Propios: {'mep_pm': 1669.39, 'ccl_pm': 1772.1, 'riesgo_pm': 902}",
+  "Rava merval: 10 días (último 2026-11-25)",
+  "BYMA merval: {'2026-11-24': 81126.03, '2026-11-25': 81643.14}",
   "BCRA compras: 233 días desde 2025-12-01",
   "BCRA bopreal: 235 días desde 2025-12-01",
   "BCRA reservas: 5 días",
@@ -36,10 +36,8 @@
   "Historia mep: 40 días en 1 tramos",
   "Historia ccl: 40 días en 1 tramos",
   "Historia may: 35 días en 1 tramos",
-  "Historia cer: 56 días en 1 tramos",
+  "Historia cer: 57 días en 1 tramos",
   "CPI EE.UU. (FRED): 118 meses"
  ],
- "errores": [
-  "BYMA merval: HTTP Error 400: "
- ]
+ "errores": []
 }
