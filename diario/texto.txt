@@ -1,12 +1,12 @@
-Dólar hoy · 26/11/2026
+Dólar hoy · 27/11/2026
 
-Oficial: $1.628,75 (−0,2%)
-MEP: $1.662,96 (−0,4%)
-CCL: $1.834,47 (+3,1%)
-Blue: $1.700,00 (−0,6%)
+Oficial: $1.628,21 (−0,0%)
+MEP: $1.656,92 (−0,4%)
+CCL: $1.754,46 (−4,4%)
+Blue: $1.695,00 (−0,9%)
 
-Brecha CCL: 12,6%
-Riesgo país: 1.067 pb (0)
+Brecha CCL: 7,8%
+Riesgo país: 960 pb (−107)
 Reservas: US$ 48.748 M (25/11)
 Compras del BCRA: 0 M (24/11); en 2026: +16.322 M
 
